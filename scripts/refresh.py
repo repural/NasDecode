@@ -85,11 +85,18 @@ def explain_current_rows(rows):
             context=(' At the same time, '+ ' and '.join(leaders)+'.') if leaders else ''
             r['explanation']=f'{x}. Breadth is {d.lower()}. A larger share of advancing Nasdaq-100 constituents means wider participation; weak participation makes index strength less robust. Current implication: {t}.{context}'
         elif n=='Nasdaq volatility (VXN / VIX)':
-            rates=[]
-            if live('10Y nominal yield'): rates.append('10Y '+signal('10Y nominal yield'))
-            if live('2Y Treasury yield'): rates.append('2Y '+signal('2Y Treasury yield'))
-            context=(' Rates remain a separate pressure point ('+', '.join(rates)+'), so calmer volatility should not be read as an all-clear signal.') if any('negative' in z for z in rates) else ''
-            r['explanation']=f'{x}. VXN measures Nasdaq-100 implied volatility and VIX provides broader-market confirmation. Volatility is {d.lower()}; falling implied volatility usually means less demand for protection, while rising volatility is a risk-off warning. Current implication: {t}.{context}'
+            if d=='Diverging':
+                interp='VXN and VIX are moving in opposite directions, so Nasdaq-specific and broad-market volatility do not confirm each other.'
+            elif d=='Falling together':
+                interp='VXN and VIX are falling together, confirming reduced demand for near-term protection.'
+            elif d=='Rising together':
+                interp='VXN and VIX are rising together, confirming increasing demand for protection.'
+            else:
+                interp='The two volatility gauges are not producing a strong aligned move.'
+            context=''
+            if live('10Y nominal yield') and live('2Y Treasury yield'):
+                context=f" Rate levels remain {tone(by['10Y nominal yield'])} at the 10Y and {tone(by['2Y Treasury yield'])} at the 2Y."
+            r['explanation']=f'{x}. {interp} Overall volatility signal: {t}.{context}'
         elif n=='Credit conditions':
             vol=f" Volatility is also {direction('Nasdaq volatility (VXN / VIX)')}, providing {'consistent risk-on confirmation' if signal('Nasdaq volatility (VXN / VIX)')=='positive' and r.get('signal')=='positive' else 'a separate cross-check on risk appetite'}." if live('Nasdaq volatility (VXN / VIX)') else ''
             r['explanation']=f'{x}. HYG versus LQD is a liquid credit-risk proxy: stronger high-yield relative performance suggests easier/risk-on conditions, while underperformance suggests tightening. Credit is {d.lower()} and {t}.{vol}'
