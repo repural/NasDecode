@@ -8,10 +8,12 @@ on:
       - 'data/cnbc_probe.json'
   workflow_dispatch:
   schedule:
-    # Candidate UTC times covering 09:30 and 10:30 New York in both EDT and EST.
-    - cron: '30 13 * * 1-5'
-    - cron: '30 14 * * 1-5'
-    - cron: '30 15 * * 1-5'
+    # Use New York time directly so DST does not require UTC candidate schedules.
+    # Run a few minutes after the cash open so equity quote feeds have populated.
+    - cron: '35 9 * * 1-5'
+      timezone: 'America/New_York'
+    - cron: '35 10 * * 1-5'
+      timezone: 'America/New_York'
 permissions:
   contents: write
 jobs:
@@ -19,13 +21,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Gate scheduled runs to 09:30/10:30 America/New_York
+      - name: Allow refresh
         id: gate
-        shell: bash
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "${{ github.event_name }}" = "push" ]; then echo "run=yes" >> "$GITHUB_OUTPUT"; exit 0; fi
-          hour=$(TZ=America/New_York date +%H)
-          if [ "$hour" = "09" ] || [ "$hour" = "10" ]; then echo "run=yes" >> "$GITHUB_OUTPUT"; else echo "run=no" >> "$GITHUB_OUTPUT"; fi
+        run: echo "run=yes" >> "$GITHUB_OUTPUT"
       - name: Refresh data
         if: steps.gate.outputs.run == 'yes'
         run: python scripts/refresh.py
