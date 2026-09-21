@@ -377,7 +377,7 @@ def main():
                 if event_date.date()<now.date(): event_date=event_date.replace(year=now.year+1)
             days=((event_date-now).total_seconds()/86400) if event_date else None
             if n=='Technology earnings calendar':
-                imp='Very High' if days is not None and days<=2 else ('High' if days is not None and days<=10 else ('Medium' if days is not None and days<=21 else 'Low'))
+                imp='Very High' if days is not None and days<=5 else ('High' if days is not None and days<=14 else ('Medium' if days is not None and days<=28 else 'Low'))
             elif n=='Fed path / rate expectations':
                 # FOMC decisions deserve more urgency than minutes; minutes still ramp as the date approaches.
                 decision=('decision' in txt.lower() or 'press conference' in txt.lower())
