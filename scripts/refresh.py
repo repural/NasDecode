@@ -370,7 +370,7 @@ def main():
             event_date=None
             txt=r.get('latest','')
             month_map={'Jan':1,'Feb':2,'Mar':3,'Apr':4,'May':5,'Jun':6,'Jul':7,'Aug':8,'Sep':9,'Oct':10,'Nov':11,'Dec':12}
-            matches=re.findall(r'\\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\\s+(\\d{1,2})\\b',txt)
+            matches=re.findall(r'\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{1,2})\b',txt)
             if matches:
                 mon,day=matches[0]
                 event_date=datetime(now.year,month_map[mon],int(day),tzinfo=NY)
