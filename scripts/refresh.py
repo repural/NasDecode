@@ -41,38 +41,72 @@ def setrow(rows,name,latest,direction,signal,freshness,source='CNBC quote feed',
     if explanation is not None: r['explanation']=explanation
 
 def explain_current_rows(rows):
-    # Contextual explanations are regenerated from each row's current values/signal on every refresh.
+    # Regenerate explanations from current values and selected related factors.
+    by={r['factor']:r for r in rows}
+    def tone(r):
+        return {'positive':'supportive','negative':'a headwind','mixed':'neutral/mixed'}.get(r.get('signal'),'neutral/mixed')
+    def latest(name):
+        return by.get(name,{}).get('latest','unavailable')
+    def signal(name):
+        return by.get(name,{}).get('signal','mixed')
+    def direction(name):
+        return by.get(name,{}).get('direction','unknown').lower()
+    def live(name):
+        r=by.get(name,{})
+        return bool(r) and 'Awaiting' not in r.get('latest','') and not str(r.get('freshness','')).startswith('STALE')
+
     for r in rows:
-        n=r['factor']; x=r.get('latest',''); d=r.get('direction',''); sig=r.get('signal','mixed')
-        tone={'positive':'supportive','negative':'a headwind','mixed':'neutral/mixed'}.get(sig,'neutral/mixed')
+        n=r['factor']; x=r.get('latest',''); d=r.get('direction',''); t=tone(r)
         if n=='10Y nominal yield':
-            r['explanation']=f'{x}. The 10-year nominal yield is {d.lower()}; higher long-term discount rates generally pressure long-duration technology valuations. At the current reading NasBoard treats this factor as {tone} for Nasdaq.'
+            extra=f" The 2Y is {latest('2Y Treasury yield')} and the 10Y real yield is {latest('10Y real yield')}, so the dashboard is seeing rate pressure across both Fed-sensitive and real long-term rates." if live('2Y Treasury yield') and live('10Y real yield') else ''
+            vol=f" Meanwhile volatility is {direction('Nasdaq volatility (VXN / VIX)')} ({latest('Nasdaq volatility (VXN / VIX)')}), which {'partly offsets the rate pressure' if signal('Nasdaq volatility (VXN / VIX)')=='positive' else 'does not provide a clear offset'}." if live('Nasdaq volatility (VXN / VIX)') else ''
+            r['explanation']=f'{x}. The 10-year yield is {d.lower()}; higher long-term discount rates generally pressure long-duration technology valuations. NasBoard treats this as {t}.{extra}{vol}'
         elif n=='2Y Treasury yield':
-            r['explanation']=f'{x}. The 2-year yield is {d.lower()} and is especially sensitive to expected Fed policy. Its current level/move is classified as {tone}; falling front-end yields generally ease rate pressure on growth stocks, while rising yields do the opposite.'
+            extra=f" The 10Y is {latest('10Y nominal yield')}; when both maturities rise together, the rate headwind is broader than a move confined to one part of the curve." if live('10Y nominal yield') else ''
+            r['explanation']=f'{x}. The 2-year yield is {d.lower()} and is especially sensitive to expected Fed policy. The current move is {t}.{extra}'
         elif n=='10Y real yield':
-            r['explanation']=f'{x}. This is the inflation-adjusted long-term discount rate. A real yield at the current level is classified as {d.lower()} and {tone} for long-duration Nasdaq valuations because future earnings are discounted at a higher real rate.'
+            extra=f" Nominal 10Y is {latest('10Y nominal yield')}, reinforcing the valuation message." if live('10Y nominal yield') and signal('10Y nominal yield')=='negative' else ''
+            r['explanation']=f'{x}. This inflation-adjusted long-term discount rate is {d.lower()} and {t} for long-duration Nasdaq valuations because future earnings are discounted at a higher real rate.{extra}'
         elif n=='Semiconductor leadership':
-            r['explanation']=f'{x}. Semiconductors are currently {d.lower()}. Because chips are a major Nasdaq/AI leadership group, relative strength versus QQQ is a useful confirmation of risk appetite. The present reading is {tone}.'
+            breadth=f" Market breadth is {direction('Market breadth')} ({latest('Market breadth')})." if live('Market breadth') else ''
+            mega=f" Mega-cap leadership is {direction('Mega-cap leadership')}." if live('Mega-cap leadership') else ''
+            r['explanation']=f'{x}. Semiconductors are {d.lower()}. Chips are a major Nasdaq/AI leadership group, so relative strength versus QQQ is an important risk-appetite confirmation. Current implication: {t}.{breadth}{mega}'
         elif n=='Mega-cap leadership':
-            r['explanation']=f'{x}. The mega-cap basket is {d.lower()}. Nasdaq is more durable when its largest weights participate rather than the index being carried by a narrow subset; this reading is currently {tone}.'
+            breadth=f" Breadth is {direction('Market breadth')}; {'broad participation confirms the move' if signal('Market breadth')=='positive' else 'the wider market is not giving equally strong confirmation' if signal('Market breadth')=='negative' else 'the wider market is giving only partial confirmation'}." if live('Market breadth') else ''
+            semi=f" Semiconductor leadership is {direction('Semiconductor leadership')}." if live('Semiconductor leadership') else ''
+            r['explanation']=f'{x}. The mega-cap basket is {d.lower()}. Nasdaq is more durable when its largest weights participate rather than the index being carried by a narrow subset. Current implication: {t}.{breadth}{semi}'
         elif n=='Market breadth':
-            r['explanation']=f'{x}. Breadth is {d.lower()}. A larger share of advancing Nasdaq-100 constituents indicates wider participation, while weak participation makes index strength less robust. NasBoard currently reads breadth as {tone}.'
+            leaders=[]
+            if live('Semiconductor leadership'): leaders.append('semiconductors are '+direction('Semiconductor leadership'))
+            if live('Mega-cap leadership'): leaders.append('mega-caps are '+direction('Mega-cap leadership'))
+            context=(' At the same time, '+ ' and '.join(leaders)+'.') if leaders else ''
+            r['explanation']=f'{x}. Breadth is {d.lower()}. A larger share of advancing Nasdaq-100 constituents means wider participation; weak participation makes index strength less robust. Current implication: {t}.{context}'
         elif n=='Nasdaq volatility (VXN / VIX)':
-            r['explanation']=f'{x}. VXN measures Nasdaq-100 implied volatility and VIX provides broader-market confirmation. Volatility is currently {d.lower()}; falling implied volatility usually means less demand for protection and is supportive, while rising volatility is a risk-off warning. Current signal: {tone}.'
+            rates=[]
+            if live('10Y nominal yield'): rates.append('10Y '+signal('10Y nominal yield'))
+            if live('2Y Treasury yield'): rates.append('2Y '+signal('2Y Treasury yield'))
+            context=(' Rates remain a separate pressure point ('+', '.join(rates)+'), so calmer volatility should not be read as an all-clear signal.') if any('negative' in z for z in rates) else ''
+            r['explanation']=f'{x}. VXN measures Nasdaq-100 implied volatility and VIX provides broader-market confirmation. Volatility is {d.lower()}; falling implied volatility usually means less demand for protection, while rising volatility is a risk-off warning. Current implication: {t}.{context}'
         elif n=='Credit conditions':
-            r['explanation']=f'{x}. HYG versus LQD is used as a liquid credit-risk proxy: stronger high-yield performance relative to investment grade suggests easier/risk-on conditions, while underperformance suggests tightening. Conditions are currently {d.lower()}, making credit {tone}.'
+            vol=f" Volatility is also {direction('Nasdaq volatility (VXN / VIX)')}, providing {'consistent risk-on confirmation' if signal('Nasdaq volatility (VXN / VIX)')=='positive' and r.get('signal')=='positive' else 'a separate cross-check on risk appetite'}." if live('Nasdaq volatility (VXN / VIX)') else ''
+            r['explanation']=f'{x}. HYG versus LQD is a liquid credit-risk proxy: stronger high-yield relative performance suggests easier/risk-on conditions, while underperformance suggests tightening. Credit is {d.lower()} and {t}.{vol}'
         elif n=='U.S. Dollar (DXY)':
-            r['explanation']=f'{x}. The dollar is {d.lower()}. A rapidly strengthening dollar can tighten global financial conditions and pressure multinational technology earnings; a weaker dollar tends to reduce that pressure. Current Nasdaq implication: {tone}.'
+            oil=f" Oil is {direction('Oil (WTI / Brent)')} ({latest('Oil (WTI / Brent)')}), another input into inflation/financial conditions." if live('Oil (WTI / Brent)') else ''
+            r['explanation']=f'{x}. The dollar is {d.lower()}. A rapidly stronger dollar can tighten global financial conditions and pressure multinational technology earnings; a weaker dollar reduces that pressure. The present move is {t}. {oil}'.strip()
         elif n=='Oil (WTI / Brent)':
-            r['explanation']=f'{x}. Oil is {d.lower()}. Large oil moves can alter inflation expectations and therefore bond yields/Fed expectations; rising energy prices are a potential inflation-rate headwind for growth stocks. NasBoard currently classifies this as {tone}.'
+            rates=f" The 10Y yield is {latest('10Y nominal yield')}; oil matters for Nasdaq mainly through inflation expectations and the rate path." if live('10Y nominal yield') else ''
+            r['explanation']=f'{x}. Oil is {d.lower()}. Large energy moves can alter inflation expectations and therefore Treasury yields/Fed expectations. Current implication: {t}.{rates}'
         elif n=='Options positioning / sentiment':
-            r['explanation']=f'{x}. Equity put/call is compared with its 5-session baseline to distinguish an isolated reading from a positioning shift; Index and Total P/C provide context because index puts often reflect institutional hedging. Positioning is {d.lower()} and currently {tone}; this is not a dealer-gamma measure.'
+            vol=f" VXN/VIX are {direction('Nasdaq volatility (VXN / VIX)')} ({latest('Nasdaq volatility (VXN / VIX)')}), so options positioning and implied volatility together {'lean toward improving risk appetite' if signal('Nasdaq volatility (VXN / VIX)')=='positive' and r.get('signal')=='positive' else 'do not currently give the same strong directional signal'}." if live('Nasdaq volatility (VXN / VIX)') else ''
+            r['explanation']=f'{x}. Equity put/call is compared with its 5-session baseline; Index and Total P/C add context because index puts often reflect institutional hedging. Positioning is {d.lower()} and {t}; this is not dealer gamma. {vol}'.strip()
         elif n=='Fed path / rate expectations':
-            r['explanation']=f'{x}. This row currently tracks the next scheduled Fed catalyst rather than market-implied cut/hike probabilities. The upcoming event creates policy-rate event risk for Nasdaq; current classification is {tone}.'
+            yields=f" Current rate-market context: 2Y {latest('2Y Treasury yield')} and 10Y {latest('10Y nominal yield')}." if live('2Y Treasury yield') and live('10Y nominal yield') else ''
+            r['explanation']=f'{x}. This row tracks the next scheduled Fed catalyst rather than market-implied cut/hike probabilities. The event creates policy-rate risk for Nasdaq. {yields}'.strip()
         elif n=='Economic / inflation data':
-            r['explanation']=f'{x}. This is the next scheduled macro release capable of changing inflation/growth expectations, Treasury yields and the expected Fed path. Event status is {d.lower()}, so NasBoard currently treats the factor as {tone}.'
+            yields=f" With 2Y at {latest('2Y Treasury yield')} and 10Y at {latest('10Y nominal yield')}, a surprise that shifts inflation/Fed expectations could feed quickly into Nasdaq discount rates." if live('2Y Treasury yield') and live('10Y nominal yield') else ''
+            r['explanation']=f'{x}. This is the next scheduled macro release capable of changing growth/inflation expectations, Treasury yields and the Fed path. Event status is {d.lower()}. {yields}'.strip()
         else:
-            r['explanation']=f'Current reading: {x}. Direction: {d}. NasBoard currently classifies this factor as {tone}. This row will become more specific as its underlying live/research source is automated.'
+            r['explanation']=f'Current reading: {x}. Direction: {d}. NasBoard currently classifies this factor as {t}. This row will become more specific as its underlying live/research source is automated.'
 
 def treasury_10y_real(year):
     url='https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_real_yield_curve&field_tdr_date_value='+str(year)
