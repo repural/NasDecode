@@ -1,5 +1,11 @@
 name: Refresh NasBoard
 on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'data/dashboard.json'
+      - 'data/cnbc_probe.json'
   workflow_dispatch:
   schedule:
     # Candidate UTC times covering 09:30 and 10:30 New York in both EDT and EST.
@@ -17,7 +23,7 @@ jobs:
         id: gate
         shell: bash
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then echo "run=yes" >> "$GITHUB_OUTPUT"; exit 0; fi
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] || [ "${{ github.event_name }}" = "push" ]; then echo "run=yes" >> "$GITHUB_OUTPUT"; exit 0; fi
           hour=$(TZ=America/New_York date +%H)
           if [ "$hour" = "09" ] || [ "$hour" = "10" ]; then echo "run=yes" >> "$GITHUB_OUTPUT"; else echo "run=no" >> "$GITHUB_OUTPUT"; fi
       - name: Refresh data
