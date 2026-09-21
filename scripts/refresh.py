@@ -378,6 +378,28 @@ def main():
             days=((event_date-now).total_seconds()/86400) if event_date else None
             if n=='Technology earnings calendar':
                 imp='Very High' if days is not None and days<=5 else ('High' if days is not None and days<=14 else ('Medium' if days is not None and days<=28 else 'Low'))
+                # Market-reaction override: major tech earnings can become immediately important before
+                # the calendar threshold when Nasdaq/semiconductor price action is already unusually strong.
+                # Use only current-session observations; never promote from previous-close/Awaiting data.
+                semi=next((z for z in rows if z['factor']=='Semiconductor leadership'),{})
+                mega=next((z for z in rows if z['factor']=='Mega-cap leadership'),{})
+                vol=next((z for z in rows if z['factor']=='Nasdaq volatility (VXN / VIX)'),{})
+                reaction_score=0
+                if 'Awaiting' not in semi.get('latest','') and 'previous close' not in semi.get('freshness','').lower():
+                    sm=re.search(r'(?:basket vs QQQ|relative) ([+-]?[0-9.]+) pp',semi.get('latest',''))
+                    if sm and abs(float(sm.group(1)))>=1.0: reaction_score+=2
+                    elif sm and abs(float(sm.group(1)))>=0.5: reaction_score+=1
+                if 'Awaiting' not in mega.get('latest','') and 'previous close' not in mega.get('freshness','').lower():
+                    mm=re.search(r'(?:basket vs QQQ|relative) ([+-]?[0-9.]+) pp',mega.get('latest',''))
+                    if mm and abs(float(mm.group(1)))>=1.0: reaction_score+=1
+                if 'previous close' not in vol.get('freshness','').lower():
+                    vm=[abs(float(v)) for v in re.findall(r'\\(([+-]?[0-9.]+)%\\)',vol.get('latest',''))]
+                    if vm and max(vm)>=5: reaction_score+=1
+                # Promote one tier on strong corroborating reaction; promote to Very High on exceptional reaction.
+                rank={'Low':0,'Medium':1,'High':2,'Very High':3}; names=['Low','Medium','High','Very High']
+                if reaction_score>=3: imp='Very High'
+                elif reaction_score>=2: imp=names[min(3,rank[imp]+1)]
+                r['impactReason']=f"Calendar: {days:.1f} days to event; market-reaction score {reaction_score}/4" if days is not None else f"Market-reaction score {reaction_score}/4"
             elif n=='Fed path / rate expectations':
                 # FOMC decisions deserve more urgency than minutes; minutes still ramp as the date approaches.
                 decision=('decision' in txt.lower() or 'press conference' in txt.lower())
