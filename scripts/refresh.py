@@ -323,6 +323,55 @@ def main():
         print('Treasury real-yield refresh failed:',repr(e))
         real['freshness']='STALE — U.S. Treasury daily feed refresh failed'
         real['source']='U.S. Department of the Treasury — Daily Treasury Par Real Yield Curve Rates (10Y TIPS)'
+    # Current impact = magnitude of the factor's present Nasdaq effect, not its structural importance.
+    # It is intentionally based on current observations/freshness and can change each refresh.
+    for r in rows:
+        n=r['factor']; imp='Medium'
+        if 'Awaiting' in r.get('latest','') or str(r.get('freshness','')).startswith('STALE'):
+            imp='Low'
+        elif n in ('10Y nominal yield','2Y Treasury yield'):
+            # High absolute yields remain important; a meaningful daily move raises immediate relevance.
+            m=re.search(r'\(([+-]?[0-9.]+) bp',r.get('latest',''))
+            bp=abs(float(m.group(1))) if m else 0
+            imp='Very High' if bp>=5 else ('High' if bp>=2 else 'Medium')
+        elif n=='10Y real yield':
+            try: rv=float(r.get('latest','0').replace('%',''))
+            except: rv=0
+            imp='High' if rv>=2 else ('Medium' if rv>=1 else 'Low')
+        elif n=='Nasdaq volatility (VXN / VIX)':
+            nums=[abs(float(v)) for v in re.findall(r'\(([+-]?[0-9.]+)%\)',r.get('latest',''))]
+            mv=max(nums) if nums else 0
+            imp='High' if mv>=5 else ('Medium' if mv>=2 else 'Low')
+        elif n=='Oil (WTI / Brent)':
+            nums=[abs(float(v)) for v in re.findall(r'\(([+-]?[0-9.]+)%\)',r.get('latest',''))]
+            mv=max(nums) if nums else 0
+            imp='Very High' if mv>=4 else ('High' if mv>=2 else ('Medium' if mv>=1 else 'Low'))
+        elif n=='U.S. Dollar (DXY)':
+            m=re.search(r'\(([+-]?[0-9.]+)%',r.get('latest','')); mv=abs(float(m.group(1))) if m else 0
+            imp='High' if mv>=0.7 else ('Medium' if mv>=0.3 else 'Low')
+        elif n=='Market breadth':
+            m=re.search(r'\(([0-9]+)%\)',r.get('latest','')); adv=float(m.group(1)) if m else 50
+            dev=abs(adv-50)
+            imp='Very High' if dev>=30 else ('High' if dev>=20 else ('Medium' if dev>=10 else 'Low'))
+        elif n in ('Semiconductor leadership','Mega-cap leadership'):
+            m=re.search(r'(?:basket vs QQQ|relative) ([+-]?[0-9.]+) pp',r.get('latest','')); mv=abs(float(m.group(1))) if m else 0
+            imp='Very High' if mv>=1.5 else ('High' if mv>=0.75 else ('Medium' if mv>=0.25 else 'Low'))
+        elif n=='Credit conditions':
+            m=re.search(r'HYG vs LQD ([+-]?[0-9.]+) pp',r.get('latest','')); mv=abs(float(m.group(1))) if m else 0
+            imp='High' if mv>=0.75 else ('Medium' if mv>=0.25 else 'Low')
+        elif n=='Options positioning / sentiment':
+            m=re.search(r'Equity P/C ([0-9.]+).*5D avg ([0-9.]+)',r.get('latest',''))
+            if m:
+                eq,av=map(float,m.groups()); dev=abs(eq-av)
+                imp='High' if eq>=0.9 or eq<=0.5 or dev>=0.15 else ('Medium' if eq>=0.75 or eq<=0.55 or dev>=0.08 else 'Low')
+        elif n in ('Fed path / rate expectations','Economic / inflation data','Technology earnings calendar'):
+            imp='High' if r.get('direction') in ('High event risk','Event risk') else 'Medium'
+        elif r.get('signal') in ('positive','negative'):
+            imp='Medium'
+        else:
+            imp='Low'
+        r['currentImpact']=imp
+
     explain_current_rows(rows)
     d['updatedET']=now.strftime('%b %d, %Y · %H:%M ET'); d['nextUpdateET']='09:30 / 10:30 ET on trading weekdays'
     with open(PATH,'w',encoding='utf-8') as f:json.dump(d,f,ensure_ascii=False,indent=2)
