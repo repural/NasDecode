@@ -210,8 +210,18 @@ def main():
             vals=[v for v in mm.values() if v is not None]; qqq=pct(q['QQQ'])
             if len(vals)>=5 and qqq is not None:
                 avg=sum(vals)/len(vals); rel=avg-qqq; pos=sum(v>0 for v in vals)
-                sig='positive' if rel>0.20 and pos>=4 else ('negative' if rel<-0.20 and pos<=3 else 'mixed')
-                direction='Leading QQQ' if rel>0.20 else ('Lagging QQQ' if rel<-0.20 else 'In line with QQQ')
+                # Leadership has two dimensions: relative performance and participation.
+                # Strong broad participation in a rising QQQ is supportive even when the basket only matches QQQ.
+                if rel>0.20 and pos>=4:
+                    sig='positive'; direction='Leading QQQ'
+                elif qqq>0 and pos>=6 and rel>=-0.20:
+                    sig='positive'; direction='Broad participation'
+                elif rel<-0.20 and pos<=3:
+                    sig='negative'; direction='Lagging QQQ'
+                elif qqq<0 and pos<=1 and rel<=0.20:
+                    sig='negative'; direction='Broad weakness'
+                else:
+                    sig='mixed'; direction='In line with QQQ'
                 setrow(rows,'Mega-cap leadership',f'{len(vals)}-stock basket {avg:+.2f}% | {pos}/{len(vals)} positive | QQQ {qqq:+.2f}% | relative {rel:+.2f} pp',direction,sig,fresh(q['QQQ']),'CNBC quotes; equal-weight AAPL/MSFT/AMZN/GOOGL/META/NVDA/TSLA basket vs QQQ')
         else:
             setrow(rows,'Mega-cap leadership','Awaiting current-session mega-cap quotes','Awaiting session','mixed',fresh(q['QQQ']) if 'QQQ' in q else 'STALE — QQQ unavailable','CNBC quotes; calculation suppressed outside current equity session')
@@ -232,7 +242,14 @@ def main():
         vx=q.get('.VXN'); vi=q.get('.VIX')
         if vx and vi:
             vxn=num(vx.get('last')); vix=num(vi.get('last')); vxnp=pct(vx); vixp=pct(vi)
-            sig='positive' if (vxnp is not None and vxnp<-2 and vixp is not None and vixp<-2) else ('negative' if (vxnp is not None and vxnp>2 and vixp is not None and vixp>2) else 'mixed')
+            # VXN is the Nasdaq-specific gauge and is primary; VIX is confirmation.
+            # Do not hide a large VXN move merely because broad-market VIX has not crossed the same threshold.
+            if vxnp is not None and vxnp>=2:
+                sig='mixed' if vixp is not None and vixp<=-2 else 'negative'
+            elif vxnp is not None and vxnp<=-2:
+                sig='mixed' if vixp is not None and vixp>=2 else 'positive'
+            else:
+                sig='mixed'
             if vxnp is not None and vixp is not None and vxnp<0 and vixp<0: direction='Falling together'
             elif vxnp is not None and vixp is not None and vxnp>0 and vixp>0: direction='Rising together'
             elif vxnp is not None and vixp is not None and vxnp*vixp<0: direction='Diverging'
@@ -312,7 +329,8 @@ def main():
     if future:
         et,name,agency=min(future,key=lambda e:e[0]); hours=(et-now).total_seconds()/3600
         urgency='High event risk' if hours<=24 else ('Event approaching' if hours<=72 else 'Scheduled')
-        esig='negative' if hours<=24 else 'mixed'
+        # Proximity raises impact/uncertainty but does not predict the sign of the surprise.
+        esig='mixed'
         setrow(rows,'Economic / inflation data',f'Next: {name} · {et.strftime("%b %d, %H:%M ET")}',urgency,esig,f'Official calendar · checked {now.strftime("%Y-%m-%d %H:%M ET")}',f'{agency} official release calendar')
     fomc=[e for e in events if e[2]=='Federal Reserve' and e[0]>now]
     if fomc:
@@ -332,7 +350,11 @@ def main():
     # It is intentionally based on current observations/freshness and can change each refresh.
     for r in rows:
         n=r['factor']; imp='Medium'
-        if 'Awaiting' in r.get('latest','') or str(r.get('freshness','')).startswith('STALE'):
+        freshness=str(r.get('freshness',''))
+        if 'Awaiting' in r.get('latest','') or freshness.startswith('STALE'):
+            imp='Low'
+        elif freshness in ('Research snapshot','Official data lag'):
+            # Undated/manual snapshots can provide background direction, but not a defensible current-impact magnitude.
             imp='Low'
         elif n in ('10Y nominal yield','2Y Treasury yield'):
             # High absolute yields remain important; a meaningful daily move raises immediate relevance.
@@ -443,6 +465,30 @@ def main():
         r['currentImpact']=imp
 
     explain_current_rows(rows)
+
+    # Recompute summary cards from the refreshed rows instead of leaving stale labels in dashboard.json.
+    group_members={
+        'Rates / Macro':['Fed path / rate expectations','10Y real yield','10Y nominal yield','Economic / inflation data','2Y Treasury yield','U.S. Dollar (DXY)','Oil (WTI / Brent)'],
+        'Semiconductors':['Semiconductor leadership'],
+        'Breadth':['Market breadth','Mega-cap leadership'],
+        'Risk / Credit':['Nasdaq volatility (VXN / VIX)','Credit conditions','Options positioning / sentiment'],
+        'AI / Fundamentals':['Earnings revisions','AI capex / monetization','AI / data-center financing','Technology earnings calendar']
+    }
+    impact_w={'Very High':4,'High':3,'Medium':2,'Low':1}
+    sig_v={'positive':1,'negative':-1,'mixed':0}
+    byname={r['factor']:r for r in rows}
+    def group_signal(names):
+        items=[byname[x] for x in names if x in byname]
+        denom=sum(impact_w.get(x.get('currentImpact','Low'),1) for x in items)
+        score=sum(sig_v.get(x.get('signal','mixed'),0)*impact_w.get(x.get('currentImpact','Low'),1) for x in items)
+        norm=score/denom if denom else 0
+        return 'positive' if norm>=0.20 else ('negative' if norm<=-0.20 else 'mixed')
+    all_signal=group_signal([r['factor'] for r in rows])
+    labels={'positive':'🟢 Positive','negative':'🔴 Negative','mixed':'🟡 Mixed'}
+    for g in d.get('groups',[]):
+        sig=all_signal if g.get('name')=='NASDAQ ENVIRONMENT' else group_signal(group_members.get(g.get('name'),[]))
+        g['signal']=sig; g['label']=labels[sig]
+
     d['updatedET']=now.strftime('%b %d, %Y · %H:%M ET'); d['nextUpdateET']='09:30 / 10:30 ET on trading weekdays'
     with open(PATH,'w',encoding='utf-8') as f:json.dump(d,f,ensure_ascii=False,indent=2)
 
