@@ -58,7 +58,7 @@ def explain_current_rows(rows):
     for r in rows:
         n=r['factor']; x=r.get('latest',''); d=r.get('direction',''); t=tone(r)
         if n=='10Y nominal yield' or n=='2Y Treasury yield':
-            level=tone(r)
+            level={'positive':'supportive','negative':'a headwind','mixed':'neutral/mixed'}.get(r.get('levelSignal'),'neutral/mixed')
             move='supportive because yields fell' if r.get('changeSignal')=='positive' else ('a headwind because yields rose' if r.get('changeSignal')=='negative' else 'roughly neutral')
             other='2Y Treasury yield' if n=='10Y nominal yield' else '10Y nominal yield'
             confirm=''
@@ -177,11 +177,16 @@ def main():
         # Treasury yields
         for sym,name in [('US10Y','10Y nominal yield'),('US2Y','2Y Treasury yield')]:
             x=q[sym]; v=num(x.get('last')); p=num(x.get('previous_day_closing')); bp=(v-p)*100 if v is not None and p is not None else None
-            sig='negative' if v>=4.5 else ('mixed' if v>=4.0 else 'positive')
+            level_sig='negative' if v>=4.5 else ('mixed' if v>=4.0 else 'positive')
+            change_sig='negative' if bp is not None and bp>1 else ('positive' if bp is not None and bp<-1 else 'mixed')
+            # Dashboard Signal should describe the current market impulse. Keep the absolute
+            # yield level separately because a high level can remain a valuation headwind
+            # even while a falling yield is supportive for today's Nasdaq session.
+            sig=change_sig if change_sig!='mixed' else level_sig
             setrow(rows,name,f'{v:.3f}%'+(f' ({bp:+.1f} bp vs prev close)' if bp is not None else ''),'Rising' if bp and bp>0 else ('Falling' if bp and bp<0 else 'Flat'),sig,fresh(x),'CNBC / Tradeweb quote feed')
             rr=next(z for z in rows if z['factor']==name)
-            rr['levelSignal']=sig
-            rr['changeSignal']='negative' if bp is not None and bp>1 else ('positive' if bp is not None and bp<-1 else 'mixed')
+            rr['levelSignal']=level_sig
+            rr['changeSignal']=change_sig
 
         # Leadership calculations only run when CNBC supplies current-session equity timestamps.
         semis=['NVDA','AMD','AVGO','TSM']
