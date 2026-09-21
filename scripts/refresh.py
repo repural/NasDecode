@@ -395,11 +395,33 @@ def main():
                 if 'previous close' not in vol.get('freshness','').lower():
                     vm=[abs(float(v)) for v in re.findall(r'\\(([+-]?[0-9.]+)%\\)',vol.get('latest',''))]
                     if vm and max(vm)>=5: reaction_score+=1
+                # Derive the earnings row's direction from current-session market reaction.
+                # Semiconductor leadership carries the most weight; mega-cap leadership and volatility confirm.
+                directional_score=0
+                if 'Awaiting' not in semi.get('latest','') and 'previous close' not in semi.get('freshness','').lower():
+                    sm=re.search(r'(?:basket vs QQQ|relative) ([+-]?[0-9.]+) pp',semi.get('latest',''))
+                    if sm:
+                        sv=float(sm.group(1)); directional_score += 2 if sv>=0.5 else (-2 if sv<=-0.5 else 0)
+                if 'Awaiting' not in mega.get('latest','') and 'previous close' not in mega.get('freshness','').lower():
+                    mm=re.search(r'(?:basket vs QQQ|relative) ([+-]?[0-9.]+) pp',mega.get('latest',''))
+                    if mm:
+                        mv=float(mm.group(1)); directional_score += 1 if mv>=0.5 else (-1 if mv<=-0.5 else 0)
+                if 'previous close' not in vol.get('freshness','').lower():
+                    vx=re.search(r'VXN [0-9.]+ \\(([+-]?[0-9.]+)%\\)',vol.get('latest',''))
+                    if vx:
+                        vv=float(vx.group(1)); directional_score += 1 if vv<=-3 else (-1 if vv>=3 else 0)
+                if directional_score>=2:
+                    r['signal']='positive'; r['direction']='Supportive setup'
+                elif directional_score<=-2:
+                    r['signal']='negative'; r['direction']='Risk-off setup'
+                else:
+                    r['signal']='mixed'; r['direction']='Event risk'
+
                 # Promote one tier on strong corroborating reaction; promote to Very High on exceptional reaction.
                 rank={'Low':0,'Medium':1,'High':2,'Very High':3}; names=['Low','Medium','High','Very High']
                 if reaction_score>=3: imp='Very High'
                 elif reaction_score>=2: imp=names[min(3,rank[imp]+1)]
-                r['impactReason']=f"Calendar: {days:.1f} days to event; market-reaction score {reaction_score}/4" if days is not None else f"Market-reaction score {reaction_score}/4"
+                r['impactReason']=f"Calendar: {days:.1f} days to event; market-reaction score {reaction_score}/4; directional score {directional_score:+d}" if days is not None else f"Market-reaction score {reaction_score}/4; directional score {directional_score:+d}"
             elif n=='Fed path / rate expectations':
                 # FOMC decisions deserve more urgency than minutes; minutes still ramp as the date approaches.
                 decision=('decision' in txt.lower() or 'press conference' in txt.lower())
