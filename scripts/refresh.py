@@ -169,6 +169,9 @@ def main():
             x=q[sym]; v=num(x.get('last')); p=num(x.get('previous_day_closing')); bp=(v-p)*100 if v is not None and p is not None else None
             sig='negative' if v>=4.5 else ('mixed' if v>=4.0 else 'positive')
             setrow(rows,name,f'{v:.3f}%'+(f' ({bp:+.1f} bp vs prev close)' if bp is not None else ''),'Rising' if bp and bp>0 else ('Falling' if bp and bp<0 else 'Flat'),sig,fresh(x),'CNBC / Tradeweb quote feed')
+            rr=next(z for z in rows if z['factor']==name)
+            rr['levelSignal']=sig
+            rr['changeSignal']='negative' if bp is not None and bp>1 else ('positive' if bp is not None and bp<-1 else 'mixed')
 
         # Leadership calculations only run when CNBC supplies current-session equity timestamps.
         semis=['NVDA','AMD','AVGO','TSM']
