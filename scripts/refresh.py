@@ -217,8 +217,11 @@ def main():
         vx=q.get('.VXN'); vi=q.get('.VIX')
         if vx and vi:
             vxn=num(vx.get('last')); vix=num(vi.get('last')); vxnp=pct(vx); vixp=pct(vi)
-            sig='positive' if (vxnp is not None and vxnp<-2 and vixp is not None and vixp<-2) else ('negative' if (vxnp is not None and vxnp>2) else 'mixed')
-            direction='Falling' if vxnp is not None and vxnp<0 else ('Rising' if vxnp is not None and vxnp>0 else 'Flat')
+            sig='positive' if (vxnp is not None and vxnp<-2 and vixp is not None and vixp<-2) else ('negative' if (vxnp is not None and vxnp>2 and vixp is not None and vixp>2) else 'mixed')
+            if vxnp is not None and vixp is not None and vxnp<0 and vixp<0: direction='Falling together'
+            elif vxnp is not None and vixp is not None and vxnp>0 and vixp>0: direction='Rising together'
+            elif vxnp is not None and vixp is not None and vxnp*vixp<0: direction='Diverging'
+            else: direction='Mixed / flat'
             setrow(rows,'Nasdaq volatility (VXN / VIX)',f'VXN {vxn:.2f} ({vxnp:+.2f}%) | VIX {vix:.2f} ({vixp:+.2f}%)',direction,sig,fresh(vx),'CNBC / Cboe quotes')
 
         # Credit conditions: HYG risk credit versus investment-grade LQD confirmation.
