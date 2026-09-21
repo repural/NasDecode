@@ -365,7 +365,28 @@ def main():
                 eq,av=map(float,m.groups()); dev=abs(eq-av)
                 imp='High' if eq>=0.9 or eq<=0.5 or dev>=0.15 else ('Medium' if eq>=0.75 or eq<=0.55 or dev>=0.08 else 'Low')
         elif n in ('Fed path / rate expectations','Economic / inflation data','Technology earnings calendar'):
-            imp='High' if r.get('direction') in ('High event risk','Event risk') else 'Medium'
+            # Event impact rises ahead of the catalyst. Earnings can affect positioning well before the report,
+            # so the 10-day window is deliberately treated as High.
+            event_date=None
+            txt=r.get('latest','')
+            month_map={'Jan':1,'Feb':2,'Mar':3,'Apr':4,'May':5,'Jun':6,'Jul':7,'Aug':8,'Sep':9,'Oct':10,'Nov':11,'Dec':12}
+            matches=re.findall(r'\\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\\s+(\\d{1,2})\\b',txt)
+            if matches:
+                mon,day=matches[0]
+                event_date=datetime(now.year,month_map[mon],int(day),tzinfo=NY)
+                if event_date.date()<now.date(): event_date=event_date.replace(year=now.year+1)
+            days=((event_date-now).total_seconds()/86400) if event_date else None
+            if n=='Technology earnings calendar':
+                imp='Very High' if days is not None and days<=2 else ('High' if days is not None and days<=10 else ('Medium' if days is not None and days<=21 else 'Low'))
+            elif n=='Fed path / rate expectations':
+                # FOMC decisions deserve more urgency than minutes; minutes still ramp as the date approaches.
+                decision=('decision' in txt.lower() or 'press conference' in txt.lower())
+                if decision:
+                    imp='Very High' if days is not None and days<=2 else ('High' if days is not None and days<=10 else ('Medium' if days is not None and days<=21 else 'Low'))
+                else:
+                    imp='High' if days is not None and days<=5 else ('Medium' if days is not None and days<=14 else 'Low')
+            else:
+                imp='Very High' if days is not None and days<=1 else ('High' if days is not None and days<=7 else ('Medium' if days is not None and days<=14 else 'Low'))
         elif r.get('signal') in ('positive','negative'):
             imp='Medium'
         else:
