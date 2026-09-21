@@ -57,13 +57,16 @@ def explain_current_rows(rows):
 
     for r in rows:
         n=r['factor']; x=r.get('latest',''); d=r.get('direction',''); t=tone(r)
-        if n=='10Y nominal yield':
-            extra=f" The 2Y is {latest('2Y Treasury yield')} and the 10Y real yield is {latest('10Y real yield')}, so the dashboard is seeing rate pressure across both Fed-sensitive and real long-term rates." if live('2Y Treasury yield') and live('10Y real yield') else ''
-            vol=f" Meanwhile volatility is {direction('Nasdaq volatility (VXN / VIX)')} ({latest('Nasdaq volatility (VXN / VIX)')}), which {'partly offsets the rate pressure' if signal('Nasdaq volatility (VXN / VIX)')=='positive' else 'does not provide a clear offset'}." if live('Nasdaq volatility (VXN / VIX)') else ''
-            r['explanation']=f'{x}. The 10-year yield is {d.lower()}; higher long-term discount rates generally pressure long-duration technology valuations. NasBoard treats this as {t}.{extra}{vol}'
-        elif n=='2Y Treasury yield':
-            extra=f" The 10Y is {latest('10Y nominal yield')}; when both maturities rise together, the rate headwind is broader than a move confined to one part of the curve." if live('10Y nominal yield') else ''
-            r['explanation']=f'{x}. The 2-year yield is {d.lower()} and is especially sensitive to expected Fed policy. The current move is {t}.{extra}'
+        if n=='10Y nominal yield' or n=='2Y Treasury yield':
+            level=tone(r)
+            move='supportive because yields fell' if r.get('changeSignal')=='positive' else ('a headwind because yields rose' if r.get('changeSignal')=='negative' else 'roughly neutral')
+            other='2Y Treasury yield' if n=='10Y nominal yield' else '10Y nominal yield'
+            confirm=''
+            if live(other):
+                od=by[other].get('changeSignal','mixed')
+                confirm=(' The other key Treasury maturity is also falling, confirming near-term easing in rate pressure.' if od==r.get('changeSignal')=='positive' else (' The other key Treasury maturity is also rising, confirming broader near-term rate pressure.' if od==r.get('changeSignal')=='negative' else ' The two Treasury maturities are not giving a fully aligned change signal.'))
+            real=f" The 10Y real yield is {latest('10Y real yield')}, so the real discount-rate backdrop remains {tone(by['10Y real yield'])}." if n=='10Y nominal yield' and live('10Y real yield') else ''
+            r['explanation']=f'{x}. Level: {level}. Latest change: {move}.{confirm}{real}'
         elif n=='10Y real yield':
             extra=f" Nominal 10Y is {latest('10Y nominal yield')}, reinforcing the valuation message." if live('10Y nominal yield') and signal('10Y nominal yield')=='negative' else ''
             r['explanation']=f'{x}. This inflation-adjusted long-term discount rate is {d.lower()} and {t} for long-duration Nasdaq valuations because future earnings are discounted at a higher real rate.{extra}'
