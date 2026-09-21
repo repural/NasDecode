@@ -373,7 +373,7 @@ def main():
             matches=re.findall(r'\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{1,2})\b',txt)
             if matches:
                 mon,day=matches[0]
-                event_date=datetime(now.year,month_map[mon],int(day),tzinfo=NY)
+                event_date=datetime.datetime(now.year,month_map[mon],int(day),tzinfo=NY)
                 if event_date.date()<now.date(): event_date=event_date.replace(year=now.year+1)
             days=((event_date-now).total_seconds()/86400) if event_date else None
             if n=='Technology earnings calendar':
