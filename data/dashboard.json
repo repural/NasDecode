@@ -6,7 +6,7 @@
       "name": "NASDAQ ENVIRONMENT",
       "signal": "mixed",
       "label": "🟡 Mixed",
-      "explanation": "Weighted composite of all 15 Nasdaq factors. Positive values indicate more supportive conditions; negative values indicate more headwinds. The trend shows the current directional impulse."
+      "explanation": "Weighted composite of all 14 Nasdaq factors. Positive values indicate more supportive conditions; negative values indicate more headwinds. The trend shows the current directional impulse."
     },
     {
       "name": "Rates / Macro",
@@ -41,19 +41,6 @@
   ],
   "rows": [
     {
-      "factor": "10Y real yield",
-      "latest": "2.63%",
-      "direction": "Elevated",
-      "signal": "negative",
-      "freshness": "U.S. Treasury daily · 2026-09-22",
-      "source": "U.S. Department of the Treasury — Daily Treasury Par Real Yield Curve Rates (10Y TIPS)",
-      "explanation": "2.63%. This inflation-adjusted long-term discount rate is elevated and a headwind for long-duration Nasdaq valuations because future earnings are discounted at a higher real rate. Nominal 10Y is 4.955% (-0.8 bp vs prev close), reinforcing the valuation message.",
-      "currentImpact": "High",
-      "trend": "Stable →",
-      "displayRank": 1,
-      "signalLabel": "🔴 Negative"
-    },
-    {
       "factor": "Economic / inflation data",
       "latest": "Next: JOLTS (Aug) · Sep 29, 10:00 ET",
       "direction": "Scheduled",
@@ -63,7 +50,7 @@
       "explanation": "Next: JOLTS (Aug) · Sep 29, 10:00 ET. This is the next scheduled macro release capable of changing growth/inflation expectations, Treasury yields and the Fed path. Event status is scheduled.  With 2Y at 4.741% (-1.2 bp vs prev close) and 10Y at 4.955% (-0.8 bp vs prev close), a surprise that shifts inflation/Fed expectations could feed quickly into Nasdaq discount rates.",
       "currentImpact": "High",
       "trend": "Stable →",
-      "displayRank": 2,
+      "displayRank": 1,
       "signalLabel": "🟡 Mixed"
     },
     {
@@ -77,7 +64,7 @@
       "currentImpact": "High",
       "impactReason": "Calendar: 7.3 days to event; market-reaction score 1/4; directional score -1",
       "trend": "Stable →",
-      "displayRank": 3,
+      "displayRank": 2,
       "signalLabel": "🟡 Mixed"
     },
     {
@@ -90,7 +77,7 @@
       "explanation": "Live · Nasdaq-100 breadth: 72/102 advancing (71%) · 30 declining · 0 flat. Breadth is broadening. A larger share of advancing Nasdaq-100 constituents means wider participation; weak participation makes index strength less robust. Current implication: supportive. At the same time, semiconductors are in line with qqq and mega-caps are lagging qqq.",
       "currentImpact": "High",
       "trend": "Improving ↑",
-      "displayRank": 4,
+      "displayRank": 3,
       "signalLabel": "🟢 Positive"
     },
     {
@@ -103,7 +90,7 @@
       "explanation": "Live · 7-stock basket -0.26% | 3/7 positive | QQQ +0.80% | relative -1.06 pp. The mega-cap basket is lagging qqq. Nasdaq is more durable when its largest weights participate rather than the index being carried by a narrow subset. Current implication: a headwind. Breadth is broadening; broad participation confirms the move. Semiconductor leadership is in line with qqq.",
       "currentImpact": "High",
       "trend": "Deteriorating ↓",
-      "displayRank": 5,
+      "displayRank": 4,
       "signalLabel": "🔴 Negative"
     },
     {
@@ -116,7 +103,7 @@
       "explanation": "WTI $95.21 (-0.60%) | Brent $97.75 (-2.58%). Oil is falling. Large energy moves can alter inflation expectations and therefore Treasury yields/Fed expectations. Current implication: supportive. The 10Y yield is 4.955% (-0.8 bp vs prev close); oil matters for Nasdaq mainly through inflation expectations and the rate path.",
       "currentImpact": "High",
       "trend": "Improving ↑",
-      "displayRank": 6,
+      "displayRank": 5,
       "signalLabel": "🟢 Positive"
     },
     {
@@ -129,23 +116,25 @@
       "explanation": "Equity P/C 0.53 | 5D avg 0.58 | → stable | Index 0.80 | Total 0.74. Equity put/call is compared with its 5-session baseline; Index and Total P/C add context because index puts often reflect institutional hedging. Positioning is balanced and neutral/mixed; this is not dealer gamma.  VXN/VIX are falling together (VXN 20.11 (-1.37%) | VIX 14.29 (-3.90%)), so options positioning and implied volatility together do not currently give the same strong directional signal.",
       "currentImpact": "Medium",
       "trend": "Stable →",
-      "displayRank": 7,
+      "displayRank": 6,
       "signalLabel": "🟡 Mixed"
     },
     {
-      "factor": "10Y nominal yield",
+      "factor": "10Y Treasury Yield",
       "latest": "4.955% (-0.8 bp vs prev close)",
       "direction": "Falling",
       "signal": "negative",
       "freshness": "CNBC intraday · 2026-09-22T15:59:12.000-0400",
-      "source": "CNBC / Tradeweb quote feed",
-      "explanation": "4.955% (-0.8 bp vs prev close). Level: a headwind. Latest change: roughly neutral. The two Treasury maturities are not giving a fully aligned change signal. The 10Y real yield is 2.63%, so the real discount-rate backdrop remains a headwind.",
+      "source": "CNBC / Tradeweb quote feed; U.S. Treasury 10Y TIPS real yield context",
+      "explanation": "4.955% (-0.8 bp vs prev close). The nominal 10Y is the primary live signal. Its current level remains a valuation headwind, while today's move is falling. The latest 10Y real yield is 2.63% (2026-09-22), retained as supporting long-duration valuation context rather than a separate factor.",
       "levelSignal": "negative",
       "changeSignal": "mixed",
       "currentImpact": "Medium",
       "trend": "Stable →",
-      "displayRank": 8,
-      "signalLabel": "🔴 Negative"
+      "displayRank": 7,
+      "signalLabel": "🔴 Negative",
+      "realYield": 2.63,
+      "realYieldDate": "2026-09-22"
     },
     {
       "factor": "2Y Treasury yield",
@@ -159,7 +148,7 @@
       "changeSignal": "positive",
       "currentImpact": "Medium",
       "trend": "Improving ↑",
-      "displayRank": 9,
+      "displayRank": 8,
       "signalLabel": "🟢 Positive"
     },
     {
@@ -172,7 +161,7 @@
       "explanation": "VXN 20.11 (-1.37%) | VIX 14.29 (-3.90%). VXN and VIX are falling together, confirming reduced demand for near-term protection. Overall volatility signal: neutral/mixed. Rate levels remain a headwind at the 10Y and supportive at the 2Y.",
       "currentImpact": "Medium",
       "trend": "Stable →",
-      "displayRank": 10,
+      "displayRank": 9,
       "signalLabel": "🟡 Mixed"
     },
     {
@@ -185,7 +174,7 @@
       "explanation": "Next Fed catalyst: FOMC Minutes (Sep 15–16 meeting) · Oct 07, 14:00 ET. This row tracks the next scheduled Fed catalyst rather than market-implied cut/hike probabilities. The event creates policy-rate risk for Nasdaq.  Current rate-market context: 2Y 4.741% (-1.2 bp vs prev close) and 10Y 4.955% (-0.8 bp vs prev close).",
       "currentImpact": "Low",
       "trend": "Stable →",
-      "displayRank": 11,
+      "displayRank": 10,
       "signalLabel": "🟡 Mixed"
     },
     {
@@ -198,7 +187,7 @@
       "explanation": "Live · NVDA +0.67% | AMD +1.29% | AVGO +0.55% | TSM +1.60% | QQQ +0.80% | basket vs QQQ +0.23 pp. Semiconductors are in line with qqq. Chips are a major Nasdaq/AI leadership group, so relative strength versus QQQ is an important risk-appetite confirmation. Current implication: neutral/mixed. Market breadth is broadening (Live · Nasdaq-100 breadth: 72/102 advancing (71%) · 30 declining · 0 flat). Mega-cap leadership is lagging qqq.",
       "currentImpact": "Low",
       "trend": "Stable →",
-      "displayRank": 12,
+      "displayRank": 11,
       "signalLabel": "🟡 Mixed"
     },
     {
@@ -211,7 +200,7 @@
       "explanation": "Current reading: Technology earnings expectations remain constructive. Direction: Constructive. NasBoard currently classifies this factor as supportive. This row will become more specific as its underlying live/research source is automated.",
       "currentImpact": "Low",
       "trend": "Stable →",
-      "displayRank": 13,
+      "displayRank": 12,
       "signalLabel": "🟢 Positive"
     },
     {
@@ -224,7 +213,7 @@
       "explanation": "Current reading: Large-platform AI infrastructure spending remains strong. Direction: Strong. NasBoard currently classifies this factor as supportive. This row will become more specific as its underlying live/research source is automated.",
       "currentImpact": "Low",
       "trend": "Stable →",
-      "displayRank": 14,
+      "displayRank": 13,
       "signalLabel": "🟢 Positive"
     },
     {
@@ -237,7 +226,7 @@
       "explanation": "HYG -0.01% | LQD +0.02% | HYG vs LQD -0.03 pp. HYG versus LQD is a liquid credit-risk proxy: stronger high-yield relative performance suggests easier/risk-on conditions, while underperformance suggests tightening. Credit is stable and neutral/mixed. Volatility is also falling together, providing a separate cross-check on risk appetite.",
       "currentImpact": "Low",
       "trend": "Stable →",
-      "displayRank": 15,
+      "displayRank": 14,
       "signalLabel": "🟡 Mixed"
     }
   ],
@@ -286,7 +275,7 @@
       },
       {
         "name": "Breadth intensity",
-        "score": 40.0,
+        "score": 40,
         "weight": 10,
         "detail": "71% advancing"
       },
