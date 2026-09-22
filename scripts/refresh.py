@@ -549,9 +549,30 @@ def main():
     # Daily records are upserted; intraday snapshots are append-only per monthly file.
     def quote_obs(sym):
         x=q.get(sym,{})
+        stamp=x.get('last_timedate') or x.get('last_time')
+        # Normalize the observation's market date separately from the refresh date.
+        obs_date=None
+        for raw in (x.get('last_timedate'),x.get('last_time')):
+            if not raw: continue
+            m=re.search(r'(\\d{2})/(\\d{2})/(\\d{2})',str(raw))
+            if m:
+                obs_date=f"20{m.group(3)}-{m.group(1)}-{m.group(2)}"; break
+            m=re.search(r'(20\\d{2})-(\\d{2})-(\\d{2})',str(raw))
+            if m:
+                obs_date=f"{m.group(1)}-{m.group(2)}-{m.group(3)}"; break
+        today=now.strftime('%Y-%m-%d')
+        # Time-only stamps from continuously trading macro instruments are current-day observations.
+        if obs_date is None and stamp and re.search(r'\\d{1,2}:\\d{2}',str(stamp)):
+            obs_date=today
+        if obs_date==today:
+            state='live'
+        elif obs_date:
+            state='previous_close' if (datetime.date.fromisoformat(today)-datetime.date.fromisoformat(obs_date)).days<=3 else 'stale'
+        else:
+            state='unknown'
         return {'last':num(x.get('last')),'previousClose':num(x.get('previous_day_closing')),
                 'changePct':num(x.get('change_pct')) if x.get('change_pct') not in (None,'') else pct(x),
-                'timestamp':x.get('last_timedate') or x.get('last_time')}
+                'timestamp':stamp,'observationDate':obs_date,'dataState':state}
     os.makedirs(HISTORY_DIR,exist_ok=True)
     market_symbols=['QQQ','.SOX','NVDA','AMD','AVGO','TSM','MU','AAPL','MSFT','AMZN','GOOGL','META','TSLA',
                     '.VXN','.VIX','US10Y','US2Y','.DXY','@CL.1','@LCO.1','HYG','LQD']
