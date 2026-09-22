@@ -676,24 +676,38 @@ def main():
     def quote_obs(sym):
         x=q.get(sym,{})
         stamp=x.get('last_timedate') or x.get('last_time')
-        # Normalize the observation's market date separately from the refresh date.
+        # Parse CNBC dates without regex backslash ambiguity. Examples:
+        # "09/21/26 EDT" -> 2026-09-21; "2026-09-22 ..." -> 2026-09-22.
         obs_date=None
         for raw in (x.get('last_timedate'),x.get('last_time')):
             if not raw: continue
-            m=re.search(r'(\\d{2})/(\\d{2})/(\\d{2})',str(raw))
-            if m:
-                obs_date=f"20{m.group(3)}-{m.group(1)}-{m.group(2)}"; break
-            m=re.search(r'(20\\d{2})-(\\d{2})-(\\d{2})',str(raw))
-            if m:
-                obs_date=f"{m.group(1)}-{m.group(2)}-{m.group(3)}"; break
+            txt=str(raw).strip()
+            token=txt.split()[0]
+            try:
+                if len(token)>=8 and token.count('/')==2:
+                    obs_date=datetime.datetime.strptime(token,'%m/%d/%y').date().isoformat(); break
+                if len(token)>=10 and token[4]=='-' and token[7]=='-':
+                    obs_date=datetime.date.fromisoformat(token[:10]).isoformat(); break
+            except ValueError:
+                pass
         today=now.strftime('%Y-%m-%d')
-        # Time-only stamps from continuously trading macro instruments are current-day observations.
-        if obs_date is None and stamp and re.search(r'\\d{1,2}:\\d{2}',str(stamp)):
-            obs_date=today
+        # Time-only stamps from continuously trading instruments are current-day observations.
+        if obs_date is None and stamp:
+            token=str(stamp).strip().split()[0]
+            try:
+                datetime.datetime.strptime(token,'%H:%M')
+                obs_date=today
+            except ValueError:
+                try:
+                    datetime.datetime.strptime(token,'%I:%M')
+                    obs_date=today
+                except ValueError:
+                    pass
         if obs_date==today:
             state='live'
         elif obs_date:
-            state='previous_close' if (datetime.date.fromisoformat(today)-datetime.date.fromisoformat(obs_date)).days<=3 else 'stale'
+            age=(datetime.date.fromisoformat(today)-datetime.date.fromisoformat(obs_date)).days
+            state='previous_close' if 0 < age <= 3 else ('live' if age==0 else 'stale')
         else:
             state='unknown'
         return {'last':num(x.get('last')),'previousClose':num(x.get('previous_day_closing')),
