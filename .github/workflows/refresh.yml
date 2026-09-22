@@ -6,6 +6,7 @@ on:
     paths-ignore:
       - 'data/dashboard.json'
       - 'data/cnbc_probe.json'
+      - 'data/history/**'
   workflow_dispatch:
   schedule:
     # Use New York time directly so DST does not require UTC candidate schedules.
@@ -33,7 +34,7 @@ jobs:
         run: |
           git config user.name 'nasboard-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add data/dashboard.json
+          git add data/dashboard.json data/history
           if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
           git diff --cached --quiet && exit 0
           git commit -m 'Refresh dashboard data'
