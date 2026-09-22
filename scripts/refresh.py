@@ -88,19 +88,16 @@ def explain_current_rows(rows):
 
     for r in rows:
         n=r['factor']; x=r.get('latest',''); d=r.get('direction',''); t=tone(r)
-        if n=='10Y nominal yield' or n=='2Y Treasury yield':
+        if n=='10Y Treasury Yield' or n=='2Y Treasury yield':
             level={'positive':'supportive','negative':'a headwind','mixed':'neutral/mixed'}.get(r.get('levelSignal'),'neutral/mixed')
             move='supportive because yields fell' if r.get('changeSignal')=='positive' else ('a headwind because yields rose' if r.get('changeSignal')=='negative' else 'roughly neutral')
-            other='2Y Treasury yield' if n=='10Y nominal yield' else '10Y nominal yield'
+            other='2Y Treasury yield' if n=='10Y Treasury Yield' else '10Y Treasury Yield'
             confirm=''
             if live(other):
                 od=by[other].get('changeSignal','mixed')
                 confirm=(' The other key Treasury maturity is also falling, confirming near-term easing in rate pressure.' if od==r.get('changeSignal')=='positive' else (' The other key Treasury maturity is also rising, confirming broader near-term rate pressure.' if od==r.get('changeSignal')=='negative' else ' The two Treasury maturities are not giving a fully aligned change signal.'))
-            real=f" The 10Y real yield is {latest('10Y real yield')}, so the real discount-rate backdrop remains {tone(by['10Y real yield'])}." if n=='10Y nominal yield' and live('10Y real yield') else ''
+            real=f" The latest 10Y real yield is {r.get('realYield'):.2f}% ({r.get('realYieldDate','latest Treasury close')}), so the real discount-rate backdrop remains {'a headwind' if r.get('realYield')>=2.0 else 'less restrictive'}." if n=='10Y Treasury Yield' and r.get('realYield') is not None else ''
             r['explanation']=f'{x}. Level: {level}. Latest change: {move}.{confirm}{real}'
-        elif n=='10Y real yield':
-            extra=f" Nominal 10Y is {latest('10Y nominal yield')}, reinforcing the valuation message." if live('10Y nominal yield') and signal('10Y nominal yield')=='negative' else ''
-            r['explanation']=f'{x}. This inflation-adjusted long-term discount rate is {d.lower()} and {t} for long-duration Nasdaq valuations because future earnings are discounted at a higher real rate.{extra}'
         elif n=='Semiconductor leadership':
             breadth=f" Market breadth is {direction('Market breadth')} ({latest('Market breadth')})." if live('Market breadth') else ''
             mega=f" Mega-cap leadership is {direction('Mega-cap leadership')}." if live('Mega-cap leadership') else ''
@@ -125,14 +122,14 @@ def explain_current_rows(rows):
             else:
                 interp='The two volatility gauges are not producing a strong aligned move.'
             context=''
-            if live('10Y nominal yield') and live('2Y Treasury yield'):
-                context=f" Rate levels remain {tone(by['10Y nominal yield'])} at the 10Y and {tone(by['2Y Treasury yield'])} at the 2Y."
+            if live('10Y Treasury Yield') and live('2Y Treasury yield'):
+                context=f" Rate levels remain {tone(by['10Y Treasury Yield'])} at the 10Y and {tone(by['2Y Treasury yield'])} at the 2Y."
             r['explanation']=f'{x}. {interp} Overall volatility signal: {t}.{context}'
         elif n=='Credit conditions':
             vol=f" Volatility is also {direction('Nasdaq volatility (VXN / VIX)')}, providing {'consistent risk-on confirmation' if signal('Nasdaq volatility (VXN / VIX)')=='positive' and r.get('signal')=='positive' else 'a separate cross-check on risk appetite'}." if live('Nasdaq volatility (VXN / VIX)') else ''
             r['explanation']=f'{x}. HYG versus LQD is a liquid credit-risk proxy: stronger high-yield relative performance suggests easier/risk-on conditions, while underperformance suggests tightening. Credit is {d.lower()} and {t}.{vol}'
         elif n=='Oil (WTI / Brent)':
-            rates=f" The 10Y yield is {latest('10Y nominal yield')}; oil matters for Nasdaq mainly through inflation expectations and the rate path." if live('10Y nominal yield') else ''
+            rates=f" The 10Y yield is {latest('10Y Treasury Yield')}; oil matters for Nasdaq mainly through inflation expectations and the rate path." if live('10Y nominal yield') else ''
             r['explanation']=f'{x}. Oil is {d.lower()}. Large energy moves can alter inflation expectations and therefore Treasury yields/Fed expectations. Current implication: {t}.{rates}'
         elif n=='Options positioning / sentiment':
             vol=f" VXN/VIX are {direction('Nasdaq volatility (VXN / VIX)')} ({latest('Nasdaq volatility (VXN / VIX)')}), so options positioning and implied volatility together {'lean toward improving risk appetite' if signal('Nasdaq volatility (VXN / VIX)')=='positive' and r.get('signal')=='positive' else 'do not currently give the same strong directional signal'}." if live('Nasdaq volatility (VXN / VIX)') else ''
@@ -191,7 +188,10 @@ def cboe_put_call_5d(now):
 
 def main():
     with open(PATH,encoding='utf-8') as f:d=json.load(f)
-    now=datetime.datetime.now(NY); rows=[r for r in d['rows'] if r.get('factor') not in {'AI / data-center financing','System liquidity','U.S. Dollar (DXY)'}]; d['rows']=rows
+    now=datetime.datetime.now(NY); rows=[r for r in d['rows'] if r.get('factor') not in {'AI / data-center financing','System liquidity','U.S. Dollar (DXY)','10Y real yield'}];
+    for r in rows:
+        if r.get('factor')=='10Y nominal yield': r['factor']='10Y Treasury Yield'
+    d['rows']=rows
     # Preserve the previous refresh so we can show whether each factor is improving or deteriorating.
     previous={r.get('factor'):{'signal':r.get('signal','mixed'),'currentImpact':r.get('currentImpact','Low'),'latest':r.get('latest','')} for r in rows}
     try:
@@ -220,7 +220,7 @@ def main():
         d['diagnostics']['cnbcSOX']=sox_probe
 
         # Treasury yields
-        for sym,name in [('US10Y','10Y nominal yield'),('US2Y','2Y Treasury yield')]:
+        for sym,name in [('US10Y','10Y Treasury Yield'),('US2Y','2Y Treasury yield')]:
             x=q[sym]; v=num(x.get('last')); p=num(x.get('previous_day_closing')); bp=(v-p)*100 if v is not None and p is not None else None
             level_sig='negative' if v>=4.5 else ('mixed' if v>=4.0 else 'positive')
             change_sig='negative' if bp is not None and bp>1 else ('positive' if bp is not None and bp<-1 else 'mixed')
@@ -232,6 +232,15 @@ def main():
             rr=next(z for z in rows if z['factor']==name)
             rr['levelSignal']=level_sig
             rr['changeSignal']=change_sig
+
+        # Add the daily 10Y real yield as context inside the single 10Y Treasury factor.
+        try:
+            real_date,real_value=treasury_10y_real(now.year)
+            rr=next(z for z in rows if z['factor']=='10Y Treasury Yield')
+            rr['realYield']=real_value; rr['realYieldDate']=real_date.isoformat()
+            rr['source']='CNBC / Tradeweb quote feed; U.S. Treasury 10Y TIPS real yield context'
+        except Exception as e:
+            print('10Y real yield context unavailable:',e)
 
         # Session-aware equity leadership. CNBC currently exposes reliable regular-session
         # and POST_MKT extended quotes. Its premarket ExtendedMktQuote is not consistently populated,
@@ -343,7 +352,7 @@ def main():
 
     except Exception as e:
         print('CNBC refresh failed:',repr(e))
-        for name in ('10Y nominal yield','2Y Treasury yield','Semiconductor leadership','Nasdaq volatility (VXN / VIX)','U.S. Dollar (DXY)','Oil (WTI / Brent)'):
+        for name in ('10Y Treasury Yield','2Y Treasury yield','Semiconductor leadership','Nasdaq volatility (VXN / VIX)','U.S. Dollar (DXY)','Oil (WTI / Brent)'):
             next(x for x in rows if x['factor']==name)['freshness']='STALE — CNBC refresh failed'
 
     # Official Cboe options-volume put/call ratios. This is sentiment/positioning, not dealer gamma exposure.
@@ -418,7 +427,7 @@ def main():
         elif freshness in ('Research snapshot','Official data lag'):
             # Undated/manual snapshots can provide background direction, but not a defensible current-impact magnitude.
             imp='Low'
-        elif n in ('10Y nominal yield','2Y Treasury yield'):
+        elif n in ('10Y Treasury Yield','2Y Treasury yield'):
             # High absolute yields remain important; a meaningful daily move raises immediate relevance.
             m=re.search(r'\(([+-]?[0-9.]+) bp',r.get('latest',''))
             bp=abs(float(m.group(1))) if m else 0
@@ -567,7 +576,7 @@ def main():
 
     # Recompute summary cards from the refreshed rows instead of leaving stale labels in dashboard.json.
     group_members={
-        'Rates / Macro':['Fed path / rate expectations','10Y real yield','10Y nominal yield','Economic / inflation data','2Y Treasury yield','Oil (WTI / Brent)'],
+        'Rates / Macro':['Fed path / rate expectations','10Y Treasury Yield','Economic / inflation data','2Y Treasury yield','Oil (WTI / Brent)'],
         'Semiconductors':['Semiconductor leadership'],
         'Breadth':['Market breadth','Mega-cap leadership'],
         'Risk / Credit':['Nasdaq volatility (VXN / VIX)','Credit conditions','Options positioning / sentiment'],
@@ -590,7 +599,7 @@ def main():
 
     # Public presentation metadata is generated here so the browser remains a dumb renderer.
     group_explanations={
-        'NASDAQ ENVIRONMENT':'Weighted composite of all 15 Nasdaq factors. Positive values indicate more supportive conditions; negative values indicate more headwinds. The trend shows the current directional impulse.',
+        'NASDAQ ENVIRONMENT':'Weighted composite of all 14 Nasdaq factors. Positive values indicate more supportive conditions; negative values indicate more headwinds. The trend shows the current directional impulse.',
         'Rates / Macro':'Combines Fed policy, Treasury yields and economic/inflation data. Falling yields or easier policy expectations are generally more supportive for growth stocks.',
         'Semiconductors':'Tracks semiconductor leadership relative to QQQ. Strong chip participation often confirms Nasdaq technology momentum.',
         'Breadth':'Measures how broadly Nasdaq-100 constituents participate. Broad participation generally makes index moves more robust.',
