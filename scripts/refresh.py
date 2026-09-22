@@ -164,6 +164,8 @@ def cboe_put_call_5d(now):
 def main():
     with open(PATH,encoding='utf-8') as f:d=json.load(f)
     now=datetime.datetime.now(NY); rows=d['rows']
+    # Preserve the previous refresh so we can show whether each factor is improving or deteriorating.
+    previous={r.get('factor'):{'signal':r.get('signal','mixed'),'currentImpact':r.get('currentImpact','Low'),'latest':r.get('latest','')} for r in rows}
     try:
         q=cnbc_quotes(SYMBOLS)
         # S5FI probe: S&P 500 stocks above 50-day moving average breadth index.
@@ -463,6 +465,37 @@ def main():
         else:
             imp='Low'
         r['currentImpact']=imp
+
+    # Refresh-to-refresh trend. This is deliberately signal-based rather than parsing every
+    # factor's units; a stronger Nasdaq-supportive signal is improving, a weaker one deteriorating.
+    sig_score={'negative':-1,'mixed':0,'positive':1}
+    for r in rows:
+        old=previous.get(r['factor'],{})
+        before=sig_score.get(old.get('signal'),0); after=sig_score.get(r.get('signal'),0)
+        if after>before:
+            r['trend']='Improving ↑'
+        elif after<before:
+            r['trend']='Deteriorating ↓'
+        else:
+            r['trend']='Stable →'
+
+    # Composite Nasdaq Environment Score: direction x current impact x freshness.
+    # Low/stale observations still contribute slightly but cannot dominate live high-impact signals.
+    impact_w={'Very High':4,'High':3,'Medium':2,'Low':1}
+    def freshness_w(r):
+        f=str(r.get('freshness','')).lower()
+        if f.startswith('stale') or 'research snapshot' in f or 'official data lag' in f: return 0.35
+        if 'previous close' in f: return 0.70
+        return 1.0
+    numerator=0.0; denominator=0.0
+    for r in rows:
+        w=impact_w.get(r.get('currentImpact','Low'),1)*freshness_w(r)
+        numerator += sig_score.get(r.get('signal','mixed'),0)*w
+        denominator += w
+    score=round(100*numerator/denominator) if denominator else 0
+    d['environmentScore']=score
+    d['environmentTrend']='Improving ↑' if score>d.get('environmentScorePrevious',score) else ('Deteriorating ↓' if score<d.get('environmentScorePrevious',score) else 'Stable →')
+    d['environmentScorePrevious']=score
 
     explain_current_rows(rows)
 
