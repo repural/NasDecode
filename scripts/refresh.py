@@ -179,10 +179,17 @@ def main():
         # Probe PHLX Semiconductor Index symbols through the existing CNBC quote service.
         # This is diagnostic first: once a returned symbol is confirmed, NasBoard can use its
         # last/previous-close pair for the 1-day SOX move without adding another provider.
+        sox_probe={'tested':['.SOX','SOX'],'returned':[]}
         for sox_symbol in ('.SOX','SOX'):
             if sox_symbol in q:
                 sx=q[sox_symbol]
-                print('SOX CNBC probe:', sox_symbol, json.dumps({k:sx.get(k) for k in ['symbol','name','last','previous_day_closing','change_pct','last_time','last_timedate','code']}))
+                item={k:sx.get(k) for k in ['symbol','name','last','previous_day_closing','change_pct','last_time','last_timedate','code']}
+                item['oneDayPct']=pct(sx)
+                sox_probe['returned'].append(item)
+                print('SOX CNBC probe:', sox_symbol, json.dumps(item))
+        sox_probe['status']='supported' if sox_probe['returned'] else 'not_returned'
+        d['diagnostics']=d.get('diagnostics',{})
+        d['diagnostics']['cnbcSOX']=sox_probe
 
         # Treasury yields
         for sym,name in [('US10Y','10Y nominal yield'),('US2Y','2Y Treasury yield')]:
