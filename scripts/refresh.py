@@ -591,6 +591,23 @@ def main():
         sig=all_signal if g.get('name')=='NASDAQ ENVIRONMENT' else group_signal(group_members.get(g.get('name'),[]))
         g['signal']=sig; g['label']=labels[sig]
 
+    # Public presentation metadata is generated here so the browser remains a dumb renderer.
+    group_explanations={
+        'NASDAQ ENVIRONMENT':'Weighted composite of all 18 Nasdaq factors. Positive values indicate more supportive conditions; negative values indicate more headwinds. The trend shows the current directional impulse.',
+        'Rates / Macro':'Combines Fed policy, Treasury yields and economic/inflation data. Falling yields or easier policy expectations are generally more supportive for growth stocks.',
+        'Semiconductors':'Tracks semiconductor leadership relative to QQQ. Strong chip participation often confirms Nasdaq technology momentum.',
+        'Breadth':'Measures how broadly Nasdaq-100 constituents participate. Broad participation generally makes index moves more robust.',
+        'Risk / Credit':'Combines volatility and credit conditions. Rising VXN/VIX or weaker high-yield credit can indicate increasing market stress.',
+        'AI / Fundamentals':'Summarizes earnings revisions, AI capex/monetization, financing conditions and technology earnings-event risk.'
+    }
+    for g in d.get('groups',[]):
+        g['explanation']=group_explanations.get(g.get('name'),'Summary of the latest signals in this category.')
+    impact_order={'Very High':0,'High':1,'Medium':2,'Low':3}
+    rows.sort(key=lambda r:impact_order.get(r.get('currentImpact','Low'),3))
+    for i,r in enumerate(rows,1):
+        r['displayRank']=i
+        r['signalLabel']={'positive':'🟢 Positive','negative':'🔴 Negative','mixed':'🟡 Mixed'}.get(r.get('signal'),'🟡 Mixed')
+
     # Consolidation / Extension Risk v1. This is intentionally separate from the
     # directional Nasdaq Environment score: a supportive tape can still be overextended.
     # Components progressively unlock as self-owned daily observations accumulate.
@@ -691,6 +708,7 @@ def main():
         a,b=add_component('RSI14 stretch',sc,10,f'RSI14 {rsi:.1f}'); weighted+=a; total_w+=b; unlocked.append('RSI14')
     risk_score=round(weighted/total_w) if total_w else None
     d['consolidationRisk']={'score':risk_score,'level':risk_band(risk_score) if risk_score is not None else 'Unavailable',
+        'explanation':'Measures short-term market extension and pullback/consolidation risk, not Nasdaq direction. The score blends QQQ and SOX stretch, breadth, volatility and, when enough history is available, multi-day returns, moving-average extension and RSI. Model coverage shows how much of the full 100-point model currently has usable data.',
         'coverageWeight':round(100*total_w/MODEL_WEIGHT),'components':components,'historyDays':len(closes),
         'unlocked':unlocked,'note':'Short-term extension risk, not a directional Nasdaq forecast. Historical components unlock as NasBoard history grows.'}
 
