@@ -9,7 +9,7 @@ NY=ZoneInfo('America/New_York')
 CNBC_BASE='https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol'
 MEGACAPS=['AAPL','MSFT','AMZN','GOOGL','META','NVDA','TSLA']
 BREADTH=['NVDA','AAPL','MU','MSFT','AMD','AMZN','TSLA','GOOGL','INTC','GOOG','AVGO','META','AMAT','WMT','LRCX','CSCO','COST','KLAC','SNDK','NFLX','PANW','TXN','PLTR','MRVL','LIN','WDC','STX','AMGN','QCOM','CRWD','ADI','PEP','ASML','TMUS','APP','GILD','ARM','ISRG','SHOP','BKNG','VRTX','SBUX','FTNT','CDNS','MAR','MNST','CEG','ADP','CSX','CMCSA','DDOG','MELI','SNPS','ADBE','ALAB','ORLY','DASH','TER','AEP','MDLZ','INTU','NXPI','HON','HONA','ROST','CTAS','MPWR','WBD','LITE','REGN','RBLX','NBIS','ABNB','RKLB','FAST','BKR','PDD','XEL','FANG','MCHP','FER','EXC','TTWO','AXON','ODFL','CCEP','CRWV','KDP','IDXX','ADSK','ALNY','PYPL','PAYX','ROP','TRI','GEHC','MSTR','KHC','CPRT','DXCM','WDAY','SPCX']
-SYMBOLS=list(dict.fromkeys(['US10Y','US2Y','QQQ','NVDA','AMD','AVGO','TSM','.VIX','.VXN','.DXY','@CL.1','@LCO.1','HYG','LQD','S5FI','.SOX','SOX']+MEGACAPS+BREADTH))
+SYMBOLS=list(dict.fromkeys(['US10Y','US2Y','QQQ','NVDA','AMD','AVGO','TSM','.VIX','.VXN','@CL.1','@LCO.1','HYG','LQD','S5FI','.SOX','SOX']+MEGACAPS+BREADTH))
 
 def cnbc_quotes(symbols):
     params={'symbols':'|'.join(symbols),'requestMethod':'itv','noform':'1','partnerId':'2','fund':'1','exthrs':'1','output':'json','events':'1'}
@@ -131,9 +131,6 @@ def explain_current_rows(rows):
         elif n=='Credit conditions':
             vol=f" Volatility is also {direction('Nasdaq volatility (VXN / VIX)')}, providing {'consistent risk-on confirmation' if signal('Nasdaq volatility (VXN / VIX)')=='positive' and r.get('signal')=='positive' else 'a separate cross-check on risk appetite'}." if live('Nasdaq volatility (VXN / VIX)') else ''
             r['explanation']=f'{x}. HYG versus LQD is a liquid credit-risk proxy: stronger high-yield relative performance suggests easier/risk-on conditions, while underperformance suggests tightening. Credit is {d.lower()} and {t}.{vol}'
-        elif n=='U.S. Dollar (DXY)':
-            oil=f" Oil is {direction('Oil (WTI / Brent)')} ({latest('Oil (WTI / Brent)')}), another input into inflation/financial conditions." if live('Oil (WTI / Brent)') else ''
-            r['explanation']=f'{x}. The dollar is {d.lower()}. A rapidly stronger dollar can tighten global financial conditions and pressure multinational technology earnings; a weaker dollar reduces that pressure. The present move is {t}. {oil}'.strip()
         elif n=='Oil (WTI / Brent)':
             rates=f" The 10Y yield is {latest('10Y nominal yield')}; oil matters for Nasdaq mainly through inflation expectations and the rate path." if live('10Y nominal yield') else ''
             r['explanation']=f'{x}. Oil is {d.lower()}. Large energy moves can alter inflation expectations and therefore Treasury yields/Fed expectations. Current implication: {t}.{rates}'
@@ -194,7 +191,7 @@ def cboe_put_call_5d(now):
 
 def main():
     with open(PATH,encoding='utf-8') as f:d=json.load(f)
-    now=datetime.datetime.now(NY); rows=d['rows']
+    now=datetime.datetime.now(NY); rows=[r for r in d['rows'] if r.get('factor') not in {'AI / data-center financing','System liquidity','U.S. Dollar (DXY)'}]; d['rows']=rows
     # Preserve the previous refresh so we can show whether each factor is improving or deteriorating.
     previous={r.get('factor'):{'signal':r.get('signal','mixed'),'currentImpact':r.get('currentImpact','Low'),'latest':r.get('latest','')} for r in rows}
     try:
@@ -570,11 +567,11 @@ def main():
 
     # Recompute summary cards from the refreshed rows instead of leaving stale labels in dashboard.json.
     group_members={
-        'Rates / Macro':['Fed path / rate expectations','10Y real yield','10Y nominal yield','Economic / inflation data','2Y Treasury yield','U.S. Dollar (DXY)','Oil (WTI / Brent)'],
+        'Rates / Macro':['Fed path / rate expectations','10Y real yield','10Y nominal yield','Economic / inflation data','2Y Treasury yield','Oil (WTI / Brent)'],
         'Semiconductors':['Semiconductor leadership'],
         'Breadth':['Market breadth','Mega-cap leadership'],
         'Risk / Credit':['Nasdaq volatility (VXN / VIX)','Credit conditions','Options positioning / sentiment'],
-        'AI / Fundamentals':['Earnings revisions','AI capex / monetization','AI / data-center financing','Technology earnings calendar']
+        'AI / Fundamentals':['Earnings revisions','AI capex / monetization','Technology earnings calendar']
     }
     impact_w={'Very High':4,'High':3,'Medium':2,'Low':1}
     sig_v={'positive':1,'negative':-1,'mixed':0}
@@ -593,12 +590,12 @@ def main():
 
     # Public presentation metadata is generated here so the browser remains a dumb renderer.
     group_explanations={
-        'NASDAQ ENVIRONMENT':'Weighted composite of all 18 Nasdaq factors. Positive values indicate more supportive conditions; negative values indicate more headwinds. The trend shows the current directional impulse.',
+        'NASDAQ ENVIRONMENT':'Weighted composite of all 15 Nasdaq factors. Positive values indicate more supportive conditions; negative values indicate more headwinds. The trend shows the current directional impulse.',
         'Rates / Macro':'Combines Fed policy, Treasury yields and economic/inflation data. Falling yields or easier policy expectations are generally more supportive for growth stocks.',
         'Semiconductors':'Tracks semiconductor leadership relative to QQQ. Strong chip participation often confirms Nasdaq technology momentum.',
         'Breadth':'Measures how broadly Nasdaq-100 constituents participate. Broad participation generally makes index moves more robust.',
         'Risk / Credit':'Combines volatility and credit conditions. Rising VXN/VIX or weaker high-yield credit can indicate increasing market stress.',
-        'AI / Fundamentals':'Summarizes earnings revisions, AI capex/monetization, financing conditions and technology earnings-event risk.'
+        'AI / Fundamentals':'Summarizes earnings revisions, AI capex/monetization and technology earnings-event risk.'
     }
     for g in d.get('groups',[]):
         g['explanation']=group_explanations.get(g.get('name'),'Summary of the latest signals in this category.')
@@ -756,7 +753,7 @@ def main():
                 'timestamp':stamp,'observationDate':obs_date,'dataState':state}
     os.makedirs(HISTORY_DIR,exist_ok=True)
     market_symbols=['QQQ','.SOX','NVDA','AMD','AVGO','TSM','MU','AAPL','MSFT','AMZN','GOOGL','META','TSLA',
-                    '.VXN','.VIX','US10Y','US2Y','.DXY','@CL.1','@LCO.1','HYG','LQD']
+                    '.VXN','.VIX','US10Y','US2Y','@CL.1','@LCO.1','HYG','LQD']
     market={sym:quote_obs(sym) for sym in market_symbols if sym in q}
     current_session=[sym for sym in BREADTH if sym in q and is_intraday(q[sym],now)]
     pos=sum(1 for sym in current_session if (pct(q[sym]) or 0)>0)
