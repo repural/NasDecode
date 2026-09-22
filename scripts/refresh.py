@@ -481,15 +481,21 @@ def main():
             imp='Low'
         r['currentImpact']=imp
 
-    # Refresh-to-refresh trend. This is deliberately signal-based rather than parsing every
-    # factor's units; a stronger Nasdaq-supportive signal is improving, a weaker one deteriorating.
+    # Trend describes the current directional impulse where the factor itself contains
+    # a measurable move. Comparing only signal buckets made nearly every row appear "Stable"
+    # even when yields were falling, volatility rising, breadth broadening, etc.
     sig_score={'negative':-1,'mixed':0,'positive':1}
+    dynamic_trend_factors={
+        '10Y nominal yield','2Y Treasury yield','Semiconductor leadership','Market breadth',
+        'Nasdaq volatility (VXN / VIX)','Mega-cap leadership','Credit conditions',
+        'U.S. Dollar (DXY)','Oil (WTI / Brent)','Options positioning / sentiment'
+    }
     for r in rows:
-        old=previous.get(r['factor'],{})
-        before=sig_score.get(old.get('signal'),0); after=sig_score.get(r.get('signal'),0)
-        if after>before:
+        n=r['factor']
+        impulse=r.get('changeSignal') if n in ('10Y nominal yield','2Y Treasury yield') else (r.get('signal') if n in dynamic_trend_factors else 'mixed')
+        if impulse=='positive':
             r['trend']='Improving ↑'
-        elif after<before:
+        elif impulse=='negative':
             r['trend']='Deteriorating ↓'
         else:
             r['trend']='Stable →'
