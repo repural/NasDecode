@@ -271,20 +271,33 @@ def main():
             msg='Premarket quote unavailable from CNBC extended-hours feed' if session=='premarket' else f'Awaiting {session_label.lower()} mega-cap quotes'
             setrow(rows,'Mega-cap leadership',msg,'Awaiting session','mixed',session_label+' — insufficient current equity data','CNBC quotes; no previous-close substitution')
 
-        # Breadth: regular session requires broad coverage; after-hours is explicitly labelled and
-        # allowed with a lower coverage floor because extended-hours participation is naturally thinner.
+        # Breadth hierarchy: live regular-session breadth first; after-hours breadth when coverage
+        # is sufficient; otherwise use the most recent regular-session breadth as explicitly labelled context.
         bm={sym:quoted_move(q[sym],session) for sym in BREADTH if sym in q and equity_quote_available(q[sym],session)}
         vals=[v for v in bm.values() if v is not None]
         min_coverage=80 if session=='regular' else 40
+        breadth_set=False
         if session in ('regular','afterhours') and len(vals)>=min_coverage:
             adv=sum(v>0 for v in vals); dec=sum(v<0 for v in vals); flat=len(vals)-adv-dec; ratio=adv/len(vals)*100
             sig='positive' if ratio>=65 else ('negative' if ratio<=35 else 'mixed')
             direction='Broadening' if ratio>=65 else ('Weakening' if ratio<=35 else 'Mixed')
             label='Nasdaq-100 breadth' if session=='regular' else 'After-hours breadth'
             setrow(rows,'Market breadth',f'{session_label} · {label}: {adv}/{len(vals)} advancing ({ratio:.0f}%) · {dec} declining · {flat} flat',direction,sig,session_label+' CNBC constituent quotes','CNBC quotes; session-aware Nasdaq-100 constituent breadth')
-        else:
-            msg='Premarket breadth unavailable from CNBC extended-hours feed' if session=='premarket' else f'Insufficient {session_label.lower()} breadth coverage ({len(vals)} quotes)'
-            setrow(rows,'Market breadth',msg,'Awaiting coverage','mixed',session_label+' — insufficient current breadth data','CNBC quotes; no previous-close substitution')
+            breadth_set=True
+        if not breadth_set:
+            # CNBC's delayed equity snapshot still carries the prior regular-session change_pct.
+            prev_moves={sym:num(q[sym].get('change_pct')) for sym in BREADTH if sym in q and q[sym].get('change_pct') not in (None,'')}
+            pv=[v for v in prev_moves.values() if v is not None]
+            if len(pv)>=80:
+                adv=sum(v>0 for v in pv); dec=sum(v<0 for v in pv); flat=len(pv)-adv-dec; ratio=adv/len(pv)*100
+                sig='positive' if ratio>=65 else ('negative' if ratio<=35 else 'mixed')
+                direction='Broad participation' if ratio>=65 else ('Weak participation' if ratio<=35 else 'Mixed participation')
+                stamps=[str(q[sym].get('last_timedate') or q[sym].get('last_time') or '') for sym in BREADTH if sym in q]
+                dated=[x for x in stamps if re.search(r'\d{2}/\d{2}/\d{2}',x)]
+                stamp=dated[0] if dated else 'most recent regular session'
+                setrow(rows,'Market breadth',f'Previous close · Nasdaq-100 breadth: {adv}/{len(pv)} advancing ({ratio:.0f}%) · {dec} declining · {flat} flat',direction,sig,f'Previous regular session · {stamp}','CNBC quotes; previous regular-session Nasdaq-100 constituent breadth')
+            else:
+                setrow(rows,'Market breadth',f'Previous-close breadth unavailable — only {len(pv)} constituent quotes','Awaiting coverage','mixed','STALE — insufficient breadth coverage','CNBC quotes')
 
         # Volatility: VXN is Nasdaq-specific; VIX is included as confirmation.
         vx=q.get('.VXN'); vi=q.get('.VIX')
