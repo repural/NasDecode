@@ -574,6 +574,90 @@ def main():
         sig=all_signal if g.get('name')=='NASDAQ ENVIRONMENT' else group_signal(group_members.get(g.get('name'),[]))
         g['signal']=sig; g['label']=labels[sig]
 
+    # Consolidation / Extension Risk v1. This is intentionally separate from the
+    # directional Nasdaq Environment score: a supportive tape can still be overextended.
+    # Components progressively unlock as self-owned daily observations accumulate.
+    try:
+        with open(DAILY_PATH,encoding='utf-8') as hf: hist_for_risk=json.load(hf)
+    except (FileNotFoundError,json.JSONDecodeError):
+        hist_for_risk={'records':{}}
+    hist_records=hist_for_risk.get('records',{})
+    def hist_series(sym):
+        out=[]
+        seen=set()
+        for day,rec in sorted(hist_records.items()):
+            o=rec.get('market',{}).get(sym,{})
+            od=o.get('observationDate') or day
+            last=o.get('last')
+            if last is not None and od not in seen:
+                seen.add(od); out.append((od,float(last)))
+        return out
+    def risk_band(v):
+        return 'Very High' if v>=75 else ('High' if v>=55 else ('Medium' if v>=30 else 'Low'))
+    components=[]; weighted=0.0; total_w=0.0
+    def add_component(name,score,weight,detail):
+        nonlocal_dummy=None
+        components.append({'name':name,'score':round(score,1),'weight':weight,'detail':detail})
+        return score*weight,weight
+
+    # Current-day QQQ stretch: available immediately.
+    qmove=quoted_move(q.get('QQQ',{}),equity_session(now)) if 'QQQ' in q else None
+    if qmove is None and 'QQQ' in q: qmove=num(q['QQQ'].get('change_pct'))
+    if qmove is not None:
+        qs=min(100,max(0,(abs(qmove)-0.5)*28)) if qmove>0 else min(45,max(0,abs(qmove)*12))
+        a,b=add_component('QQQ 1D stretch',qs,25,f'QQQ {qmove:+.2f}%'); weighted+=a; total_w+=b
+
+    # SOX extension is especially relevant to Nasdaq/AI leadership.
+    smove=num(q.get('.SOX',{}).get('change_pct')) if '.SOX' in q else None
+    if smove is not None:
+        ss=min(100,max(0,(abs(smove)-0.75)*22)) if smove>0 else min(45,max(0,abs(smove)*10))
+        a,b=add_component('SOX 1D extension',ss,20,f'SOX {smove:+.2f}%'); weighted+=a; total_w+=b
+
+    # Broad one-sided participation can indicate a short-term crowded impulse.
+    br=next((r for r in rows if r['factor']=='Market breadth'),{})
+    m=re.search(r'\\((\\d+)%\\)',br.get('latest',''))
+    if m:
+        bpct=float(m.group(1)); bs=min(100,max(0,(bpct-55)*2.5))
+        a,b=add_component('Breadth intensity',bs,10,f'{bpct:.0f}% advancing'); weighted+=a; total_w+=b
+
+    # Volatility behavior: falling vol into a strong rally adds complacency/extension risk;
+    # rising vol offsets it rather than being treated as bullish/bearish direction.
+    vxmove=num(q.get('.VXN',{}).get('change_pct')) if '.VXN' in q else None
+    if vxmove is not None:
+        vs=min(100,max(0,-vxmove*10)) if vxmove<0 else max(0,30-vxmove*5)
+        a,b=add_component('Volatility behavior',vs,10,f'VXN {vxmove:+.2f}%'); weighted+=a; total_w+=b
+
+    # Historical components unlock only when enough distinct observation dates exist.
+    qhist=hist_series('QQQ')
+    current_q=num(q.get('QQQ',{}).get('last')) if 'QQQ' in q else None
+    if current_q is not None:
+        today=now.strftime('%Y-%m-%d')
+        if not qhist or qhist[-1][0]!=today: qhist.append((today,current_q))
+        else: qhist[-1]=(today,current_q)
+    closes=[v for _,v in qhist]
+    unlocked=[]
+    if len(closes)>=4:
+        r3=(closes[-1]/closes[-4]-1)*100; sc=min(100,max(0,(r3-1.5)*18))
+        a,b=add_component('QQQ 3D return',sc,10,f'3D {r3:+.2f}%'); weighted+=a; total_w+=b; unlocked.append('3D')
+    if len(closes)>=6:
+        r5=(closes[-1]/closes[-6]-1)*100; sc=min(100,max(0,(r5-2.5)*14))
+        a,b=add_component('QQQ 5D return',sc,15,f'5D {r5:+.2f}%'); weighted+=a; total_w+=b; unlocked.append('5D')
+    if len(closes)>=5:
+        ma5=sum(closes[-5:])/5; dist=(closes[-1]/ma5-1)*100; sc=min(100,max(0,(dist-1)*25))
+        a,b=add_component('QQQ MA extension',sc,10,f'{dist:+.2f}% vs 5DMA'); weighted+=a; total_w+=b; unlocked.append('MA5')
+    if len(closes)>=15:
+        gains=[]; losses=[]
+        for x,y in zip(closes[-15:-1],closes[-14:]):
+            ch=y-x; gains.append(max(ch,0)); losses.append(max(-ch,0))
+        ag=sum(gains)/14; al=sum(losses)/14
+        rsi=100 if al==0 else 100-(100/(1+ag/al))
+        sc=min(100,max(0,(rsi-55)*3))
+        a,b=add_component('RSI14 stretch',sc,10,f'RSI14 {rsi:.1f}'); weighted+=a; total_w+=b; unlocked.append('RSI14')
+    risk_score=round(weighted/total_w) if total_w else None
+    d['consolidationRisk']={'score':risk_score,'level':risk_band(risk_score) if risk_score is not None else 'Unavailable',
+        'coverageWeight':round(total_w),'components':components,'historyDays':len(closes),
+        'unlocked':unlocked,'note':'Short-term extension risk, not a directional Nasdaq forecast. Historical components unlock as NasBoard history grows.'}
+
     # Persist raw market observations so NasBoard builds its own historical dataset.
     # Daily records are upserted; intraday snapshots are append-only per monthly file.
     def quote_obs(sym):
