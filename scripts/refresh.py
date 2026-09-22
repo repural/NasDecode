@@ -38,6 +38,31 @@ def is_intraday(q,now):
     t=str(q.get('last_time') or q.get('last_timedate') or '')
     return len(t)>10 and t[:10]==now.strftime('%Y-%m-%d')
 
+def equity_session(now):
+    mins=now.hour*60+now.minute
+    if 4*60 <= mins < 9*60+30: return 'premarket'
+    if 9*60+30 <= mins < 16*60: return 'regular'
+    if 16*60 <= mins < 20*60: return 'afterhours'
+    return 'closed'
+
+def quoted_move(q,session):
+    # CNBC's main change_pct is the regular-session move vs prior close.
+    # POST_MKT ExtendedMktQuote.change_pct is the after-hours move vs the cash close.
+    if session=='afterhours':
+        ex=q.get('ExtendedMktQuote') or {}
+        if ex.get('type')=='POST_MKT' and ex.get('change_pct') not in (None,''):
+            return num(ex.get('change_pct'))
+    if session=='regular' and is_intraday(q,datetime.datetime.now(NY)):
+        return num(q.get('change_pct')) if q.get('change_pct') not in (None,'') else pct(q)
+    return None
+
+def equity_quote_available(q,session):
+    if session=='regular': return is_intraday(q,datetime.datetime.now(NY))
+    if session=='afterhours':
+        ex=q.get('ExtendedMktQuote') or {}
+        return ex.get('type')=='POST_MKT' and ex.get('change_pct') not in (None,'')
+    return False
+
 def setrow(rows,name,latest,direction,signal,freshness,source='CNBC quote feed',explanation=None):
     r=next(x for x in rows if x['factor']==name); r.update(latest=latest,direction=direction,signal=signal,freshness=freshness,source=source)
     if explanation is not None: r['explanation']=explanation
@@ -207,55 +232,59 @@ def main():
             rr['levelSignal']=level_sig
             rr['changeSignal']=change_sig
 
-        # Leadership calculations only run when CNBC supplies current-session equity timestamps.
+        # Session-aware equity leadership. CNBC currently exposes reliable regular-session
+        # and POST_MKT extended quotes. Its premarket ExtendedMktQuote is not consistently populated,
+        # so premarket is explicitly left unavailable rather than mixing yesterday's close into today.
         semis=['NVDA','AMD','AVGO','TSM']
-        equity_live='QQQ' in q and is_intraday(q['QQQ'],now)
-        if equity_live and all(sym in q and is_intraday(q[sym],now) for sym in semis):
-            moves={sym:pct(q[sym]) for sym in semis}; qqq=pct(q['QQQ'])
+        session=equity_session(now)
+        session_label={'regular':'Live','afterhours':'After-hours','premarket':'Premarket','closed':'Closed'}[session]
+        equity_available='QQQ' in q and equity_quote_available(q['QQQ'],session)
+
+        if equity_available and all(sym in q and equity_quote_available(q[sym],session) for sym in semis):
+            moves={sym:quoted_move(q[sym],session) for sym in semis}; qqq=quoted_move(q['QQQ'],session)
             valid=[v for v in moves.values() if v is not None]
             if valid and qqq is not None:
                 avg=sum(valid)/len(valid); rel=avg-qqq
                 sig='positive' if rel>0.25 else ('negative' if rel<-0.25 else 'mixed')
                 direction='Leading QQQ' if rel>0.25 else ('Lagging QQQ' if rel<-0.25 else 'In line with QQQ')
-                text=' | '.join(f'{k} {v:+.2f}%' for k,v in moves.items())+f' | QQQ {qqq:+.2f}% | basket vs QQQ {rel:+.2f} pp'
-                setrow(rows,'Semiconductor leadership',text,direction,sig,fresh(q['QQQ']),'CNBC quotes; equal-weight NVDA/AMD/AVGO/TSM vs QQQ calculation')
+                txt=session_label+' · '+' | '.join(f'{k} {v:+.2f}%' for k,v in moves.items())+f' | QQQ {qqq:+.2f}% | basket vs QQQ {rel:+.2f} pp'
+                setrow(rows,'Semiconductor leadership',txt,direction,sig,session_label+' CNBC quote','CNBC quotes; session-aware equal-weight NVDA/AMD/AVGO/TSM vs QQQ calculation')
         else:
-            stamp=(q.get('QQQ',{}).get('last_time') or q.get('QQQ',{}).get('last_timedate') or 'unavailable')
-            setrow(rows,'Semiconductor leadership',f'Awaiting current-session equity quotes — latest equity stamp {stamp}','Awaiting session','mixed',fresh(q['QQQ']) if 'QQQ' in q else 'STALE — QQQ unavailable','CNBC quotes; calculation suppressed when only previous-close data are available')
+            msg='Premarket quote unavailable from CNBC extended-hours feed' if session=='premarket' else f'Awaiting {session_label.lower()} equity quotes'
+            setrow(rows,'Semiconductor leadership',msg,'Awaiting session','mixed',session_label+' — insufficient current equity data','CNBC quotes; no previous-close substitution')
 
-        # Mega-cap leadership: equal-weight basket versus QQQ, current session only.
-        if equity_live:
-            mm={sym:pct(q[sym]) for sym in MEGACAPS if sym in q and is_intraday(q[sym],now)}
-            vals=[v for v in mm.values() if v is not None]; qqq=pct(q['QQQ'])
+        # Mega-cap leadership, regular session or reliable CNBC POST_MKT quotes.
+        if equity_available:
+            mm={sym:quoted_move(q[sym],session) for sym in MEGACAPS if sym in q and equity_quote_available(q[sym],session)}
+            vals=[v for v in mm.values() if v is not None]; qqq=quoted_move(q['QQQ'],session)
             if len(vals)>=5 and qqq is not None:
                 avg=sum(vals)/len(vals); rel=avg-qqq; pos=sum(v>0 for v in vals)
-                # Leadership has two dimensions: relative performance and participation.
-                # Strong broad participation in a rising QQQ is supportive even when the basket only matches QQQ.
-                if rel>0.20 and pos>=4:
-                    sig='positive'; direction='Leading QQQ'
-                elif qqq>0 and pos>=6 and rel>=-0.20:
-                    sig='positive'; direction='Broad participation'
-                elif rel<-0.20 and pos<=3:
-                    sig='negative'; direction='Lagging QQQ'
-                elif qqq<0 and pos<=1 and rel<=0.20:
-                    sig='negative'; direction='Broad weakness'
-                else:
-                    sig='mixed'; direction='In line with QQQ'
-                setrow(rows,'Mega-cap leadership',f'{len(vals)}-stock basket {avg:+.2f}% | {pos}/{len(vals)} positive | QQQ {qqq:+.2f}% | relative {rel:+.2f} pp',direction,sig,fresh(q['QQQ']),'CNBC quotes; equal-weight AAPL/MSFT/AMZN/GOOGL/META/NVDA/TSLA basket vs QQQ')
+                if rel>0.20 and pos>=4: sig='positive'; direction='Leading QQQ'
+                elif qqq>0 and pos>=6 and rel>=-0.20: sig='positive'; direction='Broad participation'
+                elif rel<-0.20 and pos<=3: sig='negative'; direction='Lagging QQQ'
+                elif qqq<0 and pos<=1 and rel<=0.20: sig='negative'; direction='Broad weakness'
+                else: sig='mixed'; direction='In line with QQQ'
+                setrow(rows,'Mega-cap leadership',f'{session_label} · {len(vals)}-stock basket {avg:+.2f}% | {pos}/{len(vals)} positive | QQQ {qqq:+.2f}% | relative {rel:+.2f} pp',direction,sig,session_label+' CNBC quote','CNBC quotes; session-aware mega-cap basket vs QQQ')
+            else:
+                setrow(rows,'Mega-cap leadership',f'{session_label} · insufficient mega-cap quote coverage','Awaiting coverage','mixed',session_label+' — partial coverage','CNBC quotes')
         else:
-            setrow(rows,'Mega-cap leadership','Awaiting current-session mega-cap quotes','Awaiting session','mixed',fresh(q['QQQ']) if 'QQQ' in q else 'STALE — QQQ unavailable','CNBC quotes; calculation suppressed outside current equity session')
+            msg='Premarket quote unavailable from CNBC extended-hours feed' if session=='premarket' else f'Awaiting {session_label.lower()} mega-cap quotes'
+            setrow(rows,'Mega-cap leadership',msg,'Awaiting session','mixed',session_label+' — insufficient current equity data','CNBC quotes; no previous-close substitution')
 
-        # Nasdaq-100 day breadth using the current constituent set. Multiple share classes mean the quote count can exceed 100.
-        if equity_live:
-            bm={sym:pct(q[sym]) for sym in BREADTH if sym in q and is_intraday(q[sym],now)}
-            vals=[v for v in bm.values() if v is not None]
-            if len(vals)>=80:
-                adv=sum(v>0 for v in vals); dec=sum(v<0 for v in vals); flat=len(vals)-adv-dec; ratio=adv/len(vals)*100
-                sig='positive' if ratio>=65 else ('negative' if ratio<=35 else 'mixed')
-                direction='Broadening' if ratio>=65 else ('Weakening' if ratio<=35 else 'Mixed')
-                setrow(rows,'Market breadth',f'Nasdaq-100 breadth: {adv}/{len(vals)} advancing ({ratio:.0f}%) · {dec} declining · {flat} flat',direction,sig,fresh(q['QQQ']),'CNBC quotes; Nasdaq-100 constituent day breadth')
+        # Breadth: regular session requires broad coverage; after-hours is explicitly labelled and
+        # allowed with a lower coverage floor because extended-hours participation is naturally thinner.
+        bm={sym:quoted_move(q[sym],session) for sym in BREADTH if sym in q and equity_quote_available(q[sym],session)}
+        vals=[v for v in bm.values() if v is not None]
+        min_coverage=80 if session=='regular' else 40
+        if session in ('regular','afterhours') and len(vals)>=min_coverage:
+            adv=sum(v>0 for v in vals); dec=sum(v<0 for v in vals); flat=len(vals)-adv-dec; ratio=adv/len(vals)*100
+            sig='positive' if ratio>=65 else ('negative' if ratio<=35 else 'mixed')
+            direction='Broadening' if ratio>=65 else ('Weakening' if ratio<=35 else 'Mixed')
+            label='Nasdaq-100 breadth' if session=='regular' else 'After-hours breadth'
+            setrow(rows,'Market breadth',f'{session_label} · {label}: {adv}/{len(vals)} advancing ({ratio:.0f}%) · {dec} declining · {flat} flat',direction,sig,session_label+' CNBC constituent quotes','CNBC quotes; session-aware Nasdaq-100 constituent breadth')
         else:
-            setrow(rows,'Market breadth','Awaiting current-session quotes for Nasdaq-100 breadth','Awaiting session','mixed',fresh(q['QQQ']) if 'QQQ' in q else 'STALE — QQQ unavailable','CNBC quotes; Nasdaq-100 constituent breadth; calculation suppressed outside current equity session')
+            msg='Premarket breadth unavailable from CNBC extended-hours feed' if session=='premarket' else f'Insufficient {session_label.lower()} breadth coverage ({len(vals)} quotes)'
+            setrow(rows,'Market breadth',msg,'Awaiting coverage','mixed',session_label+' — insufficient current breadth data','CNBC quotes; no previous-close substitution')
 
         # Volatility: VXN is Nasdaq-specific; VIX is included as confirmation.
         vx=q.get('.VXN'); vi=q.get('.VIX')
