@@ -7,6 +7,8 @@ on:
       - 'data/dashboard.json'
       - 'data/cnbc_probe.json'
       - 'data/history/**'
+      - 'public/data/dashboard.json'
+      - 'public/index.html'
   workflow_dispatch:
   schedule:
     # Use New York time directly so DST does not require UTC candidate schedules.
@@ -42,4 +44,7 @@ jobs:
           if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
           git diff --cached --quiet && exit 0
           git commit -m 'Refresh dashboard data'
+          # Another commit can land while the refresh is running. Rebase the generated
+          # snapshot onto the latest main branch before pushing instead of failing.
+          git pull --rebase origin main
           git push
