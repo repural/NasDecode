@@ -129,7 +129,7 @@ def explain_current_rows(rows):
             vol=f" Volatility is also {direction('Nasdaq volatility (VXN / VIX)')}, providing {'consistent risk-on confirmation' if signal('Nasdaq volatility (VXN / VIX)')=='positive' and r.get('signal')=='positive' else 'a separate cross-check on risk appetite'}." if live('Nasdaq volatility (VXN / VIX)') else ''
             r['explanation']=f'{x}. HYG versus LQD is a liquid credit-risk proxy: stronger high-yield relative performance suggests easier/risk-on conditions, while underperformance suggests tightening. Credit is {d.lower()} and {t}.{vol}'
         elif n=='Oil (WTI / Brent)':
-            rates=f" The 10Y yield is {latest('10Y Treasury Yield')}; oil matters for Nasdaq mainly through inflation expectations and the rate path." if live('10Y nominal yield') else ''
+            rates=f" The 10Y yield is {latest('10Y Treasury Yield')}; oil matters for Nasdaq mainly through inflation expectations and the rate path." if live('10Y Treasury Yield') else ''
             r['explanation']=f'{x}. Oil is {d.lower()}. Large energy moves can alter inflation expectations and therefore Treasury yields/Fed expectations. Current implication: {t}.{rates}'
         elif n=='Options positioning / sentiment':
             vol=f" VXN/VIX are {direction('Nasdaq volatility (VXN / VIX)')} ({latest('Nasdaq volatility (VXN / VIX)')}), so options positioning and implied volatility together {'lean toward improving risk appetite' if signal('Nasdaq volatility (VXN / VIX)')=='positive' and r.get('signal')=='positive' else 'do not currently give the same strong directional signal'}." if live('Nasdaq volatility (VXN / VIX)') else ''
@@ -408,15 +408,6 @@ def main():
         et,name,_=min(fomc,key=lambda e:e[0])
         setrow(rows,'Fed path / rate expectations',f'Next Fed catalyst: {name} · {et.strftime("%b %d, %H:%M ET")}','Event risk','mixed',f'Federal Reserve calendar · checked {now.strftime("%Y-%m-%d %H:%M ET")}','Federal Reserve FOMC calendar; market-implied rate probabilities not yet connected')
 
-    # Official Treasury TIPS par real yield curve: daily, not intraday.
-    real=next(x for x in rows if x['factor']=='10Y real yield')
-    try:
-        rd,rv=treasury_10y_real(now.year)
-        real.update(latest=f'{rv:.2f}%',direction='Elevated' if rv>=2.0 else ('Moderate' if rv>=1.0 else 'Low'),signal='negative' if rv>=2.0 else ('mixed' if rv>=1.0 else 'positive'),freshness=f'U.S. Treasury daily · {rd.isoformat()}',source='U.S. Department of the Treasury — Daily Treasury Par Real Yield Curve Rates (10Y TIPS)')
-    except Exception as e:
-        print('Treasury real-yield refresh failed:',repr(e))
-        real['freshness']='STALE — U.S. Treasury daily feed refresh failed'
-        real['source']='U.S. Department of the Treasury — Daily Treasury Par Real Yield Curve Rates (10Y TIPS)'
     # Current impact = magnitude of the factor's present Nasdaq effect, not its structural importance.
     # It is intentionally based on current observations/freshness and can change each refresh.
     for r in rows:
@@ -432,10 +423,6 @@ def main():
             m=re.search(r'\(([+-]?[0-9.]+) bp',r.get('latest',''))
             bp=abs(float(m.group(1))) if m else 0
             imp='Very High' if bp>=5 else ('High' if bp>=2 else 'Medium')
-        elif n=='10Y real yield':
-            try: rv=float(r.get('latest','0').replace('%',''))
-            except: rv=0
-            imp='High' if rv>=2 else ('Medium' if rv>=1 else 'Low')
         elif n=='Nasdaq volatility (VXN / VIX)':
             nums=[abs(float(v)) for v in re.findall(r'\(([+-]?[0-9.]+)%\)',r.get('latest',''))]
             mv=max(nums) if nums else 0
@@ -542,7 +529,7 @@ def main():
     dynamic_trend_factors={
         '10Y nominal yield','2Y Treasury yield','Semiconductor leadership','Market breadth',
         'Nasdaq volatility (VXN / VIX)','Mega-cap leadership','Credit conditions',
-        'U.S. Dollar (DXY)','Oil (WTI / Brent)','Options positioning / sentiment'
+        'Oil (WTI / Brent)','Options positioning / sentiment'
     }
     for r in rows:
         n=r['factor']
