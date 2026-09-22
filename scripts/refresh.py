@@ -3,6 +3,8 @@ from zoneinfo import ZoneInfo
 
 ROOT=os.path.dirname(os.path.dirname(__file__))
 PATH=os.path.join(ROOT,'data','dashboard.json')
+HISTORY_DIR=os.path.join(ROOT,'data','history')
+DAILY_PATH=os.path.join(HISTORY_DIR,'daily.json')
 NY=ZoneInfo('America/New_York')
 CNBC_BASE='https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol'
 MEGACAPS=['AAPL','MSFT','AMZN','GOOGL','META','NVDA','TSLA']
@@ -542,6 +544,43 @@ def main():
     for g in d.get('groups',[]):
         sig=all_signal if g.get('name')=='NASDAQ ENVIRONMENT' else group_signal(group_members.get(g.get('name'),[]))
         g['signal']=sig; g['label']=labels[sig]
+
+    # Persist raw market observations so NasBoard builds its own historical dataset.
+    # Daily records are upserted; intraday snapshots are append-only per monthly file.
+    def quote_obs(sym):
+        x=q.get(sym,{})
+        return {'last':num(x.get('last')),'previousClose':num(x.get('previous_day_closing')),
+                'changePct':num(x.get('change_pct')) if x.get('change_pct') not in (None,'') else pct(x),
+                'timestamp':x.get('last_timedate') or x.get('last_time')}
+    os.makedirs(HISTORY_DIR,exist_ok=True)
+    market_symbols=['QQQ','.SOX','NVDA','AMD','AVGO','TSM','MU','AAPL','MSFT','AMZN','GOOGL','META','TSLA',
+                    '.VXN','.VIX','US10Y','US2Y','.DXY','@CL.1','@LCO.1','HYG','LQD']
+    market={sym:quote_obs(sym) for sym in market_symbols if sym in q}
+    current_session=[sym for sym in BREADTH if sym in q and is_intraday(q[sym],now)]
+    pos=sum(1 for sym in current_session if (pct(q[sym]) or 0)>0)
+    breadth_obs={'valid':len(current_session),'advancers':pos,'decliners':len(current_session)-pos,
+                 'positivePct':round(100*pos/len(current_session),2) if current_session else None}
+    factor_state={r['factor']:{'signal':r.get('signal'),'currentImpact':r.get('currentImpact'),
+                              'trend':r.get('trend'),'latest':r.get('latest')} for r in rows}
+    snapshot={'schemaVersion':1,'timestampET':now.isoformat(),'market':market,'breadth':breadth_obs,
+              'environmentScore':d.get('environmentScore'),'environmentTrend':d.get('environmentTrend'),
+              'factors':factor_state}
+    try:
+        with open(DAILY_PATH,encoding='utf-8') as hf: daily=json.load(hf)
+    except (FileNotFoundError,json.JSONDecodeError):
+        daily={'schemaVersion':1,'records':{}}
+    daily['schemaVersion']=1
+    daily.setdefault('records',{})[now.strftime('%Y-%m-%d')]=snapshot
+    with open(DAILY_PATH,'w',encoding='utf-8') as hf: json.dump(daily,hf,ensure_ascii=False,indent=2)
+    month_path=os.path.join(HISTORY_DIR,'intraday',now.strftime('%Y-%m')+'.json')
+    os.makedirs(os.path.dirname(month_path),exist_ok=True)
+    try:
+        with open(month_path,encoding='utf-8') as hf: intraday=json.load(hf)
+    except (FileNotFoundError,json.JSONDecodeError):
+        intraday={'schemaVersion':1,'snapshots':[]}
+    intraday['schemaVersion']=1
+    intraday.setdefault('snapshots',[]).append(snapshot)
+    with open(month_path,'w',encoding='utf-8') as hf: json.dump(intraday,hf,ensure_ascii=False,indent=2)
 
     d['updatedET']=now.strftime('%b %d, %Y · %H:%M ET'); d['nextUpdateET']='09:30 / 10:30 ET on trading weekdays'
     with open(PATH,'w',encoding='utf-8') as f:json.dump(d,f,ensure_ascii=False,indent=2)
