@@ -26,8 +26,12 @@ def num(v):
     except:return None
 
 def pct(q):
+    # CNBC often supplies an authoritative change_pct even when previous_day_closing is
+    # duplicated from last in delayed equity/ETF snapshots. Prefer the supplied move.
+    cp=num(q.get('change_pct'))
+    if cp is not None: return cp
     v=num(q.get('last')); p=num(q.get('previous_day_closing'))
-    return ((v/p)-1)*100 if v is not None and p not in (None,0) else None
+    return ((v/p)-1)*100 if v is not None and p not in (None,0) and v!=p else None
 
 def fresh(q):
     t=q.get('last_time') or q.get('last_timedate') or 'timestamp unavailable'
@@ -608,6 +612,7 @@ def main():
     def risk_band(v):
         return 'Very High' if v>=75 else ('High' if v>=55 else ('Medium' if v>=30 else 'Low'))
     components=[]; weighted=0.0; total_w=0.0
+    MODEL_WEIGHT=100.0
     def add_component(name,score,weight,detail):
         nonlocal_dummy=None
         components.append({'name':name,'score':round(score,1),'weight':weight,'detail':detail})
@@ -618,19 +623,26 @@ def main():
     if qmove is None and 'QQQ' in q: qmove=num(q['QQQ'].get('change_pct'))
     if qmove is not None:
         qs=min(100,max(0,(abs(qmove)-0.5)*28)) if qmove>0 else min(45,max(0,abs(qmove)*12))
-        a,b=add_component('QQQ 1D stretch',qs,25,f'QQQ {qmove:+.2f}%'); weighted+=a; total_w+=b
+        a,b=add_component('QQQ 1D stretch',qs,20,f'QQQ {qmove:+.2f}%'); weighted+=a; total_w+=b
 
     # SOX extension is especially relevant to Nasdaq/AI leadership.
     smove=num(q.get('.SOX',{}).get('change_pct')) if '.SOX' in q else None
     if smove is not None:
         ss=min(100,max(0,(abs(smove)-0.75)*22)) if smove>0 else min(45,max(0,abs(smove)*10))
-        a,b=add_component('SOX 1D extension',ss,20,f'SOX {smove:+.2f}%'); weighted+=a; total_w+=b
+        a,b=add_component('SOX 1D extension',ss,15,f'SOX {smove:+.2f}%'); weighted+=a; total_w+=b
 
     # Broad one-sided participation can indicate a short-term crowded impulse.
     br=next((r for r in rows if r['factor']=='Market breadth'),{})
-    m=re.search(r'\\((\\d+)%\\)',br.get('latest',''))
-    if m:
-        bpct=float(m.group(1)); bs=min(100,max(0,(bpct-55)*2.5))
+    # Parse the displayed breadth percentage without regex escaping fragility.
+    latest_breadth=br.get('latest','')
+    bpct=None
+    try:
+        marker=latest_breadth.rsplit('(',1)[1].split('%',1)[0]
+        bpct=float(marker)
+    except (IndexError,ValueError):
+        pass
+    if bpct is not None:
+        bs=min(100,max(0,(bpct-55)*2.5))
         a,b=add_component('Breadth intensity',bs,10,f'{bpct:.0f}% advancing'); weighted+=a; total_w+=b
 
     # Volatility behavior: falling vol into a strong rally adds complacency/extension risk;
@@ -644,9 +656,20 @@ def main():
     qhist=hist_series('QQQ')
     current_q=num(q.get('QQQ',{}).get('last')) if 'QQQ' in q else None
     if current_q is not None:
-        today=now.strftime('%Y-%m-%d')
-        if not qhist or qhist[-1][0]!=today: qhist.append((today,current_q))
-        else: qhist[-1]=(today,current_q)
+        # Use the quote's actual observation date. During premarket CNBC may still be
+        # showing the previous cash session, which must not create a fake new history day.
+        cq=q.get('QQQ',{})
+        raw=str(cq.get('last_timedate') or cq.get('last_time') or '').strip()
+        qdate=None
+        token=raw.split()[0] if raw else ''
+        try:
+            if token.count('/')==2: qdate=datetime.datetime.strptime(token,'%m/%d/%y').date().isoformat()
+            elif len(token)>=10 and token[4]=='-' and token[7]=='-': qdate=datetime.date.fromisoformat(token[:10]).isoformat()
+        except ValueError:
+            qdate=None
+        if qdate:
+            qhist=[x for x in qhist if x[0]!=qdate]
+            qhist.append((qdate,current_q)); qhist.sort(key=lambda x:x[0])
     closes=[v for _,v in qhist]
     unlocked=[]
     if len(closes)>=4:
@@ -654,7 +677,7 @@ def main():
         a,b=add_component('QQQ 3D return',sc,10,f'3D {r3:+.2f}%'); weighted+=a; total_w+=b; unlocked.append('3D')
     if len(closes)>=6:
         r5=(closes[-1]/closes[-6]-1)*100; sc=min(100,max(0,(r5-2.5)*14))
-        a,b=add_component('QQQ 5D return',sc,15,f'5D {r5:+.2f}%'); weighted+=a; total_w+=b; unlocked.append('5D')
+        a,b=add_component('QQQ 5D return',sc,10,f'5D {r5:+.2f}%'); weighted+=a; total_w+=b; unlocked.append('5D')
     if len(closes)>=5:
         ma5=sum(closes[-5:])/5; dist=(closes[-1]/ma5-1)*100; sc=min(100,max(0,(dist-1)*25))
         a,b=add_component('QQQ MA extension',sc,10,f'{dist:+.2f}% vs 5DMA'); weighted+=a; total_w+=b; unlocked.append('MA5')
@@ -668,7 +691,7 @@ def main():
         a,b=add_component('RSI14 stretch',sc,10,f'RSI14 {rsi:.1f}'); weighted+=a; total_w+=b; unlocked.append('RSI14')
     risk_score=round(weighted/total_w) if total_w else None
     d['consolidationRisk']={'score':risk_score,'level':risk_band(risk_score) if risk_score is not None else 'Unavailable',
-        'coverageWeight':round(total_w),'components':components,'historyDays':len(closes),
+        'coverageWeight':round(100*total_w/MODEL_WEIGHT),'components':components,'historyDays':len(closes),
         'unlocked':unlocked,'note':'Short-term extension risk, not a directional Nasdaq forecast. Historical components unlock as NasBoard history grows.'}
 
     # Persist raw market observations so NasBoard builds its own historical dataset.
