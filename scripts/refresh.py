@@ -344,6 +344,44 @@ def cme_fedwatch_aggregated():
             'hasAggregated':bool(re.search(r'Aggregated',html,re.I))}
 
 
+def barchart_s5fi():
+    """Scrape Barchart's public $S5FI page.
+
+    Barchart states that index quotes are 15-minute delayed during market hours. This is
+    still timely enough for NasBoard's slow-moving 50-day breadth factor. Return both the
+    current value and previous value when the public page exposes them.
+    """
+    url='https://www.barchart.com/stocks/quotes/%24S5FI/comparison'
+    req=urllib.request.Request(url,headers={
+        'User-Agent':'Mozilla/5.0',
+        'Accept':'text/html,application/xhtml+xml,*/*',
+        'Referer':'https://www.barchart.com/'
+    })
+    with urllib.request.urlopen(req,timeout=20) as r:
+        html=r.read().decode('utf-8',errors='replace')
+    def field(label):
+        patterns=[
+            rf'{label}\s*</[^>]+>\s*<[^>]+>\s*([0-9]+(?:\.[0-9]+)?)',
+            rf'{label}.{{0,500}}?([0-9]+(?:\.[0-9]+)?)'
+        ]
+        for pat in patterns:
+            m=re.search(pat,html,re.I|re.S)
+            if m: return float(m.group(1))
+        return None
+    last=field('Last'); previous=field('Previous')
+    if last is None:
+        # The overview page can expose a server-rendered "Last Price" even when the
+        # comparison table layout changes.
+        url='https://www.barchart.com/stocks/quotes/%24S5FI/overview'
+        req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0','Accept':'text/html,*/*'})
+        with urllib.request.urlopen(req,timeout=20) as r:
+            html=r.read().decode('utf-8',errors='replace')
+        m=re.search(r'Last Price.{0,300}?([0-9]+(?:\.[0-9]+)?)',html,re.I|re.S)
+        if m: last=float(m.group(1))
+    if last is None: raise ValueError('Barchart S5FI quote not parseable')
+    return {'last':last,'previous':previous,'url':url,'delay':'15-minute delayed index quote'}
+
+
 def barchart_zq_prices():
     """Free delayed ZQ quotes from Barchart's public Websol quote pages."""
     symbols=['ZQV26','ZQX26','ZQZ26','ZQF27','ZQG27','ZQH27']
@@ -658,7 +696,21 @@ def main():
         # S5FI: percentage of S&P 500 stocks above their 50-day MA.
         # CNBC does not currently return this symbol in our feed, so publish it only when
         # a real quote is available; otherwise keep the row explicitly stale.
-        sx=q.get('S5FI')
+        # Barchart is primary for S5FI. Barchart documents index quotes as
+        # 15-minute delayed during market hours, which is adequate for this breadth factor.
+        # CNBC remains a fallback if Barchart's public page is unavailable.
+        sx=None; s5_source=None; s5_freshness=None
+        try:
+            bx=barchart_s5fi()
+            sx={'last':str(bx['last']),'previous_day_closing':str(bx['previous']) if bx['previous'] is not None else ''}
+            s5_source='Barchart $S5FI'
+            s5_freshness='Barchart index · 15-minute delayed'
+        except Exception as e:
+            print('Barchart S5FI unavailable:',repr(e))
+            sx=q.get('S5FI')
+            if sx:
+                s5_source='CNBC S5FI fallback'
+                s5_freshness=fresh(sx)
         if sx and num(sx.get('last')) is not None:
             sv=num(sx.get('last')); sp=num(sx.get('previous_day_closing'))
             delta=(sv-sp) if sp is not None else None
@@ -682,7 +734,7 @@ def main():
                 sig='positive' if not falling else 'mixed'
                 direction='Very broad / extended' if not falling else 'Extended, cooling'
             move=f' · {delta:+.1f} pp vs prior' if delta is not None else ''
-            setrow(rows,'S&P 500 50D Breadth / Oversold',f'{sv:.1f}% above 50D MA{move}',direction,sig,fresh(sx),'S5FI — S&P 500 stocks above 50-day moving average')
+            setrow(rows,'S&P 500 50D Breadth / Oversold',f'{sv:.1f}% above 50D MA{move}',direction,sig,s5_freshness or 'Current',s5_source or 'S5FI')
         else:
             rr=next((z for z in rows if z['factor']=='S&P 500 50D Breadth / Oversold'),None)
             if rr:
