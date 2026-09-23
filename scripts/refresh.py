@@ -1200,26 +1200,32 @@ def main():
         'historyDays':qctx.get('bars',0),'unlocked':[x['name'] for x in components],
         'note':'Higher means more extended/crowded. Missing inputs reduce model coverage rather than being guessed.'}
 
-    # Feed extension risk back into Nasdaq Setup with a bounded nonlinear penalty.
-    # Low risk does not alter direction; progressively elevated risk trims an otherwise
-    # supportive setup without allowing extension alone to dominate all directional evidence.
-    extension_penalty=0
+    # Consolidation Risk is a conviction modifier, not directional evidence.
+    # High extension/crowding pulls the directional score toward zero regardless of sign,
+    # rather than mechanically making an already-bearish setup even more bearish.
+    conviction_reduction=0
     if risk_score is not None:
-        if risk_score>=85: extension_penalty=25
-        elif risk_score>=70: extension_penalty=15
-        elif risk_score>=50: extension_penalty=8
-        elif risk_score>=30: extension_penalty=3
-    score=max(-100,min(100,raw_setup_score-extension_penalty))
+        if risk_score>=85: conviction_reduction=25
+        elif risk_score>=70: conviction_reduction=15
+        elif risk_score>=50: conviction_reduction=8
+        elif risk_score>=30: conviction_reduction=3
+    if raw_setup_score>0:
+        score=max(0,raw_setup_score-conviction_reduction)
+    elif raw_setup_score<0:
+        score=min(0,raw_setup_score+conviction_reduction)
+    else:
+        score=0
+    score=max(-100,min(100,score))
     d['environmentScoreRaw']=raw_setup_score
-    d['consolidationPenalty']=extension_penalty
+    d['consolidationPenalty']=conviction_reduction
     d['environmentScore']=score
     previous_score=d.get('environmentScorePrevious',score)
     d['environmentTrend']='Improving ↑' if score>previous_score else ('Deteriorating ↓' if score<previous_score else 'Stable →')
     d['environmentScorePrevious']=score
 
     setup_explanation=build_setup_explanation(rows,score,d['environmentTrend'])
-    if extension_penalty:
-        setup_explanation += " Elevated consolidation risk is tempering the directional setup."
+    if conviction_reduction:
+        setup_explanation += " Elevated consolidation risk is reducing conviction in the directional setup."
 
     # 3-Day Watch: material-change detector for the post-open Market Analysis.
     # It mirrors the cross-market watch used for short-horizon Nasdaq monitoring:
