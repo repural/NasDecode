@@ -1,11 +1,11 @@
 {
-  "updatedET": "Sep 22, 2026 · 16:18 ET",
+  "updatedET": "Sep 23, 2026 · 00:45 ET",
   "nextUpdateET": "09:30 / 10:30 ET on trading weekdays",
   "groups": [
     {
       "name": "NASDAQ ENVIRONMENT",
-      "signal": "mixed",
-      "label": "🟡 Mixed",
+      "signal": "positive",
+      "label": "🟢 Positive",
       "explanation": "Weighted composite of all 14 Nasdaq factors. Positive values indicate more supportive conditions; negative values indicate more headwinds. The trend shows the current directional impulse."
     },
     {
@@ -22,14 +22,14 @@
     },
     {
       "name": "Breadth",
-      "signal": "mixed",
-      "label": "🟡 Mixed",
+      "signal": "positive",
+      "label": "🟢 Positive",
       "explanation": "Measures how broadly Nasdaq-100 constituents participate. Broad participation generally makes index moves more robust."
     },
     {
       "name": "Risk / Credit",
-      "signal": "mixed",
-      "label": "🟡 Mixed",
+      "signal": "positive",
+      "label": "🟢 Positive",
       "explanation": "Combines volatility and credit conditions. Rising VXN/VIX or weaker high-yield credit can indicate increasing market stress."
     },
     {
@@ -45,7 +45,7 @@
       "latest": "Next: JOLTS (Aug) · Sep 29, 10:00 ET",
       "direction": "Scheduled",
       "signal": "mixed",
-      "freshness": "Official calendar · checked 2026-09-22 16:18 ET",
+      "freshness": "Official calendar · checked 2026-09-23 00:45 ET",
       "source": "BLS official release calendar",
       "explanation": "Next: JOLTS (Aug) · Sep 29, 10:00 ET. This is the next scheduled macro release capable of changing growth/inflation expectations, Treasury yields and the Fed path. Event status is scheduled.",
       "currentImpact": "High",
@@ -62,114 +62,114 @@
       "source": "Company investor-relations announcements",
       "explanation": "Current reading: Micron (MU): Sep 30, 2026; earlier Sep reports include AVGO Sep 2, ORCL Sep 10 and ADBE Sep 10. Direction: Event risk. NasBoard currently classifies this factor as neutral/mixed. This row will become more specific as its underlying live/research source is automated.",
       "currentImpact": "High",
-      "impactReason": "Calendar: 7.3 days to event; market-reaction score 0/4; directional score +0",
+      "impactReason": "Calendar: 7.0 days to event; market-reaction score 0/4; directional score +0",
       "trend": "Stable →",
       "displayRank": 2,
       "signalLabel": "🟡 Mixed"
     },
     {
-      "factor": "Oil (WTI / Brent)",
-      "latest": "WTI $95.21 (-0.60%) | Brent $98.45 (-1.88%)",
-      "direction": "Falling",
+      "factor": "Options positioning / sentiment",
+      "latest": "Equity P/C 0.47 | 5D avg 0.56 | ↓ call-heavy | Index 0.93 | Total 0.78",
+      "direction": "Call-heavy",
       "signal": "positive",
-      "freshness": "CNBC intraday · 2026-09-22T14:30:36.000-0400",
-      "source": "CNBC futures quotes",
-      "explanation": "WTI $95.21 (-0.60%) | Brent $98.45 (-1.88%). Oil is falling. Large energy moves can alter inflation expectations and therefore Treasury yields/Fed expectations. Current implication: supportive. The 10Y yield is 4.951% (-1.2 bp vs prev close); oil matters for Nasdaq mainly through inflation expectations and the rate path.",
-      "currentImpact": "Medium",
+      "freshness": "Cboe daily · latest session 2026-09-22 · checked 2026-09-23 00:45 ET",
+      "source": "Cboe Daily Market Statistics — 5-session equity put/call trend; index/total context; not dealer gamma exposure",
+      "explanation": "Equity P/C 0.47 | 5D avg 0.56 | ↓ call-heavy | Index 0.93 | Total 0.78. Equity put/call is compared with its 5-session baseline; Index and Total P/C add context because index puts often reflect institutional hedging. Positioning is call-heavy and supportive; this is not dealer gamma.  VXN/VIX are falling together (VXN 20.18 (-1.03%) | VIX 14.21 (-4.44%)), so options positioning and implied volatility together do not currently give the same strong directional signal.",
+      "currentImpact": "High",
       "trend": "Improving ↑",
       "displayRank": 3,
       "signalLabel": "🟢 Positive"
     },
     {
-      "factor": "Options positioning / sentiment",
-      "latest": "Equity P/C 0.53 | 5D avg 0.58 | → stable | Index 0.80 | Total 0.74",
-      "direction": "Balanced",
-      "signal": "mixed",
-      "freshness": "Cboe daily · latest session 2026-09-21 · checked 2026-09-22 16:18 ET",
-      "source": "Cboe Daily Market Statistics — 5-session equity put/call trend; index/total context; not dealer gamma exposure",
-      "explanation": "Equity P/C 0.53 | 5D avg 0.58 | → stable | Index 0.80 | Total 0.74. Equity put/call is compared with its 5-session baseline; Index and Total P/C add context because index puts often reflect institutional hedging. Positioning is balanced and neutral/mixed; this is not dealer gamma.  VXN/VIX are falling together (VXN 20.19 (-0.98%) | VIX 14.21 (-4.44%)), so options positioning and implied volatility together do not currently give the same strong directional signal.",
-      "currentImpact": "Medium",
-      "trend": "Stable →",
+      "factor": "Market breadth",
+      "latest": "Previous close · Nasdaq-100 breadth: 72/102 advancing (71%) · 30 declining · 0 flat",
+      "direction": "Broad participation",
+      "signal": "positive",
+      "freshness": "Previous regular session · 09/22/26 EDT",
+      "source": "CNBC quotes; previous regular-session Nasdaq-100 constituent breadth",
+      "explanation": "Previous close · Nasdaq-100 breadth: 72/102 advancing (71%) · 30 declining · 0 flat. Breadth is broad participation. A larger share of advancing Nasdaq-100 constituents means wider participation; weak participation makes index strength less robust. Current implication: supportive.",
+      "currentImpact": "High",
+      "trend": "Improving ↑",
       "displayRank": 4,
-      "signalLabel": "🟡 Mixed"
+      "signalLabel": "🟢 Positive"
+    },
+    {
+      "factor": "Oil (WTI / Brent)",
+      "latest": "WTI $88.93 (-1.76%) | Brent $98.17 (-1.09%)",
+      "direction": "Falling",
+      "signal": "positive",
+      "freshness": "CNBC intraday · 2026-09-23T00:35:11.000-0400",
+      "source": "CNBC futures quotes",
+      "explanation": "WTI $88.93 (-1.76%) | Brent $98.17 (-1.09%). Oil is falling. Large energy moves can alter inflation expectations and therefore Treasury yields/Fed expectations. Current implication: supportive. The 10Y yield is 4.955% (-1.2 bp vs prev close); oil matters for Nasdaq mainly through inflation expectations and the rate path.",
+      "currentImpact": "Medium",
+      "trend": "Improving ↑",
+      "displayRank": 5,
+      "signalLabel": "🟢 Positive"
     },
     {
       "factor": "10Y Treasury Yield",
-      "latest": "4.951% (-1.2 bp vs prev close)",
+      "latest": "4.955% (-1.2 bp vs prev close)",
       "direction": "Falling",
       "signal": "positive",
-      "freshness": "CNBC intraday · 2026-09-22T16:18:38.000-0400",
+      "freshness": "CNBC intraday · 2026-09-22T19:30:06.000-0400",
       "source": "CNBC / Tradeweb quote feed; U.S. Treasury 10Y TIPS real yield context",
-      "explanation": "4.951% (-1.2 bp vs prev close). Level: a headwind. Latest change: supportive because yields fell. The two Treasury maturities are not giving a fully aligned change signal. The latest 10Y real yield is 2.63% (2026-09-22), so the real discount-rate backdrop remains a headwind.",
+      "explanation": "4.955% (-1.2 bp vs prev close). Level: a headwind. Latest change: supportive because yields fell. The latest 10Y real yield is 2.63% (2026-09-22), so the real discount-rate backdrop remains a headwind.",
       "levelSignal": "negative",
       "changeSignal": "positive",
       "currentImpact": "Medium",
       "trend": "Stable →",
-      "displayRank": 5,
+      "displayRank": 6,
       "signalLabel": "🟢 Positive",
       "realYield": 2.63,
       "realYieldDate": "2026-09-22"
     },
     {
-      "factor": "2Y Treasury yield",
-      "latest": "4.743% (-1.0 bp vs prev close)",
-      "direction": "Falling",
-      "signal": "negative",
-      "freshness": "CNBC intraday · 2026-09-22T16:18:31.000-0400",
-      "source": "CNBC / Tradeweb quote feed",
-      "explanation": "4.743% (-1.0 bp vs prev close). Level: a headwind. Latest change: roughly neutral. The two Treasury maturities are not giving a fully aligned change signal.",
-      "levelSignal": "negative",
-      "changeSignal": "mixed",
-      "currentImpact": "Medium",
-      "trend": "Stable →",
-      "displayRank": 6,
-      "signalLabel": "🔴 Negative"
-    },
-    {
       "factor": "Nasdaq volatility (VXN / VIX)",
-      "latest": "VXN 20.19 (-0.98%) | VIX 14.21 (-4.44%)",
+      "latest": "VXN 20.18 (-1.03%) | VIX 14.21 (-4.44%)",
       "direction": "Falling together",
       "signal": "mixed",
-      "freshness": "CNBC intraday · 2026-09-22T16:03:46.000-0400",
+      "freshness": "CNBC previous close · 2026-09-22",
       "source": "CNBC / Cboe quotes",
-      "explanation": "VXN 20.19 (-0.98%) | VIX 14.21 (-4.44%). VXN and VIX are falling together, confirming reduced demand for near-term protection. Overall volatility signal: neutral/mixed. Rate levels remain supportive at the 10Y and a headwind at the 2Y.",
+      "explanation": "VXN 20.18 (-1.03%) | VIX 14.21 (-4.44%). VXN and VIX are falling together, confirming reduced demand for near-term protection. Overall volatility signal: neutral/mixed.",
       "currentImpact": "Medium",
       "trend": "Stable →",
       "displayRank": 7,
       "signalLabel": "🟡 Mixed"
     },
     {
-      "factor": "Market breadth",
-      "latest": "After-hours · After-hours breadth: 31/73 advancing (42%) · 42 declining · 0 flat",
-      "direction": "Mixed",
-      "signal": "mixed",
-      "freshness": "After-hours CNBC constituent quotes",
-      "source": "CNBC quotes; session-aware Nasdaq-100 constituent breadth",
-      "explanation": "After-hours · After-hours breadth: 31/73 advancing (42%) · 42 declining · 0 flat. Breadth is mixed. A larger share of advancing Nasdaq-100 constituents means wider participation; weak participation makes index strength less robust. Current implication: neutral/mixed. At the same time, semiconductors are in line with qqq and mega-caps are in line with qqq.",
+      "factor": "2Y Treasury yield",
+      "latest": "4.743% (-1.0 bp vs prev close)",
+      "direction": "Falling",
+      "signal": "negative",
+      "freshness": "STALE — Treasury quote unavailable",
+      "source": "CNBC / Tradeweb quote feed",
+      "explanation": "4.743% (-1.0 bp vs prev close). Level: a headwind. Latest change: roughly neutral. The two Treasury maturities are not giving a fully aligned change signal.",
+      "levelSignal": "negative",
+      "changeSignal": "mixed",
       "currentImpact": "Low",
       "trend": "Stable →",
       "displayRank": 8,
-      "signalLabel": "🟡 Mixed"
+      "signalLabel": "🔴 Negative"
     },
     {
       "factor": "Mega-cap leadership",
-      "latest": "After-hours · 6-stock basket -0.02% | 4/6 positive | QQQ -0.04% | relative +0.02 pp",
-      "direction": "In line with QQQ",
+      "latest": "Awaiting closed mega-cap quotes",
+      "direction": "Awaiting session",
       "signal": "mixed",
-      "freshness": "After-hours CNBC quote",
-      "source": "CNBC quotes; session-aware mega-cap basket vs QQQ",
-      "explanation": "After-hours · 6-stock basket -0.02% | 4/6 positive | QQQ -0.04% | relative +0.02 pp. The mega-cap basket is in line with qqq. Nasdaq is more durable when its largest weights participate rather than the index being carried by a narrow subset. Current implication: neutral/mixed. Breadth is mixed; the wider market is giving only partial confirmation. Semiconductor leadership is in line with qqq.",
+      "freshness": "Closed — insufficient current equity data",
+      "source": "CNBC quotes; no previous-close substitution",
+      "explanation": "Awaiting closed mega-cap quotes. The mega-cap basket is awaiting session. Nasdaq is more durable when its largest weights participate rather than the index being carried by a narrow subset. Current implication: neutral/mixed. Breadth is broad participation; broad participation confirms the move.",
       "currentImpact": "Low",
       "trend": "Stable →",
       "displayRank": 9,
       "signalLabel": "🟡 Mixed"
     },
     {
-      "factor": "Fed path / rate expectations",
+      "factor": "Fed expectations",
       "latest": "Next Fed catalyst: FOMC Minutes (Sep 15–16 meeting) · Oct 07, 14:00 ET",
       "direction": "Event risk",
       "signal": "mixed",
-      "freshness": "Federal Reserve calendar · checked 2026-09-22 16:18 ET",
+      "freshness": "Federal Reserve calendar · checked 2026-09-23 00:45 ET",
       "source": "Federal Reserve FOMC calendar; market-implied rate probabilities not yet connected",
       "explanation": "Next Fed catalyst: FOMC Minutes (Sep 15–16 meeting) · Oct 07, 14:00 ET. This row tracks the next scheduled Fed catalyst rather than market-implied cut/hike probabilities. The event creates policy-rate risk for Nasdaq.",
       "currentImpact": "Low",
@@ -179,12 +179,12 @@
     },
     {
       "factor": "Semiconductor leadership",
-      "latest": "After-hours · NVDA -0.29% | AMD -0.28% | AVGO -0.05% | TSM -0.39% | QQQ -0.04% | basket vs QQQ -0.21 pp",
-      "direction": "In line with QQQ",
+      "latest": "Awaiting closed equity quotes",
+      "direction": "Awaiting session",
       "signal": "mixed",
-      "freshness": "After-hours CNBC quote",
-      "source": "CNBC quotes; session-aware equal-weight NVDA/AMD/AVGO/TSM vs QQQ calculation",
-      "explanation": "After-hours · NVDA -0.29% | AMD -0.28% | AVGO -0.05% | TSM -0.39% | QQQ -0.04% | basket vs QQQ -0.21 pp. Semiconductors are in line with qqq. Chips are a major Nasdaq/AI leadership group, so relative strength versus QQQ is an important risk-appetite confirmation. Current implication: neutral/mixed. Market breadth is mixed (After-hours · After-hours breadth: 31/73 advancing (42%) · 42 declining · 0 flat). Mega-cap leadership is in line with qqq.",
+      "freshness": "Closed — insufficient current equity data",
+      "source": "CNBC quotes; no previous-close substitution",
+      "explanation": "Awaiting closed equity quotes. Semiconductors are awaiting session. Chips are a major Nasdaq/AI leadership group, so relative strength versus QQQ is an important risk-appetite confirmation. Current implication: neutral/mixed. Market breadth is broad participation (Previous close · Nasdaq-100 breadth: 72/102 advancing (71%) · 30 declining · 0 flat).",
       "currentImpact": "Low",
       "trend": "Stable →",
       "displayRank": 11,
@@ -230,9 +230,9 @@
       "signalLabel": "🟡 Mixed"
     }
   ],
-  "environmentScore": 14,
+  "environmentScore": 50,
   "environmentTrend": "Improving ↑",
-  "environmentScorePrevious": 14,
+  "environmentScorePrevious": 50,
   "diagnostics": {
     "cnbcSOX": {
       "tested": [
@@ -244,28 +244,32 @@
           "symbol": ".SOX",
           "name": "Philadelphia SE Semiconductor Index",
           "last": "12,689.82",
-          "previous_day_closing": "12,433.171",
+          "previous_day_closing": "12,689.82",
           "change_pct": "+2.06%",
-          "last_time": "2026-09-22T16:18:47.000-0400",
-          "last_timedate": "4:18 PM EDT",
+          "last_time": "2026-09-22",
+          "last_timedate": "09/22/26 EDT",
           "code": 0,
           "oneDayPct": 2.06
         }
       ],
       "status": "supported"
-    }
+    },
+    "cmeFedWatchPublic": {
+      "error": "<HTTPError 403: 'Forbidden'>"
+    },
+    "fedFundsFutures": {}
   },
   "consolidationRisk": {
-    "score": 10,
+    "score": 20,
     "level": "Low",
     "explanation": "Measures short-term market extension and pullback/consolidation risk, not Nasdaq direction. The score blends QQQ and SOX stretch, breadth, volatility and, when enough history is available, multi-day returns, moving-average extension and RSI. Model coverage shows how much of the full 100-point model currently has usable data.",
     "coverageWeight": 55,
     "components": [
       {
         "name": "QQQ 1D stretch",
-        "score": 0.5,
+        "score": 8.7,
         "weight": 20,
-        "detail": "QQQ -0.04%"
+        "detail": "QQQ +0.81%"
       },
       {
         "name": "SOX 1D extension",
@@ -275,15 +279,15 @@
       },
       {
         "name": "Breadth intensity",
-        "score": 0,
+        "score": 40.0,
         "weight": 10,
-        "detail": "42% advancing"
+        "detail": "71% advancing"
       },
       {
         "name": "Volatility behavior",
-        "score": 9.8,
+        "score": 10.3,
         "weight": 10,
-        "detail": "VXN -0.98%"
+        "detail": "VXN -1.03%"
       }
     ],
     "historyDays": 1,
