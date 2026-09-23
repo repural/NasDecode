@@ -11,13 +11,15 @@ Design rule: missing or stale inputs fail closed. NasBoard should label unavaila
 rather than infer a live value from an old observation.
 """
 
-import json, urllib.request, urllib.parse, datetime, os, re, xml.etree.ElementTree as ET
+import json, urllib.request, urllib.parse, datetime, os, re, time, statistics, xml.etree.ElementTree as ET
 from zoneinfo import ZoneInfo
 
 ROOT=os.path.dirname(os.path.dirname(__file__))
 PATH=os.path.join(ROOT,'data','dashboard.json')
 HISTORY_DIR=os.path.join(ROOT,'data','history')
 DAILY_PATH=os.path.join(HISTORY_DIR,'daily.json')
+EARNINGS_AVWAP_PATH=os.path.join(ROOT,'data','earnings_avwap_watchlist.json')
+_MASSIVE_LAST_CALL=0.0
 NY=ZoneInfo('America/New_York')
 CNBC_BASE='https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol'
 MEGACAPS=['AAPL','MSFT','AMZN','GOOGL','META','NVDA','TSLA']
@@ -34,14 +36,23 @@ def cnbc_quotes(symbols):
     return {q.get('symbol'):q for q in qs if q.get('symbol') and q.get('code')==0}
 
 def massive_daily_bars(ticker, days=120):
+    """Fetch adjusted daily OHLCV/VWAP bars from Massive with free-tier pacing.
+
+    Massive Basic is rate-limited, so all historical requests share a simple process-level
+    throttle. This keeps the refresh deterministic while allowing several selective AVWAP
+    tickers plus QQQ/SOXX context to be refreshed in one workflow.
+    """
     """Fetch adjusted daily OHLC bars from Massive for historical context.
 
     The API key is read only from MASSIVE_API_KEY in the Actions environment. Missing
     credentials, plan restrictions, rate limits, or network failures return an empty
     list so Massive enriches NasBoard without becoming a hard dependency.
     """
+    global _MASSIVE_LAST_CALL
     key=os.environ.get('MASSIVE_API_KEY','').strip()
     if not key: return []
+    wait=12.5-(time.monotonic()-_MASSIVE_LAST_CALL)
+    if _MASSIVE_LAST_CALL and wait>0: time.sleep(wait)
     end=datetime.datetime.now(NY).date()
     start=end-datetime.timedelta(days=days)
     url=(f'https://api.massive.com/v2/aggs/ticker/{urllib.parse.quote(ticker)}/range/1/day/'
@@ -49,8 +60,10 @@ def massive_daily_bars(ticker, days=120):
     req=urllib.request.Request(url,headers={'Authorization':f'Bearer {key}','User-Agent':'NasBoard/1.0'})
     try:
         with urllib.request.urlopen(req,timeout=15) as resp: payload=json.load(resp)
+        _MASSIVE_LAST_CALL=time.monotonic()
         return payload.get('results',[]) if payload.get('status') in ('OK','DELAYED') else []
     except Exception as e:
+        _MASSIVE_LAST_CALL=time.monotonic()
         print(f'Massive history unavailable for {ticker}:',repr(e))
         return []
 
@@ -73,13 +86,96 @@ def historical_context(bars):
             if streak>0: break
             streak-=1
         else: break
+    ret1=(closes[-1]/closes[-2]-1)*100 if len(closes)>=2 else None
+    ret3=(closes[-1]/closes[-4]-1)*100 if len(closes)>=4 else None
     ret5=(closes[-1]/closes[-6]-1)*100 if len(closes)>=6 else None
     ma20=sum(closes[-20:])/20 if len(closes)>=20 else None
+    ma50=sum(closes[-50:])/50 if len(closes)>=50 else None
     ma20dist=(closes[-1]/ma20-1)*100 if ma20 else None
+    ma50dist=(closes[-1]/ma50-1)*100 if ma50 else None
+    rsi14=None
+    if len(closes)>=15:
+        changes=[b-a for a,b in zip(closes[-15:-1],closes[-14:])]
+        ag=sum(max(x,0) for x in changes)/14
+        al=sum(max(-x,0) for x in changes)/14
+        rsi14=100 if al==0 else 100-(100/(1+ag/al))
     max_i=max(range(len(closes)),key=lambda i:closes[i])
     max_date=datetime.datetime.fromtimestamp(bars[max_i]['t']/1000,datetime.timezone.utc).date().isoformat() if bars[max_i].get('t') else None
-    return {'streak':streak,'return5d':ret5,'ma20Distance':ma20dist,'windowHighDate':max_date,'windowHighClose':closes[max_i],'bars':len(closes)}
+    return {'streak':streak,'return1d':ret1,'return3d':ret3,'return5d':ret5,
+            'ma20Distance':ma20dist,'ma50Distance':ma50dist,'rsi14':rsi14,
+            'windowHighDate':max_date,'windowHighClose':closes[max_i],'bars':len(closes)}
 
+
+
+def earnings_avwap_from_daily_bars(bars, earnings_date, release_session):
+    """Calculate an earnings-anchored VWAP from Massive daily VWAP and volume.
+
+    After-close releases anchor at the next trading session; before-open releases anchor
+    on the release date. Daily aggregate VWAP × volume preserves the cumulative VWAP
+    mathematics without downloading every trade. The function also returns the AVWAP
+    slope over the latest five included sessions.
+    """
+    anchor=datetime.date.fromisoformat(earnings_date)
+    selected=[]
+    for b in bars:
+        if b.get('t') is None or b.get('v') in (None,0) or b.get('vw') is None: continue
+        day=datetime.datetime.fromtimestamp(b['t']/1000,datetime.timezone.utc).date()
+        include=day>anchor if release_session=='after_close' else day>=anchor
+        if include: selected.append((day,float(b['vw']),float(b['v'])))
+    if not selected: return None
+    seq=[]; pv=0.0; vol=0.0
+    for day,vw,v in selected:
+        pv+=vw*v; vol+=v; seq.append((day,pv/vol))
+    slope=(seq[-1][1]/seq[-6][1]-1)*100 if len(seq)>=6 else None
+    return {'anchorDate':seq[0][0].isoformat(),'avwap':seq[-1][1],
+            'slope5dPct':slope,'sessions':len(seq),'throughDate':seq[-1][0].isoformat()}
+
+
+def build_earnings_avwap_factor(quotes):
+    """Refresh the selective earnings-AVWAP basket and derive one Nasdaq Setup factor.
+
+    The factor measures whether important semiconductor/AI leaders trade above their
+    post-earnings institutional cost basis. Individual ticker details remain available
+    in dashboard.json while the composite row prevents six highly correlated stocks
+    from being counted as six independent Nasdaq Setup factors.
+    """
+    try:
+        with open(EARNINGS_AVWAP_PATH,encoding='utf-8') as f: cfg=json.load(f)
+    except (FileNotFoundError,json.JSONDecodeError):
+        return None,{}
+    details={}
+    for item in cfg.get('tickers',[]):
+        ticker=item.get('ticker')
+        if not ticker: continue
+        bars=massive_daily_bars(ticker,180)
+        calc=earnings_avwap_from_daily_bars(bars,item['earningsDate'],item.get('releaseSession','after_close'))
+        current=num(quotes.get(ticker,{}).get('last'))
+        if calc and current is not None:
+            dist=(current/calc['avwap']-1)*100
+            calc.update({'ticker':ticker,'price':current,'distancePct':dist,
+                         'above':dist>=0,'earningsDate':item['earningsDate'],
+                         'source':item.get('source','company investor relations')})
+            details[ticker]=calc
+    vals=list(details.values())
+    if not vals:
+        row={'factor':'Earnings AVWAP leadership','latest':'Awaiting Earnings AVWAP data',
+             'direction':'Awaiting data','signal':'mixed','freshness':'STALE — Massive/anchor data unavailable',
+             'source':'Massive aggregates + verified company earnings dates','currentImpact':'Low',
+             'explanation':'Tracks a selective semiconductor/AI basket versus VWAP anchored to each company’s latest earnings release.'}
+        return row,details
+    above=sum(x['above'] for x in vals); ratio=above/len(vals)
+    median_dist=statistics.median(x['distancePct'] for x in vals)
+    signal='positive' if ratio>=2/3 else ('negative' if ratio<=1/3 else 'mixed')
+    direction='Broad support above earnings anchors' if signal=='positive' else ('Broad weakness below earnings anchors' if signal=='negative' else 'Mixed around earnings anchors')
+    names=', '.join(f"{x['ticker']} {x['distancePct']:+.1f}%" for x in vals)
+    row={'factor':'Earnings AVWAP leadership',
+         'latest':f"{above}/{len(vals)} above Earnings AVWAP · median {median_dist:+.1f}%",
+         'direction':direction,'signal':signal,'freshness':'Massive daily aggregates + CNBC current price',
+         'source':'Massive aggregates + verified company earnings dates',
+         'currentImpact':'High' if abs(median_dist)>=3 or ratio in (0,1) else 'Medium',
+         'medianDistancePct':median_dist,'aboveCount':above,'coveredCount':len(vals),
+         'explanation':f"{names}. Earnings AVWAP approximates the volume-weighted institutional cost basis since each company’s latest earnings reset."}
+    return row,details
 
 def num(v):
     if v is None:return None
@@ -689,6 +785,13 @@ def main():
         rr=next((x for x in rows if x['factor']=='Fed expectations'),None)
         if rr: rr['freshness']='STALE — Fed futures probability refresh failed'
 
+    # Earnings AVWAP is a selective leadership factor, not one factor per stock. This
+    # avoids double-counting correlated semiconductor names in the Nasdaq Setup score.
+    avwap_row,avwap_details=build_earnings_avwap_factor(q)
+    rows=[r for r in rows if r.get('factor')!='Earnings AVWAP leadership']
+    if avwap_row: rows.append(avwap_row)
+    d['earningsAvwap']=avwap_details
+
     # Current impact = magnitude of the factor's present Nasdaq effect, not its structural importance.
     # It is intentionally based on current observations/freshness and can change each refresh.
     for r in rows:
@@ -816,7 +919,7 @@ def main():
     dynamic_trend_factors={
         '10Y Treasury Yield','2Y Treasury yield','Semiconductor leadership','Market breadth','S&P 500 50D Breadth / Oversold',
         'Nasdaq volatility (VXN / VIX)','Mega-cap leadership','Credit conditions',
-        'Oil (WTI / Brent)','Options positioning / sentiment'
+        'Oil (WTI / Brent)','Options positioning / sentiment','Earnings AVWAP leadership'
     }
     for r in rows:
         n=r['factor']
@@ -859,7 +962,7 @@ def main():
     # securities on the free stock-history endpoint and directly support Nasdaq Setup.
     massive_context={}
     for ticker in ('QQQ','SOXX'):
-        ctx=historical_context(massive_daily_bars(ticker,120))
+        ctx=historical_context(massive_daily_bars(ticker,180))
         if ctx: massive_context[ticker]=ctx
     d['historicalContext']=massive_context
 
@@ -1000,109 +1103,74 @@ def main():
         r['displayRank']=i
         r['signalLabel']={'positive':'🟢 Positive','negative':'🔴 Negative','mixed':'🟡 Mixed'}.get(r.get('signal'),'🟡 Mixed')
 
-    # Consolidation / Extension Risk v1. This is intentionally separate from the
-    # directional Nasdaq Setup score: a supportive tape can still be overextended.
-    # Components progressively unlock as self-owned daily observations accumulate.
-    try:
-        with open(DAILY_PATH,encoding='utf-8') as hf: hist_for_risk=json.load(hf)
-    except (FileNotFoundError,json.JSONDecodeError):
-        hist_for_risk={'records':{}}
-    hist_records=hist_for_risk.get('records',{})
-    def hist_series(sym):
-        out=[]
-        seen=set()
-        for day,rec in sorted(hist_records.items()):
-            o=rec.get('market',{}).get(sym,{})
-            od=o.get('observationDate') or day
-            last=o.get('last')
-            if last is not None and od not in seen:
-                seen.add(od); out.append((od,float(last)))
-        return out
+    # Consolidation / Extension Risk v2. This is separate from Nasdaq direction.
+    # Massive history supplies QQQ/SOXX momentum and trend extension immediately; session
+    # breadth, S5FI, VXN and Earnings AVWAP add participation/crowding confirmation.
     def risk_band(v):
         return 'Very High' if v>=75 else ('High' if v>=55 else ('Medium' if v>=30 else 'Low'))
     components=[]; weighted=0.0; total_w=0.0
     MODEL_WEIGHT=100.0
     def add_component(name,score,weight,detail):
-        nonlocal_dummy=None
         components.append({'name':name,'score':round(score,1),'weight':weight,'detail':detail})
         return score*weight,weight
+    def add_metric(name,value,weight,threshold,scale,detail):
+        nonlocal_dummy=None
+        if value is None: return
+        score=min(100,max(0,(value-threshold)*scale))
+        a,b=add_component(name,score,weight,detail); return a,b
 
-    # Current-day QQQ stretch: available immediately.
-    qmove=quoted_move(q.get('QQQ',{}),equity_session(now)) if 'QQQ' in q else None
-    if qmove is None and 'QQQ' in q: qmove=num(q['QQQ'].get('change_pct'))
-    if qmove is not None:
-        qs=min(100,max(0,(abs(qmove)-0.5)*28)) if qmove>0 else min(45,max(0,abs(qmove)*12))
-        a,b=add_component('QQQ 1D stretch',qs,20,f'QQQ {qmove:+.2f}%'); weighted+=a; total_w+=b
+    qctx=massive_context.get('QQQ',{}); sctx=massive_context.get('SOXX',{})
+    metric_specs=[
+        ('QQQ 1D return',qctx.get('return1d'),4,0.5,28),
+        ('QQQ 3D return',qctx.get('return3d'),6,1.5,18),
+        ('QQQ 5D return',qctx.get('return5d'),7,2.5,14),
+        ('QQQ vs 20DMA',qctx.get('ma20Distance'),9,1.0,18),
+        ('QQQ vs 50DMA',qctx.get('ma50Distance'),7,2.0,10),
+        ('QQQ RSI14',qctx.get('rsi14'),7,55.0,3.0),
+        ('SOXX 1D return',sctx.get('return1d'),4,0.75,22),
+        ('SOXX 3D return',sctx.get('return3d'),6,2.0,15),
+        ('SOXX 5D return',sctx.get('return5d'),7,3.0,12),
+        ('SOXX vs 20DMA',sctx.get('ma20Distance'),9,1.5,15),
+        ('SOXX vs 50DMA',sctx.get('ma50Distance'),7,3.0,8)
+    ]
+    for name,value,weight,threshold,scale in metric_specs:
+        if value is None: continue
+        score=min(100,max(0,(value-threshold)*scale))
+        suffix='' if 'RSI' in name else '%'
+        a,b=add_component(name,score,weight,f'{value:+.2f}{suffix}'); weighted+=a; total_w+=b
 
-    # SOX extension is especially relevant to Nasdaq/AI leadership.
-    smove=num(q.get('.SOX',{}).get('change_pct')) if '.SOX' in q else None
-    if smove is not None:
-        ss=min(100,max(0,(abs(smove)-0.75)*22)) if smove>0 else min(45,max(0,abs(smove)*10))
-        a,b=add_component('SOX 1D extension',ss,15,f'SOX {smove:+.2f}%'); weighted+=a; total_w+=b
-
-    # Broad one-sided participation can indicate a short-term crowded impulse.
     br=next((r for r in rows if r['factor']=='Market breadth'),{})
-    # Parse the displayed breadth percentage without regex escaping fragility.
-    latest_breadth=br.get('latest','')
     bpct=None
-    try:
-        marker=latest_breadth.rsplit('(',1)[1].split('%',1)[0]
-        bpct=float(marker)
-    except (IndexError,ValueError):
-        pass
+    try: bpct=float(br.get('latest','').rsplit('(',1)[1].split('%',1)[0])
+    except (IndexError,ValueError): pass
     if bpct is not None:
         bs=min(100,max(0,(bpct-55)*2.5))
-        a,b=add_component('Breadth intensity',bs,10,f'{bpct:.0f}% advancing'); weighted+=a; total_w+=b
+        a,b=add_component('Nasdaq daily breadth',bs,5,f'{bpct:.0f}% advancing'); weighted+=a; total_w+=b
 
-    # Volatility behavior: falling vol into a strong rally adds complacency/extension risk;
-    # rising vol offsets it rather than being treated as bullish/bearish direction.
+    s5=next((r for r in rows if r['factor']=='S&P 500 50D Breadth / Oversold'),{})
+    s5m=re.search(r'([0-9.]+)% above 50D MA(?: · ([+-]?[0-9.]+) pp)?',str(s5.get('latest','')))
+    if s5m:
+        level=float(s5m.group(1)); change=float(s5m.group(2)) if s5m.group(2) else 0.0
+        s5score=min(100,max(0,(level-55)*3 + max(change,0)*4))
+        a,b=add_component('S5FI level + trend',s5score,7,f'{level:.1f}% · {change:+.1f} pp'); weighted+=a; total_w+=b
+
     vxmove=num(q.get('.VXN',{}).get('change_pct')) if '.VXN' in q else None
     if vxmove is not None:
-        vs=min(100,max(0,-vxmove*10)) if vxmove<0 else max(0,30-vxmove*5)
-        a,b=add_component('Volatility behavior',vs,10,f'VXN {vxmove:+.2f}%'); weighted+=a; total_w+=b
+        vs=min(100,max(0,-vxmove*10)) if vxmove<0 else max(0,25-vxmove*5)
+        a,b=add_component('VXN behavior',vs,5,f'VXN {vxmove:+.2f}%'); weighted+=a; total_w+=b
 
-    # Historical components unlock only when enough distinct observation dates exist.
-    qhist=hist_series('QQQ')
-    current_q=num(q.get('QQQ',{}).get('last')) if 'QQQ' in q else None
-    if current_q is not None:
-        # Use the quote's actual observation date. During premarket CNBC may still be
-        # showing the previous cash session, which must not create a fake new history day.
-        cq=q.get('QQQ',{})
-        raw=str(cq.get('last_timedate') or cq.get('last_time') or '').strip()
-        qdate=None
-        token=raw.split()[0] if raw else ''
-        try:
-            if token.count('/')==2: qdate=datetime.datetime.strptime(token,'%m/%d/%y').date().isoformat()
-            elif len(token)>=10 and token[4]=='-' and token[7]=='-': qdate=datetime.date.fromisoformat(token[:10]).isoformat()
-        except ValueError:
-            qdate=None
-        if qdate:
-            qhist=[x for x in qhist if x[0]!=qdate]
-            qhist.append((qdate,current_q)); qhist.sort(key=lambda x:x[0])
-    closes=[v for _,v in qhist]
-    unlocked=[]
-    if len(closes)>=4:
-        r3=(closes[-1]/closes[-4]-1)*100; sc=min(100,max(0,(r3-1.5)*18))
-        a,b=add_component('QQQ 3D return',sc,10,f'3D {r3:+.2f}%'); weighted+=a; total_w+=b; unlocked.append('3D')
-    if len(closes)>=6:
-        r5=(closes[-1]/closes[-6]-1)*100; sc=min(100,max(0,(r5-2.5)*14))
-        a,b=add_component('QQQ 5D return',sc,10,f'5D {r5:+.2f}%'); weighted+=a; total_w+=b; unlocked.append('5D')
-    if len(closes)>=5:
-        ma5=sum(closes[-5:])/5; dist=(closes[-1]/ma5-1)*100; sc=min(100,max(0,(dist-1)*25))
-        a,b=add_component('QQQ MA extension',sc,10,f'{dist:+.2f}% vs 5DMA'); weighted+=a; total_w+=b; unlocked.append('MA5')
-    if len(closes)>=15:
-        gains=[]; losses=[]
-        for x,y in zip(closes[-15:-1],closes[-14:]):
-            ch=y-x; gains.append(max(ch,0)); losses.append(max(-ch,0))
-        ag=sum(gains)/14; al=sum(losses)/14
-        rsi=100 if al==0 else 100-(100/(1+ag/al))
-        sc=min(100,max(0,(rsi-55)*3))
-        a,b=add_component('RSI14 stretch',sc,10,f'RSI14 {rsi:.1f}'); weighted+=a; total_w+=b; unlocked.append('RSI14')
+    avvals=list(avwap_details.values())
+    if avvals:
+        avdist=statistics.median(x['distancePct'] for x in avvals)
+        avscore=min(100,max(0,(avdist-2)*8))
+        a,b=add_component('Earnings AVWAP extension',avscore,10,f'median {avdist:+.2f}% · {sum(x["above"] for x in avvals)}/{len(avvals)} above'); weighted+=a; total_w+=b
+
     risk_score=round(weighted/total_w) if total_w else None
     d['consolidationRisk']={'score':risk_score,'level':risk_band(risk_score) if risk_score is not None else 'Unavailable',
-        'explanation':'Measures short-term market extension and pullback/consolidation risk, not Nasdaq direction. The score blends QQQ and SOX stretch, breadth, volatility and, when enough history is available, multi-day returns, moving-average extension and RSI. Model coverage shows how much of the full 100-point model currently has usable data.',
-        'coverageWeight':round(100*total_w/MODEL_WEIGHT),'components':components,'historyDays':len(closes),
-        'unlocked':unlocked,'note':'Short-term extension risk, not a directional Nasdaq forecast. Historical components unlock as NasBoard history grows.'}
+        'explanation':'Measures short-term upside extension and pullback/consolidation risk, not Nasdaq direction. The 100-point model combines QQQ and SOXX 1D/3D/5D returns, 20DMA/50DMA extension, QQQ RSI14, Nasdaq daily breadth, S5FI, VXN behavior and selective semiconductor/AI Earnings AVWAP extension.',
+        'coverageWeight':round(100*total_w/MODEL_WEIGHT),'components':components,
+        'historyDays':qctx.get('bars',0),'unlocked':[x['name'] for x in components],
+        'note':'Higher means more extended/crowded, not more bearish. Missing inputs reduce model coverage rather than being guessed.'}
 
     # Persist raw market observations so NasBoard builds its own historical dataset.
     # Daily records are upserted; intraday snapshots are append-only per monthly file.
