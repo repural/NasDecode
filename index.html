@@ -5,8 +5,10 @@
  * generated JSON and renders cards, model rows, factor rows, and the daily brief.
  */
 const C={positive:'green',negative:'red',mixed:'amber'};
-// Escape model explanations before placing them in tooltip attributes.\nfunction escAttr(s){return String(s??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-// Render the quantitative dashboard snapshot without recalculating model logic.\nfunction render(d){
+// Escape model explanations before placing them in tooltip attributes.
+function escAttr(s){return String(s??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+// Render the quantitative dashboard snapshot without recalculating model logic.
+function render(d){
   updated.textContent='Last updated: '+d.updatedET+' · Next auto: '+d.nextUpdateET;
   const env=d.groups?.[0];
   const summaryCards=(env?`<div class="card" tabindex="0" data-tip="${escAttr(env.explanation||'')}"><span class="factor-name">NASDAQ SETUP</span><span class="card-status ${C[env.signal]}">${env.label}</span>${d.environmentScore!==undefined?`<br><span class="metric">${d.environmentScore>0?'+':''}${d.environmentScore}</span> <span class="muted">/ 100 · ${d.environmentTrend||''}</span>`:''}</div>`:'')+
