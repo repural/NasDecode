@@ -134,7 +134,7 @@ def explain_current_rows(rows):
         elif n=='Options positioning / sentiment':
             vol=f" VXN/VIX are {direction('Nasdaq volatility (VXN / VIX)')} ({latest('Nasdaq volatility (VXN / VIX)')}), so options positioning and implied volatility together {'lean toward improving risk appetite' if signal('Nasdaq volatility (VXN / VIX)')=='positive' and r.get('signal')=='positive' else 'do not currently give the same strong directional signal'}." if live('Nasdaq volatility (VXN / VIX)') else ''
             r['explanation']=f'{x}. Equity put/call is compared with its 5-session baseline; Index and Total P/C add context because index puts often reflect institutional hedging. Positioning is {d.lower()} and {t}; this is not dealer gamma. {vol}'.strip()
-        elif n=='Fed path / rate expectations':
+        elif n=='Fed expectations':
             yields=f" Current rate-market context: 2Y {latest('2Y Treasury yield')} and 10Y {latest('10Y nominal yield')}." if live('2Y Treasury yield') and live('10Y nominal yield') else ''
             r['explanation']=f'{x}. This row tracks the next scheduled Fed catalyst rather than market-implied cut/hike probabilities. The event creates policy-rate risk for Nasdaq. {yields}'.strip()
         elif n=='Economic / inflation data':
@@ -406,7 +406,7 @@ def main():
     fomc=[e for e in events if e[2]=='Federal Reserve' and e[0]>now]
     if fomc:
         et,name,_=min(fomc,key=lambda e:e[0])
-        setrow(rows,'Fed path / rate expectations',f'Next Fed catalyst: {name} · {et.strftime("%b %d, %H:%M ET")}','Event risk','mixed',f'Federal Reserve calendar · checked {now.strftime("%Y-%m-%d %H:%M ET")}','Federal Reserve FOMC calendar; market-implied rate probabilities not yet connected')
+        setrow(rows,'Fed expectations',f'Next Fed catalyst: {name} · {et.strftime("%b %d, %H:%M ET")}','Event risk','mixed',f'Federal Reserve calendar · checked {now.strftime("%Y-%m-%d %H:%M ET")}','Federal Reserve FOMC calendar; market-implied rate probabilities not yet connected')
 
     # Current impact = magnitude of the factor's present Nasdaq effect, not its structural importance.
     # It is intentionally based on current observations/freshness and can change each refresh.
@@ -449,7 +449,7 @@ def main():
             if m:
                 eq,av=map(float,m.groups()); dev=abs(eq-av)
                 imp='High' if eq>=0.9 or eq<=0.5 or dev>=0.15 else ('Medium' if eq>=0.75 or eq<=0.55 or dev>=0.08 else 'Low')
-        elif n in ('Fed path / rate expectations','Economic / inflation data','Technology earnings calendar'):
+        elif n in ('Fed expectations','Economic / inflation data','Technology earnings calendar'):
             # Event impact rises ahead of the catalyst. Earnings can affect positioning well before the report,
             # so the 10-day window is deliberately treated as High.
             event_date=None
@@ -507,7 +507,7 @@ def main():
                 if reaction_score>=3: imp='Very High'
                 elif reaction_score>=2: imp=names[min(3,rank[imp]+1)]
                 r['impactReason']=f"Calendar: {days:.1f} days to event; market-reaction score {reaction_score}/4; directional score {directional_score:+d}" if days is not None else f"Market-reaction score {reaction_score}/4; directional score {directional_score:+d}"
-            elif n=='Fed path / rate expectations':
+            elif n=='Fed expectations':
                 # FOMC decisions deserve more urgency than minutes; minutes still ramp as the date approaches.
                 decision=('decision' in txt.lower() or 'press conference' in txt.lower())
                 if decision:
@@ -563,7 +563,7 @@ def main():
 
     # Recompute summary cards from the refreshed rows instead of leaving stale labels in dashboard.json.
     group_members={
-        'Rates / Macro':['Fed path / rate expectations','10Y Treasury Yield','Economic / inflation data','2Y Treasury yield','Oil (WTI / Brent)'],
+        'Rates / Macro':['Fed expectations','10Y Treasury Yield','Economic / inflation data','2Y Treasury yield','Oil (WTI / Brent)'],
         'Semiconductors':['Semiconductor leadership'],
         'Breadth':['Market breadth','Mega-cap leadership'],
         'Risk / Credit':['Nasdaq volatility (VXN / VIX)','Credit conditions','Options positioning / sentiment'],
