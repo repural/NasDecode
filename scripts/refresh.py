@@ -42,12 +42,6 @@ def massive_daily_bars(ticker, days=120):
     throttle. This keeps the refresh deterministic while allowing several selective AVWAP
     tickers plus QQQ/SOXX context to be refreshed in one workflow.
     """
-    """Fetch adjusted daily OHLC bars from Massive for historical context.
-
-    The API key is read only from MASSIVE_API_KEY in the Actions environment. Missing
-    credentials, plan restrictions, rate limits, or network failures return an empty
-    list so Massive enriches NasBoard without becoming a hard dependency.
-    """
     global _MASSIVE_LAST_CALL
     key=os.environ.get('MASSIVE_API_KEY','').strip()
     if not key: return []
@@ -272,6 +266,13 @@ def explain_current_rows(rows):
             if live('Mega-cap leadership'): leaders.append('mega-caps are '+direction('Mega-cap leadership'))
             context=(' At the same time, '+ ' and '.join(leaders)+'.') if leaders else ''
             r['explanation']=f'{x}. Breadth is {d.lower()}. A larger share of advancing Nasdaq-100 constituents means wider participation; weak participation makes index strength less robust. Current implication: {t}.{context}'
+        elif n=='Earnings AVWAP leadership':
+            # Broad alignment and large median distance from earnings anchors increase
+            # the immediate relevance of this leadership factor.
+            md=abs(float(r.get('medianDistancePct',0)))
+            cov=int(r.get('coveredCount',0)); above=int(r.get('aboveCount',0))
+            aligned=cov>0 and above in (0,cov)
+            imp='High' if aligned or md>=5 else ('Medium' if md>=2 else 'Low')
         elif n=='Nasdaq volatility (VXN / VIX)':
             if d=='Diverging':
                 interp='VXN and VIX are moving in opposite directions, so Nasdaq-specific and broad-market volatility do not confirm each other.'
@@ -988,6 +989,10 @@ def main():
             if m:
                 ch=float(m.group(2)) if m.group(2) else None
                 card={'value':m.group(1)+'%','arrow':'↓' if ch is not None and ch<0 else ('↑' if ch is not None and ch>0 else '→'),'change':f'{ch:+.1f} pp' if ch is not None else ''}
+        elif n=='Earnings AVWAP leadership':
+            cov=int(r.get('coveredCount',0)); above=int(r.get('aboveCount',0)); md=r.get('medianDistancePct')
+            if cov and md is not None:
+                card={'value':f'{above}/{cov} above','arrow':'↑' if r.get('signal')=='positive' else ('↓' if r.get('signal')=='negative' else '→'),'change':f'median {md:+.1f}%'}
         elif n=='Oil (WTI / Brent)':
             m=re.search(r'WTI[^0-9]*([0-9.]+).*?[(]([+-]?[0-9.]+)%[)]',latest,re.I)
             if m:
@@ -1079,6 +1084,8 @@ def main():
         if om and float(om.group(2))<0: positives.append('falling oil')
         if signal('2Y Treasury yield')=='negative' or signal('10Y Treasury Yield')=='negative': negatives.append('elevated/rising Treasury yields')
         if signal('Semiconductor leadership')=='negative': negatives.append('weaker intraday semiconductor leadership')
+        if signal('Earnings AVWAP leadership')=='positive': positives.append('semiconductor/AI leaders holding above their earnings AVWAPs')
+        elif signal('Earnings AVWAP leadership')=='negative': negatives.append('semiconductor/AI leaders trading below their earnings AVWAPs')
         if signal('Nasdaq volatility (VXN / VIX)')=='negative': negatives.append('rising volatility')
         pos=', '.join(positives[:3]) or 'limited positive confirmation'
         neg=', '.join(negatives[:3]) or 'no major high-impact bearish confirmation'
