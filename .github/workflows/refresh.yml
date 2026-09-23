@@ -44,7 +44,20 @@ jobs:
           if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
           git diff --cached --quiet && exit 0
           git commit -m 'Refresh dashboard data'
-          # Another commit can land while the refresh is running. Rebase the generated
-          # snapshot onto the latest main branch before pushing instead of failing.
-          git pull --rebase origin main
-          git push
+          # A concurrent refresh may have published generated JSON while this run was
+          # executing. Retry from the latest main and regenerate instead of rebasing
+          # generated snapshots, which can produce content conflicts.
+          if ! git push; then
+            git reset --hard origin/main
+            git pull --ff-only origin main
+            python scripts/refresh.py
+            git add data/dashboard.json data/history
+            mkdir -p public/data
+            cp index.html public/index.html
+            cp data/dashboard.json public/data/dashboard.json
+            git add public/index.html public/data/dashboard.json
+            if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
+            git diff --cached --quiet && exit 0
+            git commit -m 'Refresh dashboard data'
+            git push
+          fi
