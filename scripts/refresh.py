@@ -62,6 +62,17 @@ def massive_daily_bars(ticker, days=120):
         return []
 
 
+def massive_index_latest(candidates):
+    """Try Massive index aggregate symbols and return the latest observed close."""
+    for ticker in candidates:
+        bars=massive_daily_bars(ticker,days=10)
+        if bars:
+            b=bars[-1]
+            v=num(b.get('c'))
+            if v is not None:
+                return {'ticker':ticker,'value':v,'date':datetime.datetime.fromtimestamp(b['t']/1000,datetime.timezone.utc).date().isoformat()}
+    return None
+
 def historical_context(bars):
     """Summarize objective historical context from daily closes.
 
@@ -1278,6 +1289,17 @@ def main():
         a,b=add_component('Nasdaq daily breadth',bs,5,f'{bpct:.0f}% advancing'); weighted+=a; total_w+=b
 
     s5=next((r for r in rows if r['factor']=='S&P 500 50D Breadth / Oversold'),{})
+    # Prefer the direct row when CNBC supplies S5FI. Otherwise probe Massive's index
+    # namespace. Massive index symbols use the I: prefix; fail closed if S5FI is not
+    # included in the account's supported index universe.
+    if 'Awaiting S5FI' in str(s5.get('latest','')) or str(s5.get('freshness','')).startswith('STALE'):
+        ms5=massive_index_latest(['I:S5FI','S5FI'])
+        if ms5 and 0 <= ms5['value'] <= 100:
+            s5['latest']=f"{ms5['value']:.1f}% above 50D MA"
+            s5['direction']='Massive breadth reading'
+            s5['signal']='positive' if ms5['value']>=60 else ('negative' if ms5['value']<40 else 'mixed')
+            s5['freshness']=f"Massive index · {ms5['date']}"
+            s5['source']=f"Massive Indices API · {ms5['ticker']}"
     s5m=re.search(r'([0-9.]+)% above 50D MA(?: · ([+-]?[0-9.]+) pp)?',str(s5.get('latest','')))
     if s5m:
         level=float(s5m.group(1)); change=float(s5m.group(2)) if s5m.group(2) else 0.0
