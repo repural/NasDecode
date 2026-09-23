@@ -1308,6 +1308,19 @@ def main():
     d['environmentScoreRaw']=raw_setup_score
     d['consolidationPenalty']=conviction_reduction
     d['environmentScore']=score
+    # The published Setup label/color is derived from the final v2 numerical score so
+    # the card can never disagree with the score after consolidation-risk adjustment.
+    if score>=45: setup_signal='positive'; setup_label='Strong Positive'
+    elif score>=15: setup_signal='positive'; setup_label='Cautiously Positive'
+    elif score>-15: setup_signal='mixed'; setup_label='Mixed / Neutral'
+    elif score>-45: setup_signal='negative'; setup_label='Cautiously Negative'
+    else: setup_signal='negative'; setup_label='Strong Negative'
+    d['environmentSignal']=setup_signal
+    d['environmentLabel']=setup_label
+    for g in d.get('groups',[]):
+        if g.get('name')=='NASDAQ SETUP':
+            g['signal']=setup_signal
+            g['label']=setup_label
     previous_score=d.get('environmentScorePrevious',score)
     d['environmentTrend']='Improving ↑' if score>previous_score else ('Deteriorating ↓' if score<previous_score else 'Stable →')
     d['environmentScorePrevious']=score
