@@ -53,7 +53,7 @@ jobs:
           if ! git push; then
             git reset --hard origin/main
             git pull --ff-only origin main
-            python scripts/refresh.py
+            MASSIVE_API_KEY='${{ secrets.MASSIVE_API_KEY }}' python scripts/refresh.py
             git add data/dashboard.json data/history
             mkdir -p public/data
             cp index.html public/index.html
