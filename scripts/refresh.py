@@ -106,6 +106,8 @@ def explain_current_rows(rows):
             breadth=f" Breadth is {direction('Market breadth')}; {'broad participation confirms the move' if signal('Market breadth')=='positive' else 'the wider market is not giving equally strong confirmation' if signal('Market breadth')=='negative' else 'the wider market is giving only partial confirmation'}." if live('Market breadth') else ''
             semi=f" Semiconductor leadership is {direction('Semiconductor leadership')}." if live('Semiconductor leadership') else ''
             r['explanation']=f'{x}. The mega-cap basket is {d.lower()}. Nasdaq is more durable when its largest weights participate rather than the index being carried by a narrow subset. Current implication: {t}.{breadth}{semi}'
+        elif n=='S&P 500 50D Breadth / Oversold':
+            r['explanation']=f'{x}. This is the percentage of S&P 500 stocks above their 50-day moving average. NasBoard interprets it as both breadth and an oversold/extended condition: low readings show weak participation, but a turn upward from below 30% can be an early recovery signal rather than simply bearish. Current state: {d.lower()}.'
         elif n=='Market breadth':
             leaders=[]
             if live('Semiconductor leadership'): leaders.append('semiconductors are '+direction('Semiconductor leadership'))
@@ -273,6 +275,19 @@ def main():
     now=datetime.datetime.now(NY); rows=[r for r in d['rows'] if r.get('factor') not in {'AI / data-center financing','System liquidity','U.S. Dollar (DXY)','10Y real yield'}];
     for r in rows:
         if r.get('factor')=='10Y nominal yield': r['factor']='10Y Treasury Yield'
+    # Add S&P 500 50-day breadth/oversold as a separate factor. It is intentionally
+    # distinct from the session-based Nasdaq breadth row.
+    if not any(r.get('factor')=='S&P 500 50D Breadth / Oversold' for r in rows):
+        rows.append({
+          'factor':'S&P 500 50D Breadth / Oversold',
+          'latest':'Awaiting S5FI data source',
+          'direction':'Awaiting data',
+          'signal':'mixed',
+          'freshness':'STALE — S5FI source not yet connected',
+          'source':'S5FI — S&P 500 stocks above 50-day moving average',
+          'explanation':'S5FI measures the percentage of S&P 500 stocks above their 50-day moving average. NasBoard uses both the breadth level and its direction so an oversold reading is not automatically treated as bearish.',
+          'currentImpact':'Low'
+        })
     d['rows']=rows
     # Preserve the previous refresh so we can show whether each factor is improving or deteriorating.
     previous={r.get('factor'):{'signal':r.get('signal','mixed'),'currentImpact':r.get('currentImpact','Low'),'latest':r.get('latest','')} for r in rows}
@@ -413,6 +428,40 @@ def main():
                 setrow(rows,'Market breadth',f'Previous close · Nasdaq-100 breadth: {adv}/{len(pv)} advancing ({ratio:.0f}%) · {dec} declining · {flat} flat',direction,sig,f'Previous regular session · {stamp}','CNBC quotes; previous regular-session Nasdaq-100 constituent breadth')
             else:
                 setrow(rows,'Market breadth',f'Previous-close breadth unavailable — only {len(pv)} constituent quotes','Awaiting coverage','mixed','STALE — insufficient breadth coverage','CNBC quotes')
+
+        # S5FI: percentage of S&P 500 stocks above their 50-day MA.
+        # CNBC does not currently return this symbol in our feed, so publish it only when
+        # a real quote is available; otherwise keep the row explicitly stale.
+        sx=q.get('S5FI')
+        if sx and num(sx.get('last')) is not None:
+            sv=num(sx.get('last')); sp=num(sx.get('previous_day_closing'))
+            delta=(sv-sp) if sp is not None else None
+            rising=delta is not None and delta>=1.0
+            falling=delta is not None and delta<=-1.0
+            if sv<30:
+                # Oversold is weak breadth, but an upturn is an early recovery signal.
+                sig='positive' if rising else ('negative' if falling else 'mixed')
+                direction='Oversold, recovering' if rising else ('Oversold, deteriorating' if falling else 'Oversold')
+            elif sv<40:
+                sig='mixed' if rising else ('negative' if falling else 'mixed')
+                direction='Weak, improving' if rising else ('Weak, deteriorating' if falling else 'Weak breadth')
+            elif sv<=60:
+                sig='positive' if rising else ('negative' if falling else 'mixed')
+                direction='Broadening' if rising else ('Narrowing' if falling else 'Neutral breadth')
+            elif sv<=70:
+                sig='positive' if not falling else 'mixed'
+                direction='Healthy breadth' if not falling else 'Healthy, weakening'
+            else:
+                # >70 is broad participation/extended breadth, not automatically bearish.
+                sig='positive' if not falling else 'mixed'
+                direction='Very broad / extended' if not falling else 'Extended, cooling'
+            move=f' · {delta:+.1f} pp vs prior' if delta is not None else ''
+            setrow(rows,'S&P 500 50D Breadth / Oversold',f'{sv:.1f}% above 50D MA{move}',direction,sig,fresh(sx),'S5FI — S&P 500 stocks above 50-day moving average')
+        else:
+            rr=next((z for z in rows if z['factor']=='S&P 500 50D Breadth / Oversold'),None)
+            if rr:
+                rr['freshness']='STALE — S5FI source not yet connected'
+                rr['latest']='Awaiting S5FI data source'
 
         # Volatility: VXN is Nasdaq-specific; VIX is included as confirmation.
         vx=q.get('.VXN'); vi=q.get('.VIX')
@@ -565,6 +614,12 @@ def main():
         elif n=='U.S. Dollar (DXY)':
             m=re.search(r'\(([+-]?[0-9.]+)%',r.get('latest','')); mv=abs(float(m.group(1))) if m else 0
             imp='High' if mv>=0.7 else ('Medium' if mv>=0.3 else 'Low')
+        elif n=='S&P 500 50D Breadth / Oversold':
+            m=re.search(r'([0-9.]+)% above 50D',r.get('latest','')); sv=float(m.group(1)) if m else 50
+            # Extremes matter more, especially while still deteriorating; a recovering oversold
+            # reading is tactically useful but not treated as a maximum-risk bearish condition.
+            dist=abs(sv-50)
+            imp='High' if dist>=20 else ('Medium' if dist>=10 else 'Low')
         elif n=='Market breadth':
             m=re.search(r'\(([0-9]+)%\)',r.get('latest','')); adv=float(m.group(1)) if m else 50
             dev=abs(adv-50)
@@ -658,13 +713,13 @@ def main():
     # even when yields were falling, volatility rising, breadth broadening, etc.
     sig_score={'negative':-1,'mixed':0,'positive':1}
     dynamic_trend_factors={
-        '10Y nominal yield','2Y Treasury yield','Semiconductor leadership','Market breadth',
+        '10Y Treasury Yield','2Y Treasury yield','Semiconductor leadership','Market breadth','S&P 500 50D Breadth / Oversold',
         'Nasdaq volatility (VXN / VIX)','Mega-cap leadership','Credit conditions',
         'Oil (WTI / Brent)','Options positioning / sentiment'
     }
     for r in rows:
         n=r['factor']
-        impulse=r.get('changeSignal') if n in ('10Y nominal yield','2Y Treasury yield') else (r.get('signal') if n in dynamic_trend_factors else 'mixed')
+        impulse=r.get('changeSignal') if n in ('10Y Treasury Yield','2Y Treasury yield') else (r.get('signal') if n in dynamic_trend_factors else 'mixed')
         if impulse=='positive':
             r['trend']='Improving ↑'
         elif impulse=='negative':
