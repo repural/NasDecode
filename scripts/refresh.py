@@ -161,18 +161,24 @@ def cme_fedwatch_aggregated():
             'hasAggregated':bool(re.search(r'Aggregated',html,re.I))}
 
 
-def tradingview_zq_prices():
-    """Best-effort public delayed ZQ contract prices from TradingView's contract table."""
-    url='https://www.tradingview.com/symbols/CBOT-ZQ1%21/contracts/'
-    req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0','Accept':'text/html,*/*','Accept-Language':'en-US,en;q=0.9'})
-    with urllib.request.urlopen(req,timeout=25) as r: html=r.read().decode('utf-8',errors='replace')
-    out={}
-    # Contract rows are also embedded in page payload; allow text/JSON between symbol and price.
-    for sym in ['ZQV2026','ZQX2026','ZQZ2026','ZQF2027','ZQG2027','ZQH2027']:
-        m=re.search(sym+r'.{0,2500}?([0-9]{2}\\.[0-9]{3,5})',html,re.S)
-        if m: out[sym]=float(m.group(1))
-    if len(out)<4: raise ValueError('TradingView ZQ contract table not parseable')
-    return out,url
+def barchart_zq_prices():
+    """Free delayed ZQ quotes from Barchart's public Websol quote pages."""
+    symbols=['ZQV26','ZQX26','ZQZ26','ZQF27','ZQG27','ZQH27']
+    out={}; stamps={}
+    for sym in symbols:
+        url='https://barchart.websol.barchart.com/?1_selected=futureQuote&lang=en&module=futureDetail&region=US&symbol='+sym
+        req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0','Accept':'text/html,*/*'})
+        with urllib.request.urlopen(req,timeout=20) as r: html=r.read().decode('utf-8',errors='replace')
+        m=re.search(r'Last\\s*</[^>]+>\\s*<[^>]+>\\s*([0-9]{2}\\.[0-9]{3,5})',html,re.I|re.S)
+        if not m:
+            # Fallback for alternate Websol rendering: first price after the "Last" label.
+            m=re.search(r'Last.{0,600}?([0-9]{2}\\.[0-9]{3,5})',html,re.I|re.S)
+        if not m: raise ValueError('Barchart ZQ quote not parseable for '+sym)
+        out[sym]=float(m.group(1))
+        tm=re.search(r'as of\\s+([^<\\n]+)',html,re.I)
+        if tm: stamps[sym]=re.sub(r'\\s+',' ',tm.group(1)).strip()
+    return out,stamps,'https://barchart.websol.barchart.com/'
+
 
 def latest_effr():
     """Latest official effective fed funds rate from the Federal Reserve H.15 page."""
@@ -189,12 +195,12 @@ def latest_effr():
 def fed_meeting_probabilities(now):
     """Approximate CME-style conditional hike/hold/cut probabilities from ZQ futures."""
     import calendar
-    prices,price_url=tradingview_zq_prices()
+    prices,price_stamps,price_url=barchart_zq_prices()
     effr,effr_url=latest_effr()
     meetings=[
-      (datetime.date(2026,10,28),'Oct 28','ZQV2026',effr),
-      (datetime.date(2026,12,9),'Dec 9','ZQZ2026',100-prices['ZQX2026']),
-      (datetime.date(2027,1,27),'Jan 27','ZQF2027',None),
+      (datetime.date(2026,10,28),'Oct 28','ZQV26',effr),
+      (datetime.date(2026,12,9),'Dec 9','ZQZ26',100-prices['ZQX26']),
+      (datetime.date(2027,1,27),'Jan 27','ZQF27',None),
     ]
     results=[]; prior_end=None
     for dt,label,sym,start in meetings:
@@ -217,7 +223,7 @@ def fed_meeting_probabilities(now):
         results.append({'date':dt.isoformat(),'label':label,'contract':sym,'price':prices[sym],
                         'startEFFR':start,'impliedEndEFFR':end,'changeBp':change_bp,'probabilities':probs})
         prior_end=end
-    return results,{'priceSource':price_url,'effrSource':effr_url,'effr':effr,'prices':prices}
+    return results,{'priceSource':price_url,'priceTimestamps':price_stamps,'effrSource':effr_url,'effr':effr,'prices':prices}
 
 def treasury_10y_real(year):
     url='https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_real_yield_curve&field_tdr_date_value='+str(year)
@@ -524,7 +530,7 @@ def main():
             detail='; '.join(f"{x['label']} ZQ {x['price']:.4f}, implied move {x['changeBp']:+.0f} bp" for x in fp[:3])
             setrow(rows,'Fed expectations',latest_txt,direction,sig,
                    f"Market-implied · checked {now.strftime('%Y-%m-%d %H:%M ET')}",
-                   '30-Day Fed Funds futures (TradingView delayed public contract table); Federal Reserve H.15 EFFR; CME FedWatch methodology',
+                   '30-Day Fed Funds futures (Barchart delayed public quotes); Federal Reserve H.15 EFFR; CME FedWatch methodology',
                    f"{latest_txt}. Conditional probabilities are estimated from monthly 30-Day Fed Funds futures using CME FedWatch methodology and the latest official EFFR. {detail}.")
             d['diagnostics']['fedExpectationsModel']['meetings']=fp
     except Exception as e:
