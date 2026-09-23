@@ -61,7 +61,7 @@ async function loadAnalysis(d){try{
     const env=(d.groups||[]).find(g=>g.name==='NASDAQ SETUP');
     const sig=env?.signal==='positive'?'Positive':env?.signal==='negative'?'Negative':'Mixed';
     const score=d.environmentScore!==undefined?(d.environmentScore>0?'+':'')+d.environmentScore+' / 100':'—';
-    const watch=d.threeDayWatch||{};const watchTitle=watch.status==='bearish'?'⚠️ Material bearish change':watch.status==='bullish'?'Material bullish improvement':'';const triggers=(watch.triggers||[]).slice(0,5).map(x=>'<li><b>'+x.title+'</b> — '+x.detail+'</li>').join('');
+    const watch=d.threeDayWatch||{};const watchTitle=watch.status==='bearish'?'⚠️ Material bearish change':watch.status==='bullish'?'Material bullish improvement':'';
     // Near-term scheduled catalysts that can materially affect Nasdaq. Keep this concise
     // and only show events close enough to matter to the current setup.
     const eventCandidates=[
@@ -74,7 +74,7 @@ async function loadAnalysis(d){try{
     const dayMs=86400000, todayUTC=Date.parse(nyDate+'T00:00:00Z');
     const closeEvents=eventCandidates.filter(e=>{const dd=(Date.parse(e.date+'T00:00:00Z')-todayUTC)/dayMs;return dd>=0&&dd<=14}).slice(0,4);
     const eventsHtml=closeEvents.map(e=>'<li><b>'+e.date+' · '+e.title+'</b> — '+e.detail+'</li>').join('');
-    premarketBody.innerHTML='<div class="bias"><b>Nasdaq Setup:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+' &nbsp; · &nbsp; <b>Trend:</b> '+(d.environmentTrend||'—')+'</div>'+(watchTitle?'<h3 class="'+(watch.status==='bearish'?'red':'green')+'">'+watchTitle+'</h3>':'')+'<p>'+String(env?.explanation||'Current Nasdaq setup explanation is not available.').replace(/\n\n/g,'</p><p>')+'</p>'+(eventsHtml?'<h3>Important upcoming catalysts</h3><ul>'+eventsHtml+'</ul>':'')+(triggers?'<h3>3-Day Watch — active triggers</h3><ul>'+triggers+'</ul>':'');
+    premarketBody.innerHTML='<div class="bias"><b>Nasdaq Setup:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+' &nbsp; · &nbsp; <b>Trend:</b> '+(d.environmentTrend||'—')+'</div>'+(watchTitle?'<h3 class="'+(watch.status==='bearish'?'red':'green')+'">'+watchTitle+'</h3>':'')+'<p>'+String(env?.explanation||'Current Nasdaq setup explanation is not available.').replace(/\n\n/g,'</p><p>')+'</p>'+(eventsHtml?'<h3>Important upcoming catalysts</h3><ul>'+eventsHtml+'</ul>':'');
     return;
   }
   analysisTitle.textContent='Pre-Market Analysis';
