@@ -255,7 +255,11 @@ def main():
 
         # Treasury yields
         for sym,name in [('US10Y','10Y Treasury Yield'),('US2Y','2Y Treasury yield')]:
-            x=q[sym]; v=num(x.get('last')); p=num(x.get('previous_day_closing')); bp=(v-p)*100 if v is not None and p is not None else None
+            x=q.get(sym); v=num(x.get('last')) if x else None; p=num(x.get('previous_day_closing')) if x else None; bp=(v-p)*100 if v is not None and p is not None else None
+            if v is None:
+                rr=next((z for z in rows if z['factor']==name),None)
+                if rr: rr['freshness']='STALE — Treasury quote unavailable'
+                continue
             level_sig='negative' if v>=4.5 else ('mixed' if v>=4.0 else 'positive')
             change_sig='negative' if bp is not None and bp>1 else ('positive' if bp is not None and bp<-1 else 'mixed')
             # Dashboard Signal should describe the current market impulse. Keep the absolute
@@ -386,8 +390,9 @@ def main():
 
     except Exception as e:
         print('CNBC refresh failed:',repr(e))
-        for name in ('10Y Treasury Yield','2Y Treasury yield','Semiconductor leadership','Nasdaq volatility (VXN / VIX)','U.S. Dollar (DXY)','Oil (WTI / Brent)'):
-            next(x for x in rows if x['factor']==name)['freshness']='STALE — CNBC refresh failed'
+        for name in ('10Y Treasury Yield','2Y Treasury yield','Semiconductor leadership','Nasdaq volatility (VXN / VIX)','Oil (WTI / Brent)'):
+            rr=next((x for x in rows if x['factor']==name),None)
+            if rr: rr['freshness']='STALE — CNBC refresh failed'
 
     # Official Cboe options-volume put/call ratios. This is sentiment/positioning, not dealer gamma exposure.
     try:
