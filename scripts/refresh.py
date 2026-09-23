@@ -33,6 +33,54 @@ def cnbc_quotes(symbols):
     if isinstance(qs,dict): qs=[qs]
     return {q.get('symbol'):q for q in qs if q.get('symbol') and q.get('code')==0}
 
+def massive_daily_bars(ticker, days=120):
+    """Fetch adjusted daily OHLC bars from Massive for historical context.
+
+    The API key is read only from MASSIVE_API_KEY in the Actions environment. Missing
+    credentials, plan restrictions, rate limits, or network failures return an empty
+    list so Massive enriches NasBoard without becoming a hard dependency.
+    """
+    key=os.environ.get('MASSIVE_API_KEY','').strip()
+    if not key: return []
+    end=datetime.datetime.now(NY).date()
+    start=end-datetime.timedelta(days=days)
+    url=(f'https://api.massive.com/v2/aggs/ticker/{urllib.parse.quote(ticker)}/range/1/day/'
+         f'{start.isoformat()}/{end.isoformat()}?adjusted=true&sort=asc&limit=5000')
+    req=urllib.request.Request(url,headers={'Authorization':f'Bearer {key}','User-Agent':'NasBoard/1.0'})
+    try:
+        with urllib.request.urlopen(req,timeout=15) as resp: payload=json.load(resp)
+        return payload.get('results',[]) if payload.get('status') in ('OK','DELAYED') else []
+    except Exception as e:
+        print(f'Massive history unavailable for {ticker}:',repr(e))
+        return []
+
+
+def historical_context(bars):
+    """Summarize objective historical context from daily closes.
+
+    Returns streak, multi-session return, moving-average distance, and the date of the
+    highest close in the fetched window. Calculations require observed bars and return
+    None when history is insufficient rather than fabricating context.
+    """
+    closes=[float(b['c']) for b in bars if b.get('c') is not None]
+    if not closes: return None
+    streak=0
+    for i in range(len(closes)-1,0,-1):
+        if closes[i]>closes[i-1]:
+            if streak<0: break
+            streak+=1
+        elif closes[i]<closes[i-1]:
+            if streak>0: break
+            streak-=1
+        else: break
+    ret5=(closes[-1]/closes[-6]-1)*100 if len(closes)>=6 else None
+    ma20=sum(closes[-20:])/20 if len(closes)>=20 else None
+    ma20dist=(closes[-1]/ma20-1)*100 if ma20 else None
+    max_i=max(range(len(closes)),key=lambda i:closes[i])
+    max_date=datetime.datetime.fromtimestamp(bars[max_i]['t']/1000,datetime.timezone.utc).date().isoformat() if bars[max_i].get('t') else None
+    return {'streak':streak,'return5d':ret5,'ma20Distance':ma20dist,'windowHighDate':max_date,'windowHighClose':closes[max_i],'bars':len(closes)}
+
+
 def num(v):
     if v is None:return None
     try:return float(str(v).replace(',','').replace('%','').replace('$','').strip())
@@ -802,6 +850,15 @@ def main():
     d['environmentTrend']='Improving ↑' if score>d.get('environmentScorePrevious',score) else ('Deteriorating ↓' if score<d.get('environmentScorePrevious',score) else 'Stable →')
     d['environmentScorePrevious']=score
 
+    # Massive supplies historical context while CNBC remains the current/session feed.
+    # Start with QQQ and the semiconductor ETF SOXX because both are available as U.S.
+    # securities on the free stock-history endpoint and directly support Nasdaq Setup.
+    massive_context={}
+    for ticker in ('QQQ','SOXX'):
+        ctx=historical_context(massive_daily_bars(ticker,120))
+        if ctx: massive_context[ticker]=ctx
+    d['historicalContext']=massive_context
+
     explain_current_rows(rows)
 
     # Factor-specific scorecards expose the underlying observation without inventing a score.
@@ -882,7 +939,14 @@ def main():
         parts=[]
         y2=latest('2Y Treasury yield'); y10=latest('10Y Treasury Yield'); fed=latest('Fed expectations')
         semi=latest('Semiconductor leadership'); oil=latest('Oil (WTI / Brent)')
+        soxx=d.get('historicalContext',{}).get('SOXX',{})
+        qctx=d.get('historicalContext',{}).get('QQQ',{})
         parts.append(f"Rates are a central part of the current setup: the 2Y is {y2}, while the 10Y is {y10}. Fed expectations are {fed}. Semiconductor confirmation is {semi}; oil is {oil}.")
+        if soxx.get('streak'):
+            st=soxx['streak']; direction='risen' if st>0 else 'fallen'
+            parts.append(f"Semiconductor momentum has {direction} for {abs(st)} consecutive session{'s' if abs(st)!=1 else ''} using SOXX as the historical semiconductor proxy." )
+        if qctx.get('return5d') is not None and qctx.get('ma20Distance') is not None:
+            parts.append(f"QQQ is {qctx['return5d']:+.2f}% over five sessions and {qctx['ma20Distance']:+.2f}% versus its 20-day average, adding objective historical context to the live setup.")
         sup=', '.join(supportive[:4]) if supportive else 'no high-impact factor is providing strong positive confirmation'
         neg=', '.join(headwinds[:4]) if headwinds else 'no high-impact factor is providing a strong negative confirmation'
         parts.append(f"The Nasdaq Setup is {label} ({score:+d}/100, {trend.lower()}). The strongest supportive side is {sup}; the main counterweight is {neg}.")
