@@ -1,6 +1,6 @@
 # NasBoard
 
-NasBoard is a Nasdaq market-regime dashboard. It combines market observations into 15 underlying factors, two derived model outputs, and a daily narrative pre-market brief.
+NasBoard is a Nasdaq market-regime dashboard. It combines market observations into core directional factors, selective Earnings AVWAP leadership, two derived model outputs, and a daily narrative pre-market brief.
 
 ## Architecture
 
@@ -53,7 +53,7 @@ This separation is intentional: the quantitative factor engine is deterministic 
 
 **Nasdaq Setup** is the weighted directional output of the underlying factors. It is a model output, not a 16th factor, so it is not counted again in the model.
 
-**Consolidation Risk** measures short-term extension/pullback risk using inputs such as QQQ/SOX stretch, breadth, volatility, multi-day returns, moving-average extension, and RSI when enough history exists. It measures consolidation risk rather than market direction.
+**Consolidation Risk** measures short-term upside extension/pullback risk rather than market direction. Version 2 uses Massive history for QQQ and SOXX 1D/3D/5D returns, distance from 20DMA and 50DMA, and QQQ RSI14; it then adds Nasdaq daily breadth, S5FI level/trend when available, VXN behavior, and selective Earnings AVWAP extension. Missing inputs reduce model coverage rather than being guessed.
 
 VXN is the primary volatility gauge because it is Nasdaq-specific; VIX is displayed and used as broad-market confirmation.
 
@@ -64,6 +64,7 @@ The nominal 10Y Treasury yield is the live directional rates factor. The 10Y rea
 - `scripts/refresh.py` — main quantitative data/model engine.
 - `index.html` — dashboard presentation layer. It should render model output, not recreate model decisions in JavaScript.
 - `data/dashboard.json` — generated working snapshot.
+- `data/earnings_avwap_watchlist.json` — selective earnings anchors for the AVWAP leadership basket.
 - `public/data/dashboard.json` — public snapshot deployed to the dashboard.
 - `public/data/premarket.json` — daily narrative pre-market analysis.
 - `data/history/` — stored observations/model states used for later historical analysis.
@@ -88,6 +89,14 @@ The workflow deliberately regenerates data after a concurrent push instead of re
 Massive is an optional historical-data layer. The refresh engine reads `MASSIVE_API_KEY` from the GitHub Actions secret environment; the key is never written to JSON, source code, or Cloudflare assets. CNBC remains the current/session quote source while Massive daily bars add objective historical context such as consecutive sessions, five-day returns, and moving-average distance. Missing credentials, entitlement limits, rate limits, or API failures fail closed and do not stop the main dashboard refresh.
 
 The first integration uses QQQ plus SOXX as a liquid U.S.-listed semiconductor-history proxy. This historical proxy supplements—not replaces—the live Semiconductor Leadership factor, which continues to use the existing semiconductor basket versus QQQ.
+
+## Earnings Anchored VWAP
+
+NasBoard calculates Earnings AVWAP internally for a selective semiconductor/AI leadership basket. The initial basket is NVDA, AMD, AVGO, MU, QCOM, and TSM. Earnings dates are verified separately and stored in `data/earnings_avwap_watchlist.json`; Massive supplies adjusted daily VWAP and volume.
+
+For after-close earnings, the anchor begins with the next regular trading session. For before-open earnings, it begins on the release date. Cumulative AVWAP is calculated as the sum of each daily bar's VWAP × volume divided by cumulative volume. The dashboard stores each ticker's AVWAP, current-price distance, five-session AVWAP slope, anchor date, and coverage through date.
+
+The Nasdaq Setup receives one composite **Earnings AVWAP leadership** factor rather than six correlated stock factors. The signal is based on how much of the basket trades above its earnings anchor. Consolidation Risk separately uses the basket's median positive distance from Earnings AVWAP as an extension/crowding input, so being above AVWAP can be directionally supportive while simultaneously increasing pullback risk when the distance becomes large.
 
 ## Data policy
 
