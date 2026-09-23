@@ -146,13 +146,7 @@ def build_earnings_avwap_factor(quotes):
         current=num(quotes.get(ticker,{}).get('last'))
         if calc and current is not None:
             dist=(current/calc['avwap']-1)*100
-            # Persist a normalized per-stock AVWAP score (0-100) alongside the raw
-            # AVWAP metrics so history/other models can reuse it without recalculation.
-            # 50 = at AVWAP; each 1 percentage point above/below moves the score by 4,
-            # capped at 0/100. Raw distance remains stored for alternative future models.
-            avwap_score=round(min(100,max(0,50 + dist*4)),1)
             calc.update({'ticker':ticker,'price':current,'distancePct':dist,
-                         'avwapScore':avwap_score,
                          'above':dist>=0,'earningsDate':item['earningsDate'],
                          'source':item.get('source','company investor relations')})
             details[ticker]=calc
@@ -1291,10 +1285,20 @@ def main():
     model_perf={'nasdaqCompositeClose':ixic.get('last'),
                 'nasdaqCompositeObservationDate':ixic.get('observationDate'),
                 'environmentScore':d.get('environmentScore')}
+    # Store each ticker's raw earnings-AVWAP observation in history. The price is the
+    # same current/session-aware CNBC quote used by the AVWAP factor at refresh time.
+    # Keeping AVWAP, price and distance together makes historical reconstruction/test use simple.
+    avwap_history={ticker:{
+        'earningsDate':x.get('earningsDate'),'anchorDate':x.get('anchorDate'),
+        'throughDate':x.get('throughDate'),'avwap':x.get('avwap'),
+        'price':x.get('price'),'distancePct':x.get('distancePct'),
+        'above':x.get('above'),'slope5dPct':x.get('slope5dPct'),
+        'sessions':x.get('sessions')
+    } for ticker,x in avwap_details.items()}
     snapshot={'schemaVersion':1,'timestampET':now.isoformat(),'market':market,'breadth':breadth_obs,
               'yieldCurve2s10s':curve_obs,'modelPerformance':model_perf,
               'environmentScore':d.get('environmentScore'),'environmentTrend':d.get('environmentTrend'),
-              'factors':factor_state}
+              'earningsAvwap':avwap_history,'factors':factor_state}
     try:
         with open(DAILY_PATH,encoding='utf-8') as hf: daily=json.load(hf)
     except (FileNotFoundError,json.JSONDecodeError):
