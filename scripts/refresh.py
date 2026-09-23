@@ -10,7 +10,8 @@ Data flow:
 Design rule: missing or stale inputs fail closed. NasBoard should label unavailable data
 rather than infer a live value from an old observation.
 """
-\nimport json, urllib.request, urllib.parse, datetime, os, re, xml.etree.ElementTree as ET
+
+import json, urllib.request, urllib.parse, datetime, os, re, xml.etree.ElementTree as ET
 from zoneinfo import ZoneInfo
 
 ROOT=os.path.dirname(os.path.dirname(__file__))
