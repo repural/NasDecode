@@ -1,4 +1,15 @@
-import json, urllib.request, urllib.parse, datetime, os, re, xml.etree.ElementTree as ET
+"""NasBoard market-data refresh engine.
+
+Data flow:
+1. Fetch/normalize free market and official-source observations.
+2. Update the 15 underlying Nasdaq factors.
+3. Derive each factor's Signal, Trend, Current Impact, explanation, and scorecard.
+4. Compute the Nasdaq Environment and Consolidation Risk model outputs.
+5. Persist daily/intraday history and publish data/dashboard.json.
+
+Design rule: missing or stale inputs fail closed. NasBoard should label unavailable data
+rather than infer a live value from an old observation.
+"""\n\nimport json, urllib.request, urllib.parse, datetime, os, re, xml.etree.ElementTree as ET
 from zoneinfo import ZoneInfo
 
 ROOT=os.path.dirname(os.path.dirname(__file__))
