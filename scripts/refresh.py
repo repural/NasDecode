@@ -809,7 +809,7 @@ def main():
     avwap_row,avwap_details=build_earnings_avwap_factor(q)
     rows=[r for r in rows if r.get('factor')!='Earnings AVWAP leadership']
     if avwap_row: rows.append(avwap_row)
-    d['earningsAvwap']=avwap_details
+    # Individual AVWAP observations belong in history snapshots, not public dashboard.json.
 
     # Current impact = magnitude of the factor's present Nasdaq effect, not its structural importance.
     # It is intentionally based on current observations/freshness and can change each refresh.
