@@ -800,9 +800,12 @@ def main():
             if m:
                 ch=float(m.group(2)); card={'value':m.group(1)+'%','arrow':'↓' if ch<0 else ('↑' if ch>0 else '→'),'change':f'{ch:+.1f} bp'}
         elif n=='Nasdaq volatility (VXN / VIX)':
-            m=re.search(r'VXN ([0-9.]+) [(]([+-]?[0-9.]+)%[)]',latest)
-            if m:
-                ch=float(m.group(2)); card={'value':'VXN '+m.group(1),'arrow':'↓' if ch<0 else ('↑' if ch>0 else '→'),'change':f'{ch:+.2f}%'}
+            vx=re.search(r'VXN ([0-9.]+) [(]([+-]?[0-9.]+)%[)]',latest)
+            vi=re.search(r'VIX ([0-9.]+) [(]([+-]?[0-9.]+)%[)]',latest)
+            if vx:
+                ch=float(vx.group(2)); card={'value':'VXN '+vx.group(1),'arrow':'↓' if ch<0 else ('↑' if ch>0 else '→'),'change':f'{ch:+.2f}%'}
+                if vi:
+                    vch=float(vi.group(2)); card['secondaryValue']='VIX '+vi.group(1); card['secondaryArrow']='↓' if vch<0 else ('↑' if vch>0 else '→'); card['secondaryChange']=f'{vch:+.2f}%'
         elif n=='S&P 500 50D Breadth / Oversold':
             m=re.search(r'([0-9.]+)% above 50D MA(?: · ([+-]?[0-9.]+) pp)?',latest)
             if m:
