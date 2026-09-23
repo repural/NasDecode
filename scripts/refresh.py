@@ -347,7 +347,12 @@ def main():
             # Dashboard Signal should describe the current market impulse. Keep the absolute
             # yield level separately because a high level can remain a valuation headwind
             # even while a falling yield is supportive for today's Nasdaq session.
-            sig=change_sig if change_sig!='mixed' else level_sig
+            # Keep structural level and short-term momentum separate. The row's overall
+            # signal blends both; cards expose each dimension independently.
+            if level_sig==change_sig: sig=level_sig
+            elif change_sig=='mixed': sig=level_sig
+            elif level_sig=='mixed': sig=change_sig
+            else: sig='mixed'
             setrow(rows,name,f'{v:.3f}%'+(f' ({bp:+.1f} bp vs prev close)' if bp is not None else ''),'Rising' if bp and bp>0 else ('Falling' if bp and bp<0 else 'Flat'),sig,fresh(x),'CNBC / Tradeweb quote feed')
             rr=next(z for z in rows if z['factor']==name)
             rr['levelSignal']=level_sig
