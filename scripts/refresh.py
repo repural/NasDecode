@@ -1165,10 +1165,14 @@ def main():
         def row(name): return by.get(name,{})
         def latest(name): return str(row(name).get('latest',''))
         def signal(name): return row(name).get('signal','mixed')
-        def first_pct(name):
-            m=re.search(r'([0-9.]+)%',latest(name))
-            return float(m.group(1)) if m else None
-        y2=first_pct('2Y Treasury yield'); y10=first_pct('10Y Treasury Yield')
+        def yield_value(name):
+            # Treasury rows can contain malformed display text if an upstream quote is
+            # unexpectedly scaled. Prefer the validated CNBC quote object for analysis.
+            sym='US10Y' if name=='10Y Treasury Yield' else 'US2Y'
+            x=q.get(sym,{}) if isinstance(q,dict) else {}
+            v=num(x.get('last')) if isinstance(x,dict) else None
+            return v if v is not None and 0 < v < 20 else None
+        y2=yield_value('2Y Treasury yield'); y10=yield_value('10Y Treasury Yield')
         soxx=d.get('historicalContext',{}).get('SOXX',{})
         qctx=d.get('historicalContext',{}).get('QQQ',{})
         label='strong positive' if score>=45 else ('cautiously positive' if score>=15 else ('mixed/neutral' if score>-15 else ('cautiously negative' if score>-45 else 'strong negative')))
@@ -1203,15 +1207,24 @@ def main():
         if signal('Nasdaq volatility (VXN / VIX)')=='negative': negatives.append('rising volatility')
         pos=', '.join(positives[:3]) or 'limited positive confirmation'
         neg=', '.join(negatives[:3]) or 'no major high-impact bearish confirmation'
-        assessment=f"The Nasdaq Setup is {label} ({score:+d}/100, {trend.lower()}). The tension is between {pos} on the supportive side and {neg} on the headwind side."
+        confidence=d.get('environmentConfidence')
+        conf=f", {confidence}% confidence" if confidence is not None else ""
+        assessment=f"The Nasdaq Setup is {label} ({score:+d}/100{conf}, {trend.lower()}). The current balance is {pos} on the supportive side versus {neg} as the main headwind."
 
-        # Paragraph 3: state the most relevant conditional trigger.
-        if y10 is not None and 4.85 <= y10 <= 5.15:
-            two=f" while the 2Y remains near {y2:.2f}%" if y2 is not None else ''
-            trigger=f"The important trigger is US10Y at 5.00%. A sustained break above roughly 5.00–5.05%{two} would materially weaken the setup, especially if semiconductor leadership also deteriorates. A retreat in the 10Y with continued semiconductor strength would reinforce the positive setup."
+        # Paragraph 3: integrate active 3-Day Watch conditions into prose instead of
+        # dumping raw trigger rows in the UI.
+        active=[]
+        if y10 is not None and y10>5.05: active.append(f"the 10Y yield is above the 5.05% headwind threshold at {y10:.3f}%")
+        if signal('Semiconductor leadership')=='negative': active.append("semiconductor leadership is lagging QQQ")
+        if signal('Market breadth')=='negative': active.append("Nasdaq breadth is weak")
+        if signal('Nasdaq volatility (VXN / VIX)')=='negative': active.append("volatility is rising")
+        if active:
+            trigger="Near-term risk is concentrated in "+", ".join(active[:3])+". Improvement in these conditions would strengthen the setup; further deterioration would reduce conviction."
+        elif y10 is not None and 4.85 <= y10 <= 5.15:
+            trigger="The key confirmation remains the interaction between Treasury yields and semiconductor leadership. A sustained 10Y break above roughly 5.00–5.05% alongside weakening chips would materially weaken the setup; easing yields with stronger semiconductor participation would improve it."
         else:
-            trigger="The key confirmation is the interaction between yields and semiconductor leadership: rising yields together with weakening chips would materially weaken the setup, while easing yields with continued semiconductor strength would reinforce it."
-        return '\n\n'.join([' '.join(evidence),assessment,trigger])
+            trigger="The key confirmation remains the interaction between yields, semiconductor leadership and breadth. Agreement across those areas would strengthen conviction; divergence would keep the setup less reliable."
+        return '\n\n'.join([x for x in [' '.join(evidence),assessment,trigger] if x])
 
     impact_order={'Very High':0,'High':1,'Medium':2,'Low':3}
     visible_rows=[r for r in rows if r.get('factor') not in background_factors]
