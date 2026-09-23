@@ -11,6 +11,9 @@ on:
       - 'public/index.html'
   workflow_dispatch:
   schedule:
+    # Daily pre-market snapshot at 06:00 Türkiye time.
+    - cron: '0 6 * * 1-5'
+      timezone: 'Europe/Istanbul'
     # Use New York time directly so DST does not require UTC candidate schedules.
     # Run a few minutes after the cash open so equity quote feeds have populated.
     - cron: '35 9 * * 1-5'
