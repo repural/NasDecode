@@ -933,36 +933,61 @@ def main():
     # This is deliberately deterministic: it explains current evidence and conditional
     # triggers without inventing historical claims that are not yet backed by stored data.
     def build_setup_explanation(rows, score, trend):
+        """Turn model state into a concise market interpretation instead of a data dump.
+
+        The narrative uses only observations already verified by NasBoard. It prioritizes
+        rates, semiconductor confirmation, historical momentum, and actionable triggers;
+        unavailable/stale factors are omitted rather than rendered as awkward prose.
+        """
         by={r['factor']:r for r in rows}
         def row(name): return by.get(name,{})
-        def latest(name): return str(row(name).get('latest','unavailable'))
-        def sig(name): return row(name).get('signal','mixed')
-        supportive=[r['factor'] for r in rows if r.get('signal')=='positive' and r.get('currentImpact') in ('Very High','High')]
-        headwinds=[r['factor'] for r in rows if r.get('signal')=='negative' and r.get('currentImpact') in ('Very High','High')]
-        label='strong positive' if score>=45 else ('cautiously positive' if score>=15 else ('mixed/neutral' if score>-15 else ('cautiously negative' if score>-45 else 'strong negative')))
-        parts=[]
-        y2=latest('2Y Treasury yield'); y10=latest('10Y Treasury Yield'); fed=latest('Fed expectations')
-        semi=latest('Semiconductor leadership'); oil=latest('Oil (WTI / Brent)')
+        def latest(name): return str(row(name).get('latest',''))
+        def signal(name): return row(name).get('signal','mixed')
+        def first_pct(name):
+            m=re.search(r'([0-9.]+)%',latest(name))
+            return float(m.group(1)) if m else None
+        y2=first_pct('2Y Treasury yield'); y10=first_pct('10Y Treasury Yield')
         soxx=d.get('historicalContext',{}).get('SOXX',{})
         qctx=d.get('historicalContext',{}).get('QQQ',{})
-        parts.append(f"Rates are a central part of the current setup: the 2Y is {y2}, while the 10Y is {y10}. Fed expectations are {fed}. Semiconductor confirmation is {semi}; oil is {oil}.")
-        if soxx.get('streak'):
-            st=soxx['streak']; direction='risen' if st>0 else 'fallen'
-            parts.append(f"Semiconductor momentum has {direction} for {abs(st)} consecutive session{'s' if abs(st)!=1 else ''} using SOXX as the historical semiconductor proxy." )
+        label='strong positive' if score>=45 else ('cautiously positive' if score>=15 else ('mixed/neutral' if score>-15 else ('cautiously negative' if score>-45 else 'strong negative')))
+
+        # Paragraph 1: explain the dominant cross-market evidence in natural language.
+        evidence=[]
+        if y2 is not None and y10 is not None:
+            evidence.append(f"Treasury yields remain the main pressure point, with the 2Y at {y2:.3f}% and the 10Y at {y10:.3f}%.")
+        st=soxx.get('streak')
+        if st:
+            direction='risen' if st>0 else 'fallen'
+            evidence.append(f"Semiconductor momentum remains an important equity confirmation: SOXX has {direction} for {abs(st)} consecutive session{'s' if abs(st)!=1 else ''}.")
         if qctx.get('return5d') is not None and qctx.get('ma20Distance') is not None:
-            parts.append(f"QQQ is {qctx['return5d']:+.2f}% over five sessions and {qctx['ma20Distance']:+.2f}% versus its 20-day average, adding objective historical context to the live setup.")
-        sup=', '.join(supportive[:4]) if supportive else 'no high-impact factor is providing strong positive confirmation'
-        neg=', '.join(headwinds[:4]) if headwinds else 'no high-impact factor is providing a strong negative confirmation'
-        parts.append(f"The Nasdaq Setup is {label} ({score:+d}/100, {trend.lower()}). The strongest supportive side is {sup}; the main counterweight is {neg}.")
-        m10=re.search(r'([0-9.]+)%',y10); m2=re.search(r'([0-9.]+)%',y2)
-        if m10:
-            ten=float(m10.group(1)); trigger=5.00
-            if 4.85 <= ten <= 5.15:
-                two=f" while the 2Y remains near {float(m2.group(1)):.2f}%" if m2 else ''
-                parts.append(f"The important rates trigger is US10Y around {trigger:.2f}%. A sustained break above roughly 5.00–5.05%{two} would materially weaken the Nasdaq setup; a retreat in the 10Y while semiconductor leadership remains supportive would strengthen it.")
-            else:
-                parts.append("The key confirmation to watch is whether Treasury yields and semiconductor leadership move together or diverge: rising yields with weakening chips would materially weaken the setup, while easing yields with continued semiconductor leadership would strengthen it.")
-        return ' '.join(parts)
+            evidence.append(f"QQQ is {qctx['return5d']:+.2f}% over five sessions and {qctx['ma20Distance']:+.2f}% versus its 20-day average.")
+        oil=latest('Oil (WTI / Brent)')
+        om=re.search(r'Brent \$([0-9.]+) \(([+-]?[0-9.]+)%\)',oil)
+        if om:
+            move=float(om.group(2))
+            evidence.append(f"Brent is {move:+.2f}% at about ${float(om.group(1)):.2f}, {'providing some inflation relief' if move<0 else 'adding some inflation pressure'}.")
+
+        # Paragraph 2: synthesize the tension rather than listing internal factor names.
+        positives=[]
+        negatives=[]
+        if st and st>0: positives.append('persistent semiconductor momentum')
+        if signal('Market breadth')=='positive': positives.append('healthy market breadth')
+        if signal('Options positioning / sentiment')=='positive': positives.append('supportive options positioning')
+        if om and float(om.group(2))<0: positives.append('falling oil')
+        if signal('2Y Treasury yield')=='negative' or signal('10Y Treasury Yield')=='negative': negatives.append('elevated/rising Treasury yields')
+        if signal('Semiconductor leadership')=='negative': negatives.append('weaker intraday semiconductor leadership')
+        if signal('Nasdaq volatility (VXN / VIX)')=='negative': negatives.append('rising volatility')
+        pos=', '.join(positives[:3]) or 'limited positive confirmation'
+        neg=', '.join(negatives[:3]) or 'no major high-impact bearish confirmation'
+        assessment=f"The Nasdaq Setup is {label} ({score:+d}/100, {trend.lower()}). The tension is between {pos} on the supportive side and {neg} on the headwind side."
+
+        # Paragraph 3: state the most relevant conditional trigger.
+        if y10 is not None and 4.85 <= y10 <= 5.15:
+            two=f" while the 2Y remains near {y2:.2f}%" if y2 is not None else ''
+            trigger=f"The important trigger is US10Y at 5.00%. A sustained break above roughly 5.00–5.05%{two} would materially weaken the setup, especially if semiconductor leadership also deteriorates. A retreat in the 10Y with continued semiconductor strength would reinforce the positive setup."
+        else:
+            trigger="The key confirmation is the interaction between yields and semiconductor leadership: rising yields together with weakening chips would materially weaken the setup, while easing yields with continued semiconductor strength would reinforce it."
+        return '\n\n'.join([' '.join(evidence),assessment,trigger])
 
     setup_explanation=build_setup_explanation(rows,score,d['environmentTrend'])
     for g in d.get('groups',[]):
