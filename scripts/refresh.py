@@ -146,7 +146,13 @@ def build_earnings_avwap_factor(quotes):
         current=num(quotes.get(ticker,{}).get('last'))
         if calc and current is not None:
             dist=(current/calc['avwap']-1)*100
+            # Persist a normalized per-stock AVWAP score (0-100) alongside the raw
+            # AVWAP metrics so history/other models can reuse it without recalculation.
+            # 50 = at AVWAP; each 1 percentage point above/below moves the score by 4,
+            # capped at 0/100. Raw distance remains stored for alternative future models.
+            avwap_score=round(min(100,max(0,50 + dist*4)),1)
             calc.update({'ticker':ticker,'price':current,'distancePct':dist,
+                         'avwapScore':avwap_score,
                          'above':dist>=0,'earningsDate':item['earningsDate'],
                          'source':item.get('source','company investor relations')})
             details[ticker]=calc
