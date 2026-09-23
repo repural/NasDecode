@@ -9,7 +9,7 @@ NY=ZoneInfo('America/New_York')
 CNBC_BASE='https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol'
 MEGACAPS=['AAPL','MSFT','AMZN','GOOGL','META','NVDA','TSLA']
 BREADTH=['NVDA','AAPL','MU','MSFT','AMD','AMZN','TSLA','GOOGL','INTC','GOOG','AVGO','META','AMAT','WMT','LRCX','CSCO','COST','KLAC','SNDK','NFLX','PANW','TXN','PLTR','MRVL','LIN','WDC','STX','AMGN','QCOM','CRWD','ADI','PEP','ASML','TMUS','APP','GILD','ARM','ISRG','SHOP','BKNG','VRTX','SBUX','FTNT','CDNS','MAR','MNST','CEG','ADP','CSX','CMCSA','DDOG','MELI','SNPS','ADBE','ALAB','ORLY','DASH','TER','AEP','MDLZ','INTU','NXPI','HON','HONA','ROST','CTAS','MPWR','WBD','LITE','REGN','RBLX','NBIS','ABNB','RKLB','FAST','BKR','PDD','XEL','FANG','MCHP','FER','EXC','TTWO','AXON','ODFL','CCEP','CRWV','KDP','IDXX','ADSK','ALNY','PYPL','PAYX','ROP','TRI','GEHC','MSTR','KHC','CPRT','DXCM','WDAY','SPCX']
-SYMBOLS=list(dict.fromkeys(['US10Y','US2Y','ZQU6','ZQV6','ZQX6','ZQZ6','ZQF7','ZQG7','ZQH7','QQQ','NVDA','AMD','AVGO','TSM','.VIX','.VXN','@CL.1','@LCO.1','HYG','LQD','S5FI','.SOX','SOX']+MEGACAPS+BREADTH))
+SYMBOLS=list(dict.fromkeys(['US10Y','US2Y','ZQU6','ZQV6','ZQX6','ZQZ6','ZQF7','ZQG7','ZQH7','.IXIC','QQQ','NVDA','AMD','AVGO','TSM','.VIX','.VXN','@CL.1','@LCO.1','HYG','LQD','S5FI','.SOX','SOX']+MEGACAPS+BREADTH))
 
 def cnbc_quotes(symbols):
     params={'symbols':'|'.join(symbols),'requestMethod':'itv','noform':'1','partnerId':'2','fund':'1','exthrs':'1','output':'json','events':'1'}
@@ -1005,7 +1005,7 @@ def main():
                 'changePct':num(x.get('change_pct')) if x.get('change_pct') not in (None,'') else pct(x),
                 'timestamp':stamp,'observationDate':obs_date,'dataState':state}
     os.makedirs(HISTORY_DIR,exist_ok=True)
-    market_symbols=['QQQ','.SOX','NVDA','AMD','AVGO','TSM','MU','AAPL','MSFT','AMZN','GOOGL','META','TSLA',
+    market_symbols=['.IXIC','QQQ','.SOX','NVDA','AMD','AVGO','TSM','MU','AAPL','MSFT','AMZN','GOOGL','META','TSLA',
                     '.VXN','.VIX','US10Y','US2Y','@CL.1','@LCO.1','HYG','LQD']
     market={sym:quote_obs(sym) for sym in market_symbols if sym in q}
     current_session=[sym for sym in BREADTH if sym in q and is_intraday(q[sym],now)]
@@ -1017,8 +1017,15 @@ def main():
     curve_obs={'spreadBp':round(curve_2s10s,1) if curve_2s10s is not None else None,
                'changeBp':round(curve_change,1) if curve_change is not None else None,
                'shape':curve_regime} if curve_2s10s is not None else None
+    # Daily model-vs-market observation for later validation. Nasdaq Composite (.IXIC)
+    # is stored alongside the Environment Score so we can test same-day and, more
+    # importantly, forward 1D/3D/5D/10D relationships without look-ahead bias.
+    ixic=market.get('.IXIC',{})
+    model_perf={'nasdaqCompositeClose':ixic.get('last'),
+                'nasdaqCompositeObservationDate':ixic.get('observationDate'),
+                'environmentScore':d.get('environmentScore')}
     snapshot={'schemaVersion':1,'timestampET':now.isoformat(),'market':market,'breadth':breadth_obs,
-              'yieldCurve2s10s':curve_obs,
+              'yieldCurve2s10s':curve_obs,'modelPerformance':model_perf,
               'environmentScore':d.get('environmentScore'),'environmentTrend':d.get('environmentTrend'),
               'factors':factor_state}
     try:
