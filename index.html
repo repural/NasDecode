@@ -38,7 +38,7 @@ async function loadAnalysis(d){try{
     const env=(d.groups||[]).find(g=>g.name==='NASDAQ SETUP');
     const sig=env?.signal==='positive'?'Positive':env?.signal==='negative'?'Negative':'Mixed';
     const score=d.environmentScore!==undefined?(d.environmentScore>0?'+':'')+d.environmentScore+' / 100':'—';
-    premarketBody.innerHTML='<div class="bias"><b>Nasdaq Setup:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+' &nbsp; · &nbsp; <b>Trend:</b> '+(d.environmentTrend||'—')+'</div><p>'+String(env?.explanation||'Current Nasdaq setup explanation is not available.').replace(/\n\n/g,'</p><p>')+'</p>';
+    premarketBody.innerHTML='<div class="bias"><b>Nasdaq Setup:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+' &nbsp; · &nbsp; <b>Trend:</b> '+(d.environmentTrend||'—')+'</div><p><b>How the score is generated:</b> NasBoard runs a proprietary AI-driven market model that evaluates multiple market factors together—including rates, semiconductor and mega-cap leadership, breadth, volatility, positioning, momentum and other current conditions—to generate the Nasdaq Setup score and interpret the prevailing market environment.</p><p>'+String(env?.explanation||'Current Nasdaq setup explanation is not available.').replace(/\n\n/g,'</p><p>')+'</p>';
     return;
   }
   analysisTitle.textContent='Pre-Market Analysis';
