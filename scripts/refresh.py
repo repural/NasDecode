@@ -345,42 +345,55 @@ def cme_fedwatch_aggregated():
 
 
 def barchart_s5fi():
-    """Scrape Barchart's public $S5FI page.
+    """Fetch $S5FI from the same JSON endpoint used by Barchart's web UI.
 
-    Barchart states that index quotes are 15-minute delayed during market hours. This is
-    still timely enough for NasBoard's slow-moving 50-day breadth factor. Return both the
-    current value and previous value when the public page exposes them.
+    Establish a browser session first to obtain XSRF cookies, then query core-api.
+    Barchart index quotes are delayed during market hours; that latency is acceptable
+    for this slow-moving 50-day breadth factor.
     """
-    url='https://www.barchart.com/stocks/quotes/%24S5FI/comparison'
-    req=urllib.request.Request(url,headers={
-        'User-Agent':'Mozilla/5.0',
-        'Accept':'text/html,application/xhtml+xml,*/*',
-        'Referer':'https://www.barchart.com/'
-    })
-    with urllib.request.urlopen(req,timeout=20) as r:
-        html=r.read().decode('utf-8',errors='replace')
-    def field(label):
-        patterns=[
-            rf'{label}\s*</[^>]+>\s*<[^>]+>\s*([0-9]+(?:\.[0-9]+)?)',
-            rf'{label}.{{0,500}}?([0-9]+(?:\.[0-9]+)?)'
-        ]
-        for pat in patterns:
-            m=re.search(pat,html,re.I|re.S)
-            if m: return float(m.group(1))
-        return None
-    last=field('Last'); previous=field('Previous')
-    if last is None:
-        # The overview page can expose a server-rendered "Last Price" even when the
-        # comparison table layout changes.
-        url='https://www.barchart.com/stocks/quotes/%24S5FI/overview'
-        req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0','Accept':'text/html,*/*'})
-        with urllib.request.urlopen(req,timeout=20) as r:
-            html=r.read().decode('utf-8',errors='replace')
-        m=re.search(r'Last Price.{0,300}?([0-9]+(?:\.[0-9]+)?)',html,re.I|re.S)
-        if m: last=float(m.group(1))
-    if last is None: raise ValueError('Barchart S5FI quote not parseable')
-    return {'last':last,'previous':previous,'url':url,'delay':'15-minute delayed index quote'}
-
+    import http.cookiejar
+    page='https://www.barchart.com/stocks/quotes/%24S5FI/overview'
+    jar=http.cookiejar.CookieJar()
+    opener=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
+    base_headers={
+        'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140.0 Safari/537.36',
+        'Accept-Language':'en-US,en;q=0.9'
+    }
+    req=urllib.request.Request(page,headers={**base_headers,'Accept':'text/html,application/xhtml+xml,*/*'})
+    with opener.open(req,timeout=20) as r:
+        r.read()
+    xsrf=None
+    for cookie in jar:
+        if cookie.name=='XSRF-TOKEN':
+            xsrf=urllib.parse.unquote(cookie.value)
+            break
+    if not xsrf:
+        raise ValueError('Barchart XSRF token unavailable')
+    params={
+        'symbol':'$S5FI',
+        'fields':'symbol,symbolName,lastPrice,previousPrice,priceChange,percentChange,tradeTime',
+        'meta':'field.shortName,field.type,field.description',
+        'raw':'1'
+    }
+    api='https://www.barchart.com/proxies/core-api/v1/quotes/get?'+urllib.parse.urlencode(params)
+    headers={**base_headers,'Accept':'application/json','Referer':page,'X-XSRF-TOKEN':xsrf}
+    req=urllib.request.Request(api,headers=headers)
+    with opener.open(req,timeout=20) as r:
+        payload=json.load(r)
+    data=payload.get('data') or []
+    if not data:
+        raise ValueError('Barchart core-api returned no S5FI data')
+    row=data[0]; raw=row.get('raw') or {}
+    def nfield(name):
+        v=raw.get(name)
+        if v is None: v=row.get(name)
+        if isinstance(v,str): v=v.replace(',','').replace('%','').strip()
+        return num(v)
+    last=nfield('lastPrice'); previous=nfield('previousPrice')
+    if last is None or not (0 <= last <= 100):
+        raise ValueError('Barchart core-api returned invalid S5FI value')
+    return {'last':last,'previous':previous,'tradeTime':row.get('tradeTime'),
+            'url':api,'delay':'Barchart delayed index quote'}
 
 def barchart_zq_prices():
     """Free delayed ZQ quotes from Barchart's public Websol quote pages."""
