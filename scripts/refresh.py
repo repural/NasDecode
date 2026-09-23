@@ -97,7 +97,8 @@ def explain_current_rows(rows):
                 od=by[other].get('changeSignal','mixed')
                 confirm=(' The other key Treasury maturity is also falling, confirming near-term easing in rate pressure.' if od==r.get('changeSignal')=='positive' else (' The other key Treasury maturity is also rising, confirming broader near-term rate pressure.' if od==r.get('changeSignal')=='negative' else ' The two Treasury maturities are not giving a fully aligned change signal.'))
             real=f" The latest 10Y real yield is {r.get('realYield'):.2f}% ({r.get('realYieldDate','latest Treasury close')}), so the real discount-rate backdrop remains {'a headwind' if r.get('realYield')>=2.0 else 'less restrictive'}." if n=='10Y Treasury Yield' and r.get('realYield') is not None else ''
-            r['explanation']=f'{x}. Level: {level}. Latest change: {move}.{confirm}{real}'
+            curve=(f" Curve context: {r.get('curveContext')}." if r.get('curveContext') else '')
+            r['explanation']=f'{x}. Level: {level}. Latest change: {move}.{confirm}{curve}{real}'
         elif n=='Semiconductor leadership':
             breadth=f" Market breadth is {direction('Market breadth')} ({latest('Market breadth')})." if live('Market breadth') else ''
             mega=f" Mega-cap leadership is {direction('Mega-cap leadership')}." if live('Mega-cap leadership') else ''
@@ -357,6 +358,36 @@ def main():
             rr=next(z for z in rows if z['factor']==name)
             rr['levelSignal']=level_sig
             rr['changeSignal']=change_sig
+
+        # Derived 2s10s curve context: 10Y minus 2Y. Store level and daily change,
+        # but keep it as background context rather than a separate dashboard factor.
+        y10=q.get('US10Y',{}); y2=q.get('US2Y',{})
+        y10v=num(y10.get('last')); y2v=num(y2.get('last'))
+        y10p=num(y10.get('previous_day_closing')); y2p=num(y2.get('previous_day_closing'))
+        curve_2s10s=None; curve_change=None; curve_regime=None
+        if y10v is not None and y2v is not None:
+            curve_2s10s=(y10v-y2v)*100
+            if y10p is not None and y2p is not None:
+                curve_change=curve_2s10s-(y10p-y2p)*100
+            curve_regime='inverted' if curve_2s10s < -5 else ('flat' if curve_2s10s <= 5 else 'upward-sloping')
+            # Classify the mechanism using each maturity's daily bp move.
+            d10=(y10v-y10p)*100 if y10p is not None else None
+            d2=(y2v-y2p)*100 if y2p is not None else None
+            mechanism='stable'
+            if d10 is not None and d2 is not None and abs(d10-d2)>=0.5:
+                if curve_change > 0:
+                    mechanism='bull steepener' if d2 < d10 and d2 < 0 else 'bear steepener'
+                elif curve_change < 0:
+                    mechanism='bear flattener' if d2 > d10 and d2 > 0 else 'bull flattener'
+            curve_text=f"2s10s {curve_2s10s:+.1f} bp ({curve_regime})"
+            if curve_change is not None:
+                curve_text+=f", {mechanism}, {curve_change:+.1f} bp vs prev close"
+            for nm in ('10Y Treasury Yield','2Y Treasury yield'):
+                rr=next((z for z in rows if z['factor']==nm),None)
+                if rr:
+                    rr['curve2s10s']={'spreadBp':round(curve_2s10s,1),'changeBp':round(curve_change,1) if curve_change is not None else None,
+                                      'shape':curve_regime,'mechanism':mechanism}
+                    rr['curveContext']=curve_text
 
         # Add the daily 10Y real yield as context inside the single 10Y Treasury factor.
         try:
@@ -983,7 +1014,11 @@ def main():
                  'positivePct':round(100*pos/len(current_session),2) if current_session else None}
     factor_state={r['factor']:{'signal':r.get('signal'),'currentImpact':r.get('currentImpact'),
                               'trend':r.get('trend'),'latest':r.get('latest')} for r in rows}
+    curve_obs={'spreadBp':round(curve_2s10s,1) if curve_2s10s is not None else None,
+               'changeBp':round(curve_change,1) if curve_change is not None else None,
+               'shape':curve_regime} if curve_2s10s is not None else None
     snapshot={'schemaVersion':1,'timestampET':now.isoformat(),'market':market,'breadth':breadth_obs,
+              'yieldCurve2s10s':curve_obs,
               'environmentScore':d.get('environmentScore'),'environmentTrend':d.get('environmentTrend'),
               'factors':factor_state}
     try:
