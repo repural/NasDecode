@@ -1460,8 +1460,15 @@ def main():
                     obs_date=today
                 except ValueError:
                     pass
+        # CNBC exposes both timestamps and an explicit realTime flag. A same-day
+        # timestamp alone is not proof of real-time service, so retain both dimensions.
+        rt=str(x.get('realTime','')).strip().lower()
+        real_time=True if rt=='true' else (False if rt=='false' else None)
+        market_status=x.get('curmktstatus')
+        source=x.get('source')
+        provider=x.get('provider')
         if obs_date==today:
-            state='live'
+            state='live' if real_time is True else ('delayed_or_unspecified' if real_time is False else 'current_unknown_latency')
         elif obs_date:
             age=(datetime.date.fromisoformat(today)-datetime.date.fromisoformat(obs_date)).days
             state='previous_close' if 0 < age <= 3 else ('live' if age==0 else 'stale')
@@ -1469,11 +1476,18 @@ def main():
             state='unknown'
         return {'last':num(x.get('last')),'previousClose':num(x.get('previous_day_closing')),
                 'changePct':num(x.get('change_pct')) if x.get('change_pct') not in (None,'') else pct(x),
-                'timestamp':stamp,'observationDate':obs_date,'dataState':state}
+                'timestamp':stamp,'observationDate':obs_date,'dataState':state,
+                'realTime':real_time,'marketStatus':market_status,'quoteSource':source,'provider':provider}
     os.makedirs(HISTORY_DIR,exist_ok=True)
     market_symbols=['.IXIC','QQQ','.SOX','NVDA','AMD','AVGO','TSM','MU','AAPL','MSFT','AMZN','GOOGL','META','TSLA',
                     '.VXN','.VIX','US10Y','US2Y','@CL.1','@LCO.1','HYG','LQD']
     market={sym:quote_obs(sym) for sym in market_symbols if sym in q}
+    # Persist a compact source/freshness audit so we can verify CNBC instrument-by-instrument
+    # instead of treating every CNBC response as equally live.
+    d.setdefault('diagnostics',{})['cnbcFreshness']={
+        sym:{k:v for k,v in obs.items() if k in ('timestamp','observationDate','dataState','realTime','marketStatus','quoteSource','provider')}
+        for sym,obs in market.items()
+    }
     current_session=[sym for sym in BREADTH if sym in q and is_intraday(q[sym],now)]
     pos=sum(1 for sym in current_session if (pct(q[sym]) or 0)>0)
     breadth_obs={'valid':len(current_session),'advancers':pos,'decliners':len(current_session)-pos,
