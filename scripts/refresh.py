@@ -811,7 +811,7 @@ def main():
 
     # Public presentation metadata is generated here so the browser remains a dumb renderer.
     group_explanations={
-        'NASDAQ ENVIRONMENT':'Weighted composite of all 14 Nasdaq factors. Positive values indicate more supportive conditions; negative values indicate more headwinds. The trend shows the current directional impulse.',
+        'NASDAQ ENVIRONMENT':'Combines the visible market indicators with background fundamental and financial-condition factors including earnings revisions, AI capex/monetization and credit conditions. Positive values indicate more supportive conditions; negative values indicate more headwinds. The trend shows the current directional impulse.',
         'Rates / Macro':'Combines Fed policy, Treasury yields and economic/inflation data. Falling yields or easier policy expectations are generally more supportive for growth stocks.',
         'Semiconductors':'Tracks semiconductor leadership relative to QQQ. Strong chip participation often confirms Nasdaq technology momentum.',
         'Breadth':'Measures how broadly Nasdaq-100 constituents participate. Broad participation generally makes index moves more robust.',
