@@ -727,6 +727,12 @@ def main():
         else:
             r['trend']='Stable →'
 
+    # Keep slow/background model inputs in history and the Environment model, but do not
+    # expose them as standalone dashboard rows/cards. Research-based inputs receive a
+    # deliberately small model weight until their underlying data is automated.
+    background_factors={'Earnings revisions','AI capex / monetization','Credit conditions'}
+    research_background={'Earnings revisions','AI capex / monetization'}
+
     # Composite Nasdaq Environment Score: direction x current impact x freshness.
     # Low/stale observations still contribute slightly but cannot dominate live high-impact signals.
     impact_w={'Very High':4,'High':3,'Medium':2,'Low':1}
@@ -738,6 +744,8 @@ def main():
     numerator=0.0; denominator=0.0
     for r in rows:
         w=impact_w.get(r.get('currentImpact','Low'),1)*freshness_w(r)
+        if r.get('factor') in research_background:
+            w=min(w,0.35)
         numerator += sig_score.get(r.get('signal','mixed'),0)*w
         denominator += w
     score=round(100*numerator/denominator) if denominator else 0
@@ -808,8 +816,9 @@ def main():
     for g in d.get('groups',[]):
         g['explanation']=group_explanations.get(g.get('name'),'Summary of the latest signals in this category.')
     impact_order={'Very High':0,'High':1,'Medium':2,'Low':3}
-    rows.sort(key=lambda r:impact_order.get(r.get('currentImpact','Low'),3))
-    for i,r in enumerate(rows,1):
+    visible_rows=[r for r in rows if r.get('factor') not in background_factors]
+    visible_rows.sort(key=lambda r:impact_order.get(r.get('currentImpact','Low'),3))
+    for i,r in enumerate(visible_rows,1):
         r['displayRank']=i
         r['signalLabel']={'positive':'🟢 Positive','negative':'🔴 Negative','mixed':'🟡 Mixed'}.get(r.get('signal'),'🟡 Mixed')
 
@@ -989,6 +998,9 @@ def main():
     intraday.setdefault('snapshots',[]).append(snapshot)
     with open(month_path,'w',encoding='utf-8') as hf: json.dump(intraday,hf,ensure_ascii=False,indent=2)
 
+    # Only tactical/actionable factors are published to the dashboard. Background factors
+    # remain in factor_state/history above and continue contributing to Environment Score.
+    d['rows']=visible_rows
     d['updatedET']=now.strftime('%b %d, %Y · %H:%M ET'); d['nextUpdateET']='09:30 / 10:30 ET on trading weekdays'
     with open(PATH,'w',encoding='utf-8') as f:json.dump(d,f,ensure_ascii=False,indent=2)
 
