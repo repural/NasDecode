@@ -143,6 +143,21 @@ def explain_current_rows(rows):
         else:
             r['explanation']=f'Current reading: {x}. Direction: {d}. NasBoard currently classifies this factor as {t}. This row will become more specific as its underlying live/research source is automated.'
 
+def cme_fedwatch_aggregated():
+    # Best-effort public FedWatch page scrape. CME renders the probability tool in an iframe,
+    # so this intentionally fails closed if the aggregated table is not present in returned HTML.
+    url='https://www.cmegroup.com/markets/interest-rates/cme-fedwatch-tool.html'
+    req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0','Accept':'text/html,*/*'})
+    with urllib.request.urlopen(req,timeout=25) as r: html=r.read().decode('utf-8',errors='replace')
+    # Preserve diagnostics for discovering CME's current embedded/public data path without
+    # inventing probabilities. We only publish values once a real aggregate table is parsed.
+    meetings=re.findall(r'(?:Meeting Date|FOMC)[^<]{0,80}?(\\d{1,2}/\\d{1,2}/\\d{4})',html,re.I)
+    rates=re.findall(r'(\\d+\\.\\d+%?)\\s*[-–]\\s*(\\d+\\.\\d+%?)',html)
+    probs=re.findall(r'(\\d{1,3}\\.\\d{1,2})%',html)
+    return {'url':url,'htmlBytes':len(html),'meetingCandidates':meetings[:10],
+            'rateRangeCandidates':rates[:20],'probabilityCandidates':probs[:40],
+            'hasAggregated':bool(re.search(r'Aggregated',html,re.I))}
+
 def treasury_10y_real(year):
     url='https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_real_yield_curve&field_tdr_date_value='+str(year)
     req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0','Accept':'application/xml,text/xml,*/*'})
@@ -196,7 +211,17 @@ def main():
     previous={r.get('factor'):{'signal':r.get('signal','mixed'),'currentImpact':r.get('currentImpact','Low'),'latest':r.get('latest','')} for r in rows}
     try:
         q=cnbc_quotes(SYMBOLS)
-        # Fed Funds futures probe for the free FedWatch-methodology path.
+        # Probe the public CME FedWatch page first. We publish no probability unless the
+        # actual aggregated table is retrievable; stale prior values are safer than fabrication.
+        try:
+            fw=cme_fedwatch_aggregated()
+            d.setdefault('diagnostics',{})['cmeFedWatchPublic']=fw
+            print('CME FedWatch public probe:',json.dumps(fw))
+        except Exception as e:
+            d.setdefault('diagnostics',{})['cmeFedWatchPublic']={'error':repr(e)}
+            print('CME FedWatch public probe failed:',repr(e))
+
+        # Fed Funds futures probe retained only as a fallback diagnostic.
         zq_probe={}
         for zsym in ['ZQU6','ZQV6','ZQX6','ZQZ6','ZQF7','ZQG7','ZQH7']:
             if zsym in q:
