@@ -51,9 +51,9 @@ This separation is intentional: the quantitative factor engine is deterministic 
 
 **Current Impact** estimates how much the factor matters *right now* based on the latest move, magnitude, event proximity, and freshness. It is separate from Signal.
 
-**Nasdaq Setup** is the weighted directional output of the underlying factors. It is a model output, not a 16th factor, so it is not counted again in the model.
+**Nasdaq Setup** starts with the weighted directional output of the underlying factors and then applies a bounded extension adjustment when Consolidation Risk becomes elevated. Low consolidation risk does not reduce the Setup; higher extension progressively tempers an otherwise supportive directional backdrop without allowing extension alone to dominate the model.
 
-**Consolidation Risk** measures short-term upside extension/pullback risk rather than market direction. Version 2 uses Massive history for QQQ and SOXX 1D/3D/5D returns, distance from 20DMA and 50DMA, and QQQ RSI14; it then adds Nasdaq daily breadth, S5FI level/trend when available, VXN behavior, and selective Earnings AVWAP extension. Missing inputs reduce model coverage rather than being guessed.
+**Consolidation Risk** measures short-term market extension and the risk of a pause, pullback, or consolidation using a proprietary blend of price, trend, participation, volatility, and leadership conditions. Missing inputs reduce model coverage rather than being guessed. Detailed component weights and thresholds are implementation details and are intentionally not documented publicly.
 
 VXN is the primary volatility gauge because it is Nasdaq-specific; VIX is displayed and used as broad-market confirmation.
 
@@ -96,7 +96,7 @@ NasBoard calculates Earnings AVWAP internally for a selective semiconductor/AI l
 
 For after-close earnings, the anchor begins with the next regular trading session. For before-open earnings, it begins on the release date. Cumulative AVWAP is calculated as the sum of each daily bar's VWAP × volume divided by cumulative volume. The dashboard stores each ticker's AVWAP, current-price distance, five-session AVWAP slope, anchor date, and coverage through date.
 
-The Nasdaq Setup receives one composite **Earnings AVWAP leadership** factor rather than six correlated stock factors. The signal is based on how much of the basket trades above its earnings anchor. Consolidation Risk separately uses the basket's median positive distance from Earnings AVWAP as an extension/crowding input, so being above AVWAP can be directionally supportive while simultaneously increasing pullback risk when the distance becomes large.
+The Nasdaq Setup receives one composite **Earnings AVWAP leadership** factor rather than six correlated stock factors. Its effect is nonlinear: healthy positioning above earnings anchors supports the Setup, while excessive extension progressively loses that benefit and can become a headwind. Consolidation Risk also uses the basket as an extension/crowding input.
 
 ## Data policy
 
