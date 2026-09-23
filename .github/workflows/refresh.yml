@@ -29,6 +29,9 @@ jobs:
         run: echo "run=yes" >> "$GITHUB_OUTPUT"
       - name: Refresh data
         if: steps.gate.outputs.run == 'yes'
+        env:
+          # Massive is optional enrichment: the secret never enters the repository or public assets.
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
         run: python scripts/refresh.py
       - name: Commit refreshed snapshot
         if: steps.gate.outputs.run == 'yes'
