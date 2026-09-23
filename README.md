@@ -51,9 +51,9 @@ This separation is intentional: the quantitative factor engine is deterministic 
 
 **Current Impact** estimates how much the factor matters *right now* based on the latest move, magnitude, event proximity, and freshness. It is separate from Signal.
 
-**Nasdaq Setup** starts with the weighted directional output of the underlying factors and then applies a bounded extension adjustment when Consolidation Risk becomes elevated. Low consolidation risk does not reduce the Setup; higher extension progressively tempers an otherwise supportive directional backdrop without allowing extension alone to dominate the model.
+**Nasdaq Setup** summarizes the current directional market backdrop using NasBoard's proprietary model. It incorporates both supporting/headwind conditions and the current degree of market extension.
 
-**Consolidation Risk** measures short-term market extension and the risk of a pause, pullback, or consolidation using a proprietary blend of price, trend, participation, volatility, and leadership conditions. Missing inputs reduce model coverage rather than being guessed. Detailed component weights and thresholds are implementation details and are intentionally not documented publicly.
+**Consolidation Risk** estimates the near-term risk of a pause, pullback, or consolidation using NasBoard's proprietary market model. Missing inputs reduce data coverage rather than being guessed.
 
 VXN is the primary volatility gauge because it is Nasdaq-specific; VIX is displayed and used as broad-market confirmation.
 
@@ -92,11 +92,7 @@ The first integration uses QQQ plus SOXX as a liquid U.S.-listed semiconductor-h
 
 ## Earnings Anchored VWAP
 
-NasBoard calculates Earnings AVWAP internally for a selective semiconductor/AI leadership basket. The initial basket is NVDA, AMD, AVGO, MU, QCOM, and TSM. Earnings dates are verified separately and stored in `data/earnings_avwap_watchlist.json`; Massive supplies adjusted daily VWAP and volume.
-
-For after-close earnings, the anchor begins with the next regular trading session. For before-open earnings, it begins on the release date. Cumulative AVWAP is calculated as the sum of each daily bar's VWAP × volume divided by cumulative volume. The dashboard stores each ticker's AVWAP, current-price distance, five-session AVWAP slope, anchor date, and coverage through date.
-
-The Nasdaq Setup receives one composite **Earnings AVWAP leadership** factor rather than six correlated stock factors. Its effect is nonlinear: healthy positioning above earnings anchors supports the Setup, while excessive extension progressively loses that benefit and can become a headwind. Consolidation Risk also uses the basket as an extension/crowding input.
+NasBoard maintains a selective Earnings AVWAP leadership signal for important technology and semiconductor shares. It evaluates how leadership is behaving around recent earnings reference levels and incorporates that information into both directional and extension analysis. Detailed construction, weighting, thresholds, and basket methodology are intentionally kept private.
 
 ## Data policy
 
