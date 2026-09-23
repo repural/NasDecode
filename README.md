@@ -78,6 +78,13 @@ Cloudflare is connected to the private GitHub repository and deploys only `./pub
 
 The workflow deliberately regenerates data after a concurrent push instead of rebasing generated JSON/history files. Generated market snapshots are poor merge candidates and previously caused rebase conflicts.
 
+
+## Massive historical enrichment
+
+Massive is an optional historical-data layer. The refresh engine reads `MASSIVE_API_KEY` from the GitHub Actions secret environment; the key is never written to JSON, source code, or Cloudflare assets. CNBC remains the current/session quote source while Massive daily bars add objective historical context such as consecutive sessions, five-day returns, and moving-average distance. Missing credentials, entitlement limits, rate limits, or API failures fail closed and do not stop the main dashboard refresh.
+
+The first integration uses QQQ plus SOXX as a liquid U.S.-listed semiconductor-history proxy. This historical proxy supplements—not replaces—the live Semiconductor Leadership factor, which continues to use the existing semiconductor basket versus QQQ.
+
 ## Data policy
 
 NasBoard prefers official/free sources and explicitly records freshness. Missing, delayed, or unavailable inputs should remain marked stale/limited rather than being invented or silently substituted with old observations.
