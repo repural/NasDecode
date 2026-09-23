@@ -159,8 +159,21 @@ def build_earnings_avwap_factor(quotes):
         return row,details
     above=sum(x['above'] for x in vals); ratio=above/len(vals)
     median_dist=statistics.median(x['distancePct'] for x in vals)
-    signal='positive' if ratio>=2/3 else ('negative' if ratio<=1/3 else 'mixed')
-    direction='Broad support above earnings anchors' if signal=='positive' else ('Broad weakness below earnings anchors' if signal=='negative' else 'Mixed around earnings anchors')
+    # Earnings AVWAP has a nonlinear directional effect. Moderate positive distance
+    # confirms leadership; extreme positive distance loses directional benefit because
+    # the same strength has become an extension risk. Exact thresholds remain private
+    # model implementation details rather than being exposed in public descriptions.
+    if median_dist < 0:
+        signal='negative' if ratio<=1/2 else 'mixed'
+    elif median_dist <= 8:
+        signal='positive' if ratio>=2/3 else 'mixed'
+    elif median_dist <= 12:
+        signal='mixed'
+    else:
+        signal='negative'
+    direction=('Healthy support above earnings anchors' if signal=='positive' else
+               ('Overextended above earnings anchors' if median_dist>8 else
+                ('Weakness below earnings anchors' if signal=='negative' else 'Mixed around earnings anchors')))
     names=', '.join(f"{x['ticker']} {x['distancePct']:+.1f}%" for x in vals)
     row={'factor':'Earnings AVWAP leadership',
          'latest':f"{above}/{len(vals)} above Earnings AVWAP · median {median_dist:+.1f}%",
@@ -955,10 +968,10 @@ def main():
             w=min(w,0.35)
         numerator += sig_score.get(r.get('signal','mixed'),0)*w
         denominator += w
-    score=round(100*numerator/denominator) if denominator else 0
-    d['environmentScore']=score
-    d['environmentTrend']='Improving ↑' if score>d.get('environmentScorePrevious',score) else ('Deteriorating ↓' if score<d.get('environmentScorePrevious',score) else 'Stable →')
-    d['environmentScorePrevious']=score
+    # This is the raw directional score. Consolidation Risk is calculated below and
+    # applies a bounded extension penalty before the final Nasdaq Setup is published.
+    raw_setup_score=round(100*numerator/denominator) if denominator else 0
+    score=raw_setup_score
 
     # Massive supplies historical context while CNBC remains the current/session feed.
     # Start with QQQ and the semiconductor ETF SOXX because both are available as U.S.
@@ -1101,10 +1114,6 @@ def main():
             trigger="The key confirmation is the interaction between yields and semiconductor leadership: rising yields together with weakening chips would materially weaken the setup, while easing yields with continued semiconductor strength would reinforce it."
         return '\n\n'.join([' '.join(evidence),assessment,trigger])
 
-    setup_explanation=build_setup_explanation(rows,score,d['environmentTrend'])
-    for g in d.get('groups',[]):
-        if g.get('name')=='NASDAQ SETUP': g['explanation']=setup_explanation
-
     impact_order={'Very High':0,'High':1,'Medium':2,'Low':3}
     visible_rows=[r for r in rows if r.get('factor') not in background_factors]
     visible_rows.sort(key=lambda r:impact_order.get(r.get('currentImpact','Low'),3))
@@ -1176,10 +1185,33 @@ def main():
 
     risk_score=round(weighted/total_w) if total_w else None
     d['consolidationRisk']={'score':risk_score,'level':risk_band(risk_score) if risk_score is not None else 'Unavailable',
-        'explanation':'Measures short-term upside extension and pullback/consolidation risk, not Nasdaq direction. The 100-point model combines QQQ and SOXX 1D/3D/5D returns, 20DMA/50DMA extension, QQQ RSI14, Nasdaq daily breadth, S5FI, VXN behavior and selective semiconductor/AI Earnings AVWAP extension.',
+        'explanation':'Measures short-term market extension and the risk of a pause, pullback, or consolidation using price, trend, participation, volatility, and leadership conditions.',
         'coverageWeight':round(100*total_w/MODEL_WEIGHT),'components':components,
         'historyDays':qctx.get('bars',0),'unlocked':[x['name'] for x in components],
-        'note':'Higher means more extended/crowded, not more bearish. Missing inputs reduce model coverage rather than being guessed.'}
+        'note':'Higher means more extended/crowded. Missing inputs reduce model coverage rather than being guessed.'}
+
+    # Feed extension risk back into Nasdaq Setup with a bounded nonlinear penalty.
+    # Low risk does not alter direction; progressively elevated risk trims an otherwise
+    # supportive setup without allowing extension alone to dominate all directional evidence.
+    extension_penalty=0
+    if risk_score is not None:
+        if risk_score>=85: extension_penalty=25
+        elif risk_score>=70: extension_penalty=15
+        elif risk_score>=50: extension_penalty=8
+        elif risk_score>=30: extension_penalty=3
+    score=max(-100,min(100,raw_setup_score-extension_penalty))
+    d['environmentScoreRaw']=raw_setup_score
+    d['consolidationPenalty']=extension_penalty
+    d['environmentScore']=score
+    previous_score=d.get('environmentScorePrevious',score)
+    d['environmentTrend']='Improving ↑' if score>previous_score else ('Deteriorating ↓' if score<previous_score else 'Stable →')
+    d['environmentScorePrevious']=score
+
+    setup_explanation=build_setup_explanation(rows,score,d['environmentTrend'])
+    if extension_penalty:
+        setup_explanation += f" Consolidation risk is applying a {extension_penalty}-point extension penalty to the directional setup."
+    for g in d.get('groups',[]):
+        if g.get('name')=='NASDAQ SETUP': g['explanation']=setup_explanation
 
     # Persist raw market observations so NasBoard builds its own historical dataset.
     # Daily records are upserted; intraday snapshots are append-only per monthly file.
