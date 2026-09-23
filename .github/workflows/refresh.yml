@@ -17,6 +17,9 @@ on:
       timezone: 'America/New_York'
     - cron: '35 10 * * 1-5'
       timezone: 'America/New_York'
+    # Continue checking material 3-Day Watch changes through the U.S. cash session.
+    - cron: '5 11-15 * * 1-5'
+      timezone: 'America/New_York'
 permissions:
   contents: write
 jobs:
