@@ -344,57 +344,6 @@ def cme_fedwatch_aggregated():
             'hasAggregated':bool(re.search(r'Aggregated',html,re.I))}
 
 
-def barchart_s5fi():
-    """Fetch $S5FI from the same JSON endpoint used by Barchart's web UI.
-
-    Establish a browser session first to obtain XSRF cookies, then query core-api.
-    Barchart index quotes are delayed during market hours; that latency is acceptable
-    for this slow-moving 50-day breadth factor.
-    """
-    import http.cookiejar
-    page='https://www.barchart.com/stocks/quotes/%24S5FI/overview'
-    jar=http.cookiejar.CookieJar()
-    opener=urllib.request.build_opener(urllib.request.HTTPCookieProcessor(jar))
-    base_headers={
-        'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140.0 Safari/537.36',
-        'Accept-Language':'en-US,en;q=0.9'
-    }
-    req=urllib.request.Request(page,headers={**base_headers,'Accept':'text/html,application/xhtml+xml,*/*'})
-    with opener.open(req,timeout=20) as r:
-        r.read()
-    xsrf=None
-    for cookie in jar:
-        if cookie.name=='XSRF-TOKEN':
-            xsrf=urllib.parse.unquote(cookie.value)
-            break
-    if not xsrf:
-        raise ValueError('Barchart XSRF token unavailable')
-    params={
-        'symbol':'$S5FI',
-        'fields':'symbol,symbolName,lastPrice,previousPrice,priceChange,percentChange,tradeTime',
-        'meta':'field.shortName,field.type,field.description',
-        'raw':'1'
-    }
-    api='https://www.barchart.com/proxies/core-api/v1/quotes/get?'+urllib.parse.urlencode(params)
-    headers={**base_headers,'Accept':'application/json','Referer':page,'X-XSRF-TOKEN':xsrf}
-    req=urllib.request.Request(api,headers=headers)
-    with opener.open(req,timeout=20) as r:
-        payload=json.load(r)
-    data=payload.get('data') or []
-    if not data:
-        raise ValueError('Barchart core-api returned no S5FI data')
-    row=data[0]; raw=row.get('raw') or {}
-    def nfield(name):
-        v=raw.get(name)
-        if v is None: v=row.get(name)
-        if isinstance(v,str): v=v.replace(',','').replace('%','').strip()
-        return num(v)
-    last=nfield('lastPrice'); previous=nfield('previousPrice')
-    if last is None or not (0 <= last <= 100):
-        raise ValueError('Barchart core-api returned invalid S5FI value')
-    return {'last':last,'previous':previous,'tradeTime':row.get('tradeTime'),
-            'url':api,'delay':'Barchart delayed index quote'}
-
 def barchart_zq_prices():
     """Free delayed ZQ quotes from Barchart's public Websol quote pages."""
     symbols=['ZQV26','ZQX26','ZQZ26','ZQF27','ZQG27','ZQH27']
@@ -709,21 +658,13 @@ def main():
         # S5FI: percentage of S&P 500 stocks above their 50-day MA.
         # CNBC does not currently return this symbol in our feed, so publish it only when
         # a real quote is available; otherwise keep the row explicitly stale.
-        # Barchart is primary for S5FI. Barchart documents index quotes as
-        # 15-minute delayed during market hours, which is adequate for this breadth factor.
-        # CNBC remains a fallback if Barchart's public page is unavailable.
-        sx=None; s5_source=None; s5_freshness=None
-        try:
-            bx=barchart_s5fi()
-            sx={'last':str(bx['last']),'previous_day_closing':str(bx['previous']) if bx['previous'] is not None else ''}
-            s5_source='Barchart $S5FI'
-            s5_freshness='Barchart index · 15-minute delayed'
-        except Exception as e:
-            print('Barchart S5FI unavailable:',repr(e))
-            sx=q.get('S5FI')
-            if sx:
-                s5_source='CNBC S5FI fallback'
-                s5_freshness=fresh(sx)
+        # S5FI source is intentionally unconnected until a reliable automated
+        # source is selected. Do not use Barchart: its public quote data is
+        # browser/session-gated in GitHub Actions. CNBC may still be used if its
+        # existing quote feed begins returning S5FI.
+        sx=q.get('S5FI')
+        s5_source='CNBC S5FI' if sx else None
+        s5_freshness=fresh(sx) if sx else None
         if sx and num(sx.get('last')) is not None:
             sv=num(sx.get('last')); sp=num(sx.get('previous_day_closing'))
             delta=(sv-sp) if sp is not None else None
