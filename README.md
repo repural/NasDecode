@@ -13,7 +13,7 @@ scripts/refresh.py
   - calculates 15 factor states
   - derives Signal / Trend / Current Impact
   - builds scorecards and explanations
-  - calculates Nasdaq Environment
+  - calculates Nasdaq Setup
   - calculates Consolidation Risk
           |
           +--> data/dashboard.json       (working/generated snapshot)
@@ -51,7 +51,7 @@ This separation is intentional: the quantitative factor engine is deterministic 
 
 **Current Impact** estimates how much the factor matters *right now* based on the latest move, magnitude, event proximity, and freshness. It is separate from Signal.
 
-**Nasdaq Environment** is the weighted directional output of the underlying factors. It is a model output, not a 16th factor, so it is not counted again in the model.
+**Nasdaq Setup** is the weighted directional output of the underlying factors. It is a model output, not a 16th factor, so it is not counted again in the model.
 
 **Consolidation Risk** measures short-term extension/pullback risk using inputs such as QQQ/SOX stretch, breadth, volatility, multi-day returns, moving-average extension, and RSI when enough history exists. It measures consolidation risk rather than market direction.
 
