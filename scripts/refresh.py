@@ -1220,6 +1220,57 @@ def main():
     setup_explanation=build_setup_explanation(rows,score,d['environmentTrend'])
     if extension_penalty:
         setup_explanation += " Elevated consolidation risk is tempering the directional setup."
+
+    # 3-Day Watch: material-change detector for the post-open Market Analysis.
+    # It mirrors the cross-market watch used for short-horizon Nasdaq monitoring:
+    # rates first, then Fed repricing, semiconductor confirmation, QQQ momentum,
+    # oil/inflation pressure, breadth and volatility. It only flags meaningful changes.
+    watch=[]
+    def watch_add(severity,title,detail):
+        watch.append({'severity':severity,'title':title,'detail':detail})
+    semi_sig=signal('Semiconductor leadership')
+    fed_sig=signal('Fed expectations')
+    breadth_sig=signal('Market breadth')
+    vol_sig=signal('Nasdaq volatility (VXN / VIX)')
+    oil_sig=signal('Oil (WTI / Brent)')
+    if y10 is not None:
+        if y10>5.05:
+            watch_add('bearish','10Y above 5.05%',f'US10Y is {y10:.3f}%, above the 3-Day Watch significant-headwind threshold.'+(f' US2Y is {y2:.3f}%.' if y2 is not None else ''))
+        elif y10>5.00:
+            watch_add('bearish','10Y above 5.00%',f'US10Y is {y10:.3f}%, in the restrictive 5.00–5.05% zone.')
+        elif y10<4.95:
+            watch_add('bullish','10Y below 4.95%',f'US10Y is {y10:.3f}%, inside the supportive 3-Day Watch zone.')
+    if fed_sig=='negative':
+        watch_add('bearish','Fed expectations repriced hawkishly',latest('Fed expectations'))
+    elif fed_sig=='positive':
+        watch_add('bullish','Fed expectations eased',latest('Fed expectations'))
+    if semi_sig=='negative':
+        watch_add('bearish','Semiconductor leadership weakened',latest('Semiconductor leadership'))
+    elif semi_sig=='positive':
+        watch_add('bullish','Semiconductors confirm Nasdaq leadership',latest('Semiconductor leadership'))
+    if breadth_sig=='negative':
+        watch_add('bearish','Market breadth deteriorated',latest('Market breadth'))
+    elif breadth_sig=='positive':
+        watch_add('bullish','Market breadth broadened',latest('Market breadth'))
+    if vol_sig=='negative':
+        watch_add('bearish','Nasdaq volatility is rising',latest('Nasdaq volatility (VXN / VIX)'))
+    if oil_sig=='negative':
+        watch_add('bearish','Oil is adding inflation pressure',latest('Oil (WTI / Brent)'))
+    elif oil_sig=='positive':
+        watch_add('bullish','Oil is easing inflation pressure',latest('Oil (WTI / Brent)'))
+    if qctx.get('return3d') is not None:
+        r3=qctx['return3d']
+        if r3<=-1.5: watch_add('bearish','QQQ 3-day momentum weakened',f'QQQ 3-day return is {r3:+.2f}%.')
+        elif r3>=1.5: watch_add('bullish','QQQ 3-day momentum strengthened',f'QQQ 3-day return is {r3:+.2f}%.')
+    bearish=sum(x['severity']=='bearish' for x in watch); bullish=sum(x['severity']=='bullish' for x in watch)
+    material='bearish' if bearish>=2 and bearish>bullish else ('bullish' if bullish>=2 and bullish>bearish else 'mixed')
+    d['threeDayWatch']={'status':material,'bearishTriggers':bearish,'bullishTriggers':bullish,'triggers':watch,
+        'monitors':['QQQ 3-day momentum','US10Y','US2Y','Fed expectations','Semiconductor leadership vs QQQ','Market breadth','VXN/VIX','WTI/Brent'],
+        'thresholds':{'US10YSupportive':'<4.95%','US10YManageable':'4.95–5.00%','US10YRestrictive':'5.00–5.05%','US10YSignificantHeadwind':'>5.05%','QQQ3dMaterialMove':'±1.5%'}}
+    if material=='bearish':
+        setup_explanation="⚠️ Material bearish change. "+setup_explanation
+    elif material=='bullish':
+        setup_explanation="Material bullish improvement. "+setup_explanation
     for g in d.get('groups',[]):
         if g.get('name')=='NASDAQ SETUP': g['explanation']=setup_explanation
 
