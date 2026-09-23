@@ -79,6 +79,10 @@ Cloudflare is connected to the private GitHub repository and deploys only `./pub
 The workflow deliberately regenerates data after a concurrent push instead of rebasing generated JSON/history files. Generated market snapshots are poor merge candidates and previously caused rebase conflicts.
 
 
+## Economic / inflation data semantics
+
+`Economic / inflation data` is a macro-surprise factor, not an event-calendar factor. It should move only when NasBoard has a verified release with both an actual value and a market-consensus value. The factor compares actual versus consensus and applies a release-specific direction mapping; upcoming releases and event proximity belong in the pre-market/event-risk layer and do not by themselves create a positive or negative signal. If a verified surprise is unavailable, the factor fails closed as mixed.
+
 ## Massive historical enrichment
 
 Massive is an optional historical-data layer. The refresh engine reads `MASSIVE_API_KEY` from the GitHub Actions secret environment; the key is never written to JSON, source code, or Cloudflare assets. CNBC remains the current/session quote source while Massive daily bars add objective historical context such as consecutive sessions, five-day returns, and moving-average distance. Missing credentials, entitlement limits, rate limits, or API failures fail closed and do not stop the main dashboard refresh.
