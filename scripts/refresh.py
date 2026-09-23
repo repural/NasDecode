@@ -24,7 +24,7 @@ NY=ZoneInfo('America/New_York')
 CNBC_BASE='https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol'
 MEGACAPS=['AAPL','MSFT','AMZN','GOOGL','META','NVDA','TSLA']
 BREADTH=['NVDA','AAPL','MU','MSFT','AMD','AMZN','TSLA','GOOGL','INTC','GOOG','AVGO','META','AMAT','WMT','LRCX','CSCO','COST','KLAC','SNDK','NFLX','PANW','TXN','PLTR','MRVL','LIN','WDC','STX','AMGN','QCOM','CRWD','ADI','PEP','ASML','TMUS','APP','GILD','ARM','ISRG','SHOP','BKNG','VRTX','SBUX','FTNT','CDNS','MAR','MNST','CEG','ADP','CSX','CMCSA','DDOG','MELI','SNPS','ADBE','ALAB','ORLY','DASH','TER','AEP','MDLZ','INTU','NXPI','HON','HONA','ROST','CTAS','MPWR','WBD','LITE','REGN','RBLX','NBIS','ABNB','RKLB','FAST','BKR','PDD','XEL','FANG','MCHP','FER','EXC','TTWO','AXON','ODFL','CCEP','CRWV','KDP','IDXX','ADSK','ALNY','PYPL','PAYX','ROP','TRI','GEHC','MSTR','KHC','CPRT','DXCM','WDAY','SPCX']
-SYMBOLS=list(dict.fromkeys(['US10Y','US2Y','ZQU6','ZQV6','ZQX6','ZQZ6','ZQF7','ZQG7','ZQH7','.IXIC','QQQ','NVDA','AMD','AVGO','TSM','.VIX','.VXN','@CL.1','@LCO.1','HYG','LQD','S5FI','.SOX','SOX']+MEGACAPS+BREADTH))
+SYMBOLS=list(dict.fromkeys(['US10Y','US2Y','ZQU6','ZQV6','ZQX6','ZQZ6','ZQF7','ZQG7','ZQH7','.IXIC','QQQ','NVDA','AMD','AVGO','TSM','MU','SMH','.VIX','.VXN','@CL.1','@LCO.1','HYG','LQD','S5FI','.SOX','SOX']+MEGACAPS+BREADTH))
 
 def cnbc_quotes(symbols):
     params={'symbols':'|'.join(symbols),'requestMethod':'itv','noform':'1','partnerId':'2','fund':'1','exthrs':'1','output':'json','events':'1'}
@@ -570,7 +570,7 @@ def main():
         # Session-aware equity leadership. CNBC currently exposes reliable regular-session
         # and POST_MKT extended quotes. Its premarket ExtendedMktQuote is not consistently populated,
         # so premarket is explicitly left unavailable rather than mixing yesterday's close into today.
-        semis=['NVDA','AMD','AVGO','TSM']
+        semis=['NVDA','AMD','AVGO','TSM','MU']
         session=equity_session(now)
         session_label={'regular':'Live','afterhours':'After-hours','premarket':'Premarket','closed':'Closed'}[session]
         equity_available='QQQ' in q and equity_quote_available(q['QQQ'],session)
@@ -579,11 +579,21 @@ def main():
             moves={sym:quoted_move(q[sym],session) for sym in semis}; qqq=quoted_move(q['QQQ'],session)
             valid=[v for v in moves.values() if v is not None]
             if valid and qqq is not None:
-                avg=sum(valid)/len(valid); rel=avg-qqq
-                sig='positive' if rel>0.25 else ('negative' if rel<-0.25 else 'mixed')
-                direction='Leading QQQ' if rel>0.25 else ('Lagging QQQ' if rel<-0.25 else 'In line with QQQ')
-                txt=session_label+' · '+' | '.join(f'{k} {v:+.2f}%' for k,v in moves.items())+f' | QQQ {qqq:+.2f}% | basket vs QQQ {rel:+.2f} pp'
-                setrow(rows,'Semiconductor leadership',txt,direction,sig,session_label+' CNBC quote','CNBC quotes; session-aware equal-weight NVDA/AMD/AVGO/TSM vs QQQ calculation')
+                avg=sum(valid)/len(valid); rel=avg-qqq; pos=sum(v>0 for v in valid)
+                smh_move=quoted_move(q['SMH'],session) if 'SMH' in q and equity_quote_available(q['SMH'],session) else None
+                smh_rel=(smh_move-qqq) if smh_move is not None else None
+                # Primary signal is the equal-weight five-stock leadership basket vs QQQ.
+                # SMH acts as confirmation: agreement strengthens the read; disagreement flags narrow/mixed leadership.
+                basket_dir=1 if rel>0.25 else (-1 if rel<-0.25 else 0)
+                smh_dir=1 if smh_rel is not None and smh_rel>0.25 else (-1 if smh_rel is not None and smh_rel<-0.25 else 0)
+                if basket_dir>0 and smh_dir>=0: sig='positive'; direction='Leading QQQ' if smh_dir==0 else 'Confirmed leadership'
+                elif basket_dir<0 and smh_dir<=0: sig='negative'; direction='Lagging QQQ' if smh_dir==0 else 'Confirmed weakness'
+                elif basket_dir>0 and smh_dir<0: sig='mixed'; direction='Narrow leader strength'
+                elif basket_dir<0 and smh_dir>0: sig='mixed'; direction='Broader semis holding up'
+                else: sig='mixed'; direction='In line with QQQ'
+                smh_txt=f' | SMH {smh_move:+.2f}% | SMH vs QQQ {smh_rel:+.2f} pp' if smh_move is not None else ' | SMH confirmation unavailable'
+                txt=session_label+' · '+f'5-stock basket {avg:+.2f}% | {pos}/5 positive | QQQ {qqq:+.2f}% | basket vs QQQ {rel:+.2f} pp'+smh_txt
+                setrow(rows,'Semiconductor leadership',txt,direction,sig,session_label+' CNBC quote','CNBC quotes; session-aware equal-weight NVDA/AMD/AVGO/TSM/MU vs QQQ, confirmed by SMH vs QQQ')
         else:
             msg='Premarket quote unavailable from CNBC extended-hours feed' if session=='premarket' else f'Awaiting {session_label.lower()} equity quotes'
             setrow(rows,'Semiconductor leadership',msg,'Awaiting session','mixed',session_label+' — insufficient current equity data','CNBC quotes; no previous-close substitution')
