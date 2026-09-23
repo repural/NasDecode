@@ -4,7 +4,7 @@ Data flow:
 1. Fetch/normalize free market and official-source observations.
 2. Update the 15 underlying Nasdaq factors.
 3. Derive each factor's Signal, Trend, Current Impact, explanation, and scorecard.
-4. Compute the Nasdaq Environment and Consolidation Risk model outputs.
+4. Compute the Nasdaq Setup and Consolidation Risk model outputs.
 5. Persist daily/intraday history and publish data/dashboard.json.
 
 Design rule: missing or stale inputs fail closed. NasBoard should label unavailable data
@@ -776,13 +776,13 @@ def main():
         else:
             r['trend']='Stable →'
 
-    # Keep slow/background model inputs in history and the Environment model, but do not
+    # Keep slow/background model inputs in history and the Nasdaq Setup model, but do not
     # expose them as standalone dashboard rows/cards. Research-based inputs receive a
     # deliberately small model weight until their underlying data is automated.
     background_factors={'Earnings revisions','AI capex / monetization','Credit conditions'}
     research_background={'Earnings revisions','AI capex / monetization'}
 
-    # Composite Nasdaq Environment Score: direction x current impact x freshness.
+    # Composite Nasdaq Setup Score: direction x current impact x freshness.
     # Low/stale observations still contribute slightly but cannot dominate live high-impact signals.
     impact_w={'Very High':4,'High':3,'Medium':2,'Low':1}
     def freshness_w(r):
@@ -853,12 +853,12 @@ def main():
     all_signal=group_signal([r['factor'] for r in rows])
     labels={'positive':'🟢 Positive','negative':'🔴 Negative','mixed':'🟡 Mixed'}
     for g in d.get('groups',[]):
-        sig=all_signal if g.get('name')=='NASDAQ ENVIRONMENT' else group_signal(group_members.get(g.get('name'),[]))
+        sig=all_signal if g.get('name') in ('NASDAQ ENVIRONMENT','NASDAQ SETUP') else group_signal(group_members.get(g.get('name'),[]))
         g['signal']=sig; g['label']=labels[sig]
 
     # Public presentation metadata is generated here so the browser remains a dumb renderer.
     group_explanations={
-        'NASDAQ ENVIRONMENT':'Combines the visible market indicators with background fundamental and financial-condition factors including earnings revisions, AI capex/monetization and credit conditions. Positive values indicate more supportive conditions; negative values indicate more headwinds. The trend shows the current directional impulse.',
+        'NASDAQ SETUP':'Dynamic synthesis of the factors currently driving Nasdaq. It highlights the strongest supportive forces, the main headwinds, and the market conditions that would materially strengthen or weaken the setup.',
         'Rates / Macro':'Combines Fed policy, Treasury yields and economic/inflation data. Falling yields or easier policy expectations are generally more supportive for growth stocks.',
         'Semiconductors':'Tracks semiconductor leadership relative to QQQ. Strong chip participation often confirms Nasdaq technology momentum.',
         'Breadth':'Measures how broadly Nasdaq-100 constituents participate. Broad participation generally makes index moves more robust.',
@@ -866,7 +866,40 @@ def main():
         'AI / Fundamentals':'Summarizes earnings revisions, AI capex/monetization and technology earnings-event risk.'
     }
     for g in d.get('groups',[]):
+        if g.get('name')=='NASDAQ ENVIRONMENT': g['name']='NASDAQ SETUP'
         g['explanation']=group_explanations.get(g.get('name'),'Summary of the latest signals in this category.')
+    # Build the Nasdaq Setup narrative from the same factor state used by the score.
+    # This is deliberately deterministic: it explains current evidence and conditional
+    # triggers without inventing historical claims that are not yet backed by stored data.
+    def build_setup_explanation(rows, score, trend):
+        by={r['factor']:r for r in rows}
+        def row(name): return by.get(name,{})
+        def latest(name): return str(row(name).get('latest','unavailable'))
+        def sig(name): return row(name).get('signal','mixed')
+        supportive=[r['factor'] for r in rows if r.get('signal')=='positive' and r.get('currentImpact') in ('Very High','High')]
+        headwinds=[r['factor'] for r in rows if r.get('signal')=='negative' and r.get('currentImpact') in ('Very High','High')]
+        label='strong positive' if score>=45 else ('cautiously positive' if score>=15 else ('mixed/neutral' if score>-15 else ('cautiously negative' if score>-45 else 'strong negative')))
+        parts=[]
+        y2=latest('2Y Treasury yield'); y10=latest('10Y Treasury Yield'); fed=latest('Fed expectations')
+        semi=latest('Semiconductor leadership'); oil=latest('Oil (WTI / Brent)')
+        parts.append(f"Rates are a central part of the current setup: the 2Y is {y2}, while the 10Y is {y10}. Fed expectations are {fed}. Semiconductor confirmation is {semi}; oil is {oil}.")
+        sup=', '.join(supportive[:4]) if supportive else 'no high-impact factor is providing strong positive confirmation'
+        neg=', '.join(headwinds[:4]) if headwinds else 'no high-impact factor is providing a strong negative confirmation'
+        parts.append(f"The Nasdaq Setup is {label} ({score:+d}/100, {trend.lower()}). The strongest supportive side is {sup}; the main counterweight is {neg}.")
+        m10=re.search(r'([0-9.]+)%',y10); m2=re.search(r'([0-9.]+)%',y2)
+        if m10:
+            ten=float(m10.group(1)); trigger=5.00
+            if 4.85 <= ten <= 5.15:
+                two=f" while the 2Y remains near {float(m2.group(1)):.2f}%" if m2 else ''
+                parts.append(f"The important rates trigger is US10Y around {trigger:.2f}%. A sustained break above roughly 5.00–5.05%{two} would materially weaken the Nasdaq setup; a retreat in the 10Y while semiconductor leadership remains supportive would strengthen it.")
+            else:
+                parts.append("The key confirmation to watch is whether Treasury yields and semiconductor leadership move together or diverge: rising yields with weakening chips would materially weaken the setup, while easing yields with continued semiconductor leadership would strengthen it.")
+        return ' '.join(parts)
+
+    setup_explanation=build_setup_explanation(rows,score,d['environmentTrend'])
+    for g in d.get('groups',[]):
+        if g.get('name')=='NASDAQ SETUP': g['explanation']=setup_explanation
+
     impact_order={'Very High':0,'High':1,'Medium':2,'Low':3}
     visible_rows=[r for r in rows if r.get('factor') not in background_factors]
     visible_rows.sort(key=lambda r:impact_order.get(r.get('currentImpact','Low'),3))
@@ -875,7 +908,7 @@ def main():
         r['signalLabel']={'positive':'🟢 Positive','negative':'🔴 Negative','mixed':'🟡 Mixed'}.get(r.get('signal'),'🟡 Mixed')
 
     # Consolidation / Extension Risk v1. This is intentionally separate from the
-    # directional Nasdaq Environment score: a supportive tape can still be overextended.
+    # directional Nasdaq Setup score: a supportive tape can still be overextended.
     # Components progressively unlock as self-owned daily observations accumulate.
     try:
         with open(DAILY_PATH,encoding='utf-8') as hf: hist_for_risk=json.load(hf)
