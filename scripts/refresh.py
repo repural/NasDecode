@@ -963,25 +963,114 @@ def main():
     background_factors={'Earnings revisions','AI capex / monetization','Credit conditions'}
     research_background={'Earnings revisions','AI capex / monetization'}
 
-    # Composite Nasdaq Setup Score: direction x current impact x freshness.
-    # Low/stale observations still contribute slightly but cannot dominate live high-impact signals.
+    # Nasdaq Setup v2: continuous factor strength, acceleration, correlation buckets,
+    # regime-sensitive weights, and confidence separated from directional score.
     impact_w={'Very High':4,'High':3,'Medium':2,'Low':1}
     def freshness_w(r):
         f=str(r.get('freshness','')).lower()
         if f.startswith('stale') or 'research snapshot' in f or 'official data lag' in f: return 0.35
         if 'previous close' in f: return 0.70
+        if 'awaiting' in f or 'insufficient' in f: return 0.20
         return 1.0
-    numerator=0.0; denominator=0.0
+    def clamp(x,lo=-1.0,hi=1.0): return max(lo,min(hi,x))
+    def first_num(pattern,text):
+        m=re.search(pattern,str(text),re.I)
+        return float(m.group(1)) if m else None
+    def continuous_factor(r):
+        # Fallback preserves every factor; high-information live factors override the
+        # old -1/0/+1 bucket with a continuous strength score.
+        base=float(sig_score.get(r.get('signal','mixed'),0))
+        n=r.get('factor',''); t=str(r.get('latest',''))
+        if n in ('10Y Treasury Yield','2Y Treasury yield'):
+            level=first_num(r'([0-9.]+)%',t); bp=first_num(r'\(([+-]?[0-9.]+) bp',t)
+            # Level + daily velocity. 4.0% is neutral; +/-50 bp spans the level score.
+            level_s=clamp((4.0-level)/0.50) if level is not None else 0
+            velocity_s=clamp(-bp/10.0) if bp is not None else 0
+            return clamp(0.60*level_s+0.40*velocity_s)
+        if n=='Semiconductor leadership':
+            rel=first_num(r'basket vs QQQ ([+-]?[0-9.]+) pp',t)
+            smh=first_num(r'SMH vs QQQ ([+-]?[0-9.]+) pp',t)
+            if rel is not None: return clamp(0.75*clamp(rel/1.5)+0.25*clamp((smh or 0)/1.5))
+        if n=='Mega-cap leadership':
+            rel=first_num(r'relative ([+-]?[0-9.]+) pp',t)
+            if rel is not None: return clamp(rel/1.25)
+        if n=='Market breadth':
+            adv=first_num(r'advancing \(([0-9.]+)%\)',t)
+            if adv is not None: return clamp((adv-50)/30.0)
+        if n=='S&P 500 50D Breadth / Oversold':
+            level=first_num(r'([0-9.]+)% above 50D',t); ch=first_num(r'([+-]?[0-9.]+) pp vs prior',t)
+            if level is not None:
+                level_s=clamp((level-50)/25.0); velocity_s=clamp((ch or 0)/5.0)
+                return clamp(0.65*level_s+0.35*velocity_s)
+        if n=='Nasdaq volatility (VXN / VIX)':
+            vx=first_num(r'VXN [0-9.]+ \(([+-]?[0-9.]+)%\)',t)
+            vi=first_num(r'VIX [0-9.]+ \(([+-]?[0-9.]+)%\)',t)
+            if vx is not None: return clamp(-0.75*clamp(vx/8.0)-0.25*clamp((vi or 0)/8.0))
+        if n=='Oil (WTI / Brent)':
+            wm=first_num(r'WTI[^|]*\(([+-]?[0-9.]+)%\)',t); bm=first_num(r'Brent[^|]*\(([+-]?[0-9.]+)%\)',t)
+            vals=[x for x in (wm,bm) if x is not None]
+            if vals: return clamp(-sum(vals)/len(vals)/3.0)
+        if n=='Options positioning / sentiment':
+            eq=first_num(r'Equity P/C ([0-9.]+)',t); avg=first_num(r'5D avg ([0-9.]+)',t)
+            if eq is not None:
+                level_s=clamp((0.70-eq)/0.25); trend_s=clamp(((avg-eq) if avg is not None else 0)/0.15)
+                return clamp(0.7*level_s+0.3*trend_s)
+        if n=='Economic / inflation data':
+            # Magnitude is release-specific; retain mapped direction but scale verified surprises
+            # above neutral so a real release matters more than an awaiting row.
+            return 0.75*base if r.get('surprise') is not None else 0.0
+        return base
+
+    bucket_of={
+      '10Y Treasury Yield':'Rates / Macro','2Y Treasury yield':'Rates / Macro','Fed expectations':'Rates / Macro',
+      'Economic / inflation data':'Rates / Macro','U.S. Dollar (DXY)':'Rates / Macro','Oil (WTI / Brent)':'Rates / Macro',
+      'Semiconductor leadership':'Leadership','Mega-cap leadership':'Leadership','Earnings AVWAP leadership':'Leadership',
+      'Market breadth':'Breadth','S&P 500 50D Breadth / Oversold':'Breadth',
+      'Nasdaq volatility (VXN / VIX)':'Volatility / Positioning','Options positioning / sentiment':'Volatility / Positioning',
+      'Credit conditions':'Volatility / Positioning','Technology earnings calendar':'Event Risk'
+    }
+    bucket_caps={'Rates / Macro':9.0,'Leadership':9.0,'Breadth':6.0,'Volatility / Positioning':7.0,'Event Risk':4.0,'Other':4.0}
+    bucket_num={}; bucket_den={}; factor_model=[]
+    available_weight=0.0; possible_weight=0.0
+    # Regime sensitivity: amplify the relevant bucket when conditions make it unusually important.
+    y10_now=num(q.get('US10Y',{}).get('last')) if isinstance(q.get('US10Y',{}),dict) else None
+    vx_now=num(q.get('.VXN',{}).get('last')) if isinstance(q.get('.VXN',{}),dict) else None
     for r in rows:
-        w=impact_w.get(r.get('currentImpact','Low'),1)*freshness_w(r)
-        if r.get('factor') in research_background:
-            w=min(w,0.35)
-        numerator += sig_score.get(r.get('signal','mixed'),0)*w
-        denominator += w
-    # This is the raw directional score. Consolidation Risk is calculated below and
-    # applies a bounded extension penalty before the final Nasdaq Setup is published.
+        base_w=impact_w.get(r.get('currentImpact','Low'),1)
+        fw=freshness_w(r); possible_weight+=base_w
+        if r.get('factor') in research_background: fw=min(fw,0.35)
+        w=base_w*fw
+        bucket=bucket_of.get(r.get('factor'),'Other')
+        regime=1.0
+        if bucket=='Rates / Macro' and y10_now is not None and y10_now>=4.85: regime=1.25
+        if bucket=='Volatility / Positioning' and vx_now is not None and vx_now>=22: regime=1.20
+        if bucket=='Leadership' and r.get('currentImpact') in ('High','Very High'): regime=1.15
+        w*=regime
+        strength=continuous_factor(r)
+        bucket_num[bucket]=bucket_num.get(bucket,0.0)+strength*w
+        bucket_den[bucket]=bucket_den.get(bucket,0.0)+w
+        available_weight+=base_w*fw
+        factor_model.append({'factor':r.get('factor'),'bucket':bucket,'strength':round(strength,3),
+                             'effectiveWeight':round(w,3),'freshnessWeight':round(fw,2),'regimeMultiplier':regime})
+    numerator=0.0; denominator=0.0; bucket_model=[]
+    for bucket,den in bucket_den.items():
+        if den<=0: continue
+        strength=bucket_num[bucket]/den
+        contribution_w=min(den,bucket_caps.get(bucket,4.0))
+        numerator+=strength*contribution_w; denominator+=contribution_w
+        bucket_model.append({'bucket':bucket,'strength':round(strength,3),'weight':round(contribution_w,2),
+                             'uncappedWeight':round(den,2),'cap':bucket_caps.get(bucket,4.0)})
     raw_setup_score=round(100*numerator/denominator) if denominator else 0
     score=raw_setup_score
+    # Confidence measures coverage/freshness plus agreement among independent buckets.
+    coverage=clamp(available_weight/possible_weight,0,1) if possible_weight else 0
+    active=[x['strength'] for x in bucket_model if abs(x['strength'])>=0.05]
+    agreement=abs(sum(active))/len(active) if active else 0.0
+    confidence=round(100*(0.60*coverage+0.40*agreement))
+    d['environmentConfidence']=confidence
+    d['environmentCoverage']=round(100*coverage)
+    d['setupModel']={'version':2,'factors':factor_model,'buckets':bucket_model,
+                     'coveragePct':round(100*coverage),'agreementPct':round(100*agreement)}
 
     # Massive supplies historical context while CNBC remains the current/session feed.
     # Start with QQQ and the semiconductor ETF SOXX because both are available as U.S.
