@@ -1236,13 +1236,21 @@ def main():
     breadth_sig=watch_signal('Market breadth')
     vol_sig=watch_signal('Nasdaq volatility (VXN / VIX)')
     oil_sig=watch_signal('Oil (WTI / Brent)')
-    if y10 is not None:
-        if y10>5.05:
-            watch_add('bearish','10Y above 5.05%',f'US10Y is {y10:.3f}%, above the 3-Day Watch significant-headwind threshold.'+(f' US2Y is {y2:.3f}%.' if y2 is not None else ''))
-        elif y10>5.00:
-            watch_add('bearish','10Y above 5.00%',f'US10Y is {y10:.3f}%, in the restrictive 5.00–5.05% zone.')
-        elif y10<4.95:
-            watch_add('bullish','10Y below 4.95%',f'US10Y is {y10:.3f}%, inside the supportive 3-Day Watch zone.')
+    # Use numeric yield values from the factor rows here. Variables named y10/y2
+    # elsewhere in main() may hold raw quote dictionaries and must not leak into
+    # the 3-Day Watch comparisons.
+    def watch_pct(name):
+        m=re.search(r'([0-9]+(?:\\.[0-9]+)?)%',watch_latest(name))
+        return float(m.group(1)) if m else None
+    watch_y10=watch_pct('10Y Treasury Yield')
+    watch_y2=watch_pct('2Y Treasury yield')
+    if watch_y10 is not None:
+        if watch_y10>5.05:
+            watch_add('bearish','10Y above 5.05%',f'US10Y is {watch_y10:.3f}%, above the 3-Day Watch significant-headwind threshold.'+(f' US2Y is {watch_y2:.3f}%.' if watch_y2 is not None else ''))
+        elif watch_y10>5.00:
+            watch_add('bearish','10Y above 5.00%',f'US10Y is {watch_y10:.3f}%, in the restrictive 5.00–5.05% zone.')
+        elif watch_y10<4.95:
+            watch_add('bullish','10Y below 4.95%',f'US10Y is {watch_y10:.3f}%, inside the supportive 3-Day Watch zone.')
     if fed_sig=='negative':
         watch_add('bearish','Fed expectations repriced hawkishly',watch_latest('Fed expectations'))
     elif fed_sig=='positive':
