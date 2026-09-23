@@ -1185,7 +1185,7 @@ def main():
 
     risk_score=round(weighted/total_w) if total_w else None
     d['consolidationRisk']={'score':risk_score,'level':risk_band(risk_score) if risk_score is not None else 'Unavailable',
-        'explanation':'Measures short-term market extension and the risk of a pause, pullback, or consolidation using price, trend, participation, volatility, and leadership conditions.',
+        'explanation':'Estimates near-term consolidation risk from a proprietary blend of market conditions.',
         'coverageWeight':round(100*total_w/MODEL_WEIGHT),'components':components,
         'historyDays':qctx.get('bars',0),'unlocked':[x['name'] for x in components],
         'note':'Higher means more extended/crowded. Missing inputs reduce model coverage rather than being guessed.'}
@@ -1209,7 +1209,7 @@ def main():
 
     setup_explanation=build_setup_explanation(rows,score,d['environmentTrend'])
     if extension_penalty:
-        setup_explanation += f" Consolidation risk is applying a {extension_penalty}-point extension penalty to the directional setup."
+        setup_explanation += " Elevated consolidation risk is tempering the directional setup."
     for g in d.get('groups',[]):
         if g.get('name')=='NASDAQ SETUP': g['explanation']=setup_explanation
 
