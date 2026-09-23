@@ -752,11 +752,11 @@ def main():
     for r in rows:
         n=r['factor']; latest=str(r.get('latest','')); card=None
         if n in ('10Y Treasury Yield','2Y Treasury yield'):
-            m=re.search(r'([0-9.]+)%.*?\\(([+-]?[0-9.]+) bp',latest)
+            m=re.search(r'([0-9.]+)%.*?[(]([+-]?[0-9.]+) bp',latest)
             if m:
                 ch=float(m.group(2)); card={'value':m.group(1)+'%','arrow':'↓' if ch<0 else ('↑' if ch>0 else '→'),'change':f'{ch:+.1f} bp'}
         elif n=='Nasdaq volatility (VXN / VIX)':
-            m=re.search(r'VXN ([0-9.]+) \\(([+-]?[0-9.]+)%\\)',latest)
+            m=re.search(r'VXN ([0-9.]+) [(]([+-]?[0-9.]+)%[)]',latest)
             if m:
                 ch=float(m.group(2)); card={'value':'VXN '+m.group(1),'arrow':'↓' if ch<0 else ('↑' if ch>0 else '→'),'change':f'{ch:+.2f}%'}
         elif n=='S&P 500 50D Breadth / Oversold':
@@ -765,11 +765,11 @@ def main():
                 ch=float(m.group(2)) if m.group(2) else None
                 card={'value':m.group(1)+'%','arrow':'↓' if ch is not None and ch<0 else ('↑' if ch is not None and ch>0 else '→'),'change':f'{ch:+.1f} pp' if ch is not None else ''}
         elif n=='Oil (WTI / Brent)':
-            m=re.search(r'WTI[^0-9]*([0-9.]+).*?\\(([+-]?[0-9.]+)%\\)',latest,re.I)
+            m=re.search(r'WTI[^0-9]*([0-9.]+).*?[(]([+-]?[0-9.]+)%[)]',latest,re.I)
             if m:
                 ch=float(m.group(2)); card={'value':'WTI '+m.group(1),'arrow':'↓' if ch<0 else ('↑' if ch>0 else '→'),'change':f'{ch:+.2f}%'}
         elif n=='Market breadth':
-            m=re.search(r'(\\d+)/(\\d+) advancing \\(([0-9]+)%\\)',latest)
+            m=re.search(r'([0-9]+)/([0-9]+) advancing [(]([0-9]+)%[)]',latest)
             if m: card={'value':m.group(3)+'% advancing','arrow':'↑' if r.get('signal')=='positive' else ('↓' if r.get('signal')=='negative' else '→'),'change':''}
         r['scorecard']=card
 
