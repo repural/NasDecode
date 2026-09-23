@@ -267,12 +267,7 @@ def explain_current_rows(rows):
             context=(' At the same time, '+ ' and '.join(leaders)+'.') if leaders else ''
             r['explanation']=f'{x}. Breadth is {d.lower()}. A larger share of advancing Nasdaq-100 constituents means wider participation; weak participation makes index strength less robust. Current implication: {t}.{context}'
         elif n=='Earnings AVWAP leadership':
-            # Broad alignment and large median distance from earnings anchors increase
-            # the immediate relevance of this leadership factor.
-            md=abs(float(r.get('medianDistancePct',0)))
-            cov=int(r.get('coveredCount',0)); above=int(r.get('aboveCount',0))
-            aligned=cov>0 and above in (0,cov)
-            imp='High' if aligned or md>=5 else ('Medium' if md>=2 else 'Low')
+            r['explanation']=f"{x}. The selective semiconductor/AI basket is {d.lower()}. Holding above a post-earnings AVWAP is supportive because price remains above the volume-weighted cost basis established since the latest earnings reset; large positive distances also contribute to Consolidation Risk as extension."
         elif n=='Nasdaq volatility (VXN / VIX)':
             if d=='Diverging':
                 interp='VXN and VIX are moving in opposite directions, so Nasdaq-specific and broad-market volatility do not confirm each other.'
@@ -808,6 +803,13 @@ def main():
             m=re.search(r'\(([+-]?[0-9.]+) bp',r.get('latest',''))
             bp=abs(float(m.group(1))) if m else 0
             imp='Very High' if bp>=5 else ('High' if bp>=2 else 'Medium')
+        elif n=='Earnings AVWAP leadership':
+            # Broad alignment and large median distance from earnings anchors increase
+            # the immediate relevance of this leadership factor.
+            md=abs(float(r.get('medianDistancePct',0)))
+            cov=int(r.get('coveredCount',0)); above=int(r.get('aboveCount',0))
+            aligned=cov>0 and above in (0,cov)
+            imp='High' if aligned or md>=5 else ('Medium' if md>=2 else 'Low')
         elif n=='Nasdaq volatility (VXN / VIX)':
             nums=[abs(float(v)) for v in re.findall(r'\(([+-]?[0-9.]+)%\)',r.get('latest',''))]
             mv=max(nums) if nums else 0
