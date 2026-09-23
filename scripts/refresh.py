@@ -204,8 +204,11 @@ def explain_current_rows(rows):
                 yields=f" Current rate-market context: 2Y {latest('2Y Treasury yield')} and 10Y {latest('10Y Treasury Yield')}." if live('2Y Treasury yield') and live('10Y Treasury Yield') else ''
                 r['explanation']=f'{x}. Market-implied Fed expectations are temporarily unavailable. {yields}'.strip()
         elif n=='Economic / inflation data':
-            yields=f" With 2Y at {latest('2Y Treasury yield')} and 10Y at {latest('10Y nominal yield')}, a surprise that shifts inflation/Fed expectations could feed quickly into Nasdaq discount rates." if live('2Y Treasury yield') and live('10Y nominal yield') else ''
-            r['explanation']=f'{x}. This is the next scheduled macro release capable of changing growth/inflation expectations, Treasury yields and the Fed path. Event status is {d.lower()}. {yields}'.strip()
+            yields=f" With 2Y at {latest('2Y Treasury yield')} and 10Y at {latest('10Y Treasury Yield')}, a surprise that shifts inflation/Fed expectations can feed quickly into Nasdaq discount rates." if live('2Y Treasury yield') and live('10Y Treasury Yield') else ''
+            if r.get('surprise') is not None:
+                r['explanation']=f"{x}. This factor measures the latest macro release against market consensus—not event proximity. {r.get('surpriseText','')} Current implication: {t}.{yields}".strip()
+            else:
+                r['explanation']=f"{x}. No verified actual-versus-consensus macro surprise is currently stored, so the factor stays neutral rather than treating an upcoming event as bullish or bearish.{yields}".strip()
         else:
             r['explanation']=f'Current reading: {x}. Direction: {d}. NasBoard currently classifies this factor as {t}. This row will become more specific as its underlying live/research source is automated.'
 
@@ -635,26 +638,27 @@ def main():
         r['freshness']='STALE — Cboe put/call refresh failed'
         r['source']='Cboe Daily Market Statistics — options volume put/call ratios'
 
-    # Scheduled macro/Fed event risk from official 2026 calendars. This is event timing, not a market-implied probability model.
-    events=[
-      (datetime.datetime(2026,9,29,10,0,tzinfo=NY),'JOLTS (Aug)','BLS'),
-      (datetime.datetime(2026,9,30,8,30,tzinfo=NY),'PCE / Personal Income & Outlays (Aug)','BEA'),
-      (datetime.datetime(2026,10,2,8,30,tzinfo=NY),'Employment Situation (Sep)','BLS'),
-      (datetime.datetime(2026,10,7,14,0,tzinfo=NY),'FOMC Minutes (Sep 15–16 meeting)','Federal Reserve'),
-      (datetime.datetime(2026,10,14,8,30,tzinfo=NY),'CPI (Sep)','BLS'),
-      (datetime.datetime(2026,10,15,8,30,tzinfo=NY),'PPI (Sep)','BLS'),
-      (datetime.datetime(2026,10,27,0,0,tzinfo=NY),'FOMC meeting begins (Oct 27–28)','Federal Reserve'),
-      (datetime.datetime(2026,10,28,14,0,tzinfo=NY),'FOMC decision / press conference','Federal Reserve'),
-      (datetime.datetime(2026,10,29,8,30,tzinfo=NY),'GDP advance Q3 + PCE (Sep)','BEA'),
-      (datetime.datetime(2026,10,30,8,30,tzinfo=NY),'Employment Cost Index Q3','BLS')
-    ]
-    future=[e for e in events if e[0]>now]
-    if future:
-        et,name,agency=min(future,key=lambda e:e[0]); hours=(et-now).total_seconds()/3600
-        urgency='High event risk' if hours<=24 else ('Event approaching' if hours<=72 else 'Scheduled')
-        # Proximity raises impact/uncertainty but does not predict the sign of the surprise.
-        esig='mixed'
-        setrow(rows,'Economic / inflation data',f'Next: {name} · {et.strftime("%b %d, %H:%M ET")}',urgency,esig,f'Official calendar · checked {now.strftime("%Y-%m-%d %H:%M ET")}',f'{agency} official release calendar')
+    # Economic / inflation data is a SURPRISE factor, not an event-calendar factor.
+    # Only verified actual-versus-consensus observations should move its signal. Upcoming
+    # releases belong in the pre-market/event-risk layer and must not affect direction.
+    macro_surprises=d.get('macroSurprises',[])
+    verified=[x for x in macro_surprises if x.get('actual') is not None and x.get('consensus') is not None and x.get('releasedAt')]
+    verified.sort(key=lambda x:x.get('releasedAt',''),reverse=True)
+    if verified:
+        m=verified[0]
+        actual=float(m['actual']); consensus=float(m['consensus']); delta=actual-consensus
+        # surpriseDirection is explicit because "higher" is not universally bearish:
+        # inflation/wage upside is generally a Nasdaq headwind, while labor/growth data
+        # can be context-dependent. Unknown mappings fail closed as mixed.
+        sd=m.get('surpriseDirection','mixed')
+        sig='negative' if sd=='higher_is_negative' and delta>0 else ('positive' if sd=='higher_is_negative' and delta<0 else ('positive' if sd=='higher_is_positive' and delta>0 else ('negative' if sd=='higher_is_positive' and delta<0 else 'mixed')))
+        unit=m.get('unit','')
+        latest_txt=f"{m.get('name','Macro release')}: {actual:g}{unit} actual vs {consensus:g}{unit} consensus · surprise {delta:+g}{unit}"
+        setrow(rows,'Economic / inflation data',latest_txt,'Hotter than expected' if delta>0 else ('Cooler/weaker than expected' if delta<0 else 'In line'),sig,f"Verified release · {m['releasedAt']}",m.get('source','Verified macro release'))
+        rr=next(x for x in rows if x['factor']=='Economic / inflation data')
+        rr['surprise']=delta; rr['surpriseText']=f"Actual {actual:g}{unit} versus {consensus:g}{unit}; surprise {delta:+g}{unit}."
+    else:
+        setrow(rows,'Economic / inflation data','Awaiting verified actual vs consensus release','No active surprise','mixed',f'No verified surprise · checked {now.strftime("%Y-%m-%d %H:%M ET")}','NasBoard verified macro-surprise feed')
     # Fed expectations: market-implied conditional move probabilities from 30-Day Fed Funds futures.
     # Fail closed: keep the prior successful row and mark it stale if either public source changes/breaks.
     try:
