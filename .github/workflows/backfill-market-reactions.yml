@@ -26,6 +26,7 @@ jobs:
       - name: Calculate reaction windows
         env:
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+          BACKFILL_DATE: '2026-09-23'
         run: node scripts/backfill-market-reactions.mjs
       - name: Preserve calculated history
         uses: actions/upload-artifact@v4
