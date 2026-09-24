@@ -263,6 +263,13 @@ def equity_quote_available(q,session):
         return ex.get('type')=='POST_MKT' and ex.get('change_pct') not in (None,'')
     return False
 
+def previous_regular_move(q):
+    """Return the most recent completed regular-session percentage move."""
+    cp=q.get('change_pct')
+    if cp not in (None,''):
+        return num(cp)
+    return pct(q)
+
 def setrow(rows,name,latest,direction,signal,freshness,source='CNBC quote feed',explanation=None):
     r=next(x for x in rows if x['factor']==name); r.update(latest=latest,direction=direction,signal=signal,freshness=freshness,source=source)
     if explanation is not None: r['explanation']=explanation
@@ -643,9 +650,9 @@ def main():
         except Exception as e:
             print('10Y real yield context unavailable:',e)
 
-        # Session-aware equity leadership. CNBC currently exposes reliable regular-session
-        # and POST_MKT extended quotes. Its premarket ExtendedMktQuote is not consistently populated,
-        # so premarket is explicitly left unavailable rather than mixing yesterday's close into today.
+        # Session-aware equity leadership. Use live/after-hours quotes when reliable.
+        # When the cash market is closed and extended-hours coverage is unavailable, fall back
+        # to the most recent completed regular-session move and label it explicitly as previous-close data.
         semis=['NVDA','AMD','AVGO','TSM','MU']
         session=equity_session(now)
         session_label={'regular':'Live','afterhours':'After-hours','premarket':'Premarket','closed':'Closed'}[session]
@@ -671,8 +678,26 @@ def main():
                 txt=session_label+' · '+f'5-stock basket {avg:+.2f}% | {pos}/5 positive | QQQ {qqq:+.2f}% | basket vs QQQ {rel:+.2f} pp'+smh_txt
                 setrow(rows,'Semiconductor leadership',txt,direction,sig,session_label+' CNBC quote','CNBC quotes; session-aware equal-weight NVDA/AMD/AVGO/TSM/MU vs QQQ, confirmed by SMH vs QQQ')
         else:
-            msg='Premarket quote unavailable from CNBC extended-hours feed' if session=='premarket' else f'Awaiting {session_label.lower()} equity quotes'
-            setrow(rows,'Semiconductor leadership',msg,'Awaiting session','mixed',session_label+' — insufficient current equity data','CNBC quotes; no previous-close substitution')
+            prev_moves={sym:previous_regular_move(q[sym]) for sym in semis if sym in q}
+            prev_qqq=previous_regular_move(q['QQQ']) if 'QQQ' in q else None
+            prev_valid=[v for v in prev_moves.values() if v is not None]
+            if session!='regular' and len(prev_valid)==len(semis) and prev_qqq is not None:
+                avg=sum(prev_valid)/len(prev_valid); rel=avg-prev_qqq; pos=sum(v>0 for v in prev_valid)
+                smh_move=previous_regular_move(q['SMH']) if 'SMH' in q else None
+                smh_rel=(smh_move-prev_qqq) if smh_move is not None else None
+                basket_dir=1 if rel>0.25 else (-1 if rel<-0.25 else 0)
+                smh_dir=1 if smh_rel is not None and smh_rel>0.25 else (-1 if smh_rel is not None and smh_rel<-0.25 else 0)
+                if basket_dir>0 and smh_dir>=0: sig='positive'; direction='Leading QQQ' if smh_dir==0 else 'Confirmed leadership'
+                elif basket_dir<0 and smh_dir<=0: sig='negative'; direction='Lagging QQQ' if smh_dir==0 else 'Confirmed weakness'
+                elif basket_dir>0 and smh_dir<0: sig='mixed'; direction='Narrow leader strength'
+                elif basket_dir<0 and smh_dir>0: sig='mixed'; direction='Broader semis holding up'
+                else: sig='mixed'; direction='In line with QQQ'
+                smh_txt=f' | SMH {smh_move:+.2f}% | SMH vs QQQ {smh_rel:+.2f} pp' if smh_move is not None else ' | SMH confirmation unavailable'
+                txt='Previous regular-session close · '+f'5-stock basket {avg:+.2f}% | {pos}/5 positive | QQQ {prev_qqq:+.2f}% | basket vs QQQ {rel:+.2f} pp'+smh_txt
+                setrow(rows,'Semiconductor leadership',txt,direction,sig,'Previous close · most recent regular session','CNBC previous-close quotes; equal-weight NVDA/AMD/AVGO/TSM/MU vs QQQ, confirmed by SMH when available')
+            else:
+                msg=f'Awaiting {session_label.lower()} equity quotes'
+                setrow(rows,'Semiconductor leadership',msg,'Awaiting session','mixed',session_label+' — insufficient current equity data','CNBC quotes')
 
         # Mega-cap leadership, regular session or reliable CNBC POST_MKT quotes.
         if equity_available:
@@ -689,8 +714,20 @@ def main():
             else:
                 setrow(rows,'Mega-cap leadership',f'{session_label} · insufficient mega-cap quote coverage','Awaiting coverage','mixed',session_label+' — partial coverage','CNBC quotes')
         else:
-            msg='Premarket quote unavailable from CNBC extended-hours feed' if session=='premarket' else f'Awaiting {session_label.lower()} mega-cap quotes'
-            setrow(rows,'Mega-cap leadership',msg,'Awaiting session','mixed',session_label+' — insufficient current equity data','CNBC quotes; no previous-close substitution')
+            prev_mm={sym:previous_regular_move(q[sym]) for sym in MEGACAPS if sym in q}
+            prev_vals=[v for v in prev_mm.values() if v is not None]
+            prev_qqq=previous_regular_move(q['QQQ']) if 'QQQ' in q else None
+            if session!='regular' and len(prev_vals)>=5 and prev_qqq is not None:
+                avg=sum(prev_vals)/len(prev_vals); rel=avg-prev_qqq; pos=sum(v>0 for v in prev_vals)
+                if rel>0.20 and pos>=4: sig='positive'; direction='Leading QQQ'
+                elif prev_qqq>0 and pos>=6 and rel>=-0.20: sig='positive'; direction='Broad participation'
+                elif rel<-0.20 and pos<=3: sig='negative'; direction='Lagging QQQ'
+                elif prev_qqq<0 and pos<=1 and rel<=0.20: sig='negative'; direction='Broad weakness'
+                else: sig='mixed'; direction='In line with QQQ'
+                setrow(rows,'Mega-cap leadership',f'Previous regular-session close · {len(prev_vals)}-stock basket {avg:+.2f}% | {pos}/{len(prev_vals)} positive | QQQ {prev_qqq:+.2f}% | relative {rel:+.2f} pp',direction,sig,'Previous close · most recent regular session','CNBC previous-close quotes; mega-cap basket vs QQQ')
+            else:
+                msg=f'Awaiting {session_label.lower()} mega-cap quotes'
+                setrow(rows,'Mega-cap leadership',msg,'Awaiting session','mixed',session_label+' — insufficient current equity data','CNBC quotes')
 
         # Breadth hierarchy: live regular-session breadth first; after-hours breadth when coverage
         # is sufficient; otherwise use the most recent regular-session breadth as explicitly labelled context.
