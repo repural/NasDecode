@@ -23,6 +23,13 @@ on:
     # Continue checking material 3-Day Watch changes through the U.S. cash session.
     - cron: '5 11-15 * * 1-5'
       timezone: 'America/New_York'
+# Serialize all dashboard refreshes. Multiple overlapping refreshes were both
+# consuming the Massive free-tier quota and racing to push generated snapshots.
+# queue:max preserves scheduled/manual runs instead of cancelling an in-progress refresh.
+concurrency:
+  group: nasboard-data-refresh
+  queue: max
+
 permissions:
   contents: write
 jobs:
