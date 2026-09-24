@@ -1,0 +1,66 @@
+name: Test Tavily FedWatch Queries
+on:
+  push:
+    branches:
+      - test-tavily-api-20260924
+    paths:
+      - '.github/workflows/test-tavily-fedwatch.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test focused FedWatch searches
+        env:
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json, os, re, urllib.request, urllib.error, datetime
+          key=os.environ["TAVILY_API_KEY"].strip()
+
+          def req(url, method="GET", payload=None):
+              data=None if payload is None else json.dumps(payload).encode()
+              r=urllib.request.Request(url,data=data,method=method,headers={
+                  "Authorization":"Bearer "+key,
+                  "Content-Type":"application/json",
+                  "User-Agent":"NasBoard-Tavily-FedWatch-Test/1.0"
+              })
+              with urllib.request.urlopen(r,timeout=40) as x:
+                  return json.loads(x.read().decode())
+
+          def usage():
+              d=req("https://api.tavily.com/usage")
+              a=d.get("account",{})
+              lim=a.get("plan_limit"); used=a.get("plan_usage")
+              return {"plan":a.get("current_plan"),"limit":lim,"used":used,
+                      "remaining":(lim-used if isinstance(lim,(int,float)) and isinstance(used,(int,float)) else None),
+                      "search_usage":a.get("search_usage")}
+
+          print("USAGE_BEFORE",json.dumps(usage(),sort_keys=True))
+          meetings=["2026-10-28","2026-12-09","2027-01-27"]
+          for mtg in meetings:
+              query=(
+                  f"As of today, report the latest CME FedWatch market-implied probabilities for the "
+                  f"Federal Reserve FOMC decision on {mtg}. Aggregate every target-rate outcome below "
+                  f"the current target range as CUT, the unchanged target range as HOLD, and every "
+                  f"higher outcome as HIKE. Return exactly: CUT x% | HOLD y% | HIKE z%. "
+                  f"Do not estimate missing probabilities. Prefer CME FedWatch and sources explicitly quoting CME FedWatch."
+              )
+              d=req("https://api.tavily.com/search","POST",{
+                  "query":query,
+                  "search_depth":"basic",
+                  "max_results":8,
+                  "include_answer":"basic"
+              })
+              print("MEETING",mtg)
+              print("ANSWER",str(d.get("answer") or "")[:2000])
+              for i,r in enumerate((d.get("results") or [])[:5],1):
+                  print("RESULT",i,json.dumps({
+                      "title":r.get("title"),"url":r.get("url"),
+                      "content":(r.get("content") or "")[:800]
+                  },ensure_ascii=False))
+          print("USAGE_AFTER",json.dumps(usage(),sort_keys=True))
+          PY
