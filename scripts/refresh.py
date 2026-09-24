@@ -36,30 +36,51 @@ def cnbc_quotes(symbols):
     return {q.get('symbol'):q for q in qs if q.get('symbol') and q.get('code')==0}
 
 def massive_daily_bars(ticker, days=120):
-    """Fetch adjusted daily OHLCV/VWAP bars from Massive with free-tier pacing.
-
-    Massive Basic is rate-limited, so all historical requests share a simple process-level
-    throttle. This keeps the refresh deterministic while allowing several selective AVWAP
-    tickers plus QQQ/SOXX context to be refreshed in one workflow.
-    """
+    """Fetch adjusted daily OHLCV/VWAP bars with pacing and bounded 429 retries."""
     global _MASSIVE_LAST_CALL
     key=os.environ.get('MASSIVE_API_KEY','').strip()
     if not key: return []
-    wait=12.5-(time.monotonic()-_MASSIVE_LAST_CALL)
-    if _MASSIVE_LAST_CALL and wait>0: time.sleep(wait)
     end=datetime.datetime.now(NY).date()
     start=end-datetime.timedelta(days=days)
     url=(f'https://api.massive.com/v2/aggs/ticker/{urllib.parse.quote(ticker)}/range/1/day/'
          f'{start.isoformat()}/{end.isoformat()}?adjusted=true&sort=asc&limit=5000')
     req=urllib.request.Request(url,headers={'Authorization':f'Bearer {key}','User-Agent':'NasBoard/1.0'})
-    try:
-        with urllib.request.urlopen(req,timeout=15) as resp: payload=json.load(resp)
-        _MASSIVE_LAST_CALL=time.monotonic()
-        return payload.get('results',[]) if payload.get('status') in ('OK','DELAYED') else []
-    except Exception as e:
-        _MASSIVE_LAST_CALL=time.monotonic()
-        print(f'Massive history unavailable for {ticker}:',repr(e))
-        return []
+    backoffs=(15,30,60)
+    for attempt in range(4):
+        # Preserve a conservative free-tier pace on every attempt, including retries.
+        wait=12.5-(time.monotonic()-_MASSIVE_LAST_CALL)
+        if _MASSIVE_LAST_CALL and wait>0: time.sleep(wait)
+        try:
+            with urllib.request.urlopen(req,timeout=20) as resp:
+                payload=json.load(resp)
+                _MASSIVE_LAST_CALL=time.monotonic()
+                remaining=resp.headers.get('X-RateLimit-Remaining')
+                limit=resp.headers.get('X-RateLimit-Limit')
+                reset=resp.headers.get('X-RateLimit-Reset')
+                if any(x is not None for x in (remaining,limit,reset)):
+                    print(f'Massive rate info {ticker}: limit={limit} remaining={remaining} reset={reset}')
+            return payload.get('results',[]) if payload.get('status') in ('OK','DELAYED') else []
+        except urllib.error.HTTPError as e:
+            _MASSIVE_LAST_CALL=time.monotonic()
+            if e.code!=429 or attempt>=len(backoffs):
+                print(f'Massive history unavailable for {ticker}:',repr(e))
+                return []
+            retry_after=e.headers.get('Retry-After') if e.headers else None
+            limit=e.headers.get('X-RateLimit-Limit') if e.headers else None
+            remaining=e.headers.get('X-RateLimit-Remaining') if e.headers else None
+            reset=e.headers.get('X-RateLimit-Reset') if e.headers else None
+            try:
+                retry_seconds=max(float(retry_after),0)+1 if retry_after is not None else backoffs[attempt]
+            except (TypeError,ValueError):
+                retry_seconds=backoffs[attempt]
+            print(f'Massive 429 for {ticker}: attempt {attempt+1}/4; retry_after={retry_after}; '
+                  f'limit={limit}; remaining={remaining}; reset={reset}; sleeping {retry_seconds:.0f}s')
+            time.sleep(retry_seconds)
+        except Exception as e:
+            _MASSIVE_LAST_CALL=time.monotonic()
+            print(f'Massive history unavailable for {ticker}:',repr(e))
+            return []
+    return []
 
 
 def massive_index_latest(candidates):
