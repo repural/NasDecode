@@ -1,10 +1,11 @@
-name: Test FedWatch Feature
+name: Test FedWatch Feature # rerun
 on:
   push:
     branches:
       - feature-fedwatch-card-20260924
     paths:
       - '.github/workflows/test-fedwatch-feature.yml'
+      - 'scripts/refresh.py'
 
 permissions:
   contents: read
