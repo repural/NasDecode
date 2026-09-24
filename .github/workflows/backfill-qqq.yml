@@ -1,0 +1,33 @@
+name: Backfill QQQ event reactions
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/backfill-qqq.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Load public event history
+        run: |
+          mkdir -p public
+          curl --fail --location --silent --show-error --retry 3 \
+            https://raw.githubusercontent.com/repural/NasCal/main/public/event-results.json \
+            -o public/event-results.json
+      - name: Calculate QQQ 15-minute and one-hour reactions
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: node scripts/fill-qqq-reactions.mjs
+      - name: Preserve calculated results for calendar update
+        uses: actions/upload-artifact@v4
+        with:
+          name: qqq-event-results
+          path: public/event-results.json
+          retention-days: 7
