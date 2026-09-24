@@ -18,10 +18,11 @@ const extraWindows = {
     { label: 'FOMC statement', timeET: '14:00', scheduleSource: 'https://www.federalreserve.gov/newsevents/pressreleases/monetary20260916a.htm', caveat: 'The +1h window overlaps the 14:30 ET Fed press conference.' }
   ]
 };
+const onlyDate = process.env.BACKFILL_DATE;
 const windows = archive.results.flatMap(record => {
   const indexed = archive.eventIndex[record.eventId];
   const date = indexed.eventDate;
-  if (!/^2026-09-/.test(date)) return [];
+  if (!/^2026-09-/.test(date) || (onlyDate && date !== onlyDate)) return [];
   const components = extraWindows[record.eventId] ??
     (/^\d{2}:\d{2}$/.test(indexed.timeET) ? [{label: record.eventId.slice(11), timeET: indexed.timeET, scheduleSource: record.sourceUrl}] : []);
   return components.map(component => ({eventId: record.eventId, date, ...component}));
@@ -29,7 +30,8 @@ const windows = archive.results.flatMap(record => {
 const tickerDates = new Map();
 for (const ticker of ['QQQ', 'NVDA', 'SMH']) {
   for (const date of [...new Set(windows.map(w => w.date))]) {
-    if (ticker === 'QQQ' && !windows.some(w => w.date === date && extraWindows[w.eventId])) continue;
+    if (ticker === 'QQQ' && !windows.some(w => w.date === date &&
+      (extraWindows[w.eventId] || !archive.results.find(r => r.eventId === w.eventId)?.qqqReaction))) continue;
     tickerDates.set(`${ticker}/${date}`, {ticker, date});
   }
 }
