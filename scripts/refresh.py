@@ -304,7 +304,14 @@ def explain_current_rows(rows):
             context=''
             if live('10Y Treasury Yield') and live('2Y Treasury yield'):
                 context=f" Rate levels remain {tone(by['10Y Treasury Yield'])} at the 10Y and {tone(by['2Y Treasury yield'])} at the 2Y."
-            r['explanation']=f'{x}. {interp} Overall volatility signal: {t}.{context}'
+            vm=re.search(r'VXN ([0-9.]+).*?VIX ([0-9.]+)',str(r.get('latest','')))
+            regime_text=''
+            if vm:
+                vxn_l=float(vm.group(1)); vix_l=float(vm.group(2))
+                vxn_band='very low' if vxn_l<=15 else ('low' if vxn_l<=18 else ('normal/moderate' if vxn_l<=23 else ('elevated' if vxn_l<=28 else ('high' if vxn_l<=33 else 'stress')))
+                vix_band='very low' if vix_l<=12 else ('low' if vix_l<=15 else ('normal/moderate' if vix_l<=20 else ('elevated' if vix_l<=25 else ('high' if vix_l<=30 else 'stress')))
+                regime_text=f' VXN is in a {vxn_band} regime; VIX is {vix_band}.'
+            r['explanation']=f'{x}. {interp}{regime_text} NasBoard weights VXN regime 50%, VIX regime 20%, VXN movement 20% and VIX movement 10%. Overall volatility signal: {t}.{context}'
         elif n=='Credit conditions':
             vol=f" Volatility is also {direction('Nasdaq volatility (VXN / VIX)')}, providing {'consistent risk-on confirmation' if signal('Nasdaq volatility (VXN / VIX)')=='positive' and r.get('signal')=='positive' else 'a separate cross-check on risk appetite'}." if live('Nasdaq volatility (VXN / VIX)') else ''
             r['explanation']=f'{x}. HYG versus LQD is a liquid credit-risk proxy: stronger high-yield relative performance suggests easier/risk-on conditions, while underperformance suggests tightening. Credit is {d.lower()} and {t}.{vol}'
@@ -735,14 +742,23 @@ def main():
         vx=q.get('.VXN'); vi=q.get('.VIX')
         if vx and vi:
             vxn=num(vx.get('last')); vix=num(vi.get('last')); vxnp=pct(vx); vixp=pct(vi)
-            # VXN is the Nasdaq-specific gauge and is primary; VIX is confirmation.
-            # Do not hide a large VXN move merely because broad-market VIX has not crossed the same threshold.
-            if vxnp is not None and vxnp>=2:
-                sig='mixed' if vixp is not None and vixp<=-2 else 'negative'
-            elif vxnp is not None and vxnp<=-2:
-                sig='mixed' if vixp is not None and vixp>=2 else 'positive'
-            else:
-                sig='mixed'
+            # Nasdaq volatility model: absolute regime dominates short-term movement.
+            # VXN is primary because NasBoard models Nasdaq; VIX confirms broad-market stress.
+            def vol_regime_score(value,levels):
+                if value is None: return 0.0
+                a,b,c,d,e=levels
+                if value<=a: return 1.0
+                if value<=b: return 0.70
+                if value<=c: return 0.20
+                if value<=d: return -0.40
+                if value<=e: return -0.70
+                return -1.0
+            vxn_reg=vol_regime_score(vxn,(15,18,23,28,33))
+            vix_reg=vol_regime_score(vix,(12,15,20,25,30))
+            vxn_move=max(-1,min(1,-(vxnp or 0)/8.0))
+            vix_move=max(-1,min(1,-(vixp or 0)/8.0))
+            vol_score=0.50*vxn_reg+0.20*vix_reg+0.20*vxn_move+0.10*vix_move
+            sig='positive' if vol_score>=0.20 else ('negative' if vol_score<=-0.20 else 'mixed')
             if vxnp is not None and vixp is not None and vxnp<0 and vixp<0: direction='Falling together'
             elif vxnp is not None and vixp is not None and vxnp>0 and vixp>0: direction='Rising together'
             elif vxnp is not None and vixp is not None and vxnp*vixp<0: direction='Diverging'
@@ -1056,9 +1072,23 @@ def main():
                 level_s=clamp((level-50)/25.0); velocity_s=clamp((ch or 0)/5.0)
                 return clamp(0.65*level_s+0.35*velocity_s)
         if n=='Nasdaq volatility (VXN / VIX)':
+            vxn_level=first_num(r'VXN ([0-9.]+)',t); vix_level=first_num(r'VIX ([0-9.]+)',t)
             vx=first_num(r'VXN [0-9.]+ \(([+-]?[0-9.]+)%\)',t)
             vi=first_num(r'VIX [0-9.]+ \(([+-]?[0-9.]+)%\)',t)
-            if vx is not None: return clamp(-0.75*clamp(vx/8.0)-0.25*clamp((vi or 0)/8.0))
+            def regime(value,levels):
+                if value is None: return 0.0
+                a,b,c,d,e=levels
+                if value<=a: return 1.0
+                if value<=b: return 0.70
+                if value<=c: return 0.20
+                if value<=d: return -0.40
+                if value<=e: return -0.70
+                return -1.0
+            if vxn_level is not None:
+                return clamp(0.50*regime(vxn_level,(15,18,23,28,33))+
+                             0.20*regime(vix_level,(12,15,20,25,30))+
+                             0.20*clamp(-(vx or 0)/8.0)+
+                             0.10*clamp(-(vi or 0)/8.0))
         if n=='Oil (WTI / Brent)':
             wm=first_num(r'WTI[^|]*\(([+-]?[0-9.]+)%\)',t); bm=first_num(r'Brent[^|]*\(([+-]?[0-9.]+)%\)',t)
             vals=[x for x in (wm,bm) if x is not None]
@@ -1401,6 +1431,36 @@ def main():
     previous_score=d.get('environmentScorePrevious',score)
     d['environmentTrend']='Improving ↑' if score>previous_score else ('Deteriorating ↓' if score<previous_score else 'Stable →')
     d['environmentScorePrevious']=score
+
+    # Deployment Environment is a separate opportunity/readiness gauge, not a Nasdaq direction score.
+    # It combines directional setup, volatility opportunity and consolidation risk so high fear alone
+    # can never produce an automatic "all-in" signal.
+    volrow=next((r for r in rows if r.get('factor')=='Nasdaq volatility (VXN / VIX)'),{})
+    vm=re.search(r'VXN ([0-9.]+).*?VIX ([0-9.]+)',str(volrow.get('latest','')))
+    dep_vxn=float(vm.group(1)) if vm else None
+    dep_vix=float(vm.group(2)) if vm else None
+    # Opportunity rises as fear becomes elevated, but is deliberately capped during stress.
+    if dep_vxn is not None:
+        fear=max(0,min(100,(dep_vxn-15)*100/18))
+    elif dep_vix is not None:
+        fear=max(0,min(100,(dep_vix-12)*100/18))
+    else:
+        fear=35.0
+    setup_readiness=max(0,min(100,(score+100)/2))
+    risk_readiness=max(0,min(100,100-float(d.get('consolidationRisk',{}).get('score',50))))
+    deployment_score=round(0.50*setup_readiness+0.30*fear+0.20*risk_readiness)
+    # In a clearly negative setup, high volatility is risk first, opportunity second.
+    if score<=-15: deployment_score=min(deployment_score,45)
+    if score<=-45: deployment_score=min(deployment_score,30)
+    if deployment_score>=75: dep_label='Strong Opportunity'; dep_signal='positive'
+    elif deployment_score>=55: dep_label='Constructive'; dep_signal='positive'
+    elif deployment_score>=35: dep_label='Selective'; dep_signal='mixed'
+    else: dep_label='Defensive'; dep_signal='negative'
+    d['deploymentEnvironment']={
+        'score':deployment_score,'label':dep_label,'signal':dep_signal,
+        'setupReadiness':round(setup_readiness),'volatilityOpportunity':round(fear),'riskReadiness':round(risk_readiness),
+        'explanation':f'Deployment Environment combines Nasdaq Setup readiness (50%), volatility opportunity (30%) and inverse Consolidation Risk (20%). High VXN/VIX increases potential opportunity, but a negative Setup caps the result so volatility stress never becomes an automatic fully-invested signal.'
+    }
 
     setup_explanation=build_setup_explanation(rows,score,d['environmentTrend'])
     if conviction_reduction:
