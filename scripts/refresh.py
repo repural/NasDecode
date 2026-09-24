@@ -1260,7 +1260,7 @@ def main():
     # Build the Nasdaq Setup narrative from the same factor state used by the score.
     # This is deliberately deterministic: it explains current evidence and conditional
     # triggers without inventing historical claims that are not yet backed by stored data.
-    def build_setup_explanation(rows, score, trend):
+    def build_setup_explanation(rows, score, trend, confidence=None):
         """Turn model state into a concise market interpretation instead of a data dump.
 
         The narrative uses only observations already verified by NasBoard. It prioritizes
@@ -1313,7 +1313,6 @@ def main():
         if signal('Nasdaq volatility (VXN / VIX)')=='negative': negatives.append('rising volatility')
         pos=', '.join(positives[:3]) or 'limited positive confirmation'
         neg=', '.join(negatives[:3]) or 'no major high-impact bearish confirmation'
-        confidence=confidence
         conf=f", {confidence}% confidence" if confidence is not None else ""
         assessment=f"The Nasdaq Setup is {label} ({score:+d}/100{conf}, {trend.lower()}). The current balance is {pos} on the supportive side versus {neg} as the main headwind."
 
@@ -1554,7 +1553,7 @@ def main():
         'explanation':f'Opportunity Score = 40% Setup readiness + 25% Recovery Confirmation + 20% inverse Consolidation Risk + 15% volatility opportunity unlocked by recovery. Recovery is built from VXN reversal (30%), breadth recovery (25%), semiconductor recovery (20%), 10Y yield stabilization (15%) and Setup improvement (10%). Current recovery confirmation is {recovery}%.'
     }
 
-    setup_explanation=build_setup_explanation(rows,score,nasdaq_trend)
+    setup_explanation=build_setup_explanation(rows,score,nasdaq_trend,confidence)
     if conviction_reduction:
         setup_explanation += " Elevated consolidation risk is reducing conviction in the directional setup."
 
