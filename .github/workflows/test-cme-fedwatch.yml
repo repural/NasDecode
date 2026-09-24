@@ -1,0 +1,25 @@
+name: Test CME FedWatch Package
+on:
+  push:
+    branches:
+      - test-tavily-api-20260924
+    paths:
+      - '.github/workflows/test-cme-fedwatch.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install package
+        run: pip install 'cme-fedwatch==0.2.1'
+      - name: Fetch probabilities
+        run: |
+          python - <<'PY'
+          import json
+          from cme_fedwatch import get_probabilities
+          d=get_probabilities()
+          print(json.dumps(d,indent=2,sort_keys=True))
+          PY
