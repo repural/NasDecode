@@ -65,7 +65,17 @@ async function barsFor(date) {
   url.searchParams.set("sort", "asc");
   url.searchParams.set("limit", "5000");
   // Authorization header keeps the key out of URLs, logs, and stored output.
-  const response = await fetch(url, { headers: { Authorization: `Bearer ${apiKey}` } });
+  let response;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    response = await fetch(url, { headers: { Authorization: `Bearer ${apiKey}` } });
+    if (response.status !== 429 || attempt === 3) break;
+    const retryAfter = Number(response.headers.get("retry-after"));
+    const delay = Number.isFinite(retryAfter) && retryAfter > 0
+      ? Math.min(retryAfter * 1000, 90000)
+      : 30000 * (attempt + 1);
+    console.log(`Massive rate limit on ${date}; retrying in ${Math.ceil(delay / 1000)}s`);
+    await new Promise(resolve => setTimeout(resolve, delay));
+  }
   if (!response.ok) throw new Error(`Massive HTTP ${response.status} for ${date}`);
   const data = await response.json();
   if (data.status !== "OK" || data.next_url) throw new Error(`Incomplete Massive minute bars for ${date}`);
@@ -75,7 +85,7 @@ const eligible = results.results.filter(item => times[item.eventId] && (!dateFil
 const dates = [...new Set(eligible.map(item => item.eventId.slice(0, 10)))];
 const byDate = new Map();
 for (const [index, date] of dates.entries()) {
-  if (index && index % 5 === 0 && !barsDir) await new Promise(resolve => setTimeout(resolve, 61000));
+  if (index && !barsDir) await new Promise(resolve => setTimeout(resolve, 14000));
   byDate.set(date, await barsFor(date));
 }
 let filled = 0;
