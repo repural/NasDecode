@@ -4,6 +4,10 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/backfill-qqq.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/qqq-run-request.txt'
   workflow_dispatch:
 permissions:
   contents: read
@@ -18,9 +22,7 @@ jobs:
       - name: Load public event history
         run: |
           mkdir -p public
-          curl --fail --location --silent --show-error --retry 3 \
-            https://raw.githubusercontent.com/repural/NasCal/main/public/event-results.json \
-            -o public/event-results.json
+          cp scripts/qqq-event-input.json public/event-results.json
       - name: Calculate QQQ 15-minute and one-hour reactions
         env:
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
