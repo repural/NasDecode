@@ -5,7 +5,7 @@
  * generated JSON and renders cards, model rows, factor rows, and the daily brief.
  */
 const C={positive:'green',negative:'red',mixed:'amber'};
-const STATIC_ORDER=['Nasdaq Setup','Consolidation Risk','Nasdaq volatility (VXN / VIX)','Options positioning / sentiment','10Y Treasury Yield','2Y Treasury yield','Oil (WTI / Brent)','Fed expectations','Economic / inflation data','Market breadth','Semiconductor leadership','Mega-cap leadership','Earnings AVWAP leadership','Technology earnings calendar'];
+const STATIC_ORDER=['Nasdaq Setup','Consolidation Risk','Nasdaq volatility (VXN / VIX)','Options positioning / sentiment','S&P 500 50D Breadth / Oversold','10Y Treasury Yield','2Y Treasury yield','Oil (WTI / Brent)','Fed expectations','Economic / inflation data','Market breadth','Semiconductor leadership','Mega-cap leadership','Earnings AVWAP leadership','Technology earnings calendar'];
 const orderOf=name=>{const i=STATIC_ORDER.indexOf(name);return i<0?STATIC_ORDER.length:i};
 const cleanSignal=s=>String(s??'').replace(/[🟢🔴🟡]/g,'').trim();
 // Escape model explanations before placing them in tooltip attributes.
