@@ -1719,6 +1719,13 @@ def main():
     for _rec in daily.setdefault('records',{}).values():
         if 'nasdaqScore' not in _rec and ('environmentScore' in _rec or 'environmentTrend' in _rec):
             _rec['nasdaqScore']={'score':_rec.pop('environmentScore',None),'trend':_rec.pop('environmentTrend',None)}
+        _ns=_rec.get('nasdaqScore')
+        if isinstance(_ns,dict) and _ns.get('score') is not None:
+            _s=_ns['score']
+            _ns.setdefault('rawScore',None); _ns.setdefault('previousScore',None)
+            _ns.setdefault('signal','positive' if _s>=15 else ('mixed' if _s>-15 else 'negative'))
+            _ns.setdefault('label','Strong Positive' if _s>=45 else ('Cautiously Positive' if _s>=15 else ('Mixed / Neutral' if _s>-15 else ('Cautiously Negative' if _s>-45 else 'Strong Negative'))))
+            _ns.setdefault('confidence',None); _ns.setdefault('coverage',None)
         _mp=_rec.get('modelPerformance')
         if isinstance(_mp,dict) and 'environmentScore' in _mp: _mp['nasdaqScore']=_mp.pop('environmentScore')
         _rec['schemaVersion']=2
@@ -1734,6 +1741,13 @@ def main():
     for _rec in intraday.setdefault('snapshots',[]):
         if 'nasdaqScore' not in _rec and ('environmentScore' in _rec or 'environmentTrend' in _rec):
             _rec['nasdaqScore']={'score':_rec.pop('environmentScore',None),'trend':_rec.pop('environmentTrend',None)}
+        _ns=_rec.get('nasdaqScore')
+        if isinstance(_ns,dict) and _ns.get('score') is not None:
+            _s=_ns['score']
+            _ns.setdefault('rawScore',None); _ns.setdefault('previousScore',None)
+            _ns.setdefault('signal','positive' if _s>=15 else ('mixed' if _s>-15 else 'negative'))
+            _ns.setdefault('label','Strong Positive' if _s>=45 else ('Cautiously Positive' if _s>=15 else ('Mixed / Neutral' if _s>-15 else ('Cautiously Negative' if _s>-45 else 'Strong Negative'))))
+            _ns.setdefault('confidence',None); _ns.setdefault('coverage',None)
         _mp=_rec.get('modelPerformance')
         if isinstance(_mp,dict) and 'environmentScore' in _mp: _mp['nasdaqScore']=_mp.pop('environmentScore')
         _rec['schemaVersion']=2
