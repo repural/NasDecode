@@ -431,6 +431,28 @@ def barchart_zq_prices():
     return out,stamps,'https://barchart.websol.barchart.com/'
 
 
+def latest_effr_context():
+    """Latest EFFR and target range from the New York Fed official rates API."""
+    url='https://markets.newyorkfed.org/api/rates/all/latest.json'
+    req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0','Accept':'application/json'})
+    with urllib.request.urlopen(req,timeout=20) as r:
+        data=json.loads(r.read().decode('utf-8',errors='replace'))
+    row=next((x for x in data.get('refRates',[]) if x.get('type')=='EFFR'),None)
+    if not row:
+        raise ValueError('EFFR not found in New York Fed latest rates API')
+    rate=num(row.get('percentRate'))
+    lower=num(row.get('targetRateFrom'))
+    upper=num(row.get('targetRateTo'))
+    if rate is None or lower is None or upper is None:
+        raise ValueError('Incomplete EFFR/target range in New York Fed latest rates API')
+    return {
+        'effr':rate,
+        'targetFrom':lower,
+        'targetTo':upper,
+        'effectiveDate':row.get('effectiveDate'),
+        'source':url
+    }
+
 def latest_effr():
     """Latest official effective fed funds rate from the Federal Reserve H.15 page."""
     url='https://www.federalreserve.gov/releases/h15/'
@@ -489,9 +511,10 @@ def fed_meeting_probabilities(now):
         from cme_fedwatch.calc import calculate, current_target_range
         from cme_fedwatch.fomc import get_upcoming_meetings, schedule_horizon, schedule_status
 
-        effr,effr_url=latest_effr()
+        effr_ctx=latest_effr_context()
+        effr=effr_ctx['effr']
         settlements=get_settlements()
-        current_range=current_target_range(effr)
+        current_range=(effr_ctx['targetFrom'],effr_ctx['targetTo'])
         meetings=get_upcoming_meetings(settlements.trade_date)
         raw=calculate(settlements.rows,meetings,current_range,schedule_horizon())
         current_lower=current_range[0]
@@ -525,7 +548,8 @@ def fed_meeting_probabilities(now):
             'tradeDate':settlements.trade_date.isoformat(),
             'effr':effr,
             'currentTarget':f'{current_range[0]:.2f}%-{current_range[1]:.2f}%',
-            'effrSource':effr_url,
+            'effrSource':effr_ctx['source'],
+            'effrEffectiveDate':effr_ctx.get('effectiveDate'),
             'settlementSource':'CME Group 30-Day Fed Funds futures settlements',
             'engine':'cme-fedwatch 0.2.1',
             'scheduleStatus':schedule_status(),
