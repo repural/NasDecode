@@ -339,7 +339,7 @@ def explain_current_rows(rows):
                 vxn_band='very low' if vxn_l<=15 else ('low' if vxn_l<=18 else ('normal/moderate' if vxn_l<=23 else ('elevated' if vxn_l<=28 else ('high' if vxn_l<=33 else 'stress'))))
                 vix_band='very low' if vix_l<=12 else ('low' if vix_l<=15 else ('normal/moderate' if vix_l<=20 else ('elevated' if vix_l<=25 else ('high' if vix_l<=30 else 'stress'))))
                 regime_text=f' VXN is in a {vxn_band} regime; VIX is {vix_band}.'
-            r['explanation']=f'{x}. {interp}{regime_text} NasBoard weights VXN regime 50%, VIX regime 20%, VXN movement 20% and VIX movement 10%. Overall volatility signal: {t}.{context}'
+            r['explanation']=f'{x}. {interp}{regime_text} Overall volatility signal: {t}.{context}'
         elif n=='Credit conditions':
             vol=f" Volatility is also {direction('Nasdaq volatility (VXN / VIX)')}, providing {'consistent risk-on confirmation' if signal('Nasdaq volatility (VXN / VIX)')=='positive' and r.get('signal')=='positive' else 'a separate cross-check on risk appetite'}." if live('Nasdaq volatility (VXN / VIX)') else ''
             r['explanation']=f'{x}. HYG versus LQD is a liquid credit-risk proxy: stronger high-yield relative performance suggests easier/risk-on conditions, while underperformance suggests tightening. Credit is {d.lower()} and {t}.{vol}'
@@ -1255,8 +1255,1099 @@ def main():
                 card={'value':f'{above}/{cov} above','arrow':'↑' if r.get('signal')=='positive' else ('↓' if r.get('signal')=='negative' else '→'),'change':f'median {md:+.1f}%'}
         elif n=='Oil (WTI / Brent)':
             m=re.search(r'WTI[^0-9]*([0-9.]+).*?[(]([+-]?[0-9.]+)%[)]',latest,re.I)
+            br=re.search(r'Brent[^0-9]*([0-9.]+).*?[(]([+-]?[0-9.]+)%[)]',latest,re.I)
             if m:
-                ch=float(m.group(2)); card={'value':'WTI '+m.group(1),'arrow':'↓' if ch<0 else ('↑' if ch>0 else '→'),'change':f'{ch:+.2f}%'}
+                ch=float(m.group(2)); card={'value':'WTI         elif n=='Market breadth':
+            m=re.search(r'([0-9]+)/([0-9]+) advancing [(]([0-9]+)%[)]',latest)
+            if m: card={'value':m.group(3)+'% advancing','arrow':'↑' if r.get('signal')=='positive' else ('↓' if r.get('signal')=='negative' else '→'),'change':''}
+        if n=='Nasdaq volatility (VXN / VIX)':\n            r['debug']='Formula: 50% VXN regime + 20% VIX regime + 20% VXN movement + 10% VIX movement. Regime thresholds — VXN: 15/18/23/28/33; VIX: 12/15/20/25/30.'\n        r['scorecard']=card
+
+    # Recompute summary cards from the refreshed rows instead of leaving stale labels in dashboard.json.
+    group_members={
+        'Rates / Macro':['Fed expectations','10Y Treasury Yield','Economic / inflation data','2Y Treasury yield','Oil (WTI / Brent)'],
+        'Semiconductors':['Semiconductor leadership'],
+        'Breadth':['Market breadth','Mega-cap leadership'],
+        'Risk / Credit':['Nasdaq volatility (VXN / VIX)','Credit conditions','Options positioning / sentiment'],
+        'AI / Fundamentals':['Earnings revisions','AI capex / monetization','Technology earnings calendar']
+    }
+    impact_w={'Very High':4,'High':3,'Medium':2,'Low':1}
+    sig_v={'positive':1,'negative':-1,'mixed':0}
+    byname={r['factor']:r for r in rows}
+    def group_signal(names):
+        items=[byname[x] for x in names if x in byname]
+        denom=sum(impact_w.get(x.get('currentImpact','Low'),1) for x in items)
+        score=sum(sig_v.get(x.get('signal','mixed'),0)*impact_w.get(x.get('currentImpact','Low'),1) for x in items)
+        norm=score/denom if denom else 0
+        return 'positive' if norm>=0.20 else ('negative' if norm<=-0.20 else 'mixed')
+    all_signal=group_signal([r['factor'] for r in rows])
+    labels={'positive':'🟢 Positive','negative':'🔴 Negative','mixed':'🟡 Mixed'}
+    for g in d.get('groups',[]):
+        sig=all_signal if g.get('name') in ('NASDAQ ENVIRONMENT','NASDAQ SETUP') else group_signal(group_members.get(g.get('name'),[]))
+        g['signal']=sig; g['label']=labels[sig]
+
+    # Public presentation metadata is generated here so the browser remains a dumb renderer.
+    group_explanations={
+        'NASDAQ SETUP':'Dynamic synthesis of the factors currently driving Nasdaq. It highlights the strongest supportive forces, the main headwinds, and the market conditions that would materially strengthen or weaken the setup.',
+        'Rates / Macro':'Combines Fed policy, Treasury yields and economic/inflation data. Falling yields or easier policy expectations are generally more supportive for growth stocks.',
+        'Semiconductors':'Tracks semiconductor leadership relative to QQQ. Strong chip participation often confirms Nasdaq technology momentum.',
+        'Breadth':'Measures how broadly Nasdaq-100 constituents participate. Broad participation generally makes index moves more robust.',
+        'Risk / Credit':'Combines volatility and credit conditions. Rising VXN/VIX or weaker high-yield credit can indicate increasing market stress.',
+        'AI / Fundamentals':'Summarizes earnings revisions, AI capex/monetization and technology earnings-event risk.'
+    }
+    for g in d.get('groups',[]):
+        if g.get('name')=='NASDAQ ENVIRONMENT': g['name']='NASDAQ SETUP'
+        g['explanation']=group_explanations.get(g.get('name'),'Summary of the latest signals in this category.')
+    # Build the Nasdaq Setup narrative from the same factor state used by the score.
+    # This is deliberately deterministic: it explains current evidence and conditional
+    # triggers without inventing historical claims that are not yet backed by stored data.
+    def build_setup_explanation(rows, score, trend, confidence=None):
+        """Turn model state into a concise market interpretation instead of a data dump.
+
+        The narrative uses only observations already verified by NasBoard. It prioritizes
+        rates, semiconductor confirmation, historical momentum, and actionable triggers;
+        unavailable/stale factors are omitted rather than rendered as awkward prose.
+        """
+        by={r['factor']:r for r in rows}
+        def row(name): return by.get(name,{})
+        def latest(name): return str(row(name).get('latest',''))
+        def signal(name): return row(name).get('signal','mixed')
+        def yield_value(name):
+            # Treasury rows can contain malformed display text if an upstream quote is
+            # unexpectedly scaled. Prefer the validated CNBC quote object for analysis.
+            sym='US10Y' if name=='10Y Treasury Yield' else 'US2Y'
+            x=q.get(sym,{}) if isinstance(q,dict) else {}
+            v=num(x.get('last')) if isinstance(x,dict) else None
+            return v if v is not None and 0 < v < 20 else None
+        y2=yield_value('2Y Treasury yield'); y10=yield_value('10Y Treasury Yield')
+        soxx=d.get('historicalContext',{}).get('SOXX',{})
+        qctx=d.get('historicalContext',{}).get('QQQ',{})
+        label='strong positive' if score>=45 else ('cautiously positive' if score>=15 else ('mixed/neutral' if score>-15 else ('cautiously negative' if score>-45 else 'strong negative')))
+
+        # Paragraph 1: explain the dominant cross-market evidence in natural language.
+        evidence=[]
+        if y2 is not None and y10 is not None:
+            evidence.append(f"Treasury yields remain the main pressure point, with the 2Y at {y2:.3f}% and the 10Y at {y10:.3f}%.")
+        st=soxx.get('streak')
+        if st:
+            direction='risen' if st>0 else 'fallen'
+            evidence.append(f"Semiconductor momentum remains an important equity confirmation: SOXX has {direction} for {abs(st)} consecutive session{'s' if abs(st)!=1 else ''}.")
+        if qctx.get('return5d') is not None and qctx.get('ma20Distance') is not None:
+            evidence.append(f"QQQ is {qctx['return5d']:+.2f}% over five sessions and {qctx['ma20Distance']:+.2f}% versus its 20-day average.")
+        oil=latest('Oil (WTI / Brent)')
+        om=re.search(r'Brent \$([0-9.]+) \(([+-]?[0-9.]+)%\)',oil)
+        if om:
+            move=float(om.group(2))
+            evidence.append(f"Brent is {move:+.2f}% at about ${float(om.group(1)):.2f}, {'providing some inflation relief' if move<0 else 'adding some inflation pressure'}.")
+
+        # Paragraph 2: synthesize the tension rather than listing internal factor names.
+        positives=[]
+        negatives=[]
+        if st and st>0: positives.append('persistent semiconductor momentum')
+        if signal('Market breadth')=='positive': positives.append('healthy market breadth')
+        if signal('Options positioning / sentiment')=='positive': positives.append('supportive options positioning')
+        if om and float(om.group(2))<0: positives.append('falling oil')
+        if signal('2Y Treasury yield')=='negative' or signal('10Y Treasury Yield')=='negative': negatives.append('elevated/rising Treasury yields')
+        if signal('Semiconductor leadership')=='negative': negatives.append('weaker intraday semiconductor leadership')
+        if signal('Earnings AVWAP leadership')=='positive': positives.append('semiconductor/AI leaders holding above their earnings AVWAPs')
+        elif signal('Earnings AVWAP leadership')=='negative': negatives.append('semiconductor/AI leaders trading below their earnings AVWAPs')
+        if signal('Nasdaq volatility (VXN / VIX)')=='negative': negatives.append('rising volatility')
+        pos=', '.join(positives[:3]) or 'limited positive confirmation'
+        neg=', '.join(negatives[:3]) or 'no major high-impact bearish confirmation'
+        conf=f", {confidence}% confidence" if confidence is not None else ""
+        assessment=f"The Nasdaq Setup is {label} ({score:+d}/100{conf}, {trend.lower()}). The current balance is {pos} on the supportive side versus {neg} as the main headwind."
+
+        # Paragraph 3: integrate active 3-Day Watch conditions into prose instead of
+        # dumping raw trigger rows in the UI.
+        active=[]
+        if y10 is not None and y10>5.05: active.append(f"the 10Y yield is above the 5.05% headwind threshold at {y10:.3f}%")
+        if signal('Semiconductor leadership')=='negative': active.append("semiconductor leadership is lagging QQQ")
+        if signal('Market breadth')=='negative': active.append("Nasdaq breadth is weak")
+        if signal('Nasdaq volatility (VXN / VIX)')=='negative': active.append("volatility is rising")
+        if active:
+            trigger="Near-term risk is concentrated in "+", ".join(active[:3])+". Improvement in these conditions would strengthen the setup; further deterioration would reduce conviction."
+        elif y10 is not None and 4.85 <= y10 <= 5.15:
+            trigger="The key confirmation remains the interaction between Treasury yields and semiconductor leadership. A sustained 10Y break above roughly 5.00–5.05% alongside weakening chips would materially weaken the setup; easing yields with stronger semiconductor participation would improve it."
+        else:
+            trigger="The key confirmation remains the interaction between yields, semiconductor leadership and breadth. Agreement across those areas would strengthen conviction; divergence would keep the setup less reliable."
+        return '\n\n'.join([x for x in [' '.join(evidence),assessment,trigger] if x])
+
+    impact_order={'Very High':0,'High':1,'Medium':2,'Low':3}
+    visible_rows=[r for r in rows if r.get('factor') not in background_factors]
+    visible_rows.sort(key=lambda r:impact_order.get(r.get('currentImpact','Low'),3))
+    for i,r in enumerate(visible_rows,1):
+        r['displayRank']=i
+        r['signalLabel']={'positive':'🟢 Positive','negative':'🔴 Negative','mixed':'🟡 Mixed'}.get(r.get('signal'),'🟡 Mixed')
+
+    # Consolidation / Extension Risk v2. This is separate from Nasdaq direction.
+    # Massive history supplies QQQ/SOXX momentum and trend extension immediately; session
+    # breadth, S5FI, VXN and Earnings AVWAP add participation/crowding confirmation.
+    def risk_band(v):
+        return 'Very High' if v>=75 else ('High' if v>=55 else ('Medium' if v>=30 else 'Low'))
+    components=[]; weighted=0.0; total_w=0.0
+    MODEL_WEIGHT=100.0
+    def add_component(name,score,weight,detail):
+        components.append({'name':name,'score':round(score,1),'weight':weight,'detail':detail})
+        return score*weight,weight
+    def add_metric(name,value,weight,threshold,scale,detail):
+        nonlocal_dummy=None
+        if value is None: return
+        score=min(100,max(0,(value-threshold)*scale))
+        a,b=add_component(name,score,weight,detail); return a,b
+
+    qctx=massive_context.get('QQQ',{}); sctx=massive_context.get('SOXX',{})
+    metric_specs=[
+        ('QQQ 1D return',qctx.get('return1d'),4,0.5,28),
+        ('QQQ 3D return',qctx.get('return3d'),6,1.5,18),
+        ('QQQ 5D return',qctx.get('return5d'),7,2.5,14),
+        ('QQQ vs 20DMA',qctx.get('ma20Distance'),9,1.0,18),
+        ('QQQ vs 50DMA',qctx.get('ma50Distance'),7,2.0,10),
+        ('QQQ RSI14',qctx.get('rsi14'),7,55.0,3.0),
+        ('SOXX 1D return',sctx.get('return1d'),4,0.75,22),
+        ('SOXX 3D return',sctx.get('return3d'),6,2.0,15),
+        ('SOXX 5D return',sctx.get('return5d'),7,3.0,12),
+        ('SOXX vs 20DMA',sctx.get('ma20Distance'),9,1.5,15),
+        ('SOXX vs 50DMA',sctx.get('ma50Distance'),7,3.0,8)
+    ]
+    for name,value,weight,threshold,scale in metric_specs:
+        if value is None: continue
+        score=min(100,max(0,(value-threshold)*scale))
+        suffix='' if 'RSI' in name else '%'
+        a,b=add_component(name,score,weight,f'{value:+.2f}{suffix}'); weighted+=a; total_w+=b
+
+    br=next((r for r in rows if r['factor']=='Market breadth'),{})
+    bpct=None
+    try: bpct=float(br.get('latest','').rsplit('(',1)[1].split('%',1)[0])
+    except (IndexError,ValueError): pass
+    if bpct is not None:
+        bs=min(100,max(0,(bpct-55)*2.5))
+        a,b=add_component('Nasdaq daily breadth',bs,5,f'{bpct:.0f}% advancing'); weighted+=a; total_w+=b
+
+    s5=next((r for r in rows if r['factor']=='S&P 500 50D Breadth / Oversold'),{})
+    # Prefer the direct row when CNBC supplies S5FI. Otherwise probe Massive's index
+    # namespace. Massive index symbols use the I: prefix; fail closed if S5FI is not
+    # included in the account's supported index universe.
+    if 'Awaiting S5FI' in str(s5.get('latest','')) or str(s5.get('freshness','')).startswith('STALE'):
+        ms5=massive_index_latest(['I:S5FI','S5FI'])
+        if ms5 and 0 <= ms5['value'] <= 100:
+            s5['latest']=f"{ms5['value']:.1f}% above 50D MA"
+            s5['direction']='Massive breadth reading'
+            s5['signal']='positive' if ms5['value']>=60 else ('negative' if ms5['value']<40 else 'mixed')
+            s5['freshness']=f"Massive index · {ms5['date']}"
+            s5['source']=f"Massive Indices API · {ms5['ticker']}"
+    s5m=re.search(r'([0-9.]+)% above 50D MA(?: · ([+-]?[0-9.]+) pp)?',str(s5.get('latest','')))
+    if s5m:
+        level=float(s5m.group(1)); change=float(s5m.group(2)) if s5m.group(2) else 0.0
+        s5score=min(100,max(0,(level-55)*3 + max(change,0)*4))
+        a,b=add_component('S5FI level + trend',s5score,7,f'{level:.1f}% · {change:+.1f} pp'); weighted+=a; total_w+=b
+
+    vxmove=num(q.get('.VXN',{}).get('change_pct')) if '.VXN' in q else None
+    if vxmove is not None:
+        vs=min(100,max(0,-vxmove*10)) if vxmove<0 else max(0,25-vxmove*5)
+        a,b=add_component('VXN behavior',vs,5,f'VXN {vxmove:+.2f}%'); weighted+=a; total_w+=b
+
+    avvals=list(avwap_details.values())
+    if avvals:
+        avdist=statistics.median(x['distancePct'] for x in avvals)
+        avscore=min(100,max(0,(avdist-2)*8))
+        a,b=add_component('Earnings AVWAP extension',avscore,10,f'median {avdist:+.2f}% · {sum(x["above"] for x in avvals)}/{len(avvals)} above'); weighted+=a; total_w+=b
+
+    risk_score=round(weighted/total_w) if total_w else None
+    d['consolidationRisk']={'score':risk_score,'level':risk_band(risk_score) if risk_score is not None else 'Unavailable',
+        "explanation":"Estimates near-term consolidation risk from market extension, breadth, volatility and leadership conditions. Calculated by NasBoard's proprietary real-time multi-factor scoring mechanism using the latest available inputs.",
+        'coverageWeight':round(100*total_w/MODEL_WEIGHT),'components':components,
+        'historyDays':qctx.get('bars',0),'unlocked':[x['name'] for x in components],
+        'note':'Higher means more extended/crowded. Missing inputs reduce model coverage rather than being guessed.'}
+
+    # Consolidation Risk is a conviction modifier, not directional evidence.
+    # High extension/crowding pulls the directional score toward zero regardless of sign,
+    # rather than mechanically making an already-bearish setup even more bearish.
+    conviction_reduction=0
+    if risk_score is not None:
+        if risk_score>=85: conviction_reduction=25
+        elif risk_score>=70: conviction_reduction=15
+        elif risk_score>=50: conviction_reduction=8
+        elif risk_score>=30: conviction_reduction=3
+    if raw_setup_score>0:
+        score=max(0,raw_setup_score-conviction_reduction)
+    elif raw_setup_score<0:
+        score=min(0,raw_setup_score+conviction_reduction)
+    else:
+        score=0
+    score=max(-100,min(100,score))
+    d['consolidationPenalty']=conviction_reduction
+    # The published Setup label/color is derived from the final v2 numerical score so
+    # the card can never disagree with the score after consolidation-risk adjustment.
+    if score>=45: setup_signal='positive'; setup_label='Strong Positive'
+    elif score>=15: setup_signal='positive'; setup_label='Cautiously Positive'
+    elif score>-15: setup_signal='mixed'; setup_label='Mixed / Neutral'
+    elif score>-45: setup_signal='negative'; setup_label='Cautiously Negative'
+    else: setup_signal='negative'; setup_label='Strong Negative'
+    for g in d.get('groups',[]):
+        if g.get('name')=='NASDAQ SETUP':
+            g['signal']=setup_signal
+            g['label']=setup_label
+    previous_score=legacy_previous if legacy_previous is not None else score
+    nasdaq_trend='Improving ↑' if score>previous_score else ('Deteriorating ↓' if score<previous_score else 'Stable →')
+    d['nasdaqScore']={'score':score,'rawScore':raw_setup_score,'previousScore':previous_score,'trend':nasdaq_trend,
+                      'signal':setup_signal,'label':setup_label,'confidence':confidence,'coverage':round(100*coverage),
+                      'model':nasdaq_model}
+
+    # Opportunity Score: is a dislocation becoming investable as market internals recover?
+    # This is deliberately separate from Nasdaq Setup (current environment) and
+    # Consolidation Risk (vulnerability). High volatility only helps when recovery confirms.
+    try:
+        with open(DAILY_PATH,encoding='utf-8') as hf:
+            _opp_daily=json.load(hf).get('records',{})
+    except (FileNotFoundError,json.JSONDecodeError):
+        _opp_daily={}
+    _opp_dates=sorted(_opp_daily.keys())[-5:]
+    _opp_hist=[_opp_daily[x] for x in _opp_dates]
+
+    def _clamp100(x): return max(0.0,min(100.0,float(x)))
+    def _row_latest(name):
+        return str(next((r for r in rows if r.get('factor')==name),{}).get('latest',''))
+    def _pct_in(text,pattern):
+        m=re.search(pattern,str(text),re.I)
+        return float(m.group(1)) if m else None
+    def _hist_factor_latest(rec,name):
+        return str(rec.get('factors',{}).get(name,{}).get('latest',''))
+
+    # S — current Nasdaq Setup mapped from -100..+100 to 0..100.
+    setup_readiness=_clamp100((score+100)/2)
+
+    # R1 — VXN reversal from the highest observation in the prior five stored sessions.
+    opp_vxn=num(q.get('.VXN',{}).get('last'))
+    hist_vxn=[num(x.get('market',{}).get('.VXN',{}).get('last')) for x in _opp_hist]
+    hist_vxn=[x for x in hist_vxn if x is not None]
+    vxn_reversal=None
+    if opp_vxn is not None and hist_vxn:
+        peak=max(hist_vxn+[opp_vxn])
+        vxn_reversal=_clamp100(((peak-opp_vxn)/peak)*500) if peak>0 else 0
+
+    # R2 — breadth recovery: +12.5 percentage points over the lookback reaches 100.
+    cur_breadth=_pct_in(_row_latest('Market breadth'),r'advancing\s*\(([0-9.]+)%\)')
+    old_breadth=None
+    for rec in _opp_hist:
+        x=_pct_in(_hist_factor_latest(rec,'Market breadth'),r'advancing\s*\(([0-9.]+)%\)')
+        if x is not None: old_breadth=x; break
+    breadth_recovery=_clamp100(50+4*(cur_breadth-old_breadth)) if cur_breadth is not None and old_breadth is not None else None
+
+    # R3 — semiconductor relative-leadership recovery versus QQQ.
+    cur_semi=_pct_in(_row_latest('Semiconductor leadership'),r'basket vs QQQ\s*([+-]?[0-9.]+)\s*pp')
+    old_semi=None
+    for rec in _opp_hist:
+        x=_pct_in(_hist_factor_latest(rec,'Semiconductor leadership'),r'basket vs QQQ\s*([+-]?[0-9.]+)\s*pp')
+        if x is not None: old_semi=x; break
+    semi_recovery=_clamp100(50+20*(cur_semi-old_semi)) if cur_semi is not None and old_semi is not None else None
+
+    # R4 — 10Y stabilization: a 10 bp fall over the lookback scores 100; +10 bp scores 0.
+    cur_y10=num(q.get('US10Y',{}).get('last'))
+    old_y10=None
+    for rec in _opp_hist:
+        x=num(rec.get('market',{}).get('US10Y',{}).get('last'))
+        if x is not None: old_y10=x; break
+    yield_stabilization=_clamp100(50-500*(cur_y10-old_y10)) if cur_y10 is not None and old_y10 is not None else None
+
+    # R5 — Setup improvement: +25 score points over the lookback reaches 100.
+    old_setup=None
+    for rec in _opp_hist:
+        x=num((rec.get('nasdaqScore') or {}).get('score',rec.get('environmentScore')))
+        if x is not None: old_setup=x; break
+    setup_improvement=_clamp100(50+2*(score-old_setup)) if old_setup is not None else None
+
+    recovery_parts=[
+        ('vxnReversal',vxn_reversal,0.30),('breadthRecovery',breadth_recovery,0.25),
+        ('semiconductorRecovery',semi_recovery,0.20),('yieldStabilization',yield_stabilization,0.15),
+        ('setupImprovement',setup_improvement,0.10)
+    ]
+    available=[x for x in recovery_parts if x[1] is not None]
+    recovery=round(sum(v*w for _,v,w in available)/sum(w for _,v,w in available)) if available else 0
+
+    # C — high Consolidation Risk is explicitly bad for opportunity.
+    consolidation_readiness=_clamp100(100-float(d.get('consolidationRisk',{}).get('score',50)))
+
+    # V — VXN dislocation. High fear creates capacity for opportunity; R unlocks it.
+    if opp_vxn is None: volatility_dislocation=0
+    elif opp_vxn<20: volatility_dislocation=0
+    elif opp_vxn<23: volatility_dislocation=25
+    elif opp_vxn<28: volatility_dislocation=50
+    elif opp_vxn<33: volatility_dislocation=75
+    else: volatility_dislocation=100
+    unlocked_volatility=volatility_dislocation*(recovery/100)
+
+    opportunity_score=round(0.40*setup_readiness+0.25*recovery+0.20*consolidation_readiness+0.15*unlocked_volatility)
+    if opportunity_score>=75: opp_label='Strong Opportunity'; opp_signal='positive'
+    elif opportunity_score>=60: opp_label='Attractive'; opp_signal='positive'
+    elif opportunity_score>=45: opp_label='Selective'; opp_signal='mixed'
+    elif opportunity_score>=25: opp_label='Limited'; opp_signal='mixed'
+    else: opp_label='Poor Opportunity'; opp_signal='negative'
+    d.pop('deploymentEnvironment',None)
+    d['opportunityScore']={
+        'score':opportunity_score,'label':opp_label,'signal':opp_signal,
+        'setupReadiness':round(setup_readiness),'recoveryConfirmation':recovery,
+        'consolidationReadiness':round(consolidation_readiness),
+        'volatilityDislocation':round(volatility_dislocation),
+        'unlockedVolatilityOpportunity':round(unlocked_volatility),
+        'recoveryComponents':{name:(round(v) if v is not None else None) for name,v,_ in recovery_parts},
+        'lookbackSessions':len(_opp_hist),
+        "explanation":"Measures how attractive current conditions are for deploying new capital by combining market setup, recovery evidence, consolidation risk and volatility context. Calculated by NasBoard's proprietary real-time multi-factor scoring mechanism using the latest available inputs.",\n        'debug':f'Formula: 40% Setup readiness + 25% Recovery Confirmation + 20% inverse Consolidation Risk + 15% volatility opportunity unlocked by recovery. Recovery formula: VXN reversal 30%, breadth recovery 25%, semiconductor recovery 20%, 10Y yield stabilization 15%, Setup improvement 10%. Lookback sessions: {len(_opp_hist)}. Current recovery confirmation: {recovery}%.'
+    }
+
+    setup_explanation=build_setup_explanation(rows,score,nasdaq_trend,confidence)
+    if conviction_reduction:
+        setup_explanation += " Elevated consolidation risk is reducing conviction in the directional setup."
+
+    # 3-Day Watch: material-change detector for the post-open Market Analysis.
+    # It mirrors the cross-market watch used for short-horizon Nasdaq monitoring:
+    # rates first, then Fed repricing, semiconductor confirmation, QQQ momentum,
+    # oil/inflation pressure, breadth and volatility. It only flags meaningful changes.
+    watch=[]
+    def watch_add(severity,title,detail):
+        watch.append({'severity':severity,'title':title,'detail':detail})
+    watch_by={r.get('factor'):r for r in rows}
+    def watch_signal(name): return watch_by.get(name,{}).get('signal','mixed')
+    def watch_latest(name): return str(watch_by.get(name,{}).get('latest',''))
+    semi_sig=watch_signal('Semiconductor leadership')
+    fed_sig=watch_signal('Fed expectations')
+    breadth_sig=watch_signal('Market breadth')
+    vol_sig=watch_signal('Nasdaq volatility (VXN / VIX)')
+    oil_sig=watch_signal('Oil (WTI / Brent)')
+    # Use numeric yield values from the factor rows here. Variables named y10/y2
+    # elsewhere in main() may hold raw quote dictionaries and must not leak into
+    # the 3-Day Watch comparisons.
+    def watch_pct(name):
+        m=re.search(r'([0-9]+(?:\\.[0-9]+)?)%',watch_latest(name))
+        return float(m.group(1)) if m else None
+    watch_y10=watch_pct('10Y Treasury Yield')
+    watch_y2=watch_pct('2Y Treasury yield')
+    if watch_y10 is not None:
+        if watch_y10>5.05:
+            watch_add('bearish','10Y above 5.05%',f'US10Y is {watch_y10:.3f}%, above the 3-Day Watch significant-headwind threshold.'+(f' US2Y is {watch_y2:.3f}%.' if watch_y2 is not None else ''))
+        elif watch_y10>5.00:
+            watch_add('bearish','10Y above 5.00%',f'US10Y is {watch_y10:.3f}%, in the restrictive 5.00–5.05% zone.')
+        elif watch_y10<4.95:
+            watch_add('bullish','10Y below 4.95%',f'US10Y is {watch_y10:.3f}%, inside the supportive 3-Day Watch zone.')
+    if fed_sig=='negative':
+        watch_add('bearish','Fed expectations repriced hawkishly',watch_latest('Fed expectations'))
+    elif fed_sig=='positive':
+        watch_add('bullish','Fed expectations eased',watch_latest('Fed expectations'))
+    if semi_sig=='negative':
+        watch_add('bearish','Semiconductor leadership weakened',watch_latest('Semiconductor leadership'))
+    elif semi_sig=='positive':
+        watch_add('bullish','Semiconductors confirm Nasdaq leadership',watch_latest('Semiconductor leadership'))
+    if breadth_sig=='negative':
+        watch_add('bearish','Market breadth deteriorated',watch_latest('Market breadth'))
+    elif breadth_sig=='positive':
+        watch_add('bullish','Market breadth broadened',watch_latest('Market breadth'))
+    if vol_sig=='negative':
+        watch_add('bearish','Nasdaq volatility is rising',watch_latest('Nasdaq volatility (VXN / VIX)'))
+    if oil_sig=='negative':
+        watch_add('bearish','Oil is adding inflation pressure',watch_latest('Oil (WTI / Brent)'))
+    elif oil_sig=='positive':
+        watch_add('bullish','Oil is easing inflation pressure',watch_latest('Oil (WTI / Brent)'))
+    if qctx.get('return3d') is not None:
+        r3=qctx['return3d']
+        if r3<=-1.5: watch_add('bearish','QQQ 3-day momentum weakened',f'QQQ 3-day return is {r3:+.2f}%.')
+        elif r3>=1.5: watch_add('bullish','QQQ 3-day momentum strengthened',f'QQQ 3-day return is {r3:+.2f}%.')
+    bearish=sum(x['severity']=='bearish' for x in watch); bullish=sum(x['severity']=='bullish' for x in watch)
+    material='bearish' if bearish>=2 and bearish>bullish else ('bullish' if bullish>=2 and bullish>bearish else 'mixed')
+    d['threeDayWatch']={'status':material,'bearishTriggers':bearish,'bullishTriggers':bullish,'triggers':watch,
+        'monitors':['QQQ 3-day momentum','US10Y','US2Y','Fed expectations','Semiconductor leadership vs QQQ','Market breadth','VXN/VIX','WTI/Brent'],
+        'thresholds':{'US10YSupportive':'<4.95%','US10YManageable':'4.95–5.00%','US10YRestrictive':'5.00–5.05%','US10YSignificantHeadwind':'>5.05%','QQQ3dMaterialMove':'±1.5%'}}
+    if material=='bearish':
+        setup_explanation="⚠️ Material bearish change. "+setup_explanation
+    elif material=='bullish':
+        setup_explanation="Material bullish improvement. "+setup_explanation
+    for g in d.get('groups',[]):
+        if g.get('name')=='NASDAQ SETUP': g['explanation']=setup_explanation
+
+    # Persist raw market observations so NasBoard builds its own historical dataset.
+    # Daily records are upserted; intraday snapshots are append-only per monthly file.
+    def quote_obs(sym):
+        x=q.get(sym,{})
+        stamp=x.get('last_timedate') or x.get('last_time')
+        # Parse CNBC dates without regex backslash ambiguity. Examples:
+        # "09/21/26 EDT" -> 2026-09-21; "2026-09-22 ..." -> 2026-09-22.
+        obs_date=None
+        for raw in (x.get('last_timedate'),x.get('last_time')):
+            if not raw: continue
+            txt=str(raw).strip()
+            token=txt.split()[0]
+            try:
+                if len(token)>=8 and token.count('/')==2:
+                    obs_date=datetime.datetime.strptime(token,'%m/%d/%y').date().isoformat(); break
+                if len(token)>=10 and token[4]=='-' and token[7]=='-':
+                    obs_date=datetime.date.fromisoformat(token[:10]).isoformat(); break
+            except ValueError:
+                pass
+        today=now.strftime('%Y-%m-%d')
+        # Time-only stamps from continuously trading instruments are current-day observations.
+        if obs_date is None and stamp:
+            token=str(stamp).strip().split()[0]
+            try:
+                datetime.datetime.strptime(token,'%H:%M')
+                obs_date=today
+            except ValueError:
+                try:
+                    datetime.datetime.strptime(token,'%I:%M')
+                    obs_date=today
+                except ValueError:
+                    pass
+        # CNBC exposes both timestamps and an explicit realTime flag. A same-day
+        # timestamp alone is not proof of real-time service, so retain both dimensions.
+        rt=str(x.get('realTime','')).strip().lower()
+        real_time=True if rt=='true' else (False if rt=='false' else None)
+        market_status=x.get('curmktstatus')
+        source=x.get('source')
+        provider=x.get('provider')
+        if obs_date==today:
+            state='live' if real_time is True else ('delayed_or_unspecified' if real_time is False else 'current_unknown_latency')
+        elif obs_date:
+            age=(datetime.date.fromisoformat(today)-datetime.date.fromisoformat(obs_date)).days
+            state='previous_close' if 0 < age <= 3 else ('live' if age==0 else 'stale')
+        else:
+            state='unknown'
+        return {'last':num(x.get('last')),'previousClose':num(x.get('previous_day_closing')),
+                'changePct':num(x.get('change_pct')) if x.get('change_pct') not in (None,'') else pct(x),
+                'timestamp':stamp,'observationDate':obs_date,'dataState':state,
+                'realTime':real_time,'marketStatus':market_status,'quoteSource':source,'provider':provider}
+    os.makedirs(HISTORY_DIR,exist_ok=True)
+    market_symbols=['.IXIC','QQQ','.SOX','NVDA','AMD','AVGO','TSM','MU','AAPL','MSFT','AMZN','GOOGL','META','TSLA',
+                    '.VXN','.VIX','US10Y','US2Y','@CL.1','@LCO.1','HYG','LQD']
+    market={sym:quote_obs(sym) for sym in market_symbols if sym in q}
+    # Persist a compact source/freshness audit so we can verify CNBC instrument-by-instrument
+    # instead of treating every CNBC response as equally live.
+    d.setdefault('diagnostics',{})['cnbcFreshness']={
+        sym:{k:v for k,v in obs.items() if k in ('timestamp','observationDate','dataState','realTime','marketStatus','quoteSource','provider')}
+        for sym,obs in market.items()
+    }
+    current_session=[sym for sym in BREADTH if sym in q and is_intraday(q[sym],now)]
+    pos=sum(1 for sym in current_session if (pct(q[sym]) or 0)>0)
+    breadth_obs={'valid':len(current_session),'advancers':pos,'decliners':len(current_session)-pos,
+                 'positivePct':round(100*pos/len(current_session),2) if current_session else None}
+    factor_state={r['factor']:{'signal':r.get('signal'),'currentImpact':r.get('currentImpact'),
+                              'trend':r.get('trend'),'latest':r.get('latest')} for r in rows}
+    curve_obs={'spreadBp':round(curve_2s10s,1) if curve_2s10s is not None else None,
+               'changeBp':round(curve_change,1) if curve_change is not None else None,
+               'shape':curve_regime} if curve_2s10s is not None else None
+    # Daily model-vs-market observation for later validation. Nasdaq Composite (.IXIC)
+    # is stored alongside the Environment Score so we can test same-day and, more
+    # importantly, forward 1D/3D/5D/10D relationships without look-ahead bias.
+    ixic=market.get('.IXIC',{})
+    model_perf={'nasdaqCompositeClose':ixic.get('last'),
+                'nasdaqCompositeObservationDate':ixic.get('observationDate'),
+                'nasdaqScore':d.get('nasdaqScore',{}).get('score')}
+    # Store each ticker's raw earnings-AVWAP observation in history. The price is the
+    # same current/session-aware CNBC quote used by the AVWAP factor at refresh time.
+    # Keeping AVWAP, price and distance together makes historical reconstruction/test use simple.
+    avwap_history={ticker:{
+        'earningsDate':x.get('earningsDate'),'anchorDate':x.get('anchorDate'),
+        'throughDate':x.get('throughDate'),'avwap':x.get('avwap'),
+        'price':x.get('price'),'distancePct':x.get('distancePct'),
+        'above':x.get('above'),'slope5dPct':x.get('slope5dPct'),
+        'sessions':x.get('sessions')
+    } for ticker,x in avwap_details.items()}
+    snapshot={'schemaVersion':2,'timestampET':now.isoformat(),'market':market,'breadth':breadth_obs,
+              'yieldCurve2s10s':curve_obs,'modelPerformance':model_perf,
+              'nasdaqScore':{k:v for k,v in d.get('nasdaqScore',{}).items() if k!='model'},
+              'earningsAvwap':avwap_history,'factors':factor_state}
+    try:
+        with open(DAILY_PATH,encoding='utf-8') as hf: daily=json.load(hf)
+    except (FileNotFoundError,json.JSONDecodeError):
+        daily={'schemaVersion':2,'records':{}}
+    daily['schemaVersion']=2
+    for _rec in daily.setdefault('records',{}).values():
+        if 'nasdaqScore' not in _rec and ('environmentScore' in _rec or 'environmentTrend' in _rec):
+            _rec['nasdaqScore']={'score':_rec.pop('environmentScore',None),'trend':_rec.pop('environmentTrend',None)}
+        _ns=_rec.get('nasdaqScore')
+        if isinstance(_ns,dict) and _ns.get('score') is not None:
+            _s=_ns['score']
+            _ns.setdefault('rawScore',None); _ns.setdefault('previousScore',None)
+            _ns.setdefault('signal','positive' if _s>=15 else ('mixed' if _s>-15 else 'negative'))
+            _ns.setdefault('label','Strong Positive' if _s>=45 else ('Cautiously Positive' if _s>=15 else ('Mixed / Neutral' if _s>-15 else ('Cautiously Negative' if _s>-45 else 'Strong Negative'))))
+            _ns.setdefault('confidence',None); _ns.setdefault('coverage',None)
+        _mp=_rec.get('modelPerformance')
+        if isinstance(_mp,dict) and 'environmentScore' in _mp: _mp['nasdaqScore']=_mp.pop('environmentScore')
+        _rec['schemaVersion']=2
+    daily['records'][now.strftime('%Y-%m-%d')]=snapshot
+    with open(DAILY_PATH,'w',encoding='utf-8') as hf: json.dump(daily,hf,ensure_ascii=False,indent=2)
+    month_path=os.path.join(HISTORY_DIR,'intraday',now.strftime('%Y-%m')+'.json')
+    os.makedirs(os.path.dirname(month_path),exist_ok=True)
+    try:
+        with open(month_path,encoding='utf-8') as hf: intraday=json.load(hf)
+    except (FileNotFoundError,json.JSONDecodeError):
+        intraday={'schemaVersion':2,'snapshots':[]}
+    intraday['schemaVersion']=2
+    for _rec in intraday.setdefault('snapshots',[]):
+        if 'nasdaqScore' not in _rec and ('environmentScore' in _rec or 'environmentTrend' in _rec):
+            _rec['nasdaqScore']={'score':_rec.pop('environmentScore',None),'trend':_rec.pop('environmentTrend',None)}
+        _ns=_rec.get('nasdaqScore')
+        if isinstance(_ns,dict) and _ns.get('score') is not None:
+            _s=_ns['score']
+            _ns.setdefault('rawScore',None); _ns.setdefault('previousScore',None)
+            _ns.setdefault('signal','positive' if _s>=15 else ('mixed' if _s>-15 else 'negative'))
+            _ns.setdefault('label','Strong Positive' if _s>=45 else ('Cautiously Positive' if _s>=15 else ('Mixed / Neutral' if _s>-15 else ('Cautiously Negative' if _s>-45 else 'Strong Negative'))))
+            _ns.setdefault('confidence',None); _ns.setdefault('coverage',None)
+        _mp=_rec.get('modelPerformance')
+        if isinstance(_mp,dict) and 'environmentScore' in _mp: _mp['nasdaqScore']=_mp.pop('environmentScore')
+        _rec['schemaVersion']=2
+    intraday['snapshots'].append(snapshot)
+    with open(month_path,'w',encoding='utf-8') as hf: json.dump(intraday,hf,ensure_ascii=False,indent=2)
+
+    # Only tactical/actionable factors are published to the dashboard. Background factors
+    # remain in factor_state/history above and continue contributing to Environment Score.
+    d['rows']=visible_rows
+    d['updatedET']=now.strftime('%b %d, %Y · %H:%M ET'); d['nextUpdateET']='09:30 / 10:30 ET on trading weekdays'
+    with open(PATH,'w',encoding='utf-8') as f:json.dump(d,f,ensure_ascii=False,indent=2)
+
+if __name__=='__main__':main()
++m.group(1),'arrow':'↓' if ch<0 else ('↑' if ch>0 else '→'),'change':f'{ch:+.2f}%'}
+                if br:
+                    bch=float(br.group(2)); card['secondaryValue']='Brent         elif n=='Market breadth':
+            m=re.search(r'([0-9]+)/([0-9]+) advancing [(]([0-9]+)%[)]',latest)
+            if m: card={'value':m.group(3)+'% advancing','arrow':'↑' if r.get('signal')=='positive' else ('↓' if r.get('signal')=='negative' else '→'),'change':''}
+        r['scorecard']=card
+
+    # Recompute summary cards from the refreshed rows instead of leaving stale labels in dashboard.json.
+    group_members={
+        'Rates / Macro':['Fed expectations','10Y Treasury Yield','Economic / inflation data','2Y Treasury yield','Oil (WTI / Brent)'],
+        'Semiconductors':['Semiconductor leadership'],
+        'Breadth':['Market breadth','Mega-cap leadership'],
+        'Risk / Credit':['Nasdaq volatility (VXN / VIX)','Credit conditions','Options positioning / sentiment'],
+        'AI / Fundamentals':['Earnings revisions','AI capex / monetization','Technology earnings calendar']
+    }
+    impact_w={'Very High':4,'High':3,'Medium':2,'Low':1}
+    sig_v={'positive':1,'negative':-1,'mixed':0}
+    byname={r['factor']:r for r in rows}
+    def group_signal(names):
+        items=[byname[x] for x in names if x in byname]
+        denom=sum(impact_w.get(x.get('currentImpact','Low'),1) for x in items)
+        score=sum(sig_v.get(x.get('signal','mixed'),0)*impact_w.get(x.get('currentImpact','Low'),1) for x in items)
+        norm=score/denom if denom else 0
+        return 'positive' if norm>=0.20 else ('negative' if norm<=-0.20 else 'mixed')
+    all_signal=group_signal([r['factor'] for r in rows])
+    labels={'positive':'🟢 Positive','negative':'🔴 Negative','mixed':'🟡 Mixed'}
+    for g in d.get('groups',[]):
+        sig=all_signal if g.get('name') in ('NASDAQ ENVIRONMENT','NASDAQ SETUP') else group_signal(group_members.get(g.get('name'),[]))
+        g['signal']=sig; g['label']=labels[sig]
+
+    # Public presentation metadata is generated here so the browser remains a dumb renderer.
+    group_explanations={
+        'NASDAQ SETUP':'Dynamic synthesis of the factors currently driving Nasdaq. It highlights the strongest supportive forces, the main headwinds, and the market conditions that would materially strengthen or weaken the setup.',
+        'Rates / Macro':'Combines Fed policy, Treasury yields and economic/inflation data. Falling yields or easier policy expectations are generally more supportive for growth stocks.',
+        'Semiconductors':'Tracks semiconductor leadership relative to QQQ. Strong chip participation often confirms Nasdaq technology momentum.',
+        'Breadth':'Measures how broadly Nasdaq-100 constituents participate. Broad participation generally makes index moves more robust.',
+        'Risk / Credit':'Combines volatility and credit conditions. Rising VXN/VIX or weaker high-yield credit can indicate increasing market stress.',
+        'AI / Fundamentals':'Summarizes earnings revisions, AI capex/monetization and technology earnings-event risk.'
+    }
+    for g in d.get('groups',[]):
+        if g.get('name')=='NASDAQ ENVIRONMENT': g['name']='NASDAQ SETUP'
+        g['explanation']=group_explanations.get(g.get('name'),'Summary of the latest signals in this category.')
+    # Build the Nasdaq Setup narrative from the same factor state used by the score.
+    # This is deliberately deterministic: it explains current evidence and conditional
+    # triggers without inventing historical claims that are not yet backed by stored data.
+    def build_setup_explanation(rows, score, trend, confidence=None):
+        """Turn model state into a concise market interpretation instead of a data dump.
+
+        The narrative uses only observations already verified by NasBoard. It prioritizes
+        rates, semiconductor confirmation, historical momentum, and actionable triggers;
+        unavailable/stale factors are omitted rather than rendered as awkward prose.
+        """
+        by={r['factor']:r for r in rows}
+        def row(name): return by.get(name,{})
+        def latest(name): return str(row(name).get('latest',''))
+        def signal(name): return row(name).get('signal','mixed')
+        def yield_value(name):
+            # Treasury rows can contain malformed display text if an upstream quote is
+            # unexpectedly scaled. Prefer the validated CNBC quote object for analysis.
+            sym='US10Y' if name=='10Y Treasury Yield' else 'US2Y'
+            x=q.get(sym,{}) if isinstance(q,dict) else {}
+            v=num(x.get('last')) if isinstance(x,dict) else None
+            return v if v is not None and 0 < v < 20 else None
+        y2=yield_value('2Y Treasury yield'); y10=yield_value('10Y Treasury Yield')
+        soxx=d.get('historicalContext',{}).get('SOXX',{})
+        qctx=d.get('historicalContext',{}).get('QQQ',{})
+        label='strong positive' if score>=45 else ('cautiously positive' if score>=15 else ('mixed/neutral' if score>-15 else ('cautiously negative' if score>-45 else 'strong negative')))
+
+        # Paragraph 1: explain the dominant cross-market evidence in natural language.
+        evidence=[]
+        if y2 is not None and y10 is not None:
+            evidence.append(f"Treasury yields remain the main pressure point, with the 2Y at {y2:.3f}% and the 10Y at {y10:.3f}%.")
+        st=soxx.get('streak')
+        if st:
+            direction='risen' if st>0 else 'fallen'
+            evidence.append(f"Semiconductor momentum remains an important equity confirmation: SOXX has {direction} for {abs(st)} consecutive session{'s' if abs(st)!=1 else ''}.")
+        if qctx.get('return5d') is not None and qctx.get('ma20Distance') is not None:
+            evidence.append(f"QQQ is {qctx['return5d']:+.2f}% over five sessions and {qctx['ma20Distance']:+.2f}% versus its 20-day average.")
+        oil=latest('Oil (WTI / Brent)')
+        om=re.search(r'Brent \$([0-9.]+) \(([+-]?[0-9.]+)%\)',oil)
+        if om:
+            move=float(om.group(2))
+            evidence.append(f"Brent is {move:+.2f}% at about ${float(om.group(1)):.2f}, {'providing some inflation relief' if move<0 else 'adding some inflation pressure'}.")
+
+        # Paragraph 2: synthesize the tension rather than listing internal factor names.
+        positives=[]
+        negatives=[]
+        if st and st>0: positives.append('persistent semiconductor momentum')
+        if signal('Market breadth')=='positive': positives.append('healthy market breadth')
+        if signal('Options positioning / sentiment')=='positive': positives.append('supportive options positioning')
+        if om and float(om.group(2))<0: positives.append('falling oil')
+        if signal('2Y Treasury yield')=='negative' or signal('10Y Treasury Yield')=='negative': negatives.append('elevated/rising Treasury yields')
+        if signal('Semiconductor leadership')=='negative': negatives.append('weaker intraday semiconductor leadership')
+        if signal('Earnings AVWAP leadership')=='positive': positives.append('semiconductor/AI leaders holding above their earnings AVWAPs')
+        elif signal('Earnings AVWAP leadership')=='negative': negatives.append('semiconductor/AI leaders trading below their earnings AVWAPs')
+        if signal('Nasdaq volatility (VXN / VIX)')=='negative': negatives.append('rising volatility')
+        pos=', '.join(positives[:3]) or 'limited positive confirmation'
+        neg=', '.join(negatives[:3]) or 'no major high-impact bearish confirmation'
+        conf=f", {confidence}% confidence" if confidence is not None else ""
+        assessment=f"The Nasdaq Setup is {label} ({score:+d}/100{conf}, {trend.lower()}). The current balance is {pos} on the supportive side versus {neg} as the main headwind."
+
+        # Paragraph 3: integrate active 3-Day Watch conditions into prose instead of
+        # dumping raw trigger rows in the UI.
+        active=[]
+        if y10 is not None and y10>5.05: active.append(f"the 10Y yield is above the 5.05% headwind threshold at {y10:.3f}%")
+        if signal('Semiconductor leadership')=='negative': active.append("semiconductor leadership is lagging QQQ")
+        if signal('Market breadth')=='negative': active.append("Nasdaq breadth is weak")
+        if signal('Nasdaq volatility (VXN / VIX)')=='negative': active.append("volatility is rising")
+        if active:
+            trigger="Near-term risk is concentrated in "+", ".join(active[:3])+". Improvement in these conditions would strengthen the setup; further deterioration would reduce conviction."
+        elif y10 is not None and 4.85 <= y10 <= 5.15:
+            trigger="The key confirmation remains the interaction between Treasury yields and semiconductor leadership. A sustained 10Y break above roughly 5.00–5.05% alongside weakening chips would materially weaken the setup; easing yields with stronger semiconductor participation would improve it."
+        else:
+            trigger="The key confirmation remains the interaction between yields, semiconductor leadership and breadth. Agreement across those areas would strengthen conviction; divergence would keep the setup less reliable."
+        return '\n\n'.join([x for x in [' '.join(evidence),assessment,trigger] if x])
+
+    impact_order={'Very High':0,'High':1,'Medium':2,'Low':3}
+    visible_rows=[r for r in rows if r.get('factor') not in background_factors]
+    visible_rows.sort(key=lambda r:impact_order.get(r.get('currentImpact','Low'),3))
+    for i,r in enumerate(visible_rows,1):
+        r['displayRank']=i
+        r['signalLabel']={'positive':'🟢 Positive','negative':'🔴 Negative','mixed':'🟡 Mixed'}.get(r.get('signal'),'🟡 Mixed')
+
+    # Consolidation / Extension Risk v2. This is separate from Nasdaq direction.
+    # Massive history supplies QQQ/SOXX momentum and trend extension immediately; session
+    # breadth, S5FI, VXN and Earnings AVWAP add participation/crowding confirmation.
+    def risk_band(v):
+        return 'Very High' if v>=75 else ('High' if v>=55 else ('Medium' if v>=30 else 'Low'))
+    components=[]; weighted=0.0; total_w=0.0
+    MODEL_WEIGHT=100.0
+    def add_component(name,score,weight,detail):
+        components.append({'name':name,'score':round(score,1),'weight':weight,'detail':detail})
+        return score*weight,weight
+    def add_metric(name,value,weight,threshold,scale,detail):
+        nonlocal_dummy=None
+        if value is None: return
+        score=min(100,max(0,(value-threshold)*scale))
+        a,b=add_component(name,score,weight,detail); return a,b
+
+    qctx=massive_context.get('QQQ',{}); sctx=massive_context.get('SOXX',{})
+    metric_specs=[
+        ('QQQ 1D return',qctx.get('return1d'),4,0.5,28),
+        ('QQQ 3D return',qctx.get('return3d'),6,1.5,18),
+        ('QQQ 5D return',qctx.get('return5d'),7,2.5,14),
+        ('QQQ vs 20DMA',qctx.get('ma20Distance'),9,1.0,18),
+        ('QQQ vs 50DMA',qctx.get('ma50Distance'),7,2.0,10),
+        ('QQQ RSI14',qctx.get('rsi14'),7,55.0,3.0),
+        ('SOXX 1D return',sctx.get('return1d'),4,0.75,22),
+        ('SOXX 3D return',sctx.get('return3d'),6,2.0,15),
+        ('SOXX 5D return',sctx.get('return5d'),7,3.0,12),
+        ('SOXX vs 20DMA',sctx.get('ma20Distance'),9,1.5,15),
+        ('SOXX vs 50DMA',sctx.get('ma50Distance'),7,3.0,8)
+    ]
+    for name,value,weight,threshold,scale in metric_specs:
+        if value is None: continue
+        score=min(100,max(0,(value-threshold)*scale))
+        suffix='' if 'RSI' in name else '%'
+        a,b=add_component(name,score,weight,f'{value:+.2f}{suffix}'); weighted+=a; total_w+=b
+
+    br=next((r for r in rows if r['factor']=='Market breadth'),{})
+    bpct=None
+    try: bpct=float(br.get('latest','').rsplit('(',1)[1].split('%',1)[0])
+    except (IndexError,ValueError): pass
+    if bpct is not None:
+        bs=min(100,max(0,(bpct-55)*2.5))
+        a,b=add_component('Nasdaq daily breadth',bs,5,f'{bpct:.0f}% advancing'); weighted+=a; total_w+=b
+
+    s5=next((r for r in rows if r['factor']=='S&P 500 50D Breadth / Oversold'),{})
+    # Prefer the direct row when CNBC supplies S5FI. Otherwise probe Massive's index
+    # namespace. Massive index symbols use the I: prefix; fail closed if S5FI is not
+    # included in the account's supported index universe.
+    if 'Awaiting S5FI' in str(s5.get('latest','')) or str(s5.get('freshness','')).startswith('STALE'):
+        ms5=massive_index_latest(['I:S5FI','S5FI'])
+        if ms5 and 0 <= ms5['value'] <= 100:
+            s5['latest']=f"{ms5['value']:.1f}% above 50D MA"
+            s5['direction']='Massive breadth reading'
+            s5['signal']='positive' if ms5['value']>=60 else ('negative' if ms5['value']<40 else 'mixed')
+            s5['freshness']=f"Massive index · {ms5['date']}"
+            s5['source']=f"Massive Indices API · {ms5['ticker']}"
+    s5m=re.search(r'([0-9.]+)% above 50D MA(?: · ([+-]?[0-9.]+) pp)?',str(s5.get('latest','')))
+    if s5m:
+        level=float(s5m.group(1)); change=float(s5m.group(2)) if s5m.group(2) else 0.0
+        s5score=min(100,max(0,(level-55)*3 + max(change,0)*4))
+        a,b=add_component('S5FI level + trend',s5score,7,f'{level:.1f}% · {change:+.1f} pp'); weighted+=a; total_w+=b
+
+    vxmove=num(q.get('.VXN',{}).get('change_pct')) if '.VXN' in q else None
+    if vxmove is not None:
+        vs=min(100,max(0,-vxmove*10)) if vxmove<0 else max(0,25-vxmove*5)
+        a,b=add_component('VXN behavior',vs,5,f'VXN {vxmove:+.2f}%'); weighted+=a; total_w+=b
+
+    avvals=list(avwap_details.values())
+    if avvals:
+        avdist=statistics.median(x['distancePct'] for x in avvals)
+        avscore=min(100,max(0,(avdist-2)*8))
+        a,b=add_component('Earnings AVWAP extension',avscore,10,f'median {avdist:+.2f}% · {sum(x["above"] for x in avvals)}/{len(avvals)} above'); weighted+=a; total_w+=b
+
+    risk_score=round(weighted/total_w) if total_w else None
+    d['consolidationRisk']={'score':risk_score,'level':risk_band(risk_score) if risk_score is not None else 'Unavailable',
+        'explanation':'Estimates near-term consolidation risk from a proprietary blend of market conditions.',
+        'coverageWeight':round(100*total_w/MODEL_WEIGHT),'components':components,
+        'historyDays':qctx.get('bars',0),'unlocked':[x['name'] for x in components],
+        'note':'Higher means more extended/crowded. Missing inputs reduce model coverage rather than being guessed.'}
+
+    # Consolidation Risk is a conviction modifier, not directional evidence.
+    # High extension/crowding pulls the directional score toward zero regardless of sign,
+    # rather than mechanically making an already-bearish setup even more bearish.
+    conviction_reduction=0
+    if risk_score is not None:
+        if risk_score>=85: conviction_reduction=25
+        elif risk_score>=70: conviction_reduction=15
+        elif risk_score>=50: conviction_reduction=8
+        elif risk_score>=30: conviction_reduction=3
+    if raw_setup_score>0:
+        score=max(0,raw_setup_score-conviction_reduction)
+    elif raw_setup_score<0:
+        score=min(0,raw_setup_score+conviction_reduction)
+    else:
+        score=0
+    score=max(-100,min(100,score))
+    d['consolidationPenalty']=conviction_reduction
+    # The published Setup label/color is derived from the final v2 numerical score so
+    # the card can never disagree with the score after consolidation-risk adjustment.
+    if score>=45: setup_signal='positive'; setup_label='Strong Positive'
+    elif score>=15: setup_signal='positive'; setup_label='Cautiously Positive'
+    elif score>-15: setup_signal='mixed'; setup_label='Mixed / Neutral'
+    elif score>-45: setup_signal='negative'; setup_label='Cautiously Negative'
+    else: setup_signal='negative'; setup_label='Strong Negative'
+    for g in d.get('groups',[]):
+        if g.get('name')=='NASDAQ SETUP':
+            g['signal']=setup_signal
+            g['label']=setup_label
+    previous_score=legacy_previous if legacy_previous is not None else score
+    nasdaq_trend='Improving ↑' if score>previous_score else ('Deteriorating ↓' if score<previous_score else 'Stable →')
+    d['nasdaqScore']={'score':score,'rawScore':raw_setup_score,'previousScore':previous_score,'trend':nasdaq_trend,
+                      'signal':setup_signal,'label':setup_label,'confidence':confidence,'coverage':round(100*coverage),
+                      'model':nasdaq_model}
+
+    # Opportunity Score: is a dislocation becoming investable as market internals recover?
+    # This is deliberately separate from Nasdaq Setup (current environment) and
+    # Consolidation Risk (vulnerability). High volatility only helps when recovery confirms.
+    try:
+        with open(DAILY_PATH,encoding='utf-8') as hf:
+            _opp_daily=json.load(hf).get('records',{})
+    except (FileNotFoundError,json.JSONDecodeError):
+        _opp_daily={}
+    _opp_dates=sorted(_opp_daily.keys())[-5:]
+    _opp_hist=[_opp_daily[x] for x in _opp_dates]
+
+    def _clamp100(x): return max(0.0,min(100.0,float(x)))
+    def _row_latest(name):
+        return str(next((r for r in rows if r.get('factor')==name),{}).get('latest',''))
+    def _pct_in(text,pattern):
+        m=re.search(pattern,str(text),re.I)
+        return float(m.group(1)) if m else None
+    def _hist_factor_latest(rec,name):
+        return str(rec.get('factors',{}).get(name,{}).get('latest',''))
+
+    # S — current Nasdaq Setup mapped from -100..+100 to 0..100.
+    setup_readiness=_clamp100((score+100)/2)
+
+    # R1 — VXN reversal from the highest observation in the prior five stored sessions.
+    opp_vxn=num(q.get('.VXN',{}).get('last'))
+    hist_vxn=[num(x.get('market',{}).get('.VXN',{}).get('last')) for x in _opp_hist]
+    hist_vxn=[x for x in hist_vxn if x is not None]
+    vxn_reversal=None
+    if opp_vxn is not None and hist_vxn:
+        peak=max(hist_vxn+[opp_vxn])
+        vxn_reversal=_clamp100(((peak-opp_vxn)/peak)*500) if peak>0 else 0
+
+    # R2 — breadth recovery: +12.5 percentage points over the lookback reaches 100.
+    cur_breadth=_pct_in(_row_latest('Market breadth'),r'advancing\s*\(([0-9.]+)%\)')
+    old_breadth=None
+    for rec in _opp_hist:
+        x=_pct_in(_hist_factor_latest(rec,'Market breadth'),r'advancing\s*\(([0-9.]+)%\)')
+        if x is not None: old_breadth=x; break
+    breadth_recovery=_clamp100(50+4*(cur_breadth-old_breadth)) if cur_breadth is not None and old_breadth is not None else None
+
+    # R3 — semiconductor relative-leadership recovery versus QQQ.
+    cur_semi=_pct_in(_row_latest('Semiconductor leadership'),r'basket vs QQQ\s*([+-]?[0-9.]+)\s*pp')
+    old_semi=None
+    for rec in _opp_hist:
+        x=_pct_in(_hist_factor_latest(rec,'Semiconductor leadership'),r'basket vs QQQ\s*([+-]?[0-9.]+)\s*pp')
+        if x is not None: old_semi=x; break
+    semi_recovery=_clamp100(50+20*(cur_semi-old_semi)) if cur_semi is not None and old_semi is not None else None
+
+    # R4 — 10Y stabilization: a 10 bp fall over the lookback scores 100; +10 bp scores 0.
+    cur_y10=num(q.get('US10Y',{}).get('last'))
+    old_y10=None
+    for rec in _opp_hist:
+        x=num(rec.get('market',{}).get('US10Y',{}).get('last'))
+        if x is not None: old_y10=x; break
+    yield_stabilization=_clamp100(50-500*(cur_y10-old_y10)) if cur_y10 is not None and old_y10 is not None else None
+
+    # R5 — Setup improvement: +25 score points over the lookback reaches 100.
+    old_setup=None
+    for rec in _opp_hist:
+        x=num((rec.get('nasdaqScore') or {}).get('score',rec.get('environmentScore')))
+        if x is not None: old_setup=x; break
+    setup_improvement=_clamp100(50+2*(score-old_setup)) if old_setup is not None else None
+
+    recovery_parts=[
+        ('vxnReversal',vxn_reversal,0.30),('breadthRecovery',breadth_recovery,0.25),
+        ('semiconductorRecovery',semi_recovery,0.20),('yieldStabilization',yield_stabilization,0.15),
+        ('setupImprovement',setup_improvement,0.10)
+    ]
+    available=[x for x in recovery_parts if x[1] is not None]
+    recovery=round(sum(v*w for _,v,w in available)/sum(w for _,v,w in available)) if available else 0
+
+    # C — high Consolidation Risk is explicitly bad for opportunity.
+    consolidation_readiness=_clamp100(100-float(d.get('consolidationRisk',{}).get('score',50)))
+
+    # V — VXN dislocation. High fear creates capacity for opportunity; R unlocks it.
+    if opp_vxn is None: volatility_dislocation=0
+    elif opp_vxn<20: volatility_dislocation=0
+    elif opp_vxn<23: volatility_dislocation=25
+    elif opp_vxn<28: volatility_dislocation=50
+    elif opp_vxn<33: volatility_dislocation=75
+    else: volatility_dislocation=100
+    unlocked_volatility=volatility_dislocation*(recovery/100)
+
+    opportunity_score=round(0.40*setup_readiness+0.25*recovery+0.20*consolidation_readiness+0.15*unlocked_volatility)
+    if opportunity_score>=75: opp_label='Strong Opportunity'; opp_signal='positive'
+    elif opportunity_score>=60: opp_label='Attractive'; opp_signal='positive'
+    elif opportunity_score>=45: opp_label='Selective'; opp_signal='mixed'
+    elif opportunity_score>=25: opp_label='Limited'; opp_signal='mixed'
+    else: opp_label='Poor Opportunity'; opp_signal='negative'
+    d.pop('deploymentEnvironment',None)
+    d['opportunityScore']={
+        'score':opportunity_score,'label':opp_label,'signal':opp_signal,
+        'setupReadiness':round(setup_readiness),'recoveryConfirmation':recovery,
+        'consolidationReadiness':round(consolidation_readiness),
+        'volatilityDislocation':round(volatility_dislocation),
+        'unlockedVolatilityOpportunity':round(unlocked_volatility),
+        'recoveryComponents':{name:(round(v) if v is not None else None) for name,v,_ in recovery_parts},
+        'lookbackSessions':len(_opp_hist),
+        'explanation':f'Opportunity Score = 40% Setup readiness + 25% Recovery Confirmation + 20% inverse Consolidation Risk + 15% volatility opportunity unlocked by recovery. Recovery is built from VXN reversal (30%), breadth recovery (25%), semiconductor recovery (20%), 10Y yield stabilization (15%) and Setup improvement (10%). Current recovery confirmation is {recovery}%.'
+    }
+
+    setup_explanation=build_setup_explanation(rows,score,nasdaq_trend,confidence)
+    if conviction_reduction:
+        setup_explanation += " Elevated consolidation risk is reducing conviction in the directional setup."
+
+    # 3-Day Watch: material-change detector for the post-open Market Analysis.
+    # It mirrors the cross-market watch used for short-horizon Nasdaq monitoring:
+    # rates first, then Fed repricing, semiconductor confirmation, QQQ momentum,
+    # oil/inflation pressure, breadth and volatility. It only flags meaningful changes.
+    watch=[]
+    def watch_add(severity,title,detail):
+        watch.append({'severity':severity,'title':title,'detail':detail})
+    watch_by={r.get('factor'):r for r in rows}
+    def watch_signal(name): return watch_by.get(name,{}).get('signal','mixed')
+    def watch_latest(name): return str(watch_by.get(name,{}).get('latest',''))
+    semi_sig=watch_signal('Semiconductor leadership')
+    fed_sig=watch_signal('Fed expectations')
+    breadth_sig=watch_signal('Market breadth')
+    vol_sig=watch_signal('Nasdaq volatility (VXN / VIX)')
+    oil_sig=watch_signal('Oil (WTI / Brent)')
+    # Use numeric yield values from the factor rows here. Variables named y10/y2
+    # elsewhere in main() may hold raw quote dictionaries and must not leak into
+    # the 3-Day Watch comparisons.
+    def watch_pct(name):
+        m=re.search(r'([0-9]+(?:\\.[0-9]+)?)%',watch_latest(name))
+        return float(m.group(1)) if m else None
+    watch_y10=watch_pct('10Y Treasury Yield')
+    watch_y2=watch_pct('2Y Treasury yield')
+    if watch_y10 is not None:
+        if watch_y10>5.05:
+            watch_add('bearish','10Y above 5.05%',f'US10Y is {watch_y10:.3f}%, above the 3-Day Watch significant-headwind threshold.'+(f' US2Y is {watch_y2:.3f}%.' if watch_y2 is not None else ''))
+        elif watch_y10>5.00:
+            watch_add('bearish','10Y above 5.00%',f'US10Y is {watch_y10:.3f}%, in the restrictive 5.00–5.05% zone.')
+        elif watch_y10<4.95:
+            watch_add('bullish','10Y below 4.95%',f'US10Y is {watch_y10:.3f}%, inside the supportive 3-Day Watch zone.')
+    if fed_sig=='negative':
+        watch_add('bearish','Fed expectations repriced hawkishly',watch_latest('Fed expectations'))
+    elif fed_sig=='positive':
+        watch_add('bullish','Fed expectations eased',watch_latest('Fed expectations'))
+    if semi_sig=='negative':
+        watch_add('bearish','Semiconductor leadership weakened',watch_latest('Semiconductor leadership'))
+    elif semi_sig=='positive':
+        watch_add('bullish','Semiconductors confirm Nasdaq leadership',watch_latest('Semiconductor leadership'))
+    if breadth_sig=='negative':
+        watch_add('bearish','Market breadth deteriorated',watch_latest('Market breadth'))
+    elif breadth_sig=='positive':
+        watch_add('bullish','Market breadth broadened',watch_latest('Market breadth'))
+    if vol_sig=='negative':
+        watch_add('bearish','Nasdaq volatility is rising',watch_latest('Nasdaq volatility (VXN / VIX)'))
+    if oil_sig=='negative':
+        watch_add('bearish','Oil is adding inflation pressure',watch_latest('Oil (WTI / Brent)'))
+    elif oil_sig=='positive':
+        watch_add('bullish','Oil is easing inflation pressure',watch_latest('Oil (WTI / Brent)'))
+    if qctx.get('return3d') is not None:
+        r3=qctx['return3d']
+        if r3<=-1.5: watch_add('bearish','QQQ 3-day momentum weakened',f'QQQ 3-day return is {r3:+.2f}%.')
+        elif r3>=1.5: watch_add('bullish','QQQ 3-day momentum strengthened',f'QQQ 3-day return is {r3:+.2f}%.')
+    bearish=sum(x['severity']=='bearish' for x in watch); bullish=sum(x['severity']=='bullish' for x in watch)
+    material='bearish' if bearish>=2 and bearish>bullish else ('bullish' if bullish>=2 and bullish>bearish else 'mixed')
+    d['threeDayWatch']={'status':material,'bearishTriggers':bearish,'bullishTriggers':bullish,'triggers':watch,
+        'monitors':['QQQ 3-day momentum','US10Y','US2Y','Fed expectations','Semiconductor leadership vs QQQ','Market breadth','VXN/VIX','WTI/Brent'],
+        'thresholds':{'US10YSupportive':'<4.95%','US10YManageable':'4.95–5.00%','US10YRestrictive':'5.00–5.05%','US10YSignificantHeadwind':'>5.05%','QQQ3dMaterialMove':'±1.5%'}}
+    if material=='bearish':
+        setup_explanation="⚠️ Material bearish change. "+setup_explanation
+    elif material=='bullish':
+        setup_explanation="Material bullish improvement. "+setup_explanation
+    for g in d.get('groups',[]):
+        if g.get('name')=='NASDAQ SETUP': g['explanation']=setup_explanation
+
+    # Persist raw market observations so NasBoard builds its own historical dataset.
+    # Daily records are upserted; intraday snapshots are append-only per monthly file.
+    def quote_obs(sym):
+        x=q.get(sym,{})
+        stamp=x.get('last_timedate') or x.get('last_time')
+        # Parse CNBC dates without regex backslash ambiguity. Examples:
+        # "09/21/26 EDT" -> 2026-09-21; "2026-09-22 ..." -> 2026-09-22.
+        obs_date=None
+        for raw in (x.get('last_timedate'),x.get('last_time')):
+            if not raw: continue
+            txt=str(raw).strip()
+            token=txt.split()[0]
+            try:
+                if len(token)>=8 and token.count('/')==2:
+                    obs_date=datetime.datetime.strptime(token,'%m/%d/%y').date().isoformat(); break
+                if len(token)>=10 and token[4]=='-' and token[7]=='-':
+                    obs_date=datetime.date.fromisoformat(token[:10]).isoformat(); break
+            except ValueError:
+                pass
+        today=now.strftime('%Y-%m-%d')
+        # Time-only stamps from continuously trading instruments are current-day observations.
+        if obs_date is None and stamp:
+            token=str(stamp).strip().split()[0]
+            try:
+                datetime.datetime.strptime(token,'%H:%M')
+                obs_date=today
+            except ValueError:
+                try:
+                    datetime.datetime.strptime(token,'%I:%M')
+                    obs_date=today
+                except ValueError:
+                    pass
+        # CNBC exposes both timestamps and an explicit realTime flag. A same-day
+        # timestamp alone is not proof of real-time service, so retain both dimensions.
+        rt=str(x.get('realTime','')).strip().lower()
+        real_time=True if rt=='true' else (False if rt=='false' else None)
+        market_status=x.get('curmktstatus')
+        source=x.get('source')
+        provider=x.get('provider')
+        if obs_date==today:
+            state='live' if real_time is True else ('delayed_or_unspecified' if real_time is False else 'current_unknown_latency')
+        elif obs_date:
+            age=(datetime.date.fromisoformat(today)-datetime.date.fromisoformat(obs_date)).days
+            state='previous_close' if 0 < age <= 3 else ('live' if age==0 else 'stale')
+        else:
+            state='unknown'
+        return {'last':num(x.get('last')),'previousClose':num(x.get('previous_day_closing')),
+                'changePct':num(x.get('change_pct')) if x.get('change_pct') not in (None,'') else pct(x),
+                'timestamp':stamp,'observationDate':obs_date,'dataState':state,
+                'realTime':real_time,'marketStatus':market_status,'quoteSource':source,'provider':provider}
+    os.makedirs(HISTORY_DIR,exist_ok=True)
+    market_symbols=['.IXIC','QQQ','.SOX','NVDA','AMD','AVGO','TSM','MU','AAPL','MSFT','AMZN','GOOGL','META','TSLA',
+                    '.VXN','.VIX','US10Y','US2Y','@CL.1','@LCO.1','HYG','LQD']
+    market={sym:quote_obs(sym) for sym in market_symbols if sym in q}
+    # Persist a compact source/freshness audit so we can verify CNBC instrument-by-instrument
+    # instead of treating every CNBC response as equally live.
+    d.setdefault('diagnostics',{})['cnbcFreshness']={
+        sym:{k:v for k,v in obs.items() if k in ('timestamp','observationDate','dataState','realTime','marketStatus','quoteSource','provider')}
+        for sym,obs in market.items()
+    }
+    current_session=[sym for sym in BREADTH if sym in q and is_intraday(q[sym],now)]
+    pos=sum(1 for sym in current_session if (pct(q[sym]) or 0)>0)
+    breadth_obs={'valid':len(current_session),'advancers':pos,'decliners':len(current_session)-pos,
+                 'positivePct':round(100*pos/len(current_session),2) if current_session else None}
+    factor_state={r['factor']:{'signal':r.get('signal'),'currentImpact':r.get('currentImpact'),
+                              'trend':r.get('trend'),'latest':r.get('latest')} for r in rows}
+    curve_obs={'spreadBp':round(curve_2s10s,1) if curve_2s10s is not None else None,
+               'changeBp':round(curve_change,1) if curve_change is not None else None,
+               'shape':curve_regime} if curve_2s10s is not None else None
+    # Daily model-vs-market observation for later validation. Nasdaq Composite (.IXIC)
+    # is stored alongside the Environment Score so we can test same-day and, more
+    # importantly, forward 1D/3D/5D/10D relationships without look-ahead bias.
+    ixic=market.get('.IXIC',{})
+    model_perf={'nasdaqCompositeClose':ixic.get('last'),
+                'nasdaqCompositeObservationDate':ixic.get('observationDate'),
+                'nasdaqScore':d.get('nasdaqScore',{}).get('score')}
+    # Store each ticker's raw earnings-AVWAP observation in history. The price is the
+    # same current/session-aware CNBC quote used by the AVWAP factor at refresh time.
+    # Keeping AVWAP, price and distance together makes historical reconstruction/test use simple.
+    avwap_history={ticker:{
+        'earningsDate':x.get('earningsDate'),'anchorDate':x.get('anchorDate'),
+        'throughDate':x.get('throughDate'),'avwap':x.get('avwap'),
+        'price':x.get('price'),'distancePct':x.get('distancePct'),
+        'above':x.get('above'),'slope5dPct':x.get('slope5dPct'),
+        'sessions':x.get('sessions')
+    } for ticker,x in avwap_details.items()}
+    snapshot={'schemaVersion':2,'timestampET':now.isoformat(),'market':market,'breadth':breadth_obs,
+              'yieldCurve2s10s':curve_obs,'modelPerformance':model_perf,
+              'nasdaqScore':{k:v for k,v in d.get('nasdaqScore',{}).items() if k!='model'},
+              'earningsAvwap':avwap_history,'factors':factor_state}
+    try:
+        with open(DAILY_PATH,encoding='utf-8') as hf: daily=json.load(hf)
+    except (FileNotFoundError,json.JSONDecodeError):
+        daily={'schemaVersion':2,'records':{}}
+    daily['schemaVersion']=2
+    for _rec in daily.setdefault('records',{}).values():
+        if 'nasdaqScore' not in _rec and ('environmentScore' in _rec or 'environmentTrend' in _rec):
+            _rec['nasdaqScore']={'score':_rec.pop('environmentScore',None),'trend':_rec.pop('environmentTrend',None)}
+        _ns=_rec.get('nasdaqScore')
+        if isinstance(_ns,dict) and _ns.get('score') is not None:
+            _s=_ns['score']
+            _ns.setdefault('rawScore',None); _ns.setdefault('previousScore',None)
+            _ns.setdefault('signal','positive' if _s>=15 else ('mixed' if _s>-15 else 'negative'))
+            _ns.setdefault('label','Strong Positive' if _s>=45 else ('Cautiously Positive' if _s>=15 else ('Mixed / Neutral' if _s>-15 else ('Cautiously Negative' if _s>-45 else 'Strong Negative'))))
+            _ns.setdefault('confidence',None); _ns.setdefault('coverage',None)
+        _mp=_rec.get('modelPerformance')
+        if isinstance(_mp,dict) and 'environmentScore' in _mp: _mp['nasdaqScore']=_mp.pop('environmentScore')
+        _rec['schemaVersion']=2
+    daily['records'][now.strftime('%Y-%m-%d')]=snapshot
+    with open(DAILY_PATH,'w',encoding='utf-8') as hf: json.dump(daily,hf,ensure_ascii=False,indent=2)
+    month_path=os.path.join(HISTORY_DIR,'intraday',now.strftime('%Y-%m')+'.json')
+    os.makedirs(os.path.dirname(month_path),exist_ok=True)
+    try:
+        with open(month_path,encoding='utf-8') as hf: intraday=json.load(hf)
+    except (FileNotFoundError,json.JSONDecodeError):
+        intraday={'schemaVersion':2,'snapshots':[]}
+    intraday['schemaVersion']=2
+    for _rec in intraday.setdefault('snapshots',[]):
+        if 'nasdaqScore' not in _rec and ('environmentScore' in _rec or 'environmentTrend' in _rec):
+            _rec['nasdaqScore']={'score':_rec.pop('environmentScore',None),'trend':_rec.pop('environmentTrend',None)}
+        _ns=_rec.get('nasdaqScore')
+        if isinstance(_ns,dict) and _ns.get('score') is not None:
+            _s=_ns['score']
+            _ns.setdefault('rawScore',None); _ns.setdefault('previousScore',None)
+            _ns.setdefault('signal','positive' if _s>=15 else ('mixed' if _s>-15 else 'negative'))
+            _ns.setdefault('label','Strong Positive' if _s>=45 else ('Cautiously Positive' if _s>=15 else ('Mixed / Neutral' if _s>-15 else ('Cautiously Negative' if _s>-45 else 'Strong Negative'))))
+            _ns.setdefault('confidence',None); _ns.setdefault('coverage',None)
+        _mp=_rec.get('modelPerformance')
+        if isinstance(_mp,dict) and 'environmentScore' in _mp: _mp['nasdaqScore']=_mp.pop('environmentScore')
+        _rec['schemaVersion']=2
+    intraday['snapshots'].append(snapshot)
+    with open(month_path,'w',encoding='utf-8') as hf: json.dump(intraday,hf,ensure_ascii=False,indent=2)
+
+    # Only tactical/actionable factors are published to the dashboard. Background factors
+    # remain in factor_state/history above and continue contributing to Environment Score.
+    d['rows']=visible_rows
+    d['updatedET']=now.strftime('%b %d, %Y · %H:%M ET'); d['nextUpdateET']='09:30 / 10:30 ET on trading weekdays'
+    with open(PATH,'w',encoding='utf-8') as f:json.dump(d,f,ensure_ascii=False,indent=2)
+
+if __name__=='__main__':main()
++br.group(1); card['secondaryArrow']='↓' if bch<0 else ('↑' if bch>0 else '→'); card['secondaryChange']=f'{bch:+.2f}%'
         elif n=='Market breadth':
             m=re.search(r'([0-9]+)/([0-9]+) advancing [(]([0-9]+)%[)]',latest)
             if m: card={'value':m.group(3)+'% advancing','arrow':'↑' if r.get('signal')=='positive' else ('↓' if r.get('signal')=='negative' else '→'),'change':''}
