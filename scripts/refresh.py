@@ -443,7 +443,7 @@ def latest_effr():
     if not vals: raise ValueError('EFFR value not found in H.15')
     return vals[-1],url
 
-def fed_meeting_probabilities(now):
+def fed_meeting_probabilities_legacy(now):
     """Approximate CME-style conditional hike/hold/cut probabilities from ZQ futures."""
     import calendar
     prices,price_stamps,price_url=barchart_zq_prices()
@@ -475,6 +475,69 @@ def fed_meeting_probabilities(now):
                         'startEFFR':start,'impliedEndEFFR':end,'changeBp':change_bp,'probabilities':probs})
         prior_end=end
     return results,{'priceSource':price_url,'priceTimestamps':price_stamps,'effrSource':effr_url,'effr':effr,'prices':prices}
+
+
+def fed_meeting_probabilities(now):
+    """FedWatch-style probabilities from CME official daily settlements.
+
+    Uses the pinned cme-fedwatch calculation engine for CME's 30-Day Fed
+    Funds settlement feed, but supplies EFFR from the Federal Reserve H.15
+    page so NasBoard does not depend on FRED for this factor.
+    """
+    try:
+        from cme_fedwatch.api import get_settlements
+        from cme_fedwatch.calc import calculate, current_target_range
+        from cme_fedwatch.fomc import get_upcoming_meetings, schedule_horizon, schedule_status
+
+        effr,effr_url=latest_effr()
+        settlements=get_settlements()
+        current_range=current_target_range(effr)
+        meetings=get_upcoming_meetings(settlements.trade_date)
+        raw=calculate(settlements.rows,meetings,current_range,schedule_horizon())
+        current_lower=current_range[0]
+
+        out=[]
+        for item in raw[:3]:
+            cut=hold=hike=0.0
+            for label,prob in item.get('probabilities',{}).items():
+                m=re.match(r'([0-9.]+)%-([0-9.]+)%',label)
+                if not m: continue
+                lower=float(m.group(1))
+                if lower < current_lower-1e-9: cut+=float(prob)
+                elif abs(lower-current_lower)<=1e-9: hold+=float(prob)
+                else: hike+=float(prob)
+            probs={'hike':round(hike,1),'hold':round(hold,1),'cut':round(cut,1)}
+            total=sum(probs.values())
+            if not (99.0 <= total <= 101.0):
+                raise ValueError(f'FedWatch probabilities do not sum to ~100 for {item.get("date")}: {total}')
+            dt=datetime.date.fromisoformat(item['date'])
+            out.append({
+                'date':item['date'],
+                'label':dt.strftime('%b %d').replace(' 0',' '),
+                'contract':item.get('contract'),
+                'probabilities':probs,
+                'targetProbabilities':item.get('probabilities',{})
+            })
+        if not out:
+            raise ValueError('CME settlement calculation returned no upcoming meetings')
+        meta={
+            'method':'CME official settlement feed + CME FedWatch methodology',
+            'tradeDate':settlements.trade_date.isoformat(),
+            'effr':effr,
+            'currentTarget':f'{current_range[0]:.2f}%-{current_range[1]:.2f}%',
+            'effrSource':effr_url,
+            'settlementSource':'CME Group 30-Day Fed Funds futures settlements',
+            'engine':'cme-fedwatch 0.2.1',
+            'scheduleStatus':schedule_status(),
+            'meetings':out
+        }
+        return out,meta
+    except Exception as primary_error:
+        print('Official CME settlement FedWatch model failed:',repr(primary_error))
+        fp,meta=fed_meeting_probabilities_legacy(now)
+        meta['fallback']='Barchart delayed ZQ futures approximation'
+        meta['primaryError']=repr(primary_error)
+        return fp,meta
 
 def treasury_10y_real(year):
     url='https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml?data=daily_treasury_real_yield_curve&field_tdr_date_value='+str(year)
@@ -926,11 +989,22 @@ def main():
             net=first['cut']-first['hike']
             sig='positive' if net>=20 else ('negative' if net<=-20 else 'mixed')
             direction='Dovish / cuts priced' if sig=='positive' else ('Hawkish / hikes priced' if sig=='negative' else 'Balanced')
-            detail='; '.join(f"{x['label']} ZQ {x['price']:.4f}, implied move {x['changeBp']:+.0f} bp" for x in fp[:3])
-            setrow(rows,'Fed expectations',latest_txt,direction,sig,
-                   f"Market-implied · checked {now.strftime('%Y-%m-%d %H:%M ET')}",
-                   '30-Day Fed Funds futures (Barchart delayed public quotes); Federal Reserve H.15 EFFR; CME FedWatch methodology',
-                   f"{latest_txt}. Conditional probabilities are estimated from monthly 30-Day Fed Funds futures using CME FedWatch methodology and the latest official EFFR. {detail}.")
+            trade_date=meta.get('tradeDate')
+            freshness=(f"CME settlement {trade_date} · checked {now.strftime('%Y-%m-%d %H:%M ET')}" if trade_date
+                       else f"Market-implied · checked {now.strftime('%Y-%m-%d %H:%M ET')}")
+            detail=[]
+            for i,x in enumerate(fp[:3]):
+                p=x['probabilities']
+                if i==0:
+                    detail.append(f"{x['label']}: Hike {p['hike']:.1f}% · Hold {p['hold']:.1f}% · Cut {p['cut']:.1f}%")
+                else:
+                    detail.append(f"By {x['label']}: target above current {p['hike']:.1f}% · same {p['hold']:.1f}% · below {p['cut']:.1f}%")
+            setrow(rows,'Fed expectations',latest_txt,direction,sig,freshness,
+                   'CME Group 30-Day Fed Funds futures settlements; Federal Reserve H.15 EFFR; CME FedWatch methodology',
+                   '. '.join(detail)+'. The nearest meeting is shown as hike/hold/cut; later meetings are aggregated versus today’s target range.')
+            rr=next(x for x in rows if x['factor']=='Fed expectations')
+            rr['fedMeetings']=fp[:3]
+            rr['debug']=f"Trade date: {trade_date or 'n/a'} · Current target: {meta.get('currentTarget','n/a')} · EFFR: {meta.get('effr','n/a')} · Engine: {meta.get('engine','legacy')}"
             d['diagnostics']['fedExpectationsModel']['meetings']=fp
     except Exception as e:
         print('Fed expectations model failed:',repr(e))
@@ -1253,6 +1327,11 @@ def main():
             cov=int(r.get('coveredCount',0)); above=int(r.get('aboveCount',0)); md=r.get('medianDistancePct')
             if cov and md is not None:
                 card={'value':f'{above}/{cov} above','arrow':'↑' if r.get('signal')=='positive' else ('↓' if r.get('signal')=='negative' else '→'),'change':f'median {md:+.1f}%'}
+        elif n=='Fed expectations':
+            fm=r.get('fedMeetings') or []
+            if fm:
+                first=fm[0]; p=first.get('probabilities',{})
+                card={'value':first.get('label','Next FOMC'),'arrow':'','change':f"Hike {p.get('hike',0):.1f}% · Hold {p.get('hold',0):.1f}% · Cut {p.get('cut',0):.1f}%"}
         elif n=='Oil (WTI / Brent)':
             m=re.search(r'WTI[^0-9]*([0-9.]+).*?[(]([+-]?[0-9.]+)%[)]',latest,re.I)
             br=re.search(r'Brent[^0-9]*([0-9.]+).*?[(]([+-]?[0-9.]+)%[)]',latest,re.I)
