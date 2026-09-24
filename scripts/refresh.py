@@ -1432,34 +1432,105 @@ def main():
     d['environmentTrend']='Improving ↑' if score>previous_score else ('Deteriorating ↓' if score<previous_score else 'Stable →')
     d['environmentScorePrevious']=score
 
-    # Deployment Environment is a separate opportunity/readiness gauge, not a Nasdaq direction score.
-    # It combines directional setup, volatility opportunity and consolidation risk so high fear alone
-    # can never produce an automatic "all-in" signal.
-    volrow=next((r for r in rows if r.get('factor')=='Nasdaq volatility (VXN / VIX)'),{})
-    vm=re.search(r'VXN ([0-9.]+).*?VIX ([0-9.]+)',str(volrow.get('latest','')))
-    dep_vxn=float(vm.group(1)) if vm else None
-    dep_vix=float(vm.group(2)) if vm else None
-    # Opportunity rises as fear becomes elevated, but is deliberately capped during stress.
-    if dep_vxn is not None:
-        fear=max(0,min(100,(dep_vxn-15)*100/18))
-    elif dep_vix is not None:
-        fear=max(0,min(100,(dep_vix-12)*100/18))
-    else:
-        fear=35.0
-    setup_readiness=max(0,min(100,(score+100)/2))
-    risk_readiness=max(0,min(100,100-float(d.get('consolidationRisk',{}).get('score',50))))
-    deployment_score=round(0.50*setup_readiness+0.30*fear+0.20*risk_readiness)
-    # In a clearly negative setup, high volatility is risk first, opportunity second.
-    if score<=-15: deployment_score=min(deployment_score,45)
-    if score<=-45: deployment_score=min(deployment_score,30)
-    if deployment_score>=75: dep_label='Strong Opportunity'; dep_signal='positive'
-    elif deployment_score>=55: dep_label='Constructive'; dep_signal='positive'
-    elif deployment_score>=35: dep_label='Selective'; dep_signal='mixed'
-    else: dep_label='Defensive'; dep_signal='negative'
-    d['deploymentEnvironment']={
-        'score':deployment_score,'label':dep_label,'signal':dep_signal,
-        'setupReadiness':round(setup_readiness),'volatilityOpportunity':round(fear),'riskReadiness':round(risk_readiness),
-        'explanation':f'Deployment Environment combines Nasdaq Setup readiness (50%), volatility opportunity (30%) and inverse Consolidation Risk (20%). High VXN/VIX increases potential opportunity, but a negative Setup caps the result so volatility stress never becomes an automatic fully-invested signal.'
+    # Opportunity Score: is a dislocation becoming investable as market internals recover?
+    # This is deliberately separate from Nasdaq Setup (current environment) and
+    # Consolidation Risk (vulnerability). High volatility only helps when recovery confirms.
+    try:
+        with open(DAILY_PATH,encoding='utf-8') as hf:
+            _opp_daily=json.load(hf).get('records',{})
+    except (FileNotFoundError,json.JSONDecodeError):
+        _opp_daily={}
+    _opp_dates=sorted(_opp_daily.keys())[-5:]
+    _opp_hist=[_opp_daily[x] for x in _opp_dates]
+
+    def _clamp100(x): return max(0.0,min(100.0,float(x)))
+    def _row_latest(name):
+        return str(next((r for r in rows if r.get('factor')==name),{}).get('latest',''))
+    def _pct_in(text,pattern):
+        m=re.search(pattern,str(text),re.I)
+        return float(m.group(1)) if m else None
+    def _hist_factor_latest(rec,name):
+        return str(rec.get('factors',{}).get(name,{}).get('latest',''))
+
+    # S — current Nasdaq Setup mapped from -100..+100 to 0..100.
+    setup_readiness=_clamp100((score+100)/2)
+
+    # R1 — VXN reversal from the highest observation in the prior five stored sessions.
+    opp_vxn=num(q.get('.VXN',{}).get('last'))
+    hist_vxn=[num(x.get('market',{}).get('.VXN',{}).get('last')) for x in _opp_hist]
+    hist_vxn=[x for x in hist_vxn if x is not None]
+    vxn_reversal=None
+    if opp_vxn is not None and hist_vxn:
+        peak=max(hist_vxn+[opp_vxn])
+        vxn_reversal=_clamp100(((peak-opp_vxn)/peak)*500) if peak>0 else 0
+
+    # R2 — breadth recovery: +12.5 percentage points over the lookback reaches 100.
+    cur_breadth=_pct_in(_row_latest('Market breadth'),r'advancing\s*\(([0-9.]+)%\)')
+    old_breadth=None
+    for rec in _opp_hist:
+        x=_pct_in(_hist_factor_latest(rec,'Market breadth'),r'advancing\s*\(([0-9.]+)%\)')
+        if x is not None: old_breadth=x; break
+    breadth_recovery=_clamp100(50+4*(cur_breadth-old_breadth)) if cur_breadth is not None and old_breadth is not None else None
+
+    # R3 — semiconductor relative-leadership recovery versus QQQ.
+    cur_semi=_pct_in(_row_latest('Semiconductor leadership'),r'basket vs QQQ\s*([+-]?[0-9.]+)\s*pp')
+    old_semi=None
+    for rec in _opp_hist:
+        x=_pct_in(_hist_factor_latest(rec,'Semiconductor leadership'),r'basket vs QQQ\s*([+-]?[0-9.]+)\s*pp')
+        if x is not None: old_semi=x; break
+    semi_recovery=_clamp100(50+20*(cur_semi-old_semi)) if cur_semi is not None and old_semi is not None else None
+
+    # R4 — 10Y stabilization: a 10 bp fall over the lookback scores 100; +10 bp scores 0.
+    cur_y10=num(q.get('US10Y',{}).get('last'))
+    old_y10=None
+    for rec in _opp_hist:
+        x=num(rec.get('market',{}).get('US10Y',{}).get('last'))
+        if x is not None: old_y10=x; break
+    yield_stabilization=_clamp100(50-500*(cur_y10-old_y10)) if cur_y10 is not None and old_y10 is not None else None
+
+    # R5 — Setup improvement: +25 score points over the lookback reaches 100.
+    old_setup=None
+    for rec in _opp_hist:
+        x=num(rec.get('environmentScore'))
+        if x is not None: old_setup=x; break
+    setup_improvement=_clamp100(50+2*(score-old_setup)) if old_setup is not None else None
+
+    recovery_parts=[
+        ('vxnReversal',vxn_reversal,0.30),('breadthRecovery',breadth_recovery,0.25),
+        ('semiconductorRecovery',semi_recovery,0.20),('yieldStabilization',yield_stabilization,0.15),
+        ('setupImprovement',setup_improvement,0.10)
+    ]
+    available=[x for x in recovery_parts if x[1] is not None]
+    recovery=round(sum(v*w for _,v,w in available)/sum(w for _,v,w in available)) if available else 0
+
+    # C — high Consolidation Risk is explicitly bad for opportunity.
+    consolidation_readiness=_clamp100(100-float(d.get('consolidationRisk',{}).get('score',50)))
+
+    # V — VXN dislocation. High fear creates capacity for opportunity; R unlocks it.
+    if opp_vxn is None: volatility_dislocation=0
+    elif opp_vxn<20: volatility_dislocation=0
+    elif opp_vxn<23: volatility_dislocation=25
+    elif opp_vxn<28: volatility_dislocation=50
+    elif opp_vxn<33: volatility_dislocation=75
+    else: volatility_dislocation=100
+    unlocked_volatility=volatility_dislocation*(recovery/100)
+
+    opportunity_score=round(0.40*setup_readiness+0.25*recovery+0.20*consolidation_readiness+0.15*unlocked_volatility)
+    if opportunity_score>=75: opp_label='Strong Opportunity'; opp_signal='positive'
+    elif opportunity_score>=60: opp_label='Attractive'; opp_signal='positive'
+    elif opportunity_score>=45: opp_label='Selective'; opp_signal='mixed'
+    elif opportunity_score>=25: opp_label='Limited'; opp_signal='mixed'
+    else: opp_label='Poor Opportunity'; opp_signal='negative'
+    d.pop('deploymentEnvironment',None)
+    d['opportunityScore']={
+        'score':opportunity_score,'label':opp_label,'signal':opp_signal,
+        'setupReadiness':round(setup_readiness),'recoveryConfirmation':recovery,
+        'consolidationReadiness':round(consolidation_readiness),
+        'volatilityDislocation':round(volatility_dislocation),
+        'unlockedVolatilityOpportunity':round(unlocked_volatility),
+        'recoveryComponents':{name:(round(v) if v is not None else None) for name,v,_ in recovery_parts},
+        'lookbackSessions':len(_opp_hist),
+        'explanation':f'Opportunity Score = 40% Setup readiness + 25% Recovery Confirmation + 20% inverse Consolidation Risk + 15% volatility opportunity unlocked by recovery. Recovery is built from VXN reversal (30%), breadth recovery (25%), semiconductor recovery (20%), 10Y yield stabilization (15%) and Setup improvement (10%). Current recovery confirmation is {recovery}%.'
     }
 
     setup_explanation=build_setup_explanation(rows,score,d['environmentTrend'])
