@@ -1,0 +1,35 @@
+name: Check Tavily Usage
+on:
+  push:
+    branches:
+      - test-tavily-api-20260924
+    paths:
+      - '.github/workflows/check-tavily-usage.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  usage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read Tavily usage
+        env:
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request
+          key=os.environ["TAVILY_API_KEY"].strip()
+          req=urllib.request.Request("https://api.tavily.com/usage",headers={"Authorization":"Bearer "+key,"User-Agent":"NasBoard-Tavily-Usage/1.0"})
+          with urllib.request.urlopen(req,timeout=30) as r:
+              d=json.loads(r.read().decode())
+          a=d.get("account",{})
+          limit=a.get("plan_limit")
+          used=a.get("plan_usage")
+          remaining=(limit-used) if isinstance(limit,(int,float)) and isinstance(used,(int,float)) else None
+          print("PLAN",a.get("current_plan"))
+          print("PLAN_LIMIT",limit)
+          print("PLAN_USAGE",used)
+          print("SEARCH_USAGE",a.get("search_usage"))
+          print("REMAINING_CREDITS",remaining)
+          PY
