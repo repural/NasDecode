@@ -344,48 +344,38 @@ def cme_fedwatch_aggregated():
             'hasAggregated':bool(re.search(r'Aggregated',html,re.I))}
 
 
-def investing_s5fi():
-    """Fetch S5FI from Investing.com's public historical-data page.
-
-    Investing.com labels this index as delayed. We parse the newest two daily observations
-    from the server-rendered page and keep the observation date explicit.
-    """
-    url='https://in.investing.com/indices/s-p-500-stocks-above-50-day-average-historical-data'
+def eoddata_s5fi():
+    """Fetch S5FI from EODData's server-rendered INDEX/S5FI page."""
+    url='https://www.eoddata.com/stockquote/INDEX/S5FI.htm'
     req=urllib.request.Request(url,headers={
         'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/140.0 Safari/537.36',
         'Accept':'text/html,application/xhtml+xml,*/*',
-        'Accept-Language':'en-IN,en;q=0.9',
-        'Referer':'https://in.investing.com/'
+        'Accept-Language':'en-US,en;q=0.9'
     })
     with urllib.request.urlopen(req,timeout=20) as r:
         html=r.read().decode('utf-8',errors='replace')
-    # Investing may emit the historical table as HTML or hydration JSON. Capture recent
-    # dd-mm-yyyy/date + first price pairs, then use the newest two unique dates.
     clean=re.sub(r'<[^>]+>',' ',html)
+    clean=re.sub(r'&nbsp;|&#160;',' ',clean)
     clean=re.sub(r'\\s+',' ',clean)
-    pairs=[]
-    for m in re.finditer(r'(\\d{1,2}[-/]\\d{1,2}[-/]20\\d{2}).{0,180}?([0-9]{1,3}(?:[.,][0-9]{1,2}))',clean,re.I):
-        ds=m.group(1); val=m.group(2).replace(',','.')
-        try:
-            dt=datetime.datetime.strptime(ds.replace('/','-'),'%d-%m-%Y').date()
-            v=float(val)
-            if 0 <= v <= 100: pairs.append((dt,v))
+    # Prefer the explicit LAST/PREV fields on the quote page.
+    lm=re.search(r'LAST:\s*([0-9]+(?:\\.[0-9]+)?)',clean,re.I)
+    pm=re.search(r'PREV:\s*([0-9]+(?:\\.[0-9]+)?)',clean,re.I)
+    dm=re.search(r'(\\d{1,2}\s+[A-Za-z]{3}\s+\\d{2})\s+\\d{1,2}:\\d{2}',clean)
+    last=float(lm.group(1)) if lm else None
+    previous=float(pm.group(1)) if pm else None
+    if last is None or not (0 <= last <= 100):
+        # Fallback to the first two Recent End of Day close observations.
+        pairs=re.findall(r'(\\d{1,2}\s+[A-Za-z]{3}\s+\\d{2})\s+([0-9.]+)\s+([0-9.]+)\s+([0-9.]+)\s+([0-9.]+)',clean)
+        if pairs:
+            last=float(pairs[0][4])
+            if len(pairs)>1: previous=float(pairs[1][4])
+    if last is None or not (0 <= last <= 100):
+        raise ValueError('EODData S5FI value not parseable')
+    obs_date=None
+    if dm:
+        try: obs_date=datetime.datetime.strptime(dm.group(1),'%d %b %y').date().isoformat()
         except Exception: pass
-    if not pairs:
-        # Hydration payload fallback: locate S5FI-adjacent numeric observations.
-        for m in re.finditer(r'20\\d{2}-\\d{2}-\\d{2}.{0,250}?(?:last|price|close)[^0-9]{0,30}([0-9]{1,3}(?:\\.[0-9]+)?)',html,re.I):
-            try:
-                ds=re.search(r'20\\d{2}-\\d{2}-\\d{2}',m.group(0)).group(0)
-                v=float(m.group(1)); dt=datetime.date.fromisoformat(ds)
-                if 0 <= v <= 100: pairs.append((dt,v))
-            except Exception: pass
-    uniq={}
-    for dt,v in pairs: uniq.setdefault(dt,v)
-    obs=sorted(uniq.items(),reverse=True)
-    if not obs: raise ValueError('Investing.com S5FI historical observations not parseable')
-    latest_date,last=obs[0]; previous=obs[1][1] if len(obs)>1 else None
-    return {'last':last,'previous':previous,'date':latest_date.isoformat(),'url':url,'delay':'Delayed Data'}
-
+    return {'last':last,'previous':previous,'date':obs_date,'url':url}
 
 def barchart_zq_prices():
     """Free delayed ZQ quotes from Barchart's public Websol quote pages."""
@@ -701,20 +691,16 @@ def main():
         # S5FI: percentage of S&P 500 stocks above their 50-day MA.
         # CNBC does not currently return this symbol in our feed, so publish it only when
         # a real quote is available; otherwise keep the row explicitly stale.
-        # Investing.com is primary for S5FI historical/delayed breadth data.
-        # CNBC remains a fallback if its existing quote feed begins returning S5FI.
+        # EODData is the sole primary source for S5FI. It exposes the breadth index
+        # in server-rendered HTML, which is suitable for deterministic GitHub Actions refreshes.
         sx=None; s5_source=None; s5_freshness=None
         try:
-            ix=investing_s5fi()
-            sx={'last':str(ix['last']),'previous_day_closing':str(ix['previous']) if ix['previous'] is not None else ''}
-            s5_source='Investing.com S5FI'
-            s5_freshness='Investing.com delayed · '+ix['date']
+            ex=eoddata_s5fi()
+            sx={'last':str(ex['last']),'previous_day_closing':str(ex['previous']) if ex['previous'] is not None else ''}
+            s5_source='EODData INDEX:S5FI'
+            s5_freshness='EODData EOD'+((' · '+ex['date']) if ex.get('date') else '')
         except Exception as e:
-            print('Investing.com S5FI unavailable:',repr(e))
-            sx=q.get('S5FI')
-            if sx:
-                s5_source='CNBC S5FI fallback'
-                s5_freshness=fresh(sx)
+            print('EODData S5FI unavailable:',repr(e))
         if sx and num(sx.get('last')) is not None:
             sv=num(sx.get('last')); sp=num(sx.get('previous_day_closing'))
             delta=(sv-sp) if sp is not None else None
