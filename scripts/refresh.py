@@ -308,8 +308,8 @@ def explain_current_rows(rows):
             regime_text=''
             if vm:
                 vxn_l=float(vm.group(1)); vix_l=float(vm.group(2))
-                vxn_band='very low' if vxn_l<=15 else ('low' if vxn_l<=18 else ('normal/moderate' if vxn_l<=23 else ('elevated' if vxn_l<=28 else ('high' if vxn_l<=33 else 'stress')))
-                vix_band='very low' if vix_l<=12 else ('low' if vix_l<=15 else ('normal/moderate' if vix_l<=20 else ('elevated' if vix_l<=25 else ('high' if vix_l<=30 else 'stress')))
+                vxn_band='very low' if vxn_l<=15 else ('low' if vxn_l<=18 else ('normal/moderate' if vxn_l<=23 else ('elevated' if vxn_l<=28 else ('high' if vxn_l<=33 else 'stress'))))
+                vix_band='very low' if vix_l<=12 else ('low' if vix_l<=15 else ('normal/moderate' if vix_l<=20 else ('elevated' if vix_l<=25 else ('high' if vix_l<=30 else 'stress'))))
                 regime_text=f' VXN is in a {vxn_band} regime; VIX is {vix_band}.'
             r['explanation']=f'{x}. {interp}{regime_text} NasBoard weights VXN regime 50%, VIX regime 20%, VXN movement 20% and VIX movement 10%. Overall volatility signal: {t}.{context}'
         elif n=='Credit conditions':
