@@ -1,0 +1,31 @@
+name: Test FedWatch Feature
+on:
+  push:
+    branches:
+      - feature-fedwatch-card-20260924
+    paths:
+      - '.github/workflows/test-fedwatch-feature.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install FedWatch dependency
+        run: pip install 'cme-fedwatch==0.2.1'
+      - name: Run refresh
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: python scripts/refresh.py
+      - name: Show Fed row
+        run: |
+          python - <<'PY'
+          import json
+          d=json.load(open('data/dashboard.json'))
+          r=next(x for x in d['rows'] if x['factor']=='Fed expectations')
+          print(json.dumps(r,indent=2))
+          print(json.dumps(d.get('diagnostics',{}).get('fedExpectationsModel'),indent=2))
+          PY
