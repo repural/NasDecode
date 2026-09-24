@@ -1,0 +1,110 @@
+name: Test Tavily API
+on:
+  push:
+    branches:
+      - test-tavily-api-20260924
+    paths:
+      - '.github/workflows/test-tavily.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test Tavily search and usage
+        env:
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request, urllib.error
+
+          key=os.environ.get("TAVILY_API_KEY","").strip()
+          if not key:
+              raise SystemExit("TAVILY_API_KEY is missing")
+
+          def request(url, method="GET", payload=None):
+              data=None if payload is None else json.dumps(payload).encode()
+              req=urllib.request.Request(
+                  url, data=data, method=method,
+                  headers={
+                      "Authorization":"Bearer "+key,
+                      "Content-Type":"application/json",
+                      "User-Agent":"NasBoard-Tavily-Test/1.0"
+                  }
+              )
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as r:
+                      body=r.read().decode("utf-8",errors="replace")
+                      return r.status, json.loads(body) if body else {}
+              except urllib.error.HTTPError as e:
+                  body=e.read().decode("utf-8",errors="replace")
+                  try: parsed=json.loads(body)
+                  except Exception: parsed={"body":body[:1000]}
+                  return e.code, parsed
+
+          def redact(obj):
+              if isinstance(obj,dict):
+                  out={}
+                  for k,v in obj.items():
+                      kl=k.lower()
+                      if "key" in kl or "token" in kl or "secret" in kl:
+                          out[k]="***REDACTED***"
+                      else:
+                          out[k]=redact(v)
+                  return out
+              if isinstance(obj,list): return [redact(x) for x in obj]
+              if isinstance(obj,str) and key and key in obj: return obj.replace(key,"***REDACTED***")
+              return obj
+
+          def find_numbers(obj):
+              found={}
+              def walk(x,path=""):
+                  if isinstance(x,dict):
+                      for k,v in x.items():
+                          p=f"{path}.{k}" if path else k
+                          if isinstance(v,(int,float)) and any(w in k.lower() for w in ("usage","used","limit","credit","remaining")):
+                              found[p]=v
+                          walk(v,p)
+                  elif isinstance(x,list):
+                      for i,v in enumerate(x): walk(v,f"{path}[{i}]")
+              walk(obj)
+              return found
+
+          before_status,before=request("https://api.tavily.com/usage")
+          print("USAGE_BEFORE_STATUS", before_status)
+          print("USAGE_BEFORE", json.dumps(redact(before),sort_keys=True))
+          print("USAGE_BEFORE_NUMBERS", json.dumps(find_numbers(before),sort_keys=True))
+
+          search_status,search=request(
+              "https://api.tavily.com/search",
+              "POST",
+              {
+                  "query":"latest CME FedWatch probabilities for the next Federal Reserve FOMC meeting",
+                  "search_depth":"basic",
+                  "max_results":5,
+                  "include_answer":False
+              }
+          )
+          print("SEARCH_STATUS", search_status)
+          if isinstance(search,dict):
+              results=search.get("results") or []
+              print("SEARCH_RESULTS_COUNT", len(results))
+              for i,r in enumerate(results[:5],1):
+                  print(f"RESULT_{i}", json.dumps({
+                      "title":r.get("title"),
+                      "url":r.get("url"),
+                      "score":r.get("score")
+                  },sort_keys=True))
+          else:
+              print("SEARCH_RESPONSE", json.dumps(redact(search),sort_keys=True))
+
+          after_status,after=request("https://api.tavily.com/usage")
+          print("USAGE_AFTER_STATUS", after_status)
+          print("USAGE_AFTER", json.dumps(redact(after),sort_keys=True))
+          print("USAGE_AFTER_NUMBERS", json.dumps(find_numbers(after),sort_keys=True))
+
+          if search_status != 200:
+              raise SystemExit(f"Tavily search failed with HTTP {search_status}")
+          PY
