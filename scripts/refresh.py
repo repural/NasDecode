@@ -854,7 +854,10 @@ def main():
         print('CNBC refresh failed:',repr(e))
         for name in ('10Y Treasury Yield','2Y Treasury yield','Semiconductor leadership','Nasdaq volatility (VXN / VIX)','Oil (WTI / Brent)'):
             rr=next((x for x in rows if x['factor']==name),None)
-            if rr: rr['freshness']='STALE — CNBC refresh failed'
+            # A completed previous-close calculation is still valid historical context even
+            # if a later, unrelated CNBC sub-refresh fails. Preserve its explicit freshness.
+            if rr and 'previous close' not in str(rr.get('freshness','')).lower():
+                rr['freshness']='STALE — CNBC refresh failed'
 
     # Official Cboe options-volume put/call ratios. This is sentiment/positioning, not dealer gamma exposure.
     try:
