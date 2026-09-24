@@ -1,0 +1,35 @@
+name: Calculate historical market reactions
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/backfill-market-reactions.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'scripts/run-market-reactions.txt'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Stage calendar history
+        run: |
+          mkdir -p public
+          cp scripts/market-reaction-input.json public/event-results.json
+      - name: Calculate reaction windows
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: node scripts/backfill-market-reactions.mjs
+      - name: Preserve calculated history
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-reactions-september-2026
+          path: public/market-reactions.json
+          retention-days: 7
