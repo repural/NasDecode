@@ -27,6 +27,8 @@ jobs:
           text=re.sub(r'<[^>]+>',' ',text)
           text=re.sub(r'&nbsp;|&#160;',' ',text)
           text=re.sub(r'\s+',' ',text)
-          i=text.lower().find('effective federal funds rate')
-          print(text[max(0,i-300):i+1800])
+          for needle in ['target rate/range','9/22/2026','3.88']:
+              i=text.lower().find(needle.lower())
+              print('NEEDLE',needle,'INDEX',i)
+              if i>=0: print(text[max(0,i-500):i+1600])
           PY
