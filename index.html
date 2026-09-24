@@ -13,7 +13,9 @@ function escAttr(s){return String(s??'').replace(/&/g,'&amp;').replace(/"/g,'&qu
 // Render the quantitative dashboard snapshot without recalculating model logic.
 function render(d){
   updated.textContent='Last updated: '+d.updatedET+' · Next auto: '+d.nextUpdateET;
-  const env=d.groups?.[0];
+  const ns=d.nasdaqScore||{};
+  const legacyEnv=d.groups?.find(g=>g.name==='NASDAQ SCORE'||g.name==='NASDAQ SETUP')||d.groups?.[0]||{};
+  const env={...legacyEnv,signal:ns.signal||legacyEnv.signal,label:ns.label||legacyEnv.label};
   const dot=s=>'';
   const orderedRows=[...d.rows].sort((a,b)=>orderOf(a.factor)-orderOf(b.factor));
   const awaiting=r=>/awaiting|not available|unavailable|stale/i.test((r.latest||'')+' '+(r.freshness||''))?' awaiting':'';
@@ -60,8 +62,10 @@ async function loadAnalysis(d){try{
   if(afterOpen&&d){
     analysisTitle.textContent='Market Analysis';
     premarketMeta.textContent='Analysis updated: '+(d.updatedET||'—');
-    const env=(d.groups||[]).find(g=>g.name==='NASDAQ SCORE');
-    const sig=env?.signal==='positive'?'Positive':env?.signal==='negative'?'Negative':'Mixed';
+    const ns=d.nasdaqScore||{};
+    const env=(d.groups||[]).find(g=>g.name==='NASDAQ SCORE'||g.name==='NASDAQ SETUP')||{};
+    const liveSignal=ns.signal||env.signal;
+    const sig=liveSignal==='positive'?'Positive':liveSignal==='negative'?'Negative':'Mixed';
     const score=ns.score!==undefined?(ns.score>0?'+':'')+ns.score+' / 100':'—';
     const watch=d.threeDayWatch||{};const watchTitle=watch.status==='bearish'?'⚠️ Material bearish change':watch.status==='bullish'?'Material bullish improvement':'';
     // Near-term scheduled catalysts that can materially affect Nasdaq. Keep this concise
