@@ -514,6 +514,10 @@ def cboe_put_call_5d(now):
 
 def main():
     with open(PATH,encoding='utf-8') as f:d=json.load(f)
+    legacy_previous=d.get('nasdaqScore',{}).get('previousScore',d.get('environmentScorePrevious',d.get('environmentScore')))
+    for _k in ('environmentScore','environmentScoreRaw','environmentScorePrevious','environmentTrend','environmentSignal','environmentLabel','environmentConfidence','environmentCoverage','setupModel'):
+        d.pop(_k,None)
+    d['schemaVersion']=2
     now=datetime.datetime.now(NY); rows=[r for r in d['rows'] if r.get('factor') not in {'AI / data-center financing','System liquidity','U.S. Dollar (DXY)','10Y real yield'}];
     for r in rows:
         if r.get('factor')=='10Y nominal yield': r['factor']='10Y Treasury Yield'
@@ -1171,10 +1175,8 @@ def main():
     active=[x['strength'] for x in bucket_model if abs(x['strength'])>=0.05]
     agreement=abs(sum(active))/len(active) if active else 0.0
     confidence=round(100*(0.60*coverage+0.40*agreement))
-    d['environmentConfidence']=confidence
-    d['environmentCoverage']=round(100*coverage)
-    d['setupModel']={'version':2,'factors':factor_model,'buckets':bucket_model,
-                     'coveragePct':round(100*coverage),'agreementPct':round(100*agreement)}
+    nasdaq_model={'version':2,'factors':factor_model,'buckets':bucket_model,
+                  'coveragePct':round(100*coverage),'agreementPct':round(100*agreement)}
 
     # Massive supplies historical context while CNBC remains the current/session feed.
     # Start with QQQ and the semiconductor ETF SOXX because both are available as U.S.
@@ -1311,7 +1313,7 @@ def main():
         if signal('Nasdaq volatility (VXN / VIX)')=='negative': negatives.append('rising volatility')
         pos=', '.join(positives[:3]) or 'limited positive confirmation'
         neg=', '.join(negatives[:3]) or 'no major high-impact bearish confirmation'
-        confidence=d.get('environmentConfidence')
+        confidence=confidence
         conf=f", {confidence}% confidence" if confidence is not None else ""
         assessment=f"The Nasdaq Setup is {label} ({score:+d}/100{conf}, {trend.lower()}). The current balance is {pos} on the supportive side versus {neg} as the main headwind."
 
@@ -1433,9 +1435,7 @@ def main():
     else:
         score=0
     score=max(-100,min(100,score))
-    d['environmentScoreRaw']=raw_setup_score
     d['consolidationPenalty']=conviction_reduction
-    d['environmentScore']=score
     # The published Setup label/color is derived from the final v2 numerical score so
     # the card can never disagree with the score after consolidation-risk adjustment.
     if score>=45: setup_signal='positive'; setup_label='Strong Positive'
@@ -1443,15 +1443,15 @@ def main():
     elif score>-15: setup_signal='mixed'; setup_label='Mixed / Neutral'
     elif score>-45: setup_signal='negative'; setup_label='Cautiously Negative'
     else: setup_signal='negative'; setup_label='Strong Negative'
-    d['environmentSignal']=setup_signal
-    d['environmentLabel']=setup_label
     for g in d.get('groups',[]):
         if g.get('name')=='NASDAQ SETUP':
             g['signal']=setup_signal
             g['label']=setup_label
-    previous_score=d.get('environmentScorePrevious',score)
-    d['environmentTrend']='Improving ↑' if score>previous_score else ('Deteriorating ↓' if score<previous_score else 'Stable →')
-    d['environmentScorePrevious']=score
+    previous_score=legacy_previous if legacy_previous is not None else score
+    nasdaq_trend='Improving ↑' if score>previous_score else ('Deteriorating ↓' if score<previous_score else 'Stable →')
+    d['nasdaqScore']={'score':score,'rawScore':raw_setup_score,'previousScore':previous_score,'trend':nasdaq_trend,
+                      'signal':setup_signal,'label':setup_label,'confidence':confidence,'coverage':round(100*coverage),
+                      'model':nasdaq_model}
 
     # Opportunity Score: is a dislocation becoming investable as market internals recover?
     # This is deliberately separate from Nasdaq Setup (current environment) and
@@ -1512,7 +1512,7 @@ def main():
     # R5 — Setup improvement: +25 score points over the lookback reaches 100.
     old_setup=None
     for rec in _opp_hist:
-        x=num(rec.get('environmentScore'))
+        x=num((rec.get('nasdaqScore') or {}).get('score',rec.get('environmentScore')))
         if x is not None: old_setup=x; break
     setup_improvement=_clamp100(50+2*(score-old_setup)) if old_setup is not None else None
 
@@ -1554,7 +1554,7 @@ def main():
         'explanation':f'Opportunity Score = 40% Setup readiness + 25% Recovery Confirmation + 20% inverse Consolidation Risk + 15% volatility opportunity unlocked by recovery. Recovery is built from VXN reversal (30%), breadth recovery (25%), semiconductor recovery (20%), 10Y yield stabilization (15%) and Setup improvement (10%). Current recovery confirmation is {recovery}%.'
     }
 
-    setup_explanation=build_setup_explanation(rows,score,d['environmentTrend'])
+    setup_explanation=build_setup_explanation(rows,score,nasdaq_trend)
     if conviction_reduction:
         setup_explanation += " Elevated consolidation risk is reducing conviction in the directional setup."
 
@@ -1697,7 +1697,7 @@ def main():
     ixic=market.get('.IXIC',{})
     model_perf={'nasdaqCompositeClose':ixic.get('last'),
                 'nasdaqCompositeObservationDate':ixic.get('observationDate'),
-                'environmentScore':d.get('environmentScore')}
+                'nasdaqScore':d.get('nasdaqScore',{}).get('score')}
     # Store each ticker's raw earnings-AVWAP observation in history. The price is the
     # same current/session-aware CNBC quote used by the AVWAP factor at refresh time.
     # Keeping AVWAP, price and distance together makes historical reconstruction/test use simple.
@@ -1708,25 +1708,37 @@ def main():
         'above':x.get('above'),'slope5dPct':x.get('slope5dPct'),
         'sessions':x.get('sessions')
     } for ticker,x in avwap_details.items()}
-    snapshot={'schemaVersion':1,'timestampET':now.isoformat(),'market':market,'breadth':breadth_obs,
+    snapshot={'schemaVersion':2,'timestampET':now.isoformat(),'market':market,'breadth':breadth_obs,
               'yieldCurve2s10s':curve_obs,'modelPerformance':model_perf,
-              'environmentScore':d.get('environmentScore'),'environmentTrend':d.get('environmentTrend'),
+              'nasdaqScore':{k:v for k,v in d.get('nasdaqScore',{}).items() if k!='model'},
               'earningsAvwap':avwap_history,'factors':factor_state}
     try:
         with open(DAILY_PATH,encoding='utf-8') as hf: daily=json.load(hf)
     except (FileNotFoundError,json.JSONDecodeError):
-        daily={'schemaVersion':1,'records':{}}
-    daily['schemaVersion']=1
-    daily.setdefault('records',{})[now.strftime('%Y-%m-%d')]=snapshot
+        daily={'schemaVersion':2,'records':{}}
+    daily['schemaVersion']=2
+    for _rec in daily.setdefault('records',{}).values():
+        if 'nasdaqScore' not in _rec and ('environmentScore' in _rec or 'environmentTrend' in _rec):
+            _rec['nasdaqScore']={'score':_rec.pop('environmentScore',None),'trend':_rec.pop('environmentTrend',None)}
+        _mp=_rec.get('modelPerformance')
+        if isinstance(_mp,dict) and 'environmentScore' in _mp: _mp['nasdaqScore']=_mp.pop('environmentScore')
+        _rec['schemaVersion']=2
+    daily['records'][now.strftime('%Y-%m-%d')]=snapshot
     with open(DAILY_PATH,'w',encoding='utf-8') as hf: json.dump(daily,hf,ensure_ascii=False,indent=2)
     month_path=os.path.join(HISTORY_DIR,'intraday',now.strftime('%Y-%m')+'.json')
     os.makedirs(os.path.dirname(month_path),exist_ok=True)
     try:
         with open(month_path,encoding='utf-8') as hf: intraday=json.load(hf)
     except (FileNotFoundError,json.JSONDecodeError):
-        intraday={'schemaVersion':1,'snapshots':[]}
-    intraday['schemaVersion']=1
-    intraday.setdefault('snapshots',[]).append(snapshot)
+        intraday={'schemaVersion':2,'snapshots':[]}
+    intraday['schemaVersion']=2
+    for _rec in intraday.setdefault('snapshots',[]):
+        if 'nasdaqScore' not in _rec and ('environmentScore' in _rec or 'environmentTrend' in _rec):
+            _rec['nasdaqScore']={'score':_rec.pop('environmentScore',None),'trend':_rec.pop('environmentTrend',None)}
+        _mp=_rec.get('modelPerformance')
+        if isinstance(_mp,dict) and 'environmentScore' in _mp: _mp['nasdaqScore']=_mp.pop('environmentScore')
+        _rec['schemaVersion']=2
+    intraday['snapshots'].append(snapshot)
     with open(month_path,'w',encoding='utf-8') as hf: json.dump(intraday,hf,ensure_ascii=False,indent=2)
 
     # Only tactical/actionable factors are published to the dashboard. Background factors
