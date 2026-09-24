@@ -40,6 +40,9 @@ jobs:
       - name: Allow refresh
         id: gate
         run: echo "run=yes" >> "$GITHUB_OUTPUT"
+      - name: Install FedWatch dependency
+        if: steps.gate.outputs.run == 'yes'
+        run: pip install 'cme-fedwatch==0.2.1'
       - name: Refresh data
         if: steps.gate.outputs.run == 'yes'
         env:
