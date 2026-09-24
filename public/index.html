@@ -47,9 +47,40 @@ function render(d){
   });
   const opportunityCard=d.opportunityScore?`<div class="card factor-card signal-${d.opportunityScore.signal}" tabindex="0" data-tip="${escAttr('Measures how attractive current conditions are for deploying new capital by combining market setup, recovery evidence, consolidation risk and volatility context. Calculated by NasBoard\'s proprietary real-time multi-factor scoring mechanism using the latest available inputs.')}"><span class="factor-name">5. OPPORTUNITY SCORE</span><span class="card-status ${C[d.opportunityScore.signal]}">${d.opportunityScore.label}</span><span><span class="metric ${C[d.opportunityScore.signal]}">${d.opportunityScore.score}</span> <span class="muted">/ 100</span></span><span class="card-latest">Proprietary real-time multi-factor scoring mechanism</span></div>`:'';
   factorCards.innerHTML=summaryCards+rowCards.slice(0,2).join('')+opportunityCard+rowCards.slice(2).join('');
+  const strongestBuckets=()=>{
+    const bs=[...(ns.model?.buckets||[])].filter(x=>Number.isFinite(Number(x.strength)));
+    const pos=bs.filter(x=>Number(x.strength)>0.05).sort((a,b)=>Number(b.strength)-Number(a.strength))[0];
+    const neg=bs.filter(x=>Number(x.strength)<-0.05).sort((a,b)=>Number(a.strength)-Number(b.strength))[0];
+    return {pos,neg};
+  };
+  const nasdaqScoreDetails=()=>{
+    const s=Number(ns.score); const raw=Number(ns.rawScore); const {pos,neg}=strongestBuckets();
+    const band=ns.label||'current band';
+    let t='Nasdaq Score is '+(Number.isFinite(s)?((s>0?'+':'')+s):'—')+' on a −100 to +100 scale, placing the market in the '+band+' regime.';
+    if(Number.isFinite(raw)&&Number.isFinite(s)&&raw!==s) t+=' The raw model reading is '+(raw>0?'+':'')+raw+', with consolidation risk moderating directional conviction to the published score.';
+    else t+=' The published score is currently close to the raw multi-factor reading.';
+    const drivers=[]; if(pos) drivers.push(pos.bucket+' is supportive'); if(neg) drivers.push(neg.bucket+' is the main headwind');
+    t+=' '+(drivers.length?drivers.join(', ')+'; ':'')+'model coverage is '+(ns.coverage??'—')+'% with '+(ns.confidence??'—')+'% confidence.';
+    return t;
+  };
+  const consolidationDetails=()=>{
+    const cr=d.consolidationRisk||{}; const s=Number(cr.score);
+    const top=[...(cr.components||[])].filter(x=>Number.isFinite(Number(x.score))&&Number.isFinite(Number(x.weight))).sort((a,b)=>(Number(b.score)*Number(b.weight))-(Number(a.score)*Number(a.weight))).slice(0,3);
+    let t='Consolidation Risk is '+(Number.isFinite(s)?s:'—')+' / 100 ('+(cr.level||'—')+'); higher readings mean the Nasdaq is more extended or vulnerable to a pause/pullback.';
+    if(top.length) t+=' The largest current contributors are '+top.map(x=>x.name+' ('+x.detail+')').join(', ')+'.';
+    t+=' Model coverage is '+(cr.coverageWeight??'—')+'%, using '+(cr.historyDays??'—')+' sessions of stored history where available.';
+    return t;
+  };
+  const opportunityDetails=()=>{
+    const o=d.opportunityScore||{};
+    let t='Opportunity Score is '+(o.score??'—')+' / 100 ('+(o.label||'—')+'), indicating how attractive the current environment is for deploying new capital rather than simply whether Nasdaq is rising or falling.';
+    t+=' Current setup readiness is '+(o.setupReadiness??'—')+'%, recovery confirmation '+(o.recoveryConfirmation??'—')+'%, and consolidation readiness '+(o.consolidationReadiness??'—')+'%.';
+    t+=' '+((o.recoveryConfirmation??0)<40?'Recovery confirmation remains the main constraint, so the model is not yet treating volatility or weakness as a strong entry opportunity.':'Recovery evidence is sufficiently developed to unlock more of the available opportunity.') ;
+    return t;
+  };
   const modelRows=[
-    env?{name:'Nasdaq Score',rank:1,signal:env.signal,status:`${ns.score>0?'+':''}${ns.score??'—'} · range −100 to +100 · ${env.label||''}`,trend:ns.trend||'—',explanation:'Nasdaq Score ranges from −100 (strong headwind) to +100 (strong support) and summarizes the current Nasdaq environment. It is calculated by NasBoard\'s proprietary real-time multi-factor scoring mechanism using the latest available inputs; source timing is shown in Debug.',freshness:'Current model output'}:null,
-    d.consolidationRisk?{name:'Consolidation Risk',rank:2,signal:d.consolidationRisk.level==='Low'?'positive':(d.consolidationRisk.level==='High'?'negative':'mixed'),status:`${d.consolidationRisk.score??'—'} / 100 · ${d.consolidationRisk.level||''}`,trend:'—',explanation:d.consolidationRisk.explanation||'Derived model of Nasdaq extension and consolidation risk.',freshness:`${d.consolidationRisk.coverageWeight??'—'}% data coverage`}:null
+    env?{name:'Nasdaq Score',rank:1,signal:env.signal,status:`${ns.score>0?'+':''}${ns.score??'—'} · range −100 to +100 · ${env.label||''}`,trend:ns.trend||'—',explanation:nasdaqScoreDetails(),freshness:'Current model output'}:null,
+    d.consolidationRisk?{name:'Consolidation Risk',rank:2,signal:d.consolidationRisk.level==='Low'?'positive':(d.consolidationRisk.level==='High'?'negative':'mixed'),status:`${d.consolidationRisk.score??'—'} / 100 · ${d.consolidationRisk.level||''}`,trend:'—',explanation:consolidationDetails(),freshness:`${d.consolidationRisk.coverageWeight??'—'}% data coverage`}:null
   ].filter(Boolean);
   const modelDebug=r=>{
     if(r.name==='Nasdaq Score') return '<b>Freshness:</b> Current model output<br><b>Model:</b> v'+(ns.model?.version??'—')+' · Coverage '+(ns.coverage??'—')+'% · Confidence '+(ns.confidence??'—')+'% · Raw '+(ns.rawScore??'—')+' · Previous '+(ns.previousScore??'—')+'<br><b>Formula:</b> weighted independent factor-bucket strengths with freshness/regime adjustments; Consolidation Risk modifies directional conviction.';
@@ -70,12 +101,12 @@ function render(d){
   };
   const modelHtml=modelRows.map(r=>`<tr><td><b>${r.rank}. ${r.name}</b></td><td class="${C[r.signal]}"><b>${r.signal==='positive'?'Positive':r.signal==='negative'?'Negative':'Mixed'}</b></td><td>${r.status}</td><td>${r.trend}</td><td><span class="impact">—</span></td><td class="explain">${String(r.explanation||"—").replace(/\n\n/g,"<br><br>")}</td><td class="debug">${modelDebug(r)}</td></tr>`).join('');
   const factorHtml=orderedRows.map((r,i)=>`<tr><td><b>${factorRank(i)}. ${r.factor}</b></td><td class="${C[r.signal]}"><b>${cleanSignal(r.signalLabel||r.signal)}</b></td><td>${r.latest}</td><td>${r.trend||'—'}</td><td><span class="impact">${r.currentImpact||'Low'}</span></td><td class="explain">${factorDetails(r)}</td><td class="debug">${factorDebug(r)}</td></tr>`);
-  const opportunityHtml=d.opportunityScore?`<tr><td><b>5. Opportunity Score</b></td><td class="${C[d.opportunityScore.signal]}"><b>${d.opportunityScore.label}</b></td><td>${d.opportunityScore.score} / 100</td><td>—</td><td><span class="impact">—</span></td><td class="explain">${d.opportunityScore.explanation||'—'}</td><td class="debug"><b>Freshness:</b> Current model output<br><b>Model/debug:</b> ${escHtml(d.opportunityScore.debug||'')}</td></tr>`:'';
+  const opportunityHtml=d.opportunityScore?`<tr><td><b>5. Opportunity Score</b></td><td class="${C[d.opportunityScore.signal]}"><b>${d.opportunityScore.label}</b></td><td>${d.opportunityScore.score} / 100</td><td>—</td><td><span class="impact">—</span></td><td class="explain">${opportunityDetails()}</td><td class="debug"><b>Freshness:</b> Current model output<br><b>Model/debug:</b> ${escHtml(d.opportunityScore.debug||'')}</td></tr>`:'';
   rows.innerHTML=modelHtml+factorHtml.slice(0,2).join('')+opportunityHtml+factorHtml.slice(2).join('');
 }
 // Fetch a cache-busted quantitative snapshot; the button refreshes displayed data only.
 async function load(){update.disabled=true;update.textContent='Checking…';try{const r=await fetch('data/dashboard.json?t='+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache'}});if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();render(d);return d}catch(e){console.error(e);update.textContent='Refresh failed';setTimeout(()=>update.textContent='↻ Check Latest',1800);return null}finally{update.disabled=false;if(update.textContent==='Checking…')update.textContent='↻ Check Latest'}}
-// Load the independently generated 06:00 Turkey-time narrative market brief.
+// Load the narrative market brief. Market Analysis times remain in New York / ET; do not localize them to browser/TR time.
 async function loadAnalysis(d){try{
   // After the cash open, this section becomes the live Market Analysis and uses the
   // Nasdaq Score explanation generated from the current dashboard factors.
@@ -84,7 +115,7 @@ async function loadAnalysis(d){try{
   const marketDay=['Mon','Tue','Wed','Thu','Fri'].includes(part('weekday')); const afterOpen=marketDay&&mins>=570;
   if(afterOpen&&d){
     analysisTitle.textContent='Market Analysis';
-    premarketMeta.textContent='Analysis updated: '+(d.updatedET||'—');
+    premarketMeta.textContent='Analysis updated: '+(d.updatedET||'—')+' (ET)';
     const ns=d.nasdaqScore||{};
     const env=(d.groups||[]).find(g=>g.name==='NASDAQ SCORE'||g.name==='NASDAQ SETUP')||{};
     const liveSignal=ns.signal||env.signal;
@@ -102,7 +133,7 @@ async function loadAnalysis(d){try{
     const nyDate=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
     const dayMs=86400000, todayUTC=Date.parse(nyDate+'T00:00:00Z');
     const closeEvents=eventCandidates.filter(e=>{const dd=(Date.parse(e.date+'T00:00:00Z')-todayUTC)/dayMs;return dd>=0&&dd<=14}).slice(0,4);
-    const eventsHtml=closeEvents.map(e=>'<li><b>'+e.date+' · '+e.title+'</b> — '+e.detail+'</li>').join('');
+    const eventsHtml=closeEvents.map(e=>'<li><b>'+e.date+' · '+e.title+'</b> — '+e.detail+'</li>').join(''); // event times, when present, stay in ET
     premarketBody.innerHTML='<div class="bias"><b>Nasdaq Score:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+' &nbsp; · &nbsp; <b>Trend:</b> '+(ns.trend||'—')+'</div>'+(watchTitle?'<h3 class="'+(watch.status==='bearish'?'red':'green')+'">'+watchTitle+'</h3>':'')+'<p>'+String(env?.explanation||'Current Nasdaq Score explanation is not available.').replace(/\n\n/g,'</p><p>')+'</p>'+(eventsHtml?'<h3>Important upcoming catalysts</h3><ul>'+eventsHtml+'</ul>':'');
     return;
   }
