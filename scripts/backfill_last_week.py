@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Backfill the previous calendar week's daily market history from Massive.
+"""Backfill recent completed daily market history from Massive.
+
+The default window starts on Monday of the previous calendar week and ends
+yesterday. This repairs the previous week plus any completed sessions in the
+current week while preserving point-in-time NasBoard model scores already stored.
 
 This intentionally backfills only observed market data. It does NOT reconstruct
 NasBoard model scores because historical OHLC alone cannot reproduce the full
@@ -73,9 +77,9 @@ def main():
     today=datetime.datetime.now(NY).date()
     this_monday=today-datetime.timedelta(days=today.weekday())
     start=this_monday-datetime.timedelta(days=7)
-    end=start+datetime.timedelta(days=4)
+    end=today-datetime.timedelta(days=1)
     start_s,end_s=start.isoformat(),end.isoformat()
-    print(f'Backfilling previous calendar week: {start_s} through {end_s}')
+    print(f'Backfilling recent completed sessions: {start_s} through {end_s}')
 
     with open(PATH,encoding='utf-8') as f:
         hist=json.load(f)
