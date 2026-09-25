@@ -15,10 +15,12 @@ _last=0.0
 BASKET=('NVDA','AMD','AVGO','TSM','MU')
 BENCH={'Nasdaq':'I:COMP','SOX':'I:SOX'}
 EVENTS={
- 'NVDA':[('2026-08-26','after_close'),('2026-05-20','after_close')],
- 'AMD':[('2026-08-04','after_close'),('2026-05-05','after_close')],
- 'AVGO':[('2026-09-02','after_close'),('2026-06-04','after_close')],
- 'TSM':[('2026-07-16','before_open'),('2026-04-16','before_open')],
+ # All completed 2026 earnings events through the current date.
+ # Latest dates are also cross-checked against the live AVWAP watchlist below.
+ 'NVDA':[('2026-08-26','after_close'),('2026-05-20','after_close'),('2026-02-25','after_close')],
+ 'AMD':[('2026-08-04','after_close'),('2026-05-05','after_close'),('2026-02-03','after_close')],
+ 'AVGO':[('2026-09-02','after_close'),('2026-06-04','after_close'),('2026-03-04','after_close')],
+ 'TSM':[('2026-07-16','before_open'),('2026-04-16','before_open'),('2026-01-15','before_open')],
  'MU':[('2026-06-24','after_close'),('2026-03-18','after_close')],
 }
 
@@ -131,7 +133,7 @@ def main():
                 'eventNumber':'latest' if event_index==0 else f'previous{event_index}',
                 'earningsDate':ed,
                 'releaseSession':release_session,
-                'source':latest_meta[t].get('source') if event_index==0 else 'historical earnings calendar',
+                'source':latest_meta[t].get('source') if event_index==0 else 'historical earnings calendar / issuer IR',
                 'eventTradingDay':event_trade_day,
                 'rows':rows,
                 'summary':summary
@@ -139,7 +141,7 @@ def main():
         events[t]=ticker_events
 
     output={
-        'version':2,
+        'version':3,
         'generatedAtUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),
         'methodology':{
             'dailyReturn':'Adjusted close-to-close percentage return from Massive daily aggregates.',
