@@ -6,6 +6,12 @@ on:
     # Covers 09:30 and 10:30 New York in both EDT and EST.
     - cron: '30 13,14,15 * * 1-5'
 
+# Share the same lock as Refresh NasBoard so the two workflows never push
+# generated dashboard data at the same time.
+concurrency:
+  group: nasboard-data-refresh
+  cancel-in-progress: false
+
 permissions:
   contents: write
 

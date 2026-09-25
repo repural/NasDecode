@@ -66,12 +66,16 @@ jobs:
           if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
           git diff --cached --quiet && exit 0
           git commit -m 'Refresh dashboard data'
-          # A concurrent refresh may have published generated JSON while this run was
-          # executing. Retry from the latest main and regenerate instead of rebasing
-          # generated snapshots, which can produce content conflicts.
-          if ! git push; then
+          # A code/UI commit or another data refresh can land while this run is
+          # generating data. Retry from the newest main and regenerate instead of
+          # rebasing generated snapshots, which can create history conflicts.
+          for attempt in 1 2 3 4; do
+            if git push; then
+              exit 0
+            fi
+            echo "Push raced with main; regenerating from latest main (attempt $attempt/4)"
+            git fetch origin main
             git reset --hard origin/main
-            git pull --ff-only origin main
             MASSIVE_API_KEY='${{ secrets.MASSIVE_API_KEY }}' python scripts/refresh.py
             git add data/dashboard.json data/history
             mkdir -p public/data
@@ -81,7 +85,8 @@ jobs:
             if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
             git diff --cached --quiet && exit 0
             git commit -m 'Refresh dashboard data'
-            git push
-          fi
+          done
+          echo "Unable to publish refreshed data after 4 attempts"
+          exit 1
 
 # validation-trigger: serialized-refresh-v1

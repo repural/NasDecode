@@ -271,8 +271,14 @@ def previous_regular_move(q):
     return pct(q)
 
 def setrow(rows,name,latest,direction,signal,freshness,source='CNBC quote feed',explanation=None):
-    r=next(x for x in rows if x['factor']==name); r.update(latest=latest,direction=direction,signal=signal,freshness=freshness,source=source)
+    # Some optional legacy factors are intentionally absent from the current dashboard.
+    # A quote arriving for one of them must not abort the rest of the CNBC refresh.
+    r=next((x for x in rows if x['factor']==name),None)
+    if r is None:
+        return None
+    r.update(latest=latest,direction=direction,signal=signal,freshness=freshness,source=source)
     if explanation is not None: r['explanation']=explanation
+    return r
 
 def explain_current_rows(rows):
     # Regenerate explanations from current values and selected related factors.
