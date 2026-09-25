@@ -128,7 +128,7 @@ const nearbyMajorEarnings=d=>{
   const today=new Date(nyToday+'T12:00:00-04:00');
   const days=Math.ceil((eventDate-today)/86400000);
   if(days<0||days>7)return '';
-  return '<p><b>Major earnings catalyst:</b> '+escHtml(m[1])+' reports '+escHtml(m[2])+' ('+(days===0?'today':days+' day'+(days===1?'':'s')+' away')+'). Given its relevance to Nasdaq/technology leadership, this event should remain part of the near-term risk assessment in both pre-market and market analysis.</p>';
+  return '<h3>Major earnings catalyst:</h3><p>'+escHtml(m[1])+' reports '+escHtml(m[2])+' ('+(days===0?'today':days+' day'+(days===1?'':'s')+' away')+'). Given its relevance to Nasdaq/technology leadership, this event should remain part of the near-term risk assessment in both pre-market and market analysis.</p>';
 };
 async function loadAnalysis(d){try{
   // After the cash open, this section becomes the live Market Analysis and uses the
