@@ -1,0 +1,40 @@
+name: Backfill Previous Week From Massive
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/backfill_last_week.py'
+  workflow_dispatch:
+
+concurrency:
+  group: nasboard-data-refresh
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Backfill previous week
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: python scripts/backfill_last_week.py
+      - name: Commit historical backfill
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/history/daily.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Backfill previous week market history from Massive"
+          for attempt in 1 2 3 4; do
+            if git push; then exit 0; fi
+            git fetch origin main
+            git rebase origin/main || { git rebase --abort; exit 1; }
+          done
+          exit 1
