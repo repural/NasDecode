@@ -64,7 +64,7 @@ def main():
 
     dates=[datetime.date.fromisoformat(meta[t]['earningsDate']) for t in BASKET]
     start=(min(dates)-datetime.timedelta(days=20)).isoformat()
-    end=(max(dates)+datetime.timedelta(days=3)).isoformat()
+    end=(max(dates)+datetime.timedelta(days=10)).isoformat()
 
     tickers=list(BASKET)+list(BENCH.values())
     raw={t:series(fetch(t,start,end)) for t in tickers}
@@ -72,16 +72,19 @@ def main():
     events={}
     for t in BASKET:
         ed=meta[t]['earningsDate']
-        days=sorted(d for d in raw[t] if d<=ed)
+        all_days=sorted(raw[t])
+        before=sorted(d for d in all_days if d<=ed)
         if ed not in raw[t]:
             # For non-trading earnings dates, use the last trading session on/before announcement.
-            event_trade_day=days[-1]
+            event_trade_day=before[-1]
         else:
             event_trade_day=ed
-        idx=days.index(event_trade_day)
-        window=days[max(0,idx-7):idx+1]
+        idx=all_days.index(event_trade_day)
+        window=all_days[max(0,idx-7):min(len(all_days),idx+4)]
+        event_pos=window.index(event_trade_day)
         rows=[]
-        for offset,day in zip(range(-len(window)+1,1),window):
+        for pos,day in enumerate(window):
+            offset=pos-event_pos
             rows.append({
                 'offset':offset,
                 'date':day,
@@ -108,7 +111,12 @@ def main():
                 'nasdaqIncludingEventDayPct':compound([r['nasdaqChangePct'] for r in incl]),
                 'soxIncludingEventDayPct':compound([r['soxChangePct'] for r in incl]),
                 'positivePreEventSessions':sum(1 for r in pre if (r['stockChangePct'] or 0)>0),
-                'preEventSessions':len(pre)
+                'preEventSessions':len(pre),
+                'stockPost1Pct':next((r['stockChangePct'] for r in rows if r['offset']==1),None),
+                'stockPost2CumulativePct':compound([r['stockChangePct'] for r in rows if 1<=r['offset']<=2]),
+                'stockPost3CumulativePct':compound([r['stockChangePct'] for r in rows if 1<=r['offset']<=3]),
+                'nasdaqPost3CumulativePct':compound([r['nasdaqChangePct'] for r in rows if 1<=r['offset']<=3]),
+                'soxPost3CumulativePct':compound([r['soxChangePct'] for r in rows if 1<=r['offset']<=3])
             }
         }
 
@@ -119,7 +127,8 @@ def main():
             'dailyReturn':'Adjusted close-to-close percentage return from Massive daily aggregates.',
             'pre7':'Compound return across offsets -7 through -1, excluding announcement day.',
             'includingEventDay':'Compound return across offsets -7 through 0.',
-            'timingNote':'For after-close reporters, offset 0 is pre-announcement trading. For before-open reporters, offset 0 includes the earnings reaction.'
+            'postEvent':'T+1, T+2 and T+3 are the next three regular trading sessions after the announcement-date session.',
+            'timingNote':'For after-close reporters, offset 0 is pre-announcement trading and T+1 contains the first regular-session earnings reaction. For before-open reporters, offset 0 already contains the first earnings reaction.'
         },
         'basket':list(BASKET),
         'benchmarks':BENCH,
