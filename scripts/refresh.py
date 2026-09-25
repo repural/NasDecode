@@ -2177,6 +2177,8 @@ def main():
               'sessionLevels':session_levels,'fedExpectations':fed_history,
               'yieldCurve2s10s':curve_obs,'modelPerformance':model_perf,
               'nasdaqScore':{k:v for k,v in d.get('nasdaqScore',{}).items() if k!='model'},
+              'consolidationRisk':d.get('consolidationRisk'),
+              'opportunityScore':d.get('opportunityScore'),
               'earningsAvwap':avwap_history,'factors':factor_state}
     try:
         with open(DAILY_PATH,encoding='utf-8') as hf: daily=json.load(hf)

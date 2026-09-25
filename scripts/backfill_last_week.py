@@ -21,6 +21,10 @@ SERIES={
     'SOX': 'I:SOX',
     'SMH': 'SMH',
     'NVDA': 'NVDA',
+    'AMD': 'AMD',
+    'AVGO': 'AVGO',
+    'TSM': 'TSM',
+    'MU': 'MU',
     'QQQ': 'QQQ',
 }
 
@@ -80,10 +84,20 @@ def main():
     fetched={}
     unavailable=[]
     for label,ticker in SERIES.items():
-        bars=fetch(ticker,start_s,end_s)
+        fetch_start=(start-datetime.timedelta(days=5)).isoformat()
+        bars=fetch(ticker,fetch_start,end_s)
         if not bars:
             unavailable.append({'label':label,'ticker':ticker})
-        fetched[label]={day_of(x):obs(x,ticker) for x in bars if x.get('t') is not None}
+        series={}
+        prior_close=None
+        for bar in bars:
+            day=day_of(bar)
+            x=obs(bar,ticker)
+            x['previousClose']=round(prior_close,6) if prior_close is not None else None
+            x['changeCloseToClosePct']=round((x['close']/prior_close-1)*100,4) if prior_close not in (None,0) else None
+            series[day]=x
+            prior_close=x['close']
+        fetched[label]={day:x for day,x in series.items() if start_s <= day <= end_s}
 
     all_days=sorted(set().union(*(set(x.keys()) for x in fetched.values())))
     for day in all_days:
@@ -104,7 +118,8 @@ def main():
             key={ 'Nasdaq':'.IXIC', 'SOX':'.SOX' }.get(label,label)
             market[key]={
                 'open':x['open'],'high':x['high'],'low':x['low'],'last':x['close'],
-                'changePct':x['changeOpenToClosePct'],'observationDate':day,
+                'previousClose':x.get('previousClose'),'changePct':x.get('changeCloseToClosePct'),
+                'openToClosePct':x['changeOpenToClosePct'],'observationDate':day,
                 'dataState':'historical','provider':'Massive','ticker':ticker
             }
         rec['historicalBackfill']={
