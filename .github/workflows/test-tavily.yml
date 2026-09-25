@@ -1,0 +1,22 @@
+name: Test Tavily Access
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/test-tavily.yml'
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Tavily secret
+        env:
+          TAVILY_KEY: ${{ secrets.TAVILY_KEY }}
+        run: |
+          if [ -z "$TAVILY_KEY" ]; then
+            echo "TAVILY_KEY MISSING"
+            exit 1
+          fi
+          echo "TAVILY_KEY PRESENT"
