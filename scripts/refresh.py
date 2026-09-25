@@ -24,7 +24,7 @@ NY=ZoneInfo('America/New_York')
 CNBC_BASE='https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol'
 MEGACAPS=['AAPL','MSFT','AMZN','GOOGL','META','NVDA','TSLA']
 BREADTH=['NVDA','AAPL','MU','MSFT','AMD','AMZN','TSLA','GOOGL','INTC','GOOG','AVGO','META','AMAT','WMT','LRCX','CSCO','COST','KLAC','SNDK','NFLX','PANW','TXN','PLTR','MRVL','LIN','WDC','STX','AMGN','QCOM','CRWD','ADI','PEP','ASML','TMUS','APP','GILD','ARM','ISRG','SHOP','BKNG','VRTX','SBUX','FTNT','CDNS','MAR','MNST','CEG','ADP','CSX','CMCSA','DDOG','MELI','SNPS','ADBE','ALAB','ORLY','DASH','TER','AEP','MDLZ','INTU','NXPI','HON','HONA','ROST','CTAS','MPWR','WBD','LITE','REGN','RBLX','NBIS','ABNB','RKLB','FAST','BKR','PDD','XEL','FANG','MCHP','FER','EXC','TTWO','AXON','ODFL','CCEP','CRWV','KDP','IDXX','ADSK','ALNY','PYPL','PAYX','ROP','TRI','GEHC','MSTR','KHC','CPRT','DXCM','WDAY','SPCX']
-SYMBOLS=list(dict.fromkeys(['US10Y','US2Y','ZQU6','ZQV6','ZQX6','ZQZ6','ZQF7','ZQG7','ZQH7','.IXIC','QQQ','NVDA','AMD','AVGO','TSM','MU','SMH','.VIX','.VXN','@CL.1','@LCO.1','HYG','LQD','S5FI','.SOX','SOX']+MEGACAPS+BREADTH))
+SYMBOLS=list(dict.fromkeys(['US10Y','US2Y','ZQU6','ZQV6','ZQX6','ZQZ6','ZQF7','ZQG7','ZQH7','.IXIC','QQQ','NVDA','AMD','AVGO','TSM','MU','SMH','SOXX','.VIX','.VXN','@CL.1','@LCO.1','HYG','LQD','S5FI','.SOX','SOX']+MEGACAPS+BREADTH))
 
 def cnbc_quotes(symbols):
     params={'symbols':'|'.join(symbols),'requestMethod':'itv','noform':'1','partnerId':'2','fund':'1','exthrs':'1','output':'json','events':'1'}
@@ -1912,7 +1912,7 @@ def main():
                 'timestamp':stamp,'observationDate':obs_date,'dataState':state,
                 'realTime':real_time,'marketStatus':market_status,'quoteSource':source,'provider':provider}
     os.makedirs(HISTORY_DIR,exist_ok=True)
-    market_symbols=['.IXIC','QQQ','.SOX','SOX','SMH','NVDA','AMD','AVGO','TSM','MU','AAPL','MSFT','AMZN','GOOGL','META','TSLA',
+    market_symbols=['.IXIC','QQQ','.SOX','SOX','SMH','SOXX','NVDA','AMD','AVGO','TSM','MU','AAPL','MSFT','AMZN','GOOGL','META','TSLA',
                     '.VXN','.VIX','US10Y','US2Y','@CL.1','@LCO.1','HYG','LQD']
     market={sym:quote_obs(sym) for sym in market_symbols if sym in q}
 
@@ -1934,7 +1934,12 @@ def main():
         'Nasdaq':session_level('Nasdaq',['.IXIC']),
         'SOX':session_level('SOX',['.SOX','SOX']),
         'SMH':session_level('SMH',['SMH']),
+        'SOXX':session_level('SOXX',['SOXX']),
         'NVDA':session_level('NVDA',['NVDA']),
+        'AMD':session_level('AMD',['AMD']),
+        'AVGO':session_level('AVGO',['AVGO']),
+        'TSM':session_level('TSM',['TSM']),
+        'MU':session_level('MU',['MU']),
         'QQQ':session_level('QQQ',['QQQ'])
     }
     # Persist a compact source/freshness audit so we can verify CNBC instrument-by-instrument

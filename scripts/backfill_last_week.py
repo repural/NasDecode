@@ -20,6 +20,7 @@ SERIES={
     'Nasdaq': 'I:COMP',
     'SOX': 'I:SOX',
     'SMH': 'SMH',
+    'SOXX': 'SOXX',
     'NVDA': 'NVDA',
     'AMD': 'AMD',
     'AVGO': 'AVGO',
