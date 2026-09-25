@@ -117,6 +117,19 @@ function render(d){
 // Fetch a cache-busted quantitative snapshot; the button refreshes displayed data only.
 async function load(){update.disabled=true;update.textContent='Checking…';try{const r=await fetch('data/dashboard.json?t='+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache'}});if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();render(d);return d}catch(e){console.error(e);update.textContent='Refresh failed';setTimeout(()=>update.textContent='↻ Check Latest',1800);return null}finally{update.disabled=false;if(update.textContent==='Checking…')update.textContent='↻ Check Latest'}}
 // Load the narrative market brief. Market Analysis times remain in New York / ET; do not localize them to browser/TR time.
+const nearbyMajorEarnings=d=>{
+  const row=(d?.rows||[]).find(r=>r.factor==='Technology earnings calendar');
+  if(!row?.latest)return '';
+  const m=String(row.latest).match(/^([^:]+):\s*([A-Z][a-z]{2}\s+\d{1,2},\s+\d{4})/);
+  if(!m)return '';
+  const eventDate=new Date(m[2]+' 12:00:00 GMT-0400');
+  const now=new Date();
+  const nyToday=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
+  const today=new Date(nyToday+'T12:00:00-04:00');
+  const days=Math.ceil((eventDate-today)/86400000);
+  if(days<0||days>7)return '';
+  return '<p><b>Major earnings catalyst:</b> '+escHtml(m[1])+' reports '+escHtml(m[2])+' ('+(days===0?'today':days+' day'+(days===1?'':'s')+' away')+'). Given its relevance to Nasdaq/technology leadership, this event should remain part of the near-term risk assessment in both pre-market and market analysis.</p>';
+};
 async function loadAnalysis(d){try{
   // After the cash open, this section becomes the live Market Analysis and uses the
   // Nasdaq Score explanation generated from the current dashboard factors.
@@ -144,11 +157,11 @@ async function loadAnalysis(d){try{
     const dayMs=86400000, todayUTC=Date.parse(nyDate+'T00:00:00Z');
     const closeEvents=eventCandidates.filter(e=>{const dd=(Date.parse(e.date+'T00:00:00Z')-todayUTC)/dayMs;return dd>=0&&dd<=14}).slice(0,4);
     const eventsHtml=closeEvents.map(e=>'<li><b>'+e.date+' · '+e.title+'</b> — '+e.detail+'</li>').join(''); // event times, when present, stay in ET
-    premarketBody.innerHTML='<div class="bias"><b>Nasdaq Score:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+' &nbsp; · &nbsp; <b>Trend:</b> '+(ns.trend||'—')+'</div>'+(watchTitle?'<h3 class="'+(watch.status==='bearish'?'red':'green')+'">'+watchTitle+'</h3>':'')+'<p>'+marketTimeText(env?.explanation||'Current Nasdaq Score explanation is not available.').replace(/\n\n/g,'</p><p>')+'</p>'+(eventsHtml?'<h3>Important upcoming catalysts</h3><ul>'+eventsHtml+'</ul>':'');
+    premarketBody.innerHTML='<div class="bias"><b>Nasdaq Score:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+' &nbsp; · &nbsp; <b>Trend:</b> '+(ns.trend||'—')+'</div>'+(watchTitle?'<h3 class="'+(watch.status==='bearish'?'red':'green')+'">'+watchTitle+'</h3>':'')+'<p>'+marketTimeText(env?.explanation||'Current Nasdaq Score explanation is not available.').replace(/\n\n/g,'</p><p>')+'</p>'+nearbyMajorEarnings(d)+(eventsHtml?'<h3>Important upcoming catalysts</h3><ul>'+eventsHtml+'</ul>':'');
     return;
   }
   analysisTitle.textContent='Pre-Market Analysis';
-  const r=await fetch('data/premarket.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const a=await r.json();premarketMeta.textContent='Analysis updated: '+marketTimeText(a.updated||'—');const events=(a.events||[]).map(x=>'<li><b>'+marketTimeText(x.title)+'</b> — '+marketTimeText(x.detail)+'</li>').join('');const meta=[a.bias&&'<b>Bias:</b> '+marketTimeText(a.bias),a.confidence&&'<b>Confidence:</b> '+marketTimeText(a.confidence),a.eventRisk&&'<b>Event Risk:</b> '+marketTimeText(a.eventRisk)].filter(Boolean).join(' &nbsp; · &nbsp; ');premarketBody.innerHTML=(meta?'<div class="bias">'+meta+'</div>':'')+'<p>'+((a.summary||[]).map(marketTimeText).join('</p><p>'))+'</p>'+(events?'<h3>Major events to watch today</h3><ol>'+events+'</ol>':'')+(a.watchIntoOpen?'<p><b>What I’d watch into the open:</b> '+marketTimeText(a.watchIntoOpen).replace(/^What I[’\x27]d watch into the open:\s*/,'')+'</p>':'')+(a.keyTimes?'<p>'+marketTimeText(a.keyTimes)+'</p>':'')+(a.sources?.length?'<p class="src">Sources: '+a.sources.map(marketTimeText).join(' · ')+'</p>':'');
+  const r=await fetch('data/premarket.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const a=await r.json();premarketMeta.textContent='Analysis updated: '+marketTimeText(a.updated||'—');const events=(a.events||[]).map(x=>'<li><b>'+marketTimeText(x.title)+'</b> — '+marketTimeText(x.detail)+'</li>').join('');const meta=[a.bias&&'<b>Bias:</b> '+marketTimeText(a.bias),a.confidence&&'<b>Confidence:</b> '+marketTimeText(a.confidence),a.eventRisk&&'<b>Event Risk:</b> '+marketTimeText(a.eventRisk)].filter(Boolean).join(' &nbsp; · &nbsp; ');premarketBody.innerHTML=(meta?'<div class="bias">'+meta+'</div>':'')+'<p>'+((a.summary||[]).map(marketTimeText).join('</p><p>'))+'</p>'+(events?'<h3>Major events to watch today</h3><ol>'+events+'</ol>':'')+(a.watchIntoOpen?'<p><b>What I’d watch into the open:</b> '+marketTimeText(a.watchIntoOpen).replace(/^What I[’\x27]d watch into the open:\s*/,'')+'</p>':'')+(a.keyTimes?'<p>'+marketTimeText(a.keyTimes)+'</p>':'')+nearbyMajorEarnings(d)+(a.sources?.length?'<p class="src">Sources: '+a.sources.map(marketTimeText).join(' · ')+'</p>':'');
 }catch(e){premarketMeta.textContent='Analysis not available yet.';premarketBody.innerHTML='';}}
 update.onclick=async()=>{const d=await load();await loadAnalysis(d)};(async()=>{const d=await load();await loadAnalysis(d)})();
 </script></body></html>
