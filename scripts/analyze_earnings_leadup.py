@@ -129,6 +129,20 @@ def main():
                 summary[f'stockPost{n}CumulativePct']=compound(vals(nrows,'stock'))
                 summary[f'nasdaqPost{n}CumulativePct']=compound(vals(nrows,'nasdaq'))
                 summary[f'soxPost{n}CumulativePct']=compound(vals(nrows,'sox'))
+            # Abnormal return is stock cumulative performance minus the sector benchmark.
+            # For semiconductor earnings SOX is the benchmark.
+            abnormal={}
+            for n in (1,3,7):
+                stock_r=summary.get(f'stockPost{n}CumulativePct')
+                bench_r=summary.get(f'soxPost{n}CumulativePct')
+                abnormal[f'T+{n}']=round(stock_r-bench_r,4) if stock_r is not None and bench_r is not None else None
+            fundamentals={
+                'eps':{'estimate':None,'actual':None,'surprisePct':None},
+                'revenue':{'estimate':None,'actual':None,'surprisePct':None,'currency':None},
+                'guidance':[],
+                'status':'pending_enrichment',
+                'sources':{}
+            }
             ticker_events.append({
                 'eventNumber':'latest' if event_index==0 else f'previous{event_index}',
                 'earningsDate':ed,
@@ -136,12 +150,14 @@ def main():
                 'source':latest_meta[t].get('source') if event_index==0 else 'historical earnings calendar / issuer IR',
                 'eventTradingDay':event_trade_day,
                 'rows':rows,
-                'summary':summary
+                'summary':summary,
+                'abnormalReturns':{'benchmark':'SOX',**abnormal},
+                'earningsFundamentals':fundamentals
             })
         events[t]=ticker_events
 
     output={
-        'version':3,
+        'version':4,
         'generatedAtUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),
         'methodology':{
             'dailyReturn':'Adjusted close-to-close percentage return from Massive daily aggregates.',
