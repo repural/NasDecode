@@ -11,6 +11,16 @@ const cleanSignal=s=>String(s??'').replace(/[🟢🔴🟡]/g,'').trim();
 // Escape model explanations before placing them in tooltip attributes.
 function escAttr(s){return String(s??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function escHtml(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function marketTimeText(s){
+  // Market-analysis copy is standardized to New York / ET. Strip any accidental
+  // local/Türkiye/Istanbul conversion while preserving the ET time itself.
+  return String(s??'')
+    .replace(/\s*[\(\[][^\)\]]*(?:Istanbul|İstanbul|Turkey|Türkiye|TRT|TR time|Turkey time|Türkiye time)[^\)\]]*[\)\]]/gi,'')
+    .replace(/\s*(?:\/|\||·|—|-)\s*\d{1,2}:\d{2}\s*(?:Istanbul|İstanbul|Turkey|Türkiye|TRT|TR time|Turkey time|Türkiye time)\b/gi,'')
+    .replace(/\b\d{1,2}:\d{2}\s*(?:Istanbul|İstanbul|Turkey|Türkiye|TRT|TR time|Turkey time|Türkiye time)\s*(?:\/|\||·|—|-)\s*/gi,'')
+    .replace(/\s{2,}/g,' ')
+    .trim();
+}
 // Render the quantitative dashboard snapshot without recalculating model logic.
 function render(d){
   updated.textContent='Last updated: '+d.updatedET+' · Next auto: '+d.nextUpdateET;
@@ -134,11 +144,11 @@ async function loadAnalysis(d){try{
     const dayMs=86400000, todayUTC=Date.parse(nyDate+'T00:00:00Z');
     const closeEvents=eventCandidates.filter(e=>{const dd=(Date.parse(e.date+'T00:00:00Z')-todayUTC)/dayMs;return dd>=0&&dd<=14}).slice(0,4);
     const eventsHtml=closeEvents.map(e=>'<li><b>'+e.date+' · '+e.title+'</b> — '+e.detail+'</li>').join(''); // event times, when present, stay in ET
-    premarketBody.innerHTML='<div class="bias"><b>Nasdaq Score:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+' &nbsp; · &nbsp; <b>Trend:</b> '+(ns.trend||'—')+'</div>'+(watchTitle?'<h3 class="'+(watch.status==='bearish'?'red':'green')+'">'+watchTitle+'</h3>':'')+'<p>'+String(env?.explanation||'Current Nasdaq Score explanation is not available.').replace(/\n\n/g,'</p><p>')+'</p>'+(eventsHtml?'<h3>Important upcoming catalysts</h3><ul>'+eventsHtml+'</ul>':'');
+    premarketBody.innerHTML='<div class="bias"><b>Nasdaq Score:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+' &nbsp; · &nbsp; <b>Trend:</b> '+(ns.trend||'—')+'</div>'+(watchTitle?'<h3 class="'+(watch.status==='bearish'?'red':'green')+'">'+watchTitle+'</h3>':'')+'<p>'+marketTimeText(env?.explanation||'Current Nasdaq Score explanation is not available.').replace(/\n\n/g,'</p><p>')+'</p>'+(eventsHtml?'<h3>Important upcoming catalysts</h3><ul>'+eventsHtml+'</ul>':'');
     return;
   }
   analysisTitle.textContent='Pre-Market Analysis';
-  const r=await fetch('data/premarket.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const a=await r.json();premarketMeta.textContent='Analysis updated: '+(a.updated||'—');const events=(a.events||[]).map(x=>'<li><b>'+x.title+'</b> — '+x.detail+'</li>').join('');const meta=[a.bias&&'<b>Bias:</b> '+a.bias,a.confidence&&'<b>Confidence:</b> '+a.confidence,a.eventRisk&&'<b>Event Risk:</b> '+a.eventRisk].filter(Boolean).join(' &nbsp; · &nbsp; ');premarketBody.innerHTML=(meta?'<div class="bias">'+meta+'</div>':'')+'<p>'+((a.summary||[]).join('</p><p>'))+'</p>'+(events?'<h3>Major events to watch today</h3><ol>'+events+'</ol>':'')+(a.watchIntoOpen?'<p><b>What I’d watch into the open:</b> '+a.watchIntoOpen.replace(/^What I[’\x27]d watch into the open:\s*/,'')+'</p>':'')+(a.keyTimes?'<p>'+a.keyTimes+'</p>':'')+(a.sources?.length?'<p class="src">Sources: '+a.sources.join(' · ')+'</p>':'');
+  const r=await fetch('data/premarket.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const a=await r.json();premarketMeta.textContent='Analysis updated: '+marketTimeText(a.updated||'—');const events=(a.events||[]).map(x=>'<li><b>'+marketTimeText(x.title)+'</b> — '+marketTimeText(x.detail)+'</li>').join('');const meta=[a.bias&&'<b>Bias:</b> '+marketTimeText(a.bias),a.confidence&&'<b>Confidence:</b> '+marketTimeText(a.confidence),a.eventRisk&&'<b>Event Risk:</b> '+marketTimeText(a.eventRisk)].filter(Boolean).join(' &nbsp; · &nbsp; ');premarketBody.innerHTML=(meta?'<div class="bias">'+meta+'</div>':'')+'<p>'+((a.summary||[]).map(marketTimeText).join('</p><p>'))+'</p>'+(events?'<h3>Major events to watch today</h3><ol>'+events+'</ol>':'')+(a.watchIntoOpen?'<p><b>What I’d watch into the open:</b> '+marketTimeText(a.watchIntoOpen).replace(/^What I[’\x27]d watch into the open:\s*/,'')+'</p>':'')+(a.keyTimes?'<p>'+marketTimeText(a.keyTimes)+'</p>':'')+(a.sources?.length?'<p class="src">Sources: '+a.sources.map(marketTimeText).join(' · ')+'</p>':'');
 }catch(e){premarketMeta.textContent='Analysis not available yet.';premarketBody.innerHTML='';}}
 update.onclick=async()=>{const d=await load();await loadAnalysis(d)};(async()=>{const d=await load();await loadAnalysis(d)})();
 </script></body></html>
