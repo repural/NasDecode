@@ -2182,18 +2182,128 @@ def main():
         'policyScore':fed_row_hist.get('fedPolicyScore'),
         'previousLevelScore':fed_row_hist.get('fedPreviousLevelScore')
     }
-    snapshot={'schemaVersion':3,'timestampET':now.isoformat(),'market':market,'breadth':breadth_obs,
+    # Structured daily validation payload. Raw observations remain in market/sessionLevels;
+    # this block freezes the model state and numeric context needed for later calibration.
+    def _factor_row(name):
+        return next((r for r in rows if r.get('factor')==name),{})
+    def _rxnum(text,pattern):
+        m=re.search(pattern,str(text),re.I)
+        return float(m.group(1)) if m else None
+    def _quote_value(sym,key='last'):
+        return num(q.get(sym,{}).get(key)) if isinstance(q.get(sym,{}),dict) else None
+    def _quote_change(sym):
+        return pct(q.get(sym,{})) if isinstance(q.get(sym,{}),dict) and q.get(sym) else None
+    def _bp_change(sym):
+        v=_quote_value(sym,'last'); p=_quote_value(sym,'previous_day_closing')
+        return round((v-p)*100,3) if v is not None and p is not None else None
+
+    semi_latest=_factor_row('Semiconductor leadership').get('latest','')
+    mega_latest=_factor_row('Mega-cap leadership').get('latest','')
+    s5_latest=_factor_row('S&P 500 50D Breadth / Oversold').get('latest','')
+    semi_basket=_rxnum(semi_latest,r'5-stock basket\s*([+-]?[0-9.]+)%')
+    semi_vs_qqq=_rxnum(semi_latest,r'basket vs QQQ\s*([+-]?[0-9.]+)\s*pp')
+    smh_vs_qqq=_rxnum(semi_latest,r'SMH vs QQQ\s*([+-]?[0-9.]+)\s*pp')
+    mega_basket=_rxnum(mega_latest,r'(?:[0-9]+-stock basket|basket)\s*([+-]?[0-9.]+)%')
+    mega_vs_qqq=_rxnum(mega_latest,r'(?:basket vs QQQ|relative)\s*([+-]?[0-9.]+)\s*pp')
+    s5_level=_rxnum(s5_latest,r'([0-9.]+)% above 50D')
+    s5_change=_rxnum(s5_latest,r'([+-]?[0-9.]+)\s*pp(?:\s+vs prior)?')
+
+    avwap_distances=[x.get('distancePct') for x in avwap_history.values() if x.get('distancePct') is not None]
+    avwap_above=sum(1 for x in avwap_history.values() if x.get('above') is True)
+    avwap_covered=sum(1 for x in avwap_history.values() if x.get('distancePct') is not None)
+    validation_market={
+        'vxn':{'close':_quote_value('.VXN'),'changePct':_quote_change('.VXN')},
+        'vix':{'close':_quote_value('.VIX'),'changePct':_quote_change('.VIX')},
+        'us10y':{'close':_quote_value('US10Y'),'changeBp':_bp_change('US10Y')},
+        'us2y':{'close':_quote_value('US2Y'),'changeBp':_bp_change('US2Y')},
+        'curve2s10s':curve_obs,
+        'nasdaqBreadth':breadth_obs,
+        's5fi':{'levelPct':s5_level,'changePp':s5_change},
+        'semiconductors':{
+            'basketReturnPct':semi_basket,'basketVsQqqPp':semi_vs_qqq,'smhVsQqqPp':smh_vs_qqq,
+            'soxx':{k:sctx.get(k) for k in ('return1d','return3d','return5d','ma20Distance','ma50Distance','rsi14','streak') if k in sctx}
+        },
+        'megaCaps':{'basketReturnPct':mega_basket,'basketVsQqqPp':mega_vs_qqq},
+        'qqq':{k:qctx.get(k) for k in ('return1d','return3d','return5d','ma20Distance','ma50Distance','rsi14','streak') if k in qctx},
+        'fed':fed_history,
+        'oil':{
+            'wti':{'close':_quote_value('@CL.1'),'changePct':_quote_change('@CL.1')},
+            'brent':{'close':_quote_value('@LCO.1'),'changePct':_quote_change('@LCO.1')}
+        },
+        'earningsAvwap':{
+            'covered':avwap_covered,'above':avwap_above,
+            'abovePct':round(100*avwap_above/avwap_covered,2) if avwap_covered else None,
+            'medianDistancePct':round(statistics.median(avwap_distances),4) if avwap_distances else None
+        }
+    }
+    same_day_returns={
+        label:(levels.get('changeCloseToClosePct') if isinstance(levels,dict) else None)
+        for label,levels in session_levels.items()
+        if label in ('Nasdaq','SOX','SOXX','SMH','NVDA','AMD','AVGO','TSM','MU','QQQ')
+    }
+    model_factor_scores=(d.get('nasdaqScore',{}).get('model') or {}).get('factors',[])
+    model_bucket_scores=(d.get('nasdaqScore',{}).get('model') or {}).get('buckets',[])
+    required_validation={
+        'nasdaqScore':d.get('nasdaqScore',{}).get('score'),
+        'consolidationRisk':d.get('consolidationRisk',{}).get('score'),
+        'opportunityScore':d.get('opportunityScore',{}).get('score'),
+        'vxn':validation_market['vxn']['close'],
+        'vix':validation_market['vix']['close'],
+        'us10y':validation_market['us10y']['close'],
+        'us2y':validation_market['us2y']['close'],
+        'nasdaqBreadth':breadth_obs.get('positivePct'),
+        's5fi':s5_level,
+        'semiVsQqq':semi_vs_qqq,
+        'megaVsQqq':mega_vs_qqq,
+        'qqqReturn3d':qctx.get('return3d'),
+        'qqqReturn5d':qctx.get('return5d'),
+        'soxxReturn3d':sctx.get('return3d'),
+        'soxxReturn5d':sctx.get('return5d'),
+        'fedLevelScore':fed_history.get('levelScore'),
+        'fedRepricingScore':fed_history.get('repricingScore'),
+        'earningsAvwapMedian':validation_market['earningsAvwap']['medianDistancePct']
+    }
+    present_validation=[k for k,v in required_validation.items() if v is not None]
+    validation={
+        'version':1,
+        'snapshotPhase':equity_session(now),
+        'modelState':{
+            'nasdaqScore':{k:v for k,v in d.get('nasdaqScore',{}).items() if k!='model'},
+            'nasdaqFactorScores':model_factor_scores,
+            'nasdaqBucketScores':model_bucket_scores,
+            'consolidationRisk':d.get('consolidationRisk'),
+            'opportunityScore':d.get('opportunityScore')
+        },
+        'marketContext':validation_market,
+        'sameDayReturnsPct':same_day_returns,
+        'dataCompleteness':{
+            'expectedFields':len(required_validation),
+            'presentFields':len(present_validation),
+            'coveragePct':round(100*len(present_validation)/len(required_validation),1) if required_validation else 0,
+            'missing':[k for k,v in required_validation.items() if v is None]
+        },
+        'forwardOutcomes':{
+            'definition':'Close-to-close return from this session close to the close N trading sessions later.',
+            'Nasdaq':{'1D':None,'3D':None,'5D':None},
+            'SOX':{'1D':None,'3D':None,'5D':None},
+            'SOXX':{'1D':None,'3D':None,'5D':None},
+            'SMH':{'1D':None,'3D':None,'5D':None}
+        }
+    }
+
+    snapshot={'schemaVersion':4,'timestampET':now.isoformat(),'market':market,'breadth':breadth_obs,
               'sessionLevels':session_levels,'fedExpectations':fed_history,
               'yieldCurve2s10s':curve_obs,'modelPerformance':model_perf,
               'nasdaqScore':{k:v for k,v in d.get('nasdaqScore',{}).items() if k!='model'},
               'consolidationRisk':d.get('consolidationRisk'),
               'opportunityScore':d.get('opportunityScore'),
+              'validation':validation,
               'earningsAvwap':avwap_history,'factors':factor_state}
     try:
         with open(DAILY_PATH,encoding='utf-8') as hf: daily=json.load(hf)
     except (FileNotFoundError,json.JSONDecodeError):
-        daily={'schemaVersion':3,'records':{}}
-    daily['schemaVersion']=3
+        daily={'schemaVersion':4,'records':{}}
+    daily['schemaVersion']=4
     for _rec in daily.setdefault('records',{}).values():
         if 'nasdaqScore' not in _rec and ('environmentScore' in _rec or 'environmentTrend' in _rec):
             _rec['nasdaqScore']={'score':_rec.pop('environmentScore',None),'trend':_rec.pop('environmentTrend',None)}
@@ -2206,16 +2316,48 @@ def main():
             _ns.setdefault('confidence',None); _ns.setdefault('coverage',None)
         _mp=_rec.get('modelPerformance')
         if isinstance(_mp,dict) and 'environmentScore' in _mp: _mp['nasdaqScore']=_mp.pop('environmentScore')
-        _rec['schemaVersion']=3
+        _rec['schemaVersion']=4
     daily['records'][now.strftime('%Y-%m-%d')]=snapshot
+
+    # Populate forward validation targets only after the future trading sessions exist.
+    # Trading-session offsets are based on completed Nasdaq sessions, avoiding weekends/holidays.
+    completed_dates=[
+        day for day in sorted(daily['records'])
+        if num(daily['records'][day].get('sessionLevels',{}).get('Nasdaq',{}).get('close')) is not None
+    ]
+    outcome_symbols=('Nasdaq','SOX','SOXX','SMH')
+    horizons=(1,3,5)
+    for base_i,base_day in enumerate(completed_dates):
+        rec=daily['records'][base_day]
+        val=rec.get('validation')
+        if not isinstance(val,dict):
+            continue
+        outcomes=val.setdefault('forwardOutcomes',{
+            'definition':'Close-to-close return from this session close to the close N trading sessions later.'
+        })
+        for label in outcome_symbols:
+            target=outcomes.setdefault(label,{'1D':None,'3D':None,'5D':None})
+            base_close=num(rec.get('sessionLevels',{}).get(label,{}).get('close'))
+            if base_close in (None,0):
+                continue
+            for horizon in horizons:
+                j=base_i+horizon
+                if j>=len(completed_dates):
+                    continue
+                future_day=completed_dates[j]
+                future_close=num(daily['records'][future_day].get('sessionLevels',{}).get(label,{}).get('close'))
+                if future_close is not None:
+                    target[f'{horizon}D']=round((future_close/base_close-1)*100,4)
+        outcomes['availableFutureSessions']=len(completed_dates)-base_i-1
+
     with open(DAILY_PATH,'w',encoding='utf-8') as hf: json.dump(daily,hf,ensure_ascii=False,indent=2)
     month_path=os.path.join(HISTORY_DIR,'intraday',now.strftime('%Y-%m')+'.json')
     os.makedirs(os.path.dirname(month_path),exist_ok=True)
     try:
         with open(month_path,encoding='utf-8') as hf: intraday=json.load(hf)
     except (FileNotFoundError,json.JSONDecodeError):
-        intraday={'schemaVersion':3,'snapshots':[]}
-    intraday['schemaVersion']=3
+        intraday={'schemaVersion':4,'snapshots':[]}
+    intraday['schemaVersion']=4
     for _rec in intraday.setdefault('snapshots',[]):
         if 'nasdaqScore' not in _rec and ('environmentScore' in _rec or 'environmentTrend' in _rec):
             _rec['nasdaqScore']={'score':_rec.pop('environmentScore',None),'trend':_rec.pop('environmentTrend',None)}
@@ -2228,7 +2370,7 @@ def main():
             _ns.setdefault('confidence',None); _ns.setdefault('coverage',None)
         _mp=_rec.get('modelPerformance')
         if isinstance(_mp,dict) and 'environmentScore' in _mp: _mp['nasdaqScore']=_mp.pop('environmentScore')
-        _rec['schemaVersion']=3
+        _rec['schemaVersion']=4
     intraday['snapshots'].append(snapshot)
     with open(month_path,'w',encoding='utf-8') as hf: json.dump(intraday,hf,ensure_ascii=False,indent=2)
 
