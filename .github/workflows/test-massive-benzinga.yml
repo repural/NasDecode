@@ -14,6 +14,16 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - name: Confirm Tavily secret availability
+        env:
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+        run: |
+          if [ -z "$TAVILY_API_KEY" ]; then
+            echo "TAVILY secret MISSING"
+            exit 1
+          fi
+          echo "TAVILY secret PRESENT"
+
       - name: Test earnings and guidance entitlements
         env:
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
