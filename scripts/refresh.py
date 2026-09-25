@@ -1733,10 +1733,25 @@ def main():
         if x is not None: old_setup=x; break
     setup_improvement=_clamp100(50+2*(score-old_setup)) if old_setup is not None else None
 
+    # R7 — Oil stabilization. Lower/stable WTI is generally friendlier to Nasdaq's
+    # inflation/rates channel; a +/-5% lookback move maps the component from 100 to 0.
+    cur_oil=num(q.get('@CL.1',{}).get('last'))
+    old_oil=None
+    for rec in _opp_hist:
+        x=num(rec.get('market',{}).get('@CL.1',{}).get('last'))
+        if x is not None:
+            old_oil=x
+            break
+    oil_stabilization=None
+    if cur_oil is not None and old_oil not in (None,0):
+        oil_change_pct=(cur_oil/old_oil-1)*100
+        oil_stabilization=_clamp100(50-10*oil_change_pct)
+
     recovery_parts=[
-        ('vxnReversal',vxn_reversal,0.25),('breadthRecovery',breadth_recovery,0.20),
-        ('semiconductorRecovery',semi_recovery,0.20),('yieldStabilization',yield_stabilization,0.15),
-        ('fedRepricing',fed_repricing_recovery,0.10),('setupImprovement',setup_improvement,0.10)
+        ('vxnReversal',vxn_reversal,0.25),('breadthRecovery',breadth_recovery,0.15),
+        ('semiconductorRecovery',semi_recovery,0.15),('yieldStabilization',yield_stabilization,0.15),
+        ('fedRepricing',fed_repricing_recovery,0.15),('setupImprovement',setup_improvement,0.10),
+        ('oilStabilization',oil_stabilization,0.05)
     ]
     available=[x for x in recovery_parts if x[1] is not None]
     recovery=round(sum(v*w for _,v,w in available)/sum(w for _,v,w in available)) if available else 0
@@ -1769,7 +1784,7 @@ def main():
         'recoveryComponents':{name:(round(v) if v is not None else None) for name,v,_ in recovery_parts},
         'lookbackSessions':len(_opp_hist),
         "explanation":"Measures how attractive current conditions are for deploying new capital by combining market setup, recovery evidence, consolidation risk and volatility context. Calculated by NasBoard's proprietary real-time multi-factor scoring mechanism using the latest available inputs.",
-        'debug':f'Formula: 40% Setup readiness + 25% Recovery Confirmation + 20% inverse Consolidation Risk + 15% volatility opportunity unlocked by recovery. Recovery formula: VXN reversal 25%, breadth recovery 20%, semiconductor recovery 20%, 10Y yield stabilization 15%, Fed repricing 10%, Setup improvement 10%. Lookback sessions: {len(_opp_hist)}. Current recovery confirmation: {recovery}%.'
+        'debug':f'Formula: 40% Setup readiness + 25% Recovery Confirmation + 20% inverse Consolidation Risk + 15% volatility opportunity unlocked by recovery. Recovery formula: VXN reversal 25%, breadth recovery 15%, semiconductor recovery 15%, 10Y yield stabilization 15%, Fed repricing 15%, Setup improvement 10%, Oil stabilization 5%. Lookback sessions: {len(_opp_hist)}. Current recovery confirmation: {recovery}%.'
     }
 
     setup_explanation=build_setup_explanation(rows,score,nasdaq_trend,confidence)
