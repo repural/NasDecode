@@ -1955,7 +1955,24 @@ def main():
     current_session=[sym for sym in BREADTH if sym in q and is_intraday(q[sym],now)]
     pos=sum(1 for sym in current_session if (pct(q[sym]) or 0)>0)
     breadth_obs={'valid':len(current_session),'advancers':pos,'decliners':len(current_session)-pos,
-                 'positivePct':round(100*pos/len(current_session),2) if current_session else None}
+                 'positivePct':round(100*pos/len(current_session),2) if current_session else None,
+                 'basis':'current_session' if current_session else None}
+    # Before the Nasdaq cash open there is no meaningful same-session constituent
+    # breadth. The Market breadth factor already falls back to the most recent completed
+    # regular session, so use that same explicitly labelled previous-close observation
+    # in the historical/validation payload instead of treating breadth as missing.
+    if equity_session(now)=='premarket' and breadth_obs['positivePct'] is None:
+        breadth_row=next((r for r in rows if r.get('factor')=='Market breadth'),{})
+        breadth_text=str(breadth_row.get('latest',''))
+        bm=re.search(r'Previous close\s*·\s*Nasdaq-100 breadth:\s*(\d+)/(\d+) advancing \(([0-9.]+)%\)\s*·\s*(\d+) declining\s*·\s*(\d+) flat',breadth_text,re.I)
+        if bm:
+            adv,total,ratio,dec,flat=bm.groups()
+            breadth_obs={
+                'valid':int(total),'advancers':int(adv),'decliners':int(dec),'flat':int(flat),
+                'positivePct':float(ratio),'basis':'previous_close',
+                'source':'Nasdaq-100 previous regular-session constituent breadth',
+                'freshness':breadth_row.get('freshness')
+            }
     factor_state={r['factor']:{'signal':r.get('signal'),'currentImpact':r.get('currentImpact'),
                               'trend':r.get('trend'),'latest':r.get('latest')} for r in rows}
 
