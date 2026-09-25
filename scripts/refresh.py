@@ -996,6 +996,32 @@ def main():
     else:
         setrow(rows,'Economic / inflation data','Awaiting verified actual vs consensus release','No active surprise','mixed',f'No verified surprise · checked {now.strftime("%Y-%m-%d %H:%M ET")}','NasBoard verified macro-surprise feed')
     # Fed expectations: market-implied conditional move probabilities from 30-Day Fed Funds futures.
+    # Persisted FedWatch history lets the model distinguish a restrictive level from fresh repricing.
+    # Meeting weights intentionally decay: nearest meeting 60%, second 25%, third 15%.
+    def fed_weighted_policy_score(meetings):
+        weights=(0.60,0.25,0.15)
+        vals=[]
+        for i,m in enumerate((meetings or [])[:3]):
+            p=m.get('probabilities',{})
+            vals.append((float(p.get('cut',0))-float(p.get('hike',0)),weights[i]))
+        if not vals: return None
+        den=sum(w for _,w in vals)
+        return sum(v*w for v,w in vals)/den if den else None
+
+    def prior_fed_expectations():
+        try:
+            with open(DAILY_PATH,encoding='utf-8') as hf:
+                recs=json.load(hf).get('records',{})
+        except (FileNotFoundError,json.JSONDecodeError):
+            return None
+        today=now.strftime('%Y-%m-%d')
+        for day in sorted((x for x in recs if x < today),reverse=True):
+            fx=recs.get(day,{}).get('fedExpectations')
+            if isinstance(fx,dict) and fx.get('meetings'):
+                return fx
+        return None
+
+    prior_fed=prior_fed_expectations()
     # Fail closed: keep the prior successful row and mark it stale if either public source changes/breaks.
     try:
         fp,meta=fed_meeting_probabilities(now)
@@ -1008,8 +1034,14 @@ def main():
                 return x['label']+f": Above current {p['hike']:.0f}% / Same {p['hold']:.0f}% / Below {p['cut']:.0f}%"
             latest_txt=' · '.join(fmt(x,i) for i,x in enumerate(fp[:3]))
             first=fp[0]['probabilities']
-            net=first['cut']-first['hike']
-            sig='positive' if net>=20 else ('negative' if net<=-20 else 'mixed')
+            fed_level_score=fed_weighted_policy_score(fp)
+            prior_level=fed_weighted_policy_score((prior_fed or {}).get('meetings'))
+            fed_repricing_score=None
+            if fed_level_score is not None and prior_level is not None:
+                fed_repricing_score=max(-100.0,min(100.0,(fed_level_score-prior_level)*4.0))
+            fed_policy_score=(fed_level_score if fed_repricing_score is None
+                              else 0.70*fed_level_score+0.30*fed_repricing_score)
+            sig='positive' if fed_policy_score>=20 else ('negative' if fed_policy_score<=-20 else 'mixed')
             direction='Dovish / cuts priced' if sig=='positive' else ('Hawkish / hikes priced' if sig=='negative' else 'Balanced')
             trade_date=meta.get('tradeDate')
             freshness=(f"CME settlement {trade_date} · checked {now.strftime('%Y-%m-%d %H:%M ET')}" if trade_date
@@ -1022,12 +1054,19 @@ def main():
                 else:
                     detail.append(f"By {x['label']}: target above current {p['hike']:.1f}% · same {p['hold']:.1f}% · below {p['cut']:.1f}%")
             setrow(rows,'Fed expectations',latest_txt,direction,sig,freshness,
-                   'CME Group 30-Day Fed Funds futures settlements; Federal Reserve H.15 EFFR; CME FedWatch methodology',
+                   'CME Group 30-Day Fed Funds futures settlements; New York Fed EFFR; CME FedWatch methodology',
                    '. '.join(detail)+'. The nearest meeting is shown as hike/hold/cut; later meetings are aggregated versus today’s target range.')
             rr=next(x for x in rows if x['factor']=='Fed expectations')
             rr['fedMeetings']=fp[:3]
-            rr['debug']=f"Trade date: {trade_date or 'n/a'} · Current target: {meta.get('currentTarget','n/a')} · EFFR: {meta.get('effr','n/a')} · Engine: {meta.get('engine','legacy')}"
+            rr['fedLevelScore']=round(fed_level_score,1) if fed_level_score is not None else None
+            rr['fedRepricingScore']=round(fed_repricing_score,1) if fed_repricing_score is not None else None
+            rr['fedPolicyScore']=round(fed_policy_score,1) if fed_policy_score is not None else None
+            rr['fedPreviousLevelScore']=round(prior_level,1) if prior_level is not None else None
+            rr['debug']=f"Trade date: {trade_date or 'n/a'} · Current target: {meta.get('currentTarget','n/a')} · EFFR: {meta.get('effr','n/a')} · Engine: {meta.get('engine','legacy')} · Policy score: {fed_policy_score:+.1f}" + (f" · Repricing score: {fed_repricing_score:+.1f}" if fed_repricing_score is not None else '')
             d['diagnostics']['fedExpectationsModel']['meetings']=fp
+            d['diagnostics']['fedExpectationsModel']['policyScore']=round(fed_policy_score,1)
+            d['diagnostics']['fedExpectationsModel']['levelScore']=round(fed_level_score,1)
+            d['diagnostics']['fedExpectationsModel']['repricingScore']=round(fed_repricing_score,1) if fed_repricing_score is not None else None
     except Exception as e:
         print('Fed expectations model failed:',repr(e))
         d.setdefault('diagnostics',{})['fedExpectationsModel']={'error':repr(e)}
@@ -1095,7 +1134,11 @@ def main():
             if m:
                 eq,av=map(float,m.groups()); dev=abs(eq-av)
                 imp='High' if eq>=0.9 or eq<=0.5 or dev>=0.15 else ('Medium' if eq>=0.75 or eq<=0.55 or dev>=0.08 else 'Low')
-        elif n in ('Fed expectations','Economic / inflation data','Technology earnings calendar'):
+        elif n=='Fed expectations':
+            fs=abs(float(r.get('fedPolicyScore',0) or 0))
+            fr=abs(float(r.get('fedRepricingScore',0) or 0))
+            imp='Very High' if fr>=60 or fs>=80 else ('High' if fr>=30 or fs>=50 else ('Medium' if fs>=20 or fr>=15 else 'Low'))
+        elif n in ('Economic / inflation data','Technology earnings calendar'):
             # Event impact rises ahead of the catalyst. Earnings can affect positioning well before the report,
             # so the 10-day window is deliberately treated as High.
             event_date=None
@@ -1217,6 +1260,9 @@ def main():
             level_s=clamp((4.0-level)/0.50) if level is not None else 0
             velocity_s=clamp(-bp/10.0) if bp is not None else 0
             return clamp(0.60*level_s+0.40*velocity_s)
+        if n=='Fed expectations':
+            fs=num(r.get('fedPolicyScore'))
+            if fs is not None: return clamp(fs/100.0)
         if n=='Semiconductor leadership':
             rel=first_num(r'basket vs QQQ ([+-]?[0-9.]+) pp',t)
             smh=first_num(r'SMH vs QQQ ([+-]?[0-9.]+) pp',t)
@@ -1657,7 +1703,13 @@ def main():
         if x is not None: old_y10=x; break
     yield_stabilization=_clamp100(50-500*(cur_y10-old_y10)) if cur_y10 is not None and old_y10 is not None else None
 
-    # R5 — Setup improvement: +25 score points over the lookback reaches 100.
+    # R5 — Fed repricing recovery. A dovish 25-point shift in the weighted
+    # probability balance maps to full confirmation; an equally hawkish shift maps to zero.
+    fed_row=next((r for r in rows if r.get('factor')=='Fed expectations'),{})
+    fed_repricing=num(fed_row.get('fedRepricingScore'))
+    fed_repricing_recovery=_clamp100(50+0.5*fed_repricing) if fed_repricing is not None else None
+
+    # R6 — Setup improvement: +25 score points over the lookback reaches 100.
     old_setup=None
     for rec in _opp_hist:
         x=num((rec.get('nasdaqScore') or {}).get('score',rec.get('environmentScore')))
@@ -1665,9 +1717,9 @@ def main():
     setup_improvement=_clamp100(50+2*(score-old_setup)) if old_setup is not None else None
 
     recovery_parts=[
-        ('vxnReversal',vxn_reversal,0.30),('breadthRecovery',breadth_recovery,0.25),
+        ('vxnReversal',vxn_reversal,0.25),('breadthRecovery',breadth_recovery,0.20),
         ('semiconductorRecovery',semi_recovery,0.20),('yieldStabilization',yield_stabilization,0.15),
-        ('setupImprovement',setup_improvement,0.10)
+        ('fedRepricing',fed_repricing_recovery,0.10),('setupImprovement',setup_improvement,0.10)
     ]
     available=[x for x in recovery_parts if x[1] is not None]
     recovery=round(sum(v*w for _,v,w in available)/sum(w for _,v,w in available)) if available else 0
@@ -1700,7 +1752,7 @@ def main():
         'recoveryComponents':{name:(round(v) if v is not None else None) for name,v,_ in recovery_parts},
         'lookbackSessions':len(_opp_hist),
         "explanation":"Measures how attractive current conditions are for deploying new capital by combining market setup, recovery evidence, consolidation risk and volatility context. Calculated by NasBoard's proprietary real-time multi-factor scoring mechanism using the latest available inputs.",
-        'debug':f'Formula: 40% Setup readiness + 25% Recovery Confirmation + 20% inverse Consolidation Risk + 15% volatility opportunity unlocked by recovery. Recovery formula: VXN reversal 30%, breadth recovery 25%, semiconductor recovery 20%, 10Y yield stabilization 15%, Setup improvement 10%. Lookback sessions: {len(_opp_hist)}. Current recovery confirmation: {recovery}%.'
+        'debug':f'Formula: 40% Setup readiness + 25% Recovery Confirmation + 20% inverse Consolidation Risk + 15% volatility opportunity unlocked by recovery. Recovery formula: VXN reversal 25%, breadth recovery 20%, semiconductor recovery 20%, 10Y yield stabilization 15%, Fed repricing 10%, Setup improvement 10%. Lookback sessions: {len(_opp_hist)}. Current recovery confirmation: {recovery}%.'
     }
 
     setup_explanation=build_setup_explanation(rows,score,nasdaq_trend,confidence)
@@ -1817,14 +1869,36 @@ def main():
             state='previous_close' if 0 < age <= 3 else ('live' if age==0 else 'stale')
         else:
             state='unknown'
-        return {'last':num(x.get('last')),'previousClose':num(x.get('previous_day_closing')),
+        return {'last':num(x.get('last')),'open':num(x.get('open')),'previousClose':num(x.get('previous_day_closing')),
                 'changePct':num(x.get('change_pct')) if x.get('change_pct') not in (None,'') else pct(x),
                 'timestamp':stamp,'observationDate':obs_date,'dataState':state,
                 'realTime':real_time,'marketStatus':market_status,'quoteSource':source,'provider':provider}
     os.makedirs(HISTORY_DIR,exist_ok=True)
-    market_symbols=['.IXIC','QQQ','.SOX','NVDA','AMD','AVGO','TSM','MU','AAPL','MSFT','AMZN','GOOGL','META','TSLA',
+    market_symbols=['.IXIC','QQQ','.SOX','SOX','SMH','NVDA','AMD','AVGO','TSM','MU','AAPL','MSFT','AMZN','GOOGL','META','TSLA',
                     '.VXN','.VIX','US10Y','US2Y','@CL.1','@LCO.1','HYG','LQD']
     market={sym:quote_obs(sym) for sym in market_symbols if sym in q}
+
+    # Daily regular-session opening/closing levels for later model validation.
+    # CNBC exposes the official session open; after 16:00 ET the regular last
+    # remains the cash-session close while extended-hours prices are separate.
+    def session_level(label,candidates):
+        sym=next((s for s in candidates if s in market and market[s].get('last') is not None),None)
+        if sym is None:
+            return {'symbol':candidates[0],'open':None,'close':None,'source':'CNBC quote unavailable'}
+        obs=market[sym]
+        same_day=obs.get('observationDate')==now.strftime('%Y-%m-%d')
+        after_close=(now.hour*60+now.minute)>=16*60
+        return {'symbol':sym,'open':obs.get('open') if same_day else None,
+                'close':obs.get('last') if same_day and after_close else None,
+                'source':'CNBC regular-session quote','observationDate':obs.get('observationDate')}
+
+    session_levels={
+        'Nasdaq':session_level('Nasdaq',['.IXIC']),
+        'SOX':session_level('SOX',['.SOX','SOX']),
+        'SMH':session_level('SMH',['SMH']),
+        'NVDA':session_level('NVDA',['NVDA']),
+        'QQQ':session_level('QQQ',['QQQ'])
+    }
     # Persist a compact source/freshness audit so we can verify CNBC instrument-by-instrument
     # instead of treating every CNBC response as equally live.
     d.setdefault('diagnostics',{})['cnbcFreshness']={
@@ -1942,7 +2016,11 @@ def main():
                 shift=f" It changed from {old.get('signal')} to {sig} after the baseline snapshot." if changed and old.get('signal') else ''
                 driver_sent.append(f"{prefix} are {tone}: {r.get('latest','')}.{shift}")
             elif name=='Fed expectations':
-                driver_sent.append(f"Fed pricing is {tone}: {r.get('latest','')}.")
+                fr=num(r.get('fedRepricingScore')); fl=num(r.get('fedLevelScore'))
+                shift=(f" The weighted Fed path repricing score is {fr:+.0f}/100 versus the prior stored session." if fr is not None
+                       else " A prior stored FedWatch session is not yet available for repricing comparison.")
+                level=(f" Weighted policy-path level score: {fl:+.0f}/100." if fl is not None else '')
+                driver_sent.append(f"Fed pricing is {tone}: {r.get('latest','')}.{level}{shift}")
             elif name=='Oil (WTI / Brent)':
                 driver_sent.append(f"Oil is {tone} for Nasdaq: {r.get('latest','')}.")
             elif name=='2Y Treasury yield':
@@ -2046,15 +2124,27 @@ def main():
         'above':x.get('above'),'slope5dPct':x.get('slope5dPct'),
         'sessions':x.get('sessions')
     } for ticker,x in avwap_details.items()}
-    snapshot={'schemaVersion':2,'timestampET':now.isoformat(),'market':market,'breadth':breadth_obs,
+    fed_row_hist=next((r for r in rows if r.get('factor')=='Fed expectations'),{})
+    fed_history={
+        'tradeDate':d.get('diagnostics',{}).get('fedExpectationsModel',{}).get('tradeDate'),
+        'currentTarget':d.get('diagnostics',{}).get('fedExpectationsModel',{}).get('currentTarget'),
+        'effr':d.get('diagnostics',{}).get('fedExpectationsModel',{}).get('effr'),
+        'meetings':fed_row_hist.get('fedMeetings',[]),
+        'levelScore':fed_row_hist.get('fedLevelScore'),
+        'repricingScore':fed_row_hist.get('fedRepricingScore'),
+        'policyScore':fed_row_hist.get('fedPolicyScore'),
+        'previousLevelScore':fed_row_hist.get('fedPreviousLevelScore')
+    }
+    snapshot={'schemaVersion':3,'timestampET':now.isoformat(),'market':market,'breadth':breadth_obs,
+              'sessionLevels':session_levels,'fedExpectations':fed_history,
               'yieldCurve2s10s':curve_obs,'modelPerformance':model_perf,
               'nasdaqScore':{k:v for k,v in d.get('nasdaqScore',{}).items() if k!='model'},
               'earningsAvwap':avwap_history,'factors':factor_state}
     try:
         with open(DAILY_PATH,encoding='utf-8') as hf: daily=json.load(hf)
     except (FileNotFoundError,json.JSONDecodeError):
-        daily={'schemaVersion':2,'records':{}}
-    daily['schemaVersion']=2
+        daily={'schemaVersion':3,'records':{}}
+    daily['schemaVersion']=3
     for _rec in daily.setdefault('records',{}).values():
         if 'nasdaqScore' not in _rec and ('environmentScore' in _rec or 'environmentTrend' in _rec):
             _rec['nasdaqScore']={'score':_rec.pop('environmentScore',None),'trend':_rec.pop('environmentTrend',None)}
@@ -2075,8 +2165,8 @@ def main():
     try:
         with open(month_path,encoding='utf-8') as hf: intraday=json.load(hf)
     except (FileNotFoundError,json.JSONDecodeError):
-        intraday={'schemaVersion':2,'snapshots':[]}
-    intraday['schemaVersion']=2
+        intraday={'schemaVersion':3,'snapshots':[]}
+    intraday['schemaVersion']=3
     for _rec in intraday.setdefault('snapshots',[]):
         if 'nasdaqScore' not in _rec and ('environmentScore' in _rec or 'environmentTrend' in _rec):
             _rec['nasdaqScore']={'score':_rec.pop('environmentScore',None),'trend':_rec.pop('environmentTrend',None)}
