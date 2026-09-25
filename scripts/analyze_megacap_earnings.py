@@ -95,10 +95,18 @@ def main():
                     summary[f'{key}Post{n}CumulativePct']=compound(vals([r for r in post if r['offset']<=n],key))
             summary['positivePreEventSessions']=sum(1 for r in pre if r['stock'] and (r['stock'].get('changePct') or 0)>0)
             summary['preEventSessions']=len(pre)
+            abnormal={}
+            for n in (1,3,7):
+                stock_r=summary.get(f'stockPost{n}CumulativePct')
+                bench_r=summary.get(f'qqqPost{n}CumulativePct')
+                abnormal[f'T+{n}']=round(stock_r-bench_r,4) if stock_r is not None and bench_r is not None else None
+            fundamentals={'eps':{'estimate':None,'actual':None,'surprisePct':None},
+                          'revenue':{'estimate':None,'actual':None,'surprisePct':None,'currency':None},
+                          'guidance':[],'status':'pending_enrichment','sources':{}}
             tes.append({'eventNumber':i+1,'earningsDate':ed,'releaseSession':session,'source':SOURCES[t],
-                        'eventTradingDay':event_day,'rows':rows,'summary':summary})
+                        'eventTradingDay':event_day,'rows':rows,'summary':summary,'abnormalReturns':{'benchmark':'QQQ',**abnormal},'earningsFundamentals':fundamentals})
         events[t]=tes
-    output={'version':1,'generatedAtUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    output={'version':2,'generatedAtUTC':datetime.datetime.now(datetime.timezone.utc).isoformat(),
             'methodology':{'dailyReturn':'Adjusted close-to-close percentage return from Massive daily aggregates.',
               'storedMarketData':'Each T-7 through T+7 row retains adjusted close, previous close and close-to-close changePct for the stock, Nasdaq Composite and QQQ.',
               'window':'T-7 through T+7 regular trading sessions around the announcement-date session.',
