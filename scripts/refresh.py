@@ -1016,9 +1016,26 @@ def main():
             return None
         today=now.strftime('%Y-%m-%d')
         for day in sorted((x for x in recs if x < today),reverse=True):
-            fx=recs.get(day,{}).get('fedExpectations')
+            rec=recs.get(day,{})
+            fx=rec.get('fedExpectations')
             if isinstance(fx,dict) and fx.get('meetings'):
                 return fx
+            # One-time bridge for Sep-2026 history written before structured FedWatch
+            # storage existed. Parse the already-stored three-meeting probability text
+            # so the first v3 run can calculate repricing immediately.
+            txt=str(rec.get('factors',{}).get('Fed expectations',{}).get('latest',''))
+            chunks=[x.strip() for x in txt.split(' · ') if x.strip()]
+            parsed=[]
+            for i,ch in enumerate(chunks[:3]):
+                if i==0:
+                    m=re.search(r'^([^:]+):\s*Hike\s*([0-9.]+)%\s*/\s*Hold\s*([0-9.]+)%\s*/\s*Cut\s*([0-9.]+)%',ch,re.I)
+                else:
+                    m=re.search(r'^([^:]+):\s*Above current\s*([0-9.]+)%\s*/\s*Same\s*([0-9.]+)%\s*/\s*Below\s*([0-9.]+)%',ch,re.I)
+                if m:
+                    parsed.append({'label':m.group(1).strip(),'probabilities':{
+                        'hike':float(m.group(2)),'hold':float(m.group(3)),'cut':float(m.group(4))}})
+            if parsed:
+                return {'meetings':parsed,'legacyParsedFrom':day}
         return None
 
     prior_fed=prior_fed_expectations()
