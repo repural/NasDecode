@@ -84,6 +84,19 @@ The workflow deliberately regenerates data after a concurrent push instead of re
 
 `Economic / inflation data` is a macro-surprise factor, not an event-calendar factor. It should move only when NasBoard has a verified release with both an actual value and a market-consensus value. The factor compares actual versus consensus and applies a release-specific direction mapping; upcoming releases and event proximity belong in the pre-market/event-risk layer and do not by themselves create a positive or negative signal. If a verified surprise is unavailable, the factor fails closed as mixed.
 
+## Daily validation history
+
+Each trading-day record in `data/history/daily.json` uses history schema v4 and keeps the raw observations plus a structured `validation` block for model calibration.
+
+The validation block stores:
+- model state: Nasdaq Score, factor/bucket scores, Consolidation Risk and Opportunity Score;
+- numeric market context: VXN/VIX, 10Y/2Y yields and daily basis-point changes, 2s10s curve, Nasdaq breadth, S5FI, semiconductor and mega-cap relative strength, QQQ/SOXX momentum and moving-average context, Fed pricing/repricing, oil and Earnings AVWAP breadth;
+- same-day close-to-close returns for Nasdaq, SOX, SOXX, SMH and the semiconductor basket constituents;
+- a data-completeness score plus the names of missing validation inputs;
+- forward Nasdaq/SOX/SOXX/SMH returns at +1, +3 and +5 trading sessions. These targets remain null until the future sessions exist and are then populated automatically, which avoids look-ahead contamination at collection time.
+
+Raw `market`, `sessionLevels`, `factors`, `fedExpectations` and `earningsAvwap` fields remain in the record so future research is not limited to the current validation schema.
+
 ## Massive historical enrichment
 
 Massive is an optional historical-data layer. The refresh engine reads `MASSIVE_API_KEY` from the GitHub Actions secret environment; the key is never written to JSON, source code, or Cloudflare assets. CNBC remains the current/session quote source while Massive daily bars add objective historical context such as consecutive sessions, five-day returns, and moving-average distance. Missing credentials, entitlement limits, rate limits, or API failures fail closed and do not stop the main dashboard refresh.
