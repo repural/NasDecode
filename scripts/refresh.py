@@ -2206,7 +2206,7 @@ def main():
             _ns.setdefault('confidence',None); _ns.setdefault('coverage',None)
         _mp=_rec.get('modelPerformance')
         if isinstance(_mp,dict) and 'environmentScore' in _mp: _mp['nasdaqScore']=_mp.pop('environmentScore')
-        _rec['schemaVersion']=2
+        _rec['schemaVersion']=3
     daily['records'][now.strftime('%Y-%m-%d')]=snapshot
     with open(DAILY_PATH,'w',encoding='utf-8') as hf: json.dump(daily,hf,ensure_ascii=False,indent=2)
     month_path=os.path.join(HISTORY_DIR,'intraday',now.strftime('%Y-%m')+'.json')
@@ -2228,7 +2228,7 @@ def main():
             _ns.setdefault('confidence',None); _ns.setdefault('coverage',None)
         _mp=_rec.get('modelPerformance')
         if isinstance(_mp,dict) and 'environmentScore' in _mp: _mp['nasdaqScore']=_mp.pop('environmentScore')
-        _rec['schemaVersion']=2
+        _rec['schemaVersion']=3
     intraday['snapshots'].append(snapshot)
     with open(month_path,'w',encoding='utf-8') as hf: json.dump(intraday,hf,ensure_ascii=False,indent=2)
 
