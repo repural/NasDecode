@@ -83,7 +83,7 @@ def main():
 
     with open(PATH,encoding='utf-8') as f:
         hist=json.load(f)
-    hist['schemaVersion']=max(3,int(hist.get('schemaVersion',0) or 0))
+    hist['schemaVersion']=max(4,int(hist.get('schemaVersion',0) or 0))
     records=hist.setdefault('records',{})
 
     fetched={}
@@ -107,12 +107,12 @@ def main():
     all_days=sorted(set().union(*(set(x.keys()) for x in fetched.values())))
     for day in all_days:
         rec=records.setdefault(day,{
-            'schemaVersion':3,
+            'schemaVersion':4,
             'timestampET':day+'T16:00:00-04:00',
             'market':{},
             'factors':{},
         })
-        rec['schemaVersion']=max(3,int(rec.get('schemaVersion',0) or 0))
+        rec['schemaVersion']=max(4,int(rec.get('schemaVersion',0) or 0))
         levels=rec.setdefault('sessionLevels',{})
         market=rec.setdefault('market',{})
         for label,ticker in SERIES.items():
