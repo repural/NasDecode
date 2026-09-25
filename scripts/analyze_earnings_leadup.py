@@ -96,7 +96,7 @@ def main():
                 'soxClose':raw[BENCH['SOX']].get(day,{}).get('close')
             })
         pre=[r for r in rows if r['offset']<0]
-        incl=rows
+        incl=[r for r in rows if r['offset']<=0]
         events[t]={
             'earningsDate':ed,
             'releaseSession':meta[t].get('releaseSession'),
