@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Confirm Tavily secret availability
         env:
-          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_KEY }}
         run: |
           if [ -z "$TAVILY_API_KEY" ]; then
             echo "TAVILY secret MISSING"
