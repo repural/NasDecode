@@ -1922,12 +1922,16 @@ def main():
     def session_level(label,candidates):
         sym=next((s for s in candidates if s in market and market[s].get('last') is not None),None)
         if sym is None:
-            return {'symbol':candidates[0],'open':None,'close':None,'source':'CNBC quote unavailable'}
+            return {'symbol':candidates[0],'open':None,'close':None,'previousClose':None,
+                    'changeCloseToClosePct':None,'source':'CNBC quote unavailable'}
         obs=market[sym]
         same_day=obs.get('observationDate')==now.strftime('%Y-%m-%d')
         after_close=(now.hour*60+now.minute)>=16*60
+        completed=same_day and after_close
         return {'symbol':sym,'open':obs.get('open') if same_day else None,
-                'close':obs.get('last') if same_day and after_close else None,
+                'close':obs.get('last') if completed else None,
+                'previousClose':obs.get('previousClose') if completed else None,
+                'changeCloseToClosePct':obs.get('changePct') if completed else None,
                 'source':'CNBC regular-session quote','observationDate':obs.get('observationDate')}
 
     session_levels={
