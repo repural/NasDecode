@@ -140,24 +140,22 @@ async function loadAnalysis(d){try{
     analysisTitle.textContent='Market Analysis';
     premarketMeta.textContent='Analysis updated: '+(d.updatedET||'—')+' (ET)';
     const ns=d.nasdaqScore||{};
-    const env=(d.groups||[]).find(g=>g.name==='NASDAQ SCORE'||g.name==='NASDAQ SETUP')||{};
-    const liveSignal=ns.signal||env.signal;
+    const ma=d.marketAnalysis||{};
+    const liveSignal=ns.signal||'mixed';
     const sig=liveSignal==='positive'?'Positive':liveSignal==='negative'?'Negative':'Mixed';
     const score=ns.score!==undefined?(ns.score>0?'+':'')+ns.score+' / 100':'—';
-    const watch=d.threeDayWatch||{};const watchTitle=watch.status==='bearish'?'⚠️ Material bearish change':watch.status==='bullish'?'Material bullish improvement':'';
-    // Near-term scheduled catalysts that can materially affect Nasdaq. Keep this concise
-    // and only show events close enough to matter to the current setup.
-    const eventCandidates=[
-      {date:'2026-09-24',title:'Trump–Xi summit',detail:'U.S.–China talks are expected to cover trade, AI and rare-earth supply—directly relevant to technology and semiconductor risk.'},
-      {date:'2026-09-30',title:'Micron (MU) earnings',detail:'Major semiconductor/memory earnings catalyst.'},
-      {date:'2026-10-07',title:'FOMC minutes',detail:'Minutes from the Sep. 15–16 meeting; watch for changes in the perceived rate path.'},
-      {date:'2026-10-27',title:'FOMC meeting',detail:'Two-day meeting Oct. 27–28; policy decision and press conference.'}
-    ];
-    const nyDate=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
-    const dayMs=86400000, todayUTC=Date.parse(nyDate+'T00:00:00Z');
-    const closeEvents=eventCandidates.filter(e=>{const dd=(Date.parse(e.date+'T00:00:00Z')-todayUTC)/dayMs;return dd>=0&&dd<=14}).slice(0,4);
-    const eventsHtml=closeEvents.map(e=>'<li><b>'+e.date+' · '+e.title+'</b> — '+e.detail+'</li>').join(''); // event times, when present, stay in ET
-    premarketBody.innerHTML='<div class="bias"><b>Nasdaq Score:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+' &nbsp; · &nbsp; <b>Trend:</b> '+(ns.trend||'—')+'</div>'+(watchTitle?'<h3 class="'+(watch.status==='bearish'?'red':'green')+'">'+watchTitle+'</h3>':'')+'<p>'+marketTimeText(env?.explanation||'Current Nasdaq Score explanation is not available.').replace(/\n\n/g,'</p><p>')+'</p>'+nearbyMajorEarnings(d)+(eventsHtml?'<h3>Important upcoming catalysts</h3><ul>'+eventsHtml+'</ul>':'');
+    const trajectory=[];
+    if(ma.preMarketScore!==null&&ma.preMarketScore!==undefined) trajectory.push('Pre-market '+(ma.preMarketScore>0?'+':'')+ma.preMarketScore);
+    if(ma.openScore!==null&&ma.openScore!==undefined) trajectory.push('Open '+(ma.openScore>0?'+':'')+ma.openScore);
+    if(ns.score!==undefined) trajectory.push('Now '+(ns.score>0?'+':'')+ns.score);
+    const paras=(ma.paragraphs||[]).map(x=>'<p>'+marketTimeText(x)+'</p>').join('');
+    const catalysts=(ma.catalysts||[]).map(e=>'<li><b>'+escHtml(e.date)+' · '+escHtml(e.title)+'</b> — '+escHtml(e.detail)+'</li>').join('');
+    const fallback=(d.groups||[]).find(g=>g.name==='NASDAQ SCORE'||g.name==='NASDAQ SETUP')?.explanation||'Current Nasdaq analysis is not available.';
+    premarketBody.innerHTML=
+      '<div class="bias"><b>Nasdaq Score:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+' &nbsp; · &nbsp; <b>Trend:</b> '+(ns.trend||'—')+
+      (trajectory.length>1?' &nbsp; · &nbsp; <b>Session path:</b> '+trajectory.join(' → '):'')+'</div>'+
+      (paras||'<p>'+marketTimeText(fallback).replace(/\n\n/g,'</p><p>')+'</p>')+
+      (catalysts?'<h3>Near-term catalysts</h3><ul>'+catalysts+'</ul>':'');
     return;
   }
   analysisTitle.textContent='Pre-Market Analysis';

@@ -1837,6 +1837,195 @@ def main():
                  'positivePct':round(100*pos/len(current_session),2) if current_session else None}
     factor_state={r['factor']:{'signal':r.get('signal'),'currentImpact':r.get('currentImpact'),
                               'trend':r.get('trend'),'latest':r.get('latest')} for r in rows}
+
+    # Change-aware Market Analysis: compare pre-market -> opening snapshot -> now.
+    # The purpose is to explain what changed during the session, not restate every factor.
+    def build_market_analysis():
+        if now.weekday()>=5 or now.hour*60+now.minute < 9*60+30:
+            return None
+        month_file=os.path.join(HISTORY_DIR,'intraday',now.strftime('%Y-%m')+'.json')
+        try:
+            with open(month_file,encoding='utf-8') as hf:
+                old_snaps=json.load(hf).get('snapshots',[])
+        except (FileNotFoundError,json.JSONDecodeError):
+            old_snaps=[]
+
+        today=now.date()
+        todays=[]
+        for s in old_snaps:
+            try:
+                ts=datetime.datetime.fromisoformat(str(s.get('timestampET','')))
+                if ts.tzinfo is None: ts=ts.replace(tzinfo=NY)
+                ts=ts.astimezone(NY)
+                if ts.date()==today: todays.append((ts,s))
+            except (TypeError,ValueError):
+                continue
+        todays.sort(key=lambda x:x[0])
+        pre=[x for x in todays if x[0].hour*60+x[0].minute < 9*60+30]
+        post=[x for x in todays if x[0].hour*60+x[0].minute >= 9*60+30]
+        pre_snap=pre[-1][1] if pre else None
+        open_snap=post[0][1] if post else None
+
+        def snap_score(s):
+            return num((s or {}).get('nasdaqScore',{}).get('score'))
+        def snap_market(s,sym,key='last'):
+            return num((s or {}).get('market',{}).get(sym,{}).get(key))
+        def snap_factor(s,name):
+            return (s or {}).get('factors',{}).get(name,{})
+        def current_row(name):
+            return next((r for r in rows if r.get('factor')==name),{})
+        def current_signal(name):
+            return current_row(name).get('signal','mixed')
+        def current_latest(name):
+            return str(current_row(name).get('latest',''))
+        def current_impact(name):
+            return current_row(name).get('currentImpact','Low')
+        def score_text(v):
+            return '—' if v is None else f'{v:+.0f}'
+        def movement(delta,eps=0.5):
+            if delta is None or abs(delta)<eps: return 'little changed'
+            return 'improved' if delta>0 else 'deteriorated'
+
+        cur_score=num(d.get('nasdaqScore',{}).get('score'))
+        pre_score=snap_score(pre_snap); open_score=snap_score(open_snap)
+        qqq_now=pct(q.get('QQQ',{})) if q.get('QQQ') else None
+        qqq_open=snap_market(open_snap,'QQQ','changePct')
+        qqq_pre=snap_market(pre_snap,'QQQ','changePct')
+        y10_now=num(q.get('US10Y',{}).get('last')) if q.get('US10Y') else None
+        y10_open=snap_market(open_snap,'US10Y')
+        y10_pre=snap_market(pre_snap,'US10Y')
+
+        # 1) Current state and trajectory.
+        state=[]
+        if qqq_now is not None:
+            state.append(f"QQQ is {qqq_now:+.2f}% versus the prior close.")
+        if cur_score is not None:
+            label=d.get('nasdaqScore',{}).get('label','current regime')
+            state.append(f"The Nasdaq Score is {cur_score:+.0f}/100 ({label}).")
+        comparisons=[]
+        if pre_score is not None and cur_score is not None:
+            comparisons.append(f"pre-market {score_text(pre_score)} → now {score_text(cur_score)}")
+        if open_score is not None and cur_score is not None:
+            delta=cur_score-open_score
+            comparisons.append(f"open {score_text(open_score)} → now {score_text(cur_score)} ({movement(delta)} {abs(delta):.0f} points)")
+        if comparisons:
+            state.append("Score path: "+'; '.join(comparisons)+".")
+        elif not todays:
+            state.append("There is not yet a same-day historical snapshot to compare with the current reading.")
+        p1=' '.join(state)
+
+        # 2) Identify the few factors that matter most now, emphasizing actual changes.
+        impact_rank={'Very High':4,'High':3,'Medium':2,'Low':1}
+        candidates=['10Y Treasury Yield','2Y Treasury yield','Semiconductor leadership','Mega-cap leadership',
+                    'Market breadth','Nasdaq volatility (VXN / VIX)','Fed expectations','Oil (WTI / Brent)']
+        driver_items=[]
+        baseline=open_snap or pre_snap
+        for name in candidates:
+            r=current_row(name)
+            if not r: continue
+            old=snap_factor(baseline,name)
+            changed=bool(old) and old.get('signal')!=r.get('signal')
+            rank=impact_rank.get(current_impact(name),1)+(2 if changed else 0)
+            driver_items.append((rank,changed,name,r,old))
+        driver_items.sort(key=lambda x:x[0],reverse=True)
+        driver_sent=[]
+        for _,changed,name,r,old in driver_items[:3]:
+            sig=r.get('signal','mixed')
+            tone='supportive' if sig=='positive' else ('a headwind' if sig=='negative' else 'mixed')
+            if name=='10Y Treasury Yield' and y10_now is not None:
+                base=y10_open if y10_open is not None else y10_pre
+                delta_bp=(y10_now-base)*100 if base is not None else None
+                move=f", {delta_bp:+.1f} bp since {'the opening snapshot' if y10_open is not None else 'pre-market'}" if delta_bp is not None else ''
+                driver_sent.append(f"Rates are {tone}: the 10Y is {y10_now:.3f}%{move}.")
+            elif name in ('Semiconductor leadership','Mega-cap leadership','Market breadth','Nasdaq volatility (VXN / VIX)'):
+                prefix={'Semiconductor leadership':'Semiconductors','Mega-cap leadership':'Mega-caps','Market breadth':'Breadth','Nasdaq volatility (VXN / VIX)':'Volatility'}[name]
+                shift=f" It changed from {old.get('signal')} to {sig} after the baseline snapshot." if changed and old.get('signal') else ''
+                driver_sent.append(f"{prefix} are {tone}: {r.get('latest','')}.{shift}")
+            elif name=='Fed expectations':
+                driver_sent.append(f"Fed pricing is {tone}: {r.get('latest','')}.")
+            elif name=='Oil (WTI / Brent)':
+                driver_sent.append(f"Oil is {tone} for Nasdaq: {r.get('latest','')}.")
+            elif name=='2Y Treasury yield':
+                driver_sent.append(f"The 2Y rate signal is {tone}: {r.get('latest','')}.")
+        p2="The main live drivers are "+" ".join(driver_sent) if driver_sent else "No single high-impact driver currently dominates the intraday model."
+
+        # 3) Confirmation versus divergence across Nasdaq internals.
+        qdir='up' if qqq_now is not None and qqq_now>0.10 else ('down' if qqq_now is not None and qqq_now<-0.10 else 'flat')
+        internals={n:current_signal(n) for n in ('Semiconductor leadership','Mega-cap leadership','Market breadth')}
+        pos=sum(v=='positive' for v in internals.values()); neg=sum(v=='negative' for v in internals.values())
+        if qdir=='up' and pos>=2:
+            confirmation="The upside move is broadly confirmed by Nasdaq internals"
+        elif qdir=='down' and neg>=2:
+            confirmation="The downside move is broadly confirmed by Nasdaq internals"
+        elif qdir=='flat':
+            confirmation="QQQ is near flat and internals are not yet producing a decisive directional confirmation"
+        else:
+            confirmation="QQQ and its internal leadership are diverging, so the index move has weaker confirmation"
+        parts=[f"semiconductors {internals['Semiconductor leadership']}",f"mega-caps {internals['Mega-cap leadership']}",f"breadth {internals['Market breadth']}"]
+        p3=confirmation+" ("+", ".join(parts)+")."
+
+        # 4) Conditions that would materially change the current view.
+        improve=[]; worsen=[]
+        if y10_now is not None:
+            if y10_now>5.05:
+                improve.append("a sustained 10Y move back below roughly 5.05%")
+                worsen.append("the 10Y remaining above 5.05% or extending higher")
+            elif y10_now>=4.95:
+                improve.append("further easing in the 10Y toward/below 4.95%")
+                worsen.append("a renewed 10Y break above roughly 5.05%")
+            else:
+                worsen.append("a reversal in the 10Y back above roughly 5.00–5.05%")
+        if current_signal('Semiconductor leadership')!='positive':
+            improve.append("semiconductors regaining leadership versus QQQ")
+        else:
+            worsen.append("semiconductor leadership rolling over")
+        if current_signal('Market breadth')!='positive':
+            improve.append("broader participation")
+        else:
+            worsen.append("breadth narrowing materially")
+        if current_signal('Nasdaq volatility (VXN / VIX)')=='negative':
+            improve.append("VXN/VIX cooling")
+        else:
+            worsen.append("a material volatility expansion")
+        p4="What would change the view: improvement would require "+", ".join(improve[:3])+". Deterioration would be reinforced by "+", ".join(worsen[:3])+"."
+
+        # Near-term catalysts: always surface a major technology earnings event within 7 days.
+        catalysts=[]
+        er=current_row('Technology earnings calendar')
+        m=re.match(r'^([^:]+):\s*([A-Z][a-z]{2})\s+(\d{1,2}),\s+(\d{4})',str(er.get('latest','')))
+        if m:
+            try:
+                ed=datetime.datetime.strptime(f"{m.group(2)} {m.group(3)} {m.group(4)}",'%b %d %Y').date()
+                days=(ed-today).days
+                if 0<=days<=7:
+                    catalysts.append({'title':m.group(1).strip()+' earnings','date':ed.isoformat(),
+                                      'detail':f"Major Nasdaq/technology earnings catalyst {('today' if days==0 else f'in {days} day'+('' if days==1 else 's'))}."})
+            except ValueError:
+                pass
+        fed=current_row('Fed expectations').get('fedMeetings') or []
+        if fed:
+            try:
+                fd=datetime.date.fromisoformat(fed[0].get('date'))
+                days=(fd-today).days
+                if 0<=days<=14:
+                    catalysts.append({'title':'FOMC decision','date':fd.isoformat(),'detail':'Nearest policy decision; FedWatch probabilities are reflected in the Fed Expectations factor.'})
+            except (TypeError,ValueError):
+                pass
+
+        return {
+            'version':2,
+            'asOfET':now.strftime('%Y-%m-%d %H:%M ET'),
+            'score':cur_score,
+            'preMarketScore':pre_score,
+            'openScore':open_score,
+            'qqqChangePct':round(qqq_now,2) if qqq_now is not None else None,
+            'paragraphs':[x for x in (p1,p2,p3,p4) if x],
+            'confirmation':confirmation,
+            'catalysts':catalysts,
+            'baseline':{'preMarketAvailable':pre_snap is not None,'openAvailable':open_snap is not None}
+        }
+
+    d['marketAnalysis']=build_market_analysis()
     curve_obs={'spreadBp':round(curve_2s10s,1) if curve_2s10s is not None else None,
                'changeBp':round(curve_change,1) if curve_change is not None else None,
                'shape':curve_regime} if curve_2s10s is not None else None
