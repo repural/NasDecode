@@ -2241,6 +2241,17 @@ def main():
         for label,levels in session_levels.items()
         if label in ('Nasdaq','SOX','SOXX','SMH','NVDA','AMD','AVGO','TSM','MU','QQQ')
     }
+    nasdaq_day_return=same_day_returns.get('Nasdaq')
+    relative_strength={
+        'semiBasketVsNasdaqPp':round(semi_basket-nasdaq_day_return,4) if semi_basket is not None and nasdaq_day_return is not None else None,
+        'megaCapBasketVsNasdaqPp':round(mega_basket-nasdaq_day_return,4) if mega_basket is not None and nasdaq_day_return is not None else None,
+        'soxVsNasdaqPp':round(same_day_returns.get('SOX')-nasdaq_day_return,4) if same_day_returns.get('SOX') is not None and nasdaq_day_return is not None else None,
+        'soxxVsNasdaqPp':round(same_day_returns.get('SOXX')-nasdaq_day_return,4) if same_day_returns.get('SOXX') is not None and nasdaq_day_return is not None else None,
+        'smhVsNasdaqPp':round(same_day_returns.get('SMH')-nasdaq_day_return,4) if same_day_returns.get('SMH') is not None and nasdaq_day_return is not None else None,
+        'semiBasketVsQqqPp':semi_vs_qqq,
+        'smhVsQqqPp':smh_vs_qqq,
+        'megaCapBasketVsQqqPp':mega_vs_qqq
+    }
     model_factor_scores=(d.get('nasdaqScore',{}).get('model') or {}).get('factors',[])
     model_bucket_scores=(d.get('nasdaqScore',{}).get('model') or {}).get('buckets',[])
     required_validation={
@@ -2276,6 +2287,7 @@ def main():
         },
         'marketContext':validation_market,
         'sameDayReturnsPct':same_day_returns,
+        'relativeStrengthPp':relative_strength,
         'dataCompleteness':{
             'expectedFields':len(required_validation),
             'presentFields':len(present_validation),
