@@ -1,11 +1,12 @@
 {
   "version": 1,
-  "generatedAtUTC": "2026-09-25T09:40:21.257530+00:00",
+  "generatedAtUTC": "2026-09-25T09:59:58.286031+00:00",
   "methodology": {
     "dailyReturn": "Adjusted close-to-close percentage return from Massive daily aggregates.",
     "pre7": "Compound return across offsets -7 through -1, excluding announcement day.",
     "includingEventDay": "Compound return across offsets -7 through 0.",
-    "timingNote": "For after-close reporters, offset 0 is pre-announcement trading. For before-open reporters, offset 0 includes the earnings reaction."
+    "postEvent": "T+1, T+2 and T+3 are the next three regular trading sessions after the announcement-date session.",
+    "timingNote": "For after-close reporters, offset 0 is pre-announcement trading and T+1 contains the first regular-session earnings reaction. For before-open reporters, offset 0 already contains the first earnings reaction."
   },
   "basket": [
     "NVDA",
@@ -104,17 +105,52 @@
           "stockClose": 209.66,
           "nasdaqClose": 26130.196716,
           "soxClose": 11611.238006
+        },
+        {
+          "offset": 1,
+          "date": "2026-08-27",
+          "stockChangePct": 8.738,
+          "nasdaqChangePct": 1.5735,
+          "soxChangePct": 2.3334,
+          "stockClose": 227.98,
+          "nasdaqClose": 26541.351819,
+          "soxClose": 11882.16919
+        },
+        {
+          "offset": 2,
+          "date": "2026-08-28",
+          "stockChangePct": -4.575,
+          "nasdaqChangePct": -0.5234,
+          "soxChangePct": -3.4716,
+          "stockClose": 217.55,
+          "nasdaqClose": 26402.422867,
+          "soxClose": 11469.661881
+        },
+        {
+          "offset": 3,
+          "date": "2026-08-31",
+          "stockChangePct": 1.4847,
+          "nasdaqChangePct": -0.1194,
+          "soxChangePct": 0.5701,
+          "stockClose": 220.78,
+          "nasdaqClose": 26370.889137,
+          "soxClose": 11535.051084
         }
       ],
       "summary": {
         "stockPre7Pct": -5.3782,
         "nasdaqPre7Pct": -2.1619,
         "soxPre7Pct": -6.6765,
-        "stockIncludingEventDayPct": -6.8839,
-        "nasdaqIncludingEventDayPct": -2.2408,
-        "soxIncludingEventDayPct": -6.4896,
+        "stockIncludingEventDayPct": -1.9452,
+        "nasdaqIncludingEventDayPct": -1.3403,
+        "soxIncludingEventDayPct": -7.1031,
         "positivePreEventSessions": 1,
-        "preEventSessions": 7
+        "preEventSessions": 7,
+        "stockPost1Pct": 8.738,
+        "stockPost2CumulativePct": 3.7632,
+        "stockPost3CumulativePct": 5.3038,
+        "nasdaqPost3CumulativePct": 0.9212,
+        "soxPost3CumulativePct": -0.6561
       }
     },
     "AMD": {
@@ -202,17 +238,52 @@
           "stockClose": 518.58,
           "nasdaqClose": 26584.993011,
           "soxClose": 12179.262698
+        },
+        {
+          "offset": 1,
+          "date": "2026-08-05",
+          "stockChangePct": -7.0442,
+          "nasdaqChangePct": -0.8334,
+          "soxChangePct": -1.3989,
+          "stockClose": 482.05,
+          "nasdaqClose": 26363.439323,
+          "soxClose": 12008.883329
+        },
+        {
+          "offset": 2,
+          "date": "2026-08-06",
+          "stockChangePct": 1.4998,
+          "nasdaqChangePct": -0.0572,
+          "soxChangePct": 0.3315,
+          "stockClose": 489.28,
+          "nasdaqClose": 26348.352173,
+          "soxClose": 12048.692906
+        },
+        {
+          "offset": 3,
+          "date": "2026-08-07",
+          "stockChangePct": -1.2099,
+          "nasdaqChangePct": 1.299,
+          "soxChangePct": 2.5571,
+          "stockClose": 483.36,
+          "nasdaqClose": 26690.615002,
+          "soxClose": 12356.787381
         }
       ],
       "summary": {
         "stockPre7Pct": -10.2003,
         "nasdaqPre7Pct": 3.0878,
         "soxPre7Pct": -7.4002,
-        "stockIncludingEventDayPct": -3.9115,
-        "nasdaqIncludingEventDayPct": 5.7575,
-        "soxIncludingEventDayPct": -1.3331,
+        "stockIncludingEventDayPct": -10.4374,
+        "nasdaqIncludingEventDayPct": 6.1777,
+        "soxIncludingEventDayPct": 0.1051,
         "positivePreEventSessions": 2,
-        "preEventSessions": 7
+        "preEventSessions": 7,
+        "stockPost1Pct": -7.0442,
+        "stockPost2CumulativePct": -5.65,
+        "stockPost3CumulativePct": -6.7916,
+        "nasdaqPost3CumulativePct": 0.3973,
+        "soxPost3CumulativePct": 1.4576
       }
     },
     "AVGO": {
@@ -300,17 +371,52 @@
           "stockClose": 367.24,
           "nasdaqClose": 26217.827923,
           "soxClose": 11339.25356
+        },
+        {
+          "offset": 1,
+          "date": "2026-09-03",
+          "stockChangePct": -2.7448,
+          "nasdaqChangePct": 1.3969,
+          "soxChangePct": 0.1135,
+          "stockClose": 357.16,
+          "nasdaqClose": 26584.059968,
+          "soxClose": 11352.128744
+        },
+        {
+          "offset": 2,
+          "date": "2026-09-04",
+          "stockChangePct": 0.2058,
+          "nasdaqChangePct": -0.2899,
+          "soxChangePct": 3.375,
+          "stockClose": 357.895,
+          "nasdaqClose": 26506.990061,
+          "soxClose": 11735.262413
+        },
+        {
+          "offset": 3,
+          "date": "2026-09-08",
+          "stockChangePct": 2.9799,
+          "nasdaqChangePct": -0.3228,
+          "soxChangePct": 1.3004,
+          "stockClose": 368.56,
+          "nasdaqClose": 26421.412555,
+          "soxClose": 11887.869476
         }
       ],
       "summary": {
         "stockPre7Pct": 0.3338,
         "nasdaqPre7Pct": -0.3081,
         "soxPre7Pct": -3.8478,
-        "stockIncludingEventDayPct": -0.3284,
-        "nasdaqIncludingEventDayPct": 0.1428,
-        "soxIncludingEventDayPct": -3.4164,
+        "stockIncludingEventDayPct": 0.0298,
+        "nasdaqIncludingEventDayPct": 0.9205,
+        "soxIncludingEventDayPct": 1.2564,
         "positivePreEventSessions": 2,
-        "preEventSessions": 7
+        "preEventSessions": 7,
+        "stockPost1Pct": -2.7448,
+        "stockPost2CumulativePct": -2.5446,
+        "stockPost3CumulativePct": 0.3594,
+        "nasdaqPost3CumulativePct": 0.7766,
+        "soxPost3CumulativePct": 4.8381
       }
     },
     "TSM": {
@@ -398,17 +504,52 @@
           "stockClose": 409.74,
           "nasdaqClose": 25881.946328,
           "soxClose": 11867.503321
+        },
+        {
+          "offset": 1,
+          "date": "2026-07-17",
+          "stockChangePct": -2.7749,
+          "nasdaqChangePct": -1.3975,
+          "soxChangePct": -1.6315,
+          "stockClose": 398.37,
+          "nasdaqClose": 25520.243668,
+          "soxClose": 11673.888578
+        },
+        {
+          "offset": 2,
+          "date": "2026-07-20",
+          "stockChangePct": 0.9865,
+          "nasdaqChangePct": -0.0477,
+          "soxChangePct": 0.5993,
+          "stockClose": 402.3,
+          "nasdaqClose": 25508.072317,
+          "soxClose": 11743.849123
+        },
+        {
+          "offset": 3,
+          "date": "2026-07-21",
+          "stockChangePct": 5.5456,
+          "nasdaqChangePct": 1.2903,
+          "soxChangePct": 5.2139,
+          "stockClose": 424.61,
+          "nasdaqClose": 25837.206516,
+          "soxClose": 12356.16362
         }
       ],
       "summary": {
         "stockPre7Pct": -7.1516,
         "nasdaqPre7Pct": 0.567,
         "soxPre7Pct": -3.8856,
-        "stockIncludingEventDayPct": -9.3075,
-        "nasdaqIncludingEventDayPct": -0.9157,
-        "soxIncludingEventDayPct": -8.0049,
+        "stockIncludingEventDayPct": -6.0161,
+        "nasdaqIncludingEventDayPct": -1.087,
+        "soxIncludingEventDayPct": -4.2169,
         "positivePreEventSessions": 1,
-        "preEventSessions": 7
+        "preEventSessions": 7,
+        "stockPost1Pct": -2.7749,
+        "stockPost2CumulativePct": -1.8158,
+        "stockPost3CumulativePct": 3.6291,
+        "nasdaqPost3CumulativePct": -0.1729,
+        "soxPost3CumulativePct": 4.1176
       }
     },
     "MU": {
@@ -496,17 +637,52 @@
           "stockClose": 1048.51,
           "nasdaqClose": 25476.63562,
           "soxClose": 13458.194595
+        },
+        {
+          "offset": 1,
+          "date": "2026-06-25",
+          "stockChangePct": 15.7414,
+          "nasdaqChangePct": -0.4633,
+          "soxChangePct": 3.5865,
+          "stockClose": 1213.56,
+          "nasdaqClose": 25358.602861,
+          "soxClose": 13940.870388
+        },
+        {
+          "offset": 2,
+          "date": "2026-06-26",
+          "stockChangePct": -6.6935,
+          "nasdaqChangePct": -0.2405,
+          "soxChangePct": -5.2888,
+          "stockClose": 1132.33,
+          "nasdaqClose": 25297.617712,
+          "soxClose": 13203.569689
+        },
+        {
+          "offset": 3,
+          "date": "2026-06-29",
+          "stockChangePct": 1.1437,
+          "nasdaqChangePct": 2.0655,
+          "soxChangePct": 3.833,
+          "stockClose": 1145.28,
+          "nasdaqClose": 25820.143836,
+          "soxClose": 13709.659996
         }
       ],
       "summary": {
         "stockPre7Pct": 5.6132,
         "nasdaqPre7Pct": -0.8625,
         "soxPre7Pct": 2.3618,
-        "stockIncludingEventDayPct": 5.2858,
-        "nasdaqIncludingEventDayPct": -1.2903,
-        "soxIncludingEventDayPct": 2.1772,
+        "stockIncludingEventDayPct": 15.0031,
+        "nasdaqIncludingEventDayPct": 0.0406,
+        "soxIncludingEventDayPct": 4.0864,
         "positivePreEventSessions": 4,
-        "preEventSessions": 7
+        "preEventSessions": 7,
+        "stockPost1Pct": 15.7414,
+        "stockPost2CumulativePct": 7.9942,
+        "stockPost3CumulativePct": 9.2294,
+        "nasdaqPost3CumulativePct": 1.3483,
+        "soxPost3CumulativePct": 1.8685
       }
     }
   }
