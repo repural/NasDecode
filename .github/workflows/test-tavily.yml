@@ -11,12 +11,38 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - name: Check Tavily secret
+      - name: Test Tavily earnings research
         env:
           TAVILY_KEY: ${{ secrets.TAVILY_KEY }}
         run: |
-          if [ -z "$TAVILY_KEY" ]; then
-            echo "TAVILY_KEY MISSING"
-            exit 1
-          fi
-          echo "TAVILY_KEY PRESENT"
+          python - <<'PY'
+          import json, os, urllib.request, urllib.error
+          key=os.environ.get("TAVILY_KEY","")
+          if not key:
+              print("TAVILY_KEY MISSING")
+              raise SystemExit(2)
+          queries=[
+            ("MU_2026-06-24","Micron MU June 24 2026 earnings EPS estimate actual revenue estimate actual guidance consensus"),
+            ("NVDA_2026-08-26","NVIDIA NVDA August 26 2026 earnings EPS estimate actual revenue estimate actual guidance consensus"),
+            ("MSFT_2026-07-29","Microsoft MSFT July 29 2026 earnings EPS estimate actual revenue estimate actual guidance consensus"),
+          ]
+          out={}
+          for eid,q in queries:
+              payload=json.dumps({"query":q,"topic":"finance","search_depth":"advanced","max_results":8,"include_answer":True,"include_raw_content":False}).encode()
+              req=urllib.request.Request("https://api.tavily.com/search",data=payload,headers={"Authorization":"Bearer "+key,"Content-Type":"application/json","User-Agent":"NasBoard/1.0"},method="POST")
+              try:
+                  with urllib.request.urlopen(req,timeout=60) as r:
+                      data=json.load(r)
+                  out[eid]={"query":q,"answer":data.get("answer"),"results":[{"title":x.get("title"),"url":x.get("url"),"content":x.get("content"),"score":x.get("score"),"published_date":x.get("published_date")} for x in data.get("results",[])]}
+                  print(eid,"HTTP",r.status,"RESULTS",len(out[eid]["results"]))
+                  for x in out[eid]["results"][:5]: print(" -",x.get("title"),x.get("url"))
+              except urllib.error.HTTPError as e:
+                  print(eid,"HTTP",e.code,e.read().decode("utf-8",errors="replace")[:500])
+                  raise
+          with open("tavily_earnings_test.json","w") as fh: json.dump(out,fh,indent=2)
+          PY
+      - name: Upload research test
+        uses: actions/upload-artifact@v4
+        with:
+          name: tavily-earnings-test
+          path: tavily_earnings_test.json
