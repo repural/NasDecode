@@ -2269,6 +2269,51 @@ def main():
         'smhVsQqqPp':smh_vs_qqq,
         'megaCapBasketVsQqqPp':mega_vs_qqq
     }
+    # Independent confirmation layer. This intentionally does NOT change Nasdaq Score.
+    # It lets us test whether improving internals can confirm/contradict the directional model.
+    def _signal100(name):
+        sig=_factor_row(name).get('signal')
+        return 100 if sig=='positive' else (0 if sig=='negative' else 50)
+    breadth_confirm=_signal100('Market breadth')
+    vol_confirm=_signal100('Nasdaq volatility (VXN / VIX)')
+    mega_confirm=_signal100('Mega-cap leadership')
+    # Semiconductor leadership blends the broad SOX/SOXX/SMH complex with the five-stock basket,
+    # so a narrow basket cannot mask broad chip-index leadership.
+    semi_rel_values=[v for v in (
+        relative_strength.get('soxVsNasdaqPp'),relative_strength.get('soxxVsNasdaqPp'),
+        relative_strength.get('smhVsNasdaqPp'),relative_strength.get('semiBasketVsNasdaqPp')
+    ) if v is not None]
+    semi_rel=sum(semi_rel_values)/len(semi_rel_values) if semi_rel_values else None
+    if semi_rel is None:
+        semiconductor_leadership_score=_signal100('Semiconductor leadership')
+    elif semi_rel>=0.50: semiconductor_leadership_score=100
+    elif semi_rel>=0.20: semiconductor_leadership_score=75
+    elif semi_rel>-0.20: semiconductor_leadership_score=50
+    elif semi_rel>-0.50: semiconductor_leadership_score=25
+    else: semiconductor_leadership_score=0
+    # Internal Confirmation: breadth 35%, semiconductor leadership 35%, volatility 20%, mega-caps 10%.
+    internal_confirmation_score=round(0.35*breadth_confirm+0.35*semiconductor_leadership_score+0.20*vol_confirm+0.10*mega_confirm)
+    def _confirm_label(v):
+        return 'Strong' if v>=75 else ('Positive' if v>=60 else ('Mixed' if v>=40 else ('Weak' if v>=25 else 'Negative')))
+    confirmation_layer={
+        'internalConfirmation':{
+            'score':internal_confirmation_score,'label':_confirm_label(internal_confirmation_score),
+            'components':{'breadth':breadth_confirm,'semiconductorLeadership':semiconductor_leadership_score,
+                          'volatility':vol_confirm,'megaCapLeadership':mega_confirm},
+            'weights':{'breadth':35,'semiconductorLeadership':35,'volatility':20,'megaCapLeadership':10}
+        },
+        'semiconductorLeadership':{
+            'score':semiconductor_leadership_score,'label':_confirm_label(semiconductor_leadership_score),
+            'relativeStrengthPp':{k:relative_strength.get(k) for k in ('soxVsNasdaqPp','soxxVsNasdaqPp','smhVsNasdaqPp','semiBasketVsNasdaqPp')},
+            'method':'Equal-average broad semiconductor relative strength versus Nasdaq, mapped to 0/25/50/75/100. Falls back to the existing semiconductor factor when index data is unavailable.'
+        },
+        'macroConstraint':{
+            'ratesMacroBucketStrength':next((x.get('strength') for x in (d.get('nasdaqScore',{}).get('model') or {}).get('buckets',[]) if x.get('bucket')=='Rates / Macro'),None)
+        },
+        'directionalScoreUnchanged':True
+    }
+    d['confirmationLayer']=confirmation_layer
+
     model_factor_scores=(d.get('nasdaqScore',{}).get('model') or {}).get('factors',[])
     model_bucket_scores=(d.get('nasdaqScore',{}).get('model') or {}).get('buckets',[])
     required_validation={
@@ -2300,7 +2345,8 @@ def main():
             'nasdaqFactorScores':model_factor_scores,
             'nasdaqBucketScores':model_bucket_scores,
             'consolidationRisk':d.get('consolidationRisk'),
-            'opportunityScore':d.get('opportunityScore')
+            'opportunityScore':d.get('opportunityScore'),
+            'confirmationLayer':confirmation_layer
         },
         'marketContext':validation_market,
         'sameDayReturnsPct':same_day_returns,
@@ -2326,6 +2372,7 @@ def main():
               'nasdaqScore':{k:v for k,v in d.get('nasdaqScore',{}).items() if k!='model'},
               'consolidationRisk':d.get('consolidationRisk'),
               'opportunityScore':d.get('opportunityScore'),
+              'confirmationLayer':confirmation_layer,
               'validation':validation,
               'earningsAvwap':avwap_history,'factors':factor_state}
     try:
