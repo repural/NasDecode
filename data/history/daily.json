@@ -4627,7 +4627,7 @@
     },
     "2026-09-26": {
       "schemaVersion": 4,
-      "timestampET": "2026-09-26T01:20:46.320808-04:00",
+      "timestampET": "2026-09-26T01:28:59.792149-04:00",
       "market": {
         ".IXIC": {
           "last": 27068.716,
@@ -5258,11 +5258,11 @@
       },
       "confirmationLayer": {
         "internalConfirmation": {
-          "score": 60,
+          "score": 69,
           "label": "Positive",
           "components": {
             "breadth": 50,
-            "semiconductorLeadership": 50,
+            "semiconductorLeadership": 75,
             "volatility": 100,
             "megaCapLeadership": 50
           },
@@ -5274,13 +5274,13 @@
           }
         },
         "semiconductorLeadership": {
-          "score": 50,
-          "label": "Mixed",
+          "score": 75,
+          "label": "Strong",
           "relativeStrengthPp": {
-            "soxVsNasdaqPp": null,
-            "soxxVsNasdaqPp": null,
-            "smhVsNasdaqPp": null,
-            "semiBasketVsNasdaqPp": null
+            "soxVsNasdaqPp": 0.93,
+            "soxxVsNasdaqPp": 0.69,
+            "smhVsNasdaqPp": 0.53,
+            "semiBasketVsNasdaqPp": -0.24
           },
           "method": "Equal-average broad semiconductor relative strength versus Nasdaq, mapped to 0/25/50/75/100. Falls back to the existing semiconductor factor when index data is unavailable."
         },
@@ -5321,6 +5321,14 @@
               "regimeMultiplier": 1.0
             },
             {
+              "factor": "Nasdaq volatility (VXN / VIX)",
+              "bucket": "Volatility / Positioning",
+              "strength": 0.347,
+              "effectiveWeight": 2.1,
+              "freshnessWeight": 0.7,
+              "regimeMultiplier": 1.0
+            },
+            {
               "factor": "Fed expectations",
               "bucket": "Rates / Macro",
               "strength": -0.497,
@@ -5345,6 +5353,14 @@
               "regimeMultiplier": 1.0
             },
             {
+              "factor": "Mega-cap leadership",
+              "bucket": "Leadership",
+              "strength": -0.24,
+              "effectiveWeight": 1.4,
+              "freshnessWeight": 0.7,
+              "regimeMultiplier": 1.0
+            },
+            {
               "factor": "Oil (WTI / Brent)",
               "bucket": "Rates / Macro",
               "strength": 0.713,
@@ -5361,28 +5377,12 @@
               "regimeMultiplier": 1.25
             },
             {
-              "factor": "Nasdaq volatility (VXN / VIX)",
-              "bucket": "Volatility / Positioning",
-              "strength": 0.347,
-              "effectiveWeight": 2.1,
-              "freshnessWeight": 0.7,
-              "regimeMultiplier": 1.0
-            },
-            {
               "factor": "10Y Treasury Yield",
               "bucket": "Rates / Macro",
               "strength": -0.612,
               "effectiveWeight": 0.438,
               "freshnessWeight": 0.35,
               "regimeMultiplier": 1.25
-            },
-            {
-              "factor": "Mega-cap leadership",
-              "bucket": "Leadership",
-              "strength": -0.24,
-              "effectiveWeight": 1.4,
-              "freshnessWeight": 0.7,
-              "regimeMultiplier": 1.0
             },
             {
               "factor": "Semiconductor leadership",
@@ -5425,18 +5425,18 @@
               "cap": 6.0
             },
             {
-              "bucket": "Rates / Macro",
-              "strength": -0.276,
-              "weight": 5.06,
-              "uncappedWeight": 5.06,
-              "cap": 9.0
-            },
-            {
               "bucket": "Volatility / Positioning",
               "strength": 0.414,
               "weight": 4.1,
               "uncappedWeight": 4.1,
               "cap": 7.0
+            },
+            {
+              "bucket": "Rates / Macro",
+              "strength": -0.276,
+              "weight": 5.06,
+              "uncappedWeight": 5.06,
+              "cap": 9.0
             },
             {
               "bucket": "Leadership",
@@ -5587,11 +5587,11 @@
           },
           "confirmationLayer": {
             "internalConfirmation": {
-              "score": 60,
+              "score": 69,
               "label": "Positive",
               "components": {
                 "breadth": 50,
-                "semiconductorLeadership": 50,
+                "semiconductorLeadership": 75,
                 "volatility": 100,
                 "megaCapLeadership": 50
               },
@@ -5603,13 +5603,13 @@
               }
             },
             "semiconductorLeadership": {
-              "score": 50,
-              "label": "Mixed",
+              "score": 75,
+              "label": "Strong",
               "relativeStrengthPp": {
-                "soxVsNasdaqPp": null,
-                "soxxVsNasdaqPp": null,
-                "smhVsNasdaqPp": null,
-                "semiBasketVsNasdaqPp": null
+                "soxVsNasdaqPp": 0.93,
+                "soxxVsNasdaqPp": 0.69,
+                "smhVsNasdaqPp": 0.53,
+                "semiBasketVsNasdaqPp": -0.24
               },
               "method": "Equal-average broad semiconductor relative strength versus Nasdaq, mapped to 0/25/50/75/100. Falls back to the existing semiconductor factor when index data is unavailable."
             },
@@ -5765,14 +5765,16 @@
           "QQQ": null
         },
         "relativeStrengthPp": {
-          "semiBasketVsNasdaqPp": null,
-          "megaCapBasketVsNasdaqPp": null,
-          "soxVsNasdaqPp": null,
-          "soxxVsNasdaqPp": null,
-          "smhVsNasdaqPp": null,
+          "semiBasketVsNasdaqPp": -0.24,
+          "megaCapBasketVsNasdaqPp": -0.32,
+          "soxVsNasdaqPp": 0.93,
+          "soxxVsNasdaqPp": 0.69,
+          "smhVsNasdaqPp": 0.53,
           "semiBasketVsQqqPp": -0.22,
           "smhVsQqqPp": 0.55,
-          "megaCapBasketVsQqqPp": -0.3
+          "megaCapBasketVsQqqPp": -0.3,
+          "basis": "previous_completed_session",
+          "observationDate": "2026-09-25"
         },
         "dataCompleteness": {
           "expectedFields": 18,
@@ -5887,6 +5889,12 @@
           "trend": "Improving ↑",
           "latest": "26.0% above 50D MA · +1.0 pp vs prior"
         },
+        "Nasdaq volatility (VXN / VIX)": {
+          "signal": "positive",
+          "currentImpact": "High",
+          "trend": "Improving ↑",
+          "latest": "VXN 20.87 (-1.74%) | VIX 14.87 (-5.11%)"
+        },
         "Fed expectations": {
           "signal": "negative",
           "currentImpact": "Medium",
@@ -5905,6 +5913,12 @@
           "trend": "Stable →",
           "latest": "Equity P/C 0.52 | 5D avg 0.51 | → stable | Index 0.95 | Total 0.75"
         },
+        "Mega-cap leadership": {
+          "signal": "mixed",
+          "currentImpact": "Medium",
+          "trend": "Stable →",
+          "latest": "Previous regular-session close · 7-stock basket +0.16% | 5/7 positive | QQQ +0.46% | relative -0.30 pp"
+        },
         "Oil (WTI / Brent)": {
           "signal": "positive",
           "currentImpact": "Low",
@@ -5917,23 +5931,11 @@
           "trend": "Improving ↑",
           "latest": "4.860% (-3.5 bp vs prev close)"
         },
-        "Nasdaq volatility (VXN / VIX)": {
-          "signal": "positive",
-          "currentImpact": "High",
-          "trend": "Improving ↑",
-          "latest": "VXN 20.87 (-1.74%) | VIX 14.87 (-5.11%)"
-        },
         "10Y Treasury Yield": {
           "signal": "negative",
           "currentImpact": "Low",
           "trend": "Stable →",
           "latest": "5.165% (+0.3 bp vs prev close)"
-        },
-        "Mega-cap leadership": {
-          "signal": "mixed",
-          "currentImpact": "Medium",
-          "trend": "Stable →",
-          "latest": "Previous regular-session close · 7-stock basket +0.16% | 5/7 positive | QQQ +0.46% | relative -0.30 pp"
         },
         "Semiconductor leadership": {
           "signal": "mixed",
