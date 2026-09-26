@@ -123,3 +123,4 @@ New functions should include a concise docstring/comment explaining:
 4. how failure or missing data is handled.
 
 Comments should explain model intent and non-obvious decisions rather than restating individual lines of code. Changes to factor/model logic should also update this README when they alter the architecture or interpretation.
+
