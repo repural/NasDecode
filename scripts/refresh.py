@@ -1,4 +1,4 @@
-"""NasBoard market-data refresh engine.
+"""NasDecode market-data refresh engine.
 
 Data flow:
 1. Fetch/normalize free market and official-source observations.
@@ -7,7 +7,7 @@ Data flow:
 4. Compute the Nasdaq Setup and Consolidation Risk model outputs.
 5. Persist daily/intraday history and publish data/dashboard.json.
 
-Design rule: missing or stale inputs fail closed. NasBoard should label unavailable data
+Design rule: missing or stale inputs fail closed. NasDecode should label unavailable data
 rather than infer a live value from an old observation.
 """
 
@@ -46,7 +46,7 @@ def massive_daily_bars(ticker, days=120):
     start=end-datetime.timedelta(days=days)
     url=(f'https://api.massive.com/v2/aggs/ticker/{urllib.parse.quote(ticker)}/range/1/day/'
          f'{start.isoformat()}/{end.isoformat()}?adjusted=true&sort=asc&limit=5000')
-    req=urllib.request.Request(url,headers={'Authorization':f'Bearer {key}','User-Agent':'NasBoard/1.0'})
+    req=urllib.request.Request(url,headers={'Authorization':f'Bearer {key}','User-Agent':'NasDecode/1.0'})
     backoffs=(15,30,60)
     for attempt in range(4):
         # Preserve a conservative free-tier pace on every attempt, including retries.
@@ -319,7 +319,7 @@ def explain_current_rows(rows):
             semi=f" Semiconductor leadership is {direction('Semiconductor leadership')}." if live('Semiconductor leadership') else ''
             r['explanation']=f'{x}. The mega-cap basket is {d.lower()}. Nasdaq is more durable when its largest weights participate rather than the index being carried by a narrow subset. Current implication: {t}.{breadth}{semi}'
         elif n=='S&P 500 50D Breadth / Oversold':
-            r['explanation']=f'{x}. This is the percentage of S&P 500 stocks above their 50-day moving average. NasBoard interprets it as both breadth and an oversold/extended condition: low readings show weak participation, but a turn upward from below 30% can be an early recovery signal rather than simply bearish. Current state: {d.lower()}.'
+            r['explanation']=f'{x}. This is the percentage of S&P 500 stocks above their 50-day moving average. NasDecode interprets it as both breadth and an oversold/extended condition: low readings show weak participation, but a turn upward from below 30% can be an early recovery signal rather than simply bearish. Current state: {d.lower()}.'
         elif n=='Market breadth':
             leaders=[]
             if live('Semiconductor leadership'): leaders.append('semiconductors are '+direction('Semiconductor leadership'))
@@ -369,7 +369,7 @@ def explain_current_rows(rows):
             else:
                 r['explanation']=f"{x}. No verified actual-versus-consensus macro surprise is currently stored, so the factor stays neutral rather than treating an upcoming event as bullish or bearish.{yields}".strip()
         else:
-            r['explanation']=f'Current reading: {x}. Direction: {d}. NasBoard currently classifies this factor as {t}. This row will become more specific as its underlying live/research source is automated.'
+            r['explanation']=f'Current reading: {x}. Direction: {d}. NasDecode currently classifies this factor as {t}. This row will become more specific as its underlying live/research source is automated.'
 
 def cme_fedwatch_aggregated():
     # Best-effort public FedWatch page scrape. CME renders the probability tool in an iframe,
@@ -512,7 +512,7 @@ def fed_meeting_probabilities(now):
 
     Uses the pinned cme-fedwatch calculation engine for CME's 30-Day Fed
     Funds settlement feed, but supplies EFFR from the Federal Reserve H.15
-    page so NasBoard does not depend on FRED for this factor.
+    page so NasDecode does not depend on FRED for this factor.
     """
     try:
         from cme_fedwatch.api import get_settlements
@@ -633,7 +633,7 @@ def main():
           'signal':'mixed',
           'freshness':'STALE — S5FI source not yet connected',
           'source':'S5FI — S&P 500 stocks above 50-day moving average',
-          'explanation':'S5FI measures the percentage of S&P 500 stocks above their 50-day moving average. NasBoard uses both the breadth level and its direction so an oversold reading is not automatically treated as bearish.',
+          'explanation':'S5FI measures the percentage of S&P 500 stocks above their 50-day moving average. NasDecode uses both the breadth level and its direction so an oversold reading is not automatically treated as bearish.',
           'currentImpact':'Low'
         })
     d['rows']=rows
@@ -669,7 +669,7 @@ def main():
             print('S5FI CNBC probe: symbol not returned')
 
         # Probe PHLX Semiconductor Index symbols through the existing CNBC quote service.
-        # This is diagnostic first: once a returned symbol is confirmed, NasBoard can use its
+        # This is diagnostic first: once a returned symbol is confirmed, NasDecode can use its
         # last/previous-close pair for the 1-day SOX move without adding another provider.
         sox_probe={'tested':['.SOX','SOX'],'returned':[]}
         for sox_symbol in ('.SOX','SOX'):
@@ -900,7 +900,7 @@ def main():
         if vx and vi:
             vxn=num(vx.get('last')); vix=num(vi.get('last')); vxnp=pct(vx); vixp=pct(vi)
             # Nasdaq volatility model: absolute regime dominates short-term movement.
-            # VXN is primary because NasBoard models Nasdaq; VIX confirms broad-market stress.
+            # VXN is primary because NasDecode models Nasdaq; VIX confirms broad-market stress.
             def vol_regime_score(value,levels):
                 if value is None: return 0.0
                 a,b,c,d,e=levels
@@ -1002,7 +1002,7 @@ def main():
         rr=next(x for x in rows if x['factor']=='Economic / inflation data')
         rr['surprise']=delta; rr['surpriseText']=f"Actual {actual:g}{unit} versus {consensus:g}{unit}; surprise {delta:+g}{unit}."
     else:
-        setrow(rows,'Economic / inflation data','Awaiting verified actual vs consensus release','No active surprise','mixed',f'No verified surprise · checked {now.strftime("%Y-%m-%d %H:%M ET")}','NasBoard verified macro-surprise feed')
+        setrow(rows,'Economic / inflation data','Awaiting verified actual vs consensus release','No active surprise','mixed',f'No verified surprise · checked {now.strftime("%Y-%m-%d %H:%M ET")}','NasDecode verified macro-surprise feed')
     # Fed expectations: market-implied conditional move probabilities from 30-Day Fed Funds futures.
     # Persisted FedWatch history lets the model distinguish a restrictive level from fresh repricing.
     # Meeting weights intentionally decay: nearest meeting 60%, second 25%, third 15%.
@@ -1483,7 +1483,7 @@ def main():
     def build_setup_explanation(rows, score, trend, confidence=None):
         """Turn model state into a concise market interpretation instead of a data dump.
 
-        The narrative uses only observations already verified by NasBoard. It prioritizes
+        The narrative uses only observations already verified by NasDecode. It prioritizes
         rates, semiconductor confirmation, historical momentum, and actionable triggers;
         unavailable/stale factors are omitted rather than rendered as awkward prose.
         """
@@ -1633,7 +1633,7 @@ def main():
 
     risk_score=round(weighted/total_w) if total_w else None
     d['consolidationRisk']={'score':risk_score,'level':risk_band(risk_score) if risk_score is not None else 'Unavailable',
-        "explanation":"Estimates near-term consolidation risk from market extension, breadth, volatility and leadership conditions. Calculated by NasBoard's proprietary real-time multi-factor scoring mechanism using the latest available inputs.",
+        "explanation":"Estimates near-term consolidation risk from market extension, breadth, volatility and leadership conditions. Calculated by NasDecode's proprietary real-time multi-factor scoring mechanism using the latest available inputs.",
         'coverageWeight':round(100*total_w/MODEL_WEIGHT),'components':components,
         'historyDays':qctx.get('bars',0),'unlocked':[x['name'] for x in components],
         'note':'Higher means more extended/crowded. Missing inputs reduce model coverage rather than being guessed.'}
@@ -1791,7 +1791,7 @@ def main():
         'unlockedVolatilityOpportunity':round(unlocked_volatility),
         'recoveryComponents':{name:(round(v) if v is not None else None) for name,v,_ in recovery_parts},
         'lookbackSessions':len(_opp_hist),
-        "explanation":"Measures how attractive current conditions are for deploying new capital by combining market setup, recovery evidence, consolidation risk and volatility context. Calculated by NasBoard's proprietary real-time multi-factor scoring mechanism using the latest available inputs.",
+        "explanation":"Measures how attractive current conditions are for deploying new capital by combining market setup, recovery evidence, consolidation risk and volatility context. Calculated by NasDecode's proprietary real-time multi-factor scoring mechanism using the latest available inputs.",
         'debug':f'Formula: 40% Setup readiness + 25% Recovery Confirmation + 20% inverse Consolidation Risk + 15% volatility opportunity unlocked by recovery. Recovery formula: VXN reversal 25%, breadth recovery 15%, semiconductor recovery 15%, 10Y yield stabilization 15%, Fed repricing 15%, Setup improvement 10%, Oil stabilization 5%. Lookback sessions: {len(_opp_hist)}. Current recovery confirmation: {recovery}%.'
     }
 
@@ -1863,7 +1863,7 @@ def main():
     for g in d.get('groups',[]):
         if g.get('name')=='NASDAQ SETUP': g['explanation']=setup_explanation
 
-    # Persist raw market observations so NasBoard builds its own historical dataset.
+    # Persist raw market observations so NasDecode builds its own historical dataset.
     # Daily records are upserted; intraday snapshots are append-only per monthly file.
     def quote_obs(sym):
         x=q.get(sym,{})
