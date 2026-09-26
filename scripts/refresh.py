@@ -1396,6 +1396,24 @@ def main():
 
     explain_current_rows(rows)
 
+    # Compare current Nasdaq breadth with the most recent completed stored session.
+    # This makes the card change-aware while preserving the current breadth level as the primary value.
+    previous_completed_breadth=None
+    previous_completed_breadth_date=None
+    try:
+        with open(DAILY_PATH,encoding='utf-8') as _bf:
+            _breadth_records=json.load(_bf).get('records',{})
+        for _bd in sorted(_breadth_records.keys(),reverse=True):
+            if _bd >= now.date().isoformat():
+                continue
+            _bl=str(_breadth_records[_bd].get('factors',{}).get('Market breadth',{}).get('latest',''))
+            _bm=re.search(r'advancing\\s*\\(([0-9.]+)%\\)',_bl,re.I)
+            if _bm:
+                previous_completed_breadth=float(_bm.group(1)); previous_completed_breadth_date=_bd
+                break
+    except (FileNotFoundError,json.JSONDecodeError):
+        pass
+
     # Factor-specific scorecards expose the underlying observation without inventing a score.
     # The value stays neutral in the UI; arrow/change inherit the factor's Nasdaq signal color.
     for r in rows:
@@ -1437,7 +1455,11 @@ def main():
                     card['secondaryChange']=f'{bch:+.2f}%'
         elif n=='Market breadth':
             m=re.search(r'([0-9]+)/([0-9]+) advancing [(]([0-9]+)%[)]',latest)
-            if m: card={'value':m.group(3)+'% advancing','arrow':'↑' if r.get('signal')=='positive' else ('↓' if r.get('signal')=='negative' else '→'),'change':''}
+            if m:
+                _cur=float(m.group(3)); _chg=_cur-previous_completed_breadth if previous_completed_breadth is not None else None
+                card={'value':m.group(3)+'% advancing','arrow':'↑' if _chg is not None and _chg>0 else ('↓' if _chg is not None and _chg<0 else '→'),'change':f'{_chg:+.1f} pp' if _chg is not None else ''}
+                card['context']='Broad participation' if _cur>=65 else ('Weak participation' if _cur<=35 else 'Mixed participation')
+                if _chg is not None: card['comparisonDate']=previous_completed_breadth_date
         if n=='Nasdaq volatility (VXN / VIX)':
             r['debug']='Formula: 50% VXN regime + 20% VIX regime + 20% VXN movement + 10% VIX movement. Regime thresholds — VXN: 15/18/23/28/33; VIX: 12/15/20/25/30.'
         r['scorecard']=card
@@ -1980,6 +2002,11 @@ def main():
                 'source':'Nasdaq-100 previous regular-session constituent breadth',
                 'freshness':breadth_row.get('freshness')
             }
+    if breadth_obs.get('positivePct') is not None and previous_completed_breadth is not None:
+        breadth_obs['previousCompletedPct']=previous_completed_breadth
+        breadth_obs['changeVsPreviousCompletedPp']=round(breadth_obs['positivePct']-previous_completed_breadth,2)
+        breadth_obs['comparisonDate']=previous_completed_breadth_date
+
     factor_state={r['factor']:{'signal':r.get('signal'),'currentImpact':r.get('currentImpact'),
                               'trend':r.get('trend'),'latest':r.get('latest')} for r in rows}
 
