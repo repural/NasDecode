@@ -23,6 +23,8 @@ _MASSIVE_LAST_CALL=0.0
 NY=ZoneInfo('America/New_York')
 CNBC_BASE='https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol'
 MEGACAPS=['AAPL','MSFT','AMZN','GOOGL','META','NVDA','TSLA']
+# Liquid/large semiconductor universe used for leadership breadth confirmation.
+SEMI_BREADTH=['NVDA','AMD','AVGO','TSM','MU','INTC','AMAT','LRCX','KLAC','TXN','MRVL','ADI','ASML','QCOM','ARM','NXPI','MCHP','MPWR']
 BREADTH=['NVDA','AAPL','MU','MSFT','AMD','AMZN','TSLA','GOOGL','INTC','GOOG','AVGO','META','AMAT','WMT','LRCX','CSCO','COST','KLAC','SNDK','NFLX','PANW','TXN','PLTR','MRVL','LIN','WDC','STX','AMGN','QCOM','CRWD','ADI','PEP','ASML','TMUS','APP','GILD','ARM','ISRG','SHOP','BKNG','VRTX','SBUX','FTNT','CDNS','MAR','MNST','CEG','ADP','CSX','CMCSA','DDOG','MELI','SNPS','ADBE','ALAB','ORLY','DASH','TER','AEP','MDLZ','INTU','NXPI','HON','HONA','ROST','CTAS','MPWR','WBD','LITE','REGN','RBLX','NBIS','ABNB','RKLB','FAST','BKR','PDD','XEL','FANG','MCHP','FER','EXC','TTWO','AXON','ODFL','CCEP','CRWV','KDP','IDXX','ADSK','ALNY','PYPL','PAYX','ROP','TRI','GEHC','MSTR','KHC','CPRT','DXCM','WDAY','SPCX']
 SYMBOLS=list(dict.fromkeys(['US10Y','US2Y','ZQU6','ZQV6','ZQX6','ZQZ6','ZQF7','ZQG7','ZQH7','.IXIC','QQQ','NVDA','AMD','AVGO','TSM','MU','SMH','SOXX','.VIX','.VXN','@CL.1','@LCO.1','HYG','LQD','S5FI','.SOX','SOX']+MEGACAPS+BREADTH))
 
@@ -2295,29 +2297,78 @@ def main():
         'observationDate':relative_strength_date
     }
     # Independent confirmation layer. This intentionally does NOT change Nasdaq Score.
-    # It lets us test whether improving internals can confirm/contradict the directional model.
+    # Broad semiconductor indexes lead the signal; the five-stock AI/semi basket is only a sub-component.
     def _signal100(name):
         sig=_factor_row(name).get('signal')
         return 100 if sig=='positive' else (0 if sig=='negative' else 50)
     breadth_confirm=_signal100('Market breadth')
     vol_confirm=_signal100('Nasdaq volatility (VXN / VIX)')
     mega_confirm=_signal100('Mega-cap leadership')
-    # Semiconductor leadership blends the broad SOX/SOXX/SMH complex with the five-stock basket,
-    # so a narrow basket cannot mask broad chip-index leadership.
-    semi_rel_values=[v for v in (
-        relative_strength.get('soxVsNasdaqPp'),relative_strength.get('soxxVsNasdaqPp'),
-        relative_strength.get('smhVsNasdaqPp'),relative_strength.get('semiBasketVsNasdaqPp')
-    ) if v is not None]
-    semi_rel=sum(semi_rel_values)/len(semi_rel_values) if semi_rel_values else None
-    if semi_rel is None:
-        semiconductor_leadership_score=_signal100('Semiconductor leadership')
-    elif semi_rel>=0.50: semiconductor_leadership_score=100
-    elif semi_rel>=0.20: semiconductor_leadership_score=75
-    elif semi_rel>-0.20: semiconductor_leadership_score=50
-    elif semi_rel>-0.50: semiconductor_leadership_score=25
-    else: semiconductor_leadership_score=0
+
+    def _rs_score(v):
+        if v is None: return 50
+        if v>=0.50: return 100
+        if v>=0.20: return 75
+        if v>-0.20: return 50
+        if v>-0.50: return 25
+        return 0
+    sox_rs=relative_strength.get('soxVsNasdaqPp')
+    soxx_rs=relative_strength.get('soxxVsNasdaqPp')
+    smh_rs=relative_strength.get('smhVsNasdaqPp')
+    basket_rs=relative_strength.get('semiBasketVsNasdaqPp')
+
+    # Semiconductor breadth: share of available large/liquid semiconductor names
+    # outperforming QQQ during the same observation basis.
+    qqq_ret=rs_returns.get('QQQ')
+    semi_member_returns={}
+    for _sym in SEMI_BREADTH:
+        _v=None
+        if relative_strength_basis=='current_session' and _sym in q:
+            _v=pct(q[_sym])
+        elif relative_strength_basis=='previous_completed_session':
+            _v=rs_returns.get(_sym)
+        if _v is not None: semi_member_returns[_sym]=_v
+    semi_outperformers=sum(1 for _v in semi_member_returns.values() if qqq_ret is not None and _v>qqq_ret)
+    semi_positive=sum(1 for _v in semi_member_returns.values() if _v>0)
+    semi_breadth_pct=(100*semi_outperformers/len(semi_member_returns)) if semi_member_returns and qqq_ret is not None else None
+    if semi_breadth_pct is None: semi_breadth_score=50
+    elif semi_breadth_pct>=70: semi_breadth_score=100
+    elif semi_breadth_pct>=55: semi_breadth_score=75
+    elif semi_breadth_pct>=45: semi_breadth_score=50
+    elif semi_breadth_pct>=30: semi_breadth_score=25
+    else: semi_breadth_score=0
+
+    # 35% SOX, 20% SOXX, 15% SMH, 20% semiconductor breadth, 10% selective basket.
+    semiconductor_leadership_score=round(
+        .35*_rs_score(sox_rs)+.20*_rs_score(soxx_rs)+.15*_rs_score(smh_rs)+
+        .20*semi_breadth_score+.10*_rs_score(basket_rs)
+    )
+    # Strong broad-index trigger: SOX >= +0.50pp vs Nasdaq with both ETFs confirming.
+    broad_trigger=bool(sox_rs is not None and sox_rs>=0.50 and
+                       soxx_rs is not None and soxx_rs>0 and smh_rs is not None and smh_rs>0)
+    if broad_trigger: semiconductor_leadership_score=max(75,semiconductor_leadership_score)
+
+    # Leadership acceleration versus the earliest regular-session snapshot today.
+    semi_acceleration=None
+    try:
+        _month_file=os.path.join(HISTORY_DIR,'intraday',now.strftime('%Y-%m')+'.json')
+        with open(_month_file,encoding='utf-8') as _hf:
+            _old=json.load(_hf).get('snapshots',[])
+        _today=[]
+        for _s in _old:
+            try:
+                _ts=datetime.datetime.fromisoformat(str(_s.get('timestampET',''))).astimezone(NY)
+                if _ts.date()==now.date() and _ts.hour*60+_ts.minute>=9*60+30: _today.append((_ts,_s))
+            except (TypeError,ValueError): pass
+        _today.sort(key=lambda x:x[0])
+        if _today:
+            _old_sox=num(_today[0][1].get('confirmationLayer',{}).get('semiconductorLeadership',{}).get('score'))
+            if _old_sox is not None: semi_acceleration=round(semiconductor_leadership_score-_old_sox)
+    except (FileNotFoundError,json.JSONDecodeError):
+        pass
+
     # Internal Confirmation: breadth 35%, semiconductor leadership 35%, volatility 20%, mega-caps 10%.
-    internal_confirmation_score=round(0.35*breadth_confirm+0.35*semiconductor_leadership_score+0.20*vol_confirm+0.10*mega_confirm)
+    internal_confirmation_score=round(.35*breadth_confirm+.35*semiconductor_leadership_score+.20*vol_confirm+.10*mega_confirm)
     def _confirm_label(v):
         return 'Strong' if v>=75 else ('Positive' if v>=60 else ('Mixed' if v>=40 else ('Weak' if v>=25 else 'Negative')))
     confirmation_layer={
@@ -2329,14 +2380,28 @@ def main():
         },
         'semiconductorLeadership':{
             'score':semiconductor_leadership_score,'label':_confirm_label(semiconductor_leadership_score),
+            'broadLeadershipTrigger':broad_trigger,'accelerationFromOpenPoints':semi_acceleration,
             'relativeStrengthPp':{k:relative_strength.get(k) for k in ('soxVsNasdaqPp','soxxVsNasdaqPp','smhVsNasdaqPp','semiBasketVsNasdaqPp')},
-            'method':'Equal-average broad semiconductor relative strength versus Nasdaq, mapped to 0/25/50/75/100. Falls back to the existing semiconductor factor when index data is unavailable.'
+            'breadth':{'universeSize':len(SEMI_BREADTH),'available':len(semi_member_returns),
+                       'positive':semi_positive,'outperformingQqq':semi_outperformers,
+                       'outperformingQqqPct':round(semi_breadth_pct,1) if semi_breadth_pct is not None else None,
+                       'score':semi_breadth_score},
+            'weights':{'SOX':35,'SOXX':20,'SMH':15,'semiconductorBreadth':20,'selectiveBasket':10},
+            'basis':relative_strength_basis,'observationDate':relative_strength_date
         },
         'macroConstraint':{
             'ratesMacroBucketStrength':next((x.get('strength') for x in (d.get('nasdaqScore',{}).get('model') or {}).get('buckets',[]) if x.get('bucket')=='Rates / Macro'),None)
         },
         'directionalScoreUnchanged':True
     }
+    # Stable checkpoint label for later open/+30m/+60m/close performance analysis.
+    _mins=now.hour*60+now.minute
+    if 9*60+30<=_mins<10*60: _checkpoint='open'
+    elif 10*60<=_mins<10*60+30: _checkpoint='+30m'
+    elif 10*60+30<=_mins<11*60+30: _checkpoint='+60m'
+    elif _mins>=16*60: _checkpoint='close'
+    else: _checkpoint='intraday'
+    confirmation_layer['checkpoint']=_checkpoint
     d['confirmationLayer']=confirmation_layer
 
     model_factor_scores=(d.get('nasdaqScore',{}).get('model') or {}).get('factors',[])
