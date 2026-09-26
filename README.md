@@ -1,6 +1,6 @@
-# NasBoard
+# NasDecode
 
-NasBoard is a Nasdaq market-regime dashboard. It combines market observations into core directional factors, selective Earnings AVWAP leadership, two derived model outputs, and a daily narrative pre-market brief.
+NasDecode is a Nasdaq market-regime dashboard. It combines market observations into core directional factors, selective Earnings AVWAP leadership, two derived model outputs, and a daily narrative pre-market brief.
 
 ## Architecture
 
@@ -23,7 +23,7 @@ scripts/refresh.py
 public/data/dashboard.json
           |
           v
-public/index.html --> Cloudflare Worker static assets --> NasBoard
+public/index.html --> Cloudflare Worker static assets --> NasDecode
 ```
 
 The daily qualitative brief is a separate path:
@@ -38,7 +38,7 @@ Fresh public-market/news research
 public/data/premarket.json
           |
           v
-Pre-Market Analysis panel in NasBoard
+Pre-Market Analysis panel in NasDecode
 ```
 
 This separation is intentional: the quantitative factor engine is deterministic Python, while the pre-market brief is a researched narrative about what matters that particular morning.
@@ -51,9 +51,9 @@ This separation is intentional: the quantitative factor engine is deterministic 
 
 **Current Impact** estimates how much the factor matters *right now* based on the latest move, magnitude, event proximity, and freshness. It is separate from Signal.
 
-**Nasdaq Setup** summarizes the current directional market backdrop using NasBoard's proprietary model. It incorporates both supporting/headwind conditions and the current degree of market extension.
+**Nasdaq Setup** summarizes the current directional market backdrop using NasDecode's proprietary model. It incorporates both supporting/headwind conditions and the current degree of market extension.
 
-**Consolidation Risk** estimates the near-term risk of a pause, pullback, or consolidation using NasBoard's proprietary market model. Missing inputs reduce data coverage rather than being guessed.
+**Consolidation Risk** estimates the near-term risk of a pause, pullback, or consolidation using NasDecode's proprietary market model. Missing inputs reduce data coverage rather than being guessed.
 
 VXN is the primary volatility gauge because it is Nasdaq-specific; VIX is displayed and used as broad-market confirmation.
 
@@ -82,7 +82,7 @@ The workflow deliberately regenerates data after a concurrent push instead of re
 
 ## Economic / inflation data semantics
 
-`Economic / inflation data` is a macro-surprise factor, not an event-calendar factor. It should move only when NasBoard has a verified release with both an actual value and a market-consensus value. The factor compares actual versus consensus and applies a release-specific direction mapping; upcoming releases and event proximity belong in the pre-market/event-risk layer and do not by themselves create a positive or negative signal. If a verified surprise is unavailable, the factor fails closed as mixed.
+`Economic / inflation data` is a macro-surprise factor, not an event-calendar factor. It should move only when NasDecode has a verified release with both an actual value and a market-consensus value. The factor compares actual versus consensus and applies a release-specific direction mapping; upcoming releases and event proximity belong in the pre-market/event-risk layer and do not by themselves create a positive or negative signal. If a verified surprise is unavailable, the factor fails closed as mixed.
 
 ## Daily validation history
 
@@ -105,11 +105,11 @@ The first integration uses QQQ plus SOXX as a liquid U.S.-listed semiconductor-h
 
 ## Earnings Anchored VWAP
 
-NasBoard maintains a selective Earnings AVWAP leadership signal for important technology and semiconductor shares. It evaluates how leadership is behaving around recent earnings reference levels and incorporates that information into both directional and extension analysis. Detailed construction, weighting, thresholds, and basket methodology are intentionally kept private.
+NasDecode maintains a selective Earnings AVWAP leadership signal for important technology and semiconductor shares. It evaluates how leadership is behaving around recent earnings reference levels and incorporates that information into both directional and extension analysis. Detailed construction, weighting, thresholds, and basket methodology are intentionally kept private.
 
 ## Data policy
 
-NasBoard prefers official/free sources and explicitly records freshness. Missing, delayed, or unavailable inputs should remain marked stale/limited rather than being invented or silently substituted with old observations.
+NasDecode prefers official/free sources and explicitly records freshness. Missing, delayed, or unavailable inputs should remain marked stale/limited rather than being invented or silently substituted with old observations.
 
 Browser code is presentation-only where practical. Signal rules, factor interpretation, model calculations, and scorecard decisions belong in the Python refresh engine so the public JavaScript does not become a second model implementation.
 
