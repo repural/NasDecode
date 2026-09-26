@@ -1948,6 +1948,11 @@ def main():
         'MU':session_level('MU',['MU']),
         'QQQ':session_level('QQQ',['QQQ'])
     }
+    # Persist the full semiconductor breadth universe so weekend/holiday confirmation
+    # can reconstruct the latest completed session instead of falling back to five names.
+    for _sym in SEMI_BREADTH:
+        if _sym not in session_levels:
+            session_levels[_sym]=session_level(_sym,[_sym])
     # Persist a compact source/freshness audit so we can verify CNBC instrument-by-instrument
     # instead of treating every CNBC response as equally live.
     d.setdefault('diagnostics',{})['cnbcFreshness']={
@@ -2258,7 +2263,7 @@ def main():
     same_day_returns={
         label:(levels.get('changeCloseToClosePct') if isinstance(levels,dict) else None)
         for label,levels in session_levels.items()
-        if label in ('Nasdaq','SOX','SOXX','SMH','NVDA','AMD','AVGO','TSM','MU','QQQ')
+        if label in tuple(['Nasdaq','SOX','SOXX','SMH','QQQ']+SEMI_BREADTH)
     }
     nasdaq_day_return=same_day_returns.get('Nasdaq')
     # On weekends/holidays, CNBC may not expose a usable current-session change.
@@ -2276,7 +2281,7 @@ def main():
             _prior_day=next((x for x in _prior_dates if num(_prior_daily[x].get('sessionLevels',{}).get('Nasdaq',{}).get('changeCloseToClosePct')) is not None),None)
             if _prior_day:
                 _prior_levels=_prior_daily[_prior_day].get('sessionLevels',{})
-                for _label in ('Nasdaq','SOX','SOXX','SMH','NVDA','AMD','AVGO','TSM','MU','QQQ'):
+                for _label in tuple(['Nasdaq','SOX','SOXX','SMH','QQQ']+SEMI_BREADTH):
                     _v=num(_prior_levels.get(_label,{}).get('changeCloseToClosePct'))
                     if _v is not None: rs_returns[_label]=_v
                 nasdaq_day_return=rs_returns.get('Nasdaq')
