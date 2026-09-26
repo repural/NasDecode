@@ -2259,15 +2259,40 @@ def main():
         if label in ('Nasdaq','SOX','SOXX','SMH','NVDA','AMD','AVGO','TSM','MU','QQQ')
     }
     nasdaq_day_return=same_day_returns.get('Nasdaq')
+    # On weekends/holidays, CNBC may not expose a usable current-session change.
+    # Confirmation should then describe the most recent completed trading session,
+    # not become artificially neutral. Pull the last completed daily snapshot only
+    # for relative-strength calculations and label the basis explicitly.
+    relative_strength_basis='current_session'
+    relative_strength_date=now.date().isoformat()
+    rs_returns=dict(same_day_returns)
+    if now.weekday()>=5 or nasdaq_day_return is None:
+        try:
+            with open(DAILY_PATH,encoding='utf-8') as _hf:
+                _prior_daily=json.load(_hf).get('records',{})
+            _prior_dates=sorted((x for x in _prior_daily if x < now.date().isoformat()),reverse=True)
+            _prior_day=next((x for x in _prior_dates if num(_prior_daily[x].get('sessionLevels',{}).get('Nasdaq',{}).get('changeCloseToClosePct')) is not None),None)
+            if _prior_day:
+                _prior_levels=_prior_daily[_prior_day].get('sessionLevels',{})
+                for _label in ('Nasdaq','SOX','SOXX','SMH','NVDA','AMD','AVGO','TSM','MU','QQQ'):
+                    _v=num(_prior_levels.get(_label,{}).get('changeCloseToClosePct'))
+                    if _v is not None: rs_returns[_label]=_v
+                nasdaq_day_return=rs_returns.get('Nasdaq')
+                relative_strength_basis='previous_completed_session'
+                relative_strength_date=_prior_day
+        except (FileNotFoundError,json.JSONDecodeError,StopIteration):
+            pass
     relative_strength={
         'semiBasketVsNasdaqPp':round(semi_basket-nasdaq_day_return,4) if semi_basket is not None and nasdaq_day_return is not None else None,
         'megaCapBasketVsNasdaqPp':round(mega_basket-nasdaq_day_return,4) if mega_basket is not None and nasdaq_day_return is not None else None,
-        'soxVsNasdaqPp':round(same_day_returns.get('SOX')-nasdaq_day_return,4) if same_day_returns.get('SOX') is not None and nasdaq_day_return is not None else None,
-        'soxxVsNasdaqPp':round(same_day_returns.get('SOXX')-nasdaq_day_return,4) if same_day_returns.get('SOXX') is not None and nasdaq_day_return is not None else None,
-        'smhVsNasdaqPp':round(same_day_returns.get('SMH')-nasdaq_day_return,4) if same_day_returns.get('SMH') is not None and nasdaq_day_return is not None else None,
+        'soxVsNasdaqPp':round(rs_returns.get('SOX')-nasdaq_day_return,4) if rs_returns.get('SOX') is not None and nasdaq_day_return is not None else None,
+        'soxxVsNasdaqPp':round(rs_returns.get('SOXX')-nasdaq_day_return,4) if rs_returns.get('SOXX') is not None and nasdaq_day_return is not None else None,
+        'smhVsNasdaqPp':round(rs_returns.get('SMH')-nasdaq_day_return,4) if rs_returns.get('SMH') is not None and nasdaq_day_return is not None else None,
         'semiBasketVsQqqPp':semi_vs_qqq,
         'smhVsQqqPp':smh_vs_qqq,
-        'megaCapBasketVsQqqPp':mega_vs_qqq
+        'megaCapBasketVsQqqPp':mega_vs_qqq,
+        'basis':relative_strength_basis,
+        'observationDate':relative_strength_date
     }
     # Independent confirmation layer. This intentionally does NOT change Nasdaq Score.
     # It lets us test whether improving internals can confirm/contradict the directional model.
