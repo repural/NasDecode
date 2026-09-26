@@ -4627,7 +4627,7 @@
     },
     "2026-09-26": {
       "schemaVersion": 4,
-      "timestampET": "2026-09-26T01:28:59.792149-04:00",
+      "timestampET": "2026-09-26T01:35:52.543253-04:00",
       "market": {
         ".IXIC": {
           "last": 27068.716,
@@ -5118,7 +5118,7 @@
         "coverage": 76
       },
       "consolidationRisk": {
-        "score": 34,
+        "score": 32,
         "level": "Medium",
         "explanation": "Estimates near-term consolidation risk from market extension, breadth, volatility and leadership conditions. Calculated by NasBoard's proprietary real-time multi-factor scoring mechanism using the latest available inputs.",
         "coverageWeight": 100,
@@ -5209,9 +5209,9 @@
           },
           {
             "name": "Earnings AVWAP extension",
-            "score": 67.9,
+            "score": 48.2,
             "weight": 10,
-            "detail": "median +10.49% · 5/6 above"
+            "detail": "median +8.03% · 4/5 above"
           }
         ],
         "historyDays": 125,
@@ -5235,12 +5235,12 @@
         "note": "Higher means more extended/crowded. Missing inputs reduce model coverage rather than being guessed."
       },
       "opportunityScore": {
-        "score": 44,
-        "label": "Limited",
+        "score": 45,
+        "label": "Selective",
         "signal": "mixed",
         "setupReadiness": 50,
         "recoveryConfirmation": 39,
-        "consolidationReadiness": 66,
+        "consolidationReadiness": 68,
         "volatilityDislocation": 25,
         "unlockedVolatilityOpportunity": 10,
         "recoveryComponents": {
@@ -5276,18 +5276,37 @@
         "semiconductorLeadership": {
           "score": 75,
           "label": "Strong",
+          "broadLeadershipTrigger": true,
+          "accelerationFromOpenPoints": null,
           "relativeStrengthPp": {
             "soxVsNasdaqPp": 0.93,
             "soxxVsNasdaqPp": 0.69,
             "smhVsNasdaqPp": 0.53,
             "semiBasketVsNasdaqPp": -0.24
           },
-          "method": "Equal-average broad semiconductor relative strength versus Nasdaq, mapped to 0/25/50/75/100. Falls back to the existing semiconductor factor when index data is unavailable."
+          "breadth": {
+            "universeSize": 18,
+            "available": 5,
+            "positive": 4,
+            "outperformingQqq": 1,
+            "outperformingQqqPct": 20.0,
+            "score": 0
+          },
+          "weights": {
+            "SOX": 35,
+            "SOXX": 20,
+            "SMH": 15,
+            "semiconductorBreadth": 20,
+            "selectiveBasket": 10
+          },
+          "basis": "previous_completed_session",
+          "observationDate": "2026-09-25"
         },
         "macroConstraint": {
           "ratesMacroBucketStrength": -0.276
         },
-        "directionalScoreUnchanged": true
+        "directionalScoreUnchanged": true,
+        "checkpoint": "intraday"
       },
       "validation": {
         "version": 1,
@@ -5447,7 +5466,7 @@
             }
           ],
           "consolidationRisk": {
-            "score": 34,
+            "score": 32,
             "level": "Medium",
             "explanation": "Estimates near-term consolidation risk from market extension, breadth, volatility and leadership conditions. Calculated by NasBoard's proprietary real-time multi-factor scoring mechanism using the latest available inputs.",
             "coverageWeight": 100,
@@ -5538,9 +5557,9 @@
               },
               {
                 "name": "Earnings AVWAP extension",
-                "score": 67.9,
+                "score": 48.2,
                 "weight": 10,
-                "detail": "median +10.49% · 5/6 above"
+                "detail": "median +8.03% · 4/5 above"
               }
             ],
             "historyDays": 125,
@@ -5564,12 +5583,12 @@
             "note": "Higher means more extended/crowded. Missing inputs reduce model coverage rather than being guessed."
           },
           "opportunityScore": {
-            "score": 44,
-            "label": "Limited",
+            "score": 45,
+            "label": "Selective",
             "signal": "mixed",
             "setupReadiness": 50,
             "recoveryConfirmation": 39,
-            "consolidationReadiness": 66,
+            "consolidationReadiness": 68,
             "volatilityDislocation": 25,
             "unlockedVolatilityOpportunity": 10,
             "recoveryComponents": {
@@ -5605,18 +5624,37 @@
             "semiconductorLeadership": {
               "score": 75,
               "label": "Strong",
+              "broadLeadershipTrigger": true,
+              "accelerationFromOpenPoints": null,
               "relativeStrengthPp": {
                 "soxVsNasdaqPp": 0.93,
                 "soxxVsNasdaqPp": 0.69,
                 "smhVsNasdaqPp": 0.53,
                 "semiBasketVsNasdaqPp": -0.24
               },
-              "method": "Equal-average broad semiconductor relative strength versus Nasdaq, mapped to 0/25/50/75/100. Falls back to the existing semiconductor factor when index data is unavailable."
+              "breadth": {
+                "universeSize": 18,
+                "available": 5,
+                "positive": 4,
+                "outperformingQqq": 1,
+                "outperformingQqqPct": 20.0,
+                "score": 0
+              },
+              "weights": {
+                "SOX": 35,
+                "SOXX": 20,
+                "SMH": 15,
+                "semiconductorBreadth": 20,
+                "selectiveBasket": 10
+              },
+              "basis": "previous_completed_session",
+              "observationDate": "2026-09-25"
             },
             "macroConstraint": {
               "ratesMacroBucketStrength": -0.276
             },
-            "directionalScoreUnchanged": true
+            "directionalScoreUnchanged": true,
+            "checkpoint": "intraday"
           }
         },
         "marketContext": {
@@ -5746,10 +5784,10 @@
             }
           },
           "earningsAvwap": {
-            "covered": 6,
-            "above": 5,
-            "abovePct": 83.33,
-            "medianDistancePct": 10.4901
+            "covered": 5,
+            "above": 4,
+            "abovePct": 80.0,
+            "medianDistancePct": 8.0297
           }
         },
         "sameDayReturnsPct": {
@@ -5853,17 +5891,6 @@
           "slope5dPct": 0.6214601665667674,
           "sessions": 65
         },
-        "QCOM": {
-          "earningsDate": "2026-07-29",
-          "anchorDate": "2026-07-30",
-          "throughDate": "2026-09-25",
-          "avwap": 171.92658731976178,
-          "price": 201.97,
-          "distancePct": 17.474558850145307,
-          "above": true,
-          "slope5dPct": 2.135264996076125,
-          "sessions": 41
-        },
         "TSM": {
           "earningsDate": "2026-07-16",
           "anchorDate": "2026-07-16",
@@ -5953,7 +5980,7 @@
           "signal": "mixed",
           "currentImpact": "High",
           "trend": "Stable →",
-          "latest": "5/6 above Earnings AVWAP · median +10.5%"
+          "latest": "4/5 above Earnings AVWAP · median +8.0%"
         }
       }
     }
