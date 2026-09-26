@@ -31,6 +31,10 @@ SERIES={
     'TSM': 'TSM',
     'MU': 'MU',
     'QQQ': 'QQQ',
+    # Full semiconductor breadth universe used by the confirmation layer.
+    'INTC':'INTC','AMAT':'AMAT','LRCX':'LRCX','KLAC':'KLAC','TXN':'TXN',
+    'MRVL':'MRVL','ADI':'ADI','ASML':'ASML','QCOM':'QCOM','ARM':'ARM',
+    'NXPI':'NXPI','MCHP':'MCHP','MPWR':'MPWR',
 }
 
 def fetch(ticker,start,end):
