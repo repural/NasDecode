@@ -1,4 +1,4 @@
-name: Refresh NasBoard data
+name: Refresh NasDecode data
 
 on:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
     # Covers 09:30 and 10:30 New York in both EDT and EST.
     - cron: '30 13,14,15 * * 1-5'
 
-# Share the same lock as Refresh NasBoard so the two workflows never push
+# Share the same lock as Refresh NasDecode so the two workflows never push
 # generated dashboard data at the same time.
 concurrency:
   group: nasboard-data-refresh
@@ -40,7 +40,7 @@ jobs:
       - name: Commit refreshed data
         if: steps.gate.outputs.run == 'true'
         run: |
-          git config user.name 'NasBoard Bot'
+          git config user.name 'NasDecode Bot'
           git config user.email 'actions@users.noreply.github.com'
           git add data/dashboard.json
           git diff --cached --quiet || git commit -m 'Refresh CNBC market data'
