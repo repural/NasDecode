@@ -1396,17 +1396,34 @@ def main():
 
     explain_current_rows(rows)
 
-    # Compare current Nasdaq breadth with the most recent completed stored session.
-    # This makes the card change-aware while preserving the current breadth level as the primary value.
+    # Compare the breadth observation itself with the prior completed regular session.
+    # On weekends/premarket the displayed row is already a previous-close observation, so
+    # use that observation's date (from freshness) rather than the refresh calendar date.
     previous_completed_breadth=None
     previous_completed_breadth_date=None
+    _breadth_row=next((x for x in rows if x.get('factor')=='Market breadth'),{})
+    _breadth_latest=str(_breadth_row.get('latest',''))
+    _breadth_freshness=str(_breadth_row.get('freshness',''))
+    _breadth_observation_date=now.date().isoformat()
+    _fd=re.search(r'(\\d{2})/(\\d{2})/(\\d{2})',_breadth_freshness)
+    if _fd:
+        _mm,_dd,_yy=_fd.groups(); _breadth_observation_date=f'20{_yy}-{_mm}-{_dd}'
     try:
         with open(DAILY_PATH,encoding='utf-8') as _bf:
             _breadth_records=json.load(_bf).get('records',{})
         for _bd in sorted(_breadth_records.keys(),reverse=True):
-            if _bd >= now.date().isoformat():
+            if _bd >= _breadth_observation_date:
                 continue
-            _bl=str(_breadth_records[_bd].get('factors',{}).get('Market breadth',{}).get('latest',''))
+            _rec=_breadth_records[_bd]
+            _vb=((_rec.get('validation') or {}).get('marketContext') or {}).get('nasdaqBreadth') or {}
+            _vp=_vb.get('positivePct')
+            if _vp is not None and _vb.get('basis') in ('current_session','previous_close'):
+                previous_completed_breadth=float(_vp); previous_completed_breadth_date=_bd
+                break
+            _bl=str(_rec.get('factors',{}).get('Market breadth',{}).get('latest',''))
+            # Avoid after-hours breadth as the comparator; we want completed regular-session breadth.
+            if _bl.lower().startswith('after-hours'):
+                continue
             _bm=re.search(r'advancing\\s*\\(([0-9.]+)%\\)',_bl,re.I)
             if _bm:
                 previous_completed_breadth=float(_bm.group(1)); previous_completed_breadth_date=_bd
