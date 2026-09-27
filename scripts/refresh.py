@@ -1478,7 +1478,7 @@ def main():
                 card['context']='Broad participation' if _cur>=65 else ('Weak participation' if _cur<=35 else 'Mixed participation')
                 if _chg is not None: card['comparisonDate']=previous_completed_breadth_date
         if n=='Nasdaq volatility (VXN / VIX)':
-            r['debug']='Formula: 50% VXN regime + 20% VIX regime + 20% VXN movement + 10% VIX movement. Regime thresholds — VXN: 15/18/23/28/33; VIX: 12/15/20/25/30.'
+            r['debug']='NasDecode AI-led volatility model. Proprietary methodology.'
         r['scorecard']=card
 
     # Recompute summary cards from the refreshed rows instead of leaving stale labels in dashboard.json.
@@ -1672,7 +1672,7 @@ def main():
 
     risk_score=round(weighted/total_w) if total_w else None
     d['consolidationRisk']={'score':risk_score,'level':risk_band(risk_score) if risk_score is not None else 'Unavailable',
-        "explanation":"Estimates near-term consolidation risk from market extension, breadth, volatility and leadership conditions. Calculated by NasDecode's proprietary real-time multi-factor scoring mechanism using the latest available inputs.",
+        "explanation":"Estimates near-term consolidation risk from market extension, breadth, volatility and leadership conditions. Calculated by NasDecode's proprietary AI-led model using the latest available inputs.",
         'coverageWeight':round(100*total_w/MODEL_WEIGHT),'components':components,
         'historyDays':qctx.get('bars',0),'unlocked':[x['name'] for x in components],
         'note':'Higher means more extended/crowded. Missing inputs reduce model coverage rather than being guessed.'}
@@ -1830,8 +1830,8 @@ def main():
         'unlockedVolatilityOpportunity':round(unlocked_volatility),
         'recoveryComponents':{name:(round(v) if v is not None else None) for name,v,_ in recovery_parts},
         'lookbackSessions':len(_opp_hist),
-        "explanation":"Measures how attractive current conditions are for deploying new capital by combining market setup, recovery evidence, consolidation risk and volatility context. Calculated by NasDecode's proprietary real-time multi-factor scoring mechanism using the latest available inputs.",
-        'debug':f'Formula: 40% Setup readiness + 25% Recovery Confirmation + 20% inverse Consolidation Risk + 15% volatility opportunity unlocked by recovery. Recovery formula: VXN reversal 25%, breadth recovery 15%, semiconductor recovery 15%, 10Y yield stabilization 15%, Fed repricing 15%, Setup improvement 10%, Oil stabilization 5%. Lookback sessions: {len(_opp_hist)}. Current recovery confirmation: {recovery}%.'
+        "explanation":"Measures how attractive current conditions are for deploying new capital by combining market setup, recovery evidence, consolidation risk and volatility context. Calculated by NasDecode's proprietary AI-led model using the latest available inputs.",
+        'debug':f'NasDecode AI-led opportunity model. Proprietary methodology. Current recovery confirmation: {recovery}%.'Formula: 40% Setup readiness + 25% Recovery Confirmation + 20% inverse Consolidation Risk + 15% volatility opportunity unlocked by recovery. Recovery formula: VXN reversal 25%, breadth recovery 15%, semiconductor recovery 15%, 10Y yield stabilization 15%, Fed repricing 15%, Setup improvement 10%, Oil stabilization 5%. Lookback sessions: {len(_opp_hist)}. Current recovery confirmation: {recovery}%.'
     }
 
     setup_explanation=build_setup_explanation(rows,score,nasdaq_trend,confidence)
