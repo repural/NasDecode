@@ -1831,7 +1831,7 @@ def main():
         'recoveryComponents':{name:(round(v) if v is not None else None) for name,v,_ in recovery_parts},
         'lookbackSessions':len(_opp_hist),
         "explanation":"Measures how attractive current conditions are for deploying new capital by combining market setup, recovery evidence, consolidation risk and volatility context. Calculated by NasDecode's proprietary AI-led model using the latest available inputs.",
-        'debug':f'NasDecode AI-led opportunity model. Proprietary methodology. Current recovery confirmation: {recovery}%.'Formula: 40% Setup readiness + 25% Recovery Confirmation + 20% inverse Consolidation Risk + 15% volatility opportunity unlocked by recovery. Recovery formula: VXN reversal 25%, breadth recovery 15%, semiconductor recovery 15%, 10Y yield stabilization 15%, Fed repricing 15%, Setup improvement 10%, Oil stabilization 5%. Lookback sessions: {len(_opp_hist)}. Current recovery confirmation: {recovery}%.'
+        'debug':f'NasDecode AI-led opportunity model. Proprietary methodology. Current recovery confirmation: {recovery}%.'
     }
 
     setup_explanation=build_setup_explanation(rows,score,nasdaq_trend,confidence)
