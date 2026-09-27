@@ -9539,7 +9539,7 @@
     },
     "2026-09-27": {
       "schemaVersion": 4,
-      "timestampET": "2026-09-27T08:21:18.239965-04:00",
+      "timestampET": "2026-09-27T13:05:30.333731-04:00",
       "market": {
         ".IXIC": {
           "last": 27068.716,
@@ -9802,10 +9802,10 @@
           "provider": "CNBC Quote Cache"
         },
         "@CL.1": {
-          "last": 92.44,
-          "open": 94.75,
-          "previousClose": 94.61,
-          "changePct": -2.29,
+          "last": 92.41,
+          "open": 0.0,
+          "previousClose": 92.41,
+          "changePct": null,
           "timestamp": "09/26/26 EDT",
           "observationDate": "2026-09-26",
           "dataState": "previous_close",
@@ -9855,17 +9855,11 @@
         }
       },
       "breadth": {
-        "valid": 102,
-        "advancers": 65,
-        "decliners": 37,
-        "flat": 0,
-        "positivePct": 64.0,
-        "basis": "previous_close",
-        "source": "Nasdaq-100 previous regular-session constituent breadth",
-        "freshness": "Previous regular session · 09/25/26 EDT",
-        "previousCompletedPct": 63.73,
-        "changeVsPreviousCompletedPp": 0.27,
-        "comparisonDate": "2026-09-25"
+        "valid": 0,
+        "advancers": 0,
+        "decliners": 0,
+        "positivePct": null,
+        "basis": null
       },
       "sessionLevels": {
         "Nasdaq": {
@@ -10127,22 +10121,22 @@
       "modelPerformance": {
         "nasdaqCompositeClose": 27068.716,
         "nasdaqCompositeObservationDate": "2026-09-25",
-        "nasdaqScore": -4
+        "nasdaqScore": -3
       },
       "nasdaqScore": {
-        "score": -4,
-        "rawScore": -7,
+        "score": -3,
+        "rawScore": -6,
         "previousScore": -2,
         "trend": "Deteriorating ↓",
         "signal": "mixed",
         "label": "Mixed / Neutral",
-        "confidence": 47,
-        "coverage": 76
+        "confidence": 45,
+        "coverage": 73
       },
       "consolidationRisk": {
         "score": 34,
         "level": "Medium",
-        "explanation": "Estimates near-term consolidation risk from market extension, breadth, volatility and leadership conditions. Calculated by NasDecode's proprietary real-time multi-factor scoring mechanism using the latest available inputs.",
+        "explanation": "Estimates near-term consolidation risk from market extension, breadth, volatility and leadership conditions. Calculated by NasDecode's proprietary AI-led model using the latest available inputs.",
         "coverageWeight": 100,
         "components": [
           {
@@ -10257,34 +10251,34 @@
         "note": "Higher means more extended/crowded. Missing inputs reduce model coverage rather than being guessed."
       },
       "opportunityScore": {
-        "score": 43,
+        "score": 44,
         "label": "Limited",
         "signal": "mixed",
         "setupReadiness": 48,
-        "recoveryConfirmation": 38,
+        "recoveryConfirmation": 41,
         "consolidationReadiness": 66,
         "volatilityDislocation": 25,
         "unlockedVolatilityOpportunity": 10,
         "recoveryComponents": {
           "vxnReversal": 9,
           "breadthRecovery": 100,
-          "semiconductorRecovery": 50,
-          "yieldStabilization": 0,
+          "semiconductorRecovery": null,
+          "yieldStabilization": 25,
           "fedRepricing": 50,
-          "setupImprovement": 14,
-          "oilStabilization": 79
+          "setupImprovement": 44,
+          "oilStabilization": 39
         },
         "lookbackSessions": 5,
-        "explanation": "Measures how attractive current conditions are for deploying new capital by combining market setup, recovery evidence, consolidation risk and volatility context. Calculated by NasDecode's proprietary real-time multi-factor scoring mechanism using the latest available inputs.",
-        "debug": "Formula: 40% Setup readiness + 25% Recovery Confirmation + 20% inverse Consolidation Risk + 15% volatility opportunity unlocked by recovery. Recovery formula: VXN reversal 25%, breadth recovery 15%, semiconductor recovery 15%, 10Y yield stabilization 15%, Fed repricing 15%, Setup improvement 10%, Oil stabilization 5%. Lookback sessions: 5. Current recovery confirmation: 38%."
+        "explanation": "Measures how attractive current conditions are for deploying new capital by combining market setup, recovery evidence, consolidation risk and volatility context. Calculated by NasDecode's proprietary AI-led model using the latest available inputs.",
+        "debug": "NasDecode AI-led opportunity model. Proprietary methodology. Current recovery confirmation: 41%."
       },
       "confirmationLayer": {
         "internalConfirmation": {
-          "score": 73,
+          "score": 74,
           "label": "Positive",
           "components": {
             "breadth": 50,
-            "semiconductorLeadership": 88,
+            "semiconductorLeadership": 90,
             "volatility": 100,
             "megaCapLeadership": 50
           },
@@ -10296,7 +10290,7 @@
           }
         },
         "semiconductorLeadership": {
-          "score": 88,
+          "score": 90,
           "label": "Strong",
           "broadLeadershipTrigger": true,
           "accelerationFromOpenPoints": null,
@@ -10304,7 +10298,7 @@
             "soxVsNasdaqPp": 0.9319,
             "soxxVsNasdaqPp": 0.6876,
             "smhVsNasdaqPp": 0.5257,
-            "semiBasketVsNasdaqPp": -0.2401
+            "semiBasketVsNasdaqPp": null
           },
           "breadth": {
             "universeSize": 18,
@@ -10332,17 +10326,17 @@
       },
       "validation": {
         "version": 1,
-        "snapshotPhase": "premarket",
+        "snapshotPhase": "regular",
         "modelState": {
           "nasdaqScore": {
-            "score": -4,
-            "rawScore": -7,
+            "score": -3,
+            "rawScore": -6,
             "previousScore": -2,
             "trend": "Deteriorating ↓",
             "signal": "mixed",
             "label": "Mixed / Neutral",
-            "confidence": 47,
-            "coverage": 76
+            "confidence": 45,
+            "coverage": 73
           },
           "nasdaqFactorScores": [
             {
@@ -10396,9 +10390,9 @@
             {
               "factor": "Mega-cap leadership",
               "bucket": "Leadership",
-              "strength": -0.24,
-              "effectiveWeight": 1.4,
-              "freshnessWeight": 0.7,
+              "strength": 0.0,
+              "effectiveWeight": 0.2,
+              "freshnessWeight": 0.2,
               "regimeMultiplier": 1.0
             },
             {
@@ -10428,9 +10422,9 @@
             {
               "factor": "Semiconductor leadership",
               "bucket": "Leadership",
-              "strength": -0.018,
-              "effectiveWeight": 0.7,
-              "freshnessWeight": 0.7,
+              "strength": 0.0,
+              "effectiveWeight": 0.35,
+              "freshnessWeight": 0.35,
               "regimeMultiplier": 1.0
             },
             {
@@ -10481,16 +10475,16 @@
             },
             {
               "bucket": "Leadership",
-              "strength": -0.063,
-              "weight": 5.55,
-              "uncappedWeight": 5.55,
+              "strength": 0.0,
+              "weight": 4.0,
+              "uncappedWeight": 4.0,
               "cap": 9.0
             }
           ],
           "consolidationRisk": {
             "score": 34,
             "level": "Medium",
-            "explanation": "Estimates near-term consolidation risk from market extension, breadth, volatility and leadership conditions. Calculated by NasDecode's proprietary real-time multi-factor scoring mechanism using the latest available inputs.",
+            "explanation": "Estimates near-term consolidation risk from market extension, breadth, volatility and leadership conditions. Calculated by NasDecode's proprietary AI-led model using the latest available inputs.",
             "coverageWeight": 100,
             "components": [
               {
@@ -10605,34 +10599,34 @@
             "note": "Higher means more extended/crowded. Missing inputs reduce model coverage rather than being guessed."
           },
           "opportunityScore": {
-            "score": 43,
+            "score": 44,
             "label": "Limited",
             "signal": "mixed",
             "setupReadiness": 48,
-            "recoveryConfirmation": 38,
+            "recoveryConfirmation": 41,
             "consolidationReadiness": 66,
             "volatilityDislocation": 25,
             "unlockedVolatilityOpportunity": 10,
             "recoveryComponents": {
               "vxnReversal": 9,
               "breadthRecovery": 100,
-              "semiconductorRecovery": 50,
-              "yieldStabilization": 0,
+              "semiconductorRecovery": null,
+              "yieldStabilization": 25,
               "fedRepricing": 50,
-              "setupImprovement": 14,
-              "oilStabilization": 79
+              "setupImprovement": 44,
+              "oilStabilization": 39
             },
             "lookbackSessions": 5,
-            "explanation": "Measures how attractive current conditions are for deploying new capital by combining market setup, recovery evidence, consolidation risk and volatility context. Calculated by NasDecode's proprietary real-time multi-factor scoring mechanism using the latest available inputs.",
-            "debug": "Formula: 40% Setup readiness + 25% Recovery Confirmation + 20% inverse Consolidation Risk + 15% volatility opportunity unlocked by recovery. Recovery formula: VXN reversal 25%, breadth recovery 15%, semiconductor recovery 15%, 10Y yield stabilization 15%, Fed repricing 15%, Setup improvement 10%, Oil stabilization 5%. Lookback sessions: 5. Current recovery confirmation: 38%."
+            "explanation": "Measures how attractive current conditions are for deploying new capital by combining market setup, recovery evidence, consolidation risk and volatility context. Calculated by NasDecode's proprietary AI-led model using the latest available inputs.",
+            "debug": "NasDecode AI-led opportunity model. Proprietary methodology. Current recovery confirmation: 41%."
           },
           "confirmationLayer": {
             "internalConfirmation": {
-              "score": 73,
+              "score": 74,
               "label": "Positive",
               "components": {
                 "breadth": 50,
-                "semiconductorLeadership": 88,
+                "semiconductorLeadership": 90,
                 "volatility": 100,
                 "megaCapLeadership": 50
               },
@@ -10644,7 +10638,7 @@
               }
             },
             "semiconductorLeadership": {
-              "score": 88,
+              "score": 90,
               "label": "Strong",
               "broadLeadershipTrigger": true,
               "accelerationFromOpenPoints": null,
@@ -10652,7 +10646,7 @@
                 "soxVsNasdaqPp": 0.9319,
                 "soxxVsNasdaqPp": 0.6876,
                 "smhVsNasdaqPp": 0.5257,
-                "semiBasketVsNasdaqPp": -0.2401
+                "semiBasketVsNasdaqPp": null
               },
               "breadth": {
                 "universeSize": 18,
@@ -10702,26 +10696,20 @@
             "shape": "upward-sloping"
           },
           "nasdaqBreadth": {
-            "valid": 102,
-            "advancers": 65,
-            "decliners": 37,
-            "flat": 0,
-            "positivePct": 64.0,
-            "basis": "previous_close",
-            "source": "Nasdaq-100 previous regular-session constituent breadth",
-            "freshness": "Previous regular session · 09/25/26 EDT",
-            "previousCompletedPct": 63.73,
-            "changeVsPreviousCompletedPp": 0.27,
-            "comparisonDate": "2026-09-25"
+            "valid": 0,
+            "advancers": 0,
+            "decliners": 0,
+            "positivePct": null,
+            "basis": null
           },
           "s5fi": {
             "levelPct": 26.0,
             "changePp": 1.0
           },
           "semiconductors": {
-            "basketReturnPct": 0.24,
-            "basketVsQqqPp": -0.22,
-            "smhVsQqqPp": 0.55,
+            "basketReturnPct": null,
+            "basketVsQqqPp": null,
+            "smhVsQqqPp": null,
             "soxx": {
               "return1d": 1.1677001077605054,
               "return3d": -0.017458710150497492,
@@ -10733,8 +10721,8 @@
             }
           },
           "megaCaps": {
-            "basketReturnPct": 0.16,
-            "basketVsQqqPp": -0.3
+            "basketReturnPct": null,
+            "basketVsQqqPp": null
           },
           "qqq": {
             "return1d": 0.4587774929159405,
@@ -10803,8 +10791,8 @@
           },
           "oil": {
             "wti": {
-              "close": 92.44,
-              "changePct": -2.29
+              "close": 92.41,
+              "changePct": null
             },
             "brent": {
               "close": 104.32,
@@ -10844,22 +10832,26 @@
           "MPWR": null
         },
         "relativeStrengthPp": {
-          "semiBasketVsNasdaqPp": -0.2401,
-          "megaCapBasketVsNasdaqPp": -0.3201,
+          "semiBasketVsNasdaqPp": null,
+          "megaCapBasketVsNasdaqPp": null,
           "soxVsNasdaqPp": 0.9319,
           "soxxVsNasdaqPp": 0.6876,
           "smhVsNasdaqPp": 0.5257,
-          "semiBasketVsQqqPp": -0.22,
-          "smhVsQqqPp": 0.55,
-          "megaCapBasketVsQqqPp": -0.3,
+          "semiBasketVsQqqPp": null,
+          "smhVsQqqPp": null,
+          "megaCapBasketVsQqqPp": null,
           "basis": "previous_completed_session",
           "observationDate": "2026-09-25"
         },
         "dataCompleteness": {
           "expectedFields": 18,
-          "presentFields": 18,
-          "coveragePct": 100.0,
-          "missing": []
+          "presentFields": 15,
+          "coveragePct": 83.3,
+          "missing": [
+            "nasdaqBreadth",
+            "semiVsQqq",
+            "megaVsQqq"
+          ]
         },
         "forwardOutcomes": {
           "definition": "Close-to-close return from this session close to the close N trading sessions later.",
@@ -10992,9 +10984,9 @@
         },
         "Mega-cap leadership": {
           "signal": "mixed",
-          "currentImpact": "Medium",
+          "currentImpact": "Low",
           "trend": "Stable →",
-          "latest": "Previous regular-session close · 7-stock basket +0.16% | 5/7 positive | QQQ +0.46% | relative -0.30 pp"
+          "latest": "Awaiting live mega-cap quotes"
         },
         "Oil (WTI / Brent)": {
           "signal": "positive",
@@ -11018,7 +11010,7 @@
           "signal": "mixed",
           "currentImpact": "Low",
           "trend": "Stable →",
-          "latest": "Previous regular-session close · 5-stock basket +0.24% | 4/5 positive | QQQ +0.46% | basket vs QQQ -0.22 pp | SMH +1.01% | SMH vs QQQ +0.55 pp"
+          "latest": "Awaiting live equity quotes"
         },
         "Economic / inflation data": {
           "signal": "mixed",
