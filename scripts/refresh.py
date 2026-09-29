@@ -2227,26 +2227,88 @@ def main():
     _ma=d.get('marketAnalysis') or {}
     _stage='premarket' if equity_session(now)=='premarket' else 'early_outlook'
     if not _ma:
-        # Pre-open/catch-up analysis: use the latest model state even when the intraday
-        # market-analysis routine is intentionally disabled before the 09:30 ET cash open.
+        # Pre-open/catch-up analysis uses the same narrative structure as live Market Analysis:
+        # setup -> key drivers -> confirmation/divergence -> conditions that change the view.
         _score=num(d.get('nasdaqScore',{}).get('score'))
         _label=d.get('nasdaqScore',{}).get('label','current regime')
-        _impact_rank={'Very High':4,'High':3,'Medium':2,'Low':1}
-        _drivers=sorted(
-            [r for r in rows if r.get('factor') not in ('Nasdaq Score','Consolidation Risk','Opportunity Score')],
-            key=lambda r:_impact_rank.get(r.get('currentImpact','Low'),1),reverse=True)[:4]
-        _driver_text=[]
-        for _r in _drivers:
-            _sig=_r.get('signal','mixed')
-            _tone='supportive' if _sig=='positive' else ('a headwind' if _sig=='negative' else 'mixed')
-            _driver_text.append(f"{_r.get('factor')} is {_tone}: {_r.get('latest','')}.")
-        _paras=[]
+        _row=lambda name: next((r for r in rows if r.get('factor')==name),{})
+        _sig=lambda name: _row(name).get('signal','mixed')
+        _tone=lambda s: 'supportive' if s=='positive' else ('a headwind' if s=='negative' else 'mixed')
+        _phase_name='pre-market' if _stage=='premarket' else 'early outlook'
+
+        # 1) State/setup. Keep this interpretive rather than repeating every dashboard card.
+        _p1=[]
         if _score is not None:
-            _paras.append(f"The Nasdaq Score is {_score:+.0f}/100 ({_label}) based on the latest available pre-open inputs.")
-        if _driver_text:
-            _paras.append("The main pre-open drivers are "+" ".join(_driver_text))
-        _paras.append("This pre-open view will be refreshed as live U.S. pre-market and regular-session inputs become available.")
-        _ma={'score':_score,'paragraphs':_paras,'catalysts':[],'confirmation':None,'baseline':{}}
+            _p1.append(f"The Nasdaq enters the {_phase_name} with a {_label.lower()} setup: the Nasdaq Score is {_score:+.0f}/100.")
+        _cr=d.get('consolidationRisk') or {}
+        _crs=num(_cr.get('score'))
+        if _crs is not None:
+            _p1.append(f"Consolidation Risk is {_crs:.0f}/100 ({_cr.get('level','current')}).")
+        _p1=' '.join(_p1)
+
+        # 2) Select the few drivers that matter, with macro/volatility/leadership context.
+        _driver_sent=[]
+        _y10=num(q.get('US10Y',{}).get('last')) if q.get('US10Y') else None
+        if _y10 is not None:
+            _driver_sent.append(f"Rates are {_tone(_sig('10Y Treasury Yield'))}: the 10Y is {_y10:.3f}%.")
+        _vr=_row('Nasdaq volatility (VXN / VIX)')
+        if _vr:
+            _driver_sent.append(f"Volatility is {_tone(_vr.get('signal','mixed'))}: {_vr.get('latest','')}.")
+        _fr=_row('Fed expectations')
+        if _fr:
+            _driver_sent.append(f"Fed pricing remains {_tone(_fr.get('signal','mixed'))}.")
+        _oil=_row('Oil (WTI / Brent)')
+        if _oil and _oil.get('currentImpact') in ('High','Very High'):
+            _driver_sent.append(f"Oil is {_tone(_oil.get('signal','mixed'))} for Nasdaq: {_oil.get('latest','')}.")
+        _p2=("The main cross-asset drivers are "+" ".join(_driver_sent[:3])) if _driver_sent else "No single cross-asset driver dominates the pre-open setup."
+
+        # 3) Confirmation/divergence across Nasdaq internals.
+        _internals={n:_sig(n) for n in ('Semiconductor leadership','Mega-cap leadership','Market breadth')}
+        _pos=sum(v=='positive' for v in _internals.values()); _neg=sum(v=='negative' for v in _internals.values())
+        if _pos>=2:
+            _conf="Nasdaq internals provide constructive confirmation"
+        elif _neg>=2:
+            _conf="Nasdaq internals reinforce the cautious setup"
+        else:
+            _conf="Nasdaq internals are mixed, so directional confirmation is incomplete"
+        _p3=_conf+f" (semiconductors {_internals['Semiconductor leadership']}, mega-caps {_internals['Mega-cap leadership']}, breadth {_internals['Market breadth']})."
+
+        # 4) Explicit conditions that would improve or deteriorate the view.
+        _improve=[]; _worsen=[]
+        if _sig('10Y Treasury Yield')!='positive':
+            _improve.append("Treasury yields easing and stabilizing")
+        else:
+            _worsen.append("a renewed rise in Treasury yields")
+        if _sig('Semiconductor leadership')!='positive':
+            _improve.append("semiconductors regaining leadership")
+        else:
+            _worsen.append("semiconductor leadership rolling over")
+        if _sig('Market breadth')!='positive':
+            _improve.append("broader participation")
+        else:
+            _worsen.append("breadth narrowing materially")
+        if _sig('Nasdaq volatility (VXN / VIX)')=='negative':
+            _improve.append("VXN/VIX cooling")
+        else:
+            _worsen.append("a material volatility expansion")
+        if not _worsen: _worsen.append("rates, volatility and leadership deteriorating together")
+        _p4="What would change the view: improvement would require "+", ".join(_improve[:3])+". Deterioration would be reinforced by "+", ".join(_worsen[:3])+"."
+
+        # Surface the same near-term catalyst logic used by live Market Analysis.
+        _cats=[]
+        _er=_row('Technology earnings calendar')
+        _m=re.match(r'^([^:]+):\\s*([A-Z][a-z]{2})\\s+(\\d{1,2}),\\s+(\\d{4})',str(_er.get('latest','')))
+        if _m:
+            try:
+                _ed=datetime.datetime.strptime(f"{_m.group(2)} {_m.group(3)} {_m.group(4)}",'%b %d %Y').date()
+                _days=(_ed-now.date()).days
+                if 0<=_days<=7:
+                    _cats.append({'title':_m.group(1).strip()+' earnings','date':_ed.isoformat(),
+                                  'detail':f"Major Nasdaq/technology earnings catalyst {('today' if _days==0 else f'in {_days} day'+('' if _days==1 else 's'))}."})
+            except ValueError:
+                pass
+        _ma={'score':_score,'paragraphs':[x for x in (_p1,_p2,_p3,_p4) if x],
+             'catalysts':_cats,'confirmation':_conf,'baseline':{}}
     _pm={
         'version':1,
         'tradingDate':now.date().isoformat(),
