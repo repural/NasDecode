@@ -15,6 +15,9 @@ on:
     # Daily pre-market snapshot at 06:00 Türkiye time.
     - cron: '0 6 * * 1-5'
       timezone: 'Europe/Istanbul'
+    # True U.S. pre-market refresh after extended-hours trading begins.
+    - cron: '15 4 * * 1-5'
+      timezone: 'America/New_York'
     # Use New York time directly so DST does not require UTC candidate schedules.
     # Run a few minutes after the cash open so equity quote feeds have populated.
     - cron: '35 9 * * 1-5'
@@ -59,11 +62,12 @@ jobs:
         run: |
           git config user.name 'nasdecode-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add data/dashboard.json data/history
+          git add data/dashboard.json data/premarket.json data/history
           mkdir -p public/data
           cp index.html public/index.html
           cp data/dashboard.json public/data/dashboard.json
-          git add public/index.html public/data/dashboard.json
+          cp data/premarket.json public/data/premarket.json
+          git add public/index.html public/data/dashboard.json public/data/premarket.json
           if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
           git diff --cached --quiet && exit 0
           git commit -m 'Refresh dashboard data'
