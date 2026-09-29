@@ -18,18 +18,10 @@ on:
     # True U.S. pre-market refresh after extended-hours trading begins.
     - cron: '15 4 * * 1-5'
       timezone: 'America/New_York'
-    # Use New York time directly so DST does not require UTC candidate schedules.
-    # Run a few minutes after the cash open so equity quote feeds have populated.
-    - cron: '35 9 * * 1-5'
-      timezone: 'America/New_York'
-    - cron: '35 10 * * 1-5'
-      timezone: 'America/New_York'
-    # Continue checking material 3-Day Watch changes through the U.S. cash session.
-    - cron: '5 11-15 * * 1-5'
-      timezone: 'America/New_York'
-    # After-close snapshot captures official regular-session closing levels.
-    - cron: '10 16 * * 1-5'
-      timezone: 'America/New_York'
+    # Resilient U.S.-session heartbeat. UTC intentionally spans both EDT and EST;
+    # the gate below decides from America/New_York time whether a refresh is useful.
+    # Repeated hourly opportunities recover automatically if GitHub delays one schedule.
+    - cron: '7 13-21 * * 1-5'
 # Serialize all dashboard refreshes. Multiple overlapping refreshes were both
 # consuming the Massive free-tier quota and racing to push generated snapshots.
 # queue:max preserves scheduled/manual runs instead of cancelling an in-progress refresh.
@@ -46,7 +38,26 @@ jobs:
       - uses: actions/checkout@v4
       - name: Allow refresh
         id: gate
-        run: echo "run=yes" >> "$GITHUB_OUTPUT"
+        shell: bash
+        run: |
+          # Push/manual runs always refresh. Scheduled heartbeat runs only during the
+          # useful U.S. window: shortly after the open through the official close.
+          if [ "$GITHUB_EVENT_NAME" != "schedule" ]; then
+            echo "run=yes" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          ny_hm=$(TZ=America/New_York date +%H%M)
+          if [ "$ny_hm" -ge 0930 ] && [ "$ny_hm" -le 1620 ]; then
+            echo "run=yes" >> "$GITHUB_OUTPUT"
+          else
+            # Dedicated 06:00 Türkiye and 04:15 ET schedules must still run.
+            tr_hm=$(TZ=Europe/Istanbul date +%H%M)
+            if { [ "$tr_hm" -ge 0550 ] && [ "$tr_hm" -le 0615 ]; } || { [ "$ny_hm" -ge 0405 ] && [ "$ny_hm" -le 0430 ]; }; then
+              echo "run=yes" >> "$GITHUB_OUTPUT"
+            else
+              echo "run=no" >> "$GITHUB_OUTPUT"
+            fi
+          fi
       - name: Install FedWatch dependency
         if: steps.gate.outputs.run == 'yes'
         run: pip install 'cme-fedwatch==0.2.1'
