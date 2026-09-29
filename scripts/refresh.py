@@ -2297,7 +2297,7 @@ def main():
         # Surface the same near-term catalyst logic used by live Market Analysis.
         _cats=[]
         _er=_row('Technology earnings calendar')
-        _m=re.match(r'^([^:]+):\\s*([A-Z][a-z]{2})\\s+(\\d{1,2}),\\s+(\\d{4})',str(_er.get('latest','')))
+        _m=re.match(r'^(.+?\\([A-Z.]+\\)):\\s*([A-Z][a-z]{2})\\s+(\\d{1,2}),\\s+(\\d{4})',str(_er.get('latest','')))
         if _m:
             try:
                 _ed=datetime.datetime.strptime(f"{_m.group(2)} {_m.group(3)} {_m.group(4)}",'%b %d %Y').date()
