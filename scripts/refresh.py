@@ -2226,6 +2226,27 @@ def main():
     # a true pre-market analysis. The frontend verifies tradingDate before displaying it.
     _ma=d.get('marketAnalysis') or {}
     _stage='premarket' if equity_session(now)=='premarket' else 'early_outlook'
+    if not _ma:
+        # Pre-open/catch-up analysis: use the latest model state even when the intraday
+        # market-analysis routine is intentionally disabled before the 09:30 ET cash open.
+        _score=num(d.get('nasdaqScore',{}).get('score'))
+        _label=d.get('nasdaqScore',{}).get('label','current regime')
+        _impact_rank={'Very High':4,'High':3,'Medium':2,'Low':1}
+        _drivers=sorted(
+            [r for r in rows if r.get('factor') not in ('Nasdaq Score','Consolidation Risk','Opportunity Score')],
+            key=lambda r:_impact_rank.get(r.get('currentImpact','Low'),1),reverse=True)[:4]
+        _driver_text=[]
+        for _r in _drivers:
+            _sig=_r.get('signal','mixed')
+            _tone='supportive' if _sig=='positive' else ('a headwind' if _sig=='negative' else 'mixed')
+            _driver_text.append(f"{_r.get('factor')} is {_tone}: {_r.get('latest','')}.")
+        _paras=[]
+        if _score is not None:
+            _paras.append(f"The Nasdaq Score is {_score:+.0f}/100 ({_label}) based on the latest available pre-open inputs.")
+        if _driver_text:
+            _paras.append("The main pre-open drivers are "+" ".join(_driver_text))
+        _paras.append("This pre-open view will be refreshed as live U.S. pre-market and regular-session inputs become available.")
+        _ma={'score':_score,'paragraphs':_paras,'catalysts':[],'confirmation':None,'baseline':{}}
     _pm={
         'version':1,
         'tradingDate':now.date().isoformat(),
