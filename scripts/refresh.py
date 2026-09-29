@@ -18,6 +18,7 @@ ROOT=os.path.dirname(os.path.dirname(__file__))
 PATH=os.path.join(ROOT,'data','dashboard.json')
 HISTORY_DIR=os.path.join(ROOT,'data','history')
 DAILY_PATH=os.path.join(HISTORY_DIR,'daily.json')
+PREMARKET_PATH=os.path.join(ROOT,'data','premarket.json')
 EARNINGS_AVWAP_PATH=os.path.join(ROOT,'data','earnings_avwap_watchlist.json')
 _MASSIVE_LAST_CALL=0.0
 NY=ZoneInfo('America/New_York')
@@ -2219,6 +2220,25 @@ def main():
         }
 
     d['marketAnalysis']=build_market_analysis()
+
+    # Publish an automatic date-safe outlook for the current U.S. trading day.
+    # Before 04:00 ET this is an early outlook; from 04:00 ET until the cash open it is
+    # a true pre-market analysis. The frontend verifies tradingDate before displaying it.
+    _ma=d.get('marketAnalysis') or {}
+    _stage='premarket' if equity_session(now)=='premarket' else 'early_outlook'
+    _pm={
+        'version':1,
+        'tradingDate':now.date().isoformat(),
+        'stage':_stage,
+        'updatedET':now.strftime('%Y-%m-%d %H:%M ET'),
+        'score':_ma.get('score'),
+        'paragraphs':_ma.get('paragraphs') or [],
+        'catalysts':_ma.get('catalysts') or [],
+        'confirmation':_ma.get('confirmation'),
+        'baseline':_ma.get('baseline') or {}
+    }
+    with open(PREMARKET_PATH,'w',encoding='utf-8') as _pf:
+        json.dump(_pm,_pf,ensure_ascii=False,indent=2)
     curve_obs={'spreadBp':round(curve_2s10s,1) if curve_2s10s is not None else None,
                'changeBp':round(curve_change,1) if curve_change is not None else None,
                'shape':curve_regime} if curve_2s10s is not None else None
