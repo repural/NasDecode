@@ -158,8 +158,16 @@ async function loadAnalysis(d){try{
       (catalysts?'<h3>Near-term catalysts</h3><ul>'+catalysts+'</ul>':'');
     return;
   }
-  analysisTitle.textContent='Pre-Market Analysis';
-  const r=await fetch('data/premarket.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const a=await r.json();premarketMeta.textContent='Analysis updated: '+marketTimeText(a.updated||'—');const events=(a.events||[]).map(x=>'<li><b>'+marketTimeText(x.title)+'</b> — '+marketTimeText(x.detail)+'</li>').join('');const meta=[a.bias&&'<b>Bias:</b> '+marketTimeText(a.bias),a.confidence&&'<b>Confidence:</b> '+marketTimeText(a.confidence),a.eventRisk&&'<b>Event Risk:</b> '+marketTimeText(a.eventRisk)].filter(Boolean).join(' &nbsp; · &nbsp; ');premarketBody.innerHTML=(meta?'<div class="bias">'+meta+'</div>':'')+'<p>'+((a.summary||[]).map(marketTimeText).join('</p><p>'))+'</p>'+(events?'<h3>Major events to watch today</h3><ol>'+events+'</ol>':'')+(a.watchIntoOpen?'<p><b>What I’d watch into the open:</b> '+marketTimeText(a.watchIntoOpen).replace(/^What I[’\x27]d watch into the open:\s*/,'')+'</p>':'')+(a.keyTimes?'<p>'+marketTimeText(a.keyTimes)+'</p>':'')+nearbyMajorEarnings(d)+(a.sources?.length?'<p class="src">Sources: '+a.sources.map(marketTimeText).join(' · ')+'</p>':'');
+  const r=await fetch('data/premarket.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const a=await r.json();
+  const nyDate=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+  if(a.tradingDate!==nyDate){analysisTitle.textContent='Pre-Market Analysis';premarketMeta.textContent='Today’s analysis is being prepared.';premarketBody.innerHTML='';return;}
+  analysisTitle.textContent=a.stage==='premarket'?'Pre-Market Analysis':'Early Market Outlook';
+  premarketMeta.textContent='Analysis updated: '+escHtml(a.updatedET||'—');
+  const ns=d?.nasdaqScore||{}; const sig=ns.signal==='positive'?'Positive':ns.signal==='negative'?'Negative':'Mixed';
+  const score=a.score!==null&&a.score!==undefined?(a.score>0?'+':'')+a.score+' / 100':'—';
+  const paras=(a.paragraphs||[]).map(x=>'<p>'+marketTimeText(x)+'</p>').join('');
+  const catalysts=(a.catalysts||[]).map(e=>'<li><b>'+escHtml(e.date)+' · '+escHtml(e.title)+'</b> — '+escHtml(e.detail)+'</li>').join('');
+  premarketBody.innerHTML='<div class="bias"><b>Nasdaq Score:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+'</div>'+paras+(catalysts?'<h3>Near-term catalysts</h3><ul>'+catalysts+'</ul>':'')+nearbyMajorEarnings(d);
 }catch(e){premarketMeta.textContent='Analysis not available yet.';premarketBody.innerHTML='';}}
 update.onclick=async()=>{const d=await load();await loadAnalysis(d)};(async()=>{const d=await load();await loadAnalysis(d)})();
 </script></body></html>
