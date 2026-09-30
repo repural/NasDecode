@@ -150,7 +150,15 @@ def main():
     for e in events:
         try: d=dt.date.fromisoformat(e.get("date",""))
         except ValueError: d=cutoff
-        if not e.get("autoDetected") or d>=cutoff: keep.append(e)
+        if e.get("autoDetected"):
+            # Revalidate older auto-detected rows with the stricter headline rule so
+            # previously stored roundup/body-text false positives disappear immediately.
+            ticker=e.get("ticker")
+            if ticker not in mentioned_tickers(str(e.get("title") or ""),[ticker] if ticker else []):
+                continue
+            if d<cutoff:
+                continue
+        keep.append(e)
     keep.sort(key=lambda x:(x.get("date",""),x.get("materialityScore",0)),reverse=True)
     out={
       "schemaVersion":2,
