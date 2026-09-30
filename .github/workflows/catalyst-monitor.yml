@@ -1,0 +1,47 @@
+name: Monitor Major Catalysts
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Near-real-time monitoring during the main U.S. pre-market/regular/after-hours window.
+    - cron: '*/30 11-23 * * 1-5'
+    # Lower-frequency overnight scan so important Asia/Europe semiconductor news is still captured.
+    - cron: '0 */2 0-10 * * 1-5'
+
+concurrency:
+  group: nasdecode-catalyst-monitor
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Discover major SOX and mega-cap catalysts
+        env:
+          TAVILY_API_KEY: ${{ secrets.TAVILY_KEY }}
+        run: python scripts/refresh_catalysts.py
+      - name: Publish catalyst updates
+        shell: bash
+        run: |
+          git config user.name 'nasdecode-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add data/semiconductor-catalysts.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Update detected market catalysts'
+          for attempt in 1 2 3 4; do
+            if git push; then
+              exit 0
+            fi
+            git fetch origin main
+            git reset --hard origin/main
+            TAVILY_API_KEY='${{ secrets.TAVILY_KEY }}' python scripts/refresh_catalysts.py
+            git add data/semiconductor-catalysts.json
+            git diff --cached --quiet && exit 0
+            git commit -m 'Update detected market catalysts'
+          done
+          echo "Unable to publish catalyst updates after 4 attempts"
+          exit 1
