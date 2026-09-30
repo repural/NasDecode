@@ -25,7 +25,7 @@ NY=ZoneInfo('America/New_York')
 CNBC_BASE='https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol'
 MEGACAPS=['AAPL','MSFT','AMZN','GOOGL','META','NVDA','TSLA']
 # Liquid/large semiconductor universe used for leadership breadth confirmation.
-SEMI_BREADTH=['NVDA','AMD','AVGO','TSM','MU','INTC','AMAT','LRCX','KLAC','TXN','MRVL','ADI','ASML','QCOM','ARM','NXPI','MCHP','MPWR']
+SEMI_BREADTH=['AMD','ADI','AMAT','ARM','ASML','ALAB','AVGO','COHR','CRDO','ENTG','GFS','INTC','KLAC','LRCX','MTSI','MRVL','MCHP','MU','MPWR','NVMI','NVDA','NXPI','ON','QRVO','QCOM','RMBS','SWKS','TSM','TER','TXN']
 BREADTH=['NVDA','AAPL','MU','MSFT','AMD','AMZN','TSLA','GOOGL','INTC','GOOG','AVGO','META','AMAT','WMT','LRCX','CSCO','COST','KLAC','SNDK','NFLX','PANW','TXN','PLTR','MRVL','LIN','WDC','STX','AMGN','QCOM','CRWD','ADI','PEP','ASML','TMUS','APP','GILD','ARM','ISRG','SHOP','BKNG','VRTX','SBUX','FTNT','CDNS','MAR','MNST','CEG','ADP','CSX','CMCSA','DDOG','MELI','SNPS','ADBE','ALAB','ORLY','DASH','TER','AEP','MDLZ','INTU','NXPI','HON','HONA','ROST','CTAS','MPWR','WBD','LITE','REGN','RBLX','NBIS','ABNB','RKLB','FAST','BKR','PDD','XEL','FANG','MCHP','FER','EXC','TTWO','AXON','ODFL','CCEP','CRWV','KDP','IDXX','ADSK','ALNY','PYPL','PAYX','ROP','TRI','GEHC','MSTR','KHC','CPRT','DXCM','WDAY','SPCX']
 SYMBOLS=list(dict.fromkeys(['US10Y','US2Y','ZQU6','ZQV6','ZQX6','ZQZ6','ZQF7','ZQG7','ZQH7','.IXIC','QQQ','NVDA','AMD','AVGO','TSM','MU','SMH','SOXX','.VIX','.VXN','@CL.1','@LCO.1','HYG','LQD','S5FI','.SOX','SOX']+MEGACAPS+BREADTH))
 
