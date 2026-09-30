@@ -2539,7 +2539,7 @@ def main():
     # changes interpretation/confidence, not the underlying leadership score.
     catalyst_context={'status':'None','active':None,'recent':[],'scoreImpact':0,'directionalScoreUnchanged':True}
     try:
-        with open(os.path.join(DATA_DIR,'semiconductor-catalysts.json'),encoding='utf-8') as _cf:
+        with open(os.path.join(ROOT,'data','semiconductor-catalysts.json'),encoding='utf-8') as _cf:
             _catalysts=json.load(_cf).get('events',[])
     except (FileNotFoundError,json.JSONDecodeError):
         _catalysts=[]
