@@ -2599,7 +2599,22 @@ def main():
                 'semiBasketAvailable':len(_members),'etfConfirmationsVsQqq':_etf_confirm}
 
     _evaluated=[x for x in (_event_reaction(e) for e in _catalysts) if x]
-    _evaluated.sort(key=lambda x:(x.get('daysSince',99),0 if x.get('status')=='Pending' else 1))
+    def _catalyst_priority(x):
+        # Rank by observed materiality/persistence and expected sector read-through,
+        # not simply by recency. This prevents a new pending event from automatically
+        # displacing an older catalyst whose price effect is still meaningful.
+        read=str(x.get('readThrough') or '').lower()
+        expected=str((x.get('event') or {}).get('expectedReadThrough') or '').lower()
+        rel=abs(num(x.get('targetVsQqqPp')) or 0)
+        score=rel*15
+        if 'strong' in read: score+=40
+        elif 'positive' in read or 'negative' in read: score+=20
+        if x.get('status')=='Pending': score+=35
+        if 'high' in expected: score+=20
+        if 'persist' in str(x.get('persistence') or '').lower(): score+=10
+        score-=min(10,max(0,num(x.get('daysSince')) or 0))*2
+        return score
+    _evaluated.sort(key=lambda x:(_catalyst_priority(x),-(num(x.get('daysSince')) or 0)),reverse=True)
     if _evaluated:
         _active=_evaluated[0]
         catalyst_context={'status':_active.get('status'),'active':_active,'recent':_evaluated[:3],
