@@ -19,6 +19,10 @@ on:
     # True U.S. pre-market refresh after extended-hours trading begins.
     - cron: '15 4 * * 1-5'
       timezone: 'America/New_York'
+    # Dedicated post-close snapshot. This is the canonical daily NasDecode score
+    # used by historical Score-vs-Nasdaq comparisons.
+    - cron: '15 16 * * 1-5'
+      timezone: 'America/New_York'
     # Resilient U.S.-session heartbeat. UTC intentionally spans both EDT and EST;
     # the gate below decides from America/New_York time whether a refresh is useful.
     # Repeated hourly opportunities recover automatically if GitHub delays one schedule.
@@ -51,9 +55,9 @@ jobs:
           if [ "$ny_hm" -ge 0930 ] && [ "$ny_hm" -le 1620 ]; then
             echo "run=yes" >> "$GITHUB_OUTPUT"
           else
-            # Dedicated 06:00 Türkiye and 04:15 ET schedules must still run.
+            # Dedicated 06:00 Türkiye, 04:15 ET pre-market and 16:15 ET close schedules must still run.
             tr_hm=$(TZ=Europe/Istanbul date +%H%M)
-            if { [ "$tr_hm" -ge 0550 ] && [ "$tr_hm" -le 0615 ]; } || { [ "$ny_hm" -ge 0405 ] && [ "$ny_hm" -le 0430 ]; }; then
+            if { [ "$tr_hm" -ge 0550 ] && [ "$tr_hm" -le 0615 ]; } || { [ "$ny_hm" -ge 0405 ] && [ "$ny_hm" -le 0430 ]; } || { [ "$ny_hm" -ge 1605 ] && [ "$ny_hm" -le 1645 ]; }; then
               echo "run=yes" >> "$GITHUB_OUTPUT"
             else
               echo "run=no" >> "$GITHUB_OUTPUT"
@@ -67,7 +71,12 @@ jobs:
         env:
           # Massive is optional enrichment: the secret never enters the repository or public assets.
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+          SCHEDULE_EXPR: ${{ github.event.schedule }}
         run: |
+          if [ "$SCHEDULE_EXPR" = "15 16 * * 1-5" ]; then
+            export NASDECODE_CLOSE_SNAPSHOT=1
+            echo "Capturing canonical post-close NasDecode snapshot"
+          fi
           python scripts/refresh.py
           python scripts/build_chart_history.py
       - name: Commit refreshed snapshot
