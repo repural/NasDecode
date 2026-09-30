@@ -621,7 +621,7 @@ def main():
     for _k in ('environmentScore','environmentScoreRaw','environmentScorePrevious','environmentTrend','environmentSignal','environmentLabel','environmentConfidence','environmentCoverage','setupModel'):
         d.pop(_k,None)
     d['schemaVersion']=2
-    now=datetime.datetime.now(NY); rows=[r for r in d['rows'] if r.get('factor') not in {'AI / data-center financing','System liquidity','U.S. Dollar (DXY)','10Y real yield'}];
+    now=datetime.datetime.now(NY); capture_close_snapshot=os.environ.get('NASDECODE_CLOSE_SNAPSHOT','').strip()=='1'; rows=[r for r in d['rows'] if r.get('factor') not in {'AI / data-center financing','System liquidity','U.S. Dollar (DXY)','10Y real yield'}];
     for r in rows:
         if r.get('factor')=='10Y nominal yield': r['factor']='10Y Treasury Yield'
     # Add S&P 500 50-day breadth/oversold as a separate factor. It is intentionally
@@ -2666,10 +2666,11 @@ def main():
     }
     # Stable checkpoint label for later open/+30m/+60m/close performance analysis.
     _mins=now.hour*60+now.minute
-    if 9*60+30<=_mins<10*60: _checkpoint='open'
+    if capture_close_snapshot: _checkpoint='close'
+    elif 9*60+30<=_mins<10*60: _checkpoint='open'
     elif 10*60<=_mins<10*60+30: _checkpoint='+30m'
     elif 10*60+30<=_mins<11*60+30: _checkpoint='+60m'
-    elif _mins>=16*60: _checkpoint='close'
+    elif _mins>=16*60: _checkpoint='afterhours'
     else: _checkpoint='intraday'
     confirmation_layer['checkpoint']=_checkpoint
     d['confirmationLayer']=confirmation_layer
@@ -2753,7 +2754,23 @@ def main():
         _mp=_rec.get('modelPerformance')
         if isinstance(_mp,dict) and 'environmentScore' in _mp: _mp['nasdaqScore']=_mp.pop('environmentScore')
         _rec['schemaVersion']=4
-    daily['records'][now.strftime('%Y-%m-%d')]=snapshot
+    _day_key=now.strftime('%Y-%m-%d')
+    _existing_today=daily['records'].get(_day_key,{})
+    _existing_close=_existing_today.get('closeSnapshot') if isinstance(_existing_today,dict) else None
+    if capture_close_snapshot:
+        snapshot['closeSnapshot']={
+            'timestampET':now.isoformat(),
+            'nasdaqScore':{k:v for k,v in d.get('nasdaqScore',{}).items() if k!='model'},
+            'consolidationRisk':d.get('consolidationRisk'),
+            'opportunityScore':d.get('opportunityScore'),
+            'confirmationLayer':confirmation_layer,
+            'sessionLevels':{k:session_levels.get(k) for k in ('Nasdaq','SOX','SOXX','SMH') if session_levels.get(k) is not None}
+        }
+    elif _existing_close:
+        # Later after-hours/news refreshes update the live daily record but must not
+        # replace the designated closing score used for historical comparisons.
+        snapshot['closeSnapshot']=_existing_close
+    daily['records'][_day_key]=snapshot
 
     # Populate forward validation targets only after the future trading sessions exist.
     # Trading-session offsets are based on completed Nasdaq sessions, avoiding weekends/holidays.
