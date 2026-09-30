@@ -118,7 +118,9 @@ def main():
             title=str(r.get("title") or "").strip()
             content=str(r.get("content") or "").strip()
             url=str(r.get("url") or "").strip()
-            # Attribute an event only when the company/ticker appears in the headline.\n        # Body-text matches are too noisy for roundup stories that mention many companies.\n        tickers=mentioned_tickers(title,batch)
+            # Attribute an event only when the company/ticker appears in the headline.
+            # Body-text matches are too noisy for roundup stories that mention many companies.
+            tickers=mentioned_tickers(title,batch)
             if not tickers: continue
             score,reasons=materiality(title,content,url)
             if score<5: continue
