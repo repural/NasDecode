@@ -2533,6 +2533,89 @@ def main():
     except (FileNotFoundError,json.JSONDecodeError):
         pass
 
+    # Semiconductor Catalyst Momentum: context layer, deliberately NOT another Nasdaq Score weight.
+    # It distinguishes isolated single-name reactions from broad sector read-through and stores
+    # the observation for persistence analysis. Price remains the source of truth; catalyst context
+    # changes interpretation/confidence, not the underlying leadership score.
+    catalyst_context={'status':'None','active':None,'recent':[],'scoreImpact':0,'directionalScoreUnchanged':True}
+    try:
+        with open(os.path.join(DATA_DIR,'semiconductor-catalysts.json'),encoding='utf-8') as _cf:
+            _catalysts=json.load(_cf).get('events',[])
+    except (FileNotFoundError,json.JSONDecodeError):
+        _catalysts=[]
+    try:
+        with open(DAILY_PATH,encoding='utf-8') as _dh:
+            _daily_for_catalysts=json.load(_dh).get('records',{})
+    except (FileNotFoundError,json.JSONDecodeError):
+        _daily_for_catalysts={}
+
+    def _event_reaction(_event):
+        try: _ed=datetime.date.fromisoformat(_event.get('date',''))
+        except (TypeError,ValueError): return None
+        _days=(now.date()-_ed).days
+        if _days<0 or _days>5: return None
+        _release=_event.get('release','during_session')
+        _pending=(_ed==now.date() and ((_release=='after_close' and equity_session(now)!='afterhours') or
+                                       (_release=='before_open' and equity_session(now) in ('closed','premarket'))))
+        if _pending:
+            return {'event':_event,'status':'Pending','daysSince':_days,'readThrough':'Pending','persistence':'Pending'}
+
+        _returns={}
+        _basis='current_session'
+        if _ed==now.date():
+            for _sym in ['QQQ','NVDA','AMD','AVGO','TSM','MU','SMH','SOXX','.SOX','.IXIC']:
+                if _sym in q and isinstance(q[_sym],dict):
+                    _v=quoted_move(q[_sym],equity_session(now))
+                    if _v is not None: _returns[_sym]=_v
+        else:
+            _rec=_daily_for_catalysts.get(_ed.isoformat(),{})
+            _levels=_rec.get('sessionLevels',{})
+            _map={'QQQ':'QQQ','NVDA':'NVDA','AMD':'AMD','AVGO':'AVGO','TSM':'TSM','MU':'MU','SMH':'SMH','SOXX':'SOXX','.SOX':'SOX','.IXIC':'Nasdaq'}
+            for _sym,_label in _map.items():
+                _v=num((_levels.get(_label) or {}).get('changeCloseToClosePct'))
+                if _v is not None: _returns[_sym]=_v
+            _basis='event_day_close'
+
+        _qqq=_returns.get('QQQ'); _ixic=_returns.get('.IXIC'); _target=_returns.get(_event.get('ticker'))
+        _sox=_returns.get('.SOX'); _smh=_returns.get('SMH'); _soxx=_returns.get('SOXX')
+        _members=[_returns.get(x) for x in ['NVDA','AMD','AVGO','TSM','MU'] if _returns.get(x) is not None]
+        _positive=sum(x>0 for x in _members)
+        _target_rel=round(_target-_qqq,2) if _target is not None and _qqq is not None else None
+        _sox_rel=round(_sox-_ixic,2) if _sox is not None and _ixic is not None else None
+        _etf_confirm=sum(1 for x in (_smh,_soxx) if x is not None and _qqq is not None and x>_qqq)
+        _broad_positive=bool(len(_members)>=4 and _positive>=3 and _sox_rel is not None and _sox_rel>=0.50 and _etf_confirm>=1)
+        _broad_negative=bool(len(_members)>=4 and _positive<=2 and _sox_rel is not None and _sox_rel<=-0.50 and
+                             sum(1 for x in (_smh,_soxx) if x is not None and _qqq is not None and x<_qqq)>=1)
+        _target_dir=1 if _target_rel is not None and _target_rel>=0.75 else (-1 if _target_rel is not None and _target_rel<=-0.75 else 0)
+        if _broad_positive and _target_dir>=0: _read='Strong positive sector read-through'
+        elif _broad_negative and _target_dir<=0: _read='Strong negative sector read-through'
+        elif _target_dir>0: _read='Positive catalyst; weak/isolated sector read-through'
+        elif _target_dir<0: _read='Negative catalyst; weak/isolated sector read-through'
+        else: _read='No decisive sector read-through yet'
+        _persistence='Event-day observation' if _days==0 else (f'Persisting {_days} session'+('' if _days==1 else 's')+' later')
+        return {'event':_event,'status':'Observed','daysSince':_days,'basis':_basis,'readThrough':_read,'persistence':_persistence,
+                'targetReturnPct':round(_target,2) if _target is not None else None,'targetVsQqqPp':_target_rel,
+                'soxVsNasdaqPp':_sox_rel,'semiBasketPositive':_positive if _members else None,
+                'semiBasketAvailable':len(_members),'etfConfirmationsVsQqq':_etf_confirm}
+
+    _evaluated=[x for x in (_event_reaction(e) for e in _catalysts) if x]
+    _evaluated.sort(key=lambda x:(x.get('daysSince',99),0 if x.get('status')=='Pending' else 1))
+    if _evaluated:
+        _active=_evaluated[0]
+        catalyst_context={'status':_active.get('status'),'active':_active,'recent':_evaluated[:3],
+                          'scoreImpact':0,'directionalScoreUnchanged':True,
+                          'interpretation':'Catalyst context modifies confidence/read-through only; price-based Semiconductor Leadership remains unchanged.'}
+        _semi_row=_factor_row('Semiconductor leadership')
+        _ev=_active.get('event',{})
+        _ctx=f" Catalyst context: {_ev.get('title','Semiconductor catalyst')} — {_active.get('readThrough','Pending')}."
+        _semi_row['explanation']=str(_semi_row.get('explanation',''))+_ctx
+        _semi_row['catalystMomentum']={'title':_ev.get('title'),'type':_ev.get('type'),'status':_active.get('status'),
+                                      'readThrough':_active.get('readThrough'),'persistence':_active.get('persistence')}
+        if d.get('marketAnalysis'):
+            _mp=d['marketAnalysis'].setdefault('paragraphs',[])
+            _mp.append(f"Semiconductor catalyst context: {_ev.get('title','current catalyst')}. {_active.get('readThrough','Pending')}; {_active.get('persistence','persistence not established')}.")
+            d['marketAnalysis']['semiconductorCatalystMomentum']=catalyst_context
+
     # Internal Confirmation: breadth 35%, semiconductor leadership 35%, volatility 20%, mega-caps 10%.
     internal_confirmation_score=round(.35*breadth_confirm+.35*semiconductor_leadership_score+.20*vol_confirm+.10*mega_confirm)
     def _confirm_label(v):
@@ -2546,6 +2629,7 @@ def main():
         },
         'semiconductorLeadership':{
             'score':semiconductor_leadership_score,'label':_confirm_label(semiconductor_leadership_score),
+            'catalystMomentum':catalyst_context,
             'broadLeadershipTrigger':broad_trigger,'accelerationFromOpenPoints':semi_acceleration,
             'relativeStrengthPp':{k:relative_strength.get(k) for k in ('soxVsNasdaqPp','soxxVsNasdaqPp','smhVsNasdaqPp','semiBasketVsNasdaqPp')},
             'breadth':{'universeSize':len(SEMI_BREADTH),'available':len(semi_member_returns),
