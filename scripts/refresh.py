@@ -2616,6 +2616,11 @@ def main():
             _mp.append(f"Semiconductor catalyst context: {_ev.get('title','current catalyst')}. {_active.get('readThrough','Pending')}; {_active.get('persistence','persistence not established')}.")
             d['marketAnalysis']['semiconductorCatalystMomentum']=catalyst_context
 
+    # Expose Catalyst Momentum as its own first-class dashboard signal. The underlying
+    # price-based leadership score remains independent; this object is for visibility,
+    # event attribution and persistence/read-through analysis.
+    d['catalystMomentum']=catalyst_context
+
     # Internal Confirmation: breadth 35%, semiconductor leadership 35%, volatility 20%, mega-caps 10%.
     internal_confirmation_score=round(.35*breadth_confirm+.35*semiconductor_leadership_score+.20*vol_confirm+.10*mega_confirm)
     def _confirm_label(v):
