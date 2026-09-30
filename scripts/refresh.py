@@ -2320,8 +2320,22 @@ def main():
         'confirmation':_ma.get('confirmation'),
         'baseline':_ma.get('baseline') or {}
     }
-    with open(PREMARKET_PATH,'w',encoding='utf-8') as _pf:
-        json.dump(_pm,_pf,ensure_ascii=False,indent=2)
+    # A researched daily brief is authoritative through the pre-open window.
+    # Quantitative refreshes must not replace it with the deterministic fallback.
+    _existing_pm={}
+    try:
+        with open(PREMARKET_PATH,encoding='utf-8') as _pf:
+            _existing_pm=json.load(_pf)
+    except (OSError,json.JSONDecodeError):
+        pass
+    _preserve_research=(
+        equity_session(now) in ('closed','premarket')
+        and _existing_pm.get('researchBrief') is True
+        and _existing_pm.get('tradingDate')==now.date().isoformat()
+    )
+    if not _preserve_research:
+        with open(PREMARKET_PATH,'w',encoding='utf-8') as _pf:
+            json.dump(_pm,_pf,ensure_ascii=False,indent=2)
     curve_obs={'spreadBp':round(curve_2s10s,1) if curve_2s10s is not None else None,
                'changeBp':round(curve_change,1) if curve_change is not None else None,
                'shape':curve_regime} if curve_2s10s is not None else None
