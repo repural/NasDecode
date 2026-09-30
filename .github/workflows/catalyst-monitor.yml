@@ -12,7 +12,7 @@ on:
     # Near-real-time monitoring during the main U.S. pre-market/regular/after-hours window.
     - cron: '*/30 11-23 * * 1-5'
     # Lower-frequency overnight scan so important Asia/Europe semiconductor news is still captured.
-    - cron: '0 */2 0-10 * * 1-5'
+    - cron: '0 0-10/2 * * 1-5'
 
 concurrency:
   group: nasdecode-catalyst-monitor
