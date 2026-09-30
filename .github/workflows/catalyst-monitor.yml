@@ -2,6 +2,12 @@ name: Monitor Major Catalysts
 
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/refresh_catalysts.py'
+      - 'data/catalyst-universe.json'
+      - '.github/workflows/catalyst-monitor.yml'
   schedule:
     # Near-real-time monitoring during the main U.S. pre-market/regular/after-hours window.
     - cron: '*/30 11-23 * * 1-5'
