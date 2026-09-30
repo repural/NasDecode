@@ -31,7 +31,7 @@ ALIASES={
  "QCOM":["qualcomm"],"RMBS":["rambus"],"SWKS":["skyworks"],"TSM":["taiwan semiconductor","tsmc"],
  "TER":["teradyne"],"TXN":["texas instruments"],
  "AAPL":["apple"],"MSFT":["microsoft"],"AMZN":["amazon"],"GOOGL":["alphabet","google"],
- "META":["meta platforms","meta"],"TSLA":["tesla"]
+ "META":["meta platforms"],"TSLA":["tesla"]
 }
 
 def load_json(path, default):
@@ -118,7 +118,7 @@ def main():
             title=str(r.get("title") or "").strip()
             content=str(r.get("content") or "").strip()
             url=str(r.get("url") or "").strip()
-            tickers=mentioned_tickers(title+" "+content,batch)
+            # Attribute an event only when the company/ticker appears in the headline.\n        # Body-text matches are too noisy for roundup stories that mention many companies.\n        tickers=mentioned_tickers(title,batch)
             if not tickers: continue
             score,reasons=materiality(title,content,url)
             if score<5: continue
