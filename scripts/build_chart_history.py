@@ -21,10 +21,14 @@ for day,rec in sorted((data.get("records") or {}).items()):
             continue
     except ValueError:
         continue
-    nasdaq=(rec.get("sessionLevels") or {}).get("Nasdaq") or {}
+    close_snap=rec.get("closeSnapshot") or {}
+    nasdaq=((close_snap.get("sessionLevels") or {}).get("Nasdaq")
+            or (rec.get("sessionLevels") or {}).get("Nasdaq")
+            or {})
+    score_obj=close_snap.get("nasdaqScore") or rec.get("nasdaqScore") or {}
     row={
       "date":day,
-      "nasdaqScore":(rec.get("nasdaqScore") or {}).get("score"),
+      "nasdaqScore":score_obj.get("score"),
       "nasdaqClose":nasdaq.get("close"),
       "nasdaqDailyPct":nasdaq.get("changeCloseToClosePct"),
       "opportunity":(rec.get("opportunityScore") or {}).get("score"),
