@@ -100,7 +100,7 @@ def main():
     sox=universe.get("components",[])
     mega=universe.get("megaCaps",[])
     symbols=list(dict.fromkeys(sox+mega))
-    batches=[symbols[i:i+6] for i in range(0,len(symbols),6)]
+    batches=[symbols[i:i+10] for i in range(0,len(symbols),10)]
     discovered=[]
     for batch in batches:
         names=[]
