@@ -195,9 +195,10 @@ async function loadAnalysis(d){try{
   premarketMeta.textContent='Analysis updated: '+escHtml(a.updatedET||'—');
   const ns=d?.nasdaqScore||{}; const sig=ns.signal==='positive'?'Positive':ns.signal==='negative'?'Negative':'Mixed';
   const score=a.score!==null&&a.score!==undefined?(a.score>0?'+':'')+a.score+' / 100':'—';
-  const paras=(a.paragraphs||[]).map(x=>'<p>'+marketTimeText(x)+'</p>').join('');
-  const catalysts=(a.catalysts||[]).map(e=>'<li><b>'+escHtml(e.date)+' · '+escHtml(e.title)+'</b> — '+escHtml(e.detail)+'</li>').join('');
-  premarketBody.innerHTML='<div class="bias"><b>Nasdaq Score:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+'</div>'+paras+(catalysts?'<h3>Near-term catalysts</h3><ul>'+catalysts+'</ul>':'')+nearbyMajorEarnings(d);
+  const paras=(a.paragraphs||a.summary||[]).map(x=>'<p>'+marketTimeText(x)+'</p>').join('');
+  const catalysts=(a.catalysts||a.events||[]).map(e=>'<li><b>'+escHtml(e.date?e.date+' · ':'')+escHtml(e.title)+'</b> — '+escHtml(e.detail)+'</li>').join('');
+  const richMeta=a.bias?'<div class="bias"><b>Pre-market bias:</b> '+escHtml(a.bias)+(a.confidence?' &nbsp; · &nbsp; <b>Confidence:</b> '+escHtml(a.confidence):'')+(a.eventRisk?' &nbsp; · &nbsp; <b>Event risk:</b> '+escHtml(a.eventRisk):'')+'</div>':'<div class="bias"><b>Nasdaq Score:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+'</div>';
+  premarketBody.innerHTML=richMeta+paras+(a.watchIntoOpen?'<p>'+marketTimeText(a.watchIntoOpen)+'</p>':'')+(a.keyTimes?'<p>'+marketTimeText(a.keyTimes)+'</p>':'')+(catalysts?'<h3>Near-term catalysts</h3><ul>'+catalysts+'</ul>':'')+nearbyMajorEarnings(d);
 }catch(e){premarketMeta.textContent='Analysis not available yet.';premarketBody.innerHTML='';}}
 update.onclick=async()=>{const d=await load();await loadAnalysis(d)};loadChartHistory();(async()=>{const d=await load();await loadAnalysis(d)})();
 </script></body></html>
