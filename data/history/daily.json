@@ -15815,7 +15815,7 @@
     },
     "2026-10-01": {
       "schemaVersion": 4,
-      "timestampET": "2026-10-01T03:47:18.367437-04:00",
+      "timestampET": "2026-10-01T03:54:36.729893-04:00",
       "market": {
         ".IXIC": {
           "last": 26861.064,
@@ -16039,11 +16039,11 @@
           "provider": "CNBC Quote Cache"
         },
         ".VIX": {
-          "last": 16.7,
+          "last": 16.62,
           "open": 16.33,
           "previousClose": 16.34,
-          "changePct": 2.2,
-          "timestamp": "3:47 AM EDT",
+          "changePct": 1.71,
+          "timestamp": "3:54 AM EDT",
           "observationDate": "2026-10-01",
           "dataState": "live",
           "realTime": true,
@@ -16056,7 +16056,7 @@
           "open": 5.289,
           "previousClose": 5.293,
           "changePct": 0.7368,
-          "timestamp": "3:47 AM EDT",
+          "timestamp": "3:54 AM EDT",
           "observationDate": "2026-10-01",
           "dataState": "live",
           "realTime": true,
@@ -16069,7 +16069,7 @@
           "open": 4.891,
           "previousClose": 4.887,
           "changePct": -0.0547,
-          "timestamp": "3:47 AM EDT",
+          "timestamp": "3:53 AM EDT",
           "observationDate": "2026-10-01",
           "dataState": "live",
           "realTime": true,
@@ -16078,11 +16078,11 @@
           "provider": "CNBC Quote Cache"
         },
         "@CL.1": {
-          "last": 92.11,
+          "last": 92.13,
           "open": 90.4,
           "previousClose": 90.42,
-          "changePct": 1.87,
-          "timestamp": "3:37 AM EDT",
+          "changePct": 1.89,
+          "timestamp": "3:44 AM EDT",
           "observationDate": "2026-10-01",
           "dataState": "delayed_or_unspecified",
           "realTime": false,
@@ -16091,11 +16091,11 @@
           "provider": "CNBC Quote Cache"
         },
         "@LCO.1": {
-          "last": 99.65,
+          "last": 99.44,
           "open": 97.66,
           "previousClose": 98.03,
-          "changePct": 1.65,
-          "timestamp": "8:37 AM BST",
+          "changePct": 1.44,
+          "timestamp": "8:44 AM BST",
           "observationDate": "2026-10-01",
           "dataState": "delayed_or_unspecified",
           "realTime": false,
@@ -16503,7 +16503,7 @@
         "signal": "mixed",
         "label": "Mixed / Neutral",
         "confidence": 58,
-        "coverage": 92
+        "coverage": 93
       },
       "consolidationRisk": {
         "score": 20,
@@ -16623,11 +16623,11 @@
         "note": "Higher means more extended/crowded. Missing inputs reduce model coverage rather than being guessed."
       },
       "opportunityScore": {
-        "score": 40,
+        "score": 41,
         "label": "Limited",
         "signal": "mixed",
         "setupReadiness": 44,
-        "recoveryConfirmation": 23,
+        "recoveryConfirmation": 26,
         "consolidationReadiness": 80,
         "volatilityDislocation": 25,
         "unlockedVolatilityOpportunity": 6,
@@ -16637,12 +16637,12 @@
           "semiconductorRecovery": 49,
           "yieldStabilization": 0,
           "fedRepricing": 67,
-          "setupImprovement": 26,
-          "oilStabilization": 54
+          "setupImprovement": 54,
+          "oilStabilization": 66
         },
         "lookbackSessions": 5,
         "explanation": "Measures how attractive current conditions are for deploying new capital by combining market setup, recovery evidence, consolidation risk and volatility context. Calculated by NasDecode's proprietary AI-led model using the latest available inputs.",
-        "debug": "NasDecode AI-led opportunity model. Proprietary methodology. Current recovery confirmation: 23%."
+        "debug": "NasDecode AI-led opportunity model. Proprietary methodology. Current recovery confirmation: 26%."
       },
       "confirmationLayer": {
         "internalConfirmation": {
@@ -16802,7 +16802,7 @@
           "observationDate": "2026-09-29"
         },
         "macroConstraint": {
-          "ratesMacroBucketStrength": -0.541
+          "ratesMacroBucketStrength": -0.536
         },
         "directionalScoreUnchanged": true,
         "checkpoint": "intraday"
@@ -16819,17 +16819,9 @@
             "signal": "mixed",
             "label": "Mixed / Neutral",
             "confidence": 58,
-            "coverage": 92
+            "coverage": 93
           },
           "nasdaqFactorScores": [
-            {
-              "factor": "Technology earnings calendar",
-              "bucket": "Event Risk",
-              "strength": 0.0,
-              "effectiveWeight": 0.35,
-              "freshnessWeight": 0.35,
-              "regimeMultiplier": 1.0
-            },
             {
               "factor": "S&P 500 50D Breadth / Oversold",
               "bucket": "Breadth",
@@ -16845,14 +16837,6 @@
               "effectiveWeight": 3.75,
               "freshnessWeight": 1.0,
               "regimeMultiplier": 1.25
-            },
-            {
-              "factor": "Options positioning / sentiment",
-              "bucket": "Volatility / Positioning",
-              "strength": 0.436,
-              "effectiveWeight": 2.4,
-              "freshnessWeight": 1.0,
-              "regimeMultiplier": 1.2
             },
             {
               "factor": "10Y Treasury Yield",
@@ -16871,9 +16855,17 @@
               "regimeMultiplier": 1.25
             },
             {
+              "factor": "Options positioning / sentiment",
+              "bucket": "Volatility / Positioning",
+              "strength": 0.436,
+              "effectiveWeight": 2.4,
+              "freshnessWeight": 1.0,
+              "regimeMultiplier": 1.2
+            },
+            {
               "factor": "Oil (WTI / Brent)",
               "bucket": "Rates / Macro",
-              "strength": -0.587,
+              "strength": -0.555,
               "effectiveWeight": 2.5,
               "freshnessWeight": 1.0,
               "regimeMultiplier": 1.25
@@ -16884,6 +16876,22 @@
               "strength": -0.113,
               "effectiveWeight": 1.4,
               "freshnessWeight": 0.7,
+              "regimeMultiplier": 1.0
+            },
+            {
+              "factor": "Nasdaq volatility (VXN / VIX)",
+              "bucket": "Volatility / Positioning",
+              "strength": 0.074,
+              "effectiveWeight": 0.84,
+              "freshnessWeight": 0.7,
+              "regimeMultiplier": 1.2
+            },
+            {
+              "factor": "Technology earnings calendar",
+              "bucket": "Event Risk",
+              "strength": 0.0,
+              "effectiveWeight": 0.35,
+              "freshnessWeight": 0.35,
               "regimeMultiplier": 1.0
             },
             {
@@ -16901,14 +16909,6 @@
               "effectiveWeight": 1.0,
               "freshnessWeight": 1.0,
               "regimeMultiplier": 1.0
-            },
-            {
-              "factor": "Nasdaq volatility (VXN / VIX)",
-              "bucket": "Volatility / Positioning",
-              "strength": 0.068,
-              "effectiveWeight": 1.68,
-              "freshnessWeight": 0.7,
-              "regimeMultiplier": 1.2
             },
             {
               "factor": "Economic / inflation data",
@@ -16929,13 +16929,6 @@
           ],
           "nasdaqBucketScores": [
             {
-              "bucket": "Event Risk",
-              "strength": 0.0,
-              "weight": 0.35,
-              "uncappedWeight": 0.35,
-              "cap": 4.0
-            },
-            {
               "bucket": "Breadth",
               "strength": -0.643,
               "weight": 4.0,
@@ -16944,16 +16937,16 @@
             },
             {
               "bucket": "Rates / Macro",
-              "strength": -0.541,
+              "strength": -0.536,
               "weight": 9.0,
               "uncappedWeight": 15.0,
               "cap": 9.0
             },
             {
               "bucket": "Volatility / Positioning",
-              "strength": 0.285,
-              "weight": 4.08,
-              "uncappedWeight": 4.08,
+              "strength": 0.342,
+              "weight": 3.24,
+              "uncappedWeight": 3.24,
               "cap": 7.0
             },
             {
@@ -16962,6 +16955,13 @@
               "weight": 5.55,
               "uncappedWeight": 5.55,
               "cap": 9.0
+            },
+            {
+              "bucket": "Event Risk",
+              "strength": 0.0,
+              "weight": 0.35,
+              "uncappedWeight": 0.35,
+              "cap": 4.0
             }
           ],
           "consolidationRisk": {
@@ -17082,11 +17082,11 @@
             "note": "Higher means more extended/crowded. Missing inputs reduce model coverage rather than being guessed."
           },
           "opportunityScore": {
-            "score": 40,
+            "score": 41,
             "label": "Limited",
             "signal": "mixed",
             "setupReadiness": 44,
-            "recoveryConfirmation": 23,
+            "recoveryConfirmation": 26,
             "consolidationReadiness": 80,
             "volatilityDislocation": 25,
             "unlockedVolatilityOpportunity": 6,
@@ -17096,12 +17096,12 @@
               "semiconductorRecovery": 49,
               "yieldStabilization": 0,
               "fedRepricing": 67,
-              "setupImprovement": 26,
-              "oilStabilization": 54
+              "setupImprovement": 54,
+              "oilStabilization": 66
             },
             "lookbackSessions": 5,
             "explanation": "Measures how attractive current conditions are for deploying new capital by combining market setup, recovery evidence, consolidation risk and volatility context. Calculated by NasDecode's proprietary AI-led model using the latest available inputs.",
-            "debug": "NasDecode AI-led opportunity model. Proprietary methodology. Current recovery confirmation: 23%."
+            "debug": "NasDecode AI-led opportunity model. Proprietary methodology. Current recovery confirmation: 26%."
           },
           "confirmationLayer": {
             "internalConfirmation": {
@@ -17261,7 +17261,7 @@
               "observationDate": "2026-09-29"
             },
             "macroConstraint": {
-              "ratesMacroBucketStrength": -0.541
+              "ratesMacroBucketStrength": -0.536
             },
             "directionalScoreUnchanged": true,
             "checkpoint": "intraday"
@@ -17273,8 +17273,8 @@
             "changePct": 1.77
           },
           "vix": {
-            "close": 16.7,
-            "changePct": 2.2
+            "close": 16.62,
+            "changePct": 1.71
           },
           "us10y": {
             "close": 5.332,
@@ -17385,12 +17385,12 @@
           },
           "oil": {
             "wti": {
-              "close": 92.11,
-              "changePct": 1.87
+              "close": 92.13,
+              "changePct": 1.89
             },
             "brent": {
-              "close": 99.65,
-              "changePct": 1.65
+              "close": 99.44,
+              "changePct": 1.44
             }
           },
           "earningsAvwap": {
@@ -17550,12 +17550,6 @@
         }
       },
       "factors": {
-        "Technology earnings calendar": {
-          "signal": "mixed",
-          "currentImpact": "Low",
-          "trend": "Stable →",
-          "latest": "Micron (MU): Sep 30, 2026; earlier Sep reports include AVGO Sep 2, ORCL Sep 10 and ADBE Sep 10"
-        },
         "S&P 500 50D Breadth / Oversold": {
           "signal": "negative",
           "currentImpact": "High",
@@ -17567,12 +17561,6 @@
           "currentImpact": "High",
           "trend": "Stable →",
           "latest": "Oct 28: Hike 38% / Hold 62% / Cut 0% · Dec 9: Above current 90% / Same 10% / Below 0% · Jan 27: Above current 95% / Same 5% / Below 0%"
-        },
-        "Options positioning / sentiment": {
-          "signal": "mixed",
-          "currentImpact": "Medium",
-          "trend": "Stable →",
-          "latest": "Equity P/C 0.53 | 5D avg 0.51 | → stable | Index 1.03 | Total 0.88"
         },
         "10Y Treasury Yield": {
           "signal": "negative",
@@ -17586,17 +17574,35 @@
           "trend": "Deteriorating ↓",
           "latest": "4.914% (+2.7 bp vs prev close)"
         },
+        "Options positioning / sentiment": {
+          "signal": "mixed",
+          "currentImpact": "Medium",
+          "trend": "Stable →",
+          "latest": "Equity P/C 0.53 | 5D avg 0.51 | → stable | Index 1.03 | Total 0.88"
+        },
         "Oil (WTI / Brent)": {
           "signal": "negative",
           "currentImpact": "Medium",
           "trend": "Deteriorating ↓",
-          "latest": "WTI $92.11 (+1.87%) | Brent $99.65 (+1.65%)"
+          "latest": "WTI $92.13 (+1.89%) | Brent $99.44 (+1.44%)"
         },
         "Semiconductor leadership": {
           "signal": "negative",
           "currentImpact": "Medium",
           "trend": "Deteriorating ↓",
           "latest": "Previous regular-session close · 5-stock basket -0.01% | 2/5 positive | QQQ +0.25% | basket vs QQQ -0.26 pp | SMH +0.35% | SMH vs QQQ +0.10 pp"
+        },
+        "Nasdaq volatility (VXN / VIX)": {
+          "signal": "mixed",
+          "currentImpact": "Low",
+          "trend": "Stable →",
+          "latest": "VXN 22.46 (+1.77%) | VIX 16.62 (+1.71%)"
+        },
+        "Technology earnings calendar": {
+          "signal": "mixed",
+          "currentImpact": "Low",
+          "trend": "Stable →",
+          "latest": "Micron (MU): Sep 30, 2026; earlier Sep reports include AVGO Sep 2, ORCL Sep 10 and ADBE Sep 10"
         },
         "Mega-cap leadership": {
           "signal": "positive",
@@ -17609,12 +17615,6 @@
           "currentImpact": "Low",
           "trend": "Stable →",
           "latest": "Previous close · Nasdaq-100 breadth: 45/102 advancing (44%) · 56 declining · 1 flat"
-        },
-        "Nasdaq volatility (VXN / VIX)": {
-          "signal": "mixed",
-          "currentImpact": "Medium",
-          "trend": "Stable →",
-          "latest": "VXN 22.46 (+1.77%) | VIX 16.70 (+2.20%)"
         },
         "Economic / inflation data": {
           "signal": "mixed",
