@@ -6,9 +6,11 @@ on:
     paths-ignore:
       - 'data/dashboard.json'
       - 'data/cnbc_probe.json'
+      - 'data/session-analyses.json'
       - 'data/history/**'
       - 'public/data/dashboard.json'
       - 'public/data/premarket.json'
+      - 'public/data/session-analyses.json'
       - 'public/index.html'
       - '.github/workflows/test-*.yml'
   workflow_dispatch:
@@ -19,17 +21,20 @@ on:
     # True U.S. pre-market refresh after extended-hours trading begins.
     - cron: '15 4 * * 1-5'
       timezone: 'America/New_York'
+    # Intraday analysis checkpoints. These create historically stored narratives.
+    - cron: '30 10 * * 1-5'
+      timezone: 'America/New_York'
+    - cron: '0 13 * * 1-5'
+      timezone: 'America/New_York'
+    - cron: '30 15 * * 1-5'
+      timezone: 'America/New_York'
     # Dedicated post-close snapshot. This is the canonical daily NasDecode score
     # used by historical Score-vs-Nasdaq comparisons.
     - cron: '15 16 * * 1-5'
       timezone: 'America/New_York'
     # Resilient U.S.-session heartbeat. UTC intentionally spans both EDT and EST;
     # the gate below decides from America/New_York time whether a refresh is useful.
-    # Repeated hourly opportunities recover automatically if GitHub delays one schedule.
     - cron: '7 13-21 * * 1-5'
-# Serialize all dashboard refreshes. Multiple overlapping refreshes were both
-# consuming the Massive free-tier quota and racing to push generated snapshots.
-# queue:max preserves scheduled/manual runs instead of cancelling an in-progress refresh.
 concurrency:
   group: nasboard-data-refresh
   queue: max
@@ -45,8 +50,6 @@ jobs:
         id: gate
         shell: bash
         run: |
-          # Push/manual runs always refresh. Scheduled heartbeat runs only during the
-          # useful U.S. window: shortly after the open through the official close.
           if [ "$GITHUB_EVENT_NAME" != "schedule" ]; then
             echo "run=yes" >> "$GITHUB_OUTPUT"
             exit 0
@@ -55,7 +58,6 @@ jobs:
           if [ "$ny_hm" -ge 0930 ] && [ "$ny_hm" -le 1620 ]; then
             echo "run=yes" >> "$GITHUB_OUTPUT"
           else
-            # Dedicated 06:00 Türkiye, 04:15 ET pre-market and 16:15 ET close schedules must still run.
             tr_hm=$(TZ=Europe/Istanbul date +%H%M)
             if { [ "$tr_hm" -ge 0550 ] && [ "$tr_hm" -le 0615 ]; } || { [ "$ny_hm" -ge 0405 ] && [ "$ny_hm" -le 0430 ]; } || { [ "$ny_hm" -ge 1605 ] && [ "$ny_hm" -le 1645 ]; }; then
               echo "run=yes" >> "$GITHUB_OUTPUT"
@@ -69,7 +71,6 @@ jobs:
       - name: Refresh data
         if: steps.gate.outputs.run == 'yes'
         env:
-          # Massive is optional enrichment: the secret never enters the repository or public assets.
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
           SCHEDULE_EXPR: ${{ github.event.schedule }}
         run: |
@@ -77,10 +78,16 @@ jobs:
             export NASDECODE_CLOSE_SNAPSHOT=1
             echo "Capturing canonical post-close NasDecode snapshot"
           fi
+          case "$SCHEDULE_EXPR" in
+            "30 10 * * 1-5") export NASDECODE_ANALYSIS_STAGE=early_market ;;
+            "0 13 * * 1-5") export NASDECODE_ANALYSIS_STAGE=mid_market ;;
+            "30 15 * * 1-5") export NASDECODE_ANALYSIS_STAGE=near_close ;;
+          esac
           python scripts/refresh.py
           python scripts/live_confirmation.py
           python scripts/refine_scores.py
           python scripts/fix_three_day_watch.py
+          python scripts/capture_session_analysis.py
           python scripts/build_chart_history.py
       - name: Commit refreshed snapshot
         if: steps.gate.outputs.run == 'yes'
@@ -88,18 +95,17 @@ jobs:
         run: |
           git config user.name 'nasdecode-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add data/dashboard.json data/premarket.json data/history
+          git add data/dashboard.json data/premarket.json data/session-analyses.json data/history
           mkdir -p public/data
           cp index.html public/index.html
+          python scripts/inject_session_analysis_ui.py public/index.html
           cp data/dashboard.json public/data/dashboard.json
           cp data/premarket.json public/data/premarket.json
-          git add public/index.html public/data/dashboard.json public/data/premarket.json public/data/chart-history.json
+          cp data/session-analyses.json public/data/session-analyses.json
+          git add public/index.html public/data/dashboard.json public/data/premarket.json public/data/session-analyses.json public/data/chart-history.json
           if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
           git diff --cached --quiet && exit 0
           git commit -m 'Refresh dashboard data'
-          # A code/UI commit or another data refresh can land while this run is
-          # generating data. Retry from the newest main and regenerate instead of
-          # rebasing generated snapshots, which can create history conflicts.
           for attempt in 1 2 3 4; do
             if git push; then
               exit 0
@@ -111,13 +117,16 @@ jobs:
             python scripts/live_confirmation.py
             python scripts/refine_scores.py
             python scripts/fix_three_day_watch.py
+            python scripts/capture_session_analysis.py
             python scripts/build_chart_history.py
-            git add data/dashboard.json data/premarket.json data/history
+            git add data/dashboard.json data/premarket.json data/session-analyses.json data/history
             mkdir -p public/data
             cp index.html public/index.html
+            python scripts/inject_session_analysis_ui.py public/index.html
             cp data/dashboard.json public/data/dashboard.json
             cp data/premarket.json public/data/premarket.json
-            git add public/index.html public/data/dashboard.json public/data/premarket.json public/data/chart-history.json
+            cp data/session-analyses.json public/data/session-analyses.json
+            git add public/index.html public/data/dashboard.json public/data/premarket.json public/data/session-analyses.json public/data/chart-history.json
             if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
             git diff --cached --quiet && exit 0
             git commit -m 'Refresh dashboard data'
