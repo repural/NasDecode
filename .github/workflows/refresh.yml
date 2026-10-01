@@ -36,7 +36,7 @@ on:
     - cron: '7 13-21 * * 1-5'
 concurrency:
   group: nasboard-data-refresh
-  queue: max
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -94,14 +94,16 @@ jobs:
         run: |
           git config user.name 'nasdecode-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add data/dashboard.json data/premarket.json data/history
+          git add -A data
           mkdir -p public/data
           cp index.html public/index.html
           python scripts/inject_session_analysis_ui.py public/index.html
           cp data/dashboard.json public/data/dashboard.json
           cp data/premarket.json public/data/premarket.json
-          cp data/history/session-analyses.json public/data/session-analyses.json
-          git add public/index.html public/data/dashboard.json public/data/premarket.json public/data/session-analyses.json public/data/chart-history.json
+          if [ -f data/history/session-analyses.json ]; then
+            cp data/history/session-analyses.json public/data/session-analyses.json
+          fi
+          git add -A public/index.html public/data
           if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
           git diff --cached --quiet && exit 0
           git commit -m 'Refresh dashboard data'
@@ -118,14 +120,16 @@ jobs:
             python scripts/fix_three_day_watch.py
             python scripts/capture_session_analysis.py
             python scripts/build_chart_history.py
-            git add data/dashboard.json data/premarket.json data/history
+            git add -A data
             mkdir -p public/data
             cp index.html public/index.html
             python scripts/inject_session_analysis_ui.py public/index.html
             cp data/dashboard.json public/data/dashboard.json
             cp data/premarket.json public/data/premarket.json
+            if [ -f data/history/session-analyses.json ]; then
             cp data/history/session-analyses.json public/data/session-analyses.json
-            git add public/index.html public/data/dashboard.json public/data/premarket.json public/data/session-analyses.json public/data/chart-history.json
+          fi
+            git add -A public/index.html public/data
             if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
             git diff --cached --quiet && exit 0
             git commit -m 'Refresh dashboard data'
