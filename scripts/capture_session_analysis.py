@@ -13,7 +13,7 @@ from zoneinfo import ZoneInfo
 ROOT=Path(__file__).resolve().parents[1]
 DASH=ROOT/'data'/'dashboard.json'
 DAILY=ROOT/'data'/'history'/'daily.json'
-OUT=ROOT/'data'/'session-analyses.json'
+OUT=ROOT/'data'/'history'/'session-analyses.json'
 NY=ZoneInfo('America/New_York')
 
 STAGES={
@@ -132,6 +132,7 @@ def main():
     today[stage]=snap
     store['latestTradingDate']=day
     store['updatedET']=now.isoformat()
+    OUT.parent.mkdir(parents=True,exist_ok=True)
     OUT.write_text(json.dumps(store,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
     print(f'Captured {stage} analysis for {day}.')
 
