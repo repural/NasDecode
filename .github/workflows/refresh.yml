@@ -79,6 +79,7 @@ jobs:
           fi
           python scripts/refresh.py
           python scripts/live_confirmation.py
+          python scripts/refine_scores.py
           python scripts/build_chart_history.py
       - name: Commit refreshed snapshot
         if: steps.gate.outputs.run == 'yes'
@@ -107,6 +108,7 @@ jobs:
             git reset --hard origin/main
             MASSIVE_API_KEY='${{ secrets.MASSIVE_API_KEY }}' python scripts/refresh.py
             python scripts/live_confirmation.py
+            python scripts/refine_scores.py
             python scripts/build_chart_history.py
             git add data/dashboard.json data/premarket.json data/history
             mkdir -p public/data
