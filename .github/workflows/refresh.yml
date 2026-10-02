@@ -83,6 +83,7 @@ jobs:
             "30 15 * * 1-5") export NASDECODE_ANALYSIS_STAGE=near_close ;;
           esac
           python scripts/refresh.py
+          python scripts/sync_premarket_brief.py
           python scripts/live_confirmation.py
           python scripts/refine_scores.py
           python scripts/fix_three_day_watch.py
@@ -115,6 +116,7 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             MASSIVE_API_KEY='${{ secrets.MASSIVE_API_KEY }}' python scripts/refresh.py
+            python scripts/sync_premarket_brief.py
             python scripts/live_confirmation.py
             python scripts/refine_scores.py
             python scripts/fix_three_day_watch.py
