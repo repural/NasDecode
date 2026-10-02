@@ -281,9 +281,13 @@ async function loadAnalysis(d){try{
   }
   const r=await fetch('data/premarket.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const a=await r.json();
   const nyDate=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-  if(a.tradingDate!==nyDate){analysisTitle.textContent='Pre-Market Analysis';premarketMeta.textContent='Today’s analysis is being prepared.';premarketBody.innerHTML='';return;}
-  analysisTitle.textContent=a.stage==='premarket'?'Pre-Market Analysis':'Early Market Outlook';
-  premarketMeta.textContent='Analysis updated: '+escHtml(a.updatedET||'—');
+  // Research briefs historically used {updated, summary, events} while the
+  // quantitative pipeline uses {tradingDate, updatedET, paragraphs, catalysts}.
+  // Accept either schema so a valid same-day researched brief is never hidden.
+  const inferredDate=a.tradingDate||String(a.updated||a.updatedET||'').match(/\\b20\\d{2}-\\d{2}-\\d{2}\\b/)?.[0];
+  if(inferredDate!==nyDate){analysisTitle.textContent='Pre-Market Analysis';premarketMeta.textContent='Today’s analysis is being prepared.';premarketBody.innerHTML='';return;}
+  analysisTitle.textContent=(a.stage==='premarket'||a.researchBrief||a.bias)?'Pre-Market Analysis':'Early Market Outlook';
+  premarketMeta.textContent='Analysis updated: '+escHtml(a.updatedET||a.updated||'—');
   const ns=d?.nasdaqScore||{}; const sig=ns.signal==='positive'?'Positive':ns.signal==='negative'?'Negative':'Mixed';
   const score=a.score!==null&&a.score!==undefined?(a.score>0?'+':'')+a.score+' / 100':'—';
   const paras=(a.paragraphs||a.summary||[]).map(x=>'<p>'+marketTimeText(x)+'</p>').join('');
