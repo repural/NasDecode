@@ -22,12 +22,6 @@ on:
     # Cash-session heartbeat every 5 minutes. GitHub cron is UTC; the ET gate below
     # limits execution to the U.S. session. This replaces unsupported timezone keys.
     - cron: '*/5 13-22 * * 1-5'
-    # Dedicated checkpoint candidates for both EDT and EST. The ET-time logic below
-    # decides whether the run is Early, Mid, Near-Close, or the canonical Close.
-    - cron: '30 14,15 * * 1-5'
-    - cron: '0 17,18 * * 1-5'
-    - cron: '30 19,20 * * 1-5'
-    - cron: '15 20,21 * * 1-5'
 concurrency:
   group: nasboard-data-refresh
   cancel-in-progress: true
