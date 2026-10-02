@@ -258,7 +258,9 @@ async function loadAnalysis(d){try{
   const part=t=>nyParts.find(x=>x.type===t)?.value; const mins=Number(part('hour'))*60+Number(part('minute'));
   const marketDay=['Mon','Tue','Wed','Thu','Fri'].includes(part('weekday')); const afterOpen=marketDay&&mins>=570;
   if(afterOpen&&d){
-    analysisTitle.textContent='Market Analysis';
+    // Use the four session phases explicitly. The content remains live; the
+    // scheduled checkpoint snapshots are retained separately for validation.
+    analysisTitle.textContent=mins>=930?'Near-Close Analysis':mins>=780?'Mid-Market Analysis':'Early Market Analysis';
     premarketMeta.textContent='Analysis updated: '+(d.updatedET||'—')+' (ET)';
     const ns=d.nasdaqScore||{};
     const ma=d.marketAnalysis||{};
