@@ -14,26 +14,20 @@ on:
       - '.github/workflows/test-*.yml'
   workflow_dispatch:
   schedule:
-    # Daily pre-market snapshot at 06:00 Türkiye time.
-    - cron: '0 6 * * 1-5'
-      timezone: 'Europe/Istanbul'
-    # True U.S. pre-market refresh after extended-hours trading begins.
-    - cron: '15 4 * * 1-5'
-      timezone: 'America/New_York'
-    # Intraday analysis checkpoints. These create historically stored narratives.
-    - cron: '30 10 * * 1-5'
-      timezone: 'America/New_York'
-    - cron: '0 13 * * 1-5'
-      timezone: 'America/New_York'
-    - cron: '30 15 * * 1-5'
-      timezone: 'America/New_York'
-    # Dedicated post-close snapshot. This is the canonical daily NasDecode score
-    # used by historical Score-vs-Nasdaq comparisons.
-    - cron: '15 16 * * 1-5'
-      timezone: 'America/New_York'
-    # Resilient U.S.-session heartbeat. UTC intentionally spans both EDT and EST;
-    # the gate below decides from America/New_York time whether a refresh is useful.
-    - cron: '7 13-21 * * 1-5'
+    # 06:00 Türkiye pre-market research/data snapshot.
+    - cron: '0 3 * * 1-5'
+    # 04:15 ET pre-market refresh. Both UTC hours are scheduled so this remains
+    # correct across U.S. daylight-saving changes; the ET gate admits only the right one.
+    - cron: '15 8,9 * * 1-5'
+    # Cash-session heartbeat every 5 minutes. GitHub cron is UTC; the ET gate below
+    # limits execution to the U.S. session. This replaces unsupported timezone keys.
+    - cron: '*/5 13-22 * * 1-5'
+    # Dedicated checkpoint candidates for both EDT and EST. The ET-time logic below
+    # decides whether the run is Early, Mid, Near-Close, or the canonical Close.
+    - cron: '30 14,15 * * 1-5'
+    - cron: '0 17,18 * * 1-5'
+    - cron: '30 19,20 * * 1-5'
+    - cron: '15 20,21 * * 1-5'
 concurrency:
   group: nasboard-data-refresh
   cancel-in-progress: true
@@ -73,15 +67,20 @@ jobs:
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
           SCHEDULE_EXPR: ${{ github.event.schedule }}
         run: |
-          if [ "$SCHEDULE_EXPR" = "15 16 * * 1-5" ]; then
+          ny_hm=$(TZ=America/New_York date +%H%M)
+          # Derive checkpoint type from actual New York time, never from UTC cron text.
+          # This keeps the schedule correct through EDT/EST changes.
+          if [ "$ny_hm" -ge 1025 ] && [ "$ny_hm" -le 1040 ]; then
+            export NASDECODE_ANALYSIS_STAGE=early_market
+          elif [ "$ny_hm" -ge 1255 ] && [ "$ny_hm" -le 1310 ]; then
+            export NASDECODE_ANALYSIS_STAGE=mid_market
+          elif [ "$ny_hm" -ge 1525 ] && [ "$ny_hm" -le 1540 ]; then
+            export NASDECODE_ANALYSIS_STAGE=near_close
+          fi
+          if [ "$ny_hm" -ge 1605 ] && [ "$ny_hm" -le 1625 ]; then
             export NASDECODE_CLOSE_SNAPSHOT=1
             echo "Capturing canonical post-close NasDecode snapshot"
           fi
-          case "$SCHEDULE_EXPR" in
-            "30 10 * * 1-5") export NASDECODE_ANALYSIS_STAGE=early_market ;;
-            "0 13 * * 1-5") export NASDECODE_ANALYSIS_STAGE=mid_market ;;
-            "30 15 * * 1-5") export NASDECODE_ANALYSIS_STAGE=near_close ;;
-          esac
           python scripts/refresh.py
           python scripts/sync_premarket_brief.py
           python scripts/live_confirmation.py
