@@ -198,7 +198,7 @@ def main():
             e["firstObservedAt"]=prev.get("firstObservedAt") or e["firstObservedAt"]
             # Once a primary source has verified an Actual, a later calendar scrape
             # may refresh consensus but must never downgrade the official value.
-            if prev.get("sourceMode")=="official_verified":
+            if prev.get("verified"):
                 for k in ("actual","unit","verified","sourceMode","officialSourceUrl",
                           "officialVerifiedAt","ingestionLagSeconds",
                           "officialVerificationLagSeconds","calendarActual","source"):
@@ -207,6 +207,10 @@ def main():
             rel=dt.datetime.fromisoformat(e["releasedAt"])
             obs=dt.datetime.fromisoformat(e["firstObservedAt"].replace("Z","+00:00"))
             e["ingestionLagSeconds"]=max(0,round((obs-rel.astimezone(UTC)).total_seconds()))
+            if e.get("providerLastUpdate"):
+                pu=dt.datetime.fromisoformat(str(e["providerLastUpdate"]).replace("Z","+00:00"))
+                if pu.tzinfo is None: pu=pu.replace(tzinfo=UTC)
+                e["providerUpdateLagSeconds"]=max(0,round((pu.astimezone(UTC)-rel.astimezone(UTC)).total_seconds()))
         except Exception: pass
         existing[e["id"]]=e
     cutoff=(dt.datetime.now(NY).date()-dt.timedelta(days=45)).isoformat()
