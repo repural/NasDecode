@@ -624,7 +624,13 @@ def main():
     for _k in ('environmentScore','environmentScoreRaw','environmentScorePrevious','environmentTrend','environmentSignal','environmentLabel','environmentConfidence','environmentCoverage','setupModel'):
         d.pop(_k,None)
     d['schemaVersion']=2
-    now=datetime.datetime.now(NY); capture_close_snapshot=os.environ.get('NASDECODE_CLOSE_SNAPSHOT','').strip()=='1'; rows=[r for r in d['rows'] if r.get('factor') not in {'AI / data-center financing','System liquidity','U.S. Dollar (DXY)','10Y real yield'}];
+    now=datetime.datetime.now(NY)
+    _close_mins=now.hour*60+now.minute
+    # Any successful post-close refresh can create the canonical close snapshot.
+    # This avoids losing the close when a scheduled GitHub run is delayed or skipped.
+    capture_close_snapshot=(os.environ.get('NASDECODE_CLOSE_SNAPSHOT','').strip()=='1' or
+                            (now.weekday()<5 and 16*60+5<=_close_mins<=16*60+45))
+    rows=[r for r in d['rows'] if r.get('factor') not in {'AI / data-center financing','System liquidity','U.S. Dollar (DXY)','10Y real yield'}];
     for r in rows:
         if r.get('factor')=='10Y nominal yield': r['factor']='10Y Treasury Yield'
         if r.get('factor')=='Economic / inflation data': r['factor']='Macro Data Impulse'
