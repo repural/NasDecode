@@ -627,6 +627,7 @@ def main():
     now=datetime.datetime.now(NY); capture_close_snapshot=os.environ.get('NASDECODE_CLOSE_SNAPSHOT','').strip()=='1'; rows=[r for r in d['rows'] if r.get('factor') not in {'AI / data-center financing','System liquidity','U.S. Dollar (DXY)','10Y real yield'}];
     for r in rows:
         if r.get('factor')=='10Y nominal yield': r['factor']='10Y Treasury Yield'
+        if r.get('factor')=='Economic / inflation data': r['factor']='Macro Data Impulse'
     # Add S&P 500 50-day breadth/oversold as a separate factor. It is intentionally
     # distinct from the session-based Nasdaq breadth row.
     if not any(r.get('factor')=='S&P 500 50D Breadth / Oversold' for r in rows):
