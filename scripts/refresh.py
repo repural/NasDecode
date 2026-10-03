@@ -20,6 +20,7 @@ HISTORY_DIR=os.path.join(ROOT,'data','history')
 DAILY_PATH=os.path.join(HISTORY_DIR,'daily.json')
 PREMARKET_PATH=os.path.join(ROOT,'data','premarket.json')
 EARNINGS_AVWAP_PATH=os.path.join(ROOT,'data','earnings_avwap_watchlist.json')
+UPCOMING_EARNINGS_PATH=os.path.join(ROOT,'data','upcoming-earnings.json')
 _MASSIVE_LAST_CALL=0.0
 NY=ZoneInfo('America/New_York')
 CNBC_BASE='https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol'
@@ -638,6 +639,51 @@ def main():
           'currentImpact':'Low'
         })
     d['rows']=rows
+
+    # Structured earnings calendar: only future SOX/mega-cap reports inside the next
+    # 14 calendar days belong in the upcoming-catalyst view. This replaces the stale
+    # single-company Technology earnings calendar text that previously retained MU.
+    try:
+        with open(UPCOMING_EARNINGS_PATH,encoding='utf-8') as ef:
+            _earnings_doc=json.load(ef)
+    except (OSError,json.JSONDecodeError):
+        _earnings_doc={'events':[]}
+    _earnings=[]
+    _earn_end=now.date()+datetime.timedelta(days=14)
+    for _e in _earnings_doc.get('events',[]):
+        try: _ed=datetime.date.fromisoformat(str(_e.get('date','')))
+        except ValueError: continue
+        if now.date()<=_ed<=_earn_end:
+            _earnings.append(dict(_e))
+    _earnings.sort(key=lambda x:(x.get('date',''),x.get('ticker','')))
+    d['upcomingEarnings']={
+        'windowDays':14,
+        'asOfDate':now.date().isoformat(),
+        'windowEnd':_earn_end.isoformat(),
+        'events':_earnings
+    }
+    _erow=next((r for r in rows if r.get('factor')=='Technology earnings calendar'),None)
+    if _erow is not None:
+        if _earnings:
+            _parts=[]
+            for _e in _earnings:
+                try: _ed=datetime.date.fromisoformat(_e['date'])
+                except ValueError: continue
+                _parts.append(f"{_e.get('ticker','?')}: {_ed.strftime('%b %d, %Y')}")
+            _erow['latest']=' · '.join(_parts)
+            _erow['direction']='Upcoming SOX / mega-cap earnings'
+            _erow['signal']='mixed'
+            _erow['freshness']='14-day rolling calendar'
+            _erow['source']='Nasdaq earnings calendar / confirmed company IR dates'
+            _erow['explanation']='Upcoming earnings for current SOX constituents and NasDecode mega-cap shares within the next 14 calendar days.'
+        else:
+            _erow['latest']='No SOX or mega-cap earnings scheduled in the next 14 days'
+            _erow['direction']='No scheduled earnings'
+            _erow['signal']='mixed'
+            _erow['freshness']='14-day rolling calendar'
+            _erow['source']='Nasdaq earnings calendar / confirmed company IR dates'
+            _erow['explanation']='No current SOX constituent or NasDecode mega-cap earnings are retained inside the rolling 14-day window.'
+
     # Preserve the previous refresh so we can show whether each factor is improving or deteriorating.
     previous={r.get('factor'):{'signal':r.get('signal','mixed'),'currentImpact':r.get('currentImpact','Low'),'latest':r.get('latest','')} for r in rows}
     try:
