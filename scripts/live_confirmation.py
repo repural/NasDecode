@@ -21,7 +21,6 @@ DAILY=os.path.join(ROOT,'data','history','daily.json')
 INTRADAY_DIR=os.path.join(ROOT,'data','history','intraday')
 NY=ZoneInfo('America/New_York')
 CORE=['.IXIC','QQQ','.SOX','SOX','SOXX','SMH']
-SELECTIVE=['NVDA','AMD','AVGO','TSM','MU']
 
 
 def signal100(rows,name):
@@ -66,8 +65,6 @@ def compute(now):
     if None in (nasdaq,qqq,sox,soxx,smh) or len(members)<10:
         return None
 
-    selective=[members[s] for s in SELECTIVE if s in members]
-    basket=sum(selective)/len(selective) if selective else None
     outperform=sum(1 for v in members.values() if v>qqq)
     positive=sum(1 for v in members.values() if v>0)
     breadth_pct=100*outperform/len(members)
@@ -80,8 +77,9 @@ def compute(now):
     sox_rs=sox-nasdaq
     soxx_rs=soxx-nasdaq
     smh_rs=smh-nasdaq
-    basket_rs=(basket-nasdaq) if basket is not None else None
-    score=round(.35*rs_score(sox_rs)+.20*rs_score(soxx_rs)+.15*rs_score(smh_rs)+.20*breadth_score+.10*rs_score(basket_rs))
+    # SOX is the primary leadership signal. SOXX/SMH and the full SOX-member
+    # breadth universe confirm it; the former five-stock basket is excluded.
+    score=round(.55*rs_score(sox_rs)+.15*rs_score(soxx_rs)+.10*rs_score(smh_rs)+.20*breadth_score)
     broad=bool(sox_rs>=0.50 and soxx_rs>0 and smh_rs>0)
     if broad: score=max(75,score)
 
@@ -93,8 +91,6 @@ def compute(now):
             'soxVsNasdaqPp':round(sox_rs,4),
             'soxxVsNasdaqPp':round(soxx_rs,4),
             'smhVsNasdaqPp':round(smh_rs,4),
-            'semiBasketVsNasdaqPp':round(basket_rs,4) if basket_rs is not None else None,
-            'semiBasketVsQqqPp':round(basket-qqq,4) if basket is not None else None,
             'smhVsQqqPp':round(smh-qqq,4),
             'basis':'current_session',
             'observationDate':now.date().isoformat()
@@ -107,7 +103,8 @@ def compute(now):
             'outperformingQqqPct':round(breadth_pct,1),
             'score':breadth_score
         },
-        'weights':{'SOX':35,'SOXX':20,'SMH':15,'semiconductorBreadth':20,'selectiveBasket':10},
+        'weights':{'SOX':55,'SOXX':15,'SMH':10,'semiconductorBreadth':20},
+        'sessionReturnsPct':{'SOX':round(sox,4),'Nasdaq':round(nasdaq,4),'SOXX':round(soxx,4),'SMH':round(smh,4)},
         'basis':'current_session',
         'observationDate':now.date().isoformat(),
         'liveCoverage':{'core':5,'soxMembers':len(members),'minimumSoxMembers':10}
@@ -122,6 +119,27 @@ def apply_confirmation(d,semi):
     for key in ('catalystMomentum','accelerationFromOpenPoints'):
         if key in old and key not in semi: semi[key]=old[key]
     layer['semiconductorLeadership']=semi
+
+    # Keep the visible scorecard row aligned with the SOX-first confirmation layer.
+    sr=semi.get('sessionReturnsPct',{})
+    rs=semi.get('relativeStrengthPp',{})
+    sox_rel=rs.get('soxVsNasdaqPp'); soxx_rel=rs.get('soxxVsNasdaqPp'); smh_rel=rs.get('smhVsNasdaqPp')
+    row=next((x for x in rows if x.get('factor')=='Semiconductor leadership'),None)
+    if row is not None and sox_rel is not None:
+        if sox_rel>0.25 and (soxx_rel or 0)>=-0.20 and (smh_rel or 0)>=-0.20:
+            sig='positive'; direction='Confirmed leadership' if ((soxx_rel or 0)>0.20 or (smh_rel or 0)>0.20) else 'SOX leading Nasdaq'
+        elif sox_rel<-0.25 and (soxx_rel or 0)<=0.20 and (smh_rel or 0)<=0.20:
+            sig='negative'; direction='Confirmed weakness' if ((soxx_rel or 0)<-0.20 or (smh_rel or 0)<-0.20) else 'SOX lagging Nasdaq'
+        else:
+            sig='mixed'; direction='Mixed confirmation'
+        row['latest']=(f"Live · SOX {sr.get('SOX',0):+.2f}% | Nasdaq {sr.get('Nasdaq',0):+.2f}% | "
+                       f"SOX vs Nasdaq {sox_rel:+.2f} pp | SOXX vs Nasdaq {soxx_rel:+.2f} pp | "
+                       f"SMH vs Nasdaq {smh_rel:+.2f} pp")
+        row['signal']=sig; row['direction']=direction
+        row['freshness']='Live CNBC quote'
+        row['source']='CNBC quotes; SOX relative strength vs Nasdaq is primary, confirmed by SOXX/SMH and broad SOX-member participation'
+        row['explanation']=(row['latest']+'. SOX is the primary semiconductor leadership reference; '
+                            'SOXX, SMH and full-universe semiconductor breadth are confirmation layers.')
 
     breadth=signal100(rows,'Market breadth')
     vol=signal100(rows,'Nasdaq volatility (VXN / VIX)')
