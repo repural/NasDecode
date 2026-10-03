@@ -242,6 +242,13 @@ def main():
         'note':'Market Response only attenuates an existing Rates / Macro contribution; it never reverses its sign.'
     }
     d['marketResponse']=mr
+    layer=d.setdefault('confirmationLayer',{})
+    layer['marketResponseApplied']=active
+    layer['directionalScoreUnchanged']=not active
+    macro_constraint=layer.setdefault('macroConstraint',{})
+    macro_constraint['ratesMacroBucketStrength']=round(raw_macro,3) if raw_macro is not None else None
+    macro_constraint['effectiveRatesMacroBucketStrength']=round(effective_macro,3) if effective_macro is not None else None
+    macro_constraint['marketResponseAttenuationPct']=round(attenuation*100,1)
     DASH.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
     sync_history(now,d,mr)
     print(f"Market Response: {status} {mode or 'none'} · evidence {mr['evidenceScore']} · attenuation {mr['attenuationPct']}% · Nasdaq {mr['rawNasdaqScore']} -> {mr['effectiveNasdaqScore']}")
