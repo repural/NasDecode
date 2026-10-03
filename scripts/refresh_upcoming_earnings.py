@@ -44,6 +44,9 @@ def main():
     sox=set(u.get("components",[])); mega=set(u.get("megaCaps",[]))
     wanted=sox|mega
     existing=load(OUT,{"events":[]})
+    if existing.get("asOfDate")==today.isoformat() and int(existing.get("fetchSuccessfulDays",0) or 0)>=15:
+        print("upcoming earnings already refreshed successfully today")
+        return
     retained={}
     for e in existing.get("events",[]):
         try: d=dt.date.fromisoformat(e.get("date",""))
@@ -76,8 +79,9 @@ def main():
 
     # Nasdaq rows supersede retained rows for the same ticker/date. Retained rows protect
     # confirmed events when the public endpoint is temporarily incomplete.
-    retained.update(fetched)
-    events=sorted(retained.values(),key=lambda e:(e["date"],e["ticker"]))
+    # Company-IR-confirmed retained rows are authoritative over generic calendar rows.
+    fetched.update(retained)
+    events=sorted(fetched.values(),key=lambda e:(e["date"],e["ticker"]))
     out={
         "schemaVersion":1,
         "windowDays":14,
