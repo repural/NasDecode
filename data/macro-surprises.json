@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "description": "Verified U.S. macro actual-vs-consensus observations used by NasDecode's decaying macro impulse. Direction is from a rate-sensitive Nasdaq lens; other rate/oil/Fed factors remain separate.",
+  "events": [
+    {
+      "id": "2026-10-02-nfp",
+      "name": "Nonfarm payrolls",
+      "family": "labor",
+      "releasedAt": "2026-10-02T08:30:00-04:00",
+      "actual": 29,
+      "consensus": 90,
+      "unit": "K",
+      "direction": "higher_is_negative",
+      "scale": 50,
+      "importance": 1,
+      "halfLifeDays": 5,
+      "source": "U.S. Bureau of Labor Statistics / Reuters consensus",
+      "sourceUrl": "https://www.bls.gov/news.release/archives/empsit_10022026.htm",
+      "consensusSourceUrl": "https://www.reuters.com/business/us-job-growth-expected-slow-september-unemployment-rate-likely-steady-2026-10-02/"
+    },
+    {
+      "id": "2026-10-02-unemployment",
+      "name": "Unemployment rate",
+      "family": "labor",
+      "releasedAt": "2026-10-02T08:30:00-04:00",
+      "actual": 4.2,
+      "consensus": 4.1,
+      "unit": "%",
+      "direction": "higher_is_positive",
+      "scale": 0.2,
+      "importance": 0.75,
+      "halfLifeDays": 5,
+      "source": "U.S. Bureau of Labor Statistics / Reuters consensus",
+      "sourceUrl": "https://www.bls.gov/news.release/archives/empsit_10022026.htm",
+      "consensusSourceUrl": "https://www.reuters.com/business/us-job-growth-expected-slow-september-unemployment-rate-likely-steady-2026-10-02/"
+    },
+    {
+      "id": "2026-09-30-core-pce-mom",
+      "name": "Core PCE",
+      "family": "inflation",
+      "releasedAt": "2026-09-30T08:30:00-04:00",
+      "actual": 0.2,
+      "consensus": 0.3,
+      "unit": "%",
+      "direction": "higher_is_negative",
+      "scale": 0.15,
+      "importance": 1,
+      "halfLifeDays": 7,
+      "source": "U.S. Bureau of Economic Analysis / consensus survey",
+      "sourceUrl": "https://www.bea.gov/news/2026/personal-income-and-outlays-august-2026"
+    },
+    {
+      "id": "2026-10-01-ism-manufacturing",
+      "name": "ISM Manufacturing PMI",
+      "family": "growth",
+      "releasedAt": "2026-10-01T10:00:00-04:00",
+      "actual": 54.5,
+      "consensus": 55,
+      "unit": "",
+      "direction": "higher_is_negative",
+      "scale": 0.8,
+      "importance": 0.55,
+      "halfLifeDays": 3,
+      "source": "Institute for Supply Management / consensus survey",
+      "sourceUrl": "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/pmi/september/"
+    }
+  ]
+}
