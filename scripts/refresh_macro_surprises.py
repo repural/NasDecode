@@ -111,52 +111,81 @@ def main():
                 return
         except ValueError: pass
 
-    req=urllib.request.Request(URL,headers={
-        "User-Agent":"Mozilla/5.0 (compatible; NasDecode/1.0; economic-calendar-refresh)",
-        "Accept":"text/html,application/xhtml+xml"
-    })
+    found=[]
+    # Prefer the structured calendar API. Guest access is intentionally used so
+    # NasDecode does not depend on another paid secret. The public HTML calendar
+    # remains a fallback if the guest endpoint is unavailable.
     try:
+        api="https://api.tradingeconomics.com/calendar/country/united%20states?c=guest%3Aguest&f=json"
+        req=urllib.request.Request(api,headers={"User-Agent":UA if 'UA' in globals() else "NasDecode/1.0"})
         with urllib.request.urlopen(req,timeout=20) as r:
-            body=r.read().decode("utf-8","replace")
+            items=json.loads(r.read().decode("utf-8","replace"))
+        if isinstance(items,list):
+            for item in items:
+                label=str(item.get("Event") or item.get("Category") or "").strip()
+                rule=next((x for x in RULES if label.lower()==x[1].lower() or label.lower().startswith(x[1].lower()+" ")),None)
+                if not rule: continue
+                key,rlabel,family,subtype,scale,importance,half_life,direction,hm,official=rule
+                actual,au=parse_number(item.get("Actual")); consensus,cu=parse_number(item.get("Forecast"))
+                if actual is None or consensus is None: continue
+                raw_date=str(item.get("Date") or "")[:10]
+                try: day=dt.date.fromisoformat(raw_date)
+                except ValueError: continue
+                event={
+                    "id":f"{day.isoformat()}-{key}","name":rlabel,"family":family,"subtype":subtype,
+                    "releasedAt":release_timestamp(day,hm),"actual":actual,"consensus":consensus,
+                    "unit":au or cu or str(item.get("Unit") or ""),
+                    "direction":direction,"scale":scale,"importance":importance,"halfLifeDays":half_life,
+                    "verified":False,"sourceMode":"calendar_observed",
+                    "firstObservedAt":now.isoformat().replace("+00:00","Z"),
+                    "providerLastUpdate":item.get("LastUpdate"),
+                    "calendarId":item.get("CalendarId"),
+                    "source":f"Trading Economics calendar actual + consensus; awaiting {official} verification",
+                    "sourceUrl":URL,"officialSource":official,
+                    "consensusSource":"Trading Economics survey consensus"
+                }
+                found.append(event)
     except Exception as e:
-        print("Macro calendar refresh unavailable:",repr(e))
-        return
+        print("Structured macro calendar unavailable:",repr(e))
 
-    p=TableRows(); p.feed(body)
-    current_date=None; found=[]
-    for row in p.rows:
-        d=date_from_row(row)
-        if d:
-            current_date=d
-            continue
-        if current_date is None: continue
-        for key,label,family,subtype,scale,importance,half_life,direction,hm,official in RULES:
-            idx=event_cell_index(row,label)
-            if idx is None: continue
-            tail=row[idx+1:]
-            # Calendar columns after Event are Actual, Previous, Consensus, Forecast.
-            if len(tail)<3: continue
-            actual,au=parse_number(tail[0]); consensus,cu=parse_number(tail[2])
-            if actual is None or consensus is None: continue
-            unit=au or cu
-            event={
-                "id":f"{current_date.isoformat()}-{key}",
-                "name":label,
-                "family":family,
-                "subtype":subtype,
-                "releasedAt":release_timestamp(current_date,hm),
-                "actual":actual,"consensus":consensus,"unit":unit,
-                "direction":direction,"scale":scale,"importance":importance,
-                "halfLifeDays":half_life,
-                "verified":False,"sourceMode":"calendar_observed",
-                "firstObservedAt":now.isoformat().replace("+00:00","Z"),
-                "source":f"Trading Economics calendar actual + consensus; awaiting {official} verification",
-                "sourceUrl":URL,
-                "officialSource":official,
-                "consensusSource":"Trading Economics survey consensus"
-            }
-            found.append(event)
-            break
+    if not found:
+        req=urllib.request.Request(URL,headers={
+            "User-Agent":"Mozilla/5.0 (compatible; NasDecode/1.0; economic-calendar-refresh)",
+            "Accept":"text/html,application/xhtml+xml"
+        })
+        try:
+            with urllib.request.urlopen(req,timeout=20) as r:
+                body=r.read().decode("utf-8","replace")
+        except Exception as e:
+            print("Macro calendar refresh unavailable:",repr(e))
+            return
+
+        p=TableRows(); p.feed(body)
+        current_date=None
+        for row in p.rows:
+            d=date_from_row(row)
+            if d:
+                current_date=d
+                continue
+            if current_date is None: continue
+            for key,label,family,subtype,scale,importance,half_life,direction,hm,official in RULES:
+                idx=event_cell_index(row,label)
+                if idx is None: continue
+                tail=row[idx+1:]
+                if len(tail)<3: continue
+                actual,au=parse_number(tail[0]); consensus,cu=parse_number(tail[2])
+                if actual is None or consensus is None: continue
+                found.append({
+                    "id":f"{current_date.isoformat()}-{key}","name":label,"family":family,"subtype":subtype,
+                    "releasedAt":release_timestamp(current_date,hm),"actual":actual,"consensus":consensus,
+                    "unit":au or cu,"direction":direction,"scale":scale,"importance":importance,
+                    "halfLifeDays":half_life,"verified":False,"sourceMode":"calendar_observed",
+                    "firstObservedAt":now.isoformat().replace("+00:00","Z"),
+                    "source":f"Trading Economics calendar actual + consensus; awaiting {official} verification",
+                    "sourceUrl":URL,"officialSource":official,
+                    "consensusSource":"Trading Economics survey consensus"
+                })
+                break
 
     if not found:
         print("Macro calendar parsed but no mapped releases with actual + consensus were found; preserving file.")
