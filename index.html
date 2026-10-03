@@ -54,6 +54,17 @@ function render(d){
   const leadershipMetrics=r=>{
     if(!/leadership/i.test(r.factor||'')||r.scorecard) return '';
     const t=String(r.latest||'');
+    if(r.factor==='Semiconductor leadership'){
+      const sox=t.match(/\bSOX\s*([+-]?\d+(?:\.\d+)?)%/i);
+      const rel=t.match(/SOX\s+vs\s+Nasdaq\s*([+-]?\d+(?:\.\d+)?)\s*pp/i);
+      const breadth=d.confirmationLayer?.semiconductorLeadership?.breadth?.outperformingQqqPct;
+      if(!sox&&!rel&&breadth==null) return '';
+      return '<div class="mini-metrics">'+
+        (sox?'<div class="mini-metric"><b>'+sox[1]+'%</b><span>SOX</span></div>':'')+
+        (rel?'<div class="mini-metric"><b>'+rel[1]+' pp</b><span>vs Nasdaq</span></div>':'')+
+        (breadth!=null?'<div class="mini-metric"><b>'+Number(breadth).toFixed(0)+'%</b><span>SOX breadth</span></div>':'')+
+        '</div>';
+    }
     const basket=t.match(/(?:basket\s*)?([+-]?\d+(?:\.\d+)?)%/i);
     const positive=t.match(/(\d+\/\d+)\s+positive/i);
     const rel=t.match(/(?:basket\s+)?vs\s+QQQ\s*([+-]?\d+(?:\.\d+)?)\s*pp/i);
