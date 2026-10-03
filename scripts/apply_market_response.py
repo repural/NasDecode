@@ -117,10 +117,12 @@ def sync_history(now,d,mr):
     if isinstance(rec,dict):
         rec['nasdaqScore']={k:v for k,v in (d.get('nasdaqScore') or {}).items() if k!='model'}
         rec['marketResponse']=mr
+        rec['confirmationLayer']=d.get('confirmationLayer')
         if isinstance(rec.get('validation'),dict):
             ms=rec['validation'].setdefault('modelState',{})
             ms['nasdaqScore']=rec['nasdaqScore']
             ms['marketResponse']=mr
+            ms['confirmationLayer']=d.get('confirmationLayer')
         if isinstance(rec.get('closeSnapshot'),dict):
             rec['closeSnapshot']['nasdaqScore']=rec['nasdaqScore']
             rec['closeSnapshot']['marketResponse']=mr
@@ -136,9 +138,10 @@ def sync_history(now,d,mr):
         if ts and ts.date()==now.date():
             last['nasdaqScore']={k:v for k,v in (d.get('nasdaqScore') or {}).items() if k!='model'}
             last['marketResponse']=mr
+            last['confirmationLayer']=d.get('confirmationLayer')
             if isinstance(last.get('validation'),dict):
                 ms=last['validation'].setdefault('modelState',{})
-                ms['nasdaqScore']=last['nasdaqScore']; ms['marketResponse']=mr
+                ms['nasdaqScore']=last['nasdaqScore']; ms['marketResponse']=mr; ms['confirmationLayer']=d.get('confirmationLayer')
             path.write_text(json.dumps(intra,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 
 
