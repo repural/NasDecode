@@ -30,7 +30,7 @@ const cleanSignal=s=>String(s??'').replace(/[🟢🔴🟡]/g,'').trim();
 // Escape model explanations before placing them in tooltip attributes.
 function escAttr(s){return String(s??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 function escHtml(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-const ANALYSIS_METRIC_RE=/\b(Macro Data Impulse|Nasdaq(?:-100| 100)?|SOXX|SOX|SMH|Semiconductor(?:s)?|Mega-cap(?:s)?|Market breadth|Breadth|VIX volatility|VIX|VXN|10Y Treasury(?: Yield)?|2Y Treasury(?: Yield)?|Treasury yields?|Treasuries|Fed(?: expectations)?|Federal Reserve|Options positioning|WTI|Brent|Oil|Core CPI|CPI|Core PCE|PCE|Payrolls?|Nonfarm payrolls?|Unemployment|Wages?|Average Hourly Earnings|ISM(?: Manufacturing| Services)?|PMI|Retail Sales|GDP)\b/gi;
+const ANALYSIS_METRIC_RE=/\b(NasDecode Score|Consolidation Risk|Opportunity Score|Macro Data Impulse|Semiconductor Leadership|Mega-cap Leadership|Earnings AVWAP Leadership|S&P 500 50D Breadth|Nasdaq(?:-100| 100)?|SOXX|SOX|SMH|Semiconductor(?:s)?|Mega-cap(?:s)?|Market breadth|Breadth|VIX volatility|VIX|VXN|10Y Treasury(?: Yield)?|2Y Treasury(?: Yield)?|Treasury yields?|Treasuries|Fed(?: expectations)?|Federal Reserve|Options positioning|WTI|Brent|Oil|Core CPI|CPI|Core PCE|PCE|Payrolls?|Nonfarm payrolls?|Unemployment|Wages?|Average Hourly Earnings|ISM(?: Manufacturing| Services)?|PMI|Retail Sales|GDP)\b/gi;
 function analysisText(s){
   // Narrative text is escaped first, then recognized market metrics/topics receive
   // presentation-only emphasis. No model logic or wording is changed here.
@@ -319,7 +319,7 @@ const nearbyMajorEarnings=d=>{
     const date=ed.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'});
     return escHtml((e.ticker||'')+' · '+date);
   }).join(', ');
-  return '<h3>Major earnings catalysts:</h3><p>'+items+'. These SOX/mega-cap reports fall inside the rolling 14-day catalyst window.</p>';
+  return '<h3>Major earnings catalysts:</h3><p>'+items+'. '+analysisText('These SOX/mega-cap reports fall inside the rolling 14-day catalyst window.')+'</p>';
 };
 async function loadAnalysis(d){try{
   // After the cash open, this section becomes the live Market Analysis and uses the
