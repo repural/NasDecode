@@ -365,7 +365,7 @@ def explain_current_rows(rows):
             if not r.get('fedMeetings'):
                 yields=f" Current rate-market context: 2Y {latest('2Y Treasury yield')} and 10Y {latest('10Y Treasury Yield')}." if live('2Y Treasury yield') and live('10Y Treasury Yield') else ''
                 r['explanation']=f'{x}. Market-implied Fed expectations are temporarily unavailable. {yields}'.strip()
-        elif n=='Economic / inflation data':
+        elif n=='Macro Data Impulse':
             yields=f" Current cross-check: 2Y {latest('2Y Treasury yield')} and 10Y {latest('10Y Treasury Yield')}." if live('2Y Treasury yield') and live('10Y Treasury Yield') else ''
             mi=r.get('macroImpulse') or {}
             if mi.get('activeReleaseCount',0):
@@ -1045,7 +1045,7 @@ def main():
         r['freshness']='STALE — Cboe put/call refresh failed'
         r['source']='Cboe Daily Market Statistics — options volume put/call ratios'
 
-    # Economic / inflation data is a DECAYING MACRO-IMPULSE factor.
+    # Macro Data Impulse is a DECAYING MACRO-IMPULSE factor.
     # Each verified actual-vs-consensus release is normalized by a release-specific
     # surprise scale, mapped through a Nasdaq/rates direction, and decays with age.
     # This preserves the information content of recent releases without pretending an
@@ -1116,8 +1116,8 @@ def main():
         latest_txt='No active verified macro impulse'
         freshness=f'No active verified surprise · checked {now.strftime("%Y-%m-%d %H:%M ET")}'
         source='NasDecode verified macro-surprise feed'
-    setrow(rows,'Economic / inflation data',latest_txt,direction,sig,freshness,source)
-    rr=next(x for x in rows if x['factor']=='Economic / inflation data')
+    setrow(rows,'Macro Data Impulse',latest_txt,direction,sig,freshness,source)
+    rr=next(x for x in rows if x['factor']=='Macro Data Impulse')
     rr['macroImpulseScore']=macro_score
     rr['macroImpulse']={
         'score':macro_score,'normalized':round(macro_impulse,4),
@@ -1287,7 +1287,7 @@ def main():
             fs=abs(float(r.get('fedPolicyScore',0) or 0))
             fr=abs(float(r.get('fedRepricingScore',0) or 0))
             imp='Very High' if fr>=60 or fs>=80 else ('High' if fr>=30 or fs>=50 else ('Medium' if fs>=20 or fr>=15 else 'Low'))
-        elif n in ('Economic / inflation data','Technology earnings calendar'):
+        elif n in ('Macro Data Impulse','Technology earnings calendar'):
             # Event impact rises ahead of the catalyst. Earnings can affect positioning well before the report,
             # so the 10-day window is deliberately treated as High.
             event_date=None
@@ -1455,7 +1455,7 @@ def main():
             if eq is not None:
                 level_s=clamp((0.70-eq)/0.25); trend_s=clamp(((avg-eq) if avg is not None else 0)/0.15)
                 return clamp(0.7*level_s+0.3*trend_s)
-        if n=='Economic / inflation data':
+        if n=='Macro Data Impulse':
             # Decaying aggregate of recent verified actual-vs-consensus releases.
             # Stored on a -100..+100 Nasdaq-support scale.
             mi=r.get('macroImpulseScore')
@@ -1464,7 +1464,7 @@ def main():
 
     bucket_of={
       '10Y Treasury Yield':'Rates / Macro','2Y Treasury yield':'Rates / Macro','Fed expectations':'Rates / Macro',
-      'Economic / inflation data':'Rates / Macro','U.S. Dollar (DXY)':'Rates / Macro','Oil (WTI / Brent)':'Rates / Macro',
+      'Macro Data Impulse':'Rates / Macro','U.S. Dollar (DXY)':'Rates / Macro','Oil (WTI / Brent)':'Rates / Macro',
       'Semiconductor leadership':'Leadership','Mega-cap leadership':'Leadership','Earnings AVWAP leadership':'Leadership',
       'Market breadth':'Breadth','S&P 500 50D Breadth / Oversold':'Breadth',
       'Nasdaq volatility (VXN / VIX)':'Volatility / Positioning','Options positioning / sentiment':'Volatility / Positioning',
@@ -1609,7 +1609,7 @@ def main():
 
     # Recompute summary cards from the refreshed rows instead of leaving stale labels in dashboard.json.
     group_members={
-        'Rates / Macro':['Fed expectations','10Y Treasury Yield','Economic / inflation data','2Y Treasury yield','Oil (WTI / Brent)'],
+        'Rates / Macro':['Fed expectations','10Y Treasury Yield','Macro Data Impulse','2Y Treasury yield','Oil (WTI / Brent)'],
         'Semiconductors':['Semiconductor leadership'],
         'Breadth':['Market breadth','Mega-cap leadership'],
         'Risk / Credit':['Nasdaq volatility (VXN / VIX)','Credit conditions','Options positioning / sentiment'],
@@ -1633,7 +1633,7 @@ def main():
     # Public presentation metadata is generated here so the browser remains a dumb renderer.
     group_explanations={
         'NASDAQ SETUP':'Dynamic synthesis of the factors currently driving Nasdaq. It highlights the strongest supportive forces, the main headwinds, and the market conditions that would materially strengthen or weaken the setup.',
-        'Rates / Macro':'Combines Fed policy, Treasury yields and economic/inflation data. Falling yields or easier policy expectations are generally more supportive for growth stocks.',
+        'Rates / Macro':'Combines Fed policy, Treasury yields and macro data impulse. Falling yields or easier policy expectations are generally more supportive for growth stocks.',
         'Semiconductors':'Tracks semiconductor leadership relative to QQQ. Strong chip participation often confirms Nasdaq technology momentum.',
         'Breadth':'Measures how broadly Nasdaq-100 constituents participate. Broad participation generally makes index moves more robust.',
         'Risk / Credit':'Combines volatility and credit conditions. Rising VXN/VIX or weaker high-yield credit can indicate increasing market stress.',
