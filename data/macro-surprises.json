@@ -39,16 +39,24 @@
       "name": "Core PCE",
       "family": "inflation",
       "releasedAt": "2026-09-30T08:30:00-04:00",
-      "actual": 0.2,
+      "actual": 0.3,
       "consensus": 0.3,
       "unit": "%",
       "direction": "higher_is_negative",
       "scale": 0.15,
       "importance": 1,
       "halfLifeDays": 7,
-      "source": "U.S. Bureau of Economic Analysis / consensus survey",
+      "source": "Primary publisher actual / market consensus",
       "sourceUrl": "https://www.bea.gov/news/2026/personal-income-and-outlays-august-2026",
-      "consensusSourceUrl": "https://seekingalpha.com/news/4648458-core-pce-inflation-rises-less-than-expected-in-august"
+      "consensusSourceUrl": "https://seekingalpha.com/news/4648458-core-pce-inflation-rises-less-than-expected-in-august",
+      "calendarActual": 0.2,
+      "verified": true,
+      "sourceMode": "official_verified",
+      "officialSourceUrl": "https://www.bea.gov/news/2026/personal-income-and-outlays-august-2026",
+      "officialVerifiedAt": "2026-10-03T18:34:59.071892Z",
+      "firstObservedAt": "2026-10-03T18:34:59.071892Z",
+      "ingestionLagSeconds": 281099,
+      "officialVerificationLagSeconds": 281099
     },
     {
       "id": "2026-10-01-ism-manufacturing",
@@ -80,10 +88,15 @@
       "importance": 0.6,
       "halfLifeDays": 7,
       "verified": true,
-      "sourceMode": "verified_seed",
-      "source": "U.S. Bureau of Economic Analysis actual / market consensus",
+      "sourceMode": "official_verified",
+      "source": "Primary publisher actual / market consensus",
       "sourceUrl": "https://www.bea.gov/news/2026/personal-income-and-outlays-august-2026",
-      "consensusSourceUrl": "https://tradingeconomics.com/united-states/pce-price-index-monthly-change"
+      "consensusSourceUrl": "https://tradingeconomics.com/united-states/pce-price-index-monthly-change",
+      "officialSourceUrl": "https://www.bea.gov/news/2026/personal-income-and-outlays-august-2026",
+      "officialVerifiedAt": "2026-10-03T18:34:59.071892Z",
+      "firstObservedAt": "2026-10-03T18:34:59.071892Z",
+      "ingestionLagSeconds": 281099,
+      "officialVerificationLagSeconds": 281099
     },
     {
       "id": "2026-09-30-gdp-final",
@@ -104,5 +117,10 @@
       "sourceUrl": "https://www.bea.gov/data/gdp/gross-domestic-product",
       "consensusSourceUrl": "https://www.investing.com/economic-calendar/gdp-375"
     }
-  ]
+  ],
+  "lastOfficialVerificationAt": "2026-10-03T18:34:59.071892Z",
+  "latencyDefinition": {
+    "ingestionLagSeconds": "Seconds from scheduled release time to first NasDecode observation.",
+    "officialVerificationLagSeconds": "Seconds from scheduled release time to first successful primary-source verification."
+  }
 }
