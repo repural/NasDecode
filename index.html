@@ -215,7 +215,7 @@ function render(d){
       const fmt=s=>Number.isFinite(Number(s))?(Number(s)<60?Number(s)+'s':(Number(s)/60).toFixed(1)+' min'):'—';
       if(ds.length){
         out+='<br><b>Primary-source verification:</b> '+ds.length+'/'+r.macroImpulse.drivers.length+' active releases';
-        out+='<br>'+ds.slice(0,5).map(x=>escHtml(x.name)+': observed '+fmt(x.ingestionLagSeconds)+' after scheduled release · official verified '+fmt(x.officialVerificationLagSeconds)+' after').join('<br>');
+        out+='<br>'+ds.slice(0,5).map(x=>escHtml(x.name)+': provider '+fmt(x.providerUpdateLagSeconds)+' · NasDecode observed '+fmt(x.ingestionLagSeconds)+' · official verified '+fmt(x.officialVerificationLagSeconds)+' after scheduled release').join('<br>');
       }
     }
     if(r.debug)out+='<br><b>Model/debug:</b> '+escHtml(r.debug);
