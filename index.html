@@ -24,7 +24,7 @@
  * generated JSON and renders cards, model rows, factor rows, and the daily brief.
  */
 const C={positive:'green',negative:'red',mixed:'amber'};
-const STATIC_ORDER=['Nasdaq volatility (VXN / VIX)','Options positioning / sentiment','10Y Treasury Yield','2Y Treasury yield','Oil (WTI / Brent)','Fed expectations','Economic / inflation data','Market breadth','Semiconductor leadership','Mega-cap leadership','Earnings AVWAP leadership','Technology earnings calendar','S&P 500 50D Breadth / Oversold'];
+const STATIC_ORDER=['Nasdaq volatility (VXN / VIX)','Options positioning / sentiment','10Y Treasury Yield','2Y Treasury yield','Oil (WTI / Brent)','Fed expectations','Macro Data Impulse','Market breadth','Semiconductor leadership','Mega-cap leadership','Earnings AVWAP leadership','Technology earnings calendar','S&P 500 50D Breadth / Oversold'];
 const orderOf=name=>{const i=STATIC_ORDER.indexOf(name);return i<0?STATIC_ORDER.length:i};
 const cleanSignal=s=>String(s??'').replace(/[🟢🔴🟡]/g,'').trim();
 // Escape model explanations before placing them in tooltip attributes.
@@ -118,11 +118,11 @@ function render(d){
   const rowBy=name=>orderedRows.find(r=>r.factor===name)||{};
   const toneLabel=s=>s==='positive'?'Supportive':s==='negative'?'Headwind':'Mixed';
   marketSetup.innerHTML='<div class="setup-hero"><div><div class="hero-label">Overall Market Setup</div><div class="hero-state '+(C[env.signal]||'')+'>'+escHtml(env.label||'Mixed')+'</div><div class="hero-score '+(C[env.signal]||'')+'>'+((Number(ns.score)>0?'+':'')+(ns.score??'—'))+'<span style="font-size:20px;color:var(--muted)"> /100</span></div><div class="hero-meta">Confidence '+(ns.confidence??'—')+'% · '+escHtml(ns.trend||'')+'</div></div><div><h3>NasDecode read</h3><p style="line-height:1.6;margin:0">'+escHtml('The current setup is '+String(env.label||'mixed').toLowerCase()+' with '+(ns.confidence??'—')+'% confidence and a '+String(ns.trend||'stable').toLowerCase()+' trend. '+(d.opportunityScore?.score<40?'Opportunity remains limited until recovery signals broaden.':'Opportunity conditions are improving as recovery signals strengthen.'))+'</p><div class="hero-meta">Consolidation Risk '+(d.consolidationRisk?.score??'—')+'/100 · Opportunity '+(d.opportunityScore?.score??'—')+'/100</div><div class="setup-chart" id="nasdaqScoreChart"></div></div></div>';
-  const econ=rowBy('Economic / inflation data'), fed=rowBy('Fed expectations');
+  const econ=rowBy('Macro Data Impulse'), fed=rowBy('Fed expectations');
   const cleanMajorCatalyst=r=>{
     if(!r?.factor)return null;
     let latest=String(r.latest||'').replace(/;\s*(?:earlier|previous|past)\b.*$/i,'').trim();
-    if(r.factor==='Economic / inflation data'&&/awaiting verified|no active surprise/i.test(latest))return null;
+    if(r.factor==='Macro Data Impulse'&&/awaiting verified|no active surprise/i.test(latest))return null;
     return latest?{factor:r.factor,latest}:null;
   };
   const earnings=(d.upcomingEarnings?.events||[]).filter(e=>{
