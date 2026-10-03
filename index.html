@@ -75,11 +75,24 @@ function render(d){
       (rel?'<div class="mini-metric"><b>'+rel[1]+' pp</b><span>vs QQQ</span></div>':'')+
       '</div>';
   };
+  const macroImpulseMetrics=r=>{
+    if(r.factor!=='Macro Data Impulse'||!r.macroImpulse)return '';
+    const fs=r.macroImpulse.familyScores||{};
+    return '<div class="mini-metrics">'+['inflation','labor','growth'].map(k=>{
+      const x=fs[k]; if(!x)return '';
+      const v=Number(x.score||0), cls=v>=20?'green':(v<=-20?'red':'amber');
+      return '<div class="mini-metric"><b class="'+cls+'">'+(v>0?'+':'')+v+'</b><span>'+escHtml(x.label||k)+'</span></div>';
+    }).join('')+'</div>';
+  };
   const summaryCards=(env?`<div class="card setup-card signal-${env.signal}" tabindex="0" data-tip="Nasdaq Score ranges from −100 (strong headwind) to +100 (strong support) and summarizes the current Nasdaq environment. It is calculated by NasDecode's Proprietary AI-led market intelligence model using the latest available inputs; source timing is shown in Debug."><span class="factor-name">1. NASDAQ SCORE</span><span class="card-status ${C[env.signal]}">${dot(env.signal)}${env.label}</span>${ns.score!==undefined?`<span><span class="metric ${C[env.signal]}">${ns.score>0?'+':''}${ns.score}</span> <span class="muted">range −100 to +100 · ${ns.trend||''}</span></span>`:''}${ns.confidence!==undefined?`<span class="card-latest">Confidence ${ns.confidence}%</span>`:''}</div>`:'')+
   (d.consolidationRisk?`<div class="card factor-card signal-${d.consolidationRisk.level==='Low'?'positive':(d.consolidationRisk.level==='High'?'negative':'mixed')}" tabindex="0" data-tip="${escAttr(d.consolidationRisk.explanation||'')}"><span class="factor-name">2. CONSOLIDATION RISK</span><span class="card-status ${d.consolidationRisk.level==='Low'?'green':(d.consolidationRisk.level==='High'?'red':'amber')}">${dot()}${d.consolidationRisk.level}</span><span><span class="metric ${d.consolidationRisk.level==='Low'?'green':(d.consolidationRisk.level==='High'?'red':'amber')}">${d.consolidationRisk.score??'—'}</span> <span class="muted">/ 100 · ${d.consolidationRisk.coverageWeight}% data coverage</span></span><span class="card-latest">Proprietary AI-led market intelligence model</span></div>`:'');
   const rowCards=visibleRows.map((r,i)=>{
     const minis=leadershipMetrics(r);
     const detail=minis?(r.factor==='Semiconductor leadership'?String(r.latest||'').split('|').slice(-2).join(' · ').trim():''):r.latest||'—';
+    if(r.factor==='Macro Data Impulse'&&r.macroImpulse){
+      const score=Number(r.macroImpulse.score||0), fam=macroImpulseMetrics(r);
+      return `<div class="card factor-card signal-${r.signal}${awaiting(r)}" tabindex="0" data-tip="${escAttr(r.explanation||'No explanation available.')}"><span class="factor-name">${factorRank(i)}. ${r.factor}</span><span><span class="metric ${C[r.signal]}">${score>0?'+':''}${score}</span> <span class="muted">/ 100</span></span>${fam}<span class="card-latest">${escHtml(r.direction||'Macro data impulse')}</span></div>`;
+    }
     if(r.factor==='Fed expectations'&&Array.isArray(r.fedMeetings)&&r.fedMeetings.length){
       const fedRows=r.fedMeetings.slice(0,3).map((m,mi)=>{
         const p=m.probabilities||{},h=Number(p.hike||0),o=Number(p.hold||0),cut=Number(p.cut||0);
@@ -197,6 +210,15 @@ function render(d){
   };
   const factorDebug=r=>'<b>Freshness:</b> '+escHtml(r.freshness||'—')+'<br><b>Source:</b> '+escHtml(r.source||'—')+(r.debug?'<br><b>Model/debug:</b> '+escHtml(r.debug):'');
   const factorDetails=r=>{
+    if(r.factor==='Macro Data Impulse'&&r.macroImpulse){
+      const fs=r.macroImpulse.familyScores||{};
+      const familyLine=['inflation','labor','growth'].map(k=>{
+        const x=fs[k]; if(!x)return null;
+        const v=Number(x.score||0);
+        return '<b>'+escHtml(x.label||k)+'</b>: '+(v>0?'+':'')+v+' / 100'+(x.drivers?.length?' · '+escHtml(x.drivers.join(', ')):'');
+      }).filter(Boolean).join('<br>');
+      return escHtml(r.explanation||'')+(familyLine?'<br><br><b>Family breakdown</b><br>'+familyLine:'');
+    }
     if(r.factor==='Fed expectations'&&Array.isArray(r.fedMeetings)&&r.fedMeetings.length){
       return r.fedMeetings.slice(0,3).map((m,i)=>{
         const p=m.probabilities||{};
