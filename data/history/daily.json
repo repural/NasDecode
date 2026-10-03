@@ -19136,7 +19136,7 @@
     },
     "2026-10-03": {
       "schemaVersion": 4,
-      "timestampET": "2026-10-03T13:32:17.436508-04:00",
+      "timestampET": "2026-10-03T14:03:41.234279-04:00",
       "market": {
         ".IXIC": {
           "last": 27190.864,
@@ -19814,16 +19814,16 @@
       "modelPerformance": {
         "nasdaqCompositeClose": 27190.864,
         "nasdaqCompositeObservationDate": "2026-10-02",
-        "nasdaqScore": -7
+        "nasdaqScore": -2
       },
       "nasdaqScore": {
-        "score": -10,
-        "rawScore": -10,
+        "score": -5,
+        "rawScore": -5,
         "previousScore": -2,
         "trend": "Deteriorating ↓",
         "signal": "mixed",
         "label": "Mixed / Neutral",
-        "confidence": 52,
+        "confidence": 50,
         "coverage": 80
       },
       "consolidationRisk": {
@@ -19850,12 +19850,12 @@
       },
       "opportunityScore": {
         "version": 3,
-        "score": 51,
+        "score": 52,
         "label": "Selective",
         "signal": "mixed",
         "type": "Selective / mixed",
         "components": {
-          "Directional edge": 38,
+          "Directional edge": 44,
           "Entry quality": 37,
           "Recovery confirmation": 66,
           "Macro timing": 38,
@@ -19867,9 +19867,9 @@
         ],
         "weakestDrivers": [
           "Entry quality 37",
-          "Directional edge 38"
+          "Macro timing 38"
         ],
-        "explanation": "Long-entry quality is selective (51/100; Selective / mixed). Strongest inputs: Catalyst asymmetry 100, Recovery confirmation 66. Weakest: Entry quality 37, Directional edge 38.",
+        "explanation": "Long-entry quality is selective (52/100; Selective / mixed). Strongest inputs: Catalyst asymmetry 100, Recovery confirmation 66. Weakest: Entry quality 37, Macro timing 38.",
         "note": "This is an entry-quality score, not a forecast of the next session return."
       },
       "confirmationLayer": {
@@ -20045,7 +20045,7 @@
           "observationDate": "2026-10-01"
         },
         "macroConstraint": {
-          "ratesMacroBucketStrength": -0.275
+          "ratesMacroBucketStrength": -0.094
         },
         "directionalScoreUnchanged": true,
         "checkpoint": "intraday"
@@ -20055,13 +20055,13 @@
         "snapshotPhase": "regular",
         "modelState": {
           "nasdaqScore": {
-            "score": -10,
-            "rawScore": -10,
+            "score": -5,
+            "rawScore": -5,
             "previousScore": -2,
             "trend": "Deteriorating ↓",
             "signal": "mixed",
             "label": "Mixed / Neutral",
-            "confidence": 52,
+            "confidence": 50,
             "coverage": 80
           },
           "nasdaqFactorScores": [
@@ -20079,6 +20079,14 @@
               "strength": 0.368,
               "effectiveWeight": 2.1,
               "freshnessWeight": 0.7,
+              "regimeMultiplier": 1.0
+            },
+            {
+              "factor": "Technology earnings calendar",
+              "bucket": "Event Risk",
+              "strength": 0.0,
+              "effectiveWeight": 3.0,
+              "freshnessWeight": 1.0,
               "regimeMultiplier": 1.0
             },
             {
@@ -20146,17 +20154,9 @@
               "regimeMultiplier": 1.0
             },
             {
-              "factor": "Technology earnings calendar",
-              "bucket": "Event Risk",
-              "strength": 0.0,
-              "effectiveWeight": 3.0,
-              "freshnessWeight": 1.0,
-              "regimeMultiplier": 1.0
-            },
-            {
-              "factor": "Economic / inflation data",
+              "factor": "Macro Data Impulse",
               "bucket": "Rates / Macro",
-              "strength": 0.0,
+              "strength": 0.73,
               "effectiveWeight": 1.25,
               "freshnessWeight": 1.0,
               "regimeMultiplier": 1.25
@@ -20186,8 +20186,15 @@
               "cap": 7.0
             },
             {
+              "bucket": "Event Risk",
+              "strength": 0.0,
+              "weight": 3.0,
+              "uncappedWeight": 3.0,
+              "cap": 4.0
+            },
+            {
               "bucket": "Rates / Macro",
-              "strength": -0.275,
+              "strength": -0.094,
               "weight": 5.06,
               "uncappedWeight": 5.06,
               "cap": 9.0
@@ -20198,13 +20205,6 @@
               "weight": 4.0,
               "uncappedWeight": 4.0,
               "cap": 9.0
-            },
-            {
-              "bucket": "Event Risk",
-              "strength": 0.0,
-              "weight": 3.0,
-              "uncappedWeight": 3.0,
-              "cap": 4.0
             }
           ],
           "consolidationRisk": {
@@ -20231,12 +20231,12 @@
           },
           "opportunityScore": {
             "version": 3,
-            "score": 51,
+            "score": 52,
             "label": "Selective",
             "signal": "mixed",
             "type": "Selective / mixed",
             "components": {
-              "Directional edge": 38,
+              "Directional edge": 44,
               "Entry quality": 37,
               "Recovery confirmation": 66,
               "Macro timing": 38,
@@ -20248,9 +20248,9 @@
             ],
             "weakestDrivers": [
               "Entry quality 37",
-              "Directional edge 38"
+              "Macro timing 38"
             ],
-            "explanation": "Long-entry quality is selective (51/100; Selective / mixed). Strongest inputs: Catalyst asymmetry 100, Recovery confirmation 66. Weakest: Entry quality 37, Directional edge 38.",
+            "explanation": "Long-entry quality is selective (52/100; Selective / mixed). Strongest inputs: Catalyst asymmetry 100, Recovery confirmation 66. Weakest: Entry quality 37, Macro timing 38.",
             "note": "This is an entry-quality score, not a forecast of the next session return."
           },
           "confirmationLayer": {
@@ -20426,7 +20426,7 @@
               "observationDate": "2026-10-01"
             },
             "macroConstraint": {
-              "ratesMacroBucketStrength": -0.275
+              "ratesMacroBucketStrength": -0.094
             },
             "directionalScoreUnchanged": true,
             "checkpoint": "intraday"
@@ -20727,6 +20727,12 @@
           "trend": "Improving ↑",
           "latest": "VXN 21.20 (-5.82%) | VIX 15.31 (-6.59%)"
         },
+        "Technology earnings calendar": {
+          "signal": "mixed",
+          "currentImpact": "High",
+          "trend": "Stable →",
+          "latest": "ASML: Oct 14, 2026 · TSM: Oct 15, 2026"
+        },
         "Fed expectations": {
           "signal": "negative",
           "currentImpact": "Medium",
@@ -20775,17 +20781,11 @@
           "trend": "Stable →",
           "latest": "Equity P/C 0.58 | 5D avg 0.53 | → stable | Index 0.86 | Total 0.78"
         },
-        "Technology earnings calendar": {
-          "signal": "mixed",
-          "currentImpact": "High",
-          "trend": "Stable →",
-          "latest": "ASML: Oct 14, 2026 · TSM: Oct 15, 2026"
-        },
-        "Economic / inflation data": {
-          "signal": "mixed",
+        "Macro Data Impulse": {
+          "signal": "positive",
           "currentImpact": "Low",
           "trend": "Stable →",
-          "latest": "Awaiting verified actual vs consensus release"
+          "latest": "Supportive macro impulse +73 · Nonfarm payrolls 29K vs 90K · Core PCE 0.2% vs 0.3% · Unemployment rate 4.2% vs 4.1%"
         },
         "Earnings AVWAP leadership": {
           "signal": "mixed",

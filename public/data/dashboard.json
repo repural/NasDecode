@@ -1,18 +1,18 @@
 {
-  "updatedET": "Oct 03, 2026 · 13:32 ET",
+  "updatedET": "Oct 03, 2026 · 14:03 ET",
   "nextUpdateET": "09:30 / 10:30 ET on trading weekdays",
   "groups": [
     {
       "name": "NASDAQ SETUP",
       "signal": "mixed",
       "label": "Mixed / Neutral",
-      "explanation": "⚠️ Material bearish change. Treasury yields remain the main pressure point, with the 2Y at 4.827% and the 10Y at 5.273%. Semiconductor momentum remains an important equity confirmation: SOXX has risen for 4 consecutive sessions. QQQ is +0.68% over five sessions and +3.00% versus its 20-day average. Brent is +0.04% at about $102.35, adding some inflation pressure.\n\nThe Nasdaq Setup is mixed/neutral (-7/100, 52% confidence, deteriorating ↓). The current balance is persistent semiconductor momentum on the supportive side versus elevated/rising Treasury yields as the main headwind.\n\nNear-term risk is concentrated in the 10Y yield is above the 5.05% headwind threshold at 5.273%. Improvement in these conditions would strengthen the setup; further deterioration would reduce conviction. Elevated consolidation risk is reducing conviction in the directional setup."
+      "explanation": "⚠️ Material bearish change. Treasury yields remain the main pressure point, with the 2Y at 4.827% and the 10Y at 5.273%. Semiconductor momentum remains an important equity confirmation: SOXX has risen for 4 consecutive sessions. QQQ is +0.68% over five sessions and +3.00% versus its 20-day average. Brent is +0.04% at about $102.35, adding some inflation pressure.\n\nThe Nasdaq Setup is mixed/neutral (-2/100, 50% confidence, stable →). The current balance is persistent semiconductor momentum on the supportive side versus elevated/rising Treasury yields as the main headwind.\n\nNear-term risk is concentrated in the 10Y yield is above the 5.05% headwind threshold at 5.273%. Improvement in these conditions would strengthen the setup; further deterioration would reduce conviction. Elevated consolidation risk is reducing conviction in the directional setup."
     },
     {
       "name": "Rates / Macro",
       "signal": "negative",
       "label": "🔴 Negative",
-      "explanation": "Combines Fed policy, Treasury yields and economic/inflation data. Falling yields or easier policy expectations are generally more supportive for growth stocks."
+      "explanation": "Combines Fed policy, Treasury yields and macro data impulse. Falling yields or easier policy expectations are generally more supportive for growth stocks."
     },
     {
       "name": "Semiconductors",
@@ -121,7 +121,7 @@
       "latest": "Oct 28: Hike 22% / Hold 78% / Cut 0% · Dec 9: Above current 85% / Same 15% / Below 0% · Jan 27: Above current 91% / Same 9% / Below 0%",
       "direction": "Hawkish / hikes priced",
       "signal": "negative",
-      "freshness": "CME settlement 2026-10-02 · checked 2026-10-03 13:32 ET",
+      "freshness": "CME settlement 2026-10-02 · checked 2026-10-03 14:03 ET",
       "source": "CME Group 30-Day Fed Funds futures settlements; New York Fed EFFR; CME FedWatch methodology",
       "explanation": "Oct 28: Hike 22.1% · Hold 77.9% · Cut 0.0%. By Dec 9: target above current 85.2% · same 14.8% · below 0.0%. By Jan 27: target above current 91.0% · same 9.0% · below 0.0%. The nearest meeting is shown as hike/hold/cut; later meetings are aggregated versus today’s target range.",
       "currentImpact": "Medium",
@@ -323,7 +323,7 @@
       "latest": "Equity P/C 0.58 | 5D avg 0.53 | → stable | Index 0.86 | Total 0.78",
       "direction": "Balanced",
       "signal": "mixed",
-      "freshness": "Cboe daily · latest session 2026-10-02 · checked 2026-10-03 13:32 ET",
+      "freshness": "Cboe daily · latest session 2026-10-02 · checked 2026-10-03 14:03 ET",
       "source": "Cboe Daily Market Statistics — 5-session equity put/call trend; index/total context; not dealer gamma exposure",
       "explanation": "Equity P/C 0.58 | 5D avg 0.53 | → stable | Index 0.86 | Total 0.78. Equity put/call is compared with its 5-session baseline; Index and Total P/C add context because index puts often reflect institutional hedging. Positioning is balanced and neutral/mixed; this is not dealer gamma.  VXN/VIX are falling together (VXN 21.20 (-5.82%) | VIX 15.31 (-6.59%)), so options positioning and implied volatility together do not currently give the same strong directional signal.",
       "currentImpact": "Low",
@@ -333,18 +333,93 @@
       "scorecard": null
     },
     {
-      "factor": "Economic / inflation data",
-      "latest": "Awaiting verified actual vs consensus release",
-      "direction": "No active surprise",
-      "signal": "mixed",
-      "freshness": "No verified surprise · checked 2026-10-03 13:32 ET",
-      "source": "NasDecode verified macro-surprise feed",
-      "explanation": "Awaiting verified actual vs consensus release. No verified actual-versus-consensus macro surprise is currently stored, so the factor stays neutral rather than treating an upcoming event as bullish or bearish.",
+      "factor": "Macro Data Impulse",
+      "latest": "Supportive macro impulse +73 · Nonfarm payrolls 29K vs 90K · Core PCE 0.2% vs 0.3% · Unemployment rate 4.2% vs 4.1%",
+      "direction": "Supportive macro impulse",
+      "signal": "positive",
+      "freshness": "Decaying verified releases · latest 2026-10-02T08:30:00-04:00",
+      "source": "Verified official releases + market consensus",
+      "explanation": "Supportive macro impulse +73 · Nonfarm payrolls 29K vs 90K · Core PCE 0.2% vs 0.3% · Unemployment rate 4.2% vs 4.1%. This is a decaying macro impulse built from recent verified actual-versus-consensus releases. Positive means the recent data mix is more supportive for rate-sensitive Nasdaq; negative means more restrictive. Older releases fade rather than disappearing after the next refresh. Upcoming releases do not affect the score before publication.",
       "currentImpact": "Low",
       "trend": "Stable →",
       "displayRank": 13,
-      "signalLabel": "🟡 Mixed",
-      "scorecard": null
+      "signalLabel": "🟢 Positive",
+      "scorecard": null,
+      "macroImpulseScore": 73,
+      "macroImpulse": {
+        "score": 73,
+        "normalized": 0.7305,
+        "activeReleaseCount": 4,
+        "drivers": [
+          {
+            "id": "2026-10-02-nfp",
+            "name": "Nonfarm payrolls",
+            "family": "labor",
+            "releasedAt": "2026-10-02T08:30:00-04:00",
+            "actual": 29.0,
+            "consensus": 90.0,
+            "unit": "K",
+            "surprise": -61.0,
+            "normalizedSurprise": -1.0,
+            "nasdaqImpact": 1.0,
+            "decay": 0.843,
+            "effectiveWeight": 0.843,
+            "weightedContribution": 0.843,
+            "source": "U.S. Bureau of Labor Statistics / Reuters consensus"
+          },
+          {
+            "id": "2026-09-30-core-pce-mom",
+            "name": "Core PCE",
+            "family": "inflation",
+            "releasedAt": "2026-09-30T08:30:00-04:00",
+            "actual": 0.2,
+            "consensus": 0.3,
+            "unit": "%",
+            "surprise": -0.09999999999999998,
+            "normalizedSurprise": -0.6667,
+            "nasdaqImpact": 0.6667,
+            "decay": 0.7261,
+            "effectiveWeight": 0.7261,
+            "weightedContribution": 0.4841,
+            "source": "U.S. Bureau of Economic Analysis / consensus survey"
+          },
+          {
+            "id": "2026-10-02-unemployment",
+            "name": "Unemployment rate",
+            "family": "labor",
+            "releasedAt": "2026-10-02T08:30:00-04:00",
+            "actual": 4.2,
+            "consensus": 4.1,
+            "unit": "%",
+            "surprise": 0.10000000000000053,
+            "normalizedSurprise": 0.5,
+            "nasdaqImpact": 0.5,
+            "decay": 0.843,
+            "effectiveWeight": 0.6323,
+            "weightedContribution": 0.3161,
+            "source": "U.S. Bureau of Labor Statistics / Reuters consensus"
+          },
+          {
+            "id": "2026-10-01-ism-manufacturing",
+            "name": "ISM Manufacturing PMI",
+            "family": "growth",
+            "releasedAt": "2026-10-01T10:00:00-04:00",
+            "actual": 54.5,
+            "consensus": 55.0,
+            "unit": "",
+            "surprise": -0.5,
+            "normalizedSurprise": -0.625,
+            "nasdaqImpact": 0.625,
+            "decay": 0.6058,
+            "effectiveWeight": 0.3332,
+            "weightedContribution": 0.2082,
+            "source": "Institute for Supply Management / consensus survey"
+          }
+        ],
+        "interpretation": "Positive is supportive for rate-sensitive Nasdaq; negative is restrictive. Recent verified surprises decay rather than disappearing immediately."
+      },
+      "surprise": -61.0,
+      "surpriseText": "Recent verified releases remain in the macro impulse with time decay."
     }
   ],
   "diagnostics": {
@@ -804,12 +879,12 @@
   },
   "opportunityScore": {
     "version": 3,
-    "score": 51,
+    "score": 52,
     "label": "Selective",
     "signal": "mixed",
     "type": "Selective / mixed",
     "components": {
-      "Directional edge": 38,
+      "Directional edge": 44,
       "Entry quality": 37,
       "Recovery confirmation": 66,
       "Macro timing": 38,
@@ -821,20 +896,20 @@
     ],
     "weakestDrivers": [
       "Entry quality 37",
-      "Directional edge 38"
+      "Macro timing 38"
     ],
-    "explanation": "Long-entry quality is selective (51/100; Selective / mixed). Strongest inputs: Catalyst asymmetry 100, Recovery confirmation 66. Weakest: Entry quality 37, Directional edge 38.",
+    "explanation": "Long-entry quality is selective (52/100; Selective / mixed). Strongest inputs: Catalyst asymmetry 100, Recovery confirmation 66. Weakest: Entry quality 37, Macro timing 38.",
     "note": "This is an entry-quality score, not a forecast of the next session return."
   },
   "schemaVersion": 2,
   "nasdaqScore": {
-    "score": -10,
-    "rawScore": -10,
+    "score": -5,
+    "rawScore": -5,
     "previousScore": -2,
     "trend": "Deteriorating ↓",
     "signal": "mixed",
     "label": "Mixed / Neutral",
-    "confidence": 52,
+    "confidence": 50,
     "coverage": 80,
     "model": {
       "version": 2,
@@ -853,6 +928,14 @@
           "strength": 0.368,
           "effectiveWeight": 2.1,
           "freshnessWeight": 0.7,
+          "regimeMultiplier": 1.0
+        },
+        {
+          "factor": "Technology earnings calendar",
+          "bucket": "Event Risk",
+          "strength": 0.0,
+          "effectiveWeight": 3.0,
+          "freshnessWeight": 1.0,
           "regimeMultiplier": 1.0
         },
         {
@@ -920,17 +1003,9 @@
           "regimeMultiplier": 1.0
         },
         {
-          "factor": "Technology earnings calendar",
-          "bucket": "Event Risk",
-          "strength": 0.0,
-          "effectiveWeight": 3.0,
-          "freshnessWeight": 1.0,
-          "regimeMultiplier": 1.0
-        },
-        {
-          "factor": "Economic / inflation data",
+          "factor": "Macro Data Impulse",
           "bucket": "Rates / Macro",
-          "strength": 0.0,
+          "strength": 0.73,
           "effectiveWeight": 1.25,
           "freshnessWeight": 1.0,
           "regimeMultiplier": 1.25
@@ -960,8 +1035,15 @@
           "cap": 7.0
         },
         {
+          "bucket": "Event Risk",
+          "strength": 0.0,
+          "weight": 3.0,
+          "uncappedWeight": 3.0,
+          "cap": 4.0
+        },
+        {
           "bucket": "Rates / Macro",
-          "strength": -0.275,
+          "strength": -0.094,
           "weight": 5.06,
           "uncappedWeight": 5.06,
           "cap": 9.0
@@ -972,17 +1054,10 @@
           "weight": 4.0,
           "uncappedWeight": 4.0,
           "cap": 9.0
-        },
-        {
-          "bucket": "Event Risk",
-          "strength": 0.0,
-          "weight": 3.0,
-          "uncappedWeight": 3.0,
-          "cap": 4.0
         }
       ],
       "coveragePct": 80,
-      "agreementPct": 10
+      "agreementPct": 4
     }
   },
   "marketAnalysis": null,
@@ -1159,7 +1234,7 @@
       "observationDate": "2026-10-01"
     },
     "macroConstraint": {
-      "ratesMacroBucketStrength": -0.275
+      "ratesMacroBucketStrength": -0.094
     },
     "directionalScoreUnchanged": true,
     "checkpoint": "intraday"
@@ -1292,7 +1367,7 @@
     "directionalScoreUnchanged": true,
     "interpretation": "Catalyst context modifies confidence/read-through only; price-based Semiconductor Leadership remains unchanged."
   },
-  "legacyConsolidationAdjustedScore": -7.0,
+  "legacyConsolidationAdjustedScore": -2.0,
   "upcomingEarnings": {
     "windowDays": 14,
     "asOfDate": "2026-10-03",
@@ -1319,5 +1394,71 @@
         "sourceUrl": "https://investor.tsmc.com/english/quarterly-results/2026/q3"
       }
     ]
-  }
+  },
+  "macroSurprises": [
+    {
+      "id": "2026-10-02-nfp",
+      "name": "Nonfarm payrolls",
+      "family": "labor",
+      "releasedAt": "2026-10-02T08:30:00-04:00",
+      "actual": 29,
+      "consensus": 90,
+      "unit": "K",
+      "direction": "higher_is_negative",
+      "scale": 50,
+      "importance": 1,
+      "halfLifeDays": 5,
+      "source": "U.S. Bureau of Labor Statistics / Reuters consensus",
+      "sourceUrl": "https://www.bls.gov/news.release/archives/empsit_10022026.htm",
+      "consensusSourceUrl": "https://www.reuters.com/business/us-job-growth-expected-slow-september-unemployment-rate-likely-steady-2026-10-02/"
+    },
+    {
+      "id": "2026-10-02-unemployment",
+      "name": "Unemployment rate",
+      "family": "labor",
+      "releasedAt": "2026-10-02T08:30:00-04:00",
+      "actual": 4.2,
+      "consensus": 4.1,
+      "unit": "%",
+      "direction": "higher_is_positive",
+      "scale": 0.2,
+      "importance": 0.75,
+      "halfLifeDays": 5,
+      "source": "U.S. Bureau of Labor Statistics / Reuters consensus",
+      "sourceUrl": "https://www.bls.gov/news.release/archives/empsit_10022026.htm",
+      "consensusSourceUrl": "https://www.reuters.com/business/us-job-growth-expected-slow-september-unemployment-rate-likely-steady-2026-10-02/"
+    },
+    {
+      "id": "2026-09-30-core-pce-mom",
+      "name": "Core PCE",
+      "family": "inflation",
+      "releasedAt": "2026-09-30T08:30:00-04:00",
+      "actual": 0.2,
+      "consensus": 0.3,
+      "unit": "%",
+      "direction": "higher_is_negative",
+      "scale": 0.15,
+      "importance": 1,
+      "halfLifeDays": 7,
+      "source": "U.S. Bureau of Economic Analysis / consensus survey",
+      "sourceUrl": "https://www.bea.gov/news/2026/personal-income-and-outlays-august-2026",
+      "consensusSourceUrl": "https://seekingalpha.com/news/4648458-core-pce-inflation-rises-less-than-expected-in-august"
+    },
+    {
+      "id": "2026-10-01-ism-manufacturing",
+      "name": "ISM Manufacturing PMI",
+      "family": "growth",
+      "releasedAt": "2026-10-01T10:00:00-04:00",
+      "actual": 54.5,
+      "consensus": 55,
+      "unit": "",
+      "direction": "higher_is_negative",
+      "scale": 0.8,
+      "importance": 0.55,
+      "halfLifeDays": 3,
+      "source": "Institute for Supply Management / consensus survey",
+      "sourceUrl": "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/pmi/september/",
+      "consensusSourceUrl": "https://seekingalpha.com/news/4649060-ism-manufacturing-unexpectedly-slips-in-september"
+    }
+  ]
 }
