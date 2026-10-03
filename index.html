@@ -49,7 +49,7 @@ function render(d){
   const dot=s=>'';
   const orderedRows=[...d.rows].sort((a,b)=>orderOf(a.factor)-orderOf(b.factor));
   const visibleRows=orderedRows.filter(r=>r.factor!=='Technology earnings calendar');
-  const factorRank=i=>i<2?i+3:(i<9?i+4:i+5);
+  const factorRank=i=>i<2?i+3:i+4;
   const awaiting=r=>/awaiting|not available|unavailable|stale/i.test((r.latest||'')+' '+(r.freshness||''))?' awaiting':'';
   const leadershipMetrics=r=>{
     if(!/leadership/i.test(r.factor||'')||r.scorecard) return '';
