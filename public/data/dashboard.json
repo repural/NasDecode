@@ -1,12 +1,12 @@
 {
-  "updatedET": "Oct 03, 2026 · 14:08 ET",
+  "updatedET": "Oct 03, 2026 · 14:23 ET",
   "nextUpdateET": "09:30 / 10:30 ET on trading weekdays",
   "groups": [
     {
       "name": "NASDAQ SETUP",
       "signal": "mixed",
       "label": "Mixed / Neutral",
-      "explanation": "⚠️ Material bearish change. Treasury yields remain the main pressure point, with the 2Y at 4.827% and the 10Y at 5.273%. Semiconductor momentum remains an important equity confirmation: SOXX has risen for 4 consecutive sessions. QQQ is +0.68% over five sessions and +3.00% versus its 20-day average. Brent is +0.04% at about $102.35, adding some inflation pressure.\n\nThe Nasdaq Setup is mixed/neutral (+1/100, 51% confidence, improving ↑). The current balance is persistent semiconductor momentum on the supportive side versus elevated/rising Treasury yields as the main headwind.\n\nNear-term risk is concentrated in the 10Y yield is above the 5.05% headwind threshold at 5.273%. Improvement in these conditions would strengthen the setup; further deterioration would reduce conviction. Elevated consolidation risk is reducing conviction in the directional setup."
+      "explanation": "⚠️ Material bearish change. Treasury yields remain the main pressure point, with the 2Y at 4.827% and the 10Y at 5.273%. Semiconductor momentum remains an important equity confirmation: SOXX has risen for 4 consecutive sessions. QQQ is +0.68% over five sessions and +3.00% versus its 20-day average. Brent is +0.04% at about $102.35, adding some inflation pressure.\n\nThe Nasdaq Setup is mixed/neutral (+0/100, 51% confidence, improving ↑). The current balance is persistent semiconductor momentum on the supportive side versus elevated/rising Treasury yields as the main headwind.\n\nNear-term risk is concentrated in the 10Y yield is above the 5.05% headwind threshold at 5.273%. Improvement in these conditions would strengthen the setup; further deterioration would reduce conviction. Elevated consolidation risk is reducing conviction in the directional setup."
     },
     {
       "name": "Rates / Macro",
@@ -97,30 +97,31 @@
     },
     {
       "factor": "Macro Data Impulse",
-      "latest": "Supportive macro impulse +73 · Nonfarm payrolls 29K vs 90K · Core PCE 0.2% vs 0.3% · Unemployment rate 4.2% vs 4.1%",
+      "latest": "Supportive macro impulse +63 · Nonfarm payrolls 29K vs 90K · Core PCE 0.2% vs 0.3% · Unemployment rate 4.2% vs 4.1%",
       "direction": "Supportive macro impulse",
       "signal": "positive",
       "freshness": "Decaying verified releases · latest 2026-10-02T08:30:00-04:00",
       "source": "Verified official releases + market consensus",
-      "explanation": "Supportive macro impulse +73 · Nonfarm payrolls 29K vs 90K · Core PCE 0.2% vs 0.3% · Unemployment rate 4.2% vs 4.1%. This is a decaying macro impulse built from recent verified actual-versus-consensus releases. Positive means the recent data mix is more supportive for rate-sensitive Nasdaq; negative means more restrictive. Older releases fade rather than disappearing after the next refresh. Upcoming releases do not affect the score before publication.",
+      "explanation": "Supportive macro impulse +63 · Nonfarm payrolls 29K vs 90K · Core PCE 0.2% vs 0.3% · Unemployment rate 4.2% vs 4.1%. This is a decaying macro impulse built from recent verified actual-versus-consensus releases. Positive means the recent data mix is more supportive for rate-sensitive Nasdaq; negative means more restrictive. Older releases fade rather than disappearing after the next refresh. Upcoming releases do not affect the score before publication.",
       "currentImpact": "High",
       "trend": "Stable →",
       "displayRank": 4,
       "signalLabel": "🟢 Positive",
       "scorecard": null,
-      "macroImpulseScore": 73,
+      "macroImpulseScore": 63,
       "macroImpulse": {
-        "score": 73,
-        "normalized": 0.7305,
-        "activeReleaseCount": 4,
+        "score": 63,
+        "normalized": 0.6341,
+        "activeReleaseCount": 6,
         "familyScores": {
           "inflation": {
             "label": "Inflation",
             "score": 67,
-            "activeReleaseCount": 1,
+            "activeReleaseCount": 2,
             "signal": "positive",
             "drivers": [
-              "Core PCE"
+              "Core PCE",
+              "PCE Price Index MoM"
             ]
           },
           "labor": {
@@ -135,11 +136,12 @@
           },
           "growth": {
             "label": "Growth / Activity",
-            "score": 62,
-            "activeReleaseCount": 1,
-            "signal": "positive",
+            "score": 12,
+            "activeReleaseCount": 2,
+            "signal": "mixed",
             "drivers": [
-              "ISM Manufacturing PMI"
+              "ISM Manufacturing PMI",
+              "GDP Growth Rate QoQ Final"
             ]
           }
         },
@@ -155,9 +157,9 @@
             "surprise": -61.0,
             "normalizedSurprise": -1.0,
             "nasdaqImpact": 1.0,
-            "decay": 0.8427,
-            "effectiveWeight": 0.8427,
-            "weightedContribution": 0.8427,
+            "decay": 0.8414,
+            "effectiveWeight": 0.8414,
+            "weightedContribution": 0.8414,
             "source": "U.S. Bureau of Labor Statistics / Reuters consensus"
           },
           {
@@ -171,9 +173,9 @@
             "surprise": -0.09999999999999998,
             "normalizedSurprise": -0.6667,
             "nasdaqImpact": 0.6667,
-            "decay": 0.7259,
-            "effectiveWeight": 0.7259,
-            "weightedContribution": 0.4839,
+            "decay": 0.7251,
+            "effectiveWeight": 0.7251,
+            "weightedContribution": 0.4834,
             "source": "U.S. Bureau of Economic Analysis / consensus survey"
           },
           {
@@ -187,10 +189,26 @@
             "surprise": 0.10000000000000053,
             "normalizedSurprise": 0.5,
             "nasdaqImpact": 0.5,
-            "decay": 0.8427,
-            "effectiveWeight": 0.632,
-            "weightedContribution": 0.316,
+            "decay": 0.8414,
+            "effectiveWeight": 0.631,
+            "weightedContribution": 0.3155,
             "source": "U.S. Bureau of Labor Statistics / Reuters consensus"
+          },
+          {
+            "id": "2026-09-30-pce-mom",
+            "name": "PCE Price Index MoM",
+            "family": "inflation",
+            "releasedAt": "2026-09-30T08:30:00-04:00",
+            "actual": 0.3,
+            "consensus": 0.4,
+            "unit": "%",
+            "surprise": -0.10000000000000003,
+            "normalizedSurprise": -0.6667,
+            "nasdaqImpact": 0.6667,
+            "decay": 0.7251,
+            "effectiveWeight": 0.4351,
+            "weightedContribution": 0.2901,
+            "source": "U.S. Bureau of Economic Analysis actual / market consensus"
           },
           {
             "id": "2026-10-01-ism-manufacturing",
@@ -203,17 +221,33 @@
             "surprise": -0.5,
             "normalizedSurprise": -0.625,
             "nasdaqImpact": 0.625,
-            "decay": 0.6054,
-            "effectiveWeight": 0.333,
-            "weightedContribution": 0.2081,
+            "decay": 0.6038,
+            "effectiveWeight": 0.3321,
+            "weightedContribution": 0.2076,
             "source": "Institute for Supply Management / consensus survey"
+          },
+          {
+            "id": "2026-09-30-gdp-final",
+            "name": "GDP Growth Rate QoQ Final",
+            "family": "growth",
+            "releasedAt": "2026-09-30T08:30:00-04:00",
+            "actual": 2.2,
+            "consensus": 1.5,
+            "unit": "%",
+            "surprise": 0.7000000000000002,
+            "normalizedSurprise": 0.875,
+            "nasdaqImpact": -0.875,
+            "decay": 0.5698,
+            "effectiveWeight": 0.1709,
+            "weightedContribution": -0.1496,
+            "source": "U.S. Bureau of Economic Analysis actual / market consensus"
           }
         ],
         "interpretation": "Positive is supportive for rate-sensitive Nasdaq; negative is restrictive. Recent verified surprises decay rather than disappearing immediately."
       },
       "surprise": -61.0,
       "surpriseText": "Recent verified releases remain in the macro impulse with time decay.",
-      "impactReason": "Absolute decaying macro impulse 73/100"
+      "impactReason": "Absolute decaying macro impulse 63/100"
     },
     {
       "factor": "Earnings AVWAP leadership",
@@ -241,7 +275,7 @@
       "latest": "Oct 28: Hike 22% / Hold 78% / Cut 0% · Dec 9: Above current 85% / Same 15% / Below 0% · Jan 27: Above current 91% / Same 9% / Below 0%",
       "direction": "Hawkish / hikes priced",
       "signal": "negative",
-      "freshness": "CME settlement 2026-10-02 · checked 2026-10-03 14:08 ET",
+      "freshness": "CME settlement 2026-10-02 · checked 2026-10-03 14:23 ET",
       "source": "CME Group 30-Day Fed Funds futures settlements; New York Fed EFFR; CME FedWatch methodology",
       "explanation": "Oct 28: Hike 22.1% · Hold 77.9% · Cut 0.0%. By Dec 9: target above current 85.2% · same 14.8% · below 0.0%. By Jan 27: target above current 91.0% · same 9.0% · below 0.0%. The nearest meeting is shown as hike/hold/cut; later meetings are aggregated versus today’s target range.",
       "currentImpact": "Medium",
@@ -443,7 +477,7 @@
       "latest": "Equity P/C 0.58 | 5D avg 0.53 | → stable | Index 0.86 | Total 0.78",
       "direction": "Balanced",
       "signal": "mixed",
-      "freshness": "Cboe daily · latest session 2026-10-02 · checked 2026-10-03 14:08 ET",
+      "freshness": "Cboe daily · latest session 2026-10-02 · checked 2026-10-03 14:23 ET",
       "source": "Cboe Daily Market Statistics — 5-session equity put/call trend; index/total context; not dealer gamma exposure",
       "explanation": "Equity P/C 0.58 | 5D avg 0.53 | → stable | Index 0.86 | Total 0.78. Equity put/call is compared with its 5-session baseline; Index and Total P/C add context because index puts often reflect institutional hedging. Positioning is balanced and neutral/mixed; this is not dealer gamma.  VXN/VIX are falling together (VXN 21.20 (-5.82%) | VIX 15.31 (-6.59%)), so options positioning and implied volatility together do not currently give the same strong directional signal.",
       "currentImpact": "Low",
@@ -910,12 +944,12 @@
   },
   "opportunityScore": {
     "version": 3,
-    "score": 55,
+    "score": 54,
     "label": "Selective",
     "signal": "mixed",
     "type": "Selective / mixed",
     "components": {
-      "Directional edge": 55,
+      "Directional edge": 52,
       "Entry quality": 37,
       "Recovery confirmation": 66,
       "Macro timing": 38,
@@ -929,13 +963,13 @@
       "Entry quality 37",
       "Macro timing 38"
     ],
-    "explanation": "Long-entry quality is selective (55/100; Selective / mixed). Strongest inputs: Catalyst asymmetry 100, Recovery confirmation 66. Weakest: Entry quality 37, Macro timing 38.",
+    "explanation": "Long-entry quality is selective (54/100; Selective / mixed). Strongest inputs: Catalyst asymmetry 100, Recovery confirmation 66. Weakest: Entry quality 37, Macro timing 38.",
     "note": "This is an entry-quality score, not a forecast of the next session return."
   },
   "schemaVersion": 2,
   "nasdaqScore": {
-    "score": 4,
-    "rawScore": 4,
+    "score": 2,
+    "rawScore": 2,
     "previousScore": -2,
     "trend": "Improving ↑",
     "signal": "mixed",
@@ -968,6 +1002,14 @@
           "effectiveWeight": 3.0,
           "freshnessWeight": 1.0,
           "regimeMultiplier": 1.0
+        },
+        {
+          "factor": "Macro Data Impulse",
+          "bucket": "Rates / Macro",
+          "strength": 0.63,
+          "effectiveWeight": 3.75,
+          "freshnessWeight": 1.0,
+          "regimeMultiplier": 1.25
         },
         {
           "factor": "Fed expectations",
@@ -1034,14 +1076,6 @@
           "regimeMultiplier": 1.0
         },
         {
-          "factor": "Macro Data Impulse",
-          "bucket": "Rates / Macro",
-          "strength": 0.73,
-          "effectiveWeight": 3.75,
-          "freshnessWeight": 1.0,
-          "regimeMultiplier": 1.25
-        },
-        {
           "factor": "Earnings AVWAP leadership",
           "bucket": "Leadership",
           "strength": 0.0,
@@ -1074,7 +1108,7 @@
         },
         {
           "bucket": "Rates / Macro",
-          "strength": 0.178,
+          "strength": 0.129,
           "weight": 7.56,
           "uncappedWeight": 7.56,
           "cap": 9.0
@@ -1088,7 +1122,7 @@
         }
       ],
       "coveragePct": 82,
-      "agreementPct": 5
+      "agreementPct": 3
     }
   },
   "marketAnalysis": null,
@@ -1265,7 +1299,7 @@
       "observationDate": "2026-10-01"
     },
     "macroConstraint": {
-      "ratesMacroBucketStrength": 0.178
+      "ratesMacroBucketStrength": 0.129
     },
     "directionalScoreUnchanged": true,
     "checkpoint": "intraday"
@@ -1398,7 +1432,7 @@
     "directionalScoreUnchanged": true,
     "interpretation": "Catalyst context modifies confidence/read-through only; price-based Semiconductor Leadership remains unchanged."
   },
-  "legacyConsolidationAdjustedScore": 1.0,
+  "legacyConsolidationAdjustedScore": 0.0,
   "upcomingEarnings": {
     "windowDays": 14,
     "asOfDate": "2026-10-03",
@@ -1490,6 +1524,44 @@
       "source": "Institute for Supply Management / consensus survey",
       "sourceUrl": "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/pmi/september/",
       "consensusSourceUrl": "https://seekingalpha.com/news/4649060-ism-manufacturing-unexpectedly-slips-in-september"
+    },
+    {
+      "id": "2026-09-30-pce-mom",
+      "name": "PCE Price Index MoM",
+      "family": "inflation",
+      "subtype": "headline_pce",
+      "releasedAt": "2026-09-30T08:30:00-04:00",
+      "actual": 0.3,
+      "consensus": 0.4,
+      "unit": "%",
+      "direction": "higher_is_negative",
+      "scale": 0.15,
+      "importance": 0.6,
+      "halfLifeDays": 7,
+      "verified": true,
+      "sourceMode": "verified_seed",
+      "source": "U.S. Bureau of Economic Analysis actual / market consensus",
+      "sourceUrl": "https://www.bea.gov/news/2026/personal-income-and-outlays-august-2026",
+      "consensusSourceUrl": "https://tradingeconomics.com/united-states/pce-price-index-monthly-change"
+    },
+    {
+      "id": "2026-09-30-gdp-final",
+      "name": "GDP Growth Rate QoQ Final",
+      "family": "growth",
+      "subtype": "gdp_growth",
+      "releasedAt": "2026-09-30T08:30:00-04:00",
+      "actual": 2.2,
+      "consensus": 1.5,
+      "unit": "%",
+      "direction": "higher_is_negative",
+      "scale": 0.8,
+      "importance": 0.3,
+      "halfLifeDays": 4,
+      "verified": true,
+      "sourceMode": "verified_seed",
+      "source": "U.S. Bureau of Economic Analysis actual / market consensus",
+      "sourceUrl": "https://www.bea.gov/data/gdp/gross-domestic-product",
+      "consensusSourceUrl": "https://www.investing.com/economic-calendar/gdp-375"
     }
   ]
 }
