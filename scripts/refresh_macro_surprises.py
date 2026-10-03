@@ -148,8 +148,9 @@ def main():
                 "actual":actual,"consensus":consensus,"unit":unit,
                 "direction":direction,"scale":scale,"importance":importance,
                 "halfLifeDays":half_life,
-                "verified":True,"sourceMode":"calendar_automated",
-                "source":f"{official} actual / Trading Economics consensus",
+                "verified":False,"sourceMode":"calendar_observed",
+                "firstObservedAt":now.isoformat().replace("+00:00","Z"),
+                "source":f"Trading Economics calendar actual + consensus; awaiting {official} verification",
                 "sourceUrl":URL,
                 "officialSource":official,
                 "consensusSource":"Trading Economics survey consensus"
@@ -162,7 +163,23 @@ def main():
         return
 
     existing={e.get("id"):e for e in doc.get("events",[]) if e.get("id")}
-    for e in found: existing[e["id"]]=e
+    for e in found:
+        prev=existing.get(e["id"])
+        if prev:
+            e["firstObservedAt"]=prev.get("firstObservedAt") or e["firstObservedAt"]
+            # Once a primary source has verified an Actual, a later calendar scrape
+            # may refresh consensus but must never downgrade the official value.
+            if prev.get("sourceMode")=="official_verified":
+                for k in ("actual","unit","verified","sourceMode","officialSourceUrl",
+                          "officialVerifiedAt","ingestionLagSeconds",
+                          "officialVerificationLagSeconds","calendarActual","source"):
+                    if k in prev: e[k]=prev[k]
+        try:
+            rel=dt.datetime.fromisoformat(e["releasedAt"])
+            obs=dt.datetime.fromisoformat(e["firstObservedAt"].replace("Z","+00:00"))
+            e["ingestionLagSeconds"]=max(0,round((obs-rel.astimezone(UTC)).total_seconds()))
+        except Exception: pass
+        existing[e["id"]]=e
     cutoff=(dt.datetime.now(NY).date()-dt.timedelta(days=45)).isoformat()
     events=[e for e in existing.values() if str(e.get("releasedAt",""))[:10]>=cutoff]
     events.sort(key=lambda e:e.get("releasedAt",""),reverse=True)
