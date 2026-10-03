@@ -23,6 +23,9 @@ on:
     # Cash-session heartbeat every 5 minutes. GitHub cron is UTC; the ET gate below
     # limits execution to the U.S. session. This replaces unsupported timezone keys.
     - cron: '*/5 12-22 * * 1-5'
+    # Extra post-close trigger improves close-snapshot reliability if the heartbeat is delayed.
+    # Dual UTC hours cover EDT/EST; the New York gate admits only the applicable run.
+    - cron: '27 20,21 * * 1-5'
 concurrency:
   group: nasboard-data-refresh
   cancel-in-progress: true
@@ -74,7 +77,7 @@ jobs:
           elif [ "$ny_hm" -ge 1525 ] && [ "$ny_hm" -le 1540 ]; then
             export NASDECODE_ANALYSIS_STAGE=near_close
           fi
-          if [ "$ny_hm" -ge 1605 ] && [ "$ny_hm" -le 1625 ]; then
+          if [ "$ny_hm" -ge 1605 ] && [ "$ny_hm" -le 1645 ]; then
             export NASDECODE_CLOSE_SNAPSHOT=1
             echo "Capturing canonical post-close NasDecode snapshot"
           fi
@@ -83,6 +86,7 @@ jobs:
           python scripts/refresh.py
           python scripts/sync_premarket_brief.py
           python scripts/live_confirmation.py
+          python scripts/apply_market_response.py
           python scripts/refine_scores.py
           python scripts/fix_three_day_watch.py
           python scripts/capture_session_analysis.py
@@ -118,6 +122,7 @@ jobs:
             MASSIVE_API_KEY='${{ secrets.MASSIVE_API_KEY }}' python scripts/refresh.py
             python scripts/sync_premarket_brief.py
             python scripts/live_confirmation.py
+            python scripts/apply_market_response.py
             python scripts/refine_scores.py
             python scripts/fix_three_day_watch.py
             python scripts/capture_session_analysis.py
