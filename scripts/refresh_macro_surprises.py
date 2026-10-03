@@ -21,6 +21,7 @@ import json
 import os
 import re
 import urllib.request
+import urllib.parse
 from html.parser import HTMLParser
 from zoneinfo import ZoneInfo
 
@@ -116,8 +117,10 @@ def main():
     # NasDecode does not depend on another paid secret. The public HTML calendar
     # remains a fallback if the guest endpoint is unavailable.
     try:
-        api="https://api.tradingeconomics.com/calendar/country/united%20states?c=guest%3Aguest&f=json"
-        req=urllib.request.Request(api,headers={"User-Agent":UA if 'UA' in globals() else "NasDecode/1.0"})
+        te_key=os.environ.get("TRADING_ECONOMICS_API_KEY","").strip()
+        if not te_key: raise RuntimeError("Trading Economics API key not configured")
+        api="https://api.tradingeconomics.com/calendar/country/united%20states?c="+urllib.parse.quote(te_key)+"&f=json"
+        req=urllib.request.Request(api,headers={"User-Agent":"NasDecode/1.0"})
         with urllib.request.urlopen(req,timeout=20) as r:
             items=json.loads(r.read().decode("utf-8","replace"))
         if isinstance(items,list):
@@ -187,6 +190,45 @@ def main():
                 })
                 break
 
+    if not found:
+        # Free fallback: use the already-configured Tavily search connector to retrieve
+        # the public Trading Economics calendar around the release window. This avoids
+        # requiring a separate paid TE API key while preserving survey consensus.
+        key=os.environ.get("TAVILY_API_KEY") or os.environ.get("TAVILY_KEY")
+        if key:
+            try:
+                local=dt.datetime.now(NY)
+                q=f"Trading Economics United States Calendar {local.strftime('%B %d %Y')} Actual Previous Consensus Forecast"
+                payload=json.dumps({
+                    "api_key":key,"query":q,"search_depth":"advanced","max_results":3,
+                    "include_domains":["tradingeconomics.com"],"include_raw_content":True,
+                    "include_answer":False
+                }).encode()
+                req=urllib.request.Request("https://api.tavily.com/search",data=payload,headers={"Content-Type":"application/json","User-Agent":"NasDecode/1.0"})
+                with urllib.request.urlopen(req,timeout=40) as r:
+                    res=json.load(r).get("results",[])
+                raw="\n".join(str(x.get("raw_content") or x.get("content") or "") for x in res if "tradingeconomics.com" in str(x.get("url","")))
+                raw=re.sub(r"\[[^\]]+\]\([^\)]+\)",lambda m:m.group(0).split("]")[0].lstrip("["),raw)
+                for keyname,label,family,subtype,scale,importance,half_life,direction,hm,official in RULES:
+                    pat=re.compile(re.escape(label)+r"(?:\s+[A-Z0-9/]+)?\s*\|\s*([-+]?\d+(?:\.\d+)?[KMBT%]?)\s*\|\s*[^|]*\|\s*([-+]?\d+(?:\.\d+)?[KMBT%]?)",re.I)
+                    m=pat.search(raw)
+                    if not m: continue
+                    actual,au=parse_number(m.group(1)); consensus,cu=parse_number(m.group(2))
+                    if actual is None or consensus is None: continue
+                    day=local.date()
+                    found.append({
+                        "id":f"{day.isoformat()}-{keyname}","name":label,"family":family,"subtype":subtype,
+                        "releasedAt":release_timestamp(day,hm),"actual":actual,"consensus":consensus,
+                        "unit":au or cu,"direction":direction,"scale":scale,"importance":importance,
+                        "halfLifeDays":half_life,"verified":False,"sourceMode":"calendar_observed",
+                        "firstObservedAt":now.isoformat().replace("+00:00","Z"),
+                        "source":f"Trading Economics public calendar via Tavily; awaiting {official} verification",
+                        "sourceUrl":URL,"officialSource":official,
+                        "consensusSource":"Trading Economics survey consensus"
+                    })
+                if found: print(f"Tavily calendar fallback found {len(found)} mapped releases.")
+            except Exception as e:
+                print("Tavily macro calendar fallback unavailable:",repr(e))
     if not found:
         print("Macro calendar parsed but no mapped releases with actual + consensus were found; preserving file.")
         return
