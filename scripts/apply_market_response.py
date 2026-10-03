@@ -168,11 +168,17 @@ def main():
     prior=d.get('marketResponse') or {}
     prior_mode=prior.get('candidateMode')
     prior_since=prior.get('candidateSince')
+    prior_observed=prior.get('observedAt')
+    # Persistence must be continuous within the same trading day. A stale Friday
+    # candidate must never make Monday's first observation immediately active.
+    prior_gap=iso_age_minutes(prior_observed,now) if prior_observed else 999.0
+    try:
+        prior_day=dt.datetime.fromisoformat(str(prior_since)).astimezone(NY).date() if prior_since else None
+    except (TypeError,ValueError):
+        prior_day=None
+    continuous=(prior_mode==mode and prior_since and prior_day==now.date() and prior_gap<=12.0)
     if mode:
-        if prior_mode==mode and prior_since:
-            candidate_since=prior_since
-        else:
-            candidate_since=now.isoformat()
+        candidate_since=prior_since if continuous else now.isoformat()
         persistent_minutes=iso_age_minutes(candidate_since,now)
     else:
         candidate_since=None; persistent_minutes=0.0
@@ -221,7 +227,7 @@ def main():
         summary='No persistent divergence between the macro impulse and live market response.'
 
     mr={
-        'version':1,'status':status,'mode':mode,'summary':summary,
+        'version':1,'status':status,'mode':mode,'summary':summary,'observedAt':now.isoformat(),
         'candidateMode':mode,'candidateSince':candidate_since,
         'persistenceMinutes':round(persistent_minutes,1),'requiredPersistenceMinutes':PERSIST_MINUTES,
         'evidenceScore':round(ev*100) if ev is not None else None,
