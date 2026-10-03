@@ -749,51 +749,65 @@ def main():
         # Session-aware equity leadership. Use live/after-hours quotes when reliable.
         # When the cash market is closed and extended-hours coverage is unavailable, fall back
         # to the most recent completed regular-session move and label it explicitly as previous-close data.
-        semis=['NVDA','AMD','AVGO','TSM','MU']
+        # Semiconductor leadership: SOX is the primary signal. SOXX/SMH and the
+        # full SOX-member breadth universe are confirmations; the old five-stock
+        # NVDA/AMD/AVGO/TSM/MU basket is deliberately not used as leadership.
         session=equity_session(now)
         session_label={'regular':'Live','afterhours':'After-hours','premarket':'Premarket','closed':'Closed'}[session]
         equity_available='QQQ' in q and equity_quote_available(q['QQQ'],session)
-
-        if equity_available and all(sym in q and equity_quote_available(q[sym],session) for sym in semis):
-            moves={sym:quoted_move(q[sym],session) for sym in semis}; qqq=quoted_move(q['QQQ'],session)
-            valid=[v for v in moves.values() if v is not None]
-            if valid and qqq is not None:
-                avg=sum(valid)/len(valid); rel=avg-qqq; pos=sum(v>0 for v in valid)
-                smh_move=quoted_move(q['SMH'],session) if 'SMH' in q and equity_quote_available(q['SMH'],session) else None
-                smh_rel=(smh_move-qqq) if smh_move is not None else None
-                # Primary signal is the equal-weight five-stock leadership basket vs QQQ.
-                # SMH acts as confirmation: agreement strengthens the read; disagreement flags narrow/mixed leadership.
-                basket_dir=1 if rel>0.25 else (-1 if rel<-0.25 else 0)
-                smh_dir=1 if smh_rel is not None and smh_rel>0.25 else (-1 if smh_rel is not None and smh_rel<-0.25 else 0)
-                if basket_dir>0 and smh_dir>=0: sig='positive'; direction='Leading QQQ' if smh_dir==0 else 'Confirmed leadership'
-                elif basket_dir<0 and smh_dir<=0: sig='negative'; direction='Lagging QQQ' if smh_dir==0 else 'Confirmed weakness'
-                elif basket_dir>0 and smh_dir<0: sig='mixed'; direction='Narrow leader strength'
-                elif basket_dir<0 and smh_dir>0: sig='mixed'; direction='Broader semis holding up'
-                else: sig='mixed'; direction='In line with QQQ'
-                smh_txt=f' | SMH {smh_move:+.2f}% | SMH vs QQQ {smh_rel:+.2f} pp' if smh_move is not None else ' | SMH confirmation unavailable'
-                txt=session_label+' · '+f'5-stock basket {avg:+.2f}% | {pos}/5 positive | QQQ {qqq:+.2f}% | basket vs QQQ {rel:+.2f} pp'+smh_txt
-                setrow(rows,'Semiconductor leadership',txt,direction,sig,session_label+' CNBC quote','CNBC quotes; session-aware equal-weight NVDA/AMD/AVGO/TSM/MU vs QQQ, confirmed by SMH vs QQQ')
+        sox_symbol='.SOX' if '.SOX' in q else ('SOX' if 'SOX' in q else None)
+        index_available=(session=='regular' and sox_symbol and '.IXIC' in q and
+                         equity_quote_available(q[sox_symbol],session) and equity_quote_available(q['.IXIC'],session))
+        if index_available:
+            sox_move=quoted_move(q[sox_symbol],session); nasdaq_move=quoted_move(q['.IXIC'],session)
+            soxx_move=quoted_move(q['SOXX'],session) if 'SOXX' in q and equity_quote_available(q['SOXX'],session) else None
+            smh_move=quoted_move(q['SMH'],session) if 'SMH' in q and equity_quote_available(q['SMH'],session) else None
+            if sox_move is not None and nasdaq_move is not None:
+                sox_rel=sox_move-nasdaq_move
+                soxx_rel=(soxx_move-nasdaq_move) if soxx_move is not None else None
+                smh_rel=(smh_move-nasdaq_move) if smh_move is not None else None
+                primary=1 if sox_rel>0.25 else (-1 if sox_rel<-0.25 else 0)
+                confirms=[x for x in (soxx_rel,smh_rel) if x is not None]
+                confirm_dir=sum(1 if x>0.20 else (-1 if x<-0.20 else 0) for x in confirms)
+                if primary>0 and confirm_dir>=0: sig='positive'; direction='Confirmed leadership' if confirm_dir>0 else 'SOX leading Nasdaq'
+                elif primary<0 and confirm_dir<=0: sig='negative'; direction='Confirmed weakness' if confirm_dir<0 else 'SOX lagging Nasdaq'
+                elif primary>0: sig='mixed'; direction='SOX leadership not broadly confirmed'
+                elif primary<0: sig='mixed'; direction='SOX weakness offset by ETF confirmation'
+                else: sig='mixed'; direction='SOX in line with Nasdaq'
+                extras=[]
+                if soxx_rel is not None: extras.append(f'SOXX vs Nasdaq {soxx_rel:+.2f} pp')
+                if smh_rel is not None: extras.append(f'SMH vs Nasdaq {smh_rel:+.2f} pp')
+                txt=session_label+' · '+f'SOX {sox_move:+.2f}% | Nasdaq {nasdaq_move:+.2f}% | SOX vs Nasdaq {sox_rel:+.2f} pp'
+                if extras: txt+=' | '+' | '.join(extras)
+                setrow(rows,'Semiconductor leadership',txt,direction,sig,session_label+' CNBC quote',
+                       'CNBC quotes; SOX relative strength vs Nasdaq is primary, confirmed by SOXX/SMH and broad SOX-member participation')
         else:
-            prev_moves={sym:previous_regular_move(q[sym]) for sym in semis if sym in q}
-            prev_qqq=previous_regular_move(q['QQQ']) if 'QQQ' in q else None
-            prev_valid=[v for v in prev_moves.values() if v is not None]
-            if session!='regular' and len(prev_valid)==len(semis) and prev_qqq is not None:
-                avg=sum(prev_valid)/len(prev_valid); rel=avg-prev_qqq; pos=sum(v>0 for v in prev_valid)
+            prev_sox=previous_regular_move(q[sox_symbol]) if sox_symbol else None
+            prev_nasdaq=previous_regular_move(q['.IXIC']) if '.IXIC' in q else None
+            if session!='regular' and prev_sox is not None and prev_nasdaq is not None:
+                sox_rel=prev_sox-prev_nasdaq
+                soxx_move=previous_regular_move(q['SOXX']) if 'SOXX' in q else None
                 smh_move=previous_regular_move(q['SMH']) if 'SMH' in q else None
-                smh_rel=(smh_move-prev_qqq) if smh_move is not None else None
-                basket_dir=1 if rel>0.25 else (-1 if rel<-0.25 else 0)
-                smh_dir=1 if smh_rel is not None and smh_rel>0.25 else (-1 if smh_rel is not None and smh_rel<-0.25 else 0)
-                if basket_dir>0 and smh_dir>=0: sig='positive'; direction='Leading QQQ' if smh_dir==0 else 'Confirmed leadership'
-                elif basket_dir<0 and smh_dir<=0: sig='negative'; direction='Lagging QQQ' if smh_dir==0 else 'Confirmed weakness'
-                elif basket_dir>0 and smh_dir<0: sig='mixed'; direction='Narrow leader strength'
-                elif basket_dir<0 and smh_dir>0: sig='mixed'; direction='Broader semis holding up'
-                else: sig='mixed'; direction='In line with QQQ'
-                smh_txt=f' | SMH {smh_move:+.2f}% | SMH vs QQQ {smh_rel:+.2f} pp' if smh_move is not None else ' | SMH confirmation unavailable'
-                txt='Previous regular-session close · '+f'5-stock basket {avg:+.2f}% | {pos}/5 positive | QQQ {prev_qqq:+.2f}% | basket vs QQQ {rel:+.2f} pp'+smh_txt
-                setrow(rows,'Semiconductor leadership',txt,direction,sig,'Previous close · most recent regular session','CNBC previous-close quotes; equal-weight NVDA/AMD/AVGO/TSM/MU vs QQQ, confirmed by SMH when available')
+                soxx_rel=(soxx_move-prev_nasdaq) if soxx_move is not None else None
+                smh_rel=(smh_move-prev_nasdaq) if smh_move is not None else None
+                primary=1 if sox_rel>0.25 else (-1 if sox_rel<-0.25 else 0)
+                confirms=[x for x in (soxx_rel,smh_rel) if x is not None]
+                confirm_dir=sum(1 if x>0.20 else (-1 if x<-0.20 else 0) for x in confirms)
+                if primary>0 and confirm_dir>=0: sig='positive'; direction='Confirmed leadership' if confirm_dir>0 else 'SOX leading Nasdaq'
+                elif primary<0 and confirm_dir<=0: sig='negative'; direction='Confirmed weakness' if confirm_dir<0 else 'SOX lagging Nasdaq'
+                elif primary>0: sig='mixed'; direction='SOX leadership not broadly confirmed'
+                elif primary<0: sig='mixed'; direction='SOX weakness offset by ETF confirmation'
+                else: sig='mixed'; direction='SOX in line with Nasdaq'
+                extras=[]
+                if soxx_rel is not None: extras.append(f'SOXX vs Nasdaq {soxx_rel:+.2f} pp')
+                if smh_rel is not None: extras.append(f'SMH vs Nasdaq {smh_rel:+.2f} pp')
+                txt='Previous regular-session close · '+f'SOX {prev_sox:+.2f}% | Nasdaq {prev_nasdaq:+.2f}% | SOX vs Nasdaq {sox_rel:+.2f} pp'
+                if extras: txt+=' | '+' | '.join(extras)
+                setrow(rows,'Semiconductor leadership',txt,direction,sig,'Previous close · most recent regular session',
+                       'CNBC previous-close quotes; SOX relative strength vs Nasdaq is primary, confirmed by SOXX/SMH')
             else:
-                msg=f'Awaiting {session_label.lower()} equity quotes'
-                setrow(rows,'Semiconductor leadership',msg,'Awaiting session','mixed',session_label+' — insufficient current equity data','CNBC quotes')
+                msg=f'Awaiting {session_label.lower()} SOX/Nasdaq quotes'
+                setrow(rows,'Semiconductor leadership',msg,'Awaiting session','mixed',session_label+' — insufficient current index data','CNBC quotes')
 
         # Mega-cap leadership, regular session or reliable CNBC POST_MKT quotes.
         if equity_available:
@@ -1150,7 +1164,7 @@ def main():
             dev=abs(adv-50)
             imp='Very High' if dev>=30 else ('High' if dev>=20 else ('Medium' if dev>=10 else 'Low'))
         elif n in ('Semiconductor leadership','Mega-cap leadership'):
-            m=re.search(r'(?:basket vs QQQ|relative) ([+-]?[0-9.]+) pp',r.get('latest','')); mv=abs(float(m.group(1))) if m else 0
+            m=re.search(r'(?:SOX vs Nasdaq|basket vs QQQ|relative) ([+-]?[0-9.]+) pp',r.get('latest','')); mv=abs(float(m.group(1))) if m else 0
             imp='Very High' if mv>=1.5 else ('High' if mv>=0.75 else ('Medium' if mv>=0.25 else 'Low'))
         elif n=='Credit conditions':
             m=re.search(r'HYG vs LQD ([+-]?[0-9.]+) pp',r.get('latest','')); mv=abs(float(m.group(1))) if m else 0
@@ -1186,11 +1200,11 @@ def main():
                 vol=next((z for z in rows if z['factor']=='Nasdaq volatility (VXN / VIX)'),{})
                 reaction_score=0
                 if 'Awaiting' not in semi.get('latest','') and 'previous close' not in semi.get('freshness','').lower():
-                    sm=re.search(r'(?:basket vs QQQ|relative) ([+-]?[0-9.]+) pp',semi.get('latest',''))
+                    sm=re.search(r'(?:SOX vs Nasdaq|basket vs QQQ|relative) ([+-]?[0-9.]+) pp',semi.get('latest',''))
                     if sm and abs(float(sm.group(1)))>=1.0: reaction_score+=2
                     elif sm and abs(float(sm.group(1)))>=0.5: reaction_score+=1
                 if 'Awaiting' not in mega.get('latest','') and 'previous close' not in mega.get('freshness','').lower():
-                    mm=re.search(r'(?:basket vs QQQ|relative) ([+-]?[0-9.]+) pp',mega.get('latest',''))
+                    mm=re.search(r'(?:SOX vs Nasdaq|basket vs QQQ|relative) ([+-]?[0-9.]+) pp',mega.get('latest',''))
                     if mm and abs(float(mm.group(1)))>=1.0: reaction_score+=1
                 if 'previous close' not in vol.get('freshness','').lower():
                     vm=[abs(float(v)) for v in re.findall(r'\\(([+-]?[0-9.]+)%\\)',vol.get('latest',''))]
@@ -1199,11 +1213,11 @@ def main():
                 # Semiconductor leadership carries the most weight; mega-cap leadership and volatility confirm.
                 directional_score=0
                 if 'Awaiting' not in semi.get('latest','') and 'previous close' not in semi.get('freshness','').lower():
-                    sm=re.search(r'(?:basket vs QQQ|relative) ([+-]?[0-9.]+) pp',semi.get('latest',''))
+                    sm=re.search(r'(?:SOX vs Nasdaq|basket vs QQQ|relative) ([+-]?[0-9.]+) pp',semi.get('latest',''))
                     if sm:
                         sv=float(sm.group(1)); directional_score += 2 if sv>=0.5 else (-2 if sv<=-0.5 else 0)
                 if 'Awaiting' not in mega.get('latest','') and 'previous close' not in mega.get('freshness','').lower():
-                    mm=re.search(r'(?:basket vs QQQ|relative) ([+-]?[0-9.]+) pp',mega.get('latest',''))
+                    mm=re.search(r'(?:SOX vs Nasdaq|basket vs QQQ|relative) ([+-]?[0-9.]+) pp',mega.get('latest',''))
                     if mm:
                         mv=float(mm.group(1)); directional_score += 1 if mv>=0.5 else (-1 if mv<=-0.5 else 0)
                 if 'previous close' not in vol.get('freshness','').lower():
@@ -1290,9 +1304,10 @@ def main():
             fs=num(r.get('fedPolicyScore'))
             if fs is not None: return clamp(fs/100.0)
         if n=='Semiconductor leadership':
-            rel=first_num(r'basket vs QQQ ([+-]?[0-9.]+) pp',t)
-            smh=first_num(r'SMH vs QQQ ([+-]?[0-9.]+) pp',t)
-            if rel is not None: return clamp(0.75*clamp(rel/1.5)+0.25*clamp((smh or 0)/1.5))
+            rel=first_num(r'SOX vs Nasdaq ([+-]?[0-9.]+) pp',t)
+            soxx=first_num(r'SOXX vs Nasdaq ([+-]?[0-9.]+) pp',t)
+            smh=first_num(r'SMH vs Nasdaq ([+-]?[0-9.]+) pp',t)
+            if rel is not None: return clamp(0.70*clamp(rel/1.5)+0.15*clamp((soxx or 0)/1.5)+0.15*clamp((smh or 0)/1.5))
         if n=='Mega-cap leadership':
             rel=first_num(r'relative ([+-]?[0-9.]+) pp',t)
             if rel is not None: return clamp(rel/1.25)
@@ -1752,11 +1767,11 @@ def main():
         if x is not None: old_breadth=x; break
     breadth_recovery=_clamp100(50+4*(cur_breadth-old_breadth)) if cur_breadth is not None and old_breadth is not None else None
 
-    # R3 — semiconductor relative-leadership recovery versus QQQ.
-    cur_semi=_pct_in(_row_latest('Semiconductor leadership'),r'basket vs QQQ\s*([+-]?[0-9.]+)\s*pp')
+    # R3 — SOX relative-leadership recovery versus Nasdaq.
+    cur_semi=_pct_in(_row_latest('Semiconductor leadership'),r'SOX vs Nasdaq\s*([+-]?[0-9.]+)\s*pp')
     old_semi=None
     for rec in _opp_hist:
-        x=_pct_in(_hist_factor_latest(rec,'Semiconductor leadership'),r'basket vs QQQ\s*([+-]?[0-9.]+)\s*pp')
+        x=_pct_in(_hist_factor_latest(rec,'Semiconductor leadership'),r'SOX vs Nasdaq\s*([+-]?[0-9.]+)\s*pp')
         if x is not None: old_semi=x; break
     semi_recovery=_clamp100(50+20*(cur_semi-old_semi)) if cur_semi is not None and old_semi is not None else None
 
@@ -2386,7 +2401,7 @@ def main():
     mega_latest=_factor_row('Mega-cap leadership').get('latest','')
     s5_latest=_factor_row('S&P 500 50D Breadth / Oversold').get('latest','')
     semi_basket=_rxnum(semi_latest,r'5-stock basket\s*([+-]?[0-9.]+)%')
-    semi_vs_qqq=_rxnum(semi_latest,r'basket vs QQQ\s*([+-]?[0-9.]+)\s*pp')
+    semi_vs_qqq=_rxnum(semi_latest,r'SOX vs Nasdaq\s*([+-]?[0-9.]+)\s*pp')
     smh_vs_qqq=_rxnum(semi_latest,r'SMH vs QQQ\s*([+-]?[0-9.]+)\s*pp')
     mega_basket=_rxnum(mega_latest,r'(?:[0-9]+-stock basket|basket)\s*([+-]?[0-9.]+)%')
     mega_vs_qqq=_rxnum(mega_latest,r'(?:basket vs QQQ|relative)\s*([+-]?[0-9.]+)\s*pp')
@@ -2405,7 +2420,8 @@ def main():
         'nasdaqBreadth':breadth_obs,
         's5fi':{'levelPct':s5_level,'changePp':s5_change},
         'semiconductors':{
-            'basketReturnPct':semi_basket,'basketVsQqqPp':semi_vs_qqq,'smhVsQqqPp':smh_vs_qqq,
+            'soxReturnPct':sox_return,'soxVsNasdaqPp':sox_vs_nasdaq,
+            'soxxVsNasdaqPp':soxx_vs_nasdaq,'smhVsNasdaqPp':smh_vs_nasdaq,
             'soxx':{k:sctx.get(k) for k in ('return1d','return3d','return5d','ma20Distance','ma50Distance','rsi14','streak') if k in sctx}
         },
         'megaCaps':{'basketReturnPct':mega_basket,'basketVsQqqPp':mega_vs_qqq},
@@ -2451,13 +2467,12 @@ def main():
         except (FileNotFoundError,json.JSONDecodeError,StopIteration):
             pass
     relative_strength={
-        'semiBasketVsNasdaqPp':round(semi_basket-nasdaq_day_return,4) if semi_basket is not None and nasdaq_day_return is not None else None,
+        
         'megaCapBasketVsNasdaqPp':round(mega_basket-nasdaq_day_return,4) if mega_basket is not None and nasdaq_day_return is not None else None,
         'soxVsNasdaqPp':round(rs_returns.get('SOX')-nasdaq_day_return,4) if rs_returns.get('SOX') is not None and nasdaq_day_return is not None else None,
         'soxxVsNasdaqPp':round(rs_returns.get('SOXX')-nasdaq_day_return,4) if rs_returns.get('SOXX') is not None and nasdaq_day_return is not None else None,
         'smhVsNasdaqPp':round(rs_returns.get('SMH')-nasdaq_day_return,4) if rs_returns.get('SMH') is not None and nasdaq_day_return is not None else None,
-        'semiBasketVsQqqPp':semi_vs_qqq,
-        'smhVsQqqPp':smh_vs_qqq,
+
         'megaCapBasketVsQqqPp':mega_vs_qqq,
         'basis':relative_strength_basis,
         'observationDate':relative_strength_date
@@ -2481,7 +2496,6 @@ def main():
     sox_rs=relative_strength.get('soxVsNasdaqPp')
     soxx_rs=relative_strength.get('soxxVsNasdaqPp')
     smh_rs=relative_strength.get('smhVsNasdaqPp')
-    basket_rs=relative_strength.get('semiBasketVsNasdaqPp')
 
     # Semiconductor breadth: share of available large/liquid semiconductor names
     # outperforming QQQ during the same observation basis.
@@ -2504,10 +2518,12 @@ def main():
     elif semi_breadth_pct>=30: semi_breadth_score=25
     else: semi_breadth_score=0
 
-    # 35% SOX, 20% SOXX, 15% SMH, 20% semiconductor breadth, 10% selective basket.
+    # SOX is the primary leadership signal. SOXX/SMH and full-universe breadth
+    # confirm whether that leadership is broad; the selective five-stock basket
+    # is intentionally excluded from Semiconductor Leadership.
     semiconductor_leadership_score=round(
-        .35*_rs_score(sox_rs)+.20*_rs_score(soxx_rs)+.15*_rs_score(smh_rs)+
-        .20*semi_breadth_score+.10*_rs_score(basket_rs)
+        .55*_rs_score(sox_rs)+.15*_rs_score(soxx_rs)+.10*_rs_score(smh_rs)+
+        .20*semi_breadth_score
     )
     # Strong broad-index trigger: SOX >= +0.50pp vs Nasdaq with both ETFs confirming.
     broad_trigger=bool(sox_rs is not None and sox_rs>=0.50 and
