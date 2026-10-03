@@ -48,7 +48,7 @@ def page(url):
 
 def num(pattern,text,flags=re.I):
     m=re.search(pattern,text,flags)
-    return float(m.group(1)) if m else None
+    return float(m.group(1).replace(",","")) if m else None
 
 def page_release_date(text):
     pats=[
@@ -158,7 +158,7 @@ def main():
     for e in doc.get("events",[]):
         key=str(e.get("id","")).split("-",3)[-1]
         # IDs contain dates plus keys; recover known key by suffix.
-        key=next((k for k in snap if str(e.get("id","")).endswith("-"+k)),None)
+        key=next((k for k in sorted(snap,key=len,reverse=True) if str(e.get("id","")).endswith("-"+k)),None)
         if not key: continue
         official_day,value,unit,url=snap[key]
         event_day=str(e.get("releasedAt",""))[:10]
@@ -176,9 +176,16 @@ def main():
         e["officialSourceUrl"]=url
         e["officialVerifiedAt"]=e.get("officialVerifiedAt") or now
         e["source"]=f"{e.get('officialSource','Primary publisher')} actual / {e.get('consensusSource','market consensus')}"
-        if not e.get("firstObservedAt"): e["firstObservedAt"]=now
-        e["ingestionLagSeconds"]=seconds_since(e.get("releasedAt"),e["firstObservedAt"])
-        e["officialVerificationLagSeconds"]=seconds_since(e.get("releasedAt"),e["officialVerifiedAt"])
+        # Latency is only meaningful for observations captured live by the automated
+        # calendar path. Never manufacture a multi-day "lag" for historical seeds
+        # merely because the verifier was introduced later.
+        if e.get("firstObservedAt"):
+            e["ingestionLagSeconds"]=seconds_since(e.get("releasedAt"),e["firstObservedAt"])
+            e["officialVerificationLagSeconds"]=seconds_since(e.get("releasedAt"),e["officialVerifiedAt"])
+        else:
+            e["ingestionLagSeconds"]=None
+            e["officialVerificationLagSeconds"]=None
+            e["latencyTracking"]="pre_tracking_release"
         changed+=1
     doc["lastOfficialVerificationAt"]=now
     doc["latencyDefinition"]={
