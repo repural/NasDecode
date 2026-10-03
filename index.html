@@ -267,17 +267,19 @@ async function loadChartHistory(){try{const r=await fetch('data/chart-history.js
 async function load(){update.disabled=true;update.textContent='Checking…';try{const r=await fetch('data/dashboard.json?t='+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache'}});if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();render(d);return d}catch(e){console.error(e);update.textContent='Refresh failed';setTimeout(()=>update.textContent='↻ Check Latest',1800);return null}finally{update.disabled=false;if(update.textContent==='Checking…')update.textContent='↻ Check Latest'}}
 // Load the narrative market brief. Market Analysis times remain in New York / ET; do not localize them to browser/TR time.
 const nearbyMajorEarnings=d=>{
-  const row=(d?.rows||[]).find(r=>r.factor==='Technology earnings calendar');
-  if(!row?.latest)return '';
-  const m=String(row.latest).match(/^([^:]+):\s*([A-Z][a-z]{2}\s+\d{1,2},\s+\d{4})/);
-  if(!m)return '';
-  const eventDate=new Date(m[2]+' 12:00:00 GMT-0400');
-  const now=new Date();
-  const nyToday=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
-  const today=new Date(nyToday+'T12:00:00-04:00');
-  const days=Math.ceil((eventDate-today)/86400000);
-  if(days<0||days>7)return '';
-  return '<h3>Major earnings catalyst:</h3><p>'+escHtml(m[1])+' reports '+escHtml(m[2])+' ('+(days===0?'today':days+' day'+(days===1?'':'s')+' away')+'). Given its relevance to Nasdaq/technology leadership, this event should remain part of the near-term risk assessment in both pre-market and market analysis.</p>';
+  const events=(d?.upcomingEarnings?.events||[]).filter(e=>{
+    const ed=new Date(String(e.date)+'T12:00:00Z');
+    const now=new Date(), nyToday=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
+    const today=new Date(nyToday+'T12:00:00Z'), days=Math.round((ed-today)/86400000);
+    return days>=0&&days<=14;
+  });
+  if(!events.length)return '';
+  const items=events.map(e=>{
+    const ed=new Date(String(e.date)+'T12:00:00Z');
+    const date=ed.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'});
+    return escHtml((e.ticker||'')+' · '+date);
+  }).join(', ');
+  return '<h3>Major earnings catalysts:</h3><p>'+items+'. These SOX/mega-cap reports fall inside the rolling 14-day catalyst window.</p>';
 };
 async function loadAnalysis(d){try{
   // After the cash open, this section becomes the live Market Analysis and uses the
