@@ -49,7 +49,8 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             TAVILY_API_KEY='${{ secrets.TAVILY_KEY }}' python scripts/refresh_catalysts.py
-            git add data/semiconductor-catalysts.json
+            python scripts/refresh_upcoming_earnings.py
+            git add data/semiconductor-catalysts.json data/upcoming-earnings.json
             git diff --cached --quiet && exit 0
             git commit -m 'Update detected market catalysts'
           done
