@@ -21,6 +21,7 @@ DAILY_PATH=os.path.join(HISTORY_DIR,'daily.json')
 PREMARKET_PATH=os.path.join(ROOT,'data','premarket.json')
 EARNINGS_AVWAP_PATH=os.path.join(ROOT,'data','earnings_avwap_watchlist.json')
 UPCOMING_EARNINGS_PATH=os.path.join(ROOT,'data','upcoming-earnings.json')
+MACRO_SURPRISES_PATH=os.path.join(ROOT,'data','macro-surprises.json')
 _MASSIVE_LAST_CALL=0.0
 NY=ZoneInfo('America/New_York')
 CNBC_BASE='https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol'
@@ -1043,27 +1044,88 @@ def main():
         r['freshness']='STALE — Cboe put/call refresh failed'
         r['source']='Cboe Daily Market Statistics — options volume put/call ratios'
 
-    # Economic / inflation data is a SURPRISE factor, not an event-calendar factor.
-    # Only verified actual-versus-consensus observations should move its signal. Upcoming
-    # releases belong in the pre-market/event-risk layer and must not affect direction.
-    macro_surprises=d.get('macroSurprises',[])
-    verified=[x for x in macro_surprises if x.get('actual') is not None and x.get('consensus') is not None and x.get('releasedAt')]
-    verified.sort(key=lambda x:x.get('releasedAt',''),reverse=True)
-    if verified:
-        m=verified[0]
-        actual=float(m['actual']); consensus=float(m['consensus']); delta=actual-consensus
-        # surpriseDirection is explicit because "higher" is not universally bearish:
-        # inflation/wage upside is generally a Nasdaq headwind, while labor/growth data
-        # can be context-dependent. Unknown mappings fail closed as mixed.
-        sd=m.get('surpriseDirection','mixed')
-        sig='negative' if sd=='higher_is_negative' and delta>0 else ('positive' if sd=='higher_is_negative' and delta<0 else ('positive' if sd=='higher_is_positive' and delta>0 else ('negative' if sd=='higher_is_positive' and delta<0 else 'mixed')))
-        unit=m.get('unit','')
-        latest_txt=f"{m.get('name','Macro release')}: {actual:g}{unit} actual vs {consensus:g}{unit} consensus · surprise {delta:+g}{unit}"
-        setrow(rows,'Economic / inflation data',latest_txt,'Hotter than expected' if delta>0 else ('Cooler/weaker than expected' if delta<0 else 'In line'),sig,f"Verified release · {m['releasedAt']}",m.get('source','Verified macro release'))
-        rr=next(x for x in rows if x['factor']=='Economic / inflation data')
-        rr['surprise']=delta; rr['surpriseText']=f"Actual {actual:g}{unit} versus {consensus:g}{unit}; surprise {delta:+g}{unit}."
+    # Economic / inflation data is a DECAYING MACRO-IMPULSE factor.
+    # Each verified actual-vs-consensus release is normalized by a release-specific
+    # surprise scale, mapped through a Nasdaq/rates direction, and decays with age.
+    # This preserves the information content of recent releases without pretending an
+    # upcoming event is directional. Treasury/Fed/oil remain separate factors, so this
+    # measures the data impulse rather than double-counting the observed rate reaction.
+    try:
+        with open(MACRO_SURPRISES_PATH,encoding='utf-8') as mf:
+            _macro_doc=json.load(mf)
+    except (OSError,json.JSONDecodeError):
+        _macro_doc={'events':[]}
+    macro_surprises=_macro_doc.get('events',[])
+    d['macroSurprises']=macro_surprises
+    macro_parts=[]
+    macro_num=0.0; macro_den=0.0
+    for m in macro_surprises:
+        if m.get('actual') is None or m.get('consensus') is None or not m.get('releasedAt'):
+            continue
+        try:
+            released=datetime.datetime.fromisoformat(str(m['releasedAt']).replace('Z','+00:00'))
+            if released.tzinfo is None: released=released.replace(tzinfo=NY)
+            age_days=max(0.0,(now-released.astimezone(NY)).total_seconds()/86400.0)
+            # Stop carrying observations once their information content is negligible.
+            half_life=max(0.5,float(m.get('halfLifeDays',5)))
+            if age_days>max(21.0,half_life*4.0): continue
+            actual=float(m['actual']); consensus=float(m['consensus'])
+            scale=max(1e-9,abs(float(m.get('scale',1))))
+            importance=max(0.0,float(m.get('importance',1)))
+        except (ValueError,TypeError,OverflowError):
+            continue
+        delta=actual-consensus
+        normalized=clamp(delta/scale)
+        direction=m.get('direction','mixed')
+        if direction=='higher_is_negative': impact=-normalized
+        elif direction=='higher_is_positive': impact=normalized
+        else: impact=0.0
+        decay=0.5**(age_days/half_life)
+        effective=importance*decay
+        contribution=impact*effective
+        macro_num+=contribution; macro_den+=effective
+        macro_parts.append({
+            'id':m.get('id'),'name':m.get('name','Macro release'),'family':m.get('family','macro'),
+            'releasedAt':m.get('releasedAt'),'actual':actual,'consensus':consensus,'unit':m.get('unit',''),
+            'surprise':delta,'normalizedSurprise':round(normalized,4),'nasdaqImpact':round(impact,4),
+            'decay':round(decay,4),'effectiveWeight':round(effective,4),
+            'weightedContribution':round(contribution,4),'source':m.get('source')
+        })
+    macro_impulse=clamp(macro_num/macro_den) if macro_den>0 else 0.0
+    macro_score=round(100*macro_impulse)
+    macro_parts.sort(key=lambda x:abs(x.get('weightedContribution',0)),reverse=True)
+    if macro_score>=20:
+        sig='positive'; direction='Supportive macro impulse'
+    elif macro_score<=-20:
+        sig='negative'; direction='Restrictive macro impulse'
     else:
-        setrow(rows,'Economic / inflation data','Awaiting verified actual vs consensus release','No active surprise','mixed',f'No verified surprise · checked {now.strftime("%Y-%m-%d %H:%M ET")}','NasDecode verified macro-surprise feed')
+        sig='mixed'; direction='Balanced macro impulse'
+    if macro_parts:
+        top=[]
+        for p in macro_parts[:3]:
+            unit=p.get('unit','')
+            a=p['actual']; con=p['consensus']
+            fmt=lambda v: f"{v:g}{unit}"
+            top.append(f"{p['name']} {fmt(a)} vs {fmt(con)}")
+        latest_txt=f"{direction} {macro_score:+d} · "+' · '.join(top)
+        newest=max(macro_parts,key=lambda x:x.get('releasedAt',''))
+        freshness=f"Decaying verified releases · latest {newest.get('releasedAt')}"
+        source='Verified official releases + market consensus'
+    else:
+        latest_txt='No active verified macro impulse'
+        freshness=f'No active verified surprise · checked {now.strftime("%Y-%m-%d %H:%M ET")}'
+        source='NasDecode verified macro-surprise feed'
+    setrow(rows,'Economic / inflation data',latest_txt,direction,sig,freshness,source)
+    rr=next(x for x in rows if x['factor']=='Economic / inflation data')
+    rr['macroImpulseScore']=macro_score
+    rr['macroImpulse']={
+        'score':macro_score,'normalized':round(macro_impulse,4),
+        'activeReleaseCount':len(macro_parts),'drivers':macro_parts,
+        'interpretation':'Positive is supportive for rate-sensitive Nasdaq; negative is restrictive. Recent verified surprises decay rather than disappearing immediately.'
+    }
+    rr['surprise']=macro_parts[0]['surprise'] if macro_parts else None
+    rr['surpriseText']=('Recent verified releases remain in the macro impulse with time decay.' if macro_parts else 'No active verified macro surprise.')
+
     # Fed expectations: market-implied conditional move probabilities from 30-Day Fed Funds futures.
     # Persisted FedWatch history lets the model distinguish a restrictive level from fresh repricing.
     # Meeting weights intentionally decay: nearest meeting 60%, second 25%, third 15%.
@@ -1393,9 +1455,10 @@ def main():
                 level_s=clamp((0.70-eq)/0.25); trend_s=clamp(((avg-eq) if avg is not None else 0)/0.15)
                 return clamp(0.7*level_s+0.3*trend_s)
         if n=='Economic / inflation data':
-            # Magnitude is release-specific; retain mapped direction but scale verified surprises
-            # above neutral so a real release matters more than an awaiting row.
-            return 0.75*base if r.get('surprise') is not None else 0.0
+            # Decaying aggregate of recent verified actual-vs-consensus releases.
+            # Stored on a -100..+100 Nasdaq-support scale.
+            mi=r.get('macroImpulseScore')
+            return clamp(float(mi)/100.0) if mi is not None else 0.0
         return base
 
     bucket_of={
