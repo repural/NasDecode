@@ -6,7 +6,9 @@ on:
     branches: [main]
     paths:
       - 'scripts/refresh_catalysts.py'
+      - 'scripts/refresh_upcoming_earnings.py'
       - 'data/catalyst-universe.json'
+      - 'data/upcoming-earnings.json'
       - '.github/workflows/catalyst-monitor.yml'
   schedule:
     # Near-real-time monitoring during the main U.S. pre-market/regular/after-hours window.
@@ -29,13 +31,15 @@ jobs:
       - name: Discover major SOX and mega-cap catalysts
         env:
           TAVILY_API_KEY: ${{ secrets.TAVILY_KEY }}
-        run: python scripts/refresh_catalysts.py
+        run: |
+          python scripts/refresh_catalysts.py
+          python scripts/refresh_upcoming_earnings.py
       - name: Publish catalyst updates
         shell: bash
         run: |
           git config user.name 'nasdecode-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add data/semiconductor-catalysts.json
+          git add data/semiconductor-catalysts.json data/upcoming-earnings.json
           git diff --cached --quiet && exit 0
           git commit -m 'Update detected market catalysts'
           for attempt in 1 2 3 4; do
