@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "description": "Verified U.S. macro actual-vs-consensus observations used by NasDecode's decaying macro impulse. Direction is from a rate-sensitive Nasdaq lens; other rate/oil/Fed factors remain separate.",
+  "description": "Verified U.S. macro actual-vs-consensus observations used by NasDecode's decaying Macro Data Impulse. Automated observations require primary-source Actual verification before entering the model.",
   "events": [
     {
       "id": "2026-10-02-nfp",
@@ -16,7 +16,11 @@
       "halfLifeDays": 5,
       "source": "U.S. Bureau of Labor Statistics / Reuters consensus",
       "sourceUrl": "https://www.bls.gov/news.release/archives/empsit_10022026.htm",
-      "consensusSourceUrl": "https://www.reuters.com/business/us-job-growth-expected-slow-september-unemployment-rate-likely-steady-2026-10-02/"
+      "consensusSourceUrl": "https://www.reuters.com/business/us-job-growth-expected-slow-september-unemployment-rate-likely-steady-2026-10-02/",
+      "verified": true,
+      "sourceMode": "official_verified",
+      "officialSourceUrl": "https://www.bls.gov/news.release/archives/empsit_10022026.htm",
+      "latencyTracking": "pre_tracking_release"
     },
     {
       "id": "2026-10-02-unemployment",
@@ -32,14 +36,18 @@
       "halfLifeDays": 5,
       "source": "U.S. Bureau of Labor Statistics / Reuters consensus",
       "sourceUrl": "https://www.bls.gov/news.release/archives/empsit_10022026.htm",
-      "consensusSourceUrl": "https://www.reuters.com/business/us-job-growth-expected-slow-september-unemployment-rate-likely-steady-2026-10-02/"
+      "consensusSourceUrl": "https://www.reuters.com/business/us-job-growth-expected-slow-september-unemployment-rate-likely-steady-2026-10-02/",
+      "verified": true,
+      "sourceMode": "official_verified",
+      "officialSourceUrl": "https://www.bls.gov/news.release/archives/empsit_10022026.htm",
+      "latencyTracking": "pre_tracking_release"
     },
     {
       "id": "2026-09-30-core-pce-mom",
       "name": "Core PCE",
       "family": "inflation",
       "releasedAt": "2026-09-30T08:30:00-04:00",
-      "actual": 0.3,
+      "actual": 0.2,
       "consensus": 0.3,
       "unit": "%",
       "direction": "higher_is_negative",
@@ -54,9 +62,7 @@
       "sourceMode": "official_verified",
       "officialSourceUrl": "https://www.bea.gov/news/2026/personal-income-and-outlays-august-2026",
       "officialVerifiedAt": "2026-10-03T18:34:59.071892Z",
-      "firstObservedAt": "2026-10-03T18:34:59.071892Z",
-      "ingestionLagSeconds": 281099,
-      "officialVerificationLagSeconds": 281099
+      "latencyTracking": "pre_tracking_release"
     },
     {
       "id": "2026-10-01-ism-manufacturing",
@@ -72,7 +78,11 @@
       "halfLifeDays": 3,
       "source": "Institute for Supply Management / consensus survey",
       "sourceUrl": "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/pmi/september/",
-      "consensusSourceUrl": "https://seekingalpha.com/news/4649060-ism-manufacturing-unexpectedly-slips-in-september"
+      "consensusSourceUrl": "https://seekingalpha.com/news/4649060-ism-manufacturing-unexpectedly-slips-in-september",
+      "verified": true,
+      "sourceMode": "official_verified",
+      "officialSourceUrl": "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/pmi/september/",
+      "latencyTracking": "pre_tracking_release"
     },
     {
       "id": "2026-09-30-pce-mom",
@@ -94,9 +104,7 @@
       "consensusSourceUrl": "https://tradingeconomics.com/united-states/pce-price-index-monthly-change",
       "officialSourceUrl": "https://www.bea.gov/news/2026/personal-income-and-outlays-august-2026",
       "officialVerifiedAt": "2026-10-03T18:34:59.071892Z",
-      "firstObservedAt": "2026-10-03T18:34:59.071892Z",
-      "ingestionLagSeconds": 281099,
-      "officialVerificationLagSeconds": 281099
+      "latencyTracking": "pre_tracking_release"
     },
     {
       "id": "2026-09-30-gdp-final",
@@ -115,7 +123,9 @@
       "sourceMode": "verified_seed",
       "source": "U.S. Bureau of Economic Analysis actual / market consensus",
       "sourceUrl": "https://www.bea.gov/data/gdp/gross-domestic-product",
-      "consensusSourceUrl": "https://www.investing.com/economic-calendar/gdp-375"
+      "consensusSourceUrl": "https://www.investing.com/economic-calendar/gdp-375",
+      "officialSourceUrl": "https://www.bea.gov/data/gdp/gross-domestic-product",
+      "latencyTracking": "pre_tracking_release"
     }
   ],
   "lastOfficialVerificationAt": "2026-10-03T18:34:59.071892Z",
