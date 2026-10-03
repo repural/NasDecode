@@ -1096,6 +1096,24 @@ def main():
     macro_impulse=max(-1.0,min(1.0,macro_num/macro_den)) if macro_den>0 else 0.0
     macro_score=round(100*macro_impulse)
     macro_parts.sort(key=lambda x:abs(x.get('weightedContribution',0)),reverse=True)
+
+    # Preserve the composition of the headline signal. Family scores use the same
+    # normalized, importance-weighted and time-decayed observations as the headline,
+    # but are normalized within each family so users can see whether inflation,
+    # labor and growth/activity agree or diverge.
+    family_labels={'inflation':'Inflation','labor':'Labor','growth':'Growth / Activity'}
+    family_scores={}
+    for family,label in family_labels.items():
+        fp=[p for p in macro_parts if p.get('family')==family]
+        fden=sum(float(p.get('effectiveWeight',0) or 0) for p in fp)
+        fnum=sum(float(p.get('weightedContribution',0) or 0) for p in fp)
+        fs=max(-1.0,min(1.0,fnum/fden)) if fden>0 else 0.0
+        score=round(100*fs)
+        family_scores[family]={
+            'label':label,'score':score,'activeReleaseCount':len(fp),
+            'signal':'positive' if score>=20 else ('negative' if score<=-20 else 'mixed'),
+            'drivers':[p.get('name') for p in fp]
+        }
     if macro_score>=20:
         sig='positive'; direction='Supportive macro impulse'
     elif macro_score<=-20:
@@ -1122,7 +1140,7 @@ def main():
     rr['macroImpulseScore']=macro_score
     rr['macroImpulse']={
         'score':macro_score,'normalized':round(macro_impulse,4),
-        'activeReleaseCount':len(macro_parts),'drivers':macro_parts,
+        'activeReleaseCount':len(macro_parts),'familyScores':family_scores,'drivers':macro_parts,
         'interpretation':'Positive is supportive for rate-sensitive Nasdaq; negative is restrictive. Recent verified surprises decay rather than disappearing immediately.'
     }
     rr['surprise']=macro_parts[0]['surprise'] if macro_parts else None
@@ -1288,7 +1306,13 @@ def main():
             fs=abs(float(r.get('fedPolicyScore',0) or 0))
             fr=abs(float(r.get('fedRepricingScore',0) or 0))
             imp='Very High' if fr>=60 or fs>=80 else ('High' if fr>=30 or fs>=50 else ('Medium' if fs>=20 or fr>=15 else 'Low'))
-        elif n in ('Macro Data Impulse','Technology earnings calendar'):
+        elif n=='Macro Data Impulse':
+            # This is a persistent data impulse, not a future event-proximity factor.
+            # Impact reflects the magnitude of the active time-decayed macro signal.
+            ms=abs(float(r.get('macroImpulseScore',0) or 0))
+            imp='High' if ms>=60 else ('Medium' if ms>=30 else 'Low')
+            r['impactReason']=f"Absolute decaying macro impulse {ms:.0f}/100"
+        elif n=='Technology earnings calendar':
             # Event impact rises ahead of the catalyst. Earnings can affect positioning well before the report,
             # so the 10-day window is deliberately treated as High.
             event_date=None
