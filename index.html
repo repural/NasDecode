@@ -136,7 +136,7 @@ function render(d){
   // Desktop intelligence layer: synthesize existing outputs without recalculating model logic.
   const rowBy=name=>orderedRows.find(r=>r.factor===name)||{};
   const toneLabel=s=>s==='positive'?'Supportive':s==='negative'?'Headwind':'Mixed';
-  marketSetup.innerHTML='<div class="setup-hero"><div><div class="hero-label">Overall Market Setup</div><div class="hero-state '+(C[env.signal]||'')+'>'+escHtml(env.label||'Mixed')+'</div><div class="hero-score '+(C[env.signal]||'')+'>'+((Number(ns.score)>0?'+':'')+(ns.score??'—'))+'<span style="font-size:20px;color:var(--muted)"> /100</span></div><div class="hero-meta">Confidence '+(ns.confidence??'—')+'% · '+escHtml(ns.trend||'')+'</div></div><div><h3>NasDecode read</h3><p style="line-height:1.6;margin:0">'+escHtml('The current setup is '+String(env.label||'mixed').toLowerCase()+' with '+(ns.confidence??'—')+'% confidence and a '+String(ns.trend||'stable').toLowerCase()+' trend. '+(d.opportunityScore?.score<40?'Opportunity remains limited until recovery signals broaden.':'Opportunity conditions are improving as recovery signals strengthen.'))+'</p><div class="hero-meta">Consolidation Risk '+(d.consolidationRisk?.score??'—')+'/100 · Opportunity '+(d.opportunityScore?.score??'—')+'/100</div><div class="setup-chart" id="nasdaqScoreChart"></div></div></div>';
+  marketSetup.innerHTML='<div class="setup-hero"><div><div class="hero-label">Overall Market Setup</div><div class="hero-state '+(C[env.signal]||'')+'>'+escHtml(env.label||'Mixed')+'</div><div class="hero-score '+(C[env.signal]||'')+'>'+((Number(ns.score)>0?'+':'')+(ns.score??'—'))+'<span style="font-size:20px;color:var(--muted)"> /100</span></div><div class="hero-meta">Confidence '+(ns.confidence??'—')+'% · '+escHtml(ns.trend||'')+'</div></div><div><h3>NasDecode read</h3><p style="line-height:1.6;margin:0">'+analysisText('The current setup is '+String(env.label||'mixed').toLowerCase()+' with '+(ns.confidence??'—')+'% confidence and a '+String(ns.trend||'stable').toLowerCase()+' trend. '+(d.opportunityScore?.score<40?'Opportunity Score remains limited until recovery signals broaden.':'Opportunity Score conditions are improving as recovery signals strengthen.'))+'</p><div class="hero-meta">'+analysisText('Consolidation Risk')+' '+(d.consolidationRisk?.score??'—')+'/100 · '+analysisText('Opportunity Score')+' '+(d.opportunityScore?.score??'—')+'/100</div><div class="setup-chart" id="nasdaqScoreChart"></div></div></div>';
   const econ=rowBy('Macro Data Impulse'), fed=rowBy('Fed expectations');
   const cleanMajorCatalyst=r=>{
     if(!r?.factor)return null;
@@ -154,17 +154,17 @@ function render(d){
     const date=ed.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'});
     const session=e.session==='before_open'?'Before open':(e.session==='after_close'?'After close':'Time TBD');
     const scope=e.scope==='sox'?'SOX':'Mega-cap';
-    return '<div class="catalyst"><b>'+escHtml(e.ticker+' earnings · '+date)+'</b><div class="muted" style="margin-top:4px">'+escHtml(scope+' · '+session+(e.status==='confirmed'?' · Confirmed':''))+'</div></div>';
+    return '<div class="catalyst"><b>'+escHtml(e.ticker+' earnings · '+date)+'</b><div class="muted" style="margin-top:4px">'+analysisText(scope+' · '+session+(e.status==='confirmed'?' · Confirmed':''))+'</div></div>';
   }).join('');
   const momentumHtml=dedupedCatalysts.slice(0,3).map(x=>{
     const ev=x.event||{}, ret=x.targetReturnPct, sox=x.soxVsNasdaqPp;
     const stats=[x.status,x.readThrough,x.persistence&&x.persistence!=='Pending'?x.persistence:null,
       ret!==null&&ret!==undefined?((Number(ret)>0?'+':'')+Number(ret).toFixed(2)+'% '+(ev.ticker||'stock')):null,
       sox!==null&&sox!==undefined?('SOX vs Nasdaq '+(Number(sox)>0?'+':'')+Number(sox).toFixed(2)+' pp'):null].filter(Boolean).join(' · ');
-    return '<div class="catalyst"><b>'+escHtml('Active catalyst · '+(ev.ticker||'Market'))+'</b><div style="margin-top:4px">'+escHtml(ev.title||'Catalyst')+'</div><div class="muted" style="margin-top:4px">'+escHtml(stats||'Monitoring')+'</div></div>';
+    return '<div class="catalyst"><b>'+escHtml('Active catalyst · '+(ev.ticker||'Market'))+'</b><div style="margin-top:4px">'+escHtml(ev.title||'Catalyst')+'</div><div class="muted" style="margin-top:4px">'+analysisText(stats||'Monitoring')+'</div></div>';
   }).join('');
   const contextItems=[cleanMajorCatalyst(econ),cleanMajorCatalyst(fed)].filter(Boolean);
-  const contextHtml=contextItems.map(r=>'<div class="catalyst"><b>'+escHtml(r.factor)+'</b><div class="muted" style="margin-top:4px">'+escHtml(r.latest)+'</div></div>').join('');
+  const contextHtml=contextItems.map(r=>'<div class="catalyst"><b>'+analysisText(r.factor)+'</b><div class="muted" style="margin-top:4px">'+analysisText(r.latest)+'</div></div>').join('');
   majorCatalysts.innerHTML=earningsHtml+momentumHtml+contextHtml||'<div class="muted">No major scheduled or active catalyst currently retained.</div>';
   const y=rowBy('10Y Treasury Yield'), semi=rowBy('Semiconductor leadership'), breadth=rowBy('Market breadth'), vol=rowBy('Nasdaq volatility (VXN / VIX)');
   const constructive=[];const risk=[];
