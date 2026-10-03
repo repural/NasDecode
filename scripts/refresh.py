@@ -366,11 +366,12 @@ def explain_current_rows(rows):
                 yields=f" Current rate-market context: 2Y {latest('2Y Treasury yield')} and 10Y {latest('10Y Treasury Yield')}." if live('2Y Treasury yield') and live('10Y Treasury Yield') else ''
                 r['explanation']=f'{x}. Market-implied Fed expectations are temporarily unavailable. {yields}'.strip()
         elif n=='Economic / inflation data':
-            yields=f" With 2Y at {latest('2Y Treasury yield')} and 10Y at {latest('10Y Treasury Yield')}, a surprise that shifts inflation/Fed expectations can feed quickly into Nasdaq discount rates." if live('2Y Treasury yield') and live('10Y Treasury Yield') else ''
-            if r.get('surprise') is not None:
-                r['explanation']=f"{x}. This factor measures the latest macro release against market consensus—not event proximity. {r.get('surpriseText','')} Current implication: {t}.{yields}".strip()
+            yields=f" Current cross-check: 2Y {latest('2Y Treasury yield')} and 10Y {latest('10Y Treasury Yield')}." if live('2Y Treasury yield') and live('10Y Treasury Yield') else ''
+            mi=r.get('macroImpulse') or {}
+            if mi.get('activeReleaseCount',0):
+                r['explanation']=f"{x}. This is a decaying macro impulse built from recent verified actual-versus-consensus releases. Positive means the recent data mix is more supportive for rate-sensitive Nasdaq; negative means more restrictive. Older releases fade rather than disappearing after the next refresh. Upcoming releases do not affect the score before publication.{yields}".strip()
             else:
-                r['explanation']=f"{x}. No verified actual-versus-consensus macro surprise is currently stored, so the factor stays neutral rather than treating an upcoming event as bullish or bearish.{yields}".strip()
+                r['explanation']=f"{x}. No active verified actual-versus-consensus releases remain in the impulse window, so the factor is neutral. Upcoming releases do not affect direction before publication.{yields}".strip()
         else:
             r['explanation']=f'Current reading: {x}. Direction: {d}. NasDecode currently classifies this factor as {t}. This row will become more specific as its underlying live/research source is automated.'
 
