@@ -2400,9 +2400,10 @@ def main():
     semi_latest=_factor_row('Semiconductor leadership').get('latest','')
     mega_latest=_factor_row('Mega-cap leadership').get('latest','')
     s5_latest=_factor_row('S&P 500 50D Breadth / Oversold').get('latest','')
-    semi_basket=_rxnum(semi_latest,r'5-stock basket\s*([+-]?[0-9.]+)%')
-    semi_vs_qqq=_rxnum(semi_latest,r'SOX vs Nasdaq\s*([+-]?[0-9.]+)\s*pp')
-    smh_vs_qqq=_rxnum(semi_latest,r'SMH vs QQQ\s*([+-]?[0-9.]+)\s*pp')
+    sox_return=_rxnum(semi_latest,r'SOX\s*([+-]?[0-9.]+)%')
+    sox_vs_nasdaq=_rxnum(semi_latest,r'SOX vs Nasdaq\s*([+-]?[0-9.]+)\s*pp')
+    soxx_vs_nasdaq=_rxnum(semi_latest,r'SOXX vs Nasdaq\s*([+-]?[0-9.]+)\s*pp')
+    smh_vs_nasdaq=_rxnum(semi_latest,r'SMH vs Nasdaq\s*([+-]?[0-9.]+)\s*pp')
     mega_basket=_rxnum(mega_latest,r'(?:[0-9]+-stock basket|basket)\s*([+-]?[0-9.]+)%')
     mega_vs_qqq=_rxnum(mega_latest,r'(?:basket vs QQQ|relative)\s*([+-]?[0-9.]+)\s*pp')
     s5_level=_rxnum(s5_latest,r'([0-9.]+)% above 50D')
@@ -2667,12 +2668,12 @@ def main():
             'score':semiconductor_leadership_score,'label':_confirm_label(semiconductor_leadership_score),
             'catalystMomentum':catalyst_context,
             'broadLeadershipTrigger':broad_trigger,'accelerationFromOpenPoints':semi_acceleration,
-            'relativeStrengthPp':{k:relative_strength.get(k) for k in ('soxVsNasdaqPp','soxxVsNasdaqPp','smhVsNasdaqPp','semiBasketVsNasdaqPp')},
+            'relativeStrengthPp':{k:relative_strength.get(k) for k in ('soxVsNasdaqPp','soxxVsNasdaqPp','smhVsNasdaqPp')},
             'breadth':{'universeSize':len(SEMI_BREADTH),'available':len(semi_member_returns),
                        'positive':semi_positive,'outperformingQqq':semi_outperformers,
                        'outperformingQqqPct':round(semi_breadth_pct,1) if semi_breadth_pct is not None else None,
                        'score':semi_breadth_score},
-            'weights':{'SOX':35,'SOXX':20,'SMH':15,'semiconductorBreadth':20,'selectiveBasket':10},
+            'weights':{'SOX':55,'SOXX':15,'SMH':10,'semiconductorBreadth':20},
             'basis':relative_strength_basis,'observationDate':relative_strength_date
         },
         'macroConstraint':{
@@ -2703,7 +2704,7 @@ def main():
         'us2y':validation_market['us2y']['close'],
         'nasdaqBreadth':breadth_obs.get('positivePct'),
         's5fi':s5_level,
-        'semiVsQqq':semi_vs_qqq,
+        'soxVsNasdaq':sox_vs_nasdaq,
         'megaVsQqq':mega_vs_qqq,
         'qqqReturn3d':qctx.get('return3d'),
         'qqqReturn5d':qctx.get('return5d'),
