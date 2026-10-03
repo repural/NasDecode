@@ -7,6 +7,7 @@ on:
       - 'data/dashboard.json'
       - 'data/cnbc_probe.json'
       - 'data/history/**'
+      - 'data/macro-surprises.json'
       - 'public/data/dashboard.json'
       - 'public/data/premarket.json'
       - 'public/data/session-analyses.json'
@@ -75,6 +76,7 @@ jobs:
             export NASDECODE_CLOSE_SNAPSHOT=1
             echo "Capturing canonical post-close NasDecode snapshot"
           fi
+          python scripts/refresh_macro_surprises.py
           python scripts/refresh.py
           python scripts/sync_premarket_brief.py
           python scripts/live_confirmation.py
@@ -108,6 +110,7 @@ jobs:
             echo "Push raced with main; regenerating from latest main (attempt $attempt/4)"
             git fetch origin main
             git reset --hard origin/main
+            python scripts/refresh_macro_surprises.py
             MASSIVE_API_KEY='${{ secrets.MASSIVE_API_KEY }}' python scripts/refresh.py
             python scripts/sync_premarket_brief.py
             python scripts/live_confirmation.py
