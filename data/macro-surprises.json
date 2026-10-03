@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "description": "Verified U.S. macro actual-vs-consensus observations used by NasDecode's decaying macro impulse. Direction is from a rate-sensitive Nasdaq lens; other rate/oil/Fed factors remain separate.",
   "events": [
     {
@@ -65,6 +65,44 @@
       "source": "Institute for Supply Management / consensus survey",
       "sourceUrl": "https://www.ismworld.org/supply-management-news-and-reports/reports/ism-pmi-reports/pmi/september/",
       "consensusSourceUrl": "https://seekingalpha.com/news/4649060-ism-manufacturing-unexpectedly-slips-in-september"
+    },
+    {
+      "id": "2026-09-30-pce-mom",
+      "name": "PCE Price Index MoM",
+      "family": "inflation",
+      "subtype": "headline_pce",
+      "releasedAt": "2026-09-30T08:30:00-04:00",
+      "actual": 0.3,
+      "consensus": 0.4,
+      "unit": "%",
+      "direction": "higher_is_negative",
+      "scale": 0.15,
+      "importance": 0.6,
+      "halfLifeDays": 7,
+      "verified": true,
+      "sourceMode": "verified_seed",
+      "source": "U.S. Bureau of Economic Analysis actual / market consensus",
+      "sourceUrl": "https://www.bea.gov/news/2026/personal-income-and-outlays-august-2026",
+      "consensusSourceUrl": "https://tradingeconomics.com/united-states/pce-price-index-monthly-change"
+    },
+    {
+      "id": "2026-09-30-gdp-final",
+      "name": "GDP Growth Rate QoQ Final",
+      "family": "growth",
+      "subtype": "gdp_growth",
+      "releasedAt": "2026-09-30T08:30:00-04:00",
+      "actual": 2.2,
+      "consensus": 1.5,
+      "unit": "%",
+      "direction": "higher_is_negative",
+      "scale": 0.8,
+      "importance": 0.3,
+      "halfLifeDays": 4,
+      "verified": true,
+      "sourceMode": "verified_seed",
+      "source": "U.S. Bureau of Economic Analysis actual / market consensus",
+      "sourceUrl": "https://www.bea.gov/data/gdp/gross-domestic-product",
+      "consensusSourceUrl": "https://www.investing.com/economic-calendar/gdp-375"
     }
   ]
 }
