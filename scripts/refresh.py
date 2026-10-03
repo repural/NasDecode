@@ -1062,7 +1062,7 @@ def main():
     macro_parts=[]
     macro_num=0.0; macro_den=0.0
     for m in macro_surprises:
-        if m.get('actual') is None or m.get('consensus') is None or not m.get('releasedAt'):
+        if (not m.get('verified')) or m.get('actual') is None or m.get('consensus') is None or not m.get('releasedAt'):
             continue
         try:
             released=datetime.datetime.fromisoformat(str(m['releasedAt']).replace('Z','+00:00'))
@@ -1091,7 +1091,11 @@ def main():
             'releasedAt':m.get('releasedAt'),'actual':actual,'consensus':consensus,'unit':m.get('unit',''),
             'surprise':delta,'normalizedSurprise':round(normalized,4),'nasdaqImpact':round(impact,4),
             'decay':round(decay,4),'effectiveWeight':round(effective,4),
-            'weightedContribution':round(contribution,4),'source':m.get('source')
+            'weightedContribution':round(contribution,4),'source':m.get('source'),
+            'sourceMode':m.get('sourceMode'),'verified':bool(m.get('verified')),
+            'ingestionLagSeconds':m.get('ingestionLagSeconds'),
+            'officialVerificationLagSeconds':m.get('officialVerificationLagSeconds'),
+            'officialSourceUrl':m.get('officialSourceUrl')
         })
     macro_impulse=max(-1.0,min(1.0,macro_num/macro_den)) if macro_den>0 else 0.0
     macro_score=round(100*macro_impulse)
