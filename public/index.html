@@ -191,7 +191,8 @@ function render(d){
     const s=Number(ns.score); const raw=Number(ns.rawScore); const {pos,neg}=strongestBuckets();
     const band=ns.label||'current band';
     let t='Nasdaq Score is '+(Number.isFinite(s)?((s>0?'+':'')+s):'—')+' on a −100 to +100 scale, placing the market in the '+band+' regime.';
-    if(Number.isFinite(raw)&&Number.isFinite(s)&&raw!==s) t+=' The raw model reading is '+(raw>0?'+':'')+raw+', with consolidation risk moderating directional conviction to the published score.';
+    const mr=d.marketResponse||{};
+    if(Number.isFinite(raw)&&Number.isFinite(s)&&raw!==s&&mr.status==='active') t+=' The raw model reading is '+(raw>0?'+':'')+raw+'. '+String(mr.summary||'Live market response is partially moderating the macro contribution.');
     else t+=' The published score is currently close to the raw multi-factor reading.';
     const drivers=[]; if(pos) drivers.push(pos.bucket+' is supportive'); if(neg) drivers.push(neg.bucket+' is the main headwind');
     t+=' '+(drivers.length?drivers.join(', ')+'; ':'')+'model coverage is '+(ns.coverage??'—')+'% with '+(ns.confidence??'—')+'% confidence.';
@@ -217,7 +218,7 @@ function render(d){
     d.consolidationRisk?{name:'Consolidation Risk',rank:2,signal:d.consolidationRisk.level==='Low'?'positive':(d.consolidationRisk.level==='High'?'negative':'mixed'),status:`${d.consolidationRisk.score??'—'} / 100 · ${d.consolidationRisk.level||''}`,trend:'—',explanation:consolidationDetails(),freshness:`${d.consolidationRisk.coverageWeight??'—'}% data coverage`}:null
   ].filter(Boolean);
   const modelDebug=r=>{
-    if(r.name==='Nasdaq Score') return '<b>Freshness:</b> Current model output<br><b>Model:</b> v'+(ns.model?.version??'—')+' · Coverage '+(ns.coverage??'—')+'% · Confidence '+(ns.confidence??'—')+'% · Raw '+(ns.rawScore??'—')+' · Previous '+(ns.previousScore??'—')+'<br><b>Model:</b> Proprietary AI-led market intelligence model.';
+    if(r.name==='Nasdaq Score'){const mr=d.marketResponse||{};return '<b>Freshness:</b> Current model output<br><b>Model:</b> v'+(ns.model?.version??'—')+' · Coverage '+(ns.coverage??'—')+'% · Confidence '+(ns.confidence??'—')+'% · Raw '+(ns.rawScore??'—')+' · Previous '+(ns.previousScore??'—')+(mr.status==='active'?'<br><b>Market response:</b> '+escHtml(mr.summary||'Active'):'')+'<br><b>Model:</b> Proprietary AI-led market intelligence model.';}
     if(r.name==='Consolidation Risk') return '<b>Freshness:</b> Current model output · Coverage '+(d.consolidationRisk?.coverageWeight??'—')+'% · History '+(d.consolidationRisk?.historyDays??'—')+' sessions<br><b>Model:</b> Proprietary AI-led market intelligence model.';
     return '<b>Freshness:</b> '+escHtml(r.freshness||'—');
   };

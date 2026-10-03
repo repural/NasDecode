@@ -19136,7 +19136,7 @@
     },
     "2026-10-03": {
       "schemaVersion": 4,
-      "timestampET": "2026-10-03T14:58:35.518200-04:00",
+      "timestampET": "2026-10-03T15:25:19.935993-04:00",
       "market": {
         ".IXIC": {
           "last": 27190.864,
@@ -19824,7 +19824,8 @@
         "signal": "mixed",
         "label": "Mixed / Neutral",
         "confidence": 52,
-        "coverage": 80
+        "coverage": 80,
+        "effectiveScore": -9.0
       },
       "consolidationRisk": {
         "version": 3,
@@ -20045,10 +20046,13 @@
           "observationDate": "2026-10-01"
         },
         "macroConstraint": {
-          "ratesMacroBucketStrength": -0.25
+          "ratesMacroBucketStrength": -0.25,
+          "effectiveRatesMacroBucketStrength": -0.25,
+          "marketResponseAttenuationPct": 0.0
         },
         "directionalScoreUnchanged": true,
-        "checkpoint": "intraday"
+        "checkpoint": "intraday",
+        "marketResponseApplied": false
       },
       "validation": {
         "version": 1,
@@ -20062,7 +20066,8 @@
             "signal": "mixed",
             "label": "Mixed / Neutral",
             "confidence": 52,
-            "coverage": 80
+            "coverage": 80,
+            "effectiveScore": -9.0
           },
           "nasdaqFactorScores": [
             {
@@ -20426,10 +20431,34 @@
               "observationDate": "2026-10-01"
             },
             "macroConstraint": {
-              "ratesMacroBucketStrength": -0.25
+              "ratesMacroBucketStrength": -0.25,
+              "effectiveRatesMacroBucketStrength": -0.25,
+              "marketResponseAttenuationPct": 0.0
             },
             "directionalScoreUnchanged": true,
-            "checkpoint": "intraday"
+            "checkpoint": "intraday",
+            "marketResponseApplied": false
+          },
+          "marketResponse": {
+            "version": 1,
+            "status": "inactive",
+            "mode": null,
+            "summary": "No persistent divergence between the macro impulse and live market response.",
+            "observedAt": "2026-10-03T15:27:10.200542-04:00",
+            "candidateMode": null,
+            "candidateSince": null,
+            "persistenceMinutes": 0.0,
+            "requiredPersistenceMinutes": 15,
+            "evidenceScore": null,
+            "positiveResponseScore": 84,
+            "negativeResponseScore": 0,
+            "attenuationPct": 0.0,
+            "rawRatesMacroStrength": -0.25,
+            "effectiveRatesMacroStrength": -0.25,
+            "rawNasdaqScore": -9,
+            "effectiveNasdaqScore": -9,
+            "components": {},
+            "note": "Market Response only attenuates an existing Rates / Macro contribution; it never reverses its sign."
           }
         },
         "marketContext": {
@@ -20793,6 +20822,27 @@
           "trend": "Stable →",
           "latest": "6/6 above Earnings AVWAP · median +9.1%"
         }
+      },
+      "marketResponse": {
+        "version": 1,
+        "status": "inactive",
+        "mode": null,
+        "summary": "No persistent divergence between the macro impulse and live market response.",
+        "observedAt": "2026-10-03T15:27:10.200542-04:00",
+        "candidateMode": null,
+        "candidateSince": null,
+        "persistenceMinutes": 0.0,
+        "requiredPersistenceMinutes": 15,
+        "evidenceScore": null,
+        "positiveResponseScore": 84,
+        "negativeResponseScore": 0,
+        "attenuationPct": 0.0,
+        "rawRatesMacroStrength": -0.25,
+        "effectiveRatesMacroStrength": -0.25,
+        "rawNasdaqScore": -9,
+        "effectiveNasdaqScore": -9,
+        "components": {},
+        "note": "Market Response only attenuates an existing Rates / Macro contribution; it never reverses its sign."
       }
     }
   }
