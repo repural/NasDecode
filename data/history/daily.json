@@ -19136,7 +19136,7 @@
     },
     "2026-10-03": {
       "schemaVersion": 4,
-      "timestampET": "2026-10-03T14:34:59.166666-04:00",
+      "timestampET": "2026-10-03T14:41:06.460384-04:00",
       "market": {
         ".IXIC": {
           "last": 27190.864,
@@ -20045,7 +20045,7 @@
           "observationDate": "2026-10-01"
         },
         "macroConstraint": {
-          "ratesMacroBucketStrength": -0.247
+          "ratesMacroBucketStrength": -0.25
         },
         "directionalScoreUnchanged": true,
         "checkpoint": "intraday"
@@ -20090,18 +20090,18 @@
               "regimeMultiplier": 1.0
             },
             {
-              "factor": "Macro Data Impulse",
-              "bucket": "Rates / Macro",
-              "strength": 0.11,
-              "effectiveWeight": 1.25,
-              "freshnessWeight": 1.0,
-              "regimeMultiplier": 1.25
-            },
-            {
               "factor": "Fed expectations",
               "bucket": "Rates / Macro",
               "strength": -0.344,
               "effectiveWeight": 2.5,
+              "freshnessWeight": 1.0,
+              "regimeMultiplier": 1.25
+            },
+            {
+              "factor": "Macro Data Impulse",
+              "bucket": "Rates / Macro",
+              "strength": 0.1,
+              "effectiveWeight": 1.25,
               "freshnessWeight": 1.0,
               "regimeMultiplier": 1.25
             },
@@ -20194,7 +20194,7 @@
             },
             {
               "bucket": "Rates / Macro",
-              "strength": -0.247,
+              "strength": -0.25,
               "weight": 5.06,
               "uncappedWeight": 5.06,
               "cap": 9.0
@@ -20426,7 +20426,7 @@
               "observationDate": "2026-10-01"
             },
             "macroConstraint": {
-              "ratesMacroBucketStrength": -0.247
+              "ratesMacroBucketStrength": -0.25
             },
             "directionalScoreUnchanged": true,
             "checkpoint": "intraday"
@@ -20733,17 +20733,17 @@
           "trend": "Stable →",
           "latest": "ASML: Oct 14, 2026 · TSM: Oct 15, 2026"
         },
-        "Macro Data Impulse": {
-          "signal": "mixed",
-          "currentImpact": "Low",
-          "trend": "Stable →",
-          "latest": "Balanced macro impulse +11 · PCE Price Index MoM 0.3% vs 0.4% · GDP Growth Rate QoQ Final 2.2% vs 1.5% · Core PCE 0.3% vs 0.3%"
-        },
         "Fed expectations": {
           "signal": "negative",
           "currentImpact": "Medium",
           "trend": "Stable →",
           "latest": "Oct 28: Hike 22% / Hold 78% / Cut 0% · Dec 9: Above current 85% / Same 15% / Below 0% · Jan 27: Above current 91% / Same 9% / Below 0%"
+        },
+        "Macro Data Impulse": {
+          "signal": "mixed",
+          "currentImpact": "Low",
+          "trend": "Stable →",
+          "latest": "Balanced macro impulse +10 · Nonfarm payrolls 29000K vs 90K · Core PCE 0.2% vs 0.3% · Unemployment rate 4.2% vs 4.1%"
         },
         "Semiconductor leadership": {
           "signal": "mixed",
