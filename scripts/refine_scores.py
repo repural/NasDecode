@@ -66,18 +66,21 @@ def main():
     validation=rec.get('validation') or {}
     mc=validation.get('marketContext') or {}
 
-    # --- Make Nasdaq Score directional again: no consolidation-risk penalty. ---
+    # --- Keep Nasdaq Score directional and preserve the bounded Market Response layer. ---
+    # rawScore is the unmodified multi-factor model. effectiveScore, when present, is
+    # the same directional model after persistent macro-response attenuation.
     ns=d.get('nasdaqScore') or {}
     raw=num(ns.get('rawScore'))
-    if raw is not None:
-        old_final=num(ns.get('score'))
-        final=int(round(raw))
+    effective=num(ns.get('effectiveScore'))
+    directional=effective if effective is not None else raw
+    if directional is not None:
+        final=int(round(directional))
         sig,label=score_label(final)
         prev=num(ns.get('previousScore'))
         trend='Improving ↑' if prev is not None and final>prev else ('Deteriorating ↓' if prev is not None and final<prev else 'Stable →')
         ns.update({'score':final,'signal':sig,'label':label,'trend':trend})
         d['nasdaqScore']=ns
-        d['legacyConsolidationAdjustedScore']=old_final
+        d.pop('legacyConsolidationAdjustedScore',None)
         d['consolidationPenalty']=0
 
     # Current market observations.
