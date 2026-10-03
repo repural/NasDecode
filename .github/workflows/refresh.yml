@@ -22,7 +22,7 @@ on:
     - cron: '15 8,9 * * 1-5'
     # Cash-session heartbeat every 5 minutes. GitHub cron is UTC; the ET gate below
     # limits execution to the U.S. session. This replaces unsupported timezone keys.
-    - cron: '*/5 13-22 * * 1-5'
+    - cron: '*/5 12-22 * * 1-5'
 concurrency:
   group: nasboard-data-refresh
   cancel-in-progress: true
@@ -43,7 +43,7 @@ jobs:
             exit 0
           fi
           ny_hm=$(TZ=America/New_York date +%H%M)
-          if [ "$ny_hm" -ge 0930 ] && [ "$ny_hm" -le 1620 ]; then
+          if { [ "$ny_hm" -ge 0825 ] && [ "$ny_hm" -le 0845 ]; } || { [ "$ny_hm" -ge 0930 ] && [ "$ny_hm" -le 1620 ]; }; then
             echo "run=yes" >> "$GITHUB_OUTPUT"
           else
             tr_hm=$(TZ=Europe/Istanbul date +%H%M)
@@ -77,6 +77,7 @@ jobs:
             echo "Capturing canonical post-close NasDecode snapshot"
           fi
           python scripts/refresh_macro_surprises.py
+          python scripts/verify_macro_actuals.py
           python scripts/refresh.py
           python scripts/sync_premarket_brief.py
           python scripts/live_confirmation.py
@@ -111,6 +112,7 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             python scripts/refresh_macro_surprises.py
+            python scripts/verify_macro_actuals.py
             MASSIVE_API_KEY='${{ secrets.MASSIVE_API_KEY }}' python scripts/refresh.py
             python scripts/sync_premarket_brief.py
             python scripts/live_confirmation.py
