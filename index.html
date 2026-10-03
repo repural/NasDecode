@@ -17,7 +17,7 @@
 .history-legend{display:flex;gap:12px;align-items:center;font-size:10px;color:var(--muted);margin-top:5px}.history-key{display:inline-flex;align-items:center;gap:5px}.history-swatch{width:14px;height:2px;display:inline-block}.history-swatch.score{background:#e0ad45}.history-swatch.nasdaq{background:#58a6ff}
 .score-chart .score-series{stroke:#e0ad45;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}.score-chart .nasdaq-series{stroke:#58a6ff;fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}.score-chart .score-dot{fill:#e0ad45}.score-chart .nasdaq-dot{fill:#58a6ff}
 .chart-axis.dual span:nth-child(2){text-align:center;flex:1}.chart-axis.dual span:last-child{text-align:right}
-</style></head><body><div class="wrap"><div class="head"><div><h1>NasDecode</h1><div class="muted">Nasdaq • Rates • Semiconductors • Breadth • Risk • AI • Earnings</div></div><div><button id="update">↻ Check Latest</button><span class="stamp" id="updated">Loading…</span></div></div><div class="section-heading"><div><div class="section-kicker">Signal monitor</div><h2>Market Signals</h2></div><span class="muted">Hover for metric definition · use View details for analysis</span></div><div class="factor-cards compact-cards" id="factorCards"></div><details class="signal-details" open><summary>Signal Explorer</summary><div class="signal-explorer" id="signalExplorer"></div></details><section class="intel-panel setup-wide" id="marketSetup"></section><div class="lower-intel two-col"><section class="intel-panel"><div class="section-kicker">Next 7 days</div><h3>Major Catalysts</h3><div class="catalyst-list" id="majorCatalysts"></div></section><section class="intel-panel"><div class="section-kicker">Decision frame</div><h3>What I’d Watch</h3><div id="watchConditions"></div></section></div><section class="premarket" id="premarket"><h2 id="analysisTitle">Pre-Market Analysis</h2><div class="muted" id="premarketMeta">Loading analysis…</div><div id="premarketBody"></div></section><div class="legacy-table" hidden><table><tbody id="rows"></tbody></table></div><section hidden></section><p class="src">Current Impact = estimated magnitude of the factor's present effect on Nasdaq based on the latest reading, move, event proximity and data freshness; it can change on every refresh and is separate from whether the signal is positive or negative. Green = supportive for Nasdaq; red = headwind; amber = mixed/event risk. Free sources can be delayed. NasDecode displays source freshness rather than representing delayed observations as exchange-real-time data.</p></div><script>
+</style></head><body><div class="wrap"><div class="head"><div><h1>NasDecode</h1><div class="muted">Nasdaq • Rates • Semiconductors • Breadth • Risk • AI • Earnings</div></div><div><button id="update">↻ Check Latest</button><span class="stamp" id="updated">Loading…</span></div></div><div class="section-heading"><div><div class="section-kicker">Signal monitor</div><h2>Market Signals</h2></div><span class="muted">Hover for metric definition · use View details for analysis</span></div><div class="factor-cards compact-cards" id="factorCards"></div><details class="signal-details" open><summary>Signal Explorer</summary><div class="signal-explorer" id="signalExplorer"></div></details><section class="intel-panel setup-wide" id="marketSetup"></section><div class="lower-intel two-col"><section class="intel-panel"><div class="section-kicker">Upcoming + active</div><h3>Major Catalysts</h3><div class="catalyst-list" id="majorCatalysts"></div></section><section class="intel-panel"><div class="section-kicker">Decision frame</div><h3>What I’d Watch</h3><div id="watchConditions"></div></section></div><section class="premarket" id="premarket"><h2 id="analysisTitle">Pre-Market Analysis</h2><div class="muted" id="premarketMeta">Loading analysis…</div><div id="premarketBody"></div></section><div class="legacy-table" hidden><table><tbody id="rows"></tbody></table></div><section hidden></section><p class="src">Current Impact = estimated magnitude of the factor's present effect on Nasdaq based on the latest reading, move, event proximity and data freshness; it can change on every refresh and is separate from whether the signal is positive or negative. Green = supportive for Nasdaq; red = headwind; amber = mixed/event risk. Free sources can be delayed. NasDecode displays source freshness rather than representing delayed observations as exchange-real-time data.</p></div><script>
 /*
  * Presentation layer only.
  * Quantitative decisions belong in scripts/refresh.py; this browser code reads the
@@ -102,34 +102,51 @@ function render(d){
     return s;
   };
   catalystEntries.sort((a,b)=>catalystPriority(b)-catalystPriority(a));
-  const observedTone=catalystEntries.find(x=>/positive|negative/i.test(String(x?.readThrough||'')));
-  const catalystText=String(observedTone?.readThrough||'');
-  const catalystSignal=/negative/i.test(catalystText)?'negative':(/positive/i.test(catalystText)?'positive':'mixed');
-  const catalystEventsHtml=catalystEntries.slice(0,3).map(x=>{
-    const ev=x.event||{}, ret=x.targetReturnPct, rel=x.targetVsQqqPp;
-    const stats=[x.status, x.readThrough, x.persistence&&x.persistence!=='Pending'?x.persistence:null,
-      ret!==null&&ret!==undefined?((Number(ret)>0?'+':'')+Number(ret).toFixed(2)+'% stock'):null,
-      rel!==null&&rel!==undefined?((Number(rel)>0?'+':'')+Number(rel).toFixed(2)+'pp vs QQQ'):null].filter(Boolean).join(' · ');
-    return `<div class="catalyst-event"><b>${escHtml(ev.title||'Catalyst')}</b><div class="event-meta">${escHtml(stats||'Monitoring')}</div></div>`;
-  }).join('');
-  const catalystCard=catalystState?`<div class="card factor-card signal-${catalystSignal}" tabindex="0" data-tip="${escAttr(catalystState.interpretation||'Tracks important company and sector catalysts, then measures whether the reaction persists and broadens across semiconductors.')}"><span class="factor-name">13. CATALYST MOMENTUM</span><span class="card-status ${C[catalystSignal]}">${catalystEntries.length} relevant event${catalystEntries.length===1?'':'s'}</span><div class="catalyst-events">${catalystEventsHtml||'<div class="catalyst-event">No material catalyst currently retained.</div>'}</div></div>`:'';
-
+  // Multiple headlines about the same company event are one catalyst, not
+  // separate momentum events. Highest-priority headline becomes the representative.
+  const catalystSeen=new Set();
+  const dedupedCatalysts=catalystEntries.filter(x=>{
+    const ev=x?.event||{};
+    const key=[ev.ticker||'',ev.date||'',String(ev.type||'').replace('guidance','earnings')].join('|');
+    if(catalystSeen.has(key))return false;
+    catalystSeen.add(key);return true;
+  });
 
   const opportunityCard=d.opportunityScore?`<div class="card factor-card signal-${d.opportunityScore.signal}" tabindex="0" data-tip="${escAttr('Measures how attractive current conditions are for deploying new capital by combining market setup, recovery evidence, consolidation risk and volatility context. Calculated by NasDecode\'s Proprietary AI-led market intelligence model using the latest available inputs.')}"><span class="factor-name">5. OPPORTUNITY SCORE</span><span class="card-status ${C[d.opportunityScore.signal]}">${d.opportunityScore.label}</span><span><span class="metric ${C[d.opportunityScore.signal]}">${d.opportunityScore.score}</span> <span class="muted">/ 100</span></span><span class="card-latest">Proprietary AI-led market intelligence model</span></div>`:'';
-  factorCards.innerHTML=summaryCards+rowCards.slice(0,2).join('')+opportunityCard+rowCards.slice(2,9).join('')+catalystCard+rowCards.slice(9).join('');
+  factorCards.innerHTML=summaryCards+rowCards.slice(0,2).join('')+opportunityCard+rowCards.slice(2).join('');
   // Desktop intelligence layer: synthesize existing outputs without recalculating model logic.
   const rowBy=name=>orderedRows.find(r=>r.factor===name)||{};
   const toneLabel=s=>s==='positive'?'Supportive':s==='negative'?'Headwind':'Mixed';
   marketSetup.innerHTML='<div class="setup-hero"><div><div class="hero-label">Overall Market Setup</div><div class="hero-state '+(C[env.signal]||'')+'>'+escHtml(env.label||'Mixed')+'</div><div class="hero-score '+(C[env.signal]||'')+'>'+((Number(ns.score)>0?'+':'')+(ns.score??'—'))+'<span style="font-size:20px;color:var(--muted)"> /100</span></div><div class="hero-meta">Confidence '+(ns.confidence??'—')+'% · '+escHtml(ns.trend||'')+'</div></div><div><h3>NasDecode read</h3><p style="line-height:1.6;margin:0">'+escHtml('The current setup is '+String(env.label||'mixed').toLowerCase()+' with '+(ns.confidence??'—')+'% confidence and a '+String(ns.trend||'stable').toLowerCase()+' trend. '+(d.opportunityScore?.score<40?'Opportunity remains limited until recovery signals broaden.':'Opportunity conditions are improving as recovery signals strengthen.'))+'</p><div class="hero-meta">Consolidation Risk '+(d.consolidationRisk?.score??'—')+'/100 · Opportunity '+(d.opportunityScore?.score??'—')+'/100</div><div class="setup-chart" id="nasdaqScoreChart"></div></div></div>';
-  const earn=rowBy('Technology earnings calendar'), econ=rowBy('Economic / inflation data'), fed=rowBy('Fed expectations');
+  const econ=rowBy('Economic / inflation data'), fed=rowBy('Fed expectations');
   const cleanMajorCatalyst=r=>{
     if(!r?.factor)return null;
     let latest=String(r.latest||'').replace(/;\s*(?:earlier|previous|past)\b.*$/i,'').trim();
     if(r.factor==='Economic / inflation data'&&/awaiting verified|no active surprise/i.test(latest))return null;
     return latest?{factor:r.factor,latest}:null;
   };
-  const majorItems=[cleanMajorCatalyst(earn),cleanMajorCatalyst(econ),cleanMajorCatalyst(fed)].filter(Boolean);
-  majorCatalysts.innerHTML=majorItems.map(r=>'<div class="catalyst"><b>'+escHtml(r.factor)+'</b><div class="muted" style="margin-top:4px">'+escHtml(r.latest)+'</div></div>').join('')||'<div class="muted">No scheduled major catalyst currently retained for the next 7 days.</div>';
+  const earnings=(d.upcomingEarnings?.events||[]).filter(e=>{
+    const ed=new Date(String(e.date)+'T12:00:00Z'), now=new Date();
+    const days=(ed-now)/86400000;
+    return days>=-1&&days<=14;
+  });
+  const earningsHtml=earnings.map(e=>{
+    const ed=new Date(String(e.date)+'T12:00:00Z');
+    const date=ed.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'});
+    const session=e.session==='before_open'?'Before open':(e.session==='after_close'?'After close':'Time TBD');
+    const scope=e.scope==='sox'?'SOX':'Mega-cap';
+    return '<div class="catalyst"><b>'+escHtml(e.ticker+' earnings · '+date)+'</b><div class="muted" style="margin-top:4px">'+escHtml(scope+' · '+session+(e.status==='confirmed'?' · Confirmed':''))+'</div></div>';
+  }).join('');
+  const momentumHtml=dedupedCatalysts.slice(0,3).map(x=>{
+    const ev=x.event||{}, ret=x.targetReturnPct, sox=x.soxVsNasdaqPp;
+    const stats=[x.status,x.readThrough,x.persistence&&x.persistence!=='Pending'?x.persistence:null,
+      ret!==null&&ret!==undefined?((Number(ret)>0?'+':'')+Number(ret).toFixed(2)+'% '+(ev.ticker||'stock')):null,
+      sox!==null&&sox!==undefined?('SOX vs Nasdaq '+(Number(sox)>0?'+':'')+Number(sox).toFixed(2)+' pp'):null].filter(Boolean).join(' · ');
+    return '<div class="catalyst"><b>'+escHtml('Active catalyst · '+(ev.ticker||'Market'))+'</b><div style="margin-top:4px">'+escHtml(ev.title||'Catalyst')+'</div><div class="muted" style="margin-top:4px">'+escHtml(stats||'Monitoring')+'</div></div>';
+  }).join('');
+  const contextItems=[cleanMajorCatalyst(econ),cleanMajorCatalyst(fed)].filter(Boolean);
+  const contextHtml=contextItems.map(r=>'<div class="catalyst"><b>'+escHtml(r.factor)+'</b><div class="muted" style="margin-top:4px">'+escHtml(r.latest)+'</div></div>').join('');
+  majorCatalysts.innerHTML=earningsHtml+momentumHtml+contextHtml||'<div class="muted">No major scheduled or active catalyst currently retained.</div>';
   const y=rowBy('10Y Treasury Yield'), semi=rowBy('Semiconductor leadership'), breadth=rowBy('Market breadth'), vol=rowBy('Nasdaq volatility (VXN / VIX)');
   const constructive=[];const risk=[];
   if(y.signal!=='positive')constructive.push('Treasury yields stabilize or ease');risk.push('Treasury yields resume a sustained rise');
