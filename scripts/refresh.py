@@ -1077,7 +1077,7 @@ def main():
         except (ValueError,TypeError,OverflowError):
             continue
         delta=actual-consensus
-        normalized=clamp(delta/scale)
+        normalized=max(-1.0,min(1.0,delta/scale))
         direction=m.get('direction','mixed')
         if direction=='higher_is_negative': impact=-normalized
         elif direction=='higher_is_positive': impact=normalized
@@ -1093,7 +1093,7 @@ def main():
             'decay':round(decay,4),'effectiveWeight':round(effective,4),
             'weightedContribution':round(contribution,4),'source':m.get('source')
         })
-    macro_impulse=clamp(macro_num/macro_den) if macro_den>0 else 0.0
+    macro_impulse=max(-1.0,min(1.0,macro_num/macro_den)) if macro_den>0 else 0.0
     macro_score=round(100*macro_impulse)
     macro_parts.sort(key=lambda x:abs(x.get('weightedContribution',0)),reverse=True)
     if macro_score>=20:
