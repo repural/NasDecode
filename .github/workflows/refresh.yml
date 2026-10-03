@@ -60,6 +60,8 @@ jobs:
         if: steps.gate.outputs.run == 'yes'
         env:
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_KEY }}
+          TRADING_ECONOMICS_API_KEY: ${{ secrets.TRADING_ECONOMICS_API_KEY }}
           SCHEDULE_EXPR: ${{ github.event.schedule }}
         run: |
           ny_hm=$(TZ=America/New_York date +%H%M)
@@ -111,7 +113,7 @@ jobs:
             echo "Push raced with main; regenerating from latest main (attempt $attempt/4)"
             git fetch origin main
             git reset --hard origin/main
-            python scripts/refresh_macro_surprises.py
+            TAVILY_API_KEY='${{ secrets.TAVILY_KEY }}' TRADING_ECONOMICS_API_KEY='${{ secrets.TRADING_ECONOMICS_API_KEY }}' python scripts/refresh_macro_surprises.py
             python scripts/verify_macro_actuals.py
             MASSIVE_API_KEY='${{ secrets.MASSIVE_API_KEY }}' python scripts/refresh.py
             python scripts/sync_premarket_brief.py
