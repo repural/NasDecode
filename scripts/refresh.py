@@ -1093,6 +1093,7 @@ def main():
             'decay':round(decay,4),'effectiveWeight':round(effective,4),
             'weightedContribution':round(contribution,4),'source':m.get('source'),
             'sourceMode':m.get('sourceMode'),'verified':bool(m.get('verified')),
+            'providerUpdateLagSeconds':m.get('providerUpdateLagSeconds'),
             'ingestionLagSeconds':m.get('ingestionLagSeconds'),
             'officialVerificationLagSeconds':m.get('officialVerificationLagSeconds'),
             'officialSourceUrl':m.get('officialSourceUrl')
