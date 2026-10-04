@@ -173,33 +173,83 @@ Opportunity Score for entry timing.
 
 
 ======================================================================
-2. CONSOLIDATION RISK v3
+2. CONSOLIDATION RISK v4
 ======================================================================
 
-RANGE
------
-0 to 100. Higher = greater 1-3 session vulnerability to a fade/consolidation/reset.
+RANGE / PURPOSE
+---------------
+0 to 100. Higher = greater 1-3 session vulnerability to a fade, pause or sideways reset.
 It is NOT a bearish-direction forecast and does not change the Nasdaq Score.
 
-WEIGHTS
--------
-- Price extension:              20%
-- Intraday rejection:           25%
-- Breadth divergence:           20%
-- Leadership divergence:        15%
-- Volatility / rates stress:    15%
+v4 separates two different ideas:
+1. Structural extension: latent vulnerability created by price stretching away from trend.
+2. Confirmation risk: evidence that the consolidation/fade is actually beginning.
+
+This distinction is important near record/recent highs. Being at a high is not bearish by
+itself. A high close to the 20DMA with normal RSI can be healthy trend behavior. A high reached
+while QQQ/SOXX are far above their 20DMAs and overbought creates meaningful latent risk even
+before breadth, leadership or intraday price action deteriorates.
+
+A. STRUCTURAL EXTENSION
+-----------------------
+Structural Extension is a 0-100 weighted score:
+
+- QQQ distance above 20DMA:          20%
+- QQQ RSI14:                         15%
+- QQQ 3D/5D acceleration:            10%
+- QQQ high-proximity x extension:    15%
+- SOXX distance above 20DMA:         15%
+- SOXX RSI14:                        10%
+- SOXX high-proximity x extension:   15%
+
+Normalization:
+- QQQ vs 20DMA:  +1% -> 0, +6% -> 100
+- QQQ RSI14:       60 -> 0, 80 -> 100
+- QQQ 3D return: +0.5% -> 0, +4% -> 100
+- QQQ 5D return: +1.0% -> 0, +6% -> 100
+  The available 3D/5D readings are averaged.
+- SOXX vs 20DMA: +2% -> 0, +10% -> 100
+- SOXX RSI14:      60 -> 0, 85 -> 100
+
+High-proximity interaction:
+- Distance from 20-day high = 0%  -> proximity 100
+- 1% below 20-day high            -> proximity 50
+- 2% or more below 20-day high    -> proximity 0
+
+For each index:
+  extension pressure = average(20DMA risk, RSI risk)
+  high x extension   = extension pressure x high proximity / 100
+
+Therefore an index merely being at a 20-day/record high does NOT automatically raise
+Consolidation Risk. High proximity becomes important only when price is simultaneously
+stretched above its 20DMA and/or RSI is elevated.
+
+STRUCTURAL RISK FLOOR
+---------------------
+Structural Floor =
+  65% x Structural Extension
+
+This is the minimum latent Consolidation Risk before live deterioration is considered.
+The 65% conversion intentionally prevents technical extension alone from implying that a
+pullback has already started.
+
+Example:
+- Structural Extension 70 -> Structural Floor about 46.
+Even with perfect intraday behavior, the market remains moderately vulnerable because price
+location is stretched.
+
+B. CONFIRMATION RISK
+--------------------
+Confirmation Risk is a separate 0-100 weighted score:
+
+- Intraday rejection:           30%
+- Breadth divergence:           25%
+- Leadership divergence:        20%
+- Volatility / rates stress:    20%
 - Event risk:                    5%
 
-Price extension:
-Average of normalized:
-- QQQ 3D return:        0.5% -> 0, 4.0% -> 100
-- QQQ 5D return:        1.0% -> 0, 6.0% -> 100
-- QQQ distance 20DMA:   1.0% -> 0, 6.0% -> 100
-- QQQ RSI14:             55 -> 0, 75 -> 100
-- SOXX distance 20DMA:  2.0% -> 0, 10.0% -> 100
-
 Intraday rejection:
-- Measures the largest giveback from the best observed regular-session Nasdaq/QQQ return.
+- Largest giveback from the best observed regular-session Nasdaq/QQQ return.
 - 0.15pp giveback -> 0
 - 1.25pp giveback -> 100
 
@@ -207,8 +257,8 @@ Breadth divergence:
 - 55% Nasdaq breadth weakness
 - 20% S&P 500 50D breadth weakness
 - 10% deterioration in S&P 500 50D breadth
-- +25-point divergence bonus when Nasdaq is >+0.35% but Nasdaq-100 breadth is <50%.
-The result is clipped 0..100.
+- +25 points when Nasdaq is >+0.35% but Nasdaq-100 breadth is <50%
+- Result clipped 0..100.
 
 Leadership divergence:
 Average weakness of:
@@ -222,8 +272,8 @@ underperformance around -0.8pp.
 Volatility / rates stress:
 Average normalized:
 - VXN daily change: 0% -> 0, +6% -> 100
-- 10Y change:       0bp -> 0, +8bp -> 100
-- 2Y change:        0bp -> 0, +8bp -> 100
+- 10Y daily change: 0bp -> 0, +8bp -> 100
+- 2Y daily change:  0bp -> 0, +8bp -> 100
 If Nasdaq is >+0.25% while both VXN and 10Y are rising, add 20 stress points, capped at 100.
 
 Event risk:
@@ -231,23 +281,54 @@ Event risk:
 - Other pending catalyst = 25
 - No pending catalyst = 0
 
+FINAL FORMULA
+-------------
+Final Consolidation Risk =
+  Structural Floor
+  + (100 - Structural Floor) x Confirmation Risk / 100
+
+Consequences:
+- Strong trend confirmation can no longer erase meaningful technical extension.
+- A stretched market can have Moderate risk even before rejection begins.
+- Once rejection/divergence appears, the score rises from that structural baseline toward 100.
+- A market near its highs but close to its 20DMA with normal RSI can still score Low.
+
+DATA COVERAGE
+-------------
+coverageWeight reports the percentage of expected structural and confirmation inputs available.
+historyDays reports the shorter stored-history length between QQQ and SOXX where available.
+These fields are published with the score and displayed in Debug/UI rather than inferred.
+
 GUIDANCE
 --------
 Score range       Label       Operational interpretation
-0-34              Low         Normal entry timing. Consolidation risk is not a major blocker.
-35-54             Moderate    Be selective; avoid poor reward/risk chase entries.
-55-74             Elevated    Prefer pullbacks/confirmation. Consider scaling rather than
-                              entering full tactical exposure at once.
-75-100            High        High fade/reset risk. Avoid chasing strength; wait for either a
-                              reset or strong renewed confirmation.
+0-34              Low         Trend location is relatively healthy and/or there is little
+                              evidence of a near-term reset. Normal entry timing.
+35-54             Moderate    Latent extension or early deterioration is meaningful. Avoid
+                              chasing; prefer better price location or selective scaling.
+55-74             Elevated    Extension plus confirmation risk is substantial. Prefer
+                              pullbacks/reset and require renewed participation before adding.
+75-100            High        Strong evidence of an unstable/overextended tape. Avoid chasing
+                              strength; wait for reset or clear renewed confirmation.
 
 Use with Nasdaq Score:
-- Positive Nasdaq + Low Risk = constructive trend with relatively healthy entry backdrop.
-- Positive Nasdaq + High Risk = direction constructive, timing poor/fragile.
-- Negative Nasdaq + High Risk = weak direction plus unstable tape; particularly defensive.
+- Positive Nasdaq + Low Risk:
+  Constructive direction with relatively healthy price location.
+- Positive Nasdaq + Moderate/Elevated Risk:
+  Bullish trend can continue, but entry timing is increasingly poor; "bullish but stretched."
+- Positive Nasdaq + High Risk:
+  Direction may still be positive, but fade/reset vulnerability is severe.
+- Negative Nasdaq + High Risk:
+  Weak direction plus confirmed instability; particularly defensive.
+
+Use with Opportunity/SOXL:
+Consolidation Risk describes the market's near-term fragility. Opportunity Score and SOXL Buy
+Score remain the decision-oriented entry scores. A high Nasdaq Score does not override poor
+price location, and strong semiconductor leadership does not erase SOXL/QQQ extension.
 
 
 ======================================================================
+
 3. OPPORTUNITY SCORE v3
 ======================================================================
 
