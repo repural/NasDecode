@@ -113,6 +113,9 @@ def main():
         except ValueError: pass
 
     found=[]
+    scheduled=[]
+    local_today=dt.datetime.now(NY).date()
+    schedule_end=local_today+dt.timedelta(days=14)
     # Prefer the structured calendar API. Guest access is intentionally used so
     # NasDecode does not depend on another paid secret. The public HTML calendar
     # remains a fallback if the guest endpoint is unavailable.
@@ -130,10 +133,18 @@ def main():
                 if not rule: continue
                 key,rlabel,family,subtype,scale,importance,half_life,direction,hm,official=rule
                 actual,au=parse_number(item.get("Actual")); consensus,cu=parse_number(item.get("Forecast"))
-                if actual is None or consensus is None: continue
                 raw_date=str(item.get("Date") or "")[:10]
                 try: day=dt.date.fromisoformat(raw_date)
                 except ValueError: continue
+                if consensus is not None and actual is None and local_today<=day<=schedule_end:
+                    scheduled.append({
+                        "id":f"{day.isoformat()}-{key}","name":rlabel,"family":family,
+                        "scheduledAt":release_timestamp(day,hm),"consensus":consensus,
+                        "unit":cu or str(item.get("Unit") or ""),"importance":importance,
+                        "source":"Trading Economics calendar","sourceUrl":URL
+                    })
+                    continue
+                if actual is None or consensus is None: continue
                 event={
                     "id":f"{day.isoformat()}-{key}","name":rlabel,"family":family,"subtype":subtype,
                     "releasedAt":release_timestamp(day,hm),"actual":actual,"consensus":consensus,
@@ -177,6 +188,13 @@ def main():
                 tail=row[idx+1:]
                 if len(tail)<3: continue
                 actual,au=parse_number(tail[0]); consensus,cu=parse_number(tail[2])
+                if consensus is not None and actual is None and local_today<=current_date<=schedule_end:
+                    scheduled.append({
+                        "id":f"{current_date.isoformat()}-{key}","name":label,"family":family,
+                        "scheduledAt":release_timestamp(current_date,hm),"consensus":consensus,
+                        "unit":cu,"importance":importance,"source":"Trading Economics calendar","sourceUrl":URL
+                    })
+                    break
                 if actual is None or consensus is None: continue
                 found.append({
                     "id":f"{current_date.isoformat()}-{key}","name":label,"family":family,"subtype":subtype,
@@ -229,8 +247,8 @@ def main():
                 if found: print(f"Tavily calendar fallback found {len(found)} mapped releases.")
             except Exception as e:
                 print("Tavily macro calendar fallback unavailable:",repr(e))
-    if not found:
-        print("Macro calendar parsed but no mapped releases with actual + consensus were found; preserving file.")
+    if not found and not scheduled:
+        print("Macro calendar parsed but no mapped releases or upcoming tracked releases were found; preserving file.")
         return
 
     existing={e.get("id"):e for e in doc.get("events",[]) if e.get("id")}
@@ -270,10 +288,11 @@ def main():
         "signalLens":"Rate-sensitive Nasdaq: positive means the recent surprise mix is more supportive for discount rates; negative means more restrictive.",
         "calendarSource":URL,
         "lastCalendarFetchAt":now.isoformat().replace("+00:00","Z"),
+        "scheduledEvents":sorted({e["id"]:e for e in scheduled}.values(),key=lambda e:e.get("scheduledAt","")),
         "events":events
     })
     os.makedirs(os.path.dirname(PATH),exist_ok=True)
     with open(PATH,"w",encoding="utf-8") as f: json.dump(doc,f,indent=2,ensure_ascii=False); f.write("\n")
-    print(f"Macro calendar refresh: {len(found)} mapped releases found; {len(events)} retained.")
+    print(f"Macro calendar refresh: {len(found)} mapped releases found; {len(events)} retained; {len(doc.get('scheduledEvents',[]))} upcoming tracked releases.")
 
 if __name__=="__main__": main()
