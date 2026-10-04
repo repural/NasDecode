@@ -7893,7 +7893,12 @@
             "3D": 1.8547,
             "5D": null
           },
-          "availableFutureSessions": 3
+          "availableFutureSessions": 3,
+          "SOXL": {
+            "1D": null,
+            "3D": null,
+            "5D": null
+          }
         }
       },
       "earningsAvwap": {
@@ -12364,7 +12369,12 @@
             "3D": null,
             "5D": null
           },
-          "availableFutureSessions": 2
+          "availableFutureSessions": 2,
+          "SOXL": {
+            "1D": null,
+            "3D": null,
+            "5D": null
+          }
         }
       },
       "earningsAvwap": {
@@ -13856,7 +13866,12 @@
             "3D": null,
             "5D": null
           },
-          "availableFutureSessions": 1
+          "availableFutureSessions": 1,
+          "SOXL": {
+            "1D": null,
+            "3D": null,
+            "5D": null
+          }
         }
       },
       "earningsAvwap": {
@@ -17297,7 +17312,12 @@
             "3D": null,
             "5D": null
           },
-          "availableFutureSessions": 0
+          "availableFutureSessions": 0,
+          "SOXL": {
+            "1D": null,
+            "3D": null,
+            "5D": null
+          }
         }
       },
       "earningsAvwap": {
@@ -20847,7 +20867,7 @@
     },
     "2026-10-04": {
       "schemaVersion": 4,
-      "timestampET": "2026-10-04T05:21:11.778825-04:00",
+      "timestampET": "2026-10-04T05:29:33.168055-04:00",
       "market": {
         ".IXIC": {
           "last": 27190.864,
@@ -20906,6 +20926,19 @@
           "open": 590.91,
           "previousClose": 576.33,
           "changePct": 2.18,
+          "timestamp": "10/02/26 EDT",
+          "observationDate": "2026-10-02",
+          "dataState": "previous_close",
+          "realTime": true,
+          "marketStatus": "POST_MKT",
+          "quoteSource": "Last NASDAQ LS, VOL From CTA",
+          "provider": "CNBC QUOTE CACHE"
+        },
+        "SOXL": {
+          "last": 163.71,
+          "open": 165.39,
+          "previousClose": 153.69,
+          "changePct": 6.52,
           "timestamp": "10/02/26 EDT",
           "observationDate": "2026-10-02",
           "dataState": "previous_close",
@@ -21205,6 +21238,15 @@
         },
         "SOXX": {
           "symbol": "SOXX",
+          "open": null,
+          "close": null,
+          "previousClose": null,
+          "changeCloseToClosePct": null,
+          "source": "CNBC regular-session quote",
+          "observationDate": "2026-10-02"
+        },
+        "SOXL": {
+          "symbol": "SOXL",
           "open": null,
           "close": null,
           "previousClose": null,
@@ -22161,7 +22203,7 @@
             "status": "inactive",
             "mode": null,
             "summary": "No persistent divergence between the macro impulse and live market response.",
-            "observedAt": "2026-10-04T05:22:53.901247-04:00",
+            "observedAt": "2026-10-04T05:31:23.772190-04:00",
             "candidateMode": null,
             "candidateSince": null,
             "persistenceMinutes": 0.0,
@@ -22176,6 +22218,44 @@
             "effectiveNasdaqScore": 12,
             "components": {},
             "note": "Market Response only attenuates an existing Rates / Macro contribution; it never reverses its sign."
+          },
+          "soxlBuyScore": {
+            "version": 1,
+            "score": 55,
+            "label": "Selective / Starter",
+            "signal": "mixed",
+            "horizon": "1–5 sessions",
+            "instrument": "SOXL",
+            "last": 163.71,
+            "changePct": 6.52,
+            "components": {
+              "Semiconductor trend": 98,
+              "SOXL entry quality": 32,
+              "Market confirmation": 74,
+              "Volatility / leverage risk": 89,
+              "Rates / macro": 51,
+              "Catalyst asymmetry": 100
+            },
+            "gates": [
+              "SOXL >8% above 20DMA caps chase entry at 55"
+            ],
+            "intradayGivebackPp": 0.0,
+            "technicalContext": {
+              "ma20DistancePct": 23.91,
+              "return5dPct": 8.1,
+              "rsi14": 83.9,
+              "distanceFromWindowHighPct": -45.57
+            },
+            "strongestDrivers": [
+              "Catalyst asymmetry 100",
+              "Semiconductor trend 98"
+            ],
+            "weakestDrivers": [
+              "SOXL entry quality 32",
+              "Rates / macro 51"
+            ],
+            "explanation": "SOXL tactical entry quality is selective / starter (55/100) for a 1–5 session horizon. Active gates: SOXL >8% above 20DMA caps chase entry at 55. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 98. Weakest: SOXL entry quality 32, Rates / macro 51.",
+            "note": "Experimental tactical score for a daily 3x leveraged ETF. It measures entry quality, not expected return or position size."
           }
         },
         "marketContext": {
@@ -22391,6 +22471,11 @@
             "1D": null,
             "3D": null,
             "5D": null
+          },
+          "SOXL": {
+            "1D": null,
+            "3D": null,
+            "5D": null
           }
         }
       },
@@ -22547,7 +22632,7 @@
         "status": "inactive",
         "mode": null,
         "summary": "No persistent divergence between the macro impulse and live market response.",
-        "observedAt": "2026-10-04T05:22:53.901247-04:00",
+        "observedAt": "2026-10-04T05:31:23.772190-04:00",
         "candidateMode": null,
         "candidateSince": null,
         "persistenceMinutes": 0.0,
@@ -22562,6 +22647,44 @@
         "effectiveNasdaqScore": 12,
         "components": {},
         "note": "Market Response only attenuates an existing Rates / Macro contribution; it never reverses its sign."
+      },
+      "soxlBuyScore": {
+        "version": 1,
+        "score": 55,
+        "label": "Selective / Starter",
+        "signal": "mixed",
+        "horizon": "1–5 sessions",
+        "instrument": "SOXL",
+        "last": 163.71,
+        "changePct": 6.52,
+        "components": {
+          "Semiconductor trend": 98,
+          "SOXL entry quality": 32,
+          "Market confirmation": 74,
+          "Volatility / leverage risk": 89,
+          "Rates / macro": 51,
+          "Catalyst asymmetry": 100
+        },
+        "gates": [
+          "SOXL >8% above 20DMA caps chase entry at 55"
+        ],
+        "intradayGivebackPp": 0.0,
+        "technicalContext": {
+          "ma20DistancePct": 23.91,
+          "return5dPct": 8.1,
+          "rsi14": 83.9,
+          "distanceFromWindowHighPct": -45.57
+        },
+        "strongestDrivers": [
+          "Catalyst asymmetry 100",
+          "Semiconductor trend 98"
+        ],
+        "weakestDrivers": [
+          "SOXL entry quality 32",
+          "Rates / macro 51"
+        ],
+        "explanation": "SOXL tactical entry quality is selective / starter (55/100) for a 1–5 session horizon. Active gates: SOXL >8% above 20DMA caps chase entry at 55. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 98. Weakest: SOXL entry quality 32, Rates / macro 51.",
+        "note": "Experimental tactical score for a daily 3x leveraged ETF. It measures entry quality, not expected return or position size."
       }
     }
   }
