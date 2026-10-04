@@ -1,4 +1,4 @@
-name: Monitor Major Catalysts
+name: NasDecode Open Watch
 
 on:
   workflow_dispatch:
@@ -38,7 +38,9 @@ jobs:
         run: |
           git config user.name 'nasdecode-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add data/semiconductor-catalysts.json data/upcoming-earnings.json
+          mkdir -p public/data
+          cp data/semiconductor-catalysts.json public/data/semiconductor-catalysts.json
+          git add data/semiconductor-catalysts.json data/upcoming-earnings.json public/data/semiconductor-catalysts.json
           git diff --cached --quiet && exit 0
           git commit -m 'Update detected market catalysts'
           for attempt in 1 2 3 4; do
@@ -49,7 +51,9 @@ jobs:
             git reset --hard origin/main
             TAVILY_API_KEY='${{ secrets.TAVILY_KEY }}' python scripts/refresh_catalysts.py
             python scripts/refresh_upcoming_earnings.py
-            git add data/semiconductor-catalysts.json data/upcoming-earnings.json
+            mkdir -p public/data
+            cp data/semiconductor-catalysts.json public/data/semiconductor-catalysts.json
+            git add data/semiconductor-catalysts.json data/upcoming-earnings.json public/data/semiconductor-catalysts.json
             git diff --cached --quiet && exit 0
             git commit -m 'Update detected market catalysts'
           done
