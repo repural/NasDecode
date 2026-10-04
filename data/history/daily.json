@@ -20867,7 +20867,7 @@
     },
     "2026-10-04": {
       "schemaVersion": 4,
-      "timestampET": "2026-10-04T09:04:46.773644-04:00",
+      "timestampET": "2026-10-04T09:36:24.645634-04:00",
       "market": {
         ".IXIC": {
           "last": 27190.864,
@@ -21196,17 +21196,11 @@
         }
       },
       "breadth": {
-        "valid": 101,
-        "advancers": 60,
-        "decliners": 41,
-        "flat": 0,
-        "positivePct": 59.0,
-        "basis": "previous_close",
-        "source": "Nasdaq-100 previous regular-session constituent breadth",
-        "freshness": "Previous regular session · 10/02/26 EDT",
-        "previousCompletedPct": 60.78,
-        "changeVsPreviousCompletedPp": -1.78,
-        "comparisonDate": "2026-10-02"
+        "valid": 0,
+        "advancers": 0,
+        "decliners": 0,
+        "positivePct": null,
+        "basis": null
       },
       "sessionLevels": {
         "Nasdaq": {
@@ -21573,18 +21567,18 @@
       "modelPerformance": {
         "nasdaqCompositeClose": 27190.864,
         "nasdaqCompositeObservationDate": "2026-10-02",
-        "nasdaqScore": 0
+        "nasdaqScore": -7
       },
       "nasdaqScore": {
-        "score": 1,
-        "rawScore": 1,
+        "score": -10,
+        "rawScore": -10,
         "previousScore": -2,
-        "trend": "Improving ↑",
+        "trend": "Deteriorating ↓",
         "signal": "mixed",
         "label": "Mixed / Neutral",
-        "confidence": 55,
-        "coverage": 91,
-        "effectiveScore": 1.0
+        "confidence": 57,
+        "coverage": 89,
+        "effectiveScore": -10.0
       },
       "consolidationRisk": {
         "version": 4,
@@ -21595,7 +21589,7 @@
         "historyDays": 125,
         "structuralFloor": 26,
         "components": {
-          "Structural extension": 41,
+          "Structural extension": 40,
           "Structural floor": 26,
           "Confirmation risk": 11,
           "Intraday rejection": 0,
@@ -21606,7 +21600,7 @@
         },
         "structuralComponents": {
           "QQQ vs 20DMA": 40,
-          "QQQ RSI14": 27,
+          "QQQ RSI14": 26,
           "QQQ 3D/5D acceleration": 15,
           "QQQ high × extension": 33,
           "SOXX vs 20DMA": 79,
@@ -21615,7 +21609,7 @@
         },
         "technicalContext": {
           "qqqMa20DistancePct": 3.0,
-          "qqqRsi14": 65.4,
+          "qqqRsi14": 65.2,
           "qqqDistanceFrom20dHighPct": 0.0,
           "soxxMa20DistancePct": 8.31,
           "soxxRsi14": 66.1,
@@ -21623,57 +21617,64 @@
         },
         "intradayGivebackPp": 0.0,
         "dominantDrivers": [
-          "Structural extension 41",
+          "Structural extension 40",
           "Volatility / rates stress 33",
           "Breadth divergence 17"
         ],
-        "explanation": "1–3 session fade/consolidation risk is low (34/100). Structural extension creates a 26/100 baseline; live confirmation risk is 11/100. Main drivers: Structural extension 41, Volatility / rates stress 33, Breadth divergence 17. A high near the 20DMA is not penalized by itself; high proximity matters when QQQ/SOXX are also stretched or overbought.",
+        "explanation": "1–3 session fade/consolidation risk is low (34/100). Structural extension creates a 26/100 baseline; live confirmation risk is 11/100. Main drivers: Structural extension 40, Volatility / rates stress 33, Breadth divergence 17. A high near the 20DMA is not penalized by itself; high proximity matters when QQQ/SOXX are also stretched or overbought.",
         "note": "Higher means the current move is more vulnerable to a fade or sideways reset; it is not a bearish-direction forecast."
       },
       "opportunityScore": {
-        "version": 4,
-        "score": 62,
-        "rawScore": 62,
-        "label": "Attractive",
-        "signal": "positive",
-        "type": "Selective / mixed",
+        "version": 5,
+        "score": 59,
+        "rawScore": 59,
+        "label": "Selective",
+        "signal": "mixed",
+        "type": "Recovery / dip entry",
         "components": {
-          "Directional edge": 51,
-          "Entry quality": 49,
-          "Recovery confirmation": 86,
+          "Directional edge": 38,
+          "Entry quality": 60,
+          "Recovery confirmation": 66,
           "Macro timing": 51,
           "Catalyst asymmetry": 100
         },
         "entryQualityComponents": {
           "QQQ vs 20DMA": 39,
-          "QQQ RSI14": 36,
+          "QQQ RSI14": 74,
           "QQQ 5D return": 60,
           "QQQ high × extension": 67,
-          "SOXX structural extension": 48
+          "SOXX structural extension": 48,
+          "QQQ ATR14 regime": 91
         },
-        "entryQualityVxnBonus": 0,
+        "entryQualityVxnAtrAdjustment": 0,
+        "entryQualityAtrContext": {
+          "atr14Pct": 1.26,
+          "atr14PctPercentile60": 8.3,
+          "atr14Vs50": 0.93,
+          "regimeScore": 91
+        },
         "consolidationRiskContext": 34,
         "gates": [],
         "strongestDrivers": [
           "Catalyst asymmetry 100",
-          "Recovery confirmation 86"
+          "Recovery confirmation 66"
         ],
         "weakestDrivers": [
-          "Entry quality 49",
-          "Directional edge 51"
+          "Directional edge 38",
+          "Macro timing 51"
         ],
-        "explanation": "Long-entry quality is attractive (62/100; Selective / mixed). Raw weighted score 62/100. Strongest inputs: Catalyst asymmetry 100, Recovery confirmation 86. Weakest: Entry quality 49, Directional edge 51.",
+        "explanation": "Long-entry quality is selective (59/100; Recovery / dip entry). Raw weighted score 59/100. Strongest inputs: Catalyst asymmetry 100, Recovery confirmation 66. Weakest: Directional edge 38, Macro timing 51.",
         "note": "This is an entry-quality score, not a forecast of the next session return. Strong internals can support the trend without making an extended price a good new entry."
       },
       "confirmationLayer": {
         "internalConfirmation": {
-          "score": 82,
+          "score": 78,
           "label": "Strong",
           "components": {
             "breadth": 50,
             "semiconductorLeadership": 100,
             "volatility": 100,
-            "megaCapLeadership": 100
+            "megaCapLeadership": 50
           },
           "weights": {
             "breadth": 35,
@@ -21843,23 +21844,23 @@
           "marketResponseAttenuationPct": 0.0
         },
         "directionalScoreUnchanged": true,
-        "checkpoint": "intraday",
+        "checkpoint": "open",
         "marketResponseApplied": false
       },
       "validation": {
         "version": 1,
-        "snapshotPhase": "premarket",
+        "snapshotPhase": "regular",
         "modelState": {
           "nasdaqScore": {
-            "score": 1,
-            "rawScore": 1,
+            "score": -10,
+            "rawScore": -10,
             "previousScore": -2,
-            "trend": "Improving ↑",
+            "trend": "Deteriorating ↓",
             "signal": "mixed",
             "label": "Mixed / Neutral",
-            "confidence": 55,
-            "coverage": 91,
-            "effectiveScore": 1.0
+            "confidence": 57,
+            "coverage": 89,
+            "effectiveScore": -10.0
           },
           "nasdaqFactorScores": [
             {
@@ -21889,10 +21890,10 @@
             {
               "factor": "Semiconductor leadership",
               "bucket": "Leadership",
-              "strength": 0.752,
-              "effectiveWeight": 2.415,
-              "freshnessWeight": 0.7,
-              "regimeMultiplier": 1.15
+              "strength": 0.0,
+              "effectiveWeight": 0.2,
+              "freshnessWeight": 0.2,
+              "regimeMultiplier": 1.0
             },
             {
               "factor": "Inflation · Labor · Growth",
@@ -21929,9 +21930,9 @@
             {
               "factor": "Mega-cap leadership",
               "bucket": "Leadership",
-              "strength": 0.456,
-              "effectiveWeight": 1.4,
-              "freshnessWeight": 0.7,
+              "strength": 0.0,
+              "effectiveWeight": 0.2,
+              "freshnessWeight": 0.2,
               "regimeMultiplier": 1.0
             },
             {
@@ -21991,9 +21992,9 @@
             },
             {
               "bucket": "Leadership",
-              "strength": 0.338,
-              "weight": 7.26,
-              "uncappedWeight": 7.26,
+              "strength": 0.0,
+              "weight": 3.85,
+              "uncappedWeight": 3.85,
               "cap": 9.0
             },
             {
@@ -22013,7 +22014,7 @@
             "historyDays": 125,
             "structuralFloor": 26,
             "components": {
-              "Structural extension": 41,
+              "Structural extension": 40,
               "Structural floor": 26,
               "Confirmation risk": 11,
               "Intraday rejection": 0,
@@ -22024,7 +22025,7 @@
             },
             "structuralComponents": {
               "QQQ vs 20DMA": 40,
-              "QQQ RSI14": 27,
+              "QQQ RSI14": 26,
               "QQQ 3D/5D acceleration": 15,
               "QQQ high × extension": 33,
               "SOXX vs 20DMA": 79,
@@ -22033,7 +22034,7 @@
             },
             "technicalContext": {
               "qqqMa20DistancePct": 3.0,
-              "qqqRsi14": 65.4,
+              "qqqRsi14": 65.2,
               "qqqDistanceFrom20dHighPct": 0.0,
               "soxxMa20DistancePct": 8.31,
               "soxxRsi14": 66.1,
@@ -22041,57 +22042,64 @@
             },
             "intradayGivebackPp": 0.0,
             "dominantDrivers": [
-              "Structural extension 41",
+              "Structural extension 40",
               "Volatility / rates stress 33",
               "Breadth divergence 17"
             ],
-            "explanation": "1–3 session fade/consolidation risk is low (34/100). Structural extension creates a 26/100 baseline; live confirmation risk is 11/100. Main drivers: Structural extension 41, Volatility / rates stress 33, Breadth divergence 17. A high near the 20DMA is not penalized by itself; high proximity matters when QQQ/SOXX are also stretched or overbought.",
+            "explanation": "1–3 session fade/consolidation risk is low (34/100). Structural extension creates a 26/100 baseline; live confirmation risk is 11/100. Main drivers: Structural extension 40, Volatility / rates stress 33, Breadth divergence 17. A high near the 20DMA is not penalized by itself; high proximity matters when QQQ/SOXX are also stretched or overbought.",
             "note": "Higher means the current move is more vulnerable to a fade or sideways reset; it is not a bearish-direction forecast."
           },
           "opportunityScore": {
-            "version": 4,
-            "score": 62,
-            "rawScore": 62,
-            "label": "Attractive",
-            "signal": "positive",
-            "type": "Selective / mixed",
+            "version": 5,
+            "score": 59,
+            "rawScore": 59,
+            "label": "Selective",
+            "signal": "mixed",
+            "type": "Recovery / dip entry",
             "components": {
-              "Directional edge": 51,
-              "Entry quality": 49,
-              "Recovery confirmation": 86,
+              "Directional edge": 38,
+              "Entry quality": 60,
+              "Recovery confirmation": 66,
               "Macro timing": 51,
               "Catalyst asymmetry": 100
             },
             "entryQualityComponents": {
               "QQQ vs 20DMA": 39,
-              "QQQ RSI14": 36,
+              "QQQ RSI14": 74,
               "QQQ 5D return": 60,
               "QQQ high × extension": 67,
-              "SOXX structural extension": 48
+              "SOXX structural extension": 48,
+              "QQQ ATR14 regime": 91
             },
-            "entryQualityVxnBonus": 0,
+            "entryQualityVxnAtrAdjustment": 0,
+            "entryQualityAtrContext": {
+              "atr14Pct": 1.26,
+              "atr14PctPercentile60": 8.3,
+              "atr14Vs50": 0.93,
+              "regimeScore": 91
+            },
             "consolidationRiskContext": 34,
             "gates": [],
             "strongestDrivers": [
               "Catalyst asymmetry 100",
-              "Recovery confirmation 86"
+              "Recovery confirmation 66"
             ],
             "weakestDrivers": [
-              "Entry quality 49",
-              "Directional edge 51"
+              "Directional edge 38",
+              "Macro timing 51"
             ],
-            "explanation": "Long-entry quality is attractive (62/100; Selective / mixed). Raw weighted score 62/100. Strongest inputs: Catalyst asymmetry 100, Recovery confirmation 86. Weakest: Entry quality 49, Directional edge 51.",
+            "explanation": "Long-entry quality is selective (59/100; Recovery / dip entry). Raw weighted score 59/100. Strongest inputs: Catalyst asymmetry 100, Recovery confirmation 66. Weakest: Directional edge 38, Macro timing 51.",
             "note": "This is an entry-quality score, not a forecast of the next session return. Strong internals can support the trend without making an extended price a good new entry."
           },
           "confirmationLayer": {
             "internalConfirmation": {
-              "score": 82,
+              "score": 78,
               "label": "Strong",
               "components": {
                 "breadth": 50,
                 "semiconductorLeadership": 100,
                 "volatility": 100,
-                "megaCapLeadership": 100
+                "megaCapLeadership": 50
               },
               "weights": {
                 "breadth": 35,
@@ -22261,7 +22269,7 @@
               "marketResponseAttenuationPct": 0.0
             },
             "directionalScoreUnchanged": true,
-            "checkpoint": "intraday",
+            "checkpoint": "open",
             "marketResponseApplied": false
           },
           "marketResponse": {
@@ -22269,28 +22277,28 @@
             "status": "inactive",
             "mode": null,
             "summary": "No persistent divergence between the macro impulse and live market response.",
-            "observedAt": "2026-10-04T09:07:03.691347-04:00",
+            "observedAt": "2026-10-04T09:39:04.225883-04:00",
             "candidateMode": null,
             "candidateSince": null,
             "persistenceMinutes": 0.0,
             "requiredPersistenceMinutes": 15,
             "evidenceScore": null,
-            "positiveResponseScore": 83,
+            "positiveResponseScore": 84,
             "negativeResponseScore": 0,
             "attenuationPct": 0.0,
             "rawRatesMacroStrength": -0.201,
             "effectiveRatesMacroStrength": -0.201,
-            "rawNasdaqScore": 1,
-            "effectiveNasdaqScore": 1,
+            "rawNasdaqScore": -10,
+            "effectiveNasdaqScore": -10,
             "components": {},
             "note": "Market Response only attenuates an existing Rates / Macro contribution; it never reverses its sign."
           },
           "soxlBuyScore": {
             "version": 3.3,
-            "score": 57,
-            "rawScore": 72,
-            "preGateScore": 57,
-            "label": "Selective / Starter",
+            "score": 51,
+            "rawScore": 70,
+            "preGateScore": 51,
+            "label": "Wait",
             "signal": "mixed",
             "horizon": "1–5 sessions",
             "instrument": "SOXL",
@@ -22299,7 +22307,7 @@
             "components": {
               "Semiconductor trend": 93,
               "SOXL entry quality": 40,
-              "Market confirmation": 71,
+              "Market confirmation": 54,
               "Volatility / leverage risk": 84,
               "Rates / macro": 61,
               "Catalyst asymmetry": 100
@@ -22413,13 +22421,13 @@
             },
             "extensionAdjustment": {
               "base20dMaPenalty": 23.8,
-              "regimeMultiplier": 0.65,
-              "regime": "Strong semiconductor trend + market confirmation",
-              "applied20dMaPenalty": 15.5,
+              "regimeMultiplier": 0.8,
+              "regime": "Strong semiconductor trend",
+              "applied20dMaPenalty": 19.1,
               "rsiHeatPenalty": 0.0,
               "rsiExtensionAmplifier": 0.96,
               "extremeRsi20dMaPenalty": 0.0,
-              "totalPenalty": 15.5
+              "totalPenalty": 19.1
             },
             "technicalContext": {
               "ma20DistancePct": 23.91,
@@ -22433,9 +22441,9 @@
             ],
             "weakestDrivers": [
               "SOXL entry quality 40",
-              "Rates / macro 61"
+              "Market confirmation 54"
             ],
-            "explanation": "SOXL tactical entry quality is selective / starter (57/100) for a 1–5 session horizon. Raw score 72; extension/overheating penalty 15.5. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 93. Weakest: SOXL entry quality 40, Rates / macro 61.",
+            "explanation": "SOXL tactical entry quality is wait (51/100) for a 1–5 session horizon. Raw score 70; extension/overheating penalty 19.1. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 93. Weakest: SOXL entry quality 40, Market confirmation 54.",
             "note": "Experimental tactical score for a daily 3x leveraged ETF. It measures entry quality, not expected return or position size."
           }
         },
@@ -22462,27 +22470,21 @@
             "shape": "upward-sloping"
           },
           "nasdaqBreadth": {
-            "valid": 101,
-            "advancers": 60,
-            "decliners": 41,
-            "flat": 0,
-            "positivePct": 59.0,
-            "basis": "previous_close",
-            "source": "Nasdaq-100 previous regular-session constituent breadth",
-            "freshness": "Previous regular session · 10/02/26 EDT",
-            "previousCompletedPct": 60.78,
-            "changeVsPreviousCompletedPp": -1.78,
-            "comparisonDate": "2026-10-02"
+            "valid": 0,
+            "advancers": 0,
+            "decliners": 0,
+            "positivePct": null,
+            "basis": null
           },
           "s5fi": {
             "levelPct": 23.0,
             "changePp": 1.0
           },
           "semiconductors": {
-            "soxReturnPct": 2.4,
-            "soxVsNasdaqPp": 1.21,
-            "soxxVsNasdaqPp": 0.99,
-            "smhVsNasdaqPp": 0.88,
+            "soxReturnPct": null,
+            "soxVsNasdaqPp": null,
+            "soxxVsNasdaqPp": null,
+            "smhVsNasdaqPp": null,
             "soxx": {
               "return1d": 2.181042111290399,
               "return3d": 3.781897645566046,
@@ -22494,8 +22496,8 @@
             }
           },
           "megaCaps": {
-            "basketReturnPct": 1.59,
-            "basketVsQqqPp": 0.57
+            "basketReturnPct": null,
+            "basketVsQqqPp": null
           },
           "qqq": {
             "return1d": 1.0174790776653397,
@@ -22503,7 +22505,7 @@
             "return5d": 0.6823371390194843,
             "ma20Distance": 2.995481461074423,
             "ma50Distance": 4.570622627532561,
-            "rsi14": 65.41015296680715,
+            "rsi14": 65.19190384629792,
             "streak": 4
           },
           "fed": {
@@ -22617,19 +22619,23 @@
           "TXN": null
         },
         "relativeStrengthPp": {
-          "megaCapBasketVsNasdaqPp": 1.55,
+          "megaCapBasketVsNasdaqPp": null,
           "soxVsNasdaqPp": 1.55,
           "soxxVsNasdaqPp": 1.31,
           "smhVsNasdaqPp": 1.41,
-          "megaCapBasketVsQqqPp": 0.57,
+          "megaCapBasketVsQqqPp": null,
           "basis": "previous_completed_session",
           "observationDate": "2026-10-01"
         },
         "dataCompleteness": {
           "expectedFields": 18,
-          "presentFields": 18,
-          "coveragePct": 100.0,
-          "missing": []
+          "presentFields": 15,
+          "coveragePct": 83.3,
+          "missing": [
+            "nasdaqBreadth",
+            "soxVsNasdaq",
+            "megaVsQqq"
+          ]
         },
         "forwardOutcomes": {
           "definition": "Close-to-close return from this session close to the close N trading sessions later.",
@@ -22748,10 +22754,10 @@
           "latest": "ASML: Oct 14, 2026 · TSM: Oct 15, 2026"
         },
         "Semiconductor leadership": {
-          "signal": "positive",
-          "currentImpact": "High",
-          "trend": "Improving ↑",
-          "latest": "Previous regular-session close · SOX +2.40% | Nasdaq +1.19% | SOX vs Nasdaq +1.21 pp | SOXX vs Nasdaq +0.99 pp | SMH vs Nasdaq +0.88 pp"
+          "signal": "mixed",
+          "currentImpact": "Low",
+          "trend": "Stable →",
+          "latest": "Awaiting live SOX/Nasdaq quotes"
         },
         "Inflation · Labor · Growth": {
           "signal": "positive",
@@ -22778,10 +22784,10 @@
           "latest": "Oct 28: Hike 22% / Hold 78% / Cut 0% · Dec 9: Above current 85% / Same 15% / Below 0% · Jan 27: Above current 91% / Same 9% / Below 0%"
         },
         "Mega-cap leadership": {
-          "signal": "positive",
-          "currentImpact": "Medium",
-          "trend": "Improving ↑",
-          "latest": "Previous regular-session close · 7-stock basket +1.59% | 7/7 positive | QQQ +1.02% | relative +0.57 pp"
+          "signal": "mixed",
+          "currentImpact": "Low",
+          "trend": "Stable →",
+          "latest": "Awaiting live mega-cap quotes"
         },
         "Oil (WTI / Brent)": {
           "signal": "positive",
@@ -22813,28 +22819,28 @@
         "status": "inactive",
         "mode": null,
         "summary": "No persistent divergence between the macro impulse and live market response.",
-        "observedAt": "2026-10-04T09:07:03.691347-04:00",
+        "observedAt": "2026-10-04T09:39:04.225883-04:00",
         "candidateMode": null,
         "candidateSince": null,
         "persistenceMinutes": 0.0,
         "requiredPersistenceMinutes": 15,
         "evidenceScore": null,
-        "positiveResponseScore": 83,
+        "positiveResponseScore": 84,
         "negativeResponseScore": 0,
         "attenuationPct": 0.0,
         "rawRatesMacroStrength": -0.201,
         "effectiveRatesMacroStrength": -0.201,
-        "rawNasdaqScore": 1,
-        "effectiveNasdaqScore": 1,
+        "rawNasdaqScore": -10,
+        "effectiveNasdaqScore": -10,
         "components": {},
         "note": "Market Response only attenuates an existing Rates / Macro contribution; it never reverses its sign."
       },
       "soxlBuyScore": {
         "version": 3.3,
-        "score": 57,
-        "rawScore": 72,
-        "preGateScore": 57,
-        "label": "Selective / Starter",
+        "score": 51,
+        "rawScore": 70,
+        "preGateScore": 51,
+        "label": "Wait",
         "signal": "mixed",
         "horizon": "1–5 sessions",
         "instrument": "SOXL",
@@ -22843,7 +22849,7 @@
         "components": {
           "Semiconductor trend": 93,
           "SOXL entry quality": 40,
-          "Market confirmation": 71,
+          "Market confirmation": 54,
           "Volatility / leverage risk": 84,
           "Rates / macro": 61,
           "Catalyst asymmetry": 100
@@ -22957,13 +22963,13 @@
         },
         "extensionAdjustment": {
           "base20dMaPenalty": 23.8,
-          "regimeMultiplier": 0.65,
-          "regime": "Strong semiconductor trend + market confirmation",
-          "applied20dMaPenalty": 15.5,
+          "regimeMultiplier": 0.8,
+          "regime": "Strong semiconductor trend",
+          "applied20dMaPenalty": 19.1,
           "rsiHeatPenalty": 0.0,
           "rsiExtensionAmplifier": 0.96,
           "extremeRsi20dMaPenalty": 0.0,
-          "totalPenalty": 15.5
+          "totalPenalty": 19.1
         },
         "technicalContext": {
           "ma20DistancePct": 23.91,
@@ -22977,9 +22983,9 @@
         ],
         "weakestDrivers": [
           "SOXL entry quality 40",
-          "Rates / macro 61"
+          "Market confirmation 54"
         ],
-        "explanation": "SOXL tactical entry quality is selective / starter (57/100) for a 1–5 session horizon. Raw score 72; extension/overheating penalty 15.5. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 93. Weakest: SOXL entry quality 40, Rates / macro 61.",
+        "explanation": "SOXL tactical entry quality is wait (51/100) for a 1–5 session horizon. Raw score 70; extension/overheating penalty 19.1. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 93. Weakest: SOXL entry quality 40, Market confirmation 54.",
         "note": "Experimental tactical score for a daily 3x leveraged ETF. It measures entry quality, not expected return or position size."
       }
     }
