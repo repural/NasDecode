@@ -1,0 +1,621 @@
+NASDECODE SCORING REFERENCE
+===========================
+Last methodology sync: 2026-10-04
+Primary implementation:
+- scripts/refresh.py: Nasdaq factor model, Semiconductor Leadership, Internal Confirmation.
+- scripts/refine_scores.py: final Nasdaq publication layer, Consolidation Risk v3,
+  Opportunity Score v3, SOXL Buy Score v2.
+
+PURPOSE
+-------
+NasDecode deliberately keeps different questions in different scores:
+
+1. Nasdaq Score (-100 to +100)
+   Question: Is the current Nasdaq environment directionally supportive or restrictive?
+
+2. Consolidation Risk (0 to 100)
+   Question: How vulnerable is the current move to a 1-3 session fade, pause or sideways reset?
+
+3. Opportunity Score (0 to 100)
+   Question: How attractive is a new broad Nasdaq-oriented long entry now?
+
+4. SOXL Buy Score (0 to 100)
+   Question: How attractive is a new tactical SOXL long for roughly 1-5 sessions?
+
+5. Internal Confirmation (0 to 100)
+   Question: Are breadth, semiconductors, volatility and mega-caps confirming the tape?
+
+6. Semiconductor Leadership (0 to 100)
+   Question: Is semiconductor leadership broad and strong relative to Nasdaq/QQQ?
+
+These scores are intentionally not interchangeable. A positive Nasdaq Score can coexist with
+high Consolidation Risk or a poor SOXL entry because direction can be constructive while price
+is too extended to chase.
+
+COMMON RULES
+------------
+- Missing inputs are generally excluded rather than guessed.
+- Where a weighted score excludes missing inputs, available weights are renormalized.
+- 0-100 component scales are clipped to 0..100.
+- Nasdaq directional factor strengths are clipped to -1..+1 before aggregation.
+- Current-session data is preferred. Previous-close/stale inputs receive lower freshness weight
+  in the Nasdaq directional model.
+- Hard gates are applied after weighted SOXL/Opportunity calculations where documented below.
+- A score is a decision aid, not an expected return, probability of profit or position-size rule.
+
+
+======================================================================
+1. NASDAQ SCORE
+======================================================================
+
+RANGE
+-----
+-100 to +100. Negative = restrictive/bearish environment. Positive = supportive/bullish
+environment. Near zero = balanced/mixed.
+
+HIGH-LEVEL FORMULA
+------------------
+Each dashboard factor receives:
+  factor strength x base impact weight x freshness weight x regime multiplier.
+
+Factors are grouped into correlation buckets so several versions of the same macro theme cannot
+dominate merely because many related rows exist.
+
+Buckets and maximum contribution weights:
+- Rates / Macro:              cap 9
+- Leadership:                 cap 9
+- Breadth:                    cap 6
+- Volatility / Positioning:   cap 7
+- Event Risk:                 cap 4
+- Other:                      cap 4
+
+Raw Nasdaq Score =
+  round(100 x SUM(bucket_strength x capped_bucket_weight)
+            / SUM(capped_bucket_weight))
+
+Base impact weights:
+- Very High = 4
+- High      = 3
+- Medium    = 2
+- Low       = 1
+
+Freshness weights:
+- Current/normal input = 1.00
+- Previous close       = 0.70
+- Stale/research snapshot/official-data lag = 0.35
+- Awaiting/insufficient = 0.20
+- Research-background factors are capped at 0.35 freshness weight.
+
+Regime multipliers:
+- Rates / Macro x1.25 when 10Y >= 4.85%
+- Volatility / Positioning x1.20 when VXN >= 22
+- Leadership x1.15 when that factor has High or Very High current impact
+
+MAJOR CONTINUOUS FACTOR TRANSFORMS
+----------------------------------
+Treasury yields:
+  level_strength    = clip((4.0 - yield_level) / 0.50, -1, +1)
+  velocity_strength = clip(-daily_change_bp / 10, -1, +1)
+  factor_strength   = 60% level + 40% velocity
+
+Fed expectations:
+  factor_strength = Fed Policy Score / 100, clipped -1..+1.
+
+Semiconductor leadership inside Nasdaq Score:
+  70% SOX relative strength + 15% SOXX relative strength + 15% SMH relative strength,
+  with each relative-strength reading normalized over approximately +/-1.5 percentage points.
+
+Mega-cap leadership:
+  relative basket-vs-QQQ performance / 1.25pp, clipped -1..+1.
+
+Nasdaq-100 breadth:
+  (advancing_pct - 50) / 30, clipped -1..+1.
+
+S&P 500 50D breadth:
+  65% level strength + 35% change strength.
+  level strength  = (percent above 50D - 50) / 25
+  change strength = percentage-point change / 5
+  both clipped -1..+1.
+
+VXN/VIX:
+  Uses both absolute volatility regimes and daily movement.
+  VXN regime breakpoints: 15, 18, 23, 28, 33.
+  VIX regime breakpoints: 12, 15, 20, 25, 30.
+  factor = 50% VXN regime + 20% VIX regime
+         + 20% inverse VXN daily move + 10% inverse VIX daily move.
+
+Oil:
+  factor_strength = negative average WTI/Brent daily percentage move / 3, clipped -1..+1.
+  Falling oil is therefore supportive through the inflation/rates channel.
+
+Options positioning:
+  Uses Equity Put/Call level and its 5-day average:
+  70% level signal + 30% trend signal.
+
+Inflation · Labor · Growth:
+  Uses the decaying verified macroImpulseScore on a -100..+100 Nasdaq-support scale.
+
+Other factors:
+  Fall back to positive = +1, mixed = 0, negative = -1.
+
+CONFIDENCE
+----------
+Coverage = available base-weighted freshness / possible base weight.
+Agreement = absolute average direction among active bucket strengths (|strength| >= 0.05).
+
+Confidence =
+  60% Coverage + 40% Agreement.
+
+PUBLISHED NASDAQ SCORE
+----------------------
+scripts/refine_scores.py publishes effectiveScore when a bounded market-response layer is
+available; otherwise it publishes rawScore. The result is rounded and clipped by the underlying
+model design to the -100..+100 range.
+
+GUIDANCE
+--------
+Score range       Label                  Operational interpretation
++45 to +100       Strong Positive        Favor long bias. Prefer entries with acceptable
+                                         Opportunity/SOXL entry quality; do not chase solely
+                                         because direction is strong.
++15 to +44        Cautiously Positive    Constructive but selective. Require confirmation from
+                                         breadth/semiconductors and watch rates/volatility.
+-14 to +14        Mixed / Neutral        No strong directional edge. Reduce conviction; favor
+                                         patience, smaller exposure or event-driven setups.
+-44 to -15        Cautiously Negative    Defensive bias. Avoid weak long setups; require clear
+                                         recovery confirmation before adding risk.
+-100 to -45       Strong Negative        Strongly restrictive environment. Avoid routine new
+                                         longs unless a separate reversal framework confirms.
+
+Important:
+A high positive Nasdaq Score is NOT automatically a buy signal. Check Consolidation Risk and
+Opportunity Score for entry timing.
+
+
+======================================================================
+2. CONSOLIDATION RISK v3
+======================================================================
+
+RANGE
+-----
+0 to 100. Higher = greater 1-3 session vulnerability to a fade/consolidation/reset.
+It is NOT a bearish-direction forecast and does not change the Nasdaq Score.
+
+WEIGHTS
+-------
+- Price extension:              20%
+- Intraday rejection:           25%
+- Breadth divergence:           20%
+- Leadership divergence:        15%
+- Volatility / rates stress:    15%
+- Event risk:                    5%
+
+Price extension:
+Average of normalized:
+- QQQ 3D return:        0.5% -> 0, 4.0% -> 100
+- QQQ 5D return:        1.0% -> 0, 6.0% -> 100
+- QQQ distance 20DMA:   1.0% -> 0, 6.0% -> 100
+- QQQ RSI14:             55 -> 0, 75 -> 100
+- SOXX distance 20DMA:  2.0% -> 0, 10.0% -> 100
+
+Intraday rejection:
+- Measures the largest giveback from the best observed regular-session Nasdaq/QQQ return.
+- 0.15pp giveback -> 0
+- 1.25pp giveback -> 100
+
+Breadth divergence:
+- 55% Nasdaq breadth weakness
+- 20% S&P 500 50D breadth weakness
+- 10% deterioration in S&P 500 50D breadth
+- +25-point divergence bonus when Nasdaq is >+0.35% but Nasdaq-100 breadth is <50%.
+The result is clipped 0..100.
+
+Leadership divergence:
+Average weakness of:
+- SOX vs Nasdaq
+- SOXX vs Nasdaq
+- SMH vs Nasdaq
+- Mega-cap basket vs QQQ
+Semiconductor relative underperformance reaches maximum divergence around -1.0pp; mega-cap
+underperformance around -0.8pp.
+
+Volatility / rates stress:
+Average normalized:
+- VXN daily change: 0% -> 0, +6% -> 100
+- 10Y change:       0bp -> 0, +8bp -> 100
+- 2Y change:        0bp -> 0, +8bp -> 100
+If Nasdaq is >+0.25% while both VXN and 10Y are rising, add 20 stress points, capped at 100.
+
+Event risk:
+- Pending high-read-through catalyst = 100
+- Other pending catalyst = 25
+- No pending catalyst = 0
+
+GUIDANCE
+--------
+Score range       Label       Operational interpretation
+0-34              Low         Normal entry timing. Consolidation risk is not a major blocker.
+35-54             Moderate    Be selective; avoid poor reward/risk chase entries.
+55-74             Elevated    Prefer pullbacks/confirmation. Consider scaling rather than
+                              entering full tactical exposure at once.
+75-100            High        High fade/reset risk. Avoid chasing strength; wait for either a
+                              reset or strong renewed confirmation.
+
+Use with Nasdaq Score:
+- Positive Nasdaq + Low Risk = constructive trend with relatively healthy entry backdrop.
+- Positive Nasdaq + High Risk = direction constructive, timing poor/fragile.
+- Negative Nasdaq + High Risk = weak direction plus unstable tape; particularly defensive.
+
+
+======================================================================
+3. OPPORTUNITY SCORE v3
+======================================================================
+
+RANGE
+-----
+0 to 100. Measures general long-entry quality now, not next-session expected return.
+
+WEIGHTS
+-------
+- Directional edge:        25%
+- Entry quality:           25%
+- Recovery confirmation:   25%
+- Macro timing:            15%
+- Catalyst asymmetry:      10%
+
+Directional edge:
+  clip(NasdaqScore x 1.25 + 50, 0, 100)
+Examples:
+  Nasdaq -40 -> 0
+  Nasdaq   0 -> 50
+  Nasdaq +20 -> 75
+  Nasdaq +40 -> 100
+
+Entry quality:
+Average of:
+- clip(75 - 12 x QQQ distance above 20DMA)
+- clip(65 - 7 x QQQ 5D return)
+- clip(75 - 2.5 x (QQQ RSI14 - 50))
+If VXN is between 22 and 32 inclusive, +10 points are added to entry quality. This rewards
+tradable volatility/dislocation but does not override broken internals.
+
+Recovery confirmation:
+Equal-weight average of:
+- Internal Confirmation score
+- Market breadth signal: positive 100 / mixed 50 / negative 0
+- Semiconductor leadership signal: 100 / 50 / 0
+- Mega-cap leadership signal: 100 / 50 / 0
+- Nasdaq volatility signal: 100 / 50 / 0
+
+Macro timing:
+Equal-weight average of:
+- 10Y: clip(50 - 6 x daily bp change)
+- 2Y:  clip(50 - 6 x daily bp change)
+- Fed repricing: clip(50 + 0.5 x Fed Repricing Score)
+- Oil signal: positive 100 / mixed 50 / negative 0
+
+Catalyst asymmetry:
+Starts at 50.
+For each relevant catalyst:
+- Pending high-impact: -15
+- Other pending:       -5
+- Observed positive:   +8
+- Positive + persistent: +15
+- Observed negative:   -15
+Final catalyst score is clipped 0..100.
+
+BEHAVIORAL GATES
+----------------
+After weighted calculation:
+- Directional edge <40 AND recovery <50 -> final score capped at 44.
+- Consolidation Risk >=75 AND recovery <70 -> capped at 49.
+- Pending high-impact catalyst -> capped at 64.
+
+GUIDANCE
+--------
+Score range       Label                    Operational interpretation
+75-100            Strong Long Opportunity  Strong environment for deploying new long capital.
+                                           Still use instrument-specific entry controls.
+60-74             Attractive               Favor adding exposure selectively; confirmation and
+                                           price location are supportive enough.
+45-59             Selective                Mixed entry quality. Starter positions/pullbacks are
+                                           preferable to aggressive deployment.
+30-44             Wait for Confirmation    Conditions are not yet sufficiently confirmed.
+0-29              Poor Long Opportunity    Avoid routine new long entries; wait for a material
+                                           improvement in direction/recovery/timing.
+
+Opportunity type:
+- Recovery / dip entry: recovery >=65, entry quality >=60, directional edge <60.
+- Trend continuation: directional edge >=60 and recovery >=60.
+- Wait for confirmation: recovery <45.
+- Otherwise: Selective / mixed.
+
+
+======================================================================
+4. SOXL BUY SCORE v2
+======================================================================
+
+RANGE / HORIZON
+---------------
+0 to 100, tactical horizon approximately 1-5 sessions.
+This is an entry-quality score for a DAILY 3x leveraged semiconductor ETF. It is not expected
+return, probability of profit or a position-size recommendation.
+
+MAJOR WEIGHTS
+-------------
+- Semiconductor trend / leadership: 30%
+- SOXL entry quality:                25%
+- Market confirmation:              15%
+- Volatility / leverage risk:       15%
+- Rates / macro:                    10%
+- Catalyst asymmetry:                5%
+
+The weighted available components are renormalized when a component is unavailable.
+
+4.1 SEMICONDUCTOR TREND / LEADERSHIP (30%)
+-------------------------------------------
+Equal-weight average of four 0-100 readings:
+- Semiconductor Leadership score
+- SOX vs Nasdaq relative strength scaled from -1.5pp=0 to +1.5pp=100
+- SOXX vs Nasdaq relative strength scaled the same way
+- SMH vs Nasdaq relative strength scaled the same way
+
+This deliberately requires broad semiconductor confirmation rather than relying on one stock.
+
+4.2 SOXL ENTRY QUALITY (25%)
+----------------------------
+Internal weights:
+- Distance from 20DMA:       30%
+- 5-day return:              20%
+- RSI14:                     20%
+- Distance from 20-day high: 20%
+- Intraday giveback:         10%
+
+20DMA distance factor:
+If SOXL is above its 20DMA:
+  score = clip(85 - 8 x distance_above_20DMA_pct)
+If below its 20DMA:
+  score = clip(85 - 5 x absolute_distance_below_20DMA_pct)
+
+This makes extreme positive extension expensive rather than treating momentum as a free benefit.
+
+5-day return factor:
+  score = clip(78
+               - 5 x max(5D_return - 4, 0)
+               - 4 x max(-5D_return - 3, 0))
+Moderate positive momentum is acceptable; excessive upside chase or sharp negative momentum
+reduces entry quality.
+
+RSI14 factor:
+  score = clip(88 - 3 x abs(RSI14 - 55))
+The preferred center is RSI 55. Both overbought and very weak RSI reduce entry quality.
+
+20-day-high factor -- STRONG SOX REGIME:
+Strong regime requires:
+- Semiconductor Trend >=70, AND
+- SOX is positive on the session OR SOX relative strength vs Nasdaq is positive.
+
+SOXL pullback from 20-day high -> factor score:
+  0%   -> 25
+ -2%   -> 40
+ -4%   -> 55
+ -6%   -> 70
+ -8%   -> 82
+-10%   -> 90
+-12%   -> 95   preferred tactical discount
+-15%   -> 75
+-20%   -> 35
+-25%+  -> 10
+
+Values between points are linearly interpolated. A controlled pullback from confirmed sector
+strength is rewarded; a very deep drawdown is penalized as possible breakdown/divergence.
+
+20-day-high factor -- WITHOUT STRONG SOX:
+  score = clip(82 - 5 x abs(distanceFrom20dHighPct + 4))
+This conservative profile peaks around 4% below the high and does not automatically treat a
+deep drawdown as a bargain.
+
+Intraday giveback factor:
+  giveback = best observed regular-session SOXL return - current SOXL return
+  score = clip(100 - 25 x giveback_pp)
+Outside a current U.S. session this factor is unavailable and its 10% weight is excluded.
+
+4.3 MARKET CONFIRMATION (15%)
+-----------------------------
+Equal-weight average of:
+- Internal Confirmation
+- Nasdaq directional edge = clip(Nasdaq Score x 1.25 + 50)
+- Market breadth signal = 100 / 50 / 0
+- Mega-cap leadership signal = 100 / 50 / 0
+
+4.4 VOLATILITY / LEVERAGE RISK (15%)
+-------------------------------------
+Equal-weight average of:
+- 100 - Consolidation Risk
+- Nasdaq volatility signal = 100 / 50 / 0
+- clip(50 - 6 x VXN daily change_pct)
+
+Higher values mean the volatility backdrop is safer/more supportive for a leveraged long.
+
+4.5 RATES / MACRO (10%)
+-----------------------
+Equal-weight average of:
+- clip(50 - 6 x 10Y daily bp change)
+- clip(50 - 6 x 2Y daily bp change)
+- clip(50 + 0.5 x Fed Repricing Score)
+- Inflation · Labor · Growth signal = 100 / 50 / 0
+- Oil signal = 100 / 50 / 0
+
+4.6 CATALYST ASYMMETRY (5%)
+---------------------------
+Uses the same catalyst score as Opportunity Score:
+- Start 50
+- Pending high-impact -15
+- Other pending -5
+- Observed positive +8
+- Positive persistent +15
+- Observed negative -15
+- Clip 0..100
+
+SOXL HARD GATES
+---------------
+Hard gates are applied AFTER the weighted score:
+- Semiconductor Trend <40 -> cap final score at 45.
+- At least two semiconductor relative-strength readings available and ALL negative -> cap 50.
+- Consolidation Risk >=75 -> cap 45.
+- SOXL >8% above 20DMA -> cap 55.
+- SOXL >12% above 20DMA -> cap 40.
+- SOXL >18% above 20DMA -> cap 30.
+- SOXL >15% above 20DMA AND RSI14 >80 -> cap 25.
+- VXN daily change >+8% AND 10Y >+5bp -> cap 45.
+- Pending high-impact semiconductor catalyst -> cap 64.
+
+The most restrictive active gate wins. This is why a strong semiconductor trend cannot turn a
+severely overextended SOXL into a high entry score.
+
+GUIDANCE
+--------
+Score range       Label                       Operational interpretation
+85-100            Exceptional Tactical Entry  Highest-quality tactical setup. Broad chips,
+                                              entry location and risk backdrop align.
+70-84             Attractive                  Favor a tactical long, preferably with normal
+                                              risk controls and no contradictory active gate.
+55-69             Selective / Starter         Constructive but imperfect. Prefer starter size,
+                                              scaling or confirmation rather than full entry.
+40-54             Wait                        Edge is insufficient. Wait for better price
+                                              location or stronger confirmation.
+25-39             Poor Entry                  Do not chase. Even if sector direction is strong,
+                                              timing/risk is unfavorable.
+0-24              Avoid Long                  Tactical long setup is materially unfavorable.
+
+PRACTICAL COMBINATIONS
+----------------------
+Nasdaq + / SOXL <40:
+  The market can be constructive while SOXL itself is too extended or leverage risk is poor.
+  Do not use Nasdaq direction as permission to chase SOXL.
+
+Semiconductor Trend >70 / SOXL Entry Quality <40:
+  Sector leadership is healthy, but price location is poor. Prefer waiting for a controlled
+  pullback or reset.
+
+SOXL 55-69 with improving components:
+  Starter/scale-in territory, not an all-clear. Watch 20DMA distance, RSI, giveback and rates.
+
+SOXL >=70 with no hard gate:
+  Broad leadership and entry conditions are aligned. This is the regime the score is designed
+  to identify as tactically attractive.
+
+
+======================================================================
+5. INTERNAL CONFIRMATION
+======================================================================
+
+FORMULA
+-------
+Internal Confirmation =
+  35% Breadth Confirmation
++ 35% Semiconductor Leadership
++ 20% Volatility Confirmation
++ 10% Mega-cap Leadership
+
+Labels:
+75-100  Strong
+60-74   Positive
+40-59   Mixed
+25-39   Weak
+0-24    Negative
+
+GUIDANCE
+--------
+75-100: Broad confirmation. Directional signals deserve higher confidence.
+60-74:  Useful confirmation, though not universal.
+40-59:  Mixed internals. Treat index direction with caution.
+25-39:  Weak confirmation. Rallies are less trustworthy.
+0-24:   Internal rejection. Avoid relying on index-level strength alone.
+
+
+======================================================================
+6. SEMICONDUCTOR LEADERSHIP
+======================================================================
+
+FORMULA
+-------
+Semiconductor Leadership =
+  55% SOX relative-strength score
++ 15% SOXX relative-strength score
++ 10% SMH relative-strength score
++ 20% Semiconductor Breadth score
+
+Relative-strength score mapping used by the confirmation layer:
+- >= +0.75pp -> 100
+- >= +0.50pp -> 75
+- >  -0.50pp -> 50
+- >  -0.75pp -> 25
+- <= -0.75pp -> 0
+
+Semiconductor breadth:
+Share of available tracked semiconductor names outperforming QQQ.
+- >=70% -> 100
+- >=55% -> 75
+- >=45% -> 50
+- >=30% -> 25
+- <30%   -> 0
+
+Broad leadership trigger:
+If SOX >= +0.50pp vs Nasdaq AND SOXX >0pp vs Nasdaq AND SMH >0pp vs Nasdaq,
+Semiconductor Leadership is floored at 75.
+
+Labels:
+75-100  Strong
+60-74   Positive
+40-59   Mixed
+25-39   Weak
+0-24    Negative
+
+GUIDANCE
+--------
+75-100: Strong broad chip leadership; supportive for Nasdaq and SOXL trend.
+60-74:  Positive leadership; useful but not full broad confirmation.
+40-59:  Mixed; do not assume semiconductor-led Nasdaq strength.
+25-39:  Weak leadership; SOXL tactical longs need unusually good entry quality.
+0-24:   Negative leadership; semiconductor weakness is a major warning.
+
+
+======================================================================
+HOW TO USE THE SCORE SET TOGETHER
+======================================================================
+
+A useful decision sequence is:
+
+1. Nasdaq Score: direction
+   "Do I want a bullish, neutral or defensive market bias?"
+
+2. Internal Confirmation / Semiconductor Leadership: confirmation
+   "Is the tape actually confirming that directional view?"
+
+3. Consolidation Risk: fragility
+   "Even if direction is right, is the current move vulnerable to a near-term reset?"
+
+4. Opportunity Score: broad entry timing
+   "Is this a good moment to deploy new long capital?"
+
+5. SOXL Buy Score: instrument-specific timing
+   "Given 3x leverage and semiconductor conditions, is SOXL itself a good tactical entry?"
+
+Example:
+- Nasdaq Score +50
+- Semiconductor Leadership 90
+- Consolidation Risk 65
+- Opportunity Score 58
+- SOXL Buy Score 30
+
+Interpretation:
+The directional and semiconductor trend are strong, but the move is extended and SOXL entry
+quality is poor. The model says "bullish environment, bad chase" rather than "buy because chips
+are strong."
+
+MAINTENANCE RULE
+----------------
+Whenever a scoring formula, threshold, weight, hard gate, label range or interpretation changes
+in code, update scores.txt in the same change set so this file remains synchronized with the
+implemented model.
