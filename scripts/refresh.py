@@ -100,13 +100,14 @@ def massive_index_latest(candidates):
     return None
 
 def historical_context(bars):
-    """Summarize objective historical context from daily closes.
+    """Summarize objective historical context from daily OHLC bars.
 
-    Returns streak, multi-session return, moving-average distance, and the date of the
-    highest close in the fetched window. Calculations require observed bars and return
-    None when history is insufficient rather than fabricating context.
+    In addition to close-based trend measures, calculate Wilder ATR(14) and
+    ADX/DMI(14). ATR is normalized by price and its own recent regime; ADX/DMI
+    supplies direction-aware trend strength without relying on an external TA feed.
     """
-    closes=[float(b['c']) for b in bars if b.get('c') is not None]
+    clean=[b for b in bars if b.get('c') is not None]
+    closes=[float(b['c']) for b in clean]
     if not closes: return None
     streak=0
     for i in range(len(closes)-1,0,-1):
@@ -126,22 +127,83 @@ def historical_context(bars):
     ma50dist=(closes[-1]/ma50-1)*100 if ma50 else None
     rsi14=None
     if len(closes)>=15:
-        changes=[b-a for a,b in zip(closes[-15:-1],closes[-14:])]
+        changes=[bb-aa for aa,bb in zip(closes[-15:-1],closes[-14:])]
         ag=sum(max(x,0) for x in changes)/14
         al=sum(max(-x,0) for x in changes)/14
         rsi14=100 if al==0 else 100-(100/(1+ag/al))
+
+    # Wilder TR / ATR / DMI / ADX. Keep None when OHLC depth is insufficient.
+    period=14
+    tr=[]; plus_dm=[]; minus_dm=[]
+    for i in range(1,len(clean)):
+        try:
+            hi=float(clean[i]['h']); lo=float(clean[i]['l']); prev_close=float(clean[i-1]['c'])
+            prev_hi=float(clean[i-1]['h']); prev_lo=float(clean[i-1]['l'])
+        except (TypeError,ValueError,KeyError):
+            tr.append(None); plus_dm.append(None); minus_dm.append(None); continue
+        tr.append(max(hi-lo,abs(hi-prev_close),abs(lo-prev_close)))
+        up=hi-prev_hi; down=prev_lo-lo
+        plus_dm.append(up if up>down and up>0 else 0.0)
+        minus_dm.append(down if down>up and down>0 else 0.0)
+
+    atr14=None; atr14_pct=None; atr50=None; atr14_vs50=None; atr_pct_percentile60=None
+    atr_series=[]
+    valid_tr=[x for x in tr if x is not None]
+    if len(valid_tr)>=period:
+        atr=sum(valid_tr[:period])/period
+        atr_series.append((period,atr))
+        for idx,x in enumerate(valid_tr[period:],start=period+1):
+            atr=((period-1)*atr+x)/period
+            atr_series.append((idx,atr))
+        atr14=atr_series[-1][1]
+        atr14_pct=100*atr14/closes[-1] if closes[-1] else None
+        if len(valid_tr)>=50:
+            atr50=sum(valid_tr[-50:])/50
+            atr14_vs50=atr14/atr50 if atr50 else None
+        pct_series=[]
+        # atr_series index maps to the corresponding close index for complete OHLC histories.
+        for close_idx,atrv in atr_series:
+            if close_idx<len(closes) and closes[close_idx]:
+                pct_series.append(100*atrv/closes[close_idx])
+        if pct_series and atr14_pct is not None:
+            recent=pct_series[-60:]
+            atr_pct_percentile60=100*sum(1 for x in recent if x<=atr14_pct)/len(recent)
+
+    plus_di14=None; minus_di14=None; adx14=None
+    if len(tr)>=period and all(x is not None for x in tr):
+        sm_tr=sum(tr[:period]); sm_plus=sum(plus_dm[:period]); sm_minus=sum(minus_dm[:period])
+        dx=[]
+        def _dmi_values(st,sp,sm):
+            pdi=100*sp/st if st else 0.0; mdi=100*sm/st if st else 0.0
+            den=pdi+mdi; dxi=100*abs(pdi-mdi)/den if den else 0.0
+            return pdi,mdi,dxi
+        pdi,mdi,dxi=_dmi_values(sm_tr,sm_plus,sm_minus); dx.append(dxi)
+        plus_di14=pdi; minus_di14=mdi
+        for i in range(period,len(tr)):
+            sm_tr=sm_tr-(sm_tr/period)+tr[i]
+            sm_plus=sm_plus-(sm_plus/period)+plus_dm[i]
+            sm_minus=sm_minus-(sm_minus/period)+minus_dm[i]
+            pdi,mdi,dxi=_dmi_values(sm_tr,sm_plus,sm_minus)
+            dx.append(dxi); plus_di14=pdi; minus_di14=mdi
+        if len(dx)>=period:
+            adx=sum(dx[:period])/period
+            for x in dx[period:]:
+                adx=((period-1)*adx+x)/period
+            adx14=adx
+
     max_i=max(range(len(closes)),key=lambda i:closes[i])
-    max_date=datetime.datetime.fromtimestamp(bars[max_i]['t']/1000,datetime.timezone.utc).date().isoformat() if bars[max_i].get('t') else None
+    max_date=datetime.datetime.fromtimestamp(clean[max_i]['t']/1000,datetime.timezone.utc).date().isoformat() if clean[max_i].get('t') else None
     max_close=closes[max_i]
     high_distance=(closes[-1]/max_close-1)*100 if max_close else None
     high20=max(closes[-20:]) if closes else None
     high20_distance=(closes[-1]/high20-1)*100 if high20 else None
     return {'streak':streak,'return1d':ret1,'return3d':ret3,'return5d':ret5,
             'ma20Distance':ma20dist,'ma50Distance':ma50dist,'rsi14':rsi14,
+            'atr14':atr14,'atr14Pct':atr14_pct,'atr50':atr50,'atr14Vs50':atr14_vs50,
+            'atr14PctPercentile60':atr_pct_percentile60,
+            'adx14':adx14,'plusDI14':plus_di14,'minusDI14':minus_di14,
             'windowHighDate':max_date,'windowHighClose':max_close,'distanceFromWindowHighPct':high_distance,
             'high20Close':high20,'distanceFrom20dHighPct':high20_distance,'bars':len(closes)}
-
-
 
 def earnings_avwap_from_daily_bars(bars, earnings_date, release_session):
     """Calculate an earnings-anchored VWAP from Massive daily VWAP and volume.
@@ -1564,14 +1626,14 @@ def main():
         bars=massive_daily_bars(ticker,730 if ticker=='SOXL' else 180)
         ctx=historical_context(bars)
         if ctx: massive_context[ticker]=ctx
-        if ticker=='SOXL' and bars:
-            soxl_history_path=os.path.join(HISTORY_DIR,'soxl-daily.json')
-            soxl_daily={'schemaVersion':1,'ticker':'SOXL','source':'Massive adjusted daily aggregates','updatedET':now.isoformat(),'bars':[]}
+        if ticker in ('SOXX','SOXL') and bars:
+            history_path=os.path.join(HISTORY_DIR,f'{ticker.lower()}-daily.json')
+            ticker_daily={'schemaVersion':1,'ticker':ticker,'source':'Massive adjusted daily aggregates','updatedET':now.isoformat(),'bars':[]}
             for b in bars:
                 try: day=datetime.datetime.fromtimestamp(float(b.get('t'))/1000,datetime.timezone.utc).date().isoformat()
                 except (TypeError,ValueError): continue
-                soxl_daily['bars'].append({'date':day,'open':num(b.get('o')),'high':num(b.get('h')),'low':num(b.get('l')),'close':num(b.get('c')),'volume':num(b.get('v')),'vwap':num(b.get('vw'))})
-            with open(soxl_history_path,'w',encoding='utf-8') as _sf: json.dump(soxl_daily,_sf,ensure_ascii=False,indent=2)
+                ticker_daily['bars'].append({'date':day,'open':num(b.get('o')),'high':num(b.get('h')),'low':num(b.get('l')),'close':num(b.get('c')),'volume':num(b.get('v')),'vwap':num(b.get('vw'))})
+            with open(history_path,'w',encoding='utf-8') as _sf: json.dump(ticker_daily,_sf,ensure_ascii=False,indent=2)
     d['historicalContext']=massive_context
 
     explain_current_rows(rows)
