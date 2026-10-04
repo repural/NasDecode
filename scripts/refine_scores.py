@@ -286,7 +286,7 @@ def main():
         'note':'Higher means the current move is more vulnerable to a fade or sideways reset; it is not a bearish-direction forecast.'
     }
 
-    # ---------------- Opportunity Score v4 ----------------
+    # ---------------- Opportunity Score v5 ----------------
     # General long-entry quality. Direction/recovery tell us whether the tape is
     # constructive; Entry Quality tells us whether the current PRICE LOCATION is
     # attractive enough to initiate exposure. Consolidation Risk is used only as
@@ -294,7 +294,7 @@ def main():
     # weighted component.
     direction=clamp((num((d.get('nasdaqScore') or {}).get('score')) or 0)*1.25+50)
 
-    # Entry Quality v4: explicitly price-location aware.
+    # Entry Quality v5: price-location aware with realized-volatility regime.
     # QQQ is the primary Nasdaq entry instrument/context. SOXX is included because
     # semiconductor extension matters materially to a semiconductor-led Nasdaq.
     ma20=num(qqq_ctx.get('ma20Distance'))
@@ -302,8 +302,27 @@ def main():
     rsi=num(qqq_ctx.get('rsi14'))
 
     qqq_ma_entry=clamp(75-12*(ma20 or 0)) if ma20 is not None else None
-    qqq_rsi_entry=clamp(75-2.5*((rsi or 50)-50)) if rsi is not None else None
+    # Nonlinear RSI entry curve. Low RSI is not automatically attractive: severe
+    # weakness can be a falling knife, while 50-60 is the healthiest continuation/reset zone.
+    qqq_rsi_entry=piecewise(rsi,[
+        (0,25),(30,25),(35,40),(40,60),(45,80),(50,95),(55,100),
+        (60,90),(65,75),(70,55),(75,30),(80,10),(100,10)
+    ]) if rsi is not None else None
     qqq_r5_entry=clamp(65-7*(r5 or 0)) if r5 is not None else None
+
+    # QQQ realized-volatility regime. Raw ATR is normalized by price and by QQQ's
+    # own history. Normal/contracting volatility is favorable; fresh expansion is not.
+    qqq_atr_pct=num(qqq_ctx.get('atr14Pct'))
+    qqq_atr_percentile=num(qqq_ctx.get('atr14PctPercentile60'))
+    qqq_atr_ratio=num(qqq_ctx.get('atr14Vs50'))
+    qqq_atr_percentile_score=piecewise(qqq_atr_percentile,[
+        (0,80),(20,90),(40,100),(60,85),(75,60),(90,25),(100,10)
+    ]) if qqq_atr_percentile is not None else None
+    qqq_atr_ratio_score=piecewise(qqq_atr_ratio,[
+        (0,80),(0.70,85),(0.85,95),(1.00,100),(1.10,85),(1.20,65),
+        (1.35,35),(1.50,10),(3.00,0)
+    ]) if qqq_atr_ratio is not None else None
+    qqq_atr_regime=avg([qqq_atr_percentile_score,qqq_atr_ratio_score])
 
     # Invert the extension-aware high interaction from Consolidation Risk v4.
     # Being at a high near the 20DMA is not penalized much; being at a high while
@@ -317,23 +336,35 @@ def main():
     soxx_extension_entry=(100-soxx_structural_extension) if soxx_structural_extension is not None else None
 
     entry_parts=[
-        ('QQQ vs 20DMA',qqq_ma_entry,0.30),
+        ('QQQ vs 20DMA',qqq_ma_entry,0.25),
         ('QQQ RSI14',qqq_rsi_entry,0.20),
-        ('QQQ 5D return',qqq_r5_entry,0.15),
+        ('QQQ 5D return',qqq_r5_entry,0.10),
         ('QQQ high × extension',qqq_high_entry,0.20),
-        ('SOXX structural extension',soxx_extension_entry,0.15)
+        ('SOXX structural extension',soxx_extension_entry,0.15),
+        ('QQQ ATR14 regime',qqq_atr_regime,0.10)
     ]
     entry_available=[x for x in entry_parts if x[1] is not None]
     entry=(sum(v*w for _,v,w in entry_available)/sum(w for _,v,w in entry_available)
            if entry_available else None)
 
-    # Tradable volatility can improve optionality, but only when price location is
-    # not already structurally extreme. It must never turn a poor chase into a good one.
+    # VXN x realized-volatility interaction replaces the old binary +10 VXN bonus.
+    # Elevated implied volatility is useful optionality only when realized QQQ volatility
+    # is stable/contracting. If both VXN and ATR are expanding, entry quality is reduced.
     vxn=num(((mc.get('vxn') or {}).get('close')))
-    vxn_entry_bonus=10 if (vxn is not None and 22<=vxn<=32 and
-                           (structural_extension or 0)<70 and (entry or 0)>=35) else 0
-    if entry is not None and vxn_entry_bonus:
-        entry=clamp(entry+vxn_entry_bonus)
+    vxn_atr_adjustment=0
+    if entry is not None and vxn is not None:
+        if (22<=vxn<=32 and (structural_extension or 0)<70 and entry>=35 and
+            qqq_atr_ratio is not None and qqq_atr_percentile is not None):
+            if qqq_atr_ratio<=1.00 and qqq_atr_percentile<=50:
+                vxn_atr_adjustment=8
+            elif (qqq_atr_regime or 0)>=60:
+                vxn_atr_adjustment=4
+        if qqq_atr_ratio is not None:
+            if vxn>=32 and qqq_atr_ratio>=1.20:
+                vxn_atr_adjustment=-8
+            elif vxn>=28 and qqq_atr_ratio>=1.10:
+                vxn_atr_adjustment=min(vxn_atr_adjustment,-4)
+        entry=clamp(entry+vxn_atr_adjustment)
 
     # Recovery/participation: live internal confirmation plus direction of breadth,
     # semiconductors, mega-caps and volatility.
@@ -416,10 +447,16 @@ def main():
     opp_sorted=sorted(((n,round(v)) for n,v,_ in opp_available),key=lambda x:x[1],reverse=True)
     weak_sorted=sorted(((n,round(v)) for n,v,_ in opp_available),key=lambda x:x[1])
     d['opportunityScore']={
-        'version':4,'score':opp,'rawScore':opp_raw,'label':label,'signal':sig,'type':opp_type,
+        'version':5,'score':opp,'rawScore':opp_raw,'label':label,'signal':sig,'type':opp_type,
         'components':{n:round(v) if v is not None else None for n,v,_ in opp_components},
         'entryQualityComponents':{n:round(v) if v is not None else None for n,v,_ in entry_parts},
-        'entryQualityVxnBonus':vxn_entry_bonus,
+        'entryQualityVxnAtrAdjustment':vxn_atr_adjustment,
+        'entryQualityAtrContext':{
+            'atr14Pct':round(qqq_atr_pct,2) if qqq_atr_pct is not None else None,
+            'atr14PctPercentile60':round(qqq_atr_percentile,1) if qqq_atr_percentile is not None else None,
+            'atr14Vs50':round(qqq_atr_ratio,2) if qqq_atr_ratio is not None else None,
+            'regimeScore':round(qqq_atr_regime) if qqq_atr_regime is not None else None
+        },
         'consolidationRiskContext':risk,
         'gates':opp_gates,
         'strongestDrivers':[f'{n} {v}' for n,v in opp_sorted[:2]],
