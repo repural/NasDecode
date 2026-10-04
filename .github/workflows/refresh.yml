@@ -94,6 +94,7 @@ jobs:
           python scripts/fix_three_day_watch.py
           python scripts/capture_session_analysis.py
           python scripts/build_chart_history.py
+          python scripts/build_resilience_history.py
       - name: Commit refreshed snapshot
         if: steps.gate.outputs.run == 'yes'
         shell: bash
@@ -131,6 +132,7 @@ jobs:
             python scripts/fix_three_day_watch.py
             python scripts/capture_session_analysis.py
             python scripts/build_chart_history.py
+          python scripts/build_resilience_history.py
             git add -A data
             mkdir -p public/data
             cp index.html public/index.html
