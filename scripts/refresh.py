@@ -132,9 +132,11 @@ def historical_context(bars):
         rsi14=100 if al==0 else 100-(100/(1+ag/al))
     max_i=max(range(len(closes)),key=lambda i:closes[i])
     max_date=datetime.datetime.fromtimestamp(bars[max_i]['t']/1000,datetime.timezone.utc).date().isoformat() if bars[max_i].get('t') else None
+    max_close=closes[max_i]
+    high_distance=(closes[-1]/max_close-1)*100 if max_close else None
     return {'streak':streak,'return1d':ret1,'return3d':ret3,'return5d':ret5,
             'ma20Distance':ma20dist,'ma50Distance':ma50dist,'rsi14':rsi14,
-            'windowHighDate':max_date,'windowHighClose':closes[max_i],'bars':len(closes)}
+            'windowHighDate':max_date,'windowHighClose':max_close,'distanceFromWindowHighPct':high_distance,'bars':len(closes)}
 
 
 
