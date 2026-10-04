@@ -155,7 +155,8 @@ def main():
             with open(OUT,encoding='utf-8') as f: existing=json.load(f)
         except Exception: existing={}
     old_records=existing.get('records') or {}
-    if old_records:
+    needs_full_backfill=not old_records or not ((existing.get('providerAvailability') or {}).get('US2Y') or {}).get('available')
+    if old_records and not needs_full_backfill:
         last=max(old_records)
         incremental=datetime.date.fromisoformat(last)-datetime.timedelta(days=7)
         fetch_start=max(target_start,incremental)
