@@ -171,8 +171,10 @@ function render(d){
 
   const watchFeed=d.openWatchEvents||{};
   const nowMs=Date.now(), watchWindowMs=72*60*60*1000;
+  const majorWatchReasons=new Set(['earnings','guidance','forecast','outlook','buyback','repurchase','acquisition','acquire','merger','partnership','contract','deal','investment','export','restriction','license','sanction','investigation','lawsuit','settlement','ceo','cfo','resign','capacity','pricing','production','supply']);
   const openWatchEvents=(watchFeed.events||[]).filter(e=>{
     if(!e?.autoDetected||activeIds.has(e.id)||Number(e.materialityScore||0)<15)return false;
+    if(!(e.materialityReasons||[]).some(x=>majorWatchReasons.has(String(x).toLowerCase())))return false;
     const discovered=Date.parse(e.discoveredAtUTC||'');
     return Number.isFinite(discovered)&&nowMs-discovered>=0&&nowMs-discovered<=watchWindowMs;
   }).sort((a,b)=>Number(b.materialityScore||0)-Number(a.materialityScore||0)||
