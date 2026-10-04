@@ -19,6 +19,29 @@ Important distinction:
 Running a workflow every 5 minutes does not make a daily source (for example Cboe put/call
 or S5FI) a 5-minute data source.
 
+LATENCY DEFINITIONS
+-------------------
+For every category below, "Latency" describes the practical age of information seen by
+NasDecode, not just the workflow frequency.
+
+- Source latency: delay between the real-world event/market change and the upstream
+  provider making that observation available to NasDecode.
+- Detection latency: additional wait until the next NasDecode collection run.
+- Publication latency: workflow calculation + Git commit/publication time after collection.
+- Browser latency: additional wait until an open browser checks the newly published file.
+
+Where an upstream service does not provide a contractual latency/SLA, this file says
+"provider-dependent / not guaranteed" rather than inventing a real-time figure. For live
+CNBC-derived observations, NasDecode preserves/uses the source observation date/session
+and freshness metadata; the 5-minute workflow cadence is NOT a claim that CNBC itself is
+real-time.
+
+During the U.S. cash session, a normal already-published market observation therefore has
+an operational path of:
+source availability -> <=~5 min backend detection target -> workflow/publication time ->
+<=~2 min normal browser polling.
+Scheduled macro releases use tighter browser polling as documented in Section M.
+
 
 ======================================================================
 A. LIVE / SESSION MARKET DATA
@@ -52,6 +75,16 @@ NasDecode workflow refresh:
 
 Upstream frequency:
 - Intraday quote feed; actual quote freshness is retained in the generated data.
+
+Latency:
+- Source latency: provider-dependent / not guaranteed by NasDecode. Treat the quote's own
+  timestamp/session as authoritative for freshness; do not equate CNBC delivery with
+  exchange-direct real-time data.
+- Backend detection latency during cash hours: target <=~5 minutes after a newer source
+  observation becomes available, plus workflow execution time.
+- Browser latency after publication: normally <=~2 minutes during cash hours; <=20 seconds
+  during an active scheduled macro-release UI window.
+- Worst case can be longer if GitHub Actions is queued/delayed or the source is stale.
 
 Used for:
 - Nasdaq market return/context
@@ -91,6 +124,14 @@ Upstream frequency:
 - Nominal 10Y/2Y: intraday.
 - Treasury real-yield context: daily official observation.
 
+Latency:
+- Nominal 10Y/2Y source latency: provider-dependent / not guaranteed; source timestamps
+  determine freshness.
+- Backend detection during cash hours: target <=~5 minutes after a newer quote is available.
+- Official 10Y TIPS real-yield context: daily/EOD-style latency; it is not an intraday
+  component even though the model may re-read it intraday.
+- Browser latency after publication: normally <=~2 minutes in cash hours.
+
 Used for:
 - 10Y Treasury Yield card
 - 2Y Treasury Yield card
@@ -116,6 +157,12 @@ NasDecode workflow refresh:
 Upstream frequency:
 - Intraday.
 
+Latency:
+- Source latency: provider-dependent / not guaranteed by NasDecode.
+- Backend detection during cash hours: target <=~5 minutes after a newer VXN/VIX
+  observation becomes available.
+- Browser latency after publication: normally <=~2 minutes in cash hours.
+
 Used for:
 - Nasdaq Volatility (VXN / VIX)
 - Internal Confirmation
@@ -140,6 +187,12 @@ NasDecode workflow refresh:
 Upstream frequency:
 - Intraday futures market.
 
+Latency:
+- Source latency: provider-dependent / not guaranteed by NasDecode.
+- Backend detection during the main cash-session cadence: target <=~5 minutes after a
+  newer CNBC futures observation is available.
+- Browser latency after publication: normally <=~2 minutes in cash hours.
+
 Used for:
 - Oil (WTI / Brent) card
 - Rates / Macro context
@@ -161,6 +214,12 @@ NasDecode workflow refresh:
 
 Upstream frequency:
 - Intraday while the ETFs are trading.
+
+Latency:
+- Source latency: provider-dependent / not guaranteed.
+- Backend detection while the main cash-session cadence is active: target <=~5 minutes.
+- This is a background confirmation input, so its effective model latency follows the
+  main dashboard publication cycle.
 
 UI:
 - Retained as model/history context; not necessarily shown as a standalone scorecard.
@@ -191,6 +250,16 @@ NasDecode workflow refresh:
 Upstream frequency:
 - Intraday.
 
+Latency:
+- Source latency: inherits CNBC constituent-quote latency and is provider-dependent.
+- Calculation latency: breadth is recomputed in the same refresh after constituent quotes
+  are collected; no separate scheduled delay is added.
+- Backend detection during cash hours: target <=~5 minutes.
+- If live constituent coverage is insufficient, the displayed breadth intentionally falls
+  back to the previous completed session; in that state its age is one trading session,
+  not ~5 minutes.
+- Browser latency after publication: normally <=~2 minutes.
+
 Used for:
 - Market Breadth card
 - Internal Confirmation
@@ -218,6 +287,14 @@ NasDecode workflow refresh:
 Upstream frequency:
 - End-of-day/daily. Rechecking it every 5 minutes does not create new intraday breadth data.
 
+Latency:
+- Source latency: daily/EOD; the new value is available only after the provider publishes
+  the completed daily observation.
+- NasDecode detection after provider publication: next eligible main refresh, normally
+  <=~5 minutes during the cash-session cadence or the next scheduled run outside it.
+- Effective information age during the trading day can therefore be most of one trading
+  session. This card must not be interpreted as live intraday S&P breadth.
+
 Used for:
 - S&P 500 50D Breadth / Oversold
 - Consolidation Risk
@@ -242,6 +319,15 @@ NasDecode workflow refresh:
 Upstream frequency:
 - Intraday during market hours.
 
+Latency:
+- Source latency: inherits CNBC SOX/Nasdaq/SOXX/SMH/constituent quote latency and is
+  provider-dependent.
+- Calculation latency: computed in the same refresh; no additional model delay.
+- Backend detection during cash hours: target <=~5 minutes.
+- Outside regular trading, the factor can intentionally represent the previous completed
+  session; its freshness label should make that one-session age explicit.
+- Browser latency after publication: normally <=~2 minutes.
+
 Used for:
 - Semiconductor Leadership
 - Internal Confirmation
@@ -264,6 +350,14 @@ Primary source:
 NasDecode workflow refresh:
 - Approximately every 5 minutes during cash hours; session-aware extended/previous-close
   handling is used outside cash hours.
+
+Latency:
+- Source latency: inherits CNBC equity-quote latency and is provider-dependent.
+- Calculation/backend detection during cash hours: target <=~5 minutes after newer quotes
+  become available.
+- Outside cash hours, previous-close/extended-session handling can make the effective
+  observation age longer and is labelled by session.
+- Browser latency after publication: normally <=~2 minutes.
 
 Used for:
 - Mega-cap Leadership
@@ -293,6 +387,13 @@ NasDecode workflow refresh:
 
 Upstream frequency:
 - Daily/session statistic, not a live 5-minute options-flow feed.
+
+Latency:
+- Source latency: daily/session-close publication by Cboe; not intraday.
+- NasDecode detection: next main refresh after Cboe publishes the daily statistic.
+- Effective information age intraday is generally the most recently completed session
+  until the next daily statistic is published.
+- Rechecking every 5 minutes does not reduce this source latency.
 
 Important:
 - This is options-volume put/call positioning.
@@ -334,6 +435,15 @@ Upstream frequency:
 - The current production probability calculation is settlement-based, so the underlying
   official futures settlement input is effectively daily even though NasDecode checks it
   more frequently.
+
+Latency:
+- Source latency: settlement-based/daily. The production probability path does not capture
+  continuous intraday Fed-funds-futures repricing.
+- NasDecode calculation latency: next main refresh after a new official settlement/EFFR
+  input is available.
+- Effective information age during a session can therefore be the prior settlement.
+- If the official path fails, stale prior probabilities may be retained and marked stale;
+  latency then increases until a verified refresh succeeds.
 
 Used for:
 - Fed Expectations card
@@ -399,10 +509,21 @@ NasDecode workflow refresh:
   approximately 08:25 through 08:45 ET.
 - 10:00 ET ISM releases are covered by the regular 5-minute cash-session heartbeat.
 
-Latency recorded:
-- Provider update lag: scheduled release -> calendar provider update.
-- NasDecode ingestion lag: scheduled release -> first NasDecode observation.
-- Official verification lag: scheduled release -> first successful primary-source verification.
+Latency:
+- This category records latency explicitly per release rather than relying on an estimate.
+- providerUpdateLagSeconds: scheduled release -> Trading Economics/provider update.
+- ingestionLagSeconds: scheduled release -> first NasDecode observation.
+- officialVerificationLagSeconds: scheduled release -> first successful primary-source
+  verification.
+- For major 08:30 ET releases, backend polling targets <=~5-minute detection inside the
+  08:25-08:45 window, subject to provider and GitHub Actions delay.
+- For 10:00 ET ISM releases, the normal ~5-minute cash-session heartbeat provides the
+  detection target.
+- Browser behavior is tighter around known releases: exact-time wake-up followed by
+  ~20-second checks for 10 minutes. This reduces browser delay but cannot make the UI
+  newer than the backend's latest published/verified observation.
+- Historical events marked pre_tracking_release intentionally have null latency fields;
+  no latency is fabricated for releases that predate instrumentation.
 
 Used for:
 - Macro Data Impulse.
@@ -437,6 +558,15 @@ NasDecode workflow refresh:
 - Requested as part of the main refresh/model calculation.
 - The underlying bars are daily, so repeated intraday retrieval primarily refreshes
   context/current availability rather than creating new completed daily bars.
+
+Latency:
+- Source latency: daily aggregate availability from Massive; exact provider availability
+  time is plan/provider-dependent and is not assumed to be intraday real-time.
+- NasDecode detection: next successful main refresh after the completed daily aggregate
+  becomes available.
+- Technical indicators based on completed daily bars therefore intentionally lag the live
+  tape by up to the current incomplete session.
+- HTTP 429 backoff/rate limiting can add additional collection delay.
 
 Used for:
 - QQQ / SOXX historical context.
@@ -474,6 +604,16 @@ Refresh:
 - Therefore the earnings file is normally refreshed successfully once per UTC day, with
   later monitor runs retaining the successful daily result unless a retry is required.
 
+Latency:
+- Source latency: depends on when Nasdaq/issuer IR publishes or changes an earnings date;
+  no guaranteed publication SLA is assumed.
+- Scheduled-date detection: normally within the first successful daily earnings-calendar
+  refresh after the source change; a confirmed IR fallback can be inserted sooner when
+  explicitly maintained.
+- Because the source is a forward calendar rather than a market tick, expected latency is
+  measured in refresh cycles/days, not seconds.
+- UI exposure follows the next main dashboard publication after the earnings file changes.
+
 Used for:
 - Major Catalysts.
 - Technology earnings event context.
@@ -495,6 +635,12 @@ Sources:
 
 Refresh:
 - Recalculated during the main refresh.
+
+Latency:
+- Earnings-anchor/date latency follows the verified earnings-date source.
+- Price/VWAP inputs are completed daily Massive aggregates, so AVWAP technical context is
+  daily-bar based rather than tick-real-time.
+- Recalculation itself occurs on the next main refresh after new daily data is available.
 
 
 ======================================================================
@@ -541,6 +687,18 @@ Catalyst Monitor refresh:
 - There is currently no scheduled weekend catalyst scan in catalyst-monitor.yml.
 - Manual workflow dispatch and relevant code/config pushes can also run it.
 
+Latency:
+- News-source latency: depends on original publisher indexing plus Tavily discovery; no
+  guaranteed seconds-level latency is assumed.
+- NasDecode detection latency in the main monitoring window: up to ~30 minutes from
+  Tavily availability under the scheduled cadence, plus workflow time.
+- Overnight weekday detection latency: up to ~2 hours from Tavily availability.
+- Weekend scheduled detection: none; an event may remain undiscovered until a manual run
+  or the next scheduled weekday monitor.
+- Dashboard/UI latency after catalyst detection: catalyst JSON is committed by the monitor,
+  then the event becomes part of the full dashboard presentation on the next main dashboard
+  publication unless separately published by another path.
+
 Used for:
 - Major Catalysts
 - Catalyst asymmetry / event-risk context
@@ -574,6 +732,16 @@ Scheduled main checkpoints:
 - Near-Close: around 15:30 ET.
 - Canonical close snapshot: any successful qualifying refresh around 16:05-16:45 ET,
   with an additional dedicated post-close trigger for reliability.
+
+Latency:
+- Quantitative analysis latency inherits the slowest/current input used by that snapshot
+  plus the main workflow calculation/publication time.
+- During cash hours, live-input detection target is generally <=~5 minutes; analysis is
+  generated in the same workflow.
+- Checkpoint analyses are intentionally scheduled products, so their nominal latency is
+  defined by the checkpoint window rather than continuous generation.
+- A preserved researched premarket brief has the age of its original research generation;
+  sync_premarket_brief.py only preserves/normalizes it and does not make it fresher.
 
 Stored in:
 - data/premarket.json
@@ -648,6 +816,18 @@ from the observations above:
 
 Refresh:
 - Recalculated whenever the main NasDecode workflow successfully runs.
+
+Latency:
+- Derived-score calculation adds essentially one workflow step after its inputs are
+  collected; there is no separate polling cycle.
+- Therefore each derived score inherits the latency of its underlying inputs plus workflow
+  execution/publication and browser polling.
+- Mixed-frequency inputs remain mixed-frequency: for example a live Nasdaq quote can be
+  minutes old while Cboe put/call or settlement-based Fed probabilities are still based on
+  the latest completed daily observation.
+- Market Response deliberately adds a further 15-minute continuous-confirmation requirement
+  before it can attenuate the Rates / Macro contribution. This is intentional signal
+  confirmation latency, not a data-feed delay.
 
 Market Response:
 - Uses live price/internals evidence against the Rates / Macro condition.
