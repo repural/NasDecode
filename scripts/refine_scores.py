@@ -55,6 +55,16 @@ def score_label(s):
 
 def signal100(sig): return 100 if sig=='positive' else (0 if sig=='negative' else 50)
 
+def piecewise(v,points):
+    """Piecewise-linear interpolation over sorted (x,y) points."""
+    if v is None: return None
+    if v<=points[0][0]: return float(points[0][1])
+    if v>=points[-1][0]: return float(points[-1][1])
+    for (x0,y0),(x1,y1) in zip(points,points[1:]):
+        if x0<=v<=x1:
+            return float(y0)+(float(y1)-float(y0))*(float(v)-float(x0))/(float(x1)-float(x0))
+    return float(points[-1][1])
+
 
 def main():
     d=load(DASH,{})
@@ -455,9 +465,18 @@ def main():
     # not a falling knife and not a chase after an already extreme leveraged run.
     sx_ma20=num(soxl_ctx.get('ma20Distance')); sx_r5=num(soxl_ctx.get('return5d'))
     sx_rsi=num(soxl_ctx.get('rsi14')); sx_highdist=num(soxl_ctx.get('distanceFrom20dHighPct'))
+
+    # SOXL Entry Quality v3. RSI is deliberately momentum-aware: a leveraged
+    # semiconductor ETF can remain healthy at RSI 55-65, while RSI >75 increasingly
+    # represents overheating. RSI remains 20% of Entry Quality; the separate
+    # RSI x 20DMA penalty below handles only genuinely extreme combinations.
     ma_entry=clamp(85-8*max(sx_ma20 or 0,0)-5*max(-(sx_ma20 or 0),0)) if sx_ma20 is not None else None
     r5_entry=clamp(78-5*max((sx_r5 or 0)-4,0)-4*max(-(sx_r5 or 0)-3,0)) if sx_r5 is not None else None
-    rsi_entry=clamp(88-3*abs((sx_rsi or 55)-55)) if sx_rsi is not None else None
+    rsi_entry=piecewise(sx_rsi,[
+        (0,20),(40,40),(45,55),(50,70),(55,85),(60,100),(65,95),
+        (70,80),(75,60),(80,35),(85,10),(90,0),(100,0)
+    ]) if sx_rsi is not None else None
+
     # Recent-high distance is regime-aware. When SOX/semiconductor leadership is
     # strong, a controlled SOXL pullback from a recent high is an improving entry
     # rather than a weakness signal. The reward peaks around a 12% pullback, then
@@ -467,16 +486,10 @@ def main():
                 ((sox_ret is not None and sox_ret>0) or (sox_rs is not None and sox_rs>0)))
     if sx_highdist is not None and sox_strong:
         pullback=max(0,-sx_highdist)
-        high_curve=[(0,25),(2,40),(4,55),(6,70),(8,82),(10,90),(12,95),
-                    (15,75),(20,35),(25,10)]
-        if pullback>=high_curve[-1][0]:
-            high_entry=high_curve[-1][1]
-        else:
-            high_entry=high_curve[0][1]
-            for (x0,y0),(x1,y1) in zip(high_curve,high_curve[1:]):
-                if x0<=pullback<=x1:
-                    high_entry=y0+(y1-y0)*(pullback-x0)/(x1-x0)
-                    break
+        high_entry=piecewise(pullback,[
+            (0,25),(2,40),(4,55),(6,70),(8,82),(10,90),(12,95),
+            (15,75),(20,35),(25,10)
+        ])
         high_entry=clamp(high_entry)
     else:
         # Without confirmed SOX strength, keep the conservative mean-reversion
@@ -523,10 +536,42 @@ def main():
         ('Rates / macro',soxl_macro,0.10),('Catalyst asymmetry',soxl_catalyst,0.05)
     ]
     sx_available=[x for x in sx_components if x[1] is not None]
-    soxl_score=round(sum(v*w for _,v,w in sx_available)/sum(w for _,v,w in sx_available)) if sx_available else 50
+    soxl_raw=round(sum(v*w for _,v,w in sx_available)/sum(w for _,v,w in sx_available)) if sx_available else 50
+
+    # Continuous extension treatment replaces v2's 8/12/18% hard cliffs.
+    # The penalty rises smoothly with distance above the 20DMA. Strong confirmed
+    # semiconductor regimes can reduce (never reverse) this extension penalty.
+    base_extension_penalty=piecewise(sx_ma20,[
+        (-100,0),(8,0),(12,4),(18,12),(24,24),(30,35),(100,35)
+    ]) if sx_ma20 is not None else 0
+    if semi_trend is not None and semi_trend>=85 and market_confirmation is not None and market_confirmation>=60:
+        extension_regime_multiplier=0.65
+        extension_regime='Strong semiconductor trend + market confirmation'
+    elif semi_trend is not None and semi_trend>=75:
+        extension_regime_multiplier=0.80
+        extension_regime='Strong semiconductor trend'
+    else:
+        extension_regime_multiplier=1.00
+        extension_regime='No extension relief'
+    extension_penalty=base_extension_penalty*extension_regime_multiplier
+
+    # RSI x 20DMA overheating penalty. This is intentionally NOT granted the full
+    # semiconductor-regime relief: strong SOX can justify trend extension, but it
+    # does not make an RSI in the mid/high-80s harmless for a daily 3x ETF.
+    rsi_heat_penalty=piecewise(sx_rsi,[
+        (0,0),(75,0),(80,10),(85,20),(90,30),(100,30)
+    ]) if sx_rsi is not None else 0
+    extension_amplifier=piecewise(sx_ma20,[
+        (-100,0.25),(8,0.25),(15,0.50),(20,0.80),(25,1.00),(100,1.00)
+    ]) if sx_ma20 is not None else 0.25
+    extreme_extension_penalty=rsi_heat_penalty*extension_amplifier
+
+    soxl_pre_gate=max(0,round(soxl_raw-extension_penalty-extreme_extension_penalty))
+    soxl_score=soxl_pre_gate
     gates=[]
 
-    # Hard gates stop cheap/oversold readings from becoming false buy signals.
+    # Keep genuine regime/event vetoes. Price extension itself is no longer a hard
+    # gate; it is represented by the continuous penalties above.
     if semi_trend is not None and semi_trend<40:
         soxl_score=min(soxl_score,45); gates.append('Weak semiconductor trend caps score at 45')
     rs_vals=[x for x in (sox_rs,soxx_rs,smh_rs) if x is not None]
@@ -534,15 +579,6 @@ def main():
         soxl_score=min(soxl_score,50); gates.append('Broad semiconductor underperformance caps score at 50')
     if risk>=75:
         soxl_score=min(soxl_score,45); gates.append('High consolidation risk caps score at 45')
-    if sx_ma20 is not None:
-        if sx_ma20>18:
-            soxl_score=min(soxl_score,30); gates.append('SOXL >18% above 20DMA caps chase entry at 30')
-        elif sx_ma20>12:
-            soxl_score=min(soxl_score,40); gates.append('SOXL >12% above 20DMA caps chase entry at 40')
-        elif sx_ma20>8:
-            soxl_score=min(soxl_score,55); gates.append('SOXL >8% above 20DMA caps chase entry at 55')
-    if sx_ma20 is not None and sx_rsi is not None and sx_ma20>15 and sx_rsi>80:
-        soxl_score=min(soxl_score,25); gates.append('Extreme extension (>15% above 20DMA + RSI>80) caps score at 25')
     if vxn_ch is not None and y10_bp is not None and vxn_ch>8 and y10_bp>5:
         soxl_score=min(soxl_score,45); gates.append('Volatility + yield shock caps score at 45')
     if pending_high:
@@ -558,7 +594,8 @@ def main():
     sx_sorted=sorted(((n,round(v)) for n,v,_ in sx_available),key=lambda x:x[1],reverse=True)
     sx_weak=sorted(((n,round(v)) for n,v,_ in sx_available),key=lambda x:x[1])
     d['soxlBuyScore']={
-        'version':2,'score':soxl_score,'label':sx_label,'signal':sx_sig,'horizon':'1–5 sessions',
+        'version':3,'score':soxl_score,'rawScore':soxl_raw,'preGateScore':soxl_pre_gate,
+        'label':sx_label,'signal':sx_sig,'horizon':'1–5 sessions',
         'instrument':'SOXL','last':soxl_last,'changePct':soxl_change,
         'components':{n:round(v) if v is not None else None for n,v,_ in sx_components},
         'gates':gates,'intradayGivebackPp':round(soxl_giveback,2) if soxl_giveback is not None else None,
@@ -567,7 +604,17 @@ def main():
             'factorScores':{n:round(v) if v is not None else None for n,v,_ in entry_parts},
             'factorWeights':{n:int(w*100) for n,_,w in entry_parts},
             'availableWeightPct':round(100*sum(w for _,v,w in entry_available)),
-            'method':'Weighted available factors; intraday giveback is excluded when there is no current-session SOXL observation.'
+            'method':'Weighted available factors; RSI uses a momentum-aware nonlinear curve. Intraday giveback is excluded when there is no current-session SOXL observation.'
+        },
+        'extensionAdjustment':{
+            'base20dMaPenalty':round(base_extension_penalty,1),
+            'regimeMultiplier':extension_regime_multiplier,
+            'regime':extension_regime,
+            'applied20dMaPenalty':round(extension_penalty,1),
+            'rsiHeatPenalty':round(rsi_heat_penalty,1),
+            'rsiExtensionAmplifier':round(extension_amplifier,2),
+            'extremeRsi20dMaPenalty':round(extreme_extension_penalty,1),
+            'totalPenalty':round(extension_penalty+extreme_extension_penalty,1)
         },
         'technicalContext':{
             'ma20DistancePct':round(sx_ma20,2) if sx_ma20 is not None else None,
@@ -578,10 +625,12 @@ def main():
         'strongestDrivers':[f'{n} {v}' for n,v in sx_sorted[:2]],
         'weakestDrivers':[f'{n} {v}' for n,v in sx_weak[:2]],
         'explanation':f"SOXL tactical entry quality is {sx_label.lower()} ({soxl_score}/100) for a 1–5 session horizon. "
+                      +f"Raw score {soxl_raw}; extension/overheating penalty {round(extension_penalty+extreme_extension_penalty,1)}. "
                       +('Active gates: '+ '; '.join(gates)+'. ' if gates else '')
                       +'Strongest inputs: '+', '.join(f'{n} {v}' for n,v in sx_sorted[:2])+'. Weakest: '+', '.join(f'{n} {v}' for n,v in sx_weak[:2])+'.',
         'note':'Experimental tactical score for a daily 3x leveraged ETF. It measures entry quality, not expected return or position size.'
     }
+
 
     DASH.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 
