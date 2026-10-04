@@ -316,7 +316,7 @@ def main():
     ma_entry=clamp(85-8*max(sx_ma20 or 0,0)-5*max(-(sx_ma20 or 0),0)) if sx_ma20 is not None else None
     r5_entry=clamp(78-5*max((sx_r5 or 0)-4,0)-4*max(-(sx_r5 or 0)-3,0)) if sx_r5 is not None else None
     rsi_entry=clamp(88-3*abs((sx_rsi or 55)-55)) if sx_rsi is not None else None
-    high_entry=clamp(82-5*abs((sx_highdist or -4)+4)) if sx_highdist is not None else None
+    high_entry=clamp(82-5*abs(sx_highdist+4)) if sx_highdist is not None else None
     intraday_entry=clamp(100-25*soxl_giveback) if soxl_giveback is not None else None
     entry_parts=[
         ('20DMA distance',ma_entry,0.30),('5D return',r5_entry,0.20),('RSI14',rsi_entry,0.20),
