@@ -68,10 +68,14 @@ def official_snapshot():
     # BLS Employment Situation: payrolls, unemployment and average hourly earnings.
     try:
         url="https://www.bls.gov/news.release/empsit.nr0.htm"; text,_=page(url); day=page_release_date(text)
-        payroll=num(r"nonfarm payroll employment\s*\(\+?([0-9,.]+)\)",text)
+        payroll_jobs=num(r"nonfarm payroll employment\s*\(\+?([0-9,.]+)\)",text)
         unemployment=num(r"unemployment rate\s*\(([0-9.]+) percent\)",text)
         wages=num(r"average hourly earnings for all employees.*?(?:rose|increased|edged up).*?or\s+([0-9.]+) percent",text)
-        if payroll is not None: out["nfp"]=(day,payroll,"K",url)
+        # BLS prose reports payroll changes as an absolute number of jobs (for example
+        # "29,000"). NasDecode's NFP consensus/scale are stored in thousands ("K"), so
+        # normalize the official Actual to K before comparison. Keeping 29,000 with unit
+        # "K" would incorrectly mean 29 million jobs and can reverse the macro signal.
+        if payroll_jobs is not None: out["nfp"]=(day,payroll_jobs/1000.0,"K",url)
         if unemployment is not None: out["unemployment"]=(day,unemployment,"%",url)
         if wages is not None: out["ahe-mom"]=(day,wages,"%",url)
     except Exception as e: print("BLS employment verification unavailable:",repr(e))
