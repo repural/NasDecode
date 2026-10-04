@@ -349,13 +349,13 @@ Strong internals can support continuation while price is too stretched to chase.
 
 TOP-LEVEL WEIGHTS
 -----------------
-- Directional edge:        25%
-- Entry quality:           25%
-- Recovery confirmation:   25%
+- Directional edge:        20%
+- Entry quality:           35%
+- Recovery confirmation:   20%
 - Macro timing:            15%
 - Catalyst asymmetry:      10%
 
-A. DIRECTIONAL EDGE — 25%
+A. DIRECTIONAL EDGE — 20%
 -------------------------
   clip(Nasdaq Score x 1.25 + 50, 0, 100)
 
@@ -368,7 +368,7 @@ Examples:
 This measures whether the broader Nasdaq setup is directionally supportive. It does not
 determine whether the current price is attractive.
 
-B. ENTRY QUALITY v4 — 25%
+B. ENTRY QUALITY v4 — 35%
 -------------------------
 Entry Quality is now explicitly price-location aware.
 
@@ -432,7 +432,7 @@ VXN optionality bonus:
 This preserves the benefit of tradable volatility/dislocation without allowing volatility to
 turn an already extreme chase into a good entry.
 
-C. RECOVERY CONFIRMATION — 25%
+C. RECOVERY CONFIRMATION — 20%
 ------------------------------
 Equal-weight average of:
 - Internal Confirmation score
@@ -468,9 +468,9 @@ Final catalyst score is clipped 0..100.
 RAW SCORE
 ---------
 Raw Opportunity Score =
-  25% Directional Edge
-+ 25% Entry Quality
-+ 25% Recovery Confirmation
+  20% Directional Edge
++ 35% Entry Quality
++ 20% Recovery Confirmation
 + 15% Macro Timing
 + 10% Catalyst Asymmetry
 
