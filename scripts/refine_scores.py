@@ -634,6 +634,35 @@ def main():
     elif soxl_score>=25: sx_label='Poor Entry'; sx_sig='negative'
     else: sx_label='Avoid Long'; sx_sig='negative'
 
+    # Snapshot-friendly indicator interpretations. Keep the raw value, plain-English
+    # meaning and the exact subscore together so later validation can test not only
+    # the overall SOXL score but whether RSI/ATR interpretation itself was useful.
+    if sx_rsi is None:
+        sx_rsi_meaning='Unavailable'
+    elif sx_rsi>=80:
+        sx_rsi_meaning='Overheated'
+    elif sx_rsi>=70:
+        sx_rsi_meaning='Strong / Extended'
+    elif sx_rsi>=55:
+        sx_rsi_meaning='Healthy Bullish Momentum'
+    elif sx_rsi>=45:
+        sx_rsi_meaning='Neutral'
+    elif sx_rsi>=35:
+        sx_rsi_meaning='Weak Momentum'
+    else:
+        sx_rsi_meaning='Oversold / Weak'
+
+    if sx_atr_pct is None:
+        sx_atr_meaning='Unavailable'
+    elif (sx_atr_ratio is not None and sx_atr_ratio>=1.20) or (sx_atr_percentile is not None and sx_atr_percentile>=75):
+        sx_atr_meaning='Expanding / High Leverage Risk'
+    elif (sx_atr_ratio is not None and sx_atr_ratio<=0.95) and (sx_atr_percentile is not None and sx_atr_percentile<=35):
+        sx_atr_meaning='Contracting / Favorable'
+    elif (sx_atr_ratio is not None and sx_atr_ratio>1.05) or (sx_atr_percentile is not None and sx_atr_percentile>=55):
+        sx_atr_meaning='Elevated'
+    else:
+        sx_atr_meaning='Normal'
+
     sx_sorted=sorted(((n,round(v)) for n,v,_ in sx_available),key=lambda x:x[1],reverse=True)
     sx_weak=sorted(((n,round(v)) for n,v,_ in sx_available),key=lambda x:x[1])
     d['soxlBuyScore']={
@@ -662,6 +691,22 @@ def main():
             }
         },
         'gates':gates,'intradayGivebackPp':round(soxl_giveback,2) if soxl_giveback is not None else None,
+        'indicatorSnapshot':{
+            'RSI14':{
+                'value':round(sx_rsi,1) if sx_rsi is not None else None,
+                'meaning':sx_rsi_meaning,
+                'entryScore':round(rsi_entry) if rsi_entry is not None else None,
+                'role':'SOXL entry-quality momentum / overheating input'
+            },
+            'ATR14':{
+                'valuePct':round(sx_atr_pct,2) if sx_atr_pct is not None else None,
+                'meaning':sx_atr_meaning,
+                'regimeSafetyScore':round(sx_atr_regime_safety) if sx_atr_regime_safety is not None else None,
+                'percentile60':round(sx_atr_percentile,1) if sx_atr_percentile is not None else None,
+                'atr14Vs50':round(sx_atr_ratio,2) if sx_atr_ratio is not None else None,
+                'role':'SOXL realized-volatility / leverage-risk input'
+            }
+        },
         'volatilityLeverageRisk':{
             'score':round(leverage_risk) if leverage_risk is not None else None,
             'components':{n:round(v) if v is not None else None for n,v,_ in leverage_parts},
