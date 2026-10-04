@@ -20867,7 +20867,7 @@
     },
     "2026-10-04": {
       "schemaVersion": 4,
-      "timestampET": "2026-10-04T07:52:03.930733-04:00",
+      "timestampET": "2026-10-04T08:06:49.305072-04:00",
       "market": {
         ".IXIC": {
           "last": 27190.864,
@@ -22273,7 +22273,7 @@
             "status": "inactive",
             "mode": null,
             "summary": "No persistent divergence between the macro impulse and live market response.",
-            "observedAt": "2026-10-04T07:54:08.980902-04:00",
+            "observedAt": "2026-10-04T08:08:38.818103-04:00",
             "candidateMode": null,
             "candidateSince": null,
             "persistenceMinutes": 0.0,
@@ -22290,8 +22290,10 @@
             "note": "Market Response only attenuates an existing Rates / Macro contribution; it never reverses its sign."
           },
           "soxlBuyScore": {
-            "version": 2,
-            "score": 25,
+            "version": 3,
+            "score": 35,
+            "rawScore": 68,
+            "preGateScore": 35,
             "label": "Poor Entry",
             "signal": "negative",
             "horizon": "1–5 sessions",
@@ -22300,23 +22302,20 @@
             "changePct": 6.52,
             "components": {
               "Semiconductor trend": 98,
-              "SOXL entry quality": 19,
+              "SOXL entry quality": 22,
               "Market confirmation": 71,
               "Volatility / leverage risk": 79,
               "Rates / macro": 61,
               "Catalyst asymmetry": 100
             },
-            "gates": [
-              "SOXL >18% above 20DMA caps chase entry at 30",
-              "Extreme extension (>15% above 20DMA + RSI>80) caps score at 25"
-            ],
+            "gates": [],
             "intradayGivebackPp": null,
             "entryQuality": {
-              "score": 19,
+              "score": 22,
               "factorScores": {
                 "20DMA distance": 0,
                 "5D return": 58,
-                "RSI14": 1,
+                "RSI14": 15,
                 "20D-high distance": 25,
                 "Intraday giveback": null
               },
@@ -22328,7 +22327,17 @@
                 "Intraday giveback": 10
               },
               "availableWeightPct": 90,
-              "method": "Weighted available factors; intraday giveback is excluded when there is no current-session SOXL observation."
+              "method": "Weighted available factors; RSI uses a momentum-aware nonlinear curve. Intraday giveback is excluded when there is no current-session SOXL observation."
+            },
+            "extensionAdjustment": {
+              "base20dMaPenalty": 23.8,
+              "regimeMultiplier": 0.65,
+              "regime": "Strong semiconductor trend + market confirmation",
+              "applied20dMaPenalty": 15.5,
+              "rsiHeatPenalty": 17.8,
+              "rsiExtensionAmplifier": 0.96,
+              "extremeRsi20dMaPenalty": 17.0,
+              "totalPenalty": 32.5
             },
             "technicalContext": {
               "ma20DistancePct": 23.91,
@@ -22341,10 +22350,10 @@
               "Semiconductor trend 98"
             ],
             "weakestDrivers": [
-              "SOXL entry quality 19",
+              "SOXL entry quality 22",
               "Rates / macro 61"
             ],
-            "explanation": "SOXL tactical entry quality is poor entry (25/100) for a 1–5 session horizon. Active gates: SOXL >18% above 20DMA caps chase entry at 30; Extreme extension (>15% above 20DMA + RSI>80) caps score at 25. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 98. Weakest: SOXL entry quality 19, Rates / macro 61.",
+            "explanation": "SOXL tactical entry quality is poor entry (35/100) for a 1–5 session horizon. Raw score 68; extension/overheating penalty 32.5. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 98. Weakest: SOXL entry quality 22, Rates / macro 61.",
             "note": "Experimental tactical score for a daily 3x leveraged ETF. It measures entry quality, not expected return or position size."
           }
         },
@@ -22722,7 +22731,7 @@
         "status": "inactive",
         "mode": null,
         "summary": "No persistent divergence between the macro impulse and live market response.",
-        "observedAt": "2026-10-04T07:54:08.980902-04:00",
+        "observedAt": "2026-10-04T08:08:38.818103-04:00",
         "candidateMode": null,
         "candidateSince": null,
         "persistenceMinutes": 0.0,
@@ -22739,8 +22748,10 @@
         "note": "Market Response only attenuates an existing Rates / Macro contribution; it never reverses its sign."
       },
       "soxlBuyScore": {
-        "version": 2,
-        "score": 25,
+        "version": 3,
+        "score": 35,
+        "rawScore": 68,
+        "preGateScore": 35,
         "label": "Poor Entry",
         "signal": "negative",
         "horizon": "1–5 sessions",
@@ -22749,23 +22760,20 @@
         "changePct": 6.52,
         "components": {
           "Semiconductor trend": 98,
-          "SOXL entry quality": 19,
+          "SOXL entry quality": 22,
           "Market confirmation": 71,
           "Volatility / leverage risk": 79,
           "Rates / macro": 61,
           "Catalyst asymmetry": 100
         },
-        "gates": [
-          "SOXL >18% above 20DMA caps chase entry at 30",
-          "Extreme extension (>15% above 20DMA + RSI>80) caps score at 25"
-        ],
+        "gates": [],
         "intradayGivebackPp": null,
         "entryQuality": {
-          "score": 19,
+          "score": 22,
           "factorScores": {
             "20DMA distance": 0,
             "5D return": 58,
-            "RSI14": 1,
+            "RSI14": 15,
             "20D-high distance": 25,
             "Intraday giveback": null
           },
@@ -22777,7 +22785,17 @@
             "Intraday giveback": 10
           },
           "availableWeightPct": 90,
-          "method": "Weighted available factors; intraday giveback is excluded when there is no current-session SOXL observation."
+          "method": "Weighted available factors; RSI uses a momentum-aware nonlinear curve. Intraday giveback is excluded when there is no current-session SOXL observation."
+        },
+        "extensionAdjustment": {
+          "base20dMaPenalty": 23.8,
+          "regimeMultiplier": 0.65,
+          "regime": "Strong semiconductor trend + market confirmation",
+          "applied20dMaPenalty": 15.5,
+          "rsiHeatPenalty": 17.8,
+          "rsiExtensionAmplifier": 0.96,
+          "extremeRsi20dMaPenalty": 17.0,
+          "totalPenalty": 32.5
         },
         "technicalContext": {
           "ma20DistancePct": 23.91,
@@ -22790,10 +22808,10 @@
           "Semiconductor trend 98"
         ],
         "weakestDrivers": [
-          "SOXL entry quality 19",
+          "SOXL entry quality 22",
           "Rates / macro 61"
         ],
-        "explanation": "SOXL tactical entry quality is poor entry (25/100) for a 1–5 session horizon. Active gates: SOXL >18% above 20DMA caps chase entry at 30; Extreme extension (>15% above 20DMA + RSI>80) caps score at 25. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 98. Weakest: SOXL entry quality 19, Rates / macro 61.",
+        "explanation": "SOXL tactical entry quality is poor entry (35/100) for a 1–5 session horizon. Raw score 68; extension/overheating penalty 32.5. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 98. Weakest: SOXL entry quality 22, Rates / macro 61.",
         "note": "Experimental tactical score for a daily 3x leveraged ETF. It measures entry quality, not expected return or position size."
       }
     }
