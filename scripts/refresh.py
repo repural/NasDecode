@@ -29,7 +29,7 @@ MEGACAPS=['AAPL','MSFT','AMZN','GOOGL','META','NVDA','TSLA']
 # Liquid/large semiconductor universe used for leadership breadth confirmation.
 SEMI_BREADTH=['AMD','ADI','AMAT','ARM','ASML','ALAB','AVGO','COHR','CRDO','ENTG','GFS','INTC','KLAC','LRCX','MTSI','MRVL','MCHP','MU','MPWR','NVMI','NVDA','NXPI','ON','QRVO','QCOM','RMBS','SWKS','TSM','TER','TXN']
 BREADTH=['NVDA','AAPL','MU','MSFT','AMD','AMZN','TSLA','GOOGL','INTC','GOOG','AVGO','META','AMAT','WMT','LRCX','CSCO','COST','KLAC','SNDK','NFLX','PANW','TXN','PLTR','MRVL','LIN','WDC','STX','AMGN','QCOM','CRWD','ADI','PEP','ASML','TMUS','APP','GILD','ARM','ISRG','SHOP','BKNG','VRTX','SBUX','FTNT','CDNS','MAR','MNST','CEG','ADP','CSX','CMCSA','DDOG','MELI','SNPS','ADBE','ALAB','ORLY','DASH','TER','AEP','MDLZ','INTU','NXPI','HON','HONA','ROST','CTAS','MPWR','WBD','LITE','REGN','RBLX','NBIS','ABNB','RKLB','FAST','BKR','PDD','XEL','FANG','MCHP','FER','EXC','TTWO','AXON','ODFL','CCEP','CRWV','KDP','IDXX','ADSK','ALNY','PYPL','PAYX','ROP','TRI','GEHC','MSTR','KHC','CPRT','DXCM','WDAY','SPCX']
-SYMBOLS=list(dict.fromkeys(['US10Y','US2Y','ZQU6','ZQV6','ZQX6','ZQZ6','ZQF7','ZQG7','ZQH7','.IXIC','QQQ','NVDA','AMD','AVGO','TSM','MU','SMH','SOXX','.VIX','.VXN','@CL.1','@LCO.1','HYG','LQD','S5FI','.SOX','SOX']+MEGACAPS+BREADTH))
+SYMBOLS=list(dict.fromkeys(['US10Y','US2Y','ZQU6','ZQV6','ZQX6','ZQZ6','ZQF7','ZQG7','ZQH7','.IXIC','QQQ','SOXL','NVDA','AMD','AVGO','TSM','MU','SMH','SOXX','.VIX','.VXN','@CL.1','@LCO.1','HYG','LQD','S5FI','.SOX','SOX']+MEGACAPS+BREADTH))
 
 def cnbc_quotes(symbols):
     params={'symbols':'|'.join(symbols),'requestMethod':'itv','noform':'1','partnerId':'2','fund':'1','exthrs':'1','output':'json','events':'1'}
@@ -1551,9 +1551,18 @@ def main():
     # Start with QQQ and the semiconductor ETF SOXX because both are available as U.S.
     # securities on the free stock-history endpoint and directly support Nasdaq Setup.
     massive_context={}
-    for ticker in ('QQQ','SOXX'):
-        ctx=historical_context(massive_daily_bars(ticker,180))
+    for ticker in ('QQQ','SOXX','SOXL'):
+        bars=massive_daily_bars(ticker,730 if ticker=='SOXL' else 180)
+        ctx=historical_context(bars)
         if ctx: massive_context[ticker]=ctx
+        if ticker=='SOXL' and bars:
+            soxl_history_path=os.path.join(HISTORY_DIR,'soxl-daily.json')
+            soxl_daily={'schemaVersion':1,'ticker':'SOXL','source':'Massive adjusted daily aggregates','updatedET':now.isoformat(),'bars':[]}
+            for b in bars:
+                try: day=datetime.datetime.fromtimestamp(float(b.get('t'))/1000,datetime.timezone.utc).date().isoformat()
+                except (TypeError,ValueError): continue
+                soxl_daily['bars'].append({'date':day,'open':num(b.get('o')),'high':num(b.get('h')),'low':num(b.get('l')),'close':num(b.get('c')),'volume':num(b.get('v')),'vwap':num(b.get('vw'))})
+            with open(soxl_history_path,'w',encoding='utf-8') as _sf: json.dump(soxl_daily,_sf,ensure_ascii=False,indent=2)
     d['historicalContext']=massive_context
 
     explain_current_rows(rows)
@@ -2115,7 +2124,7 @@ def main():
                 'timestamp':stamp,'observationDate':obs_date,'dataState':state,
                 'realTime':real_time,'marketStatus':market_status,'quoteSource':source,'provider':provider}
     os.makedirs(HISTORY_DIR,exist_ok=True)
-    market_symbols=['.IXIC','QQQ','.SOX','SOX','SMH','SOXX','NVDA','AMD','AVGO','TSM','MU','AAPL','MSFT','AMZN','GOOGL','META','TSLA',
+    market_symbols=['.IXIC','QQQ','.SOX','SOX','SMH','SOXX','SOXL','NVDA','AMD','AVGO','TSM','MU','AAPL','MSFT','AMZN','GOOGL','META','TSLA',
                     '.VXN','.VIX','US10Y','US2Y','@CL.1','@LCO.1','HYG','LQD']
     market={sym:quote_obs(sym) for sym in market_symbols if sym in q}
 
@@ -2142,6 +2151,7 @@ def main():
         'SOX':session_level('SOX',['.SOX','SOX']),
         'SMH':session_level('SMH',['SMH']),
         'SOXX':session_level('SOXX',['SOXX']),
+        'SOXL':session_level('SOXL',['SOXL']),
         'NVDA':session_level('NVDA',['NVDA']),
         'AMD':session_level('AMD',['AMD']),
         'AVGO':session_level('AVGO',['AVGO']),
@@ -2886,7 +2896,8 @@ def main():
             'Nasdaq':{'1D':None,'3D':None,'5D':None},
             'SOX':{'1D':None,'3D':None,'5D':None},
             'SOXX':{'1D':None,'3D':None,'5D':None},
-            'SMH':{'1D':None,'3D':None,'5D':None}
+            'SMH':{'1D':None,'3D':None,'5D':None},
+            'SOXL':{'1D':None,'3D':None,'5D':None}
         }
     }
 
@@ -2927,7 +2938,7 @@ def main():
             'consolidationRisk':d.get('consolidationRisk'),
             'opportunityScore':d.get('opportunityScore'),
             'confirmationLayer':confirmation_layer,
-            'sessionLevels':{k:session_levels.get(k) for k in ('Nasdaq','SOX','SOXX','SMH') if session_levels.get(k) is not None}
+            'sessionLevels':{k:session_levels.get(k) for k in ('Nasdaq','SOX','SOXX','SMH','SOXL') if session_levels.get(k) is not None}
         }
     elif _existing_close:
         # Later after-hours/news refreshes update the live daily record but must not
@@ -2941,7 +2952,7 @@ def main():
         day for day in sorted(daily['records'])
         if num(daily['records'][day].get('sessionLevels',{}).get('Nasdaq',{}).get('close')) is not None
     ]
-    outcome_symbols=('Nasdaq','SOX','SOXX','SMH')
+    outcome_symbols=('Nasdaq','SOX','SOXX','SMH','SOXL')
     horizons=(1,3,5)
     for base_i,base_day in enumerate(completed_dates):
         rec=daily['records'][base_day]
