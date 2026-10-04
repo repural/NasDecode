@@ -316,7 +316,30 @@ def main():
     ma_entry=clamp(85-8*max(sx_ma20 or 0,0)-5*max(-(sx_ma20 or 0),0)) if sx_ma20 is not None else None
     r5_entry=clamp(78-5*max((sx_r5 or 0)-4,0)-4*max(-(sx_r5 or 0)-3,0)) if sx_r5 is not None else None
     rsi_entry=clamp(88-3*abs((sx_rsi or 55)-55)) if sx_rsi is not None else None
-    high_entry=clamp(82-5*abs(sx_highdist+4)) if sx_highdist is not None else None
+    # Recent-high distance is regime-aware. When SOX/semiconductor leadership is
+    # strong, a controlled SOXL pullback from a recent high is an improving entry
+    # rather than a weakness signal. The reward peaks around a 12% pullback, then
+    # falls as a deeper drawdown increasingly resembles breakdown/divergence.
+    sox_ret=num((market.get('.SOX') or {}).get('changePct'))
+    sox_strong=(semi_trend is not None and semi_trend>=70 and
+                ((sox_ret is not None and sox_ret>0) or (sox_rs is not None and sox_rs>0)))
+    if sx_highdist is not None and sox_strong:
+        pullback=max(0,-sx_highdist)
+        high_curve=[(0,25),(2,40),(4,55),(6,70),(8,82),(10,90),(12,95),
+                    (15,75),(20,35),(25,10)]
+        if pullback>=high_curve[-1][0]:
+            high_entry=high_curve[-1][1]
+        else:
+            high_entry=high_curve[0][1]
+            for (x0,y0),(x1,y1) in zip(high_curve,high_curve[1:]):
+                if x0<=pullback<=x1:
+                    high_entry=y0+(y1-y0)*(pullback-x0)/(x1-x0)
+                    break
+        high_entry=clamp(high_entry)
+    else:
+        # Without confirmed SOX strength, keep the conservative mean-reversion
+        # profile: distance from the high is not automatically treated as a bargain.
+        high_entry=clamp(82-5*abs(sx_highdist+4)) if sx_highdist is not None else None
     intraday_entry=clamp(100-25*soxl_giveback) if soxl_giveback is not None else None
     entry_parts=[
         ('20DMA distance',ma_entry,0.30),('5D return',r5_entry,0.20),('RSI14',rsi_entry,0.20),
