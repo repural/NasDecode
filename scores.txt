@@ -329,7 +329,7 @@ price location, and strong semiconductor leadership does not erase SOXL/QQQ exte
 
 ======================================================================
 
-3. OPPORTUNITY SCORE v4
+3. OPPORTUNITY SCORE v5
 ======================================================================
 
 RANGE / PURPOSE
@@ -337,112 +337,131 @@ RANGE / PURPOSE
 0 to 100. Measures the quality of deploying NEW general Nasdaq long exposure now.
 It is an entry-quality score, not a forecast of the next session return.
 
-Opportunity Score answers:
-  "Given direction, participation, macro conditions, catalysts and CURRENT PRICE LOCATION,
-   is this a good time to add long Nasdaq exposure?"
-
-It deliberately distinguishes:
-- A healthy/strong market from
-- A good price at which to initiate a new position.
-
-Strong internals can support continuation while price is too stretched to chase.
-
-TOP-LEVEL WEIGHTS
------------------
-- Directional edge:        20%
-- Entry quality:           35%
-- Recovery confirmation:   20%
-- Macro timing:            15%
-- Catalyst asymmetry:      10%
+TOP-LEVEL WEIGHTS — UNCHANGED
+-----------------------------
+- Entry Quality:            35%
+- Directional Edge:         20%
+- Recovery Confirmation:    20%
+- Macro Timing:             15%
+- Catalyst Asymmetry:       10%
 
 A. DIRECTIONAL EDGE — 20%
 -------------------------
-  clip(Nasdaq Score x 1.25 + 50, 0, 100)
+clip(Nasdaq Score x 1.25 + 50, 0, 100)
 
 Examples:
-  Nasdaq -40 -> 0
-  Nasdaq   0 -> 50
-  Nasdaq +20 -> 75
-  Nasdaq +40 -> 100
+Nasdaq -40 -> 0
+Nasdaq   0 -> 50
+Nasdaq +20 -> 75
+Nasdaq +40 -> 100
 
-This measures whether the broader Nasdaq setup is directionally supportive. It does not
-determine whether the current price is attractive.
-
-B. ENTRY QUALITY v4 — 35%
+B. ENTRY QUALITY v5 — 35%
 -------------------------
-Entry Quality is now explicitly price-location aware.
+Entry Quality asks whether current Nasdaq PRICE LOCATION and realized-volatility regime are
+attractive enough to initiate exposure. Subweights:
 
-Subweights:
-- QQQ vs 20DMA:                  30%
-- QQQ RSI14:                     20%
-- QQQ 5D return:                 15%
-- QQQ high x extension:          20%
-- SOXX structural extension:     15%
+- QQQ vs 20DMA:                 25%
+- QQQ RSI14:                    20%
+- QQQ 5D return:                10%
+- QQQ high x extension:         20%
+- SOXX structural extension:    15%
+- QQQ ATR14 regime:             10%
 
-QQQ vs 20DMA entry score:
+QQQ vs 20DMA:
   clip(75 - 12 x QQQ distance above 20DMA)
-Examples:
-  0% above 20DMA -> 75
-  +3%            -> 39
-  +5%            -> 15
-Negative distance (price below 20DMA) improves this subscore, subject to the broader
-direction/recovery gates.
 
-QQQ RSI14 entry score:
-  clip(75 - 2.5 x (RSI14 - 50))
-Examples:
-  RSI 50 -> 75
-  RSI 60 -> 50
-  RSI 70 -> 25
-  RSI 80 -> 0
+QQQ RSI14:
+Uses Massive native DAILY RSI(14) when available; standard Wilder RSI from Massive adjusted
+daily OHLC is the fallback.
 
-QQQ 5D-return entry score:
+The nonlinear entry curve is:
+RSI <=30 -> 25
+RSI 35   -> 40
+RSI 40   -> 60
+RSI 45   -> 80
+RSI 50   -> 95
+RSI 55   -> 100
+RSI 60   -> 90
+RSI 65   -> 75
+RSI 70   -> 55
+RSI 75   -> 30
+RSI >=80 -> 10
+Values between breakpoints are linearly interpolated.
+
+Purpose: low RSI is no longer treated as automatically attractive. RSI 30 can represent a
+falling knife; the best entry zone is a healthy reset/continuation around RSI 50-60.
+
+QQQ 5D return:
   clip(65 - 7 x QQQ 5D return %)
-This discourages chasing a sharp five-session advance and improves after a controlled reset.
 
-QQQ high x extension entry score:
+QQQ high x extension:
   100 - QQQ high x extension risk from Consolidation Risk v4.
+A high near the 20DMA is not inherently bad. A high while materially above the 20DMA and
+overbought is penalized.
 
-The underlying high interaction is:
-  extension pressure = average(QQQ 20DMA risk, QQQ RSI risk)
-  high x extension risk = extension pressure x 20-day-high proximity / 100
-
-Therefore:
-- QQQ at a 20-day/record high but close to its 20DMA with normal RSI is NOT heavily penalized.
-- QQQ at the high while materially above its 20DMA and overbought receives a poor entry score.
-- Pulling several percent below the high reduces this chase penalty.
-
-SOXX structural-extension entry score:
+SOXX structural extension:
   100 - average(
       SOXX 20DMA-extension risk,
       SOXX RSI risk,
       SOXX high x extension risk
   )
 
-This matters because NasDecode is designed around a semiconductor-led Nasdaq. Strong SOXX
-leadership is constructive for direction/recovery, but extreme SOXX price extension should
-simultaneously reduce the attractiveness of CHASING new Nasdaq exposure.
+QQQ ATR14 REGIME:
+ATR uses Wilder ATR(14) from Massive adjusted DAILY OHLC. Raw ATR is normalized as ATR14 %
+of QQQ price and judged relative to QQQ's own history.
 
-VXN optionality bonus:
-+10 to Entry Quality only when ALL are true:
-- VXN is between 22 and 32 inclusive,
-- overall Structural Extension is below 70,
-- pre-bonus Entry Quality is at least 35.
+ATR14% 60-session-percentile score:
+percentile 0  -> 80
+20            -> 90
+40            -> 100
+60            -> 85
+75            -> 60
+90            -> 25
+100           -> 10
 
-This preserves the benefit of tradable volatility/dislocation without allowing volatility to
-turn an already extreme chase into a good entry.
+ATR14 / ATR50 regime score:
+<=0.70 -> 85 (extremely quiet is good but not automatically ideal)
+0.85   -> 95
+1.00   -> 100
+1.10   -> 85
+1.20   -> 65
+1.35   -> 35
+1.50   -> 10
+>=3.00 -> 0
+
+QQQ ATR14 regime score = average(percentile score, ATR14/ATR50 score).
+Values between breakpoints are linearly interpolated.
+
+Interpretation:
+- Stable/contracting realized volatility supports entry quality.
+- Fresh realized-volatility expansion reduces entry quality.
+- Very low volatility is favorable but does not receive an automatic perfect score.
+
+VXN x ATR ADJUSTMENT:
+The old binary VXN +10 bonus has been removed. After weighted Entry Quality is calculated,
+a smaller regime-aware adjustment is applied:
+
+Positive optionality:
+- VXN 22-32, Structural Extension <70, Entry Quality >=35, and
+  QQQ ATR14/ATR50 <=1.00 with ATR14% percentile <=50 -> +8
+- Same VXN/location conditions with QQQ ATR regime >=60 -> +4
+
+Volatility stress:
+- VXN >=32 AND QQQ ATR14/ATR50 >=1.20 -> -8
+- otherwise VXN >=28 AND QQQ ATR14/ATR50 >=1.10 -> -4
+
+The adjustment is clipped with Entry Quality to 0..100. Elevated implied volatility therefore
+helps only when realized volatility is stable/contracting; VXN and ATR expanding together
+reduce entry quality.
 
 C. RECOVERY CONFIRMATION — 20%
 ------------------------------
 Equal-weight average of:
-- Internal Confirmation score
+- Internal Confirmation
 - Market breadth signal: positive 100 / mixed 50 / negative 0
 - Semiconductor leadership signal: positive 100 / mixed 50 / negative 0
 - Mega-cap leadership signal: positive 100 / mixed 50 / negative 0
 - Nasdaq volatility signal: positive 100 / mixed 50 / negative 0
-
-Recovery can be strong while Entry Quality is weak. That combination means:
-  "The tape is healthy, but do not chase the current price."
 
 D. MACRO TIMING — 15%
 ---------------------
@@ -452,120 +471,52 @@ Equal-weight average of:
 - Fed repricing: clip(50 + 0.5 x Fed Repricing Score)
 - Oil signal: positive 100 / mixed 50 / negative 0
 
-Current changes matter more than absolute levels for this tactical entry score.
-
 E. CATALYST ASYMMETRY — 10%
 ---------------------------
 Starts at 50.
-For each relevant catalyst:
-- Pending high-impact:        -15
-- Other pending:               -5
-- Observed positive:           +8
-- Positive + persistent:      +15
-- Observed negative:          -15
+- Pending high-impact catalyst: -15
+- Other pending catalyst:        -5
+- Observed positive:             +8
+- Positive + persistent:        +15
+- Observed negative:            -15
 Final catalyst score is clipped 0..100.
 
 RAW SCORE
 ---------
-Raw Opportunity Score =
-  20% Directional Edge
-+ 35% Entry Quality
+Opportunity v5 =
+  35% Entry Quality
++ 20% Directional Edge
 + 20% Recovery Confirmation
 + 15% Macro Timing
 + 10% Catalyst Asymmetry
 
 CONSOLIDATION / BEHAVIORAL GATES
 --------------------------------
-Consolidation Risk is NOT added as another weighted component because its 20DMA, RSI and
-high-location inputs already overlap with Entry Quality. Instead it acts only as a final
-sanity gate so strong recovery/catalyst readings cannot relabel a stretched chase as Attractive.
+Consolidation Risk remains a gate rather than a sixth weighted component because QQQ/SOXX
+20DMA, RSI and high-location information already appears in Entry Quality.
 
-After the raw weighted calculation:
-
-1. Weak tape gate
-   Directional Edge <40 AND Recovery <50
-   -> final Opportunity capped at 44.
-
-2. Moderate consolidation-risk / poor-entry gate
-   Consolidation Risk 35-54 AND Entry Quality <45
-   -> final Opportunity capped at 59.
-
-3. Elevated consolidation-risk / poor-entry gate
-   Consolidation Risk 55-74 AND Entry Quality <50
-   -> final Opportunity capped at 54.
-
-4. High consolidation-risk gate
-   Consolidation Risk >=75:
-   - if Entry Quality <50 OR Recovery <70 -> cap at 44
-   - otherwise -> cap at 49 pending stronger confirmation/reset.
-
-5. Pending high-impact catalyst
-   -> final Opportunity capped at 64.
-
-The score stores both rawScore and final score, plus the active gates, so a capped result is
-auditable.
-
-WHY CONSOLIDATION RISK IS A GATE, NOT A SIXTH COMPONENT
---------------------------------------------------------
-Opportunity v4 already sees price extension directly through Entry Quality. Subtracting or
-weighting Consolidation Risk again would double-count QQQ/SOXX 20DMA, RSI and high proximity.
-
-The gate has a narrower purpose:
-  "Even if recovery and catalysts are excellent, should NasDecode be allowed to call this
-   entry Attractive when price location is objectively poor?"
-
-This produces coherent combinations such as:
-- Strong recovery + stretched price -> Selective, wait for pullback.
-- Strong recovery + healthy price location -> Attractive/Strong.
-- Weak direction + cheap price -> still wait for confirmation.
+1. Direction <40 AND Recovery <50 -> cap 44.
+2. Consolidation Risk 35-54 AND Entry Quality <45 -> cap 59.
+3. Consolidation Risk 55-74 AND Entry Quality <50 -> cap 54.
+4. Consolidation Risk >=75:
+   - Entry Quality <50 OR Recovery <70 -> cap 44
+   - otherwise -> cap 49.
+5. Pending high-impact catalyst -> cap 64.
 
 GUIDANCE
 --------
-Score range       Label                    Operational interpretation
-75-100            Strong Long Opportunity  Strong environment AND sufficiently good entry
-                                           location for deploying new long capital.
-60-74             Attractive               Favor adding exposure selectively. Price location
-                                           and confirmation are supportive enough.
-45-59             Selective                Constructive elements may exist, but price location,
-                                           risk or confirmation argues against chasing. Prefer
-                                           pullbacks, scaling or starter positions.
-30-44             Wait for Confirmation    Conditions are not sufficiently aligned for routine
-                                           new long exposure.
-0-29              Poor Long Opportunity    Avoid routine new long entries; wait for material
-                                           improvement in direction/recovery/price location.
+75-100  Strong Long Opportunity  Strong environment and sufficiently good entry location.
+60-74   Attractive               Favor adding exposure selectively.
+45-59   Selective                Constructive, but prefer pullbacks/scaling/starters.
+30-44   Wait for Confirmation    Conditions are not sufficiently aligned.
+0-29    Poor Long Opportunity    Avoid routine new long entries.
 
 OPPORTUNITY TYPE
 ----------------
-- Recovery / dip entry:
-  Recovery >=65 AND Entry Quality >=60 AND Directional Edge <60.
-- Trend continuation:
-  Directional Edge >=60 AND Recovery >=60 AND Entry Quality >=50.
-- Wait for confirmation:
-  Recovery <45.
-- Otherwise:
-  Selective / mixed.
-
-RELATIONSHIP TO OTHER NASDECODE SCORES
---------------------------------------
-Nasdaq Score:
-  Direction. Is the broader setup bullish, bearish or neutral?
-
-Consolidation Risk:
-  Fragility. Is the current move structurally stretched and/or beginning to deteriorate?
-
-Opportunity Score:
-  General Nasdaq entry decision. Is NOW a good price/time to add long exposure?
-
-SOXL Buy Score:
-  Instrument-specific leveraged-semiconductor entry decision. It can be much lower than
-  Opportunity Score when SOXL itself is extremely extended.
-
-A positive Nasdaq Score does not guarantee a high Opportunity Score. Likewise, strong
-semiconductor leadership can raise Recovery Confirmation while simultaneously reducing Entry
-Quality if SOXX has become technically overextended.
-
-
-======================================================================
+- Recovery / dip entry: Recovery >=65 AND Entry Quality >=60 AND Direction <60.
+- Trend continuation: Direction >=60 AND Recovery >=60 AND Entry Quality >=50.
+- Wait for confirmation: Recovery <45.
+- Otherwise: Selective / mixed.
 
 4. SOXL BUY SCORE v3.3
 ======================================================================
@@ -585,16 +536,16 @@ MAJOR WEIGHTS — UNCHANGED FROM v2
 - Rates / macro:                    10%
 - Catalyst asymmetry:                5%
 
-v3 does NOT change these six weights. It changes how RSI and technical extension affect the
+v3.3 does NOT change these six weights. It changes how RSI and technical extension affect the
 final score so price extension is continuous and regime-aware rather than a set of hard cliffs.
 
-4.1 SEMICONDUCTOR TREND v2 (30%)
+4.1 SEMICONDUCTOR TREND v2.1 (30%)
 --------------------------------------
 Semiconductor Trend is no longer an average containing the nested Semiconductor Leadership
 score. That structure double-counted SOX/SOXX/SMH relative strength and made the trend overly
 sensitive to one session.
 
-New formula:
+Current formula (Semiconductor Trend v2.1):
 - SOXX Technical Trend:       30%
 - SOX vs Nasdaq relative strength:  25%
 - SOXX vs Nasdaq relative strength: 15%
