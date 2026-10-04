@@ -329,90 +329,244 @@ price location, and strong semiconductor leadership does not erase SOXL/QQQ exte
 
 ======================================================================
 
-3. OPPORTUNITY SCORE v3
+3. OPPORTUNITY SCORE v4
 ======================================================================
 
-RANGE
------
-0 to 100. Measures general long-entry quality now, not next-session expected return.
+RANGE / PURPOSE
+---------------
+0 to 100. Measures the quality of deploying NEW general Nasdaq long exposure now.
+It is an entry-quality score, not a forecast of the next session return.
 
-WEIGHTS
--------
+Opportunity Score answers:
+  "Given direction, participation, macro conditions, catalysts and CURRENT PRICE LOCATION,
+   is this a good time to add long Nasdaq exposure?"
+
+It deliberately distinguishes:
+- A healthy/strong market from
+- A good price at which to initiate a new position.
+
+Strong internals can support continuation while price is too stretched to chase.
+
+TOP-LEVEL WEIGHTS
+-----------------
 - Directional edge:        25%
 - Entry quality:           25%
 - Recovery confirmation:   25%
 - Macro timing:            15%
 - Catalyst asymmetry:      10%
 
-Directional edge:
-  clip(NasdaqScore x 1.25 + 50, 0, 100)
+A. DIRECTIONAL EDGE — 25%
+-------------------------
+  clip(Nasdaq Score x 1.25 + 50, 0, 100)
+
 Examples:
   Nasdaq -40 -> 0
   Nasdaq   0 -> 50
   Nasdaq +20 -> 75
   Nasdaq +40 -> 100
 
-Entry quality:
-Average of:
-- clip(75 - 12 x QQQ distance above 20DMA)
-- clip(65 - 7 x QQQ 5D return)
-- clip(75 - 2.5 x (QQQ RSI14 - 50))
-If VXN is between 22 and 32 inclusive, +10 points are added to entry quality. This rewards
-tradable volatility/dislocation but does not override broken internals.
+This measures whether the broader Nasdaq setup is directionally supportive. It does not
+determine whether the current price is attractive.
 
-Recovery confirmation:
+B. ENTRY QUALITY v4 — 25%
+-------------------------
+Entry Quality is now explicitly price-location aware.
+
+Subweights:
+- QQQ vs 20DMA:                  30%
+- QQQ RSI14:                     20%
+- QQQ 5D return:                 15%
+- QQQ high x extension:          20%
+- SOXX structural extension:     15%
+
+QQQ vs 20DMA entry score:
+  clip(75 - 12 x QQQ distance above 20DMA)
+Examples:
+  0% above 20DMA -> 75
+  +3%            -> 39
+  +5%            -> 15
+Negative distance (price below 20DMA) improves this subscore, subject to the broader
+direction/recovery gates.
+
+QQQ RSI14 entry score:
+  clip(75 - 2.5 x (RSI14 - 50))
+Examples:
+  RSI 50 -> 75
+  RSI 60 -> 50
+  RSI 70 -> 25
+  RSI 80 -> 0
+
+QQQ 5D-return entry score:
+  clip(65 - 7 x QQQ 5D return %)
+This discourages chasing a sharp five-session advance and improves after a controlled reset.
+
+QQQ high x extension entry score:
+  100 - QQQ high x extension risk from Consolidation Risk v4.
+
+The underlying high interaction is:
+  extension pressure = average(QQQ 20DMA risk, QQQ RSI risk)
+  high x extension risk = extension pressure x 20-day-high proximity / 100
+
+Therefore:
+- QQQ at a 20-day/record high but close to its 20DMA with normal RSI is NOT heavily penalized.
+- QQQ at the high while materially above its 20DMA and overbought receives a poor entry score.
+- Pulling several percent below the high reduces this chase penalty.
+
+SOXX structural-extension entry score:
+  100 - average(
+      SOXX 20DMA-extension risk,
+      SOXX RSI risk,
+      SOXX high x extension risk
+  )
+
+This matters because NasDecode is designed around a semiconductor-led Nasdaq. Strong SOXX
+leadership is constructive for direction/recovery, but extreme SOXX price extension should
+simultaneously reduce the attractiveness of CHASING new Nasdaq exposure.
+
+VXN optionality bonus:
++10 to Entry Quality only when ALL are true:
+- VXN is between 22 and 32 inclusive,
+- overall Structural Extension is below 70,
+- pre-bonus Entry Quality is at least 35.
+
+This preserves the benefit of tradable volatility/dislocation without allowing volatility to
+turn an already extreme chase into a good entry.
+
+C. RECOVERY CONFIRMATION — 25%
+------------------------------
 Equal-weight average of:
 - Internal Confirmation score
 - Market breadth signal: positive 100 / mixed 50 / negative 0
-- Semiconductor leadership signal: 100 / 50 / 0
-- Mega-cap leadership signal: 100 / 50 / 0
-- Nasdaq volatility signal: 100 / 50 / 0
+- Semiconductor leadership signal: positive 100 / mixed 50 / negative 0
+- Mega-cap leadership signal: positive 100 / mixed 50 / negative 0
+- Nasdaq volatility signal: positive 100 / mixed 50 / negative 0
 
-Macro timing:
+Recovery can be strong while Entry Quality is weak. That combination means:
+  "The tape is healthy, but do not chase the current price."
+
+D. MACRO TIMING — 15%
+---------------------
 Equal-weight average of:
 - 10Y: clip(50 - 6 x daily bp change)
 - 2Y:  clip(50 - 6 x daily bp change)
 - Fed repricing: clip(50 + 0.5 x Fed Repricing Score)
 - Oil signal: positive 100 / mixed 50 / negative 0
 
-Catalyst asymmetry:
+Current changes matter more than absolute levels for this tactical entry score.
+
+E. CATALYST ASYMMETRY — 10%
+---------------------------
 Starts at 50.
 For each relevant catalyst:
-- Pending high-impact: -15
-- Other pending:       -5
-- Observed positive:   +8
-- Positive + persistent: +15
-- Observed negative:   -15
+- Pending high-impact:        -15
+- Other pending:               -5
+- Observed positive:           +8
+- Positive + persistent:      +15
+- Observed negative:          -15
 Final catalyst score is clipped 0..100.
 
-BEHAVIORAL GATES
-----------------
-After weighted calculation:
-- Directional edge <40 AND recovery <50 -> final score capped at 44.
-- Consolidation Risk >=75 AND recovery <70 -> capped at 49.
-- Pending high-impact catalyst -> capped at 64.
+RAW SCORE
+---------
+Raw Opportunity Score =
+  25% Directional Edge
++ 25% Entry Quality
++ 25% Recovery Confirmation
++ 15% Macro Timing
++ 10% Catalyst Asymmetry
+
+CONSOLIDATION / BEHAVIORAL GATES
+--------------------------------
+Consolidation Risk is NOT added as another weighted component because its 20DMA, RSI and
+high-location inputs already overlap with Entry Quality. Instead it acts only as a final
+sanity gate so strong recovery/catalyst readings cannot relabel a stretched chase as Attractive.
+
+After the raw weighted calculation:
+
+1. Weak tape gate
+   Directional Edge <40 AND Recovery <50
+   -> final Opportunity capped at 44.
+
+2. Moderate consolidation-risk / poor-entry gate
+   Consolidation Risk 35-54 AND Entry Quality <45
+   -> final Opportunity capped at 59.
+
+3. Elevated consolidation-risk / poor-entry gate
+   Consolidation Risk 55-74 AND Entry Quality <50
+   -> final Opportunity capped at 54.
+
+4. High consolidation-risk gate
+   Consolidation Risk >=75:
+   - if Entry Quality <50 OR Recovery <70 -> cap at 44
+   - otherwise -> cap at 49 pending stronger confirmation/reset.
+
+5. Pending high-impact catalyst
+   -> final Opportunity capped at 64.
+
+The score stores both rawScore and final score, plus the active gates, so a capped result is
+auditable.
+
+WHY CONSOLIDATION RISK IS A GATE, NOT A SIXTH COMPONENT
+--------------------------------------------------------
+Opportunity v4 already sees price extension directly through Entry Quality. Subtracting or
+weighting Consolidation Risk again would double-count QQQ/SOXX 20DMA, RSI and high proximity.
+
+The gate has a narrower purpose:
+  "Even if recovery and catalysts are excellent, should NasDecode be allowed to call this
+   entry Attractive when price location is objectively poor?"
+
+This produces coherent combinations such as:
+- Strong recovery + stretched price -> Selective, wait for pullback.
+- Strong recovery + healthy price location -> Attractive/Strong.
+- Weak direction + cheap price -> still wait for confirmation.
 
 GUIDANCE
 --------
 Score range       Label                    Operational interpretation
-75-100            Strong Long Opportunity  Strong environment for deploying new long capital.
-                                           Still use instrument-specific entry controls.
-60-74             Attractive               Favor adding exposure selectively; confirmation and
-                                           price location are supportive enough.
-45-59             Selective                Mixed entry quality. Starter positions/pullbacks are
-                                           preferable to aggressive deployment.
-30-44             Wait for Confirmation    Conditions are not yet sufficiently confirmed.
-0-29              Poor Long Opportunity    Avoid routine new long entries; wait for a material
-                                           improvement in direction/recovery/timing.
+75-100            Strong Long Opportunity  Strong environment AND sufficiently good entry
+                                           location for deploying new long capital.
+60-74             Attractive               Favor adding exposure selectively. Price location
+                                           and confirmation are supportive enough.
+45-59             Selective                Constructive elements may exist, but price location,
+                                           risk or confirmation argues against chasing. Prefer
+                                           pullbacks, scaling or starter positions.
+30-44             Wait for Confirmation    Conditions are not sufficiently aligned for routine
+                                           new long exposure.
+0-29              Poor Long Opportunity    Avoid routine new long entries; wait for material
+                                           improvement in direction/recovery/price location.
 
-Opportunity type:
-- Recovery / dip entry: recovery >=65, entry quality >=60, directional edge <60.
-- Trend continuation: directional edge >=60 and recovery >=60.
-- Wait for confirmation: recovery <45.
-- Otherwise: Selective / mixed.
+OPPORTUNITY TYPE
+----------------
+- Recovery / dip entry:
+  Recovery >=65 AND Entry Quality >=60 AND Directional Edge <60.
+- Trend continuation:
+  Directional Edge >=60 AND Recovery >=60 AND Entry Quality >=50.
+- Wait for confirmation:
+  Recovery <45.
+- Otherwise:
+  Selective / mixed.
+
+RELATIONSHIP TO OTHER NASDECODE SCORES
+--------------------------------------
+Nasdaq Score:
+  Direction. Is the broader setup bullish, bearish or neutral?
+
+Consolidation Risk:
+  Fragility. Is the current move structurally stretched and/or beginning to deteriorate?
+
+Opportunity Score:
+  General Nasdaq entry decision. Is NOW a good price/time to add long exposure?
+
+SOXL Buy Score:
+  Instrument-specific leveraged-semiconductor entry decision. It can be much lower than
+  Opportunity Score when SOXL itself is extremely extended.
+
+A positive Nasdaq Score does not guarantee a high Opportunity Score. Likewise, strong
+semiconductor leadership can raise Recovery Confirmation while simultaneously reducing Entry
+Quality if SOXX has become technically overextended.
 
 
 ======================================================================
+
 4. SOXL BUY SCORE v2
 ======================================================================
 
