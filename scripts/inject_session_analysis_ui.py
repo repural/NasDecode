@@ -9,7 +9,7 @@ import sys
 
 path=Path(sys.argv[1] if len(sys.argv)>1 else 'public/index.html')
 text=path.read_text(encoding='utf-8')
-tag='<script src="session-analysis.js?v=1"></script>'
+tag='<script src="session-analysis.js?v=2"></script>'
 if tag not in text:
     if '</body>' in text:
         text=text.replace('</body>',tag+'</body>',1)
