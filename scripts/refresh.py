@@ -169,6 +169,27 @@ def historical_context(bars):
             recent=pct_series[-60:]
             atr_pct_percentile60=100*sum(1 for x in recent if x<=atr14_pct)/len(recent)
 
+    # STOCH(9,6): fast %K over the latest 9 daily bars and a 6-session
+    # simple average of %K as %D. This is observational context only; it is not
+    # used by any NasDecode score.
+    stoch_k9=None; stoch_d6=None
+    stoch_k_series=[]
+    if len(clean)>=9:
+        for end in range(8,len(clean)):
+            window=clean[end-8:end+1]
+            try:
+                hh=max(float(x['h']) for x in window)
+                ll=min(float(x['l']) for x in window)
+                cc=float(clean[end]['c'])
+            except (TypeError,ValueError,KeyError):
+                continue
+            k=50.0 if hh==ll else 100*(cc-ll)/(hh-ll)
+            stoch_k_series.append(k)
+        if stoch_k_series:
+            stoch_k9=stoch_k_series[-1]
+            if len(stoch_k_series)>=6:
+                stoch_d6=sum(stoch_k_series[-6:])/6
+
     plus_di14=None; minus_di14=None; adx14=None
     if len(tr)>=period and all(x is not None for x in tr):
         sm_tr=sum(tr[:period]); sm_plus=sum(plus_dm[:period]); sm_minus=sum(minus_dm[:period])
@@ -201,6 +222,7 @@ def historical_context(bars):
             'ma20Distance':ma20dist,'ma50Distance':ma50dist,'rsi14':rsi14,
             'atr14':atr14,'atr14Pct':atr14_pct,'atr50':atr50,'atr14Vs50':atr14_vs50,
             'atr14PctPercentile60':atr_pct_percentile60,
+            'stochK9':stoch_k9,'stochD6':stoch_d6,
             'adx14':adx14,'plusDI14':plus_di14,'minusDI14':minus_di14,
             'windowHighDate':max_date,'windowHighClose':max_close,'distanceFromWindowHighPct':high_distance,
             'high20Close':high20,'distanceFrom20dHighPct':high20_distance,'bars':len(closes)}
