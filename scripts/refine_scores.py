@@ -295,8 +295,10 @@ def main():
         if ts.date()!=now.date() or ts.hour*60+ts.minute<9*60+30: continue
         v=num(((s.get('market') or {}).get('SOXL') or {}).get('changePct'))
         if v is not None: soxl_path.append(v)
-    if soxl_change is not None: soxl_path.append(soxl_change)
-    soxl_giveback=(max(soxl_path)-soxl_change) if soxl_path and soxl_change is not None else None
+    soxl_obs_date=str(soxl_obs.get('observationDate') or '')
+    current_soxl_session=(now.weekday()<5 and soxl_obs_date==now.date().isoformat() and now.hour*60+now.minute>=9*60+30)
+    if current_soxl_session and soxl_change is not None: soxl_path.append(soxl_change)
+    soxl_giveback=(max(soxl_path)-soxl_change) if current_soxl_session and soxl_path and soxl_change is not None else None
 
     # 1) Semiconductor trend / leadership (30%).
     semi_score=num(semi.get('score'))
@@ -316,7 +318,12 @@ def main():
     rsi_entry=clamp(88-3*abs((sx_rsi or 55)-55)) if sx_rsi is not None else None
     high_entry=clamp(82-5*abs((sx_highdist or -4)+4)) if sx_highdist is not None else None
     intraday_entry=clamp(100-25*soxl_giveback) if soxl_giveback is not None else None
-    soxl_entry=avg([ma_entry,r5_entry,rsi_entry,high_entry,intraday_entry])
+    entry_parts=[
+        ('20DMA distance',ma_entry,0.30),('5D return',r5_entry,0.20),('RSI14',rsi_entry,0.20),
+        ('20D-high distance',high_entry,0.20),('Intraday giveback',intraday_entry,0.10)
+    ]
+    entry_available=[x for x in entry_parts if x[1] is not None]
+    soxl_entry=(sum(v*w for _,v,w in entry_available)/sum(w for _,v,w in entry_available)) if entry_available else None
 
     # 3) Broader market confirmation (15%).
     market_confirmation=avg([
@@ -362,8 +369,15 @@ def main():
         soxl_score=min(soxl_score,50); gates.append('Broad semiconductor underperformance caps score at 50')
     if risk>=75:
         soxl_score=min(soxl_score,45); gates.append('High consolidation risk caps score at 45')
-    if sx_ma20 is not None and sx_ma20>8:
-        soxl_score=min(soxl_score,55); gates.append('SOXL >8% above 20DMA caps chase entry at 55')
+    if sx_ma20 is not None:
+        if sx_ma20>18:
+            soxl_score=min(soxl_score,30); gates.append('SOXL >18% above 20DMA caps chase entry at 30')
+        elif sx_ma20>12:
+            soxl_score=min(soxl_score,40); gates.append('SOXL >12% above 20DMA caps chase entry at 40')
+        elif sx_ma20>8:
+            soxl_score=min(soxl_score,55); gates.append('SOXL >8% above 20DMA caps chase entry at 55')
+    if sx_ma20 is not None and sx_rsi is not None and sx_ma20>15 and sx_rsi>80:
+        soxl_score=min(soxl_score,25); gates.append('Extreme extension (>15% above 20DMA + RSI>80) caps score at 25')
     if vxn_ch is not None and y10_bp is not None and vxn_ch>8 and y10_bp>5:
         soxl_score=min(soxl_score,45); gates.append('Volatility + yield shock caps score at 45')
     if pending_high:
@@ -379,10 +393,17 @@ def main():
     sx_sorted=sorted(((n,round(v)) for n,v,_ in sx_available),key=lambda x:x[1],reverse=True)
     sx_weak=sorted(((n,round(v)) for n,v,_ in sx_available),key=lambda x:x[1])
     d['soxlBuyScore']={
-        'version':1,'score':soxl_score,'label':sx_label,'signal':sx_sig,'horizon':'1–5 sessions',
+        'version':2,'score':soxl_score,'label':sx_label,'signal':sx_sig,'horizon':'1–5 sessions',
         'instrument':'SOXL','last':soxl_last,'changePct':soxl_change,
         'components':{n:round(v) if v is not None else None for n,v,_ in sx_components},
         'gates':gates,'intradayGivebackPp':round(soxl_giveback,2) if soxl_giveback is not None else None,
+        'entryQuality':{
+            'score':round(soxl_entry) if soxl_entry is not None else None,
+            'factorScores':{n:round(v) if v is not None else None for n,v,_ in entry_parts},
+            'factorWeights':{n:int(w*100) for n,_,w in entry_parts},
+            'availableWeightPct':round(100*sum(w for _,v,w in entry_available)),
+            'method':'Weighted available factors; intraday giveback is excluded when there is no current-session SOXL observation.'
+        },
         'technicalContext':{
             'ma20DistancePct':round(sx_ma20,2) if sx_ma20 is not None else None,
             'return5dPct':round(sx_r5,2) if sx_r5 is not None else None,
