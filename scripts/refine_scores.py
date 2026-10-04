@@ -429,7 +429,7 @@ def main():
     }
 
 
-    # ---------------- SOXL Buy Score v3.1 ----------------
+    # ---------------- SOXL Buy Score v3.2 ----------------
     # Tactical 1-5 session entry score for the 3x daily semiconductor ETF. This is
     # intentionally separate from the broader Opportunity Score: semiconductor trend
     # and SOXL's own entry quality dominate, while leverage-sensitive risk can hard-cap it.
@@ -462,10 +462,17 @@ def main():
         (0,0),(35,0),(40,20),(45,35),(50,50),(55,65),(60,80),
         (65,90),(70,100),(80,100),(100,95)
     ]) if soxx_rsi is not None else None
+    soxx_adx=num(soxx_ctx.get('adx14')); soxx_plus_di=num(soxx_ctx.get('plusDI14')); soxx_minus_di=num(soxx_ctx.get('minusDI14'))
+    adx_strength=piecewise(soxx_adx,[(0,50),(15,50),(20,65),(25,80),(35,95),(45,100),(100,100)]) if soxx_adx is not None else None
+    if adx_strength is not None and soxx_plus_di is not None and soxx_minus_di is not None:
+        soxx_directional_adx=adx_strength if soxx_plus_di>=soxx_minus_di else 100-adx_strength
+    else:
+        soxx_directional_adx=None
     soxx_technical_parts=[
-        ('SOXX vs 20DMA',soxx_trend_ma,0.40),
-        ('SOXX 5D momentum',soxx_trend_r5,0.30),
-        ('SOXX RSI14 trend',soxx_trend_rsi,0.30)
+        ('SOXX vs 20DMA',soxx_trend_ma,0.30),
+        ('SOXX 5D momentum',soxx_trend_r5,0.25),
+        ('SOXX RSI14 trend',soxx_trend_rsi,0.25),
+        ('SOXX ADX/DMI trend strength',soxx_directional_adx,0.20)
     ]
     soxx_technical_available=[x for x in soxx_technical_parts if x[1] is not None]
     soxx_technical_trend=(sum(v*w for _,v,w in soxx_technical_available)/sum(w for _,v,w in soxx_technical_available)
@@ -533,13 +540,27 @@ def main():
         signal100(row(d,'Mega-cap leadership').get('signal'))
     ])
 
-    # 4) Volatility / leverage risk (15%). High consolidation risk and a volatility
-    # expansion are especially costly for a daily 3x instrument.
-    leverage_risk=avg([
-        100-risk,
-        signal100(row(d,'Nasdaq volatility (VXN / VIX)').get('signal')),
-        clamp(50-(vxn_ch or 0)*6) if vxn_ch is not None else None
-    ])
+    # 4) Volatility / leverage risk (15%). Add SOXL's own realized-volatility
+    # regime rather than relying only on market-level VXN. ATR% is displayed, while
+    # the score uses relative ATR regime (60-session percentile + ATR14/ATR50 expansion)
+    # so SOXL is judged against its own naturally high-volatility history.
+    sx_atr_pct=num(soxl_ctx.get('atr14Pct'))
+    sx_atr_percentile=num(soxl_ctx.get('atr14PctPercentile60'))
+    sx_atr_ratio=num(soxl_ctx.get('atr14Vs50'))
+    sx_atr_percentile_safety=clamp(100-sx_atr_percentile) if sx_atr_percentile is not None else None
+    sx_atr_expansion_safety=piecewise(sx_atr_ratio,[
+        (0,100),(0.8,100),(1.0,80),(1.2,55),(1.5,25),(1.8,0),(3.0,0)
+    ]) if sx_atr_ratio is not None else None
+    sx_atr_regime_safety=avg([sx_atr_percentile_safety,sx_atr_expansion_safety])
+    leverage_parts=[
+        ('Consolidation safety',100-risk,0.35),
+        ('VXN condition',signal100(row(d,'Nasdaq volatility (VXN / VIX)').get('signal')),0.25),
+        ('VXN daily change',clamp(50-(vxn_ch or 0)*6) if vxn_ch is not None else None,0.15),
+        ('SOXL ATR regime',sx_atr_regime_safety,0.25)
+    ]
+    leverage_available=[x for x in leverage_parts if x[1] is not None]
+    leverage_risk=(sum(v*w for _,v,w in leverage_available)/sum(w for _,v,w in leverage_available)
+                   if leverage_available else None)
 
     # 5) Rates / macro timing (10%), including the verified release-surprise mix.
     release_mix=row(d,'Inflation · Labor · Growth')
@@ -616,12 +637,12 @@ def main():
     sx_sorted=sorted(((n,round(v)) for n,v,_ in sx_available),key=lambda x:x[1],reverse=True)
     sx_weak=sorted(((n,round(v)) for n,v,_ in sx_available),key=lambda x:x[1])
     d['soxlBuyScore']={
-        'version':3.1,'score':soxl_score,'rawScore':soxl_raw,'preGateScore':soxl_pre_gate,
+        'version':3.2,'score':soxl_score,'rawScore':soxl_raw,'preGateScore':soxl_pre_gate,
         'label':sx_label,'signal':sx_sig,'horizon':'1–5 sessions',
         'instrument':'SOXL','last':soxl_last,'changePct':soxl_change,
         'components':{n:round(v) if v is not None else None for n,v,_ in sx_components},
         'semiconductorTrend':{
-            'version':2,
+            'version':2.1,
             'score':round(semi_trend) if semi_trend is not None else None,
             'components':{n:round(v) if v is not None else None for n,v,_ in semi_trend_parts},
             'weights':{n:int(w*100) for n,_,w in semi_trend_parts},
@@ -633,11 +654,25 @@ def main():
                 'context':{
                     'ma20DistancePct':round(soxx_ma20,2) if soxx_ma20 is not None else None,
                     'return5dPct':round(soxx_r5,2) if soxx_r5 is not None else None,
-                    'rsi14':round(soxx_rsi,1) if soxx_rsi is not None else None
+                    'rsi14':round(soxx_rsi,1) if soxx_rsi is not None else None,
+                    'adx14':round(soxx_adx,1) if soxx_adx is not None else None,
+                    'plusDI14':round(soxx_plus_di,1) if soxx_plus_di is not None else None,
+                    'minusDI14':round(soxx_minus_di,1) if soxx_minus_di is not None else None
                 }
             }
         },
         'gates':gates,'intradayGivebackPp':round(soxl_giveback,2) if soxl_giveback is not None else None,
+        'volatilityLeverageRisk':{
+            'score':round(leverage_risk) if leverage_risk is not None else None,
+            'components':{n:round(v) if v is not None else None for n,v,_ in leverage_parts},
+            'weights':{n:int(w*100) for n,_,w in leverage_parts},
+            'soxlAtr':{
+                'atr14Pct':round(sx_atr_pct,2) if sx_atr_pct is not None else None,
+                'atr14PctPercentile60':round(sx_atr_percentile,1) if sx_atr_percentile is not None else None,
+                'atr14Vs50':round(sx_atr_ratio,2) if sx_atr_ratio is not None else None,
+                'regimeSafetyScore':round(sx_atr_regime_safety) if sx_atr_regime_safety is not None else None
+            }
+        },
         'entryQuality':{
             'score':round(soxl_entry) if soxl_entry is not None else None,
             'factorScores':{n:round(v) if v is not None else None for n,v,_ in entry_parts},
