@@ -1689,7 +1689,7 @@ def main():
     for ticker in ('QQQ','SOXX','SOXL'):
         bars=massive_daily_bars(ticker,730 if ticker=='SOXL' else 180)
         ctx=historical_context(bars)
-        if ctx and ticker in ('SOXX','SOXL'):
+        if ctx and ticker in ('QQQ','SOXX','SOXL'):
             native_rsi=massive_rsi_latest(ticker,14)
             if native_rsi and native_rsi.get('value') is not None:
                 ctx['rsi14LocalWilder']=ctx.get('rsi14')
