@@ -10,7 +10,7 @@ Macro-market history adapter: Yahoo chart history for Treasury yields, VXN and
 oil futures. Provider/source is persisted per observation so adapters can be
 replaced without changing the resilience schema.
 """
-import datetime, json, math, os, time, urllib.error, urllib.parse, urllib.request
+import datetime, json, math, os, time, urllib.error, urllib.parse, urllib.request, xml.etree.ElementTree as ET
 from zoneinfo import ZoneInfo
 
 ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,9 +24,8 @@ MARKET={
     'SOX':'I:SOX','QQQ':'QQQ','SOXX':'SOXX','SMH':'SMH',
     'NVDA':'NVDA','AMD':'AMD','AVGO':'AVGO','TSM':'TSM','MU':'MU'
 }
-MACRO={
-    'US10Y':'^TNX','US2Y':'^UST2Y','VXN':'^VXN','Brent':'BZ=F','WTI':'CL=F'
-}
+MACRO_YAHOO={'VXN':'^VXN','Brent':'BZ=F','WTI':'CL=F'}
+MACRO={'US10Y':'US Treasury BC_10YEAR','US2Y':'US Treasury BC_2YEAR',**MACRO_YAHOO}
 BASKET=('NVDA','AMD','AVGO','TSM','MU')
 
 def num(x):
@@ -58,6 +57,38 @@ def massive_fetch(ticker,start,end):
         _last_massive=time.monotonic()
         print('Massive',ticker,'HTTP',e.code,e.read().decode('utf-8',errors='replace')[:300])
         return []
+
+def treasury_yields(start,end):
+    """Official US Treasury daily par yields for 2Y and 10Y."""
+    out={'US2Y':{},'US10Y':{}}
+    for year in range(start.year,end.year+1):
+        url=('https://home.treasury.gov/resource-center/data-chart-center/interest-rates/pages/xml'
+             f'?data=daily_treasury_yield_curve&field_tdr_date_value={year}')
+        req=urllib.request.Request(url,headers={'User-Agent':'NasDecode/1.0'})
+        try:
+            with urllib.request.urlopen(req,timeout=40) as resp:
+                root=ET.fromstring(resp.read())
+            count=0
+            for entry in root.iter():
+                if entry.tag.split('}')[-1]!='properties': continue
+                vals={child.tag.split('}')[-1]:(child.text or '').strip() for child in entry}
+                ds=vals.get('NEW_DATE')
+                if not ds: continue
+                day=ds[:10]
+                try: d=datetime.date.fromisoformat(day)
+                except ValueError: continue
+                if not (start<=d<=end): continue
+                for name,field in [('US2Y','BC_2YEAR'),('US10Y','BC_10YEAR')]:
+                    v=num(vals.get(field))
+                    if v is not None:
+                        out[name][day]={'open':None,'high':None,'low':None,'close':v,'volume':None,
+                                        'source':'U.S. Treasury daily par yield curve'}
+                count+=1
+            print('US Treasury',year,'rows',count)
+        except Exception as e:
+            print('US Treasury',year,'unavailable:',repr(e))
+    return out
+
 
 def yahoo_fetch(symbol,start,end):
     # Query range includes end date by adding one day to period2.
@@ -141,8 +172,13 @@ def main():
         series[name]=s
         availability[name]={'provider':'Massive','ticker':ticker,'rows':len(s),'available':bool(s)}
 
-    for name,symbol in MACRO.items():
-        s=with_changes(yahoo_rows(yahoo_fetch(symbol,request_start,end),symbol),yield_series=name in ('US10Y','US2Y'))
+    treasury=treasury_yields(request_start,end)
+    for name in ('US10Y','US2Y'):
+        s=with_changes(treasury.get(name,{}) ,yield_series=True)
+        series[name]=s
+        availability[name]={'provider':'U.S. Treasury','ticker':MACRO[name],'rows':len(s),'available':bool(s)}
+    for name,symbol in MACRO_YAHOO.items():
+        s=with_changes(yahoo_rows(yahoo_fetch(symbol,request_start,end),symbol),yield_series=False)
         series[name]=s
         availability[name]={'provider':'Yahoo Finance','ticker':symbol,'rows':len(s),'available':bool(s)}
 
