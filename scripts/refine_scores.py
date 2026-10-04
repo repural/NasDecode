@@ -416,6 +416,23 @@ def main():
             rec['closeSnapshot']['soxlBuyScore']=d['soxlBuyScore']
         DAILY.write_text(json.dumps(daily,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 
+    # refresh.py appends the intraday snapshot before this refinement pass. Enrich the
+    # newest same-day snapshot with the final SOXL score so every refresh is backtestable.
+    intraday_path=INTRADAY/f'{now:%Y-%m}.json'
+    intraday_doc=load(intraday_path,{'schemaVersion':4,'snapshots':[]})
+    snaps=intraday_doc.get('snapshots') or []
+    if snaps:
+        latest=snaps[-1]
+        try:
+            latest_ts=dt.datetime.fromisoformat(str(latest.get('timestampET'))).astimezone(NY)
+        except (TypeError,ValueError):
+            latest_ts=None
+        if latest_ts is not None and latest_ts.date()==now.date():
+            latest['soxlBuyScore']=d['soxlBuyScore']
+            if isinstance(latest.get('validation'),dict):
+                latest['validation'].setdefault('modelState',{})['soxlBuyScore']=d['soxlBuyScore']
+            intraday_path.write_text(json.dumps(intraday_doc,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+
     print(f'v3 scores: Nasdaq {d.get("nasdaqScore",{}).get("score"):+} | Consolidation {risk} ({risk_level}) | Opportunity {opp} ({label}) | SOXL Buy {soxl_score} ({sx_label})')
 
 if __name__=='__main__': main()
