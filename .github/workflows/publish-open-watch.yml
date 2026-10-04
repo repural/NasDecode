@@ -1,0 +1,46 @@
+name: Publish Open Watch History
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'history/market-watch-events.json'
+
+concurrency:
+  group: nasdecode-open-watch-publish
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish curated Open Watch feed
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p public/history
+          cp history/market-watch-events.json public/history/market-watch-events.json
+          git config user.name 'nasdecode-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add public/history/market-watch-events.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Publish Open Watch history'
+          for attempt in 1 2 3 4; do
+            if git push; then
+              exit 0
+            fi
+            git fetch origin main
+            git reset --hard origin/main
+            mkdir -p public/history
+            cp history/market-watch-events.json public/history/market-watch-events.json
+            git add public/history/market-watch-events.json
+            git diff --cached --quiet && exit 0
+            git commit -m 'Publish Open Watch history'
+          done
+          echo "Unable to publish Open Watch history after 4 attempts"
+          exit 1
