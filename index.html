@@ -156,33 +156,39 @@ function render(d){
   const rowBy=name=>orderedRows.find(r=>r.factor===name)||{};
   const toneLabel=s=>s==='positive'?'Supportive':s==='negative'?'Headwind':'Mixed';
   marketSetup.innerHTML='<div class="setup-hero"><div><div class="hero-label">Overall Market Setup</div><div class="hero-state '+(C[env.signal]||'')+'>'+escHtml(env.label||'Mixed')+'</div><div class="hero-score '+(C[env.signal]||'')+'>'+((Number(ns.score)>0?'+':'')+(ns.score??'—'))+'<span style="font-size:20px;color:var(--muted)"> /100</span></div><div class="hero-meta">Confidence '+(ns.confidence??'—')+'% · '+escHtml(ns.trend||'')+'</div></div><div><h3>NasDecode read</h3><p style="line-height:1.6;margin:0">'+analysisText('The current setup is '+String(env.label||'mixed').toLowerCase()+' with '+(ns.confidence??'—')+'% confidence and a '+String(ns.trend||'stable').toLowerCase()+' trend. '+(d.opportunityScore?.score<40?'Opportunity Score remains limited until recovery signals broaden.':'Opportunity Score conditions are improving as recovery signals strengthen.'))+'</p><div class="hero-meta">'+analysisText('Consolidation Risk')+' '+(d.consolidationRisk?.score??'—')+'/100 · '+analysisText('Opportunity Score')+' '+(d.opportunityScore?.score??'—')+'/100</div><div class="setup-chart" id="nasdaqScoreChart"></div></div></div>';
-  // Major Catalysts is event-only: active catalysts first, then fresh Open Watch
-  // detections, then scheduled earnings. Macro releases and Fed probabilities belong
-  // in their dedicated signal cards and are intentionally excluded here.
-  const activeCatalysts=dedupedCatalysts.slice(0,3);
-  const activeIds=new Set(activeCatalysts.map(x=>x?.event?.id).filter(Boolean));
-  const momentumHtml=activeCatalysts.map(x=>{
-    const ev=x.event||{}, ret=x.targetReturnPct, sox=x.soxVsNasdaqPp;
-    const stats=[x.status,x.readThrough,x.persistence&&x.persistence!=='Pending'?x.persistence:null,
-      ret!==null&&ret!==undefined?((Number(ret)>0?'+':'')+Number(ret).toFixed(2)+'% '+(ev.ticker||'stock')):null,
-      sox!==null&&sox!==undefined?('SOX vs Nasdaq '+(Number(sox)>0?'+':'')+Number(sox).toFixed(2)+' pp'):null].filter(Boolean).join(' · ');
-    return '<div class="catalyst"><b>'+escHtml('Active catalyst · '+(ev.ticker||'Market'))+'</b><div style="margin-top:4px">'+escHtml(ev.title||'Catalyst')+'</div><div class="muted" style="margin-top:4px">'+analysisText(stats||'Monitoring')+'</div></div>';
+  // Major Catalysts uses the curated NasDecode Open Watch history as the
+  // authoritative event feed. Discovery candidates are intentionally not rendered.
+  // Active lifecycle events come first; newly retained non-historical events follow;
+  // scheduled earnings are shown after those. Routine macro/Fed rows are excluded.
+  const watchFeed=d.marketWatchEvents||{};
+  const excludedWatchCategories=new Set(['macro','fed-rates','inflation','labor','growth','economic']);
+  const watchEvents=(watchFeed.events||[]).filter(e=>!excludedWatchCategories.has(String(e.category||'').toLowerCase()));
+  const materialityRank=m=>({'very high':4,'high':3,'medium-high':2,'medium':1}[String(m||'').toLowerCase()]||0);
+  const eventTimeMs=e=>Date.parse(e.eventTime||e.firstReported||'')||0;
+
+  const activeWatchEvents=watchEvents.filter(e=>String(e.status||'').toLowerCase()==='active')
+    .sort((a,b)=>materialityRank(b.expectedImpact?.materiality)-materialityRank(a.expectedImpact?.materiality)||eventTimeMs(b)-eventTimeMs(a))
+    .slice(0,4);
+  const activeIds=new Set(activeWatchEvents.map(e=>e.id).filter(Boolean));
+  const activeWatchHtml=activeWatchEvents.map(e=>{
+    const impact=e.expectedImpact||{}, confirm=e.marketConfirmation||{};
+    const impactBits=[impact.materiality,impact.sox?('SOX '+impact.sox):null,impact.nasdaq?('Nasdaq '+impact.nasdaq):null].filter(Boolean).join(' · ');
+    const confirmBits=[confirm.state,confirm.summary].filter(Boolean).join(' · ');
+    return '<div class="catalyst"><b>'+escHtml('Active catalyst · '+(e.companyMarket||e.category||'Market'))+'</b><div style="margin-top:4px">'+escHtml(e.headline||'Material market catalyst')+'</div>'+
+      (impactBits?'<div class="muted" style="margin-top:4px">'+analysisText(impactBits)+'</div>':'')+
+      (confirmBits?'<div class="muted" style="margin-top:4px">'+analysisText(confirmBits)+'</div>':'')+'</div>';
   }).join('');
 
-  const watchFeed=d.openWatchEvents||{};
-  const nowMs=Date.now(), watchWindowMs=72*60*60*1000;
-  const majorWatchReasons=new Set(['earnings','guidance','forecast','outlook','buyback','repurchase','acquisition','acquire','merger','partnership','contract','deal','investment','export','restriction','license','sanction','investigation','lawsuit','settlement','ceo','cfo','resign','capacity','pricing','production','supply']);
-  const openWatchEvents=(watchFeed.events||[]).filter(e=>{
-    if(!e?.autoDetected||activeIds.has(e.id)||Number(e.materialityScore||0)<15)return false;
-    if(!(e.materialityReasons||[]).some(x=>majorWatchReasons.has(String(x).toLowerCase())))return false;
-    const discovered=Date.parse(e.discoveredAtUTC||'');
-    return Number.isFinite(discovered)&&nowMs-discovered>=0&&nowMs-discovered<=watchWindowMs;
-  }).sort((a,b)=>Number(b.materialityScore||0)-Number(a.materialityScore||0)||
-                    Date.parse(b.discoveredAtUTC||0)-Date.parse(a.discoveredAtUTC||0)).slice(0,3);
-  const openWatchHtml=openWatchEvents.map(e=>{
-    const when=e.discoveredAtUTC?new Date(e.discoveredAtUTC).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}):'New';
-    const scope=e.scope==='sector'?'SOX':(e.scope==='mega_cap'?'Mega-cap':'Market');
-    return '<div class="catalyst"><b>'+escHtml('Open Watch · '+(e.ticker||'Market'))+'</b><div style="margin-top:4px">'+escHtml(e.title||'Major new event')+'</div><div class="muted" style="margin-top:4px">'+analysisText(scope+' · Detected '+when+' · Materiality '+Number(e.materialityScore||0))+'</div></div>';
+  const freshCutoff=Date.now()-72*60*60*1000;
+  const newWatchEvents=watchEvents.filter(e=>{
+    const status=String(e.status||'').toLowerCase();
+    return !activeIds.has(e.id)&&status!=='historical'&&eventTimeMs(e)>=freshCutoff;
+  }).sort((a,b)=>materialityRank(b.expectedImpact?.materiality)-materialityRank(a.expectedImpact?.materiality)||eventTimeMs(b)-eventTimeMs(a)).slice(0,3);
+  const newWatchHtml=newWatchEvents.map(e=>{
+    const impact=e.expectedImpact||{}, confirm=e.marketConfirmation||{};
+    const when=e.eventTime?new Date(e.eventTime).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}):'New';
+    const bits=[impact.materiality,impact.sox?('SOX '+impact.sox):null,impact.nasdaq?('Nasdaq '+impact.nasdaq):null,confirm.state].filter(Boolean).join(' · ');
+    return '<div class="catalyst"><b>'+escHtml('Open Watch · '+(e.companyMarket||e.category||'Market'))+'</b><div style="margin-top:4px">'+escHtml(e.headline||'Major new event')+'</div><div class="muted" style="margin-top:4px">'+analysisText('Detected '+when+(bits?' · '+bits:''))+'</div></div>';
   }).join('');
 
   const earnings=[...(d.upcomingEarnings?.events||[])].filter(e=>{
@@ -197,7 +203,7 @@ function render(d){
     const scope=e.scope==='sox'?'SOX':'Mega-cap';
     return '<div class="catalyst"><b>'+escHtml(e.ticker+' earnings · '+date)+'</b><div class="muted" style="margin-top:4px">'+analysisText(scope+' · '+session+(e.status==='confirmed'?' · Confirmed':''))+'</div></div>';
   }).join('');
-  majorCatalysts.innerHTML=momentumHtml+openWatchHtml+earningsHtml||'<div class="muted">No major active or upcoming catalyst currently retained.</div>';
+  majorCatalysts.innerHTML=activeWatchHtml+newWatchHtml+earningsHtml||'<div class="muted">No major active or upcoming catalyst currently retained.</div>';
   const y=rowBy('10Y Treasury Yield'), semi=rowBy('Semiconductor leadership'), breadth=rowBy('Market breadth'), vol=rowBy('Nasdaq volatility (VXN / VIX)');
   const constructive=[];const risk=[];
   if(y.signal!=='positive')constructive.push('Treasury yields stabilize or ease');risk.push('Treasury yields resume a sustained rise');
@@ -338,7 +344,7 @@ async function loadChartHistory(){try{const r=await fetch('data/chart-history.js
 
 // Fetch a cache-busted quantitative snapshot; the button refreshes displayed data only.
 let currentDashboard=null,lastRenderedStamp=null,autoRefreshTimer=null;
-async function load(){update.disabled=true;update.textContent='Checking…';try{const t=Date.now();const [r,w]=await Promise.all([fetch('data/dashboard.json?t='+t,{cache:'no-store',headers:{'Cache-Control':'no-cache'}}),fetch('data/semiconductor-catalysts.json?t='+t,{cache:'no-store'}).catch(()=>null)]);if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();if(w?.ok){try{d.openWatchEvents=await w.json()}catch(_){d.openWatchEvents={events:[]}}}else d.openWatchEvents={events:[]};currentDashboard=d;const renderStamp=d.updatedET+'|'+(d.openWatchEvents?.lastDiscoveryUTC||'');if(renderStamp!==lastRenderedStamp){render(d);lastRenderedStamp=renderStamp}return d}catch(e){console.error(e);update.textContent='Refresh failed';setTimeout(()=>update.textContent='↻ Check Latest',1800);return null}finally{update.disabled=false;if(update.textContent==='Checking…')update.textContent='↻ Check Latest'}}
+async function load(){update.disabled=true;update.textContent='Checking…';try{const t=Date.now();const [r,w]=await Promise.all([fetch('data/dashboard.json?t='+t,{cache:'no-store',headers:{'Cache-Control':'no-cache'}}),fetch('history/market-watch-events.json?t='+t,{cache:'no-store'}).catch(()=>null)]);if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();if(w?.ok){try{d.marketWatchEvents=await w.json()}catch(_){d.marketWatchEvents={events:[]}}}else d.marketWatchEvents={events:[]};currentDashboard=d;const renderStamp=d.updatedET+'|'+(d.marketWatchEvents?.updated||'');if(renderStamp!==lastRenderedStamp){render(d);lastRenderedStamp=renderStamp}return d}catch(e){console.error(e);update.textContent='Refresh failed';setTimeout(()=>update.textContent='↻ Check Latest',1800);return null}finally{update.disabled=false;if(update.textContent==='Checking…')update.textContent='↻ Check Latest'}}
 // Load the narrative market brief. Market Analysis times remain in New York / ET; do not localize them to browser/TR time.
 const nearbyMajorEarnings=d=>{
   const events=(d?.upcomingEarnings?.events||[]).filter(e=>{
