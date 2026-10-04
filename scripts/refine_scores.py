@@ -452,14 +452,36 @@ def main():
     if current_soxl_session and soxl_change is not None: soxl_path.append(soxl_change)
     soxl_giveback=(max(soxl_path)-soxl_change) if current_soxl_session and soxl_path and soxl_change is not None else None
 
-    # 1) Semiconductor trend / leadership (30%).
-    semi_score=num(semi.get('score'))
-    semi_trend=avg([
-        semi_score,
-        scale(sox_rs,-1.5,1.5) if sox_rs is not None else None,
-        scale(soxx_rs,-1.5,1.5) if soxx_rs is not None else None,
-        scale(smh_rs,-1.5,1.5) if smh_rs is not None else None
-    ])
+    # 1) Semiconductor Trend v2 (30% of SOXL score).
+    # Mix a persistent SOXX technical trend with current-session relative leadership
+    # and breadth. This avoids double-counting the nested Semiconductor Leadership score.
+    soxx_trend_ma=piecewise(soxx_ma20,[(-10,0),(-5,25),(0,50),(5,75),(10,100)]) if soxx_ma20 is not None else None
+    soxx_r5=num(soxx_ctx.get('return5d'))
+    soxx_trend_r5=piecewise(soxx_r5,[(-5,0),(-2.5,25),(0,50),(2.5,75),(5,100)]) if soxx_r5 is not None else None
+    soxx_trend_rsi=piecewise(soxx_rsi,[
+        (0,0),(35,0),(40,20),(45,35),(50,50),(55,65),(60,80),
+        (65,90),(70,100),(80,100),(100,95)
+    ]) if soxx_rsi is not None else None
+    soxx_technical_parts=[
+        ('SOXX vs 20DMA',soxx_trend_ma,0.40),
+        ('SOXX 5D momentum',soxx_trend_r5,0.30),
+        ('SOXX RSI14 trend',soxx_trend_rsi,0.30)
+    ]
+    soxx_technical_available=[x for x in soxx_technical_parts if x[1] is not None]
+    soxx_technical_trend=(sum(v*w for _,v,w in soxx_technical_available)/sum(w for _,v,w in soxx_technical_available)
+                          if soxx_technical_available else None)
+
+    semi_breadth=num(((semi.get('breadth') or {}).get('score')))
+    semi_trend_parts=[
+        ('SOXX technical trend',soxx_technical_trend,0.30),
+        ('SOX relative strength',scale(sox_rs,-1.5,1.5) if sox_rs is not None else None,0.25),
+        ('SOXX relative strength',scale(soxx_rs,-1.5,1.5) if soxx_rs is not None else None,0.15),
+        ('SMH relative strength',scale(smh_rs,-1.5,1.5) if smh_rs is not None else None,0.10),
+        ('Semiconductor breadth',semi_breadth,0.20)
+    ]
+    semi_trend_available=[x for x in semi_trend_parts if x[1] is not None]
+    semi_trend=(sum(v*w for _,v,w in semi_trend_available)/sum(w for _,v,w in semi_trend_available)
+                if semi_trend_available else None)
 
     # 2) SOXL entry quality (25%). Reward a controlled pullback/normal extension,
     # not a falling knife and not a chase after an already extreme leveraged run.
@@ -598,6 +620,23 @@ def main():
         'label':sx_label,'signal':sx_sig,'horizon':'1–5 sessions',
         'instrument':'SOXL','last':soxl_last,'changePct':soxl_change,
         'components':{n:round(v) if v is not None else None for n,v,_ in sx_components},
+        'semiconductorTrend':{
+            'version':2,
+            'score':round(semi_trend) if semi_trend is not None else None,
+            'components':{n:round(v) if v is not None else None for n,v,_ in semi_trend_parts},
+            'weights':{n:int(w*100) for n,_,w in semi_trend_parts},
+            'availableWeightPct':round(100*sum(w for _,v,w in semi_trend_available)),
+            'soxxTechnicalTrend':{
+                'score':round(soxx_technical_trend) if soxx_technical_trend is not None else None,
+                'components':{n:round(v) if v is not None else None for n,v,_ in soxx_technical_parts},
+                'weights':{n:int(w*100) for n,_,w in soxx_technical_parts},
+                'context':{
+                    'ma20DistancePct':round(soxx_ma20,2) if soxx_ma20 is not None else None,
+                    'return5dPct':round(soxx_r5,2) if soxx_r5 is not None else None,
+                    'rsi14':round(soxx_rsi,1) if soxx_rsi is not None else None
+                }
+            }
+        },
         'gates':gates,'intradayGivebackPp':round(soxl_giveback,2) if soxl_giveback is not None else None,
         'entryQuality':{
             'score':round(soxl_entry) if soxl_entry is not None else None,
