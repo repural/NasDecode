@@ -310,7 +310,7 @@ def main():
     # 2) SOXL entry quality (25%). Reward a controlled pullback/normal extension,
     # not a falling knife and not a chase after an already extreme leveraged run.
     sx_ma20=num(soxl_ctx.get('ma20Distance')); sx_r5=num(soxl_ctx.get('return5d'))
-    sx_rsi=num(soxl_ctx.get('rsi14')); sx_highdist=num(soxl_ctx.get('distanceFromWindowHighPct'))
+    sx_rsi=num(soxl_ctx.get('rsi14')); sx_highdist=num(soxl_ctx.get('distanceFrom20dHighPct'))
     ma_entry=clamp(85-8*max(sx_ma20 or 0,0)-5*max(-(sx_ma20 or 0),0)) if sx_ma20 is not None else None
     r5_entry=clamp(78-5*max((sx_r5 or 0)-4,0)-4*max(-(sx_r5 or 0)-3,0)) if sx_r5 is not None else None
     rsi_entry=clamp(88-3*abs((sx_rsi or 55)-55)) if sx_rsi is not None else None
@@ -387,7 +387,7 @@ def main():
             'ma20DistancePct':round(sx_ma20,2) if sx_ma20 is not None else None,
             'return5dPct':round(sx_r5,2) if sx_r5 is not None else None,
             'rsi14':round(sx_rsi,1) if sx_rsi is not None else None,
-            'distanceFromWindowHighPct':round(sx_highdist,2) if sx_highdist is not None else None
+            'distanceFrom20dHighPct':round(sx_highdist,2) if sx_highdist is not None else None
         },
         'strongestDrivers':[f'{n} {v}' for n,v in sx_sorted[:2]],
         'weakestDrivers':[f'{n} {v}' for n,v in sx_weak[:2]],
