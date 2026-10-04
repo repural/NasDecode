@@ -172,7 +172,9 @@ def main():
                 body=r.read().decode("utf-8","replace")
         except Exception as e:
             print("Macro calendar refresh unavailable:",repr(e))
-            return
+            body=""
+            if not scheduled:
+                return
 
         p=TableRows(); p.feed(body)
         current_date=None
