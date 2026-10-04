@@ -770,6 +770,30 @@ SOXL ATR regime safety = average(ATR percentile safety, ATR expansion safety).
 This means high but contracting/normal-for-SOXL volatility is less punitive than a fresh
 realized-volatility expansion. ATR does not predict direction; it only changes leverage risk.
 
+SOXL CARD + SNAPSHOT INDICATORS
+-------------------------------
+Every refined SOXL snapshot stores the raw indicator, interpretation, and subscore together.
+
+RSI14 meaning:
+- >=80: Overheated
+- 70–79.9: Strong / Extended
+- 55–69.9: Healthy Bullish Momentum
+- 45–54.9: Neutral
+- 35–44.9: Weak Momentum
+- <35: Oversold / Weak
+
+The RSI14 score shown on the SOXL card is the same RSI entry-quality subscore used by the
+model. Higher means a better tactical entry condition; it is not a bullish-direction score.
+
+ATR(14) meaning uses SOXL-relative regime context:
+- Expanding / High Leverage Risk: ATR14/ATR50 >=1.20 or ATR14% 60-session percentile >=75
+- Contracting / Favorable: ATR14/ATR50 <=0.95 and percentile <=35
+- Elevated: ATR14/ATR50 >1.05 or percentile >=55, when not already in the high-risk state
+- Normal: otherwise
+
+The ATR score shown on the card is ATR regime safety. Higher means realized volatility is
+more favorable for a leveraged tactical entry; it is not a direction forecast.
+
 4.5 RATES / MACRO (10%)
 -----------------------
 Equal-weight average of available:
