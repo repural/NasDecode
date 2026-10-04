@@ -617,7 +617,7 @@ penalty. Therefore the model can simultaneously say:
 Semiconductor Breadth is the confirmation layer's breadth score based on the share of tracked
 semiconductor names outperforming QQQ.
 
-This v2 construction intentionally gives 50% of Semiconductor Trend to persistent structure
+This v2.1 construction intentionally gives 50% of Semiconductor Trend to persistent structure
 (SOXX Technical Trend + Breadth) and 50% to current relative leadership. A single strong or weak
 session can therefore change the score, but cannot by itself define the entire sector trend.
 
@@ -637,7 +637,7 @@ Entry Quality factor weights remain:
 5D-return factor:
   clip(78 - 5 x max(5D_return - 4,0) - 4 x max(-5D_return - 3,0))
 
-RSI14 factor — v3 momentum-aware curve:
+RSI14 factor — v3.3 momentum-aware curve:
   RSI 40 -> 40
   RSI 45 -> 55
   RSI 50 -> 70
@@ -793,7 +793,7 @@ Raw SOXL Score =
 + 10% Rates / Macro
 +  5% Catalyst Asymmetry
 
-v3 then applies two CONTINUOUS technical penalties before genuine risk gates.
+v3.3 then applies two CONTINUOUS technical penalties before genuine risk gates.
 
 A. CONTINUOUS 20DMA EXTENSION PENALTY
 -------------------------------------
