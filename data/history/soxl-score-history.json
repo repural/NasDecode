@@ -1,7 +1,7 @@
 {
-  "schemaVersion": 4,
+  "schemaVersion": 5,
   "instrument": "SOXL",
-  "currentScoreVersion": 3.2,
+  "currentScoreVersion": 3.3,
   "scoreWeights": {
     "Semiconductor trend": 30,
     "SOXL entry quality": 25,
@@ -19,7 +19,8 @@
     "scoreWeightsChangedBetweenV2AndV3": false,
     "v3Change": "Top-level weights unchanged. v3 replaces hard 20DMA/RSI chase caps with nonlinear RSI Entry Quality, continuous regime-aware 20DMA extension penalty, and continuous RSI x 20DMA overheating penalty.",
     "semiconductorTrendV2": "30% SOXX technical trend + 25% SOX relative strength + 15% SOXX relative strength + 10% SMH relative strength + 20% semiconductor breadth. SOXX technical trend = 40% 20DMA trend + 30% 5D momentum + 30% RSI14 trend.",
-    "adxAtrV32": "SOXX Technical Trend adds 20% directional ADX/DMI and reweights 20DMA/5D/RSI to 30/25/25. Volatility/Leverage Risk becomes 35% consolidation safety, 25% VXN condition, 15% VXN change, 25% SOXL ATR regime. ATR regime uses Wilder ATR14% 60-session percentile and ATR14/ATR50 expansion."
+    "adxAtrV32": "SOXX Technical Trend adds 20% directional ADX/DMI and reweights 20DMA/5D/RSI to 30/25/25. Volatility/Leverage Risk becomes 35% consolidation safety, 25% VXN condition, 15% VXN change, 25% SOXL ATR regime. ATR regime uses Wilder ATR14% 60-session percentile and ATR14/ATR50 expansion.",
+    "rsiV33": "Corrects RSI14 methodology. Live scores use Massive native daily RSI API; historical reconstruction uses standard Wilder RSI from Massive adjusted daily OHLC. Previous simple 14-change RSI was invalid for NasDecode daily RSI."
   },
   "period": {
     "from": "2026-09-21",
@@ -2781,6 +2782,1166 @@
                 "adx14": 18.4,
                 "plusDI14": 38.4,
                 "minusDI14": 19.7
+              }
+            }
+          },
+          "volatilityLeverageRisk": {
+            "score": 84,
+            "components": {
+              "Consolidation safety": 73,
+              "VXN condition": 100,
+              "VXN daily change": 67,
+              "SOXL ATR regime": 94
+            },
+            "weights": {
+              "Consolidation safety": 35,
+              "VXN condition": 25,
+              "VXN daily change": 15,
+              "SOXL ATR regime": 25
+            },
+            "soxlAtr": {
+              "atr14Pct": 7.5,
+              "atr14PctPercentile60": 1.7,
+              "atr14Vs50": 0.9,
+              "regimeSafetyScore": 94
+            }
+          }
+        }
+      ]
+    },
+    "v3_3": {
+      "scoreVersion": 3.3,
+      "rsiMethod": "Massive native daily RSI live; Wilder daily fallback/backfill",
+      "records": [
+        {
+          "date": "2026-09-21",
+          "score": 44,
+          "label": "Wait",
+          "close": 141.93,
+          "rawScore": 62,
+          "components": {
+            "Semiconductor trend": 94,
+            "SOXL entry quality": 27,
+            "Market confirmation": 50,
+            "Volatility / leverage risk": 74,
+            "Rates / macro": null,
+            "Catalyst asymmetry": 50
+          },
+          "entryQuality": {
+            "score": 27,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 0,
+              "RSI14": 98,
+              "20D-high distance": 25
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 22.7,
+            "regimeMultiplier": 0.8,
+            "regime": "Strong semiconductor trend",
+            "applied20dMaPenalty": 18.1,
+            "rsiHeatPenalty": 0,
+            "rsiExtensionAmplifier": 0.93,
+            "extremeRsi20dMaPenalty": 0,
+            "totalPenalty": 18.1,
+            "extremeRsiExtensionPenalty": 0
+          },
+          "technicalContext": {
+            "ma20DistancePct": 23.34,
+            "return5dPct": 40.34,
+            "rsi14": 59.3,
+            "distanceFrom20dHighPct": 0,
+            "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
+          },
+          "gates": [],
+          "reconstructionCoveragePct": 75,
+          "sourceSnapshotET": "2026-09-21T16:00:00-04:00",
+          "forwardReturnsPct": {
+            "T+1": 7.06,
+            "T+3": 3.1,
+            "T+5": 0.25
+          },
+          "scoreVersion": 3.3,
+          "semiconductorTrend": {
+            "version": 2.1,
+            "score": 94,
+            "components": {
+              "SOXX technical trend": 84,
+              "SOX relative strength": 100,
+              "SOXX relative strength": 100,
+              "SMH relative strength": 100,
+              "Semiconductor breadth": null
+            },
+            "weights": {
+              "SOXX technical trend": 30,
+              "SOX relative strength": 25,
+              "SOXX relative strength": 15,
+              "SMH relative strength": 10,
+              "Semiconductor breadth": 20
+            },
+            "availableWeightPct": 80,
+            "soxxTechnicalTrend": {
+              "score": 84,
+              "components": {
+                "SOXX vs 20DMA": 92,
+                "SOXX 5D momentum": 100,
+                "SOXX RSI14 trend": 84,
+                "SOXX ADX/DMI trend strength": 50
+              },
+              "weights": {
+                "SOXX vs 20DMA": 30,
+                "SOXX 5D momentum": 25,
+                "SOXX RSI14 trend": 25,
+                "SOXX ADX/DMI trend strength": 20
+              },
+              "context": {
+                "ma20DistancePct": 8.41,
+                "return5dPct": 12.45,
+                "rsi14": 61.8,
+                "adx14": 12.3,
+                "plusDI14": 39.3,
+                "minusDI14": 24,
+                "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
+              }
+            }
+          },
+          "volatilityLeverageRisk": {
+            "score": 74,
+            "components": {
+              "Consolidation safety": null,
+              "VXN condition": 50,
+              "VXN daily change": null,
+              "SOXL ATR regime": 99
+            },
+            "weights": {
+              "Consolidation safety": 35,
+              "VXN condition": 25,
+              "VXN daily change": 15,
+              "SOXL ATR regime": 25
+            },
+            "soxlAtr": {
+              "atr14Pct": 8.93,
+              "atr14PctPercentile60": 1.7,
+              "atr14Vs50": 0.8,
+              "regimeSafetyScore": 99
+            }
+          }
+        },
+        {
+          "date": "2026-09-22",
+          "score": 35,
+          "label": "Poor Entry",
+          "close": 151.95,
+          "rawScore": 63,
+          "components": {
+            "Semiconductor trend": 95,
+            "SOXL entry quality": 27,
+            "Market confirmation": 56,
+            "Volatility / leverage risk": 70,
+            "Rates / macro": 66,
+            "Catalyst asymmetry": 50
+          },
+          "entryQuality": {
+            "score": 27,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 0,
+              "RSI14": 97,
+              "20D-high distance": 25
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 34.5,
+            "regimeMultiplier": 0.8,
+            "regime": "Strong semiconductor trend",
+            "applied20dMaPenalty": 27.6,
+            "rsiHeatPenalty": 0,
+            "rsiExtensionAmplifier": 1,
+            "extremeRsi20dMaPenalty": 0,
+            "totalPenalty": 27.6,
+            "extremeRsiExtensionPenalty": 0
+          },
+          "technicalContext": {
+            "ma20DistancePct": 29.75,
+            "return5dPct": 48.5,
+            "rsi14": 62.7,
+            "distanceFrom20dHighPct": 0,
+            "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
+          },
+          "gates": [],
+          "reconstructionCoveragePct": 100,
+          "sourceSnapshotET": "2026-09-22T16:18:47.905206-04:00",
+          "forwardReturnsPct": {
+            "T+1": -3.75,
+            "T+3": -0.33,
+            "T+5": -3.26
+          },
+          "scoreVersion": 3.3,
+          "semiconductorTrend": {
+            "version": 2.1,
+            "score": 95,
+            "components": {
+              "SOXX technical trend": 88,
+              "SOX relative strength": 100,
+              "SOXX relative strength": 100,
+              "SMH relative strength": 99,
+              "Semiconductor breadth": null
+            },
+            "weights": {
+              "SOXX technical trend": 30,
+              "SOX relative strength": 25,
+              "SOXX relative strength": 15,
+              "SMH relative strength": 10,
+              "Semiconductor breadth": 20
+            },
+            "availableWeightPct": 80,
+            "soxxTechnicalTrend": {
+              "score": 88,
+              "components": {
+                "SOXX vs 20DMA": 100,
+                "SOXX 5D momentum": 100,
+                "SOXX RSI14 trend": 90,
+                "SOXX ADX/DMI trend strength": 50
+              },
+              "weights": {
+                "SOXX vs 20DMA": 30,
+                "SOXX 5D momentum": 25,
+                "SOXX RSI14 trend": 25,
+                "SOXX ADX/DMI trend strength": 20
+              },
+              "context": {
+                "ma20DistancePct": 10.3,
+                "return5dPct": 14.82,
+                "rsi14": 64.8,
+                "adx14": 13.5,
+                "plusDI14": 40.7,
+                "minusDI14": 22.1,
+                "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
+              }
+            }
+          },
+          "volatilityLeverageRisk": {
+            "score": 70,
+            "components": {
+              "Consolidation safety": null,
+              "VXN condition": 50,
+              "VXN daily change": 56,
+              "SOXL ATR regime": 98
+            },
+            "weights": {
+              "Consolidation safety": 35,
+              "VXN condition": 25,
+              "VXN daily change": 15,
+              "SOXL ATR regime": 25
+            },
+            "soxlAtr": {
+              "atr14Pct": 8.46,
+              "atr14PctPercentile60": 1.7,
+              "atr14Vs50": 0.83,
+              "regimeSafetyScore": 98
+            }
+          }
+        },
+        {
+          "date": "2026-09-23",
+          "score": 27,
+          "label": "Poor Entry",
+          "close": 146.25,
+          "rawScore": 50,
+          "components": {
+            "Semiconductor trend": 62,
+            "SOXL entry quality": 40,
+            "Market confirmation": 50,
+            "Volatility / leverage risk": 45,
+            "Rates / macro": 51,
+            "Catalyst asymmetry": 50
+          },
+          "entryQuality": {
+            "score": 40,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 0,
+              "RSI14": 99,
+              "20D-high distance": 81
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 22.5,
+            "regimeMultiplier": 1,
+            "regime": "No extension relief",
+            "applied20dMaPenalty": 22.5,
+            "rsiHeatPenalty": 0,
+            "rsiExtensionAmplifier": 0.93,
+            "extremeRsi20dMaPenalty": 0,
+            "totalPenalty": 22.5,
+            "extremeRsiExtensionPenalty": 0
+          },
+          "technicalContext": {
+            "ma20DistancePct": 23.27,
+            "return5dPct": 40.67,
+            "rsi14": 59.6,
+            "distanceFrom20dHighPct": -3.75,
+            "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
+          },
+          "gates": [],
+          "reconstructionCoveragePct": 100,
+          "sourceSnapshotET": "2026-09-23T23:03:24.035623-04:00",
+          "forwardReturnsPct": {
+            "T+1": 0.05,
+            "T+3": -2.71,
+            "T+5": 1.1
+          },
+          "scoreVersion": 3.3,
+          "semiconductorTrend": {
+            "version": 2.1,
+            "score": 62,
+            "components": {
+              "SOXX technical trend": 84,
+              "SOX relative strength": 47,
+              "SOXX relative strength": 47,
+              "SMH relative strength": 55,
+              "Semiconductor breadth": null
+            },
+            "weights": {
+              "SOXX technical trend": 30,
+              "SOX relative strength": 25,
+              "SOXX relative strength": 15,
+              "SMH relative strength": 10,
+              "Semiconductor breadth": 20
+            },
+            "availableWeightPct": 80,
+            "soxxTechnicalTrend": {
+              "score": 84,
+              "components": {
+                "SOXX vs 20DMA": 92,
+                "SOXX 5D momentum": 100,
+                "SOXX RSI14 trend": 84,
+                "SOXX ADX/DMI trend strength": 50
+              },
+              "weights": {
+                "SOXX vs 20DMA": 30,
+                "SOXX 5D momentum": 25,
+                "SOXX RSI14 trend": 25,
+                "SOXX ADX/DMI trend strength": 20
+              },
+              "context": {
+                "ma20DistancePct": 8.4,
+                "return5dPct": 12.68,
+                "rsi14": 62.1,
+                "adx14": 14.7,
+                "plusDI14": 38.1,
+                "minusDI14": 20.7,
+                "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
+              }
+            }
+          },
+          "volatilityLeverageRisk": {
+            "score": 45,
+            "components": {
+              "Consolidation safety": null,
+              "VXN condition": 0,
+              "VXN daily change": 33,
+              "SOXL ATR regime": 96
+            },
+            "weights": {
+              "Consolidation safety": 35,
+              "VXN condition": 25,
+              "VXN daily change": 15,
+              "SOXL ATR regime": 25
+            },
+            "soxlAtr": {
+              "atr14Pct": 8.77,
+              "atr14PctPercentile60": 3.3,
+              "atr14Vs50": 0.84,
+              "regimeSafetyScore": 96
+            }
+          }
+        },
+        {
+          "date": "2026-09-24",
+          "score": 28,
+          "label": "Poor Entry",
+          "close": 146.33,
+          "rawScore": 48,
+          "components": {
+            "Semiconductor trend": 58,
+            "SOXL entry quality": 40,
+            "Market confirmation": 27,
+            "Volatility / leverage risk": 64,
+            "Rates / macro": 44,
+            "Catalyst asymmetry": 50
+          },
+          "entryQuality": {
+            "score": 40,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 0,
+              "RSI14": 99,
+              "20D-high distance": 81
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 19.6,
+            "regimeMultiplier": 1,
+            "regime": "No extension relief",
+            "applied20dMaPenalty": 19.6,
+            "rsiHeatPenalty": 0,
+            "rsiExtensionAmplifier": 0.87,
+            "extremeRsi20dMaPenalty": 0,
+            "totalPenalty": 19.6,
+            "extremeRsiExtensionPenalty": 0
+          },
+          "technicalContext": {
+            "ma20DistancePct": 21.81,
+            "return5dPct": 27.44,
+            "rsi14": 59.7,
+            "distanceFrom20dHighPct": -3.7,
+            "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
+          },
+          "gates": [],
+          "reconstructionCoveragePct": 100,
+          "sourceSnapshotET": "2026-09-24T22:59:55.867985-04:00",
+          "forwardReturnsPct": {
+            "T+1": 3.5,
+            "T+3": 0.46,
+            "T+5": 5.03
+          },
+          "scoreVersion": 3.3,
+          "semiconductorTrend": {
+            "version": 2.1,
+            "score": 58,
+            "components": {
+              "SOXX technical trend": 83,
+              "SOX relative strength": 38,
+              "SOXX relative strength": 52,
+              "SMH relative strength": 45,
+              "Semiconductor breadth": null
+            },
+            "weights": {
+              "SOXX technical trend": 30,
+              "SOX relative strength": 25,
+              "SOXX relative strength": 15,
+              "SMH relative strength": 10,
+              "Semiconductor breadth": 20
+            },
+            "availableWeightPct": 80,
+            "soxxTechnicalTrend": {
+              "score": 83,
+              "components": {
+                "SOXX vs 20DMA": 90,
+                "SOXX 5D momentum": 100,
+                "SOXX RSI14 trend": 84,
+                "SOXX ADX/DMI trend strength": 52
+              },
+              "weights": {
+                "SOXX vs 20DMA": 30,
+                "SOXX 5D momentum": 25,
+                "SOXX RSI14 trend": 25,
+                "SOXX ADX/DMI trend strength": 20
+              },
+              "context": {
+                "ma20DistancePct": 7.94,
+                "return5dPct": 9.05,
+                "rsi14": 62.1,
+                "adx14": 15.5,
+                "plusDI14": 36,
+                "minusDI14": 21.1,
+                "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
+              }
+            }
+          },
+          "volatilityLeverageRisk": {
+            "score": 64,
+            "components": {
+              "Consolidation safety": null,
+              "VXN condition": 50,
+              "VXN daily change": 36,
+              "SOXL ATR regime": 96
+            },
+            "weights": {
+              "Consolidation safety": 35,
+              "VXN condition": 25,
+              "VXN daily change": 15,
+              "SOXL ATR regime": 25
+            },
+            "soxlAtr": {
+              "atr14Pct": 8.64,
+              "atr14PctPercentile60": 3.3,
+              "atr14Vs50": 0.86,
+              "regimeSafetyScore": 96
+            }
+          }
+        },
+        {
+          "date": "2026-09-25",
+          "score": 42,
+          "label": "Wait",
+          "close": 151.45,
+          "rawScore": 62,
+          "components": {
+            "Semiconductor trend": 80,
+            "SOXL entry quality": 28,
+            "Market confirmation": 67,
+            "Volatility / leverage risk": 81,
+            "Rates / macro": 67,
+            "Catalyst asymmetry": 50
+          },
+          "entryQuality": {
+            "score": 28,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 0,
+              "RSI14": 98,
+              "20D-high distance": 27
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 25.1,
+            "regimeMultiplier": 0.8,
+            "regime": "Strong semiconductor trend",
+            "applied20dMaPenalty": 20.1,
+            "rsiHeatPenalty": 0,
+            "rsiExtensionAmplifier": 0.98,
+            "extremeRsi20dMaPenalty": 0,
+            "totalPenalty": 20.1,
+            "extremeRsiExtensionPenalty": 0
+          },
+          "technicalContext": {
+            "ma20DistancePct": 24.6,
+            "return5dPct": 22.46,
+            "rsi14": 61.6,
+            "distanceFrom20dHighPct": -0.33,
+            "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
+          },
+          "gates": [],
+          "reconstructionCoveragePct": 100,
+          "sourceSnapshotET": "2026-09-25T19:16:34.839510-04:00",
+          "forwardReturnsPct": {
+            "T+1": -6.05,
+            "T+3": -2.37,
+            "T+5": 8.1
+          },
+          "scoreVersion": 3.3,
+          "semiconductorTrend": {
+            "version": 2.1,
+            "score": 80,
+            "components": {
+              "SOXX technical trend": 86,
+              "SOX relative strength": 81,
+              "SOXX relative strength": 73,
+              "SMH relative strength": 68,
+              "Semiconductor breadth": null
+            },
+            "weights": {
+              "SOXX technical trend": 30,
+              "SOX relative strength": 25,
+              "SOXX relative strength": 15,
+              "SMH relative strength": 10,
+              "Semiconductor breadth": 20
+            },
+            "availableWeightPct": 80,
+            "soxxTechnicalTrend": {
+              "score": 86,
+              "components": {
+                "SOXX vs 20DMA": 94,
+                "SOXX 5D momentum": 100,
+                "SOXX RSI14 trend": 88,
+                "SOXX ADX/DMI trend strength": 55
+              },
+              "weights": {
+                "SOXX vs 20DMA": 30,
+                "SOXX 5D momentum": 25,
+                "SOXX RSI14 trend": 25,
+                "SOXX ADX/DMI trend strength": 20
+              },
+              "context": {
+                "ma20DistancePct": 8.71,
+                "return5dPct": 7.43,
+                "rsi14": 63.8,
+                "adx14": 16.6,
+                "plusDI14": 38.3,
+                "minusDI14": 20.3,
+                "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
+              }
+            }
+          },
+          "volatilityLeverageRisk": {
+            "score": 81,
+            "components": {
+              "Consolidation safety": 65,
+              "VXN condition": 100,
+              "VXN daily change": 60,
+              "SOXL ATR regime": 96
+            },
+            "weights": {
+              "Consolidation safety": 35,
+              "VXN condition": 25,
+              "VXN daily change": 15,
+              "SOXL ATR regime": 25
+            },
+            "soxlAtr": {
+              "atr14Pct": 8.11,
+              "atr14PctPercentile60": 1.7,
+              "atr14Vs50": 0.85,
+              "regimeSafetyScore": 96
+            }
+          }
+        },
+        {
+          "date": "2026-09-28",
+          "score": 38,
+          "label": "Poor Entry",
+          "close": 142.29,
+          "rawScore": 47,
+          "components": {
+            "Semiconductor trend": 48,
+            "SOXL entry quality": 53,
+            "Market confirmation": 27,
+            "Volatility / leverage risk": 62,
+            "Rates / macro": 37,
+            "Catalyst asymmetry": 50
+          },
+          "entryQuality": {
+            "score": 53,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 78,
+              "RSI14": 89,
+              "20D-high distance": 70
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 8.8,
+            "regimeMultiplier": 1,
+            "regime": "No extension relief",
+            "applied20dMaPenalty": 8.8,
+            "rsiHeatPenalty": 0,
+            "rsiExtensionAmplifier": 0.54,
+            "extremeRsi20dMaPenalty": 0,
+            "totalPenalty": 8.8,
+            "extremeRsiExtensionPenalty": 0
+          },
+          "technicalContext": {
+            "ma20DistancePct": 15.59,
+            "return5dPct": 0.25,
+            "rsi14": 56.3,
+            "distanceFrom20dHighPct": -6.36,
+            "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
+          },
+          "gates": [
+            "Broad semiconductor underperformance caps score at 50"
+          ],
+          "reconstructionCoveragePct": 100,
+          "sourceSnapshotET": "2026-09-28T20:20:23.583579-04:00",
+          "forwardReturnsPct": {
+            "T+1": 3.31,
+            "T+3": 8.01,
+            "T+5": null
+          },
+          "scoreVersion": 3.3,
+          "semiconductorTrend": {
+            "version": 2.1,
+            "score": 48,
+            "components": {
+              "SOXX technical trend": 67,
+              "SOX relative strength": 27,
+              "SOXX relative strength": 11,
+              "SMH relative strength": 45,
+              "Semiconductor breadth": 75
+            },
+            "weights": {
+              "SOXX technical trend": 30,
+              "SOX relative strength": 25,
+              "SOXX relative strength": 15,
+              "SMH relative strength": 10,
+              "Semiconductor breadth": 20
+            },
+            "availableWeightPct": 100,
+            "soxxTechnicalTrend": {
+              "score": 67,
+              "components": {
+                "SOXX vs 20DMA": 80,
+                "SOXX 5D momentum": 53,
+                "SOXX RSI14 trend": 76,
+                "SOXX ADX/DMI trend strength": 55
+              },
+              "weights": {
+                "SOXX vs 20DMA": 30,
+                "SOXX 5D momentum": 25,
+                "SOXX RSI14 trend": 25,
+                "SOXX ADX/DMI trend strength": 20
+              },
+              "context": {
+                "ma20DistancePct": 5.93,
+                "return5dPct": 0.26,
+                "rsi14": 58.8,
+                "adx14": 16.6,
+                "plusDI14": 35,
+                "minusDI14": 24.9,
+                "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
+              }
+            }
+          },
+          "volatilityLeverageRisk": {
+            "score": 62,
+            "components": {
+              "Consolidation safety": 70,
+              "VXN condition": 50,
+              "VXN daily change": 14,
+              "SOXL ATR regime": 91
+            },
+            "weights": {
+              "Consolidation safety": 35,
+              "VXN condition": 25,
+              "VXN daily change": 15,
+              "SOXL ATR regime": 25
+            },
+            "soxlAtr": {
+              "atr14Pct": 8.83,
+              "atr14PctPercentile60": 8.3,
+              "atr14Vs50": 0.89,
+              "regimeSafetyScore": 91
+            }
+          }
+        },
+        {
+          "date": "2026-09-29",
+          "score": 54,
+          "label": "Wait",
+          "close": 147,
+          "rawScore": 63,
+          "components": {
+            "Semiconductor trend": 87,
+            "SOXL entry quality": 49,
+            "Market confirmation": 37,
+            "Volatility / leverage risk": 73,
+            "Rates / macro": 55,
+            "Catalyst asymmetry": 50
+          },
+          "entryQuality": {
+            "score": 49,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 77,
+              "RSI14": 95,
+              "20D-high distance": 49
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 11.7,
+            "regimeMultiplier": 0.8,
+            "regime": "Strong semiconductor trend",
+            "applied20dMaPenalty": 9.4,
+            "rsiHeatPenalty": 0,
+            "rsiExtensionAmplifier": 0.67,
+            "extremeRsi20dMaPenalty": 0,
+            "totalPenalty": 9.4,
+            "extremeRsiExtensionPenalty": 0
+          },
+          "technicalContext": {
+            "ma20DistancePct": 17.78,
+            "return5dPct": -3.26,
+            "rsi14": 58.3,
+            "distanceFrom20dHighPct": -3.26,
+            "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
+          },
+          "gates": [],
+          "reconstructionCoveragePct": 100,
+          "sourceSnapshotET": "2026-09-29T23:02:34.155609-04:00",
+          "forwardReturnsPct": {
+            "T+1": 0.59,
+            "T+3": 11.37,
+            "T+5": null
+          },
+          "scoreVersion": 3.3,
+          "semiconductorTrend": {
+            "version": 2.1,
+            "score": 87,
+            "components": {
+              "SOXX technical trend": 66,
+              "SOX relative strength": 97,
+              "SOXX relative strength": 93,
+              "SMH relative strength": 91,
+              "Semiconductor breadth": 100
+            },
+            "weights": {
+              "SOXX technical trend": 30,
+              "SOX relative strength": 25,
+              "SOXX relative strength": 15,
+              "SMH relative strength": 10,
+              "Semiconductor breadth": 20
+            },
+            "availableWeightPct": 100,
+            "soxxTechnicalTrend": {
+              "score": 66,
+              "components": {
+                "SOXX vs 20DMA": 83,
+                "SOXX 5D momentum": 41,
+                "SOXX RSI14 trend": 81,
+                "SOXX ADX/DMI trend strength": 55
+              },
+              "weights": {
+                "SOXX vs 20DMA": 30,
+                "SOXX 5D momentum": 25,
+                "SOXX RSI14 trend": 25,
+                "SOXX ADX/DMI trend strength": 20
+              },
+              "context": {
+                "ma20DistancePct": 6.62,
+                "return5dPct": -0.93,
+                "rsi14": 60.6,
+                "adx14": 16.8,
+                "plusDI14": 34.5,
+                "minusDI14": 23.5,
+                "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
+              }
+            }
+          },
+          "volatilityLeverageRisk": {
+            "score": 73,
+            "components": {
+              "Consolidation safety": 83,
+              "VXN condition": 50,
+              "VXN daily change": 52,
+              "SOXL ATR regime": 94
+            },
+            "weights": {
+              "Consolidation safety": 35,
+              "VXN condition": 25,
+              "VXN daily change": 15,
+              "SOXL ATR regime": 25
+            },
+            "soxlAtr": {
+              "atr14Pct": 8.43,
+              "atr14PctPercentile60": 3.3,
+              "atr14Vs50": 0.88,
+              "regimeSafetyScore": 94
+            }
+          }
+        },
+        {
+          "date": "2026-09-30",
+          "score": 54,
+          "label": "Wait",
+          "close": 147.86,
+          "rawScore": 62,
+          "components": {
+            "Semiconductor trend": 83,
+            "SOXL entry quality": 49,
+            "Market confirmation": 64,
+            "Volatility / leverage risk": 71,
+            "Rates / macro": 32,
+            "Catalyst asymmetry": 35
+          },
+          "entryQuality": {
+            "score": 49,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 78,
+              "RSI14": 96,
+              "20D-high distance": 45
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 10,
+            "regimeMultiplier": 0.8,
+            "regime": "Strong semiconductor trend",
+            "applied20dMaPenalty": 8,
+            "rsiHeatPenalty": 0,
+            "rsiExtensionAmplifier": 0.59,
+            "extremeRsi20dMaPenalty": 0,
+            "totalPenalty": 8,
+            "extremeRsiExtensionPenalty": 0
+          },
+          "technicalContext": {
+            "ma20DistancePct": 16.51,
+            "return5dPct": 1.1,
+            "rsi14": 58.7,
+            "distanceFrom20dHighPct": -2.69,
+            "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
+          },
+          "gates": [
+            "Pending high-impact semiconductor catalyst caps score at 64"
+          ],
+          "reconstructionCoveragePct": 100,
+          "sourceSnapshotET": "2026-09-30T14:25:31.081603-04:00",
+          "forwardReturnsPct": {
+            "T+1": 3.94,
+            "T+3": null,
+            "T+5": null
+          },
+          "scoreVersion": 3.3,
+          "semiconductorTrend": {
+            "version": 2.1,
+            "score": 83,
+            "components": {
+              "SOXX technical trend": 70,
+              "SOX relative strength": 97,
+              "SOXX relative strength": 93,
+              "SMH relative strength": 91,
+              "Semiconductor breadth": 75
+            },
+            "weights": {
+              "SOXX technical trend": 30,
+              "SOX relative strength": 25,
+              "SOXX relative strength": 15,
+              "SMH relative strength": 10,
+              "Semiconductor breadth": 20
+            },
+            "availableWeightPct": 100,
+            "soxxTechnicalTrend": {
+              "score": 70,
+              "components": {
+                "SOXX vs 20DMA": 81,
+                "SOXX 5D momentum": 55,
+                "SOXX RSI14 trend": 82,
+                "SOXX ADX/DMI trend strength": 56
+              },
+              "weights": {
+                "SOXX vs 20DMA": 30,
+                "SOXX 5D momentum": 25,
+                "SOXX RSI14 trend": 25,
+                "SOXX ADX/DMI trend strength": 20
+              },
+              "context": {
+                "ma20DistancePct": 6.17,
+                "return5dPct": 0.52,
+                "rsi14": 61,
+                "adx14": 16.9,
+                "plusDI14": 33.3,
+                "minusDI14": 23.2,
+                "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
+              }
+            }
+          },
+          "volatilityLeverageRisk": {
+            "score": 71,
+            "components": {
+              "Consolidation safety": 80,
+              "VXN condition": 50,
+              "VXN daily change": 47,
+              "SOXL ATR regime": 96
+            },
+            "weights": {
+              "Consolidation safety": 35,
+              "VXN condition": 25,
+              "VXN daily change": 15,
+              "SOXL ATR regime": 25
+            },
+            "soxlAtr": {
+              "atr14Pct": 8.09,
+              "atr14PctPercentile60": 1.7,
+              "atr14Vs50": 0.87,
+              "regimeSafetyScore": 96
+            }
+          }
+        },
+        {
+          "date": "2026-10-01",
+          "score": 60,
+          "label": "Selective / Starter",
+          "close": 153.69,
+          "rawScore": 69,
+          "components": {
+            "Semiconductor trend": 91,
+            "SOXL entry quality": 44,
+            "Market confirmation": 71,
+            "Volatility / leverage risk": 74,
+            "Rates / macro": 59,
+            "Catalyst asymmetry": 65
+          },
+          "entryQuality": {
+            "score": 44,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 73,
+              "RSI14": 99,
+              "20D-high distance": 25
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 13.8,
+            "regimeMultiplier": 0.65,
+            "regime": "Strong semiconductor trend + market confirmation",
+            "applied20dMaPenalty": 9,
+            "rsiHeatPenalty": 0,
+            "rsiExtensionAmplifier": 0.73,
+            "extremeRsi20dMaPenalty": 0,
+            "totalPenalty": 9,
+            "extremeRsiExtensionPenalty": 0
+          },
+          "technicalContext": {
+            "ma20DistancePct": 18.89,
+            "return5dPct": 5.03,
+            "rsi14": 61.2,
+            "distanceFrom20dHighPct": 0,
+            "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
+          },
+          "gates": [],
+          "reconstructionCoveragePct": 100,
+          "sourceSnapshotET": "2026-10-01T16:23:47.748019-04:00",
+          "forwardReturnsPct": {
+            "T+1": 6.52,
+            "T+3": null,
+            "T+5": null
+          },
+          "scoreVersion": 3.3,
+          "semiconductorTrend": {
+            "version": 2.1,
+            "score": 91,
+            "components": {
+              "SOXX technical trend": 75,
+              "SOX relative strength": 100,
+              "SOXX relative strength": 94,
+              "SMH relative strength": 97,
+              "Semiconductor breadth": 100
+            },
+            "weights": {
+              "SOXX technical trend": 30,
+              "SOX relative strength": 25,
+              "SOXX relative strength": 15,
+              "SMH relative strength": 10,
+              "Semiconductor breadth": 20
+            },
+            "availableWeightPct": 100,
+            "soxxTechnicalTrend": {
+              "score": 75,
+              "components": {
+                "SOXX vs 20DMA": 84,
+                "SOXX 5D momentum": 68,
+                "SOXX RSI14 trend": 86,
+                "SOXX ADX/DMI trend strength": 57
+              },
+              "weights": {
+                "SOXX vs 20DMA": 30,
+                "SOXX 5D momentum": 25,
+                "SOXX RSI14 trend": 25,
+                "SOXX ADX/DMI trend strength": 20
+              },
+              "context": {
+                "ma20DistancePct": 6.85,
+                "return5dPct": 1.81,
+                "rsi14": 63.2,
+                "adx14": 17.3,
+                "plusDI14": 34.3,
+                "minusDI14": 21.6,
+                "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
+              }
+            }
+          },
+          "volatilityLeverageRisk": {
+            "score": 74,
+            "components": {
+              "Consolidation safety": 87,
+              "VXN condition": 50,
+              "VXN daily change": 48,
+              "SOXL ATR regime": 95
+            },
+            "weights": {
+              "Consolidation safety": 35,
+              "VXN condition": 25,
+              "VXN daily change": 15,
+              "SOXL ATR regime": 25
+            },
+            "soxlAtr": {
+              "atr14Pct": 7.8,
+              "atr14PctPercentile60": 1.7,
+              "atr14Vs50": 0.88,
+              "regimeSafetyScore": 95
+            }
+          }
+        },
+        {
+          "date": "2026-10-02",
+          "score": 53,
+          "label": "Wait",
+          "close": 163.71,
+          "rawScore": 68,
+          "components": {
+            "Semiconductor trend": 89,
+            "SOXL entry quality": 40,
+            "Market confirmation": 70,
+            "Volatility / leverage risk": 84,
+            "Rates / macro": 36,
+            "Catalyst asymmetry": 95
+          },
+          "entryQuality": {
+            "score": 40,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 58,
+              "RSI14": 95,
+              "20D-high distance": 25
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 23.8,
+            "regimeMultiplier": 0.65,
+            "regime": "Strong semiconductor trend + market confirmation",
+            "applied20dMaPenalty": 15.5,
+            "rsiHeatPenalty": 17.8,
+            "rsiExtensionAmplifier": 0.96,
+            "extremeRsi20dMaPenalty": 17,
+            "totalPenalty": 15.5,
+            "extremeRsiExtensionPenalty": 0
+          },
+          "technicalContext": {
+            "ma20DistancePct": 23.91,
+            "return5dPct": 8.1,
+            "rsi14": 65.1,
+            "distanceFrom20dHighPct": 0,
+            "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
+          },
+          "gates": [],
+          "reconstructionCoveragePct": 100,
+          "sourceSnapshotET": "2026-10-02T15:22:31.441316-04:00",
+          "forwardReturnsPct": {
+            "T+1": null,
+            "T+3": null,
+            "T+5": null
+          },
+          "scoreVersion": 3.3,
+          "semiconductorTrend": {
+            "version": 2.1,
+            "score": 89,
+            "components": {
+              "SOXX technical trend": 82,
+              "SOX relative strength": 94,
+              "SOXX relative strength": 86,
+              "SMH relative strength": 81,
+              "Semiconductor breadth": 100
+            },
+            "weights": {
+              "SOXX technical trend": 30,
+              "SOX relative strength": 25,
+              "SOXX relative strength": 15,
+              "SMH relative strength": 10,
+              "Semiconductor breadth": 20
+            },
+            "availableWeightPct": 100,
+            "soxxTechnicalTrend": {
+              "score": 82,
+              "components": {
+                "SOXX vs 20DMA": 92,
+                "SOXX 5D momentum": 78,
+                "SOXX RSI14 trend": 93,
+                "SOXX ADX/DMI trend strength": 60
+              },
+              "weights": {
+                "SOXX vs 20DMA": 30,
+                "SOXX 5D momentum": 25,
+                "SOXX RSI14 trend": 25,
+                "SOXX ADX/DMI trend strength": 20
+              },
+              "context": {
+                "ma20DistancePct": 8.31,
+                "return5dPct": 2.83,
+                "rsi14": 66.6,
+                "adx14": 18.4,
+                "plusDI14": 38.4,
+                "minusDI14": 19.7,
+                "rsi14Source": "Wilder fallback from Massive daily OHLC (historical reconstruction)"
               }
             }
           },
