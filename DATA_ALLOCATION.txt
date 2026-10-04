@@ -967,10 +967,22 @@ Weights:
 - Volatility / leverage risk: 15%
 - Rates / macro: 10%
 - Semiconductor catalyst asymmetry: 5%
+SOXL entry-quality subscore:
+- 20DMA distance: 30%
+- 5-day return: 20%
+- RSI14: 20%
+- Distance from 20-day high: 20%
+- Intraday giveback from the best observed session return: 10%
+- Missing factors are excluded and the available weights are renormalized. Intraday giveback is
+  unavailable outside a current U.S. session rather than being treated as a perfect score.
+
 Behavior:
-- Hard caps apply when semiconductor leadership breaks, broad relative strength is negative,
-  Consolidation Risk is high, SOXL is >8% above its 20DMA, volatility/yields shock together,
-  or a high-impact semiconductor catalyst is pending.
+- 20DMA extension is a nonlinear hard gate: >8% caps the final score at 55; >12% caps at 40;
+  >18% caps at 30.
+- Combined extreme extension (>15% above 20DMA and RSI14 >80) caps the final score at 25.
+- Additional hard caps apply when semiconductor leadership breaks, broad relative strength is
+  negative, Consolidation Risk is high, volatility/yields shock together, or a high-impact
+  semiconductor catalyst is pending.
 Publication:
 - Temporarily visible in the Market Assessment category for calibration.
 Validation:
