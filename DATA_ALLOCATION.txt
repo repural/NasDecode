@@ -1,0 +1,735 @@
+NASDECODE DATA ALLOCATION AND REFRESH MAP
+========================================
+Last reviewed against repository code: 2026-10-04
+Scope: NasDecode repository only.
+
+PURPOSE
+-------
+This file documents:
+1. Which categories of data NasDecode collects.
+2. The primary/fallback source for each category.
+3. How often the collection code runs.
+4. Whether the underlying source is intraday, daily, event-driven, or historical.
+5. Where the data is stored/used.
+6. When the public UI is regenerated and when an already-open browser actually reloads data.
+
+Important distinction:
+- "Workflow refresh rate" means how often NasDecode attempts to fetch/recalculate.
+- "Source update rate" means how often the upstream source itself normally changes.
+Running a workflow every 5 minutes does not make a daily source (for example Cboe put/call
+or S5FI) a 5-minute data source.
+
+
+======================================================================
+A. LIVE / SESSION MARKET DATA
+======================================================================
+
+A1. Nasdaq, QQQ and equity/ETF prices
+-------------------------------------
+Data:
+- Nasdaq Composite (.IXIC)
+- QQQ
+- SOXX, SMH
+- Mega-cap stocks: AAPL, MSFT, AMZN, GOOGL, META, NVDA, TSLA
+- Nasdaq-100 constituent quotes used for breadth
+- Current SOX-member equity quotes used for semiconductor breadth
+- Other tracked equity symbols required by validation/history
+
+Primary source:
+- CNBC quote JSON service.
+
+Collection:
+- Collected by scripts/refresh.py.
+- CNBC extended-hours fields are requested as well.
+- Session logic distinguishes regular, premarket, after-hours and previous-close data.
+- If adequate current-session coverage is unavailable, NasDecode explicitly falls back
+  to previous regular-session data instead of presenting stale data as live.
+
+NasDecode workflow refresh:
+- Every ~5 minutes during the U.S. cash-session gate, 09:30-16:20 ET, trading weekdays.
+- Also collected during the scheduled premarket, macro-release and post-close runs
+  described in Section J.
+
+Upstream frequency:
+- Intraday quote feed; actual quote freshness is retained in the generated data.
+
+Used for:
+- Nasdaq market return/context
+- Mega-cap Leadership
+- Market Breadth
+- Semiconductor Leadership confirmations
+- Internal Confirmation
+- Market Response / Constraint Absorption
+- Consolidation Risk
+- Opportunity Score
+- Session analysis and historical validation
+
+
+A2. Treasury yields: 10Y and 2Y
+-------------------------------
+Data:
+- US10Y
+- US2Y
+- Current yield
+- Change versus previous close
+- Derived 2s10s spread and curve mechanism
+
+Primary source:
+- CNBC quote feed / Tradeweb quote data exposed through the CNBC service.
+
+Additional context:
+- U.S. Treasury official daily 10Y TIPS real-yield curve is used as real-yield context
+  inside the 10Y factor.
+- Federal Reserve H.15 / official rate pages are available to supporting rate logic
+  where applicable.
+
+NasDecode workflow refresh:
+- Same main refresh cadence as live market data: approximately every 5 minutes during
+  09:30-16:20 ET, plus scheduled premarket/macro/post-close runs.
+
+Upstream frequency:
+- Nominal 10Y/2Y: intraday.
+- Treasury real-yield context: daily official observation.
+
+Used for:
+- 10Y Treasury Yield card
+- 2Y Treasury Yield card
+- Rates / Macro bucket
+- Opportunity Score macro timing
+- Consolidation Risk rate stress
+- Market Response / Constraint Absorption
+
+
+A3. Volatility
+--------------
+Data:
+- VXN (Nasdaq volatility)
+- VIX (broad-market volatility)
+- Current level and percentage move
+
+Primary source:
+- CNBC quote feed; index data originates from the volatility-index market/Cboe context.
+
+NasDecode workflow refresh:
+- Approximately every 5 minutes during the U.S. cash session, plus other main refreshes.
+
+Upstream frequency:
+- Intraday.
+
+Used for:
+- Nasdaq Volatility (VXN / VIX)
+- Internal Confirmation
+- Consolidation Risk
+- Opportunity Score
+- Market Response
+
+
+A4. Oil
+-------
+Data:
+- WTI front/continuous futures quote (@CL.1)
+- Brent front/continuous futures quote (@LCO.1)
+- Price and percentage move
+
+Primary source:
+- CNBC futures quote feed.
+
+NasDecode workflow refresh:
+- Main workflow cadence; approximately every 5 minutes during U.S. cash hours.
+
+Upstream frequency:
+- Intraday futures market.
+
+Used for:
+- Oil (WTI / Brent) card
+- Rates / Macro context
+- Inflation/risk context
+
+
+A5. Credit proxy (background model input)
+-----------------------------------------
+Data:
+- HYG
+- LQD
+- HYG relative performance versus LQD
+
+Primary source:
+- CNBC quote feed.
+
+NasDecode workflow refresh:
+- Main workflow cadence.
+
+Upstream frequency:
+- Intraday while the ETFs are trading.
+
+UI:
+- Retained as model/history context; not necessarily shown as a standalone scorecard.
+
+
+======================================================================
+B. MARKET BREADTH AND LEADERSHIP
+======================================================================
+
+B1. Nasdaq market breadth
+-------------------------
+Data:
+- Advancing / declining / flat tracked Nasdaq-100 constituent quotes.
+- Percentage advancing.
+- Change versus the previous completed session when available.
+
+Primary source:
+- CNBC constituent quotes.
+
+Coverage rule:
+- Regular-session live breadth requires broad quote coverage.
+- When live coverage is insufficient, the most recent completed regular-session breadth
+  is used and explicitly labelled previous close.
+
+NasDecode workflow refresh:
+- Approximately every 5 minutes during cash hours.
+
+Upstream frequency:
+- Intraday.
+
+Used for:
+- Market Breadth card
+- Internal Confirmation
+- Consolidation Risk
+- Opportunity Score
+- Market Response
+
+
+B2. S&P 500 50-day breadth / S5FI
+---------------------------------
+Data:
+- Percentage of S&P 500 stocks above their 50-day moving average.
+- Change versus prior observation.
+
+Primary source:
+- EODData INDEX:S5FI server-rendered page.
+
+Fallback:
+- Massive index aggregates are probed for I:S5FI / S5FI when the direct S5FI row is
+  unavailable/stale. This fallback fails closed if no real observation is returned.
+
+NasDecode workflow refresh:
+- Checked during every main workflow run.
+
+Upstream frequency:
+- End-of-day/daily. Rechecking it every 5 minutes does not create new intraday breadth data.
+
+Used for:
+- S&P 500 50D Breadth / Oversold
+- Consolidation Risk
+- Participation/extension context
+
+
+B3. Semiconductor Leadership
+-----------------------------
+Data:
+- SOX relative performance versus Nasdaq is the PRIMARY semiconductor leadership signal.
+- SOXX and SMH relative performance are confirmation signals.
+- Broad semiconductor-member participation is an additional confirmation layer.
+- Current SOX universe is stored in data/catalyst-universe.json.
+
+Primary price source:
+- CNBC quotes for SOX, Nasdaq, SOXX, SMH and constituent stocks.
+
+NasDecode workflow refresh:
+- Approximately every 5 minutes during regular trading.
+- Outside regular trading, previous completed-session data can be retained as context.
+
+Upstream frequency:
+- Intraday during market hours.
+
+Used for:
+- Semiconductor Leadership
+- Internal Confirmation
+- Consolidation Risk
+- Opportunity Score
+- Market Response
+- SOX/Nasdaq validation
+
+
+B4. Mega-cap Leadership
+-----------------------
+Data:
+- AAPL, MSFT, AMZN, GOOGL, META, NVDA, TSLA.
+- Equal basket session performance and participation.
+- Relative performance versus QQQ.
+
+Primary source:
+- CNBC quotes.
+
+NasDecode workflow refresh:
+- Approximately every 5 minutes during cash hours; session-aware extended/previous-close
+  handling is used outside cash hours.
+
+Used for:
+- Mega-cap Leadership
+- Internal Confirmation
+- Consolidation Risk
+- Opportunity Score
+- Market Response
+
+
+======================================================================
+C. OPTIONS POSITIONING
+======================================================================
+
+C1. Put/call positioning
+------------------------
+Data:
+- Cboe Equity Put/Call ratio
+- Cboe Index Put/Call ratio
+- Cboe Total Put/Call ratio
+- 5-session Equity Put/Call average/trend
+
+Primary source:
+- Cboe Daily Market Statistics.
+
+NasDecode workflow refresh:
+- Checked on every main workflow run.
+
+Upstream frequency:
+- Daily/session statistic, not a live 5-minute options-flow feed.
+
+Important:
+- This is options-volume put/call positioning.
+- It is NOT dealer gamma exposure and is not represented as such.
+
+Used for:
+- Options Positioning / Sentiment
+- Volatility / Positioning model bucket
+
+
+======================================================================
+D. FED EXPECTATIONS
+======================================================================
+
+D1. Fed meeting probabilities
+-----------------------------
+Data:
+- Nearest FOMC meeting hike / hold / cut probabilities.
+- Later meetings aggregated as target above / same / below current range.
+- Current policy level and change/repricing versus prior stored session.
+
+Primary calculation/source chain:
+- CME Group 30-Day Fed Funds futures official settlements.
+- New York Fed Effective Federal Funds Rate (EFFR).
+- CME FedWatch methodology via the pinned cme-fedwatch calculation engine.
+
+Diagnostic/fallback probes:
+- Public CME FedWatch page.
+- CNBC Fed Funds futures symbols are retained as diagnostics where available.
+
+Failure behavior:
+- Fail closed. If the official probability path fails, NasDecode does not fabricate a
+  new probability; prior successful data can remain but is marked stale.
+
+NasDecode workflow refresh:
+- Checked during every main workflow run.
+
+Upstream frequency:
+- The current production probability calculation is settlement-based, so the underlying
+  official futures settlement input is effectively daily even though NasDecode checks it
+  more frequently.
+
+Used for:
+- Fed Expectations card
+- Rates / Macro bucket
+- Macro timing / policy repricing context
+
+
+======================================================================
+E. MACRO DATA IMPULSE
+======================================================================
+
+E1. Consensus / economic-calendar observation
+---------------------------------------------
+Tracked release families:
+
+Inflation:
+- CPI MoM
+- Core CPI MoM
+- PCE MoM
+- Core PCE MoM
+
+Labor:
+- Nonfarm Payrolls
+- Unemployment Rate
+- Average Hourly Earnings MoM
+
+Growth / Activity:
+- ISM Manufacturing PMI
+- ISM Services PMI
+- Retail Sales MoM
+- GDP Advance
+- GDP Second Estimate
+- GDP Final
+
+Consensus source:
+1. Trading Economics U.S. calendar / API when configured and available.
+2. Public Trading Economics calendar parsing.
+3. Tavily search fallback targeting the public Trading Economics calendar.
+
+Important:
+- Calendar-observed Actual values are NOT trusted as final model Actuals until primary
+  publisher verification succeeds.
+
+
+E2. Official Actual verification
+--------------------------------
+Primary publishers:
+- BLS: Nonfarm Payrolls, Unemployment, Average Hourly Earnings, CPI, Core CPI.
+- BEA: PCE, Core PCE, GDP releases.
+- U.S. Census Bureau: Retail Sales.
+- Institute for Supply Management: ISM Manufacturing and ISM Services.
+
+Verification behavior:
+- scripts/verify_macro_actuals.py promotes an observation to official_verified only after
+  matching the primary-source release.
+- If official verification cannot be completed, the existing event remains unverified;
+  NasDecode does not manufacture an Actual.
+
+NasDecode workflow refresh:
+- refresh_macro_surprises.py and verify_macro_actuals.py run BEFORE the main model on
+  every main workflow refresh.
+- Around 08:30 ET, the main workflow gate admits repeated 5-minute checks from
+  approximately 08:25 through 08:45 ET.
+- 10:00 ET ISM releases are covered by the regular 5-minute cash-session heartbeat.
+
+Latency recorded:
+- Provider update lag: scheduled release -> calendar provider update.
+- NasDecode ingestion lag: scheduled release -> first NasDecode observation.
+- Official verification lag: scheduled release -> first successful primary-source verification.
+
+Used for:
+- Macro Data Impulse.
+- The impulse decays over time; older releases gradually lose influence rather than
+  disappearing abruptly.
+- Treasury yields and Fed expectations remain separate signals so the observed market
+  reaction is not treated as the same thing as the macro surprise itself.
+
+
+======================================================================
+F. HISTORICAL PRICE DATA / TECHNICAL CONTEXT
+======================================================================
+
+F1. Daily historical aggregates
+-------------------------------
+Data:
+- Adjusted daily OHLCV/VWAP bars.
+- Multi-session returns.
+- 20D/50D moving-average distance.
+- RSI14.
+- Historical streak/window-high context.
+- Earnings-anchored VWAP calculations.
+
+Primary source:
+- Massive API daily aggregates.
+
+Rate-limit behavior:
+- Requests are deliberately paced for the free tier.
+- Bounded retries/backoff are used on HTTP 429 responses.
+
+NasDecode workflow refresh:
+- Requested as part of the main refresh/model calculation.
+- The underlying bars are daily, so repeated intraday retrieval primarily refreshes
+  context/current availability rather than creating new completed daily bars.
+
+Used for:
+- QQQ / SOXX historical context.
+- Earnings AVWAP Leadership.
+- Opportunity and Consolidation calculations.
+- Historical validation/backtesting context.
+
+
+======================================================================
+G. EARNINGS DATA
+======================================================================
+
+G1. Upcoming earnings calendar
+------------------------------
+Universe:
+- Every current SOX constituent in NasDecode's universe.
+- Mega-caps: AAPL, MSFT, AMZN, GOOGL, META, NVDA, TSLA.
+
+Window:
+- Today through the next 14 calendar days.
+
+Primary source:
+- Nasdaq public earnings-calendar endpoint.
+
+Fallback/authority:
+- Existing company-IR-confirmed rows can be retained and are authoritative over a generic
+  calendar row when appropriate.
+
+Refresh:
+- scripts/refresh_upcoming_earnings.py runs in the Catalyst Monitor workflow.
+- It normally avoids repeatedly refetching all 15 dates after a successful same-day fetch.
+- Catalyst Monitor schedule:
+  * Every 30 minutes during its weekday 11:00-23:59 UTC monitoring window.
+  * Every 2 hours at 00:00, 02:00, 04:00, 06:00, 08:00 and 10:00 UTC on weekdays.
+- Therefore the earnings file is normally refreshed successfully once per UTC day, with
+  later monitor runs retaining the successful daily result unless a retry is required.
+
+Used for:
+- Major Catalysts.
+- Technology earnings event context.
+- Pre/market analysis.
+- Event-risk context.
+
+
+G2. Earnings AVWAP
+------------------
+Data:
+- Latest verified earnings anchor date for selected tracked leaders.
+- Daily VWAP x volume from the anchor onward.
+- Current price distance from anchored VWAP.
+- AVWAP slope.
+
+Sources:
+- Massive daily aggregates for VWAP/volume history.
+- Verified company earnings dates / configured earnings AVWAP watchlist.
+
+Refresh:
+- Recalculated during the main refresh.
+
+
+======================================================================
+H. MAJOR CATALYST / NEWS DATA
+======================================================================
+
+H1. SOX + mega-cap catalyst discovery
+-------------------------------------
+Universe:
+- All symbols in data/catalyst-universe.json:
+  current tracked SOX constituents + AAPL, MSFT, AMZN, GOOGL, META, NVDA, TSLA.
+
+Discovery source:
+- Tavily News Search API.
+
+Search focus:
+- Earnings
+- Guidance / forecasts
+- Buybacks / capital return
+- M&A
+- Partnerships
+- Contracts / major deals
+- Investments
+- Product/chip/AI/data-center announcements
+- Export controls / restrictions / sanctions / licenses
+- Investigations / legal developments
+- CEO/CFO changes
+- Major customers/orders
+- Capacity / production / supply / pricing
+
+Source-quality boost:
+- Reuters, Bloomberg, CNBC, WSJ, FT, MarketWatch, Business Wire, PR Newswire,
+  GlobeNewswire and SEC-hosted material receive higher trust/materiality treatment.
+
+Noise controls:
+- Company/ticker must appear in the HEADLINE for automatic attribution.
+- Materiality threshold is applied.
+- Auto-detected catalyst records are retained for 14 days.
+- UI performs additional event presentation/deduplication.
+
+Catalyst Monitor refresh:
+- Weekdays 11:00-23:59 UTC: every 30 minutes.
+- Weekdays 00:00-10:59 UTC: every 2 hours on even UTC hours.
+- There is currently no scheduled weekend catalyst scan in catalyst-monitor.yml.
+- Manual workflow dispatch and relevant code/config pushes can also run it.
+
+Used for:
+- Major Catalysts
+- Catalyst asymmetry / event-risk context
+- Semiconductor catalyst context
+- Market analysis
+
+
+======================================================================
+I. PRE-MARKET AND INTRADAY ANALYSIS DATA
+======================================================================
+
+I1. Quantitative premarket / market analysis
+--------------------------------------------
+Inputs:
+- Current dashboard factors and scores.
+- Rates, volatility, breadth, leadership, macro, Fed, oil, catalysts and earnings.
+
+Generation:
+- Deterministic analysis is generated from the current NasDecode data/model during the
+  main refresh.
+- A richer researched premarket brief, when already present in public/data/premarket.json,
+  is treated as authoritative through the pre-open window and synchronized into
+  data/premarket.json by scripts/sync_premarket_brief.py.
+- The repository currently does NOT contain a separate scheduled external-research job
+  that creates that richer researched brief from scratch. The sync step preserves and
+  normalizes it; it does not invent a new researched brief.
+
+Scheduled main checkpoints:
+- Early Market: around 10:30 ET.
+- Mid-Market: around 13:00 ET.
+- Near-Close: around 15:30 ET.
+- Canonical close snapshot: any successful qualifying refresh around 16:05-16:45 ET,
+  with an additional dedicated post-close trigger for reliability.
+
+Stored in:
+- data/premarket.json
+- data/history/session-analyses.json
+- data/history/daily.json
+- data/history/intraday/YYYY-MM.json
+
+
+======================================================================
+J. MAIN NASDECODE REFRESH SCHEDULE
+======================================================================
+
+Workflow:
+- .github/workflows/refresh.yml ("Refresh NasDecode")
+
+Trading weekdays, New York / ET logic:
+1. Türkiye premarket snapshot:
+   - 06:00 Türkiye time scheduled weekday run.
+   - This is independent of U.S. daylight-saving time.
+
+2. Early premarket:
+   - Approximately 04:15 ET.
+
+3. Major 08:30 ET macro release window:
+   - Gate allows approximately 08:25-08:45 ET.
+   - The 5-minute heartbeat schedule can therefore collect/reverify releases repeatedly
+     around the publication time.
+
+4. U.S. cash session:
+   - Approximately every 5 minutes from 09:30 through 16:20 ET.
+   - GitHub Actions cron execution can be delayed; this is a target cadence, not an
+     exchange-grade guaranteed timestamp.
+
+5. Analysis checkpoints:
+   - Early Market: 10:25-10:40 ET window, nominally ~10:30.
+   - Mid-Market: 12:55-13:10 ET window, nominally ~13:00.
+   - Near-Close: 15:25-15:40 ET window, nominally ~15:30.
+
+6. Close snapshot:
+   - A successful refresh between 16:05 and 16:45 ET can create the canonical close
+     snapshot.
+   - An extra post-close cron trigger is scheduled at the DST-safe UTC equivalents of
+     approximately 16:27 ET to reduce the chance of missing the close snapshot.
+
+Other triggers:
+- Manual workflow dispatch: runs immediately.
+- Push to main: runs unless the push changes only ignored generated-data/test paths.
+- Workflow concurrency cancels a superseded older main refresh so stale runs do not
+  overwrite newer data.
+
+
+======================================================================
+K. DERIVED / PROPRIETARY NASDECODE DATA
+======================================================================
+
+The following are NOT directly downloaded from a third-party source. They are calculated
+from the observations above:
+
+- Nasdaq Score
+- Consolidation Risk
+- Opportunity Score
+- Internal Confirmation
+- Semiconductor Leadership composite/confirmation score
+- Mega-cap Leadership interpretation
+- Market Response / Constraint Absorption / Support Rejection
+- Macro Data Impulse
+- 2s10s curve interpretation
+- Breadth interpretation
+- Earnings AVWAP Leadership
+- Session analyses
+- Historical model validation fields
+
+Refresh:
+- Recalculated whenever the main NasDecode workflow successfully runs.
+
+Market Response:
+- Uses live price/internals evidence against the Rates / Macro condition.
+- Requires 15 minutes of continuous same-day confirmation before modifying the published
+  Nasdaq Score.
+- Can attenuate, but never reverse, the sign of the Rates / Macro contribution.
+- Maximum attenuation is capped at 50%.
+- Raw and effective values are retained for validation.
+
+
+======================================================================
+L. STORAGE / PUBLICATION
+======================================================================
+
+Canonical generated data:
+- data/dashboard.json                 Current quantitative dashboard/model snapshot.
+- data/premarket.json                 Current normalized premarket/analysis brief.
+- data/macro-surprises.json           Macro calendar/verified surprise observations.
+- data/upcoming-earnings.json         Rolling 14-day SOX + mega-cap earnings.
+- data/semiconductor-catalysts.json   Detected major catalysts.
+- data/history/daily.json             Daily model/market history and close snapshots.
+- data/history/intraday/YYYY-MM.json  Intraday snapshots.
+- data/history/session-analyses.json  Early/Mid/Near-Close analysis archive.
+
+Public copies:
+- public/index.html
+- public/data/dashboard.json
+- public/data/premarket.json
+- public/data/session-analyses.json
+- public/data/chart-history.json and other generated public data as produced by pipeline.
+
+Publication behavior:
+- After a successful refresh, generated data is committed to main.
+- index.html is copied to public/index.html and generated data is copied under public/data.
+- Push races are retried after resetting to the newest main branch so stale workflow runs
+  do not overwrite newer state.
+
+
+======================================================================
+M. WHEN THE UI REFRESHES
+======================================================================
+
+There are TWO different meanings of "UI refresh":
+
+1. SERVER/PUBLISHED DATA REFRESH
+   The public files used by the UI are regenerated/published whenever the main Refresh
+   NasDecode workflow successfully completes and commits its output.
+
+   Normal weekday publication opportunities are therefore:
+   - 06:00 Türkiye premarket run.
+   - ~04:15 ET premarket run.
+   - ~08:25-08:45 ET around major 08:30 macro releases.
+   - Approximately every 5 minutes from 09:30-16:20 ET.
+   - Early/Mid/Near-Close analysis checkpoints occur inside that 5-minute stream.
+   - Post-close/canonical close capture between ~16:05-16:45 ET, including the extra
+     ~16:27 ET trigger.
+   - Manual/push-triggered refreshes when invoked.
+
+   Catalyst/earnings monitoring is a separate workflow. It updates its source JSON every
+   30 minutes in the main weekday monitoring window and every 2 hours overnight. Those
+   catalyst JSON changes become part of the full dashboard presentation on the next main
+   dashboard refresh unless another publishing path explicitly copies them to public data.
+
+2. BROWSER DISPLAY REFRESH
+   Current index.html does NOT contain a periodic setInterval/automatic browser polling
+   loop for data/dashboard.json.
+
+   An open browser fetches the latest published dashboard:
+   - Once when the page is initially loaded/reloaded.
+   - Whenever the user presses "Check Latest".
+
+   "Check Latest" uses a cache-busted/no-cache request, so it retrieves the newest
+   already-published dashboard.json. It does NOT itself execute the GitHub data-collection
+   workflow.
+
+   Consequence:
+   - Backend/public data can be updating every ~5 minutes during the market,
+     while a tab that has remained open will continue displaying its previously loaded
+     snapshot until the page is reloaded or "Check Latest" is pressed.
+
+TIME ZONES
+----------
+- Market/session logic and analysis checkpoints: America/New_York (ET), DST-aware.
+- Türkiye premarket schedule: Europe/Istanbul.
+- Catalyst-monitor cron expressions: UTC.
