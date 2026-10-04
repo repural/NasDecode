@@ -924,3 +924,55 @@ TIME ZONES
 - Market/session logic and analysis checkpoints: America/New_York (ET), DST-aware.
 - Türkiye premarket schedule: Europe/Istanbul.
 - Catalyst-monitor cron expressions: UTC.
+
+
+======================================================================
+SOXL TACTICAL ENTRY DATA
+======================================================================
+
+SOXL live/session price
+-----------------------
+Purpose:
+- Current price/change input for the experimental SOXL Buy Score.
+Primary source:
+- CNBC quote JSON, using the same U.S. ETF quote path as SOXX/SMH.
+Refresh:
+- Every normal NasDecode data refresh.
+Storage:
+- Current dashboard/history market snapshots and SOXL session levels.
+Latency:
+- Provider-dependent CNBC quote latency plus the normal NasDecode refresh/publication latency.
+
+SOXL daily history
+------------------
+Purpose:
+- 20-day moving-average distance, 5-day return, RSI14, recent-high distance and forward validation.
+Primary source:
+- Massive adjusted U.S. stock/ETF daily aggregate bars.
+Refresh:
+- Re-fetched on the normal NasDecode refresh; the retained file is data/history/soxl-daily.json.
+History window:
+- Up to 730 calendar days requested, subject to the connected Massive plan's accessible history.
+Latency:
+- Daily-bar recency follows the connected Massive plan. The free Stocks Basic tier is end-of-day.
+
+SOXL Buy Score
+--------------
+Purpose:
+- Experimental 0-100 tactical entry-quality score for a new SOXL long over roughly 1-5 sessions.
+Weights:
+- Semiconductor trend / leadership: 30%
+- SOXL entry quality: 25%
+- Market confirmation: 15%
+- Volatility / leverage risk: 15%
+- Rates / macro: 10%
+- Semiconductor catalyst asymmetry: 5%
+Behavior:
+- Hard caps apply when semiconductor leadership breaks, broad relative strength is negative,
+  Consolidation Risk is high, SOXL is >8% above its 20DMA, volatility/yields shock together,
+  or a high-impact semiconductor catalyst is pending.
+Publication:
+- Temporarily visible in the Market Assessment category for calibration.
+Validation:
+- Stored on each intraday refresh and daily record. SOXL forward close-to-close outcomes are
+  tracked at T+1, T+3 and T+5 trading sessions for later calibration.
