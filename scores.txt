@@ -567,7 +567,7 @@ Quality if SOXX has become technically overextended.
 
 ======================================================================
 
-4. SOXL BUY SCORE v3.2
+4. SOXL BUY SCORE v3.3
 ======================================================================
 
 RANGE / HORIZON
@@ -773,6 +773,13 @@ realized-volatility expansion. ATR does not predict direction; it only changes l
 SOXL CARD + SNAPSHOT INDICATORS
 -------------------------------
 Every refined SOXL snapshot stores the raw indicator, interpretation, and subscore together.
+
+RSI14 source and timeframe:
+- Daily timeframe only.
+- Live/current RSI14 uses Massive's native RSI endpoint (window=14, timespan=day, adjusted=true, close).
+- If the endpoint is unavailable, NasDecode uses standard Wilder-smoothed RSI from Massive adjusted daily OHLC.
+- Historical v3.3 reconstruction uses the Wilder fallback.
+- v3.2 and earlier used a simple 14-change average and are retained only as superseded history.
 
 RSI14 meaning:
 - >=80: Overheated
