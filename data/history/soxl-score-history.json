@@ -1,7 +1,7 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "instrument": "SOXL",
-  "scoreVersion": 2,
+  "currentScoreVersion": 3,
   "scoreWeights": {
     "Semiconductor trend": 30,
     "SOXL entry quality": 25,
@@ -10,26 +10,851 @@
     "Rates / macro": 10,
     "Catalyst asymmetry": 5
   },
-  "purpose": "Historical reconstruction of the unchanged SOXL Buy Score v2 for tactical 1-5 session validation.",
+  "purpose": "Historical SOXL Buy Score validation. v2 is retained for comparison; v3 is the current regime-aware RSI/extension model.",
   "methodology": {
     "reconstructed": true,
-    "warning": "These are retrospective reconstructions, not contemporaneously stored SOXL scores. They use only observations preserved in NasDecode history plus SOXL daily bars available at each date.",
-    "technicalInputs": "SOXL close history through each T0 only; 20DMA, 5D return, RSI14 and distance from 20-day closing high are recomputed without future bars.",
-    "modelInputs": "Stored daily NasDecode snapshot for each date. Newer confirmation-layer values are used when present; older missing fields use explicitly listed stored-factor fallbacks. Missing components are not fabricated.",
+    "warning": "These backfilled values are retrospective reconstructions, not contemporaneously stored SOXL scores. Each version uses only observations preserved in NasDecode history plus SOXL bars available through that date.",
+    "technicalInputs": "SOXL history is truncated at each T0 before 20DMA, 5D return, RSI14 and distance from 20-day closing high are computed.",
     "forwardReturns": "Close-to-close SOXL return from T0 close to the nth subsequent trading-session close.",
-    "scoreWeightsChanged": false
+    "scoreWeightsChangedBetweenV2AndV3": false,
+    "v3Change": "Top-level weights unchanged. v3 replaces hard 20DMA/RSI chase caps with nonlinear RSI Entry Quality, continuous regime-aware 20DMA extension penalty, and continuous RSI x 20DMA overheating penalty."
   },
-  "period": {"from":"2026-09-21","through":"2026-10-02","tradingSessions":10},
-  "records": [
-    {"date":"2026-09-21","score":30,"label":"Poor Entry","close":141.93,"components":{"Semiconductor trend":100,"SOXL entry quality":19,"Market confirmation":50,"Volatility / leverage risk":null,"Rates / macro":null,"Catalyst asymmetry":50},"technicalContext":{"ma20DistancePct":23.34,"return5dPct":40.34,"rsi14":63.9,"distanceFrom20dHighPct":0},"gates":["SOXL >18% above 20DMA caps chase entry at 30"],"reconstructionCoveragePct":75,"fallbacks":[],"sourceSnapshotET":"2026-09-21T16:00:00-04:00","forwardReturnsPct":{"T+1":7.06,"T+3":3.10,"T+5":0.25}},
-    {"date":"2026-09-22","score":30,"label":"Poor Entry","close":151.95,"components":{"Semiconductor trend":87,"SOXL entry quality":14,"Market confirmation":56,"Volatility / leverage risk":53,"Rates / macro":66,"Catalyst asymmetry":50},"technicalContext":{"ma20DistancePct":29.75,"return5dPct":48.50,"rsi14":71.4,"distanceFrom20dHighPct":0},"gates":["SOXL >18% above 20DMA caps chase entry at 30"],"reconstructionCoveragePct":100,"fallbacks":["semiconductor score from stored factor signal","Inflation/Labor/Growth from legacy economic factor"],"sourceSnapshotET":"2026-09-22T16:18:47.905206-04:00","forwardReturnsPct":{"T+1":-3.75,"T+3":-0.33,"T+5":-3.26}},
-    {"date":"2026-09-23","score":30,"label":"Poor Entry","close":146.25,"components":{"Semiconductor trend":49,"SOXL entry quality":29,"Market confirmation":50,"Volatility / leverage risk":16,"Rates / macro":51,"Catalyst asymmetry":50},"technicalContext":{"ma20DistancePct":23.27,"return5dPct":40.67,"rsi14":67.7,"distanceFrom20dHighPct":-3.75},"gates":["SOXL >18% above 20DMA caps chase entry at 30"],"reconstructionCoveragePct":100,"fallbacks":["semiconductor score from stored factor signal","Inflation/Labor/Growth from legacy economic factor"],"sourceSnapshotET":"2026-09-23T23:03:24.035623-04:00","forwardReturnsPct":{"T+1":0.05,"T+3":-2.71,"T+5":1.10}},
-    {"date":"2026-09-24","score":30,"label":"Poor Entry","close":146.33,"components":{"Semiconductor trend":59,"SOXL entry quality":29,"Market confirmation":27,"Volatility / leverage risk":43,"Rates / macro":44,"Catalyst asymmetry":50},"technicalContext":{"ma20DistancePct":21.81,"return5dPct":27.44,"rsi14":67.6,"distanceFrom20dHighPct":-3.70},"gates":["SOXL >18% above 20DMA caps chase entry at 30"],"reconstructionCoveragePct":100,"fallbacks":["semiconductor score from stored factor signal","Inflation/Labor/Growth from legacy economic factor"],"sourceSnapshotET":"2026-09-24T22:59:55.867985-04:00","forwardReturnsPct":{"T+1":3.50,"T+3":0.46,"T+5":5.03}},
-    {"date":"2026-09-25","score":30,"label":"Poor Entry","close":151.45,"components":{"Semiconductor trend":68,"SOXL entry quality":26,"Market confirmation":67,"Volatility / leverage risk":75,"Rates / macro":67,"Catalyst asymmetry":50},"technicalContext":{"ma20DistancePct":24.60,"return5dPct":22.46,"rsi14":65.9,"distanceFrom20dHighPct":-0.33},"gates":["SOXL >18% above 20DMA caps chase entry at 30"],"reconstructionCoveragePct":100,"fallbacks":["semiconductor score from stored factor signal","Inflation/Labor/Growth from legacy economic factor"],"sourceSnapshotET":"2026-09-25T19:16:34.839510-04:00","forwardReturnsPct":{"T+1":-6.05,"T+3":-2.37,"T+5":8.10}},
-    {"date":"2026-09-28","score":38,"label":"Poor Entry","close":142.29,"components":{"Semiconductor trend":28,"SOXL entry quality":50,"Market confirmation":27,"Volatility / leverage risk":45,"Rates / macro":37,"Catalyst asymmetry":50},"technicalContext":{"ma20DistancePct":15.59,"return5dPct":0.25,"rsi14":58.6,"distanceFrom20dHighPct":-6.36},"gates":["Weak semiconductor trend caps score at 45","Broad semiconductor underperformance caps score at 50","SOXL >12% above 20DMA caps chase entry at 40"],"reconstructionCoveragePct":100,"fallbacks":["Inflation/Labor/Growth from legacy economic factor"],"sourceSnapshotET":"2026-09-28T20:20:23.583579-04:00","forwardReturnsPct":{"T+1":3.31,"T+3":8.01,"T+5":null}},
-    {"date":"2026-09-29","score":40,"label":"Wait","close":147.00,"components":{"Semiconductor trend":95,"SOXL entry quality":45,"Market confirmation":37,"Volatility / leverage risk":62,"Rates / macro":55,"Catalyst asymmetry":50},"technicalContext":{"ma20DistancePct":17.78,"return5dPct":-3.26,"rsi14":59.4,"distanceFrom20dHighPct":-3.26},"gates":["SOXL >12% above 20DMA caps chase entry at 40"],"reconstructionCoveragePct":100,"fallbacks":["Inflation/Labor/Growth from legacy economic factor"],"sourceSnapshotET":"2026-09-29T23:02:34.155609-04:00","forwardReturnsPct":{"T+1":0.59,"T+3":11.37,"T+5":null}},
-    {"date":"2026-09-30","score":40,"label":"Wait","close":147.86,"components":{"Semiconductor trend":93,"SOXL entry quality":40,"Market confirmation":64,"Volatility / leverage risk":59,"Rates / macro":32,"Catalyst asymmetry":35},"technicalContext":{"ma20DistancePct":16.51,"return5dPct":1.10,"rsi14":65.6,"distanceFrom20dHighPct":-2.69},"gates":["SOXL >12% above 20DMA caps chase entry at 40","Pending high-impact semiconductor catalyst caps score at 64"],"reconstructionCoveragePct":100,"fallbacks":["Inflation/Labor/Growth from legacy economic factor"],"sourceSnapshotET":"2026-09-30T14:25:31.081603-04:00","forwardReturnsPct":{"T+1":3.94,"T+3":null,"T+5":null}},
-    {"date":"2026-10-01","score":30,"label":"Poor Entry","close":153.69,"components":{"Semiconductor trend":96,"SOXL entry quality":34,"Market confirmation":71,"Volatility / leverage risk":62,"Rates / macro":59,"Catalyst asymmetry":65},"technicalContext":{"ma20DistancePct":18.89,"return5dPct":5.03,"rsi14":65.5,"distanceFrom20dHighPct":0},"gates":["SOXL >18% above 20DMA caps chase entry at 30"],"reconstructionCoveragePct":100,"fallbacks":["Inflation/Labor/Growth from legacy economic factor"],"sourceSnapshotET":"2026-10-01T16:23:47.748019-04:00","forwardReturnsPct":{"T+1":6.52,"T+3":null,"T+5":null}},
-    {"date":"2026-10-02","score":25,"label":"Poor Entry","close":163.71,"components":{"Semiconductor trend":90,"SOXL entry quality":19,"Market confirmation":70,"Volatility / leverage risk":80,"Rates / macro":36,"Catalyst asymmetry":95},"technicalContext":{"ma20DistancePct":23.91,"return5dPct":8.10,"rsi14":83.9,"distanceFrom20dHighPct":0},"gates":["SOXL >18% above 20DMA caps chase entry at 30","Extreme extension (>15% above 20DMA + RSI>80) caps score at 25"],"reconstructionCoveragePct":100,"fallbacks":["Inflation/Labor/Growth from legacy economic factor"],"sourceSnapshotET":"2026-10-02T15:22:31.441316-04:00","forwardReturnsPct":{"T+1":null,"T+3":null,"T+5":null}}
-  ]
+  "period": {
+    "from": "2026-09-21",
+    "through": "2026-10-02",
+    "tradingSessions": 10
+  },
+  "versions": {
+    "v2": {
+      "scoreVersion": 2,
+      "records": [
+        {
+          "date": "2026-09-21",
+          "score": 30,
+          "label": "Poor Entry",
+          "close": 141.93,
+          "components": {
+            "Semiconductor trend": 100,
+            "SOXL entry quality": 19,
+            "Market confirmation": 50,
+            "Volatility / leverage risk": null,
+            "Rates / macro": null,
+            "Catalyst asymmetry": 50
+          },
+          "technicalContext": {
+            "ma20DistancePct": 23.34,
+            "return5dPct": 40.34,
+            "rsi14": 63.9,
+            "distanceFrom20dHighPct": 0
+          },
+          "gates": [
+            "SOXL >18% above 20DMA caps chase entry at 30"
+          ],
+          "reconstructionCoveragePct": 75,
+          "fallbacks": [],
+          "sourceSnapshotET": "2026-09-21T16:00:00-04:00",
+          "forwardReturnsPct": {
+            "T+1": 7.06,
+            "T+3": 3.1,
+            "T+5": 0.25
+          }
+        },
+        {
+          "date": "2026-09-22",
+          "score": 30,
+          "label": "Poor Entry",
+          "close": 151.95,
+          "components": {
+            "Semiconductor trend": 87,
+            "SOXL entry quality": 14,
+            "Market confirmation": 56,
+            "Volatility / leverage risk": 53,
+            "Rates / macro": 66,
+            "Catalyst asymmetry": 50
+          },
+          "technicalContext": {
+            "ma20DistancePct": 29.75,
+            "return5dPct": 48.5,
+            "rsi14": 71.4,
+            "distanceFrom20dHighPct": 0
+          },
+          "gates": [
+            "SOXL >18% above 20DMA caps chase entry at 30"
+          ],
+          "reconstructionCoveragePct": 100,
+          "fallbacks": [
+            "semiconductor score from stored factor signal",
+            "Inflation/Labor/Growth from legacy economic factor"
+          ],
+          "sourceSnapshotET": "2026-09-22T16:18:47.905206-04:00",
+          "forwardReturnsPct": {
+            "T+1": -3.75,
+            "T+3": -0.33,
+            "T+5": -3.26
+          }
+        },
+        {
+          "date": "2026-09-23",
+          "score": 30,
+          "label": "Poor Entry",
+          "close": 146.25,
+          "components": {
+            "Semiconductor trend": 49,
+            "SOXL entry quality": 29,
+            "Market confirmation": 50,
+            "Volatility / leverage risk": 16,
+            "Rates / macro": 51,
+            "Catalyst asymmetry": 50
+          },
+          "technicalContext": {
+            "ma20DistancePct": 23.27,
+            "return5dPct": 40.67,
+            "rsi14": 67.7,
+            "distanceFrom20dHighPct": -3.75
+          },
+          "gates": [
+            "SOXL >18% above 20DMA caps chase entry at 30"
+          ],
+          "reconstructionCoveragePct": 100,
+          "fallbacks": [
+            "semiconductor score from stored factor signal",
+            "Inflation/Labor/Growth from legacy economic factor"
+          ],
+          "sourceSnapshotET": "2026-09-23T23:03:24.035623-04:00",
+          "forwardReturnsPct": {
+            "T+1": 0.05,
+            "T+3": -2.71,
+            "T+5": 1.1
+          }
+        },
+        {
+          "date": "2026-09-24",
+          "score": 30,
+          "label": "Poor Entry",
+          "close": 146.33,
+          "components": {
+            "Semiconductor trend": 59,
+            "SOXL entry quality": 29,
+            "Market confirmation": 27,
+            "Volatility / leverage risk": 43,
+            "Rates / macro": 44,
+            "Catalyst asymmetry": 50
+          },
+          "technicalContext": {
+            "ma20DistancePct": 21.81,
+            "return5dPct": 27.44,
+            "rsi14": 67.6,
+            "distanceFrom20dHighPct": -3.7
+          },
+          "gates": [
+            "SOXL >18% above 20DMA caps chase entry at 30"
+          ],
+          "reconstructionCoveragePct": 100,
+          "fallbacks": [
+            "semiconductor score from stored factor signal",
+            "Inflation/Labor/Growth from legacy economic factor"
+          ],
+          "sourceSnapshotET": "2026-09-24T22:59:55.867985-04:00",
+          "forwardReturnsPct": {
+            "T+1": 3.5,
+            "T+3": 0.46,
+            "T+5": 5.03
+          }
+        },
+        {
+          "date": "2026-09-25",
+          "score": 30,
+          "label": "Poor Entry",
+          "close": 151.45,
+          "components": {
+            "Semiconductor trend": 68,
+            "SOXL entry quality": 26,
+            "Market confirmation": 67,
+            "Volatility / leverage risk": 75,
+            "Rates / macro": 67,
+            "Catalyst asymmetry": 50
+          },
+          "technicalContext": {
+            "ma20DistancePct": 24.6,
+            "return5dPct": 22.46,
+            "rsi14": 65.9,
+            "distanceFrom20dHighPct": -0.33
+          },
+          "gates": [
+            "SOXL >18% above 20DMA caps chase entry at 30"
+          ],
+          "reconstructionCoveragePct": 100,
+          "fallbacks": [
+            "semiconductor score from stored factor signal",
+            "Inflation/Labor/Growth from legacy economic factor"
+          ],
+          "sourceSnapshotET": "2026-09-25T19:16:34.839510-04:00",
+          "forwardReturnsPct": {
+            "T+1": -6.05,
+            "T+3": -2.37,
+            "T+5": 8.1
+          }
+        },
+        {
+          "date": "2026-09-28",
+          "score": 38,
+          "label": "Poor Entry",
+          "close": 142.29,
+          "components": {
+            "Semiconductor trend": 28,
+            "SOXL entry quality": 50,
+            "Market confirmation": 27,
+            "Volatility / leverage risk": 45,
+            "Rates / macro": 37,
+            "Catalyst asymmetry": 50
+          },
+          "technicalContext": {
+            "ma20DistancePct": 15.59,
+            "return5dPct": 0.25,
+            "rsi14": 58.6,
+            "distanceFrom20dHighPct": -6.36
+          },
+          "gates": [
+            "Weak semiconductor trend caps score at 45",
+            "Broad semiconductor underperformance caps score at 50",
+            "SOXL >12% above 20DMA caps chase entry at 40"
+          ],
+          "reconstructionCoveragePct": 100,
+          "fallbacks": [
+            "Inflation/Labor/Growth from legacy economic factor"
+          ],
+          "sourceSnapshotET": "2026-09-28T20:20:23.583579-04:00",
+          "forwardReturnsPct": {
+            "T+1": 3.31,
+            "T+3": 8.01,
+            "T+5": null
+          }
+        },
+        {
+          "date": "2026-09-29",
+          "score": 40,
+          "label": "Wait",
+          "close": 147,
+          "components": {
+            "Semiconductor trend": 95,
+            "SOXL entry quality": 45,
+            "Market confirmation": 37,
+            "Volatility / leverage risk": 62,
+            "Rates / macro": 55,
+            "Catalyst asymmetry": 50
+          },
+          "technicalContext": {
+            "ma20DistancePct": 17.78,
+            "return5dPct": -3.26,
+            "rsi14": 59.4,
+            "distanceFrom20dHighPct": -3.26
+          },
+          "gates": [
+            "SOXL >12% above 20DMA caps chase entry at 40"
+          ],
+          "reconstructionCoveragePct": 100,
+          "fallbacks": [
+            "Inflation/Labor/Growth from legacy economic factor"
+          ],
+          "sourceSnapshotET": "2026-09-29T23:02:34.155609-04:00",
+          "forwardReturnsPct": {
+            "T+1": 0.59,
+            "T+3": 11.37,
+            "T+5": null
+          }
+        },
+        {
+          "date": "2026-09-30",
+          "score": 40,
+          "label": "Wait",
+          "close": 147.86,
+          "components": {
+            "Semiconductor trend": 93,
+            "SOXL entry quality": 40,
+            "Market confirmation": 64,
+            "Volatility / leverage risk": 59,
+            "Rates / macro": 32,
+            "Catalyst asymmetry": 35
+          },
+          "technicalContext": {
+            "ma20DistancePct": 16.51,
+            "return5dPct": 1.1,
+            "rsi14": 65.6,
+            "distanceFrom20dHighPct": -2.69
+          },
+          "gates": [
+            "SOXL >12% above 20DMA caps chase entry at 40",
+            "Pending high-impact semiconductor catalyst caps score at 64"
+          ],
+          "reconstructionCoveragePct": 100,
+          "fallbacks": [
+            "Inflation/Labor/Growth from legacy economic factor"
+          ],
+          "sourceSnapshotET": "2026-09-30T14:25:31.081603-04:00",
+          "forwardReturnsPct": {
+            "T+1": 3.94,
+            "T+3": null,
+            "T+5": null
+          }
+        },
+        {
+          "date": "2026-10-01",
+          "score": 30,
+          "label": "Poor Entry",
+          "close": 153.69,
+          "components": {
+            "Semiconductor trend": 96,
+            "SOXL entry quality": 34,
+            "Market confirmation": 71,
+            "Volatility / leverage risk": 62,
+            "Rates / macro": 59,
+            "Catalyst asymmetry": 65
+          },
+          "technicalContext": {
+            "ma20DistancePct": 18.89,
+            "return5dPct": 5.03,
+            "rsi14": 65.5,
+            "distanceFrom20dHighPct": 0
+          },
+          "gates": [
+            "SOXL >18% above 20DMA caps chase entry at 30"
+          ],
+          "reconstructionCoveragePct": 100,
+          "fallbacks": [
+            "Inflation/Labor/Growth from legacy economic factor"
+          ],
+          "sourceSnapshotET": "2026-10-01T16:23:47.748019-04:00",
+          "forwardReturnsPct": {
+            "T+1": 6.52,
+            "T+3": null,
+            "T+5": null
+          }
+        },
+        {
+          "date": "2026-10-02",
+          "score": 25,
+          "label": "Poor Entry",
+          "close": 163.71,
+          "components": {
+            "Semiconductor trend": 90,
+            "SOXL entry quality": 19,
+            "Market confirmation": 70,
+            "Volatility / leverage risk": 80,
+            "Rates / macro": 36,
+            "Catalyst asymmetry": 95
+          },
+          "technicalContext": {
+            "ma20DistancePct": 23.91,
+            "return5dPct": 8.1,
+            "rsi14": 83.9,
+            "distanceFrom20dHighPct": 0
+          },
+          "gates": [
+            "SOXL >18% above 20DMA caps chase entry at 30",
+            "Extreme extension (>15% above 20DMA + RSI>80) caps score at 25"
+          ],
+          "reconstructionCoveragePct": 100,
+          "fallbacks": [
+            "Inflation/Labor/Growth from legacy economic factor"
+          ],
+          "sourceSnapshotET": "2026-10-02T15:22:31.441316-04:00",
+          "forwardReturnsPct": {
+            "T+1": null,
+            "T+3": null,
+            "T+5": null
+          }
+        }
+      ]
+    },
+    "v3": {
+      "scoreVersion": 3,
+      "records": [
+        {
+          "date": "2026-09-21",
+          "score": 44,
+          "label": "Wait",
+          "close": 141.93,
+          "rawScore": 62,
+          "components": {
+            "Semiconductor trend": 100,
+            "SOXL entry quality": 27,
+            "Market confirmation": 50,
+            "Volatility / leverage risk": null,
+            "Rates / macro": null,
+            "Catalyst asymmetry": 50
+          },
+          "entryQuality": {
+            "score": 27,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 0,
+              "RSI14": 96,
+              "20D-high distance": 25
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 22.7,
+            "regimeMultiplier": 0.8,
+            "regime": "Strong semiconductor trend",
+            "applied20dMaPenalty": 18.1,
+            "rsiHeatPenalty": 0,
+            "rsiExtensionAmplifier": 0.93,
+            "extremeRsi20dMaPenalty": 0,
+            "totalPenalty": 18.1
+          },
+          "technicalContext": {
+            "ma20DistancePct": 23.34,
+            "return5dPct": 40.34,
+            "rsi14": 63.9,
+            "distanceFrom20dHighPct": 0
+          },
+          "gates": [],
+          "reconstructionCoveragePct": 75,
+          "sourceSnapshotET": "2026-09-21T16:00:00-04:00",
+          "forwardReturnsPct": {
+            "T+1": 7.06,
+            "T+3": 3.1,
+            "T+5": 0.25
+          }
+        },
+        {
+          "date": "2026-09-22",
+          "score": 29,
+          "label": "Poor Entry",
+          "close": 151.95,
+          "rawScore": 57,
+          "components": {
+            "Semiconductor trend": 87,
+            "SOXL entry quality": 22,
+            "Market confirmation": 56,
+            "Volatility / leverage risk": 53,
+            "Rates / macro": 66,
+            "Catalyst asymmetry": 50
+          },
+          "entryQuality": {
+            "score": 22,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 0,
+              "RSI14": 74,
+              "20D-high distance": 25
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 34.5,
+            "regimeMultiplier": 0.8,
+            "regime": "Strong semiconductor trend",
+            "applied20dMaPenalty": 27.6,
+            "rsiHeatPenalty": 0,
+            "rsiExtensionAmplifier": 1,
+            "extremeRsi20dMaPenalty": 0,
+            "totalPenalty": 27.6
+          },
+          "technicalContext": {
+            "ma20DistancePct": 29.75,
+            "return5dPct": 48.5,
+            "rsi14": 71.4,
+            "distanceFrom20dHighPct": 0
+          },
+          "gates": [],
+          "reconstructionCoveragePct": 100,
+          "sourceSnapshotET": "2026-09-22T16:18:47.905206-04:00",
+          "forwardReturnsPct": {
+            "T+1": -3.75,
+            "T+3": -0.33,
+            "T+5": -3.26
+          }
+        },
+        {
+          "date": "2026-09-23",
+          "score": 19,
+          "label": "Avoid Long",
+          "close": 146.25,
+          "rawScore": 42,
+          "components": {
+            "Semiconductor trend": 49,
+            "SOXL entry quality": 37,
+            "Market confirmation": 50,
+            "Volatility / leverage risk": 16,
+            "Rates / macro": 51,
+            "Catalyst asymmetry": 50
+          },
+          "entryQuality": {
+            "score": 37,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 0,
+              "RSI14": 87,
+              "20D-high distance": 81
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 22.5,
+            "regimeMultiplier": 1,
+            "regime": "No extension relief",
+            "applied20dMaPenalty": 22.5,
+            "rsiHeatPenalty": 0,
+            "rsiExtensionAmplifier": 0.93,
+            "extremeRsi20dMaPenalty": 0,
+            "totalPenalty": 22.5
+          },
+          "technicalContext": {
+            "ma20DistancePct": 23.27,
+            "return5dPct": 40.67,
+            "rsi14": 67.7,
+            "distanceFrom20dHighPct": -3.75
+          },
+          "gates": [],
+          "reconstructionCoveragePct": 100,
+          "sourceSnapshotET": "2026-09-23T23:03:24.035623-04:00",
+          "forwardReturnsPct": {
+            "T+1": 0.05,
+            "T+3": -2.71,
+            "T+5": 1.1
+          }
+        },
+        {
+          "date": "2026-09-24",
+          "score": 24,
+          "label": "Avoid Long",
+          "close": 146.33,
+          "rawScore": 44,
+          "components": {
+            "Semiconductor trend": 59,
+            "SOXL entry quality": 37,
+            "Market confirmation": 27,
+            "Volatility / leverage risk": 43,
+            "Rates / macro": 44,
+            "Catalyst asymmetry": 50
+          },
+          "entryQuality": {
+            "score": 37,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 0,
+              "RSI14": 87,
+              "20D-high distance": 80
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 19.6,
+            "regimeMultiplier": 1,
+            "regime": "No extension relief",
+            "applied20dMaPenalty": 19.6,
+            "rsiHeatPenalty": 0,
+            "rsiExtensionAmplifier": 0.87,
+            "extremeRsi20dMaPenalty": 0,
+            "totalPenalty": 19.6
+          },
+          "technicalContext": {
+            "ma20DistancePct": 21.81,
+            "return5dPct": 27.44,
+            "rsi14": 67.6,
+            "distanceFrom20dHighPct": -3.7
+          },
+          "gates": [],
+          "reconstructionCoveragePct": 100,
+          "sourceSnapshotET": "2026-09-24T22:59:55.867985-04:00",
+          "forwardReturnsPct": {
+            "T+1": 3.5,
+            "T+3": 0.46,
+            "T+5": 5.03
+          }
+        },
+        {
+          "date": "2026-09-25",
+          "score": 35,
+          "label": "Poor Entry",
+          "close": 151.45,
+          "rawScore": 60,
+          "components": {
+            "Semiconductor trend": 68,
+            "SOXL entry quality": 35,
+            "Market confirmation": 67,
+            "Volatility / leverage risk": 75,
+            "Rates / macro": 67,
+            "Catalyst asymmetry": 50
+          },
+          "entryQuality": {
+            "score": 35,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 0,
+              "RSI14": 92,
+              "20D-high distance": 64
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 25.1,
+            "regimeMultiplier": 1,
+            "regime": "No extension relief",
+            "applied20dMaPenalty": 25.1,
+            "rsiHeatPenalty": 0,
+            "rsiExtensionAmplifier": 0.98,
+            "extremeRsi20dMaPenalty": 0,
+            "totalPenalty": 25.1
+          },
+          "technicalContext": {
+            "ma20DistancePct": 24.6,
+            "return5dPct": 22.46,
+            "rsi14": 65.9,
+            "distanceFrom20dHighPct": -0.33
+          },
+          "gates": [],
+          "reconstructionCoveragePct": 100,
+          "sourceSnapshotET": "2026-09-25T19:16:34.839510-04:00",
+          "forwardReturnsPct": {
+            "T+1": -6.05,
+            "T+3": -2.37,
+            "T+5": 8.1
+          }
+        },
+        {
+          "date": "2026-09-28",
+          "score": 30,
+          "label": "Poor Entry",
+          "close": 142.29,
+          "rawScore": 39,
+          "components": {
+            "Semiconductor trend": 28,
+            "SOXL entry quality": 54,
+            "Market confirmation": 27,
+            "Volatility / leverage risk": 45,
+            "Rates / macro": 37,
+            "Catalyst asymmetry": 50
+          },
+          "entryQuality": {
+            "score": 54,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 78,
+              "RSI14": 96,
+              "20D-high distance": 70
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 8.8,
+            "regimeMultiplier": 1,
+            "regime": "No extension relief",
+            "applied20dMaPenalty": 8.8,
+            "rsiHeatPenalty": 0,
+            "rsiExtensionAmplifier": 0.54,
+            "extremeRsi20dMaPenalty": 0,
+            "totalPenalty": 8.8
+          },
+          "technicalContext": {
+            "ma20DistancePct": 15.59,
+            "return5dPct": 0.25,
+            "rsi14": 58.6,
+            "distanceFrom20dHighPct": -6.36
+          },
+          "gates": [
+            "Weak semiconductor trend caps score at 45",
+            "Broad semiconductor underperformance caps score at 50"
+          ],
+          "reconstructionCoveragePct": 100,
+          "sourceSnapshotET": "2026-09-28T20:20:23.583579-04:00",
+          "forwardReturnsPct": {
+            "T+1": 3.31,
+            "T+3": 8.01,
+            "T+5": null
+          }
+        },
+        {
+          "date": "2026-09-29",
+          "score": 55,
+          "label": "Selective / Starter",
+          "close": 147,
+          "rawScore": 64,
+          "components": {
+            "Semiconductor trend": 95,
+            "SOXL entry quality": 50,
+            "Market confirmation": 37,
+            "Volatility / leverage risk": 62,
+            "Rates / macro": 55,
+            "Catalyst asymmetry": 50
+          },
+          "entryQuality": {
+            "score": 50,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 77,
+              "RSI14": 98,
+              "20D-high distance": 49
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 11.7,
+            "regimeMultiplier": 0.8,
+            "regime": "Strong semiconductor trend",
+            "applied20dMaPenalty": 9.4,
+            "rsiHeatPenalty": 0,
+            "rsiExtensionAmplifier": 0.67,
+            "extremeRsi20dMaPenalty": 0,
+            "totalPenalty": 9.4
+          },
+          "technicalContext": {
+            "ma20DistancePct": 17.78,
+            "return5dPct": -3.26,
+            "rsi14": 59.4,
+            "distanceFrom20dHighPct": -3.26
+          },
+          "gates": [],
+          "reconstructionCoveragePct": 100,
+          "sourceSnapshotET": "2026-09-29T23:02:34.155609-04:00",
+          "forwardReturnsPct": {
+            "T+1": 0.59,
+            "T+3": 11.37,
+            "T+5": null
+          }
+        },
+        {
+          "date": "2026-09-30",
+          "score": 56,
+          "label": "Selective / Starter",
+          "close": 147.86,
+          "rawScore": 63,
+          "components": {
+            "Semiconductor trend": 93,
+            "SOXL entry quality": 48,
+            "Market confirmation": 64,
+            "Volatility / leverage risk": 59,
+            "Rates / macro": 32,
+            "Catalyst asymmetry": 35
+          },
+          "entryQuality": {
+            "score": 48,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 78,
+              "RSI14": 93,
+              "20D-high distance": 45
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 10,
+            "regimeMultiplier": 0.65,
+            "regime": "Strong semiconductor trend + market confirmation",
+            "applied20dMaPenalty": 6.5,
+            "rsiHeatPenalty": 0,
+            "rsiExtensionAmplifier": 0.59,
+            "extremeRsi20dMaPenalty": 0,
+            "totalPenalty": 6.5
+          },
+          "technicalContext": {
+            "ma20DistancePct": 16.51,
+            "return5dPct": 1.1,
+            "rsi14": 65.6,
+            "distanceFrom20dHighPct": -2.69
+          },
+          "gates": [
+            "Pending high-impact semiconductor catalyst caps score at 64"
+          ],
+          "reconstructionCoveragePct": 100,
+          "sourceSnapshotET": "2026-09-30T14:25:31.081603-04:00",
+          "forwardReturnsPct": {
+            "T+1": 3.94,
+            "T+3": null,
+            "T+5": null
+          }
+        },
+        {
+          "date": "2026-10-01",
+          "score": 60,
+          "label": "Selective / Starter",
+          "close": 153.69,
+          "rawScore": 69,
+          "components": {
+            "Semiconductor trend": 96,
+            "SOXL entry quality": 43,
+            "Market confirmation": 71,
+            "Volatility / leverage risk": 62,
+            "Rates / macro": 59,
+            "Catalyst asymmetry": 65
+          },
+          "entryQuality": {
+            "score": 43,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 73,
+              "RSI14": 94,
+              "20D-high distance": 25
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 13.8,
+            "regimeMultiplier": 0.65,
+            "regime": "Strong semiconductor trend + market confirmation",
+            "applied20dMaPenalty": 9,
+            "rsiHeatPenalty": 0,
+            "rsiExtensionAmplifier": 0.73,
+            "extremeRsi20dMaPenalty": 0,
+            "totalPenalty": 9
+          },
+          "technicalContext": {
+            "ma20DistancePct": 18.89,
+            "return5dPct": 5.03,
+            "rsi14": 65.5,
+            "distanceFrom20dHighPct": 0
+          },
+          "gates": [],
+          "reconstructionCoveragePct": 100,
+          "sourceSnapshotET": "2026-10-01T16:23:47.748019-04:00",
+          "forwardReturnsPct": {
+            "T+1": 6.52,
+            "T+3": null,
+            "T+5": null
+          }
+        },
+        {
+          "date": "2026-10-02",
+          "score": 30,
+          "label": "Poor Entry",
+          "close": 163.71,
+          "rawScore": 63,
+          "components": {
+            "Semiconductor trend": 90,
+            "SOXL entry quality": 22,
+            "Market confirmation": 70,
+            "Volatility / leverage risk": 80,
+            "Rates / macro": 36,
+            "Catalyst asymmetry": 95
+          },
+          "entryQuality": {
+            "score": 22,
+            "factorScores": {
+              "20DMA distance": 0,
+              "5D return": 58,
+              "RSI14": 15,
+              "20D-high distance": 25
+            }
+          },
+          "extensionAdjustment": {
+            "base20dMaPenalty": 23.8,
+            "regimeMultiplier": 0.65,
+            "regime": "Strong semiconductor trend + market confirmation",
+            "applied20dMaPenalty": 15.5,
+            "rsiHeatPenalty": 17.8,
+            "rsiExtensionAmplifier": 0.96,
+            "extremeRsi20dMaPenalty": 17,
+            "totalPenalty": 32.5
+          },
+          "technicalContext": {
+            "ma20DistancePct": 23.91,
+            "return5dPct": 8.1,
+            "rsi14": 83.9,
+            "distanceFrom20dHighPct": 0
+          },
+          "gates": [],
+          "reconstructionCoveragePct": 100,
+          "sourceSnapshotET": "2026-10-02T15:22:31.441316-04:00",
+          "forwardReturnsPct": {
+            "T+1": null,
+            "T+3": null,
+            "T+5": null
+          }
+        }
+      ]
+    }
+  }
 }
