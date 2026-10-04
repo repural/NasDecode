@@ -1013,9 +1013,13 @@ def main():
         # Oil
         w=q.get('@CL.1'); b=q.get('@LCO.1')
         if w and b:
-            wv=num(w.get('last')); bv=num(b.get('last')); wm=pct(w); bm=pct(b); avg=(wm+bm)/2
+            wv=num(w.get('last')); bv=num(b.get('last')); wm=pct(w); bm=pct(b)
+            oil_moves=[x for x in (wm,bm) if x is not None]
+            avg=sum(oil_moves)/len(oil_moves) if oil_moves else 0.0
             sig='positive' if avg<-1 else ('negative' if avg>1 else 'mixed')
-            setrow(rows,'Oil (WTI / Brent)',f'WTI ${wv:.2f} ({wm:+.2f}%) | Brent ${bv:.2f} ({bm:+.2f}%)','Falling' if avg<0 else ('Rising' if avg>0 else 'Flat'),sig,fresh(w),'CNBC futures quotes')
+            wtxt=f'{wm:+.2f}%' if wm is not None else 'n/a'
+            btxt=f'{bm:+.2f}%' if bm is not None else 'n/a'
+            setrow(rows,'Oil (WTI / Brent)',f'WTI ${wv:.2f} ({wtxt}) | Brent ${bv:.2f} ({btxt})','Falling' if avg<0 else ('Rising' if avg>0 else 'Flat'),sig,fresh(w),'CNBC futures quotes')
 
     except Exception as e:
         print('CNBC refresh failed:',repr(e))
