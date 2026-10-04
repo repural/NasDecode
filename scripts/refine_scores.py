@@ -356,8 +356,8 @@ def main():
         elif 'negative' in rt: catalyst_score-=15
     catalyst_score=clamp(catalyst_score)
 
-    opp_components=[('Directional edge',direction,0.25),('Entry quality',entry,0.25),
-                    ('Recovery confirmation',recovery,0.25),('Macro timing',macro,0.15),
+    opp_components=[('Directional edge',direction,0.20),('Entry quality',entry,0.35),
+                    ('Recovery confirmation',recovery,0.20),('Macro timing',macro,0.15),
                     ('Catalyst asymmetry',catalyst_score,0.10)]
     opp_available=[x for x in opp_components if x[1] is not None]
     opp_raw=round(sum(v*w for _,v,w in opp_available)/sum(w for _,v,w in opp_available)) if opp_available else 50
