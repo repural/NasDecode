@@ -701,13 +701,13 @@ def main():
         else:
             sx_stoch_zone='Neutral'
         if sx_stoch_d is None:
-            sx_stoch_momentum='signal unavailable'
+            sx_stoch_momentum='Momentum signal unavailable'
         elif sx_stoch_k>=sx_stoch_d+2:
-            sx_stoch_momentum='bullish momentum'
+            sx_stoch_momentum='Momentum accelerating'
         elif sx_stoch_k<=sx_stoch_d-2:
-            sx_stoch_momentum='bearish momentum'
+            sx_stoch_momentum='Momentum cooling'
         else:
-            sx_stoch_momentum='flat momentum'
+            sx_stoch_momentum='Momentum steady'
         sx_stoch_meaning=f'{sx_stoch_zone} · {sx_stoch_momentum}'
 
     if sx_atr_pct is None:
@@ -757,11 +757,15 @@ def main():
                 'role':'SOXL entry-quality momentum / overheating input'
             },
             'STOCH96':{
+                'label':'Stochastic · Daily',
+                'kPeriod':9,
+                'dPeriod':6,
                 'k':round(sx_stoch_k,1) if sx_stoch_k is not None else None,
                 'd':round(sx_stoch_d,1) if sx_stoch_d is not None else None,
                 'meaning':sx_stoch_meaning,
                 'scored':False,
-                'role':'Observational SOXL momentum / overbought-oversold context only'
+                'timeframe':'Daily',
+                'role':'Observational SOXL range-position and momentum context only'
             },
             'ATR14':{
                 'valuePct':round(sx_atr_pct,2) if sx_atr_pct is not None else None,
