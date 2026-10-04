@@ -652,6 +652,27 @@ def main():
     else:
         sx_rsi_meaning='Oversold / Weak'
 
+    sx_stoch_k=num(soxl_ctx.get('stochK9'))
+    sx_stoch_d=num(soxl_ctx.get('stochD6'))
+    if sx_stoch_k is None:
+        sx_stoch_meaning='Unavailable'
+    else:
+        if sx_stoch_k>=80:
+            sx_stoch_zone='Overbought'
+        elif sx_stoch_k<=20:
+            sx_stoch_zone='Oversold'
+        else:
+            sx_stoch_zone='Neutral'
+        if sx_stoch_d is None:
+            sx_stoch_momentum='signal unavailable'
+        elif sx_stoch_k>=sx_stoch_d+2:
+            sx_stoch_momentum='bullish momentum'
+        elif sx_stoch_k<=sx_stoch_d-2:
+            sx_stoch_momentum='bearish momentum'
+        else:
+            sx_stoch_momentum='flat momentum'
+        sx_stoch_meaning=f'{sx_stoch_zone} · {sx_stoch_momentum}'
+
     if sx_atr_pct is None:
         sx_atr_meaning='Unavailable'
     elif (sx_atr_ratio is not None and sx_atr_ratio>=1.20) or (sx_atr_percentile is not None and sx_atr_percentile>=75):
@@ -697,6 +718,13 @@ def main():
                 'meaning':sx_rsi_meaning,
                 'entryScore':round(rsi_entry) if rsi_entry is not None else None,
                 'role':'SOXL entry-quality momentum / overheating input'
+            },
+            'STOCH96':{
+                'k':round(sx_stoch_k,1) if sx_stoch_k is not None else None,
+                'd':round(sx_stoch_d,1) if sx_stoch_d is not None else None,
+                'meaning':sx_stoch_meaning,
+                'scored':False,
+                'role':'Observational SOXL momentum / overbought-oversold context only'
             },
             'ATR14':{
                 'valuePct':round(sx_atr_pct,2) if sx_atr_pct is not None else None,
