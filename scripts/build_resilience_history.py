@@ -183,10 +183,13 @@ def main():
         series[name]=s
         availability[name]={'provider':'Yahoo Finance','ticker':symbol,'rows':len(s),'available':bool(s)}
 
-    # SOX trading sessions are the canonical row calendar.
-    sox_days=[d for d in sorted(series['SOX']) if fetch_start.isoformat()<=d<=end.isoformat()]
+    # Require both SOX and QQQ for the canonical U.S. equity-session calendar.
+    # Massive's index feed can occasionally emit a weekend carry/administrative bar;
+    # an investable QQQ bar prevents those artifacts becoming model observations.
+    session_days=[d for d in sorted(series['SOX'])
+                  if d in series['QQQ'] and fetch_start.isoformat()<=d<=end.isoformat()]
     records=dict(old_records)
-    for day in sox_days:
+    for day in session_days:
         market={k:series[k].get(day) for k in MARKET}
         macro={k:series[k].get(day) for k in MACRO}
         sox=market['SOX'] or {}; qqq=market['QQQ'] or {}; soxx=market['SOXX'] or {}; smh=market['SMH'] or {}
@@ -219,7 +222,22 @@ def main():
 
     # Retain only the requested rolling one-year calendar window.
     cutoff=(end-datetime.timedelta(days=365)).isoformat()
-    records={d:records[d] for d in sorted(records) if d>=cutoff and d<=end.isoformat()}
+    records={d:records[d] for d in sorted(records)
+             if d>=cutoff and d<=end.isoformat()
+             and (records[d].get('market') or {}).get('SOX')
+             and (records[d].get('market') or {}).get('QQQ')}
+
+    # Report coverage of the stored rolling dataset, not merely the incremental
+    # overlap fetched on this invocation.
+    for name in MARKET:
+        rows=sum(1 for r in records.values() if ((r.get('market') or {}).get(name) or {}).get('close') is not None)
+        availability[name]['storedRows']=rows
+        availability[name]['coveragePct']=round(100*rows/len(records),1) if records else 0
+    for name in MACRO:
+        rows=sum(1 for r in records.values() if ((r.get('macro') or {}).get(name) or {}).get('close') is not None)
+        availability[name]['storedRows']=rows
+        availability[name]['coveragePct']=round(100*rows/len(records),1) if records else 0
+
     payload={
         'schemaVersion':1,
         'enginePhase':1,
@@ -230,6 +248,7 @@ def main():
             'macro':MACRO,
             'semiconductorBasket':list(BASKET)
         },
+        'sessionCalendar':'U.S. equity sessions requiring both SOX and QQQ observations; filters index-only weekend artifacts.',
         'fieldDefinitions':{
             'changeBp':'Yield close-to-close change in basis points.',
             'return1dPct':'Adjusted close-to-close daily percentage return.',
@@ -243,7 +262,7 @@ def main():
     os.makedirs(os.path.dirname(OUT),exist_ok=True)
     with open(OUT,'w',encoding='utf-8') as f:
         json.dump(payload,f,ensure_ascii=False,indent=2); f.write('\n')
-    print('Stored',len(records),'SOX sessions in',OUT)
+    print('Stored',len(records),'canonical U.S. equity sessions in',OUT)
     for k,v in availability.items(): print(k,v)
 
 if __name__=='__main__':
