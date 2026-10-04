@@ -276,21 +276,54 @@ def main():
         'note':'Higher means the current move is more vulnerable to a fade or sideways reset; it is not a bearish-direction forecast.'
     }
 
-    # ---------------- Opportunity Score v3 ----------------
-    # A long-entry quality score. Avoid circular dependence on Consolidation Risk itself;
-    # every component is computed directly from market observations.
-    direction=_clamp=clamp((num((d.get('nasdaqScore') or {}).get('score')) or 0)*1.25+50)
+    # ---------------- Opportunity Score v4 ----------------
+    # General long-entry quality. Direction/recovery tell us whether the tape is
+    # constructive; Entry Quality tells us whether the current PRICE LOCATION is
+    # attractive enough to initiate exposure. Consolidation Risk is used only as
+    # a final sanity gate so its extension inputs are not double-counted as a sixth
+    # weighted component.
+    direction=clamp((num((d.get('nasdaqScore') or {}).get('score')) or 0)*1.25+50)
 
-    # Entry quality: better near/under the 20DMA or after a modest pullback; poor when
-    # already stretched. VXN dislocation adds optionality but not if internals are broken.
-    ma20=num(qqq_ctx.get('ma20Distance')); r5=num(qqq_ctx.get('return5d')); rsi=num(qqq_ctx.get('rsi14'))
-    entry=avg([
-        clamp(75-12*(ma20 or 0)),
-        clamp(65-7*(r5 or 0)),
-        clamp(75-2.5*((rsi or 50)-50))
-    ])
+    # Entry Quality v4: explicitly price-location aware.
+    # QQQ is the primary Nasdaq entry instrument/context. SOXX is included because
+    # semiconductor extension matters materially to a semiconductor-led Nasdaq.
+    ma20=num(qqq_ctx.get('ma20Distance'))
+    r5=num(qqq_ctx.get('return5d'))
+    rsi=num(qqq_ctx.get('rsi14'))
+
+    qqq_ma_entry=clamp(75-12*(ma20 or 0)) if ma20 is not None else None
+    qqq_rsi_entry=clamp(75-2.5*((rsi or 50)-50)) if rsi is not None else None
+    qqq_r5_entry=clamp(65-7*(r5 or 0)) if r5 is not None else None
+
+    # Invert the extension-aware high interaction from Consolidation Risk v4.
+    # Being at a high near the 20DMA is not penalized much; being at a high while
+    # stretched/overbought is a poor entry location.
+    qqq_high_entry=(100-qqq_high_interaction) if qqq_high_interaction is not None else None
+
+    # SOXX structural extension combines trend distance, RSI and high x extension.
+    # It is inverted for entry quality: extreme semiconductor extension reduces the
+    # attractiveness of initiating broad Nasdaq exposure even when leadership is strong.
+    soxx_structural_extension=avg([soxx_ma_risk,soxx_rsi_risk,soxx_high_interaction])
+    soxx_extension_entry=(100-soxx_structural_extension) if soxx_structural_extension is not None else None
+
+    entry_parts=[
+        ('QQQ vs 20DMA',qqq_ma_entry,0.30),
+        ('QQQ RSI14',qqq_rsi_entry,0.20),
+        ('QQQ 5D return',qqq_r5_entry,0.15),
+        ('QQQ high × extension',qqq_high_entry,0.20),
+        ('SOXX structural extension',soxx_extension_entry,0.15)
+    ]
+    entry_available=[x for x in entry_parts if x[1] is not None]
+    entry=(sum(v*w for _,v,w in entry_available)/sum(w for _,v,w in entry_available)
+           if entry_available else None)
+
+    # Tradable volatility can improve optionality, but only when price location is
+    # not already structurally extreme. It must never turn a poor chase into a good one.
     vxn=num(((mc.get('vxn') or {}).get('close')))
-    if vxn is not None and 22<=vxn<=32: entry=clamp((entry or 50)+10)
+    vxn_entry_bonus=10 if (vxn is not None and 22<=vxn<=32 and
+                           (structural_extension or 0)<70 and (entry or 0)>=35) else 0
+    if entry is not None and vxn_entry_bonus:
+        entry=clamp(entry+vxn_entry_bonus)
 
     # Recovery/participation: live internal confirmation plus direction of breadth,
     # semiconductors, mega-caps and volatility.
@@ -327,33 +360,62 @@ def main():
                     ('Recovery confirmation',recovery,0.25),('Macro timing',macro,0.15),
                     ('Catalyst asymmetry',catalyst_score,0.10)]
     opp_available=[x for x in opp_components if x[1] is not None]
-    opp=round(sum(v*w for _,v,w in opp_available)/sum(w for _,v,w in opp_available)) if opp_available else 50
+    opp_raw=round(sum(v*w for _,v,w in opp_available)/sum(w for _,v,w in opp_available)) if opp_available else 50
+    opp=opp_raw
+    opp_gates=[]
 
-    # Behavioral gates: a falling tape with no internal recovery should not score as an
-    # attractive long merely because it is cheap/oversold. Severe rejection also limits
-    # entry quality until confirmation returns.
-    if (direction or 0)<40 and (recovery or 0)<50: opp=min(opp,44)
-    if risk>=75 and (recovery or 0)<70: opp=min(opp,49)
-    if pending_high: opp=min(opp,64)
+    # Behavioral gates. Consolidation Risk is deliberately a gate rather than a
+    # weighted input: the same 20DMA/RSI/high-location data already contributes to
+    # Entry Quality. The gate simply prevents strong recovery/catalysts from relabeling
+    # a stretched entry as Attractive.
+    if (direction or 0)<40 and (recovery or 0)<50:
+        opp=min(opp,44)
+        opp_gates.append('Weak direction + weak recovery caps opportunity at 44')
+    if risk>=35 and risk<55 and (entry or 0)<45:
+        opp=min(opp,59)
+        opp_gates.append('Moderate consolidation risk + weak entry quality caps opportunity at 59')
+    elif risk>=55 and risk<75 and (entry or 0)<50:
+        opp=min(opp,54)
+        opp_gates.append('Elevated consolidation risk + weak entry quality caps opportunity at 54')
+    elif risk>=75:
+        if (entry or 0)<50 or (recovery or 0)<70:
+            opp=min(opp,44)
+            opp_gates.append('High consolidation risk without a strong reset/recovery entry caps opportunity at 44')
+        else:
+            opp=min(opp,49)
+            opp_gates.append('High consolidation risk caps opportunity at 49 pending stronger confirmation')
+    if pending_high:
+        opp=min(opp,64)
+        opp_gates.append('Pending high-impact catalyst caps opportunity at 64')
 
     if opp>=75: label='Strong Long Opportunity'; sig='positive'
     elif opp>=60: label='Attractive'; sig='positive'
     elif opp>=45: label='Selective'; sig='mixed'
     elif opp>=30: label='Wait for Confirmation'; sig='mixed'
     else: label='Poor Long Opportunity'; sig='negative'
-    if (recovery or 0)>=65 and (entry or 0)>=60 and (direction or 0)<60: opp_type='Recovery / dip entry'
-    elif (direction or 0)>=60 and (recovery or 0)>=60: opp_type='Trend continuation'
-    elif (recovery or 0)<45: opp_type='Wait for confirmation'
-    else: opp_type='Selective / mixed'
+
+    if (recovery or 0)>=65 and (entry or 0)>=60 and (direction or 0)<60:
+        opp_type='Recovery / dip entry'
+    elif (direction or 0)>=60 and (recovery or 0)>=60 and (entry or 0)>=50:
+        opp_type='Trend continuation'
+    elif (recovery or 0)<45:
+        opp_type='Wait for confirmation'
+    else:
+        opp_type='Selective / mixed'
+
     opp_sorted=sorted(((n,round(v)) for n,v,_ in opp_available),key=lambda x:x[1],reverse=True)
     weak_sorted=sorted(((n,round(v)) for n,v,_ in opp_available),key=lambda x:x[1])
     d['opportunityScore']={
-        'version':3,'score':opp,'label':label,'signal':sig,'type':opp_type,
+        'version':4,'score':opp,'rawScore':opp_raw,'label':label,'signal':sig,'type':opp_type,
         'components':{n:round(v) if v is not None else None for n,v,_ in opp_components},
+        'entryQualityComponents':{n:round(v) if v is not None else None for n,v,_ in entry_parts},
+        'entryQualityVxnBonus':vxn_entry_bonus,
+        'consolidationRiskContext':risk,
+        'gates':opp_gates,
         'strongestDrivers':[f'{n} {v}' for n,v in opp_sorted[:2]],
         'weakestDrivers':[f'{n} {v}' for n,v in weak_sorted[:2]],
-        'explanation':f"Long-entry quality is {label.lower()} ({opp}/100; {opp_type}). Strongest inputs: "+', '.join(f'{n} {v}' for n,v in opp_sorted[:2])+'. Weakest: '+', '.join(f'{n} {v}' for n,v in weak_sorted[:2])+'.',
-        'note':'This is an entry-quality score, not a forecast of the next session return.'
+        'explanation':f"Long-entry quality is {label.lower()} ({opp}/100; {opp_type}). Raw weighted score {opp_raw}/100. Strongest inputs: "+', '.join(f'{n} {v}' for n,v in opp_sorted[:2])+'. Weakest: '+', '.join(f'{n} {v}' for n,v in weak_sorted[:2])+('. Active gate: '+opp_gates[-1]+'.' if opp_gates else '.'),
+        'note':'This is an entry-quality score, not a forecast of the next session return. Strong internals can support the trend without making an extended price a good new entry.'
     }
 
 
