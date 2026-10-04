@@ -132,7 +132,7 @@ jobs:
             python scripts/fix_three_day_watch.py
             python scripts/capture_session_analysis.py
             python scripts/build_chart_history.py
-          MASSIVE_API_KEY='${{ secrets.MASSIVE_API_KEY }}' python scripts/build_resilience_history.py
+            MASSIVE_API_KEY='${{ secrets.MASSIVE_API_KEY }}' python scripts/build_resilience_history.py
             git add -A data
             mkdir -p public/data
             cp index.html public/index.html
@@ -140,8 +140,8 @@ jobs:
             cp data/dashboard.json public/data/dashboard.json
             cp data/premarket.json public/data/premarket.json
             if [ -f data/history/session-analyses.json ]; then
-            cp data/history/session-analyses.json public/data/session-analyses.json
-          fi
+              cp data/history/session-analyses.json public/data/session-analyses.json
+            fi
             git add -A public/index.html public/data
             if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
             git diff --cached --quiet && exit 0
