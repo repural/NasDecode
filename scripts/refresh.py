@@ -88,6 +88,41 @@ def massive_daily_bars(ticker, days=120):
     return []
 
 
+def massive_rsi_latest(ticker, window=14):
+    """Fetch Massive's native daily RSI; return None so Wilder local calculation can be fallback."""
+    global _MASSIVE_LAST_CALL
+    key=os.environ.get('MASSIVE_API_KEY','').strip()
+    if not key: return None
+    params=urllib.parse.urlencode({'timespan':'day','adjusted':'true','window':window,
+                                   'series_type':'close','order':'desc','limit':1})
+    url=f'https://api.massive.com/v1/indicators/rsi/{urllib.parse.quote(ticker)}?{params}'
+    req=urllib.request.Request(url,headers={'Authorization':f'Bearer {key}','User-Agent':'NasDecode/1.0'})
+    backoffs=(15,30,60)
+    for attempt in range(4):
+        wait=12.5-(time.monotonic()-_MASSIVE_LAST_CALL)
+        if _MASSIVE_LAST_CALL and wait>0: time.sleep(wait)
+        try:
+            with urllib.request.urlopen(req,timeout=20) as resp:
+                payload=json.load(resp); _MASSIVE_LAST_CALL=time.monotonic()
+            vals=((payload.get('results') or {}).get('values') or [])
+            if vals:
+                v=num(vals[0].get('value'))
+                ts=vals[0].get('timestamp')
+                day=(datetime.datetime.fromtimestamp(float(ts)/1000,datetime.timezone.utc).date().isoformat()
+                     if ts is not None else None)
+                return {'value':v,'date':day,'source':'Massive native RSI API'} if v is not None else None
+            return None
+        except urllib.error.HTTPError as e:
+            _MASSIVE_LAST_CALL=time.monotonic()
+            if e.code!=429 or attempt>=len(backoffs):
+                print(f'Massive RSI unavailable for {ticker}:',repr(e)); return None
+            time.sleep(backoffs[attempt])
+        except Exception as e:
+            _MASSIVE_LAST_CALL=time.monotonic()
+            print(f'Massive RSI unavailable for {ticker}:',repr(e)); return None
+    return None
+
+
 def massive_index_latest(candidates):
     """Try Massive index aggregate symbols and return the latest observed close."""
     for ticker in candidates:
@@ -125,11 +160,17 @@ def historical_context(bars):
     ma50=sum(closes[-50:])/50 if len(closes)>=50 else None
     ma20dist=(closes[-1]/ma20-1)*100 if ma20 else None
     ma50dist=(closes[-1]/ma50-1)*100 if ma50 else None
+    # Wilder RSI(14). The previous implementation used a simple average of only the
+    # latest 14 changes, which overstated RSI during sharp runs. This is also the
+    # deterministic fallback when Massive's native RSI endpoint is unavailable.
     rsi14=None
     if len(closes)>=15:
-        changes=[bb-aa for aa,bb in zip(closes[-15:-1],closes[-14:])]
-        ag=sum(max(x,0) for x in changes)/14
-        al=sum(max(-x,0) for x in changes)/14
+        changes=[closes[i]-closes[i-1] for i in range(1,len(closes))]
+        gains=[max(x,0) for x in changes]; losses=[max(-x,0) for x in changes]
+        ag=sum(gains[:14])/14; al=sum(losses[:14])/14
+        for i in range(14,len(changes)):
+            ag=((13*ag)+gains[i])/14
+            al=((13*al)+losses[i])/14
         rsi14=100 if al==0 else 100-(100/(1+ag/al))
 
     # Wilder TR / ATR / DMI / ADX. Keep None when OHLC depth is insufficient.
@@ -220,6 +261,7 @@ def historical_context(bars):
     high20_distance=(closes[-1]/high20-1)*100 if high20 else None
     return {'streak':streak,'return1d':ret1,'return3d':ret3,'return5d':ret5,
             'ma20Distance':ma20dist,'ma50Distance':ma50dist,'rsi14':rsi14,
+            'rsi14Source':'Wilder calculation from Massive adjusted daily OHLC',
             'atr14':atr14,'atr14Pct':atr14_pct,'atr50':atr50,'atr14Vs50':atr14_vs50,
             'atr14PctPercentile60':atr_pct_percentile60,
             'stochK9':stoch_k9,'stochD6':stoch_d6,
@@ -1647,6 +1689,13 @@ def main():
     for ticker in ('QQQ','SOXX','SOXL'):
         bars=massive_daily_bars(ticker,730 if ticker=='SOXL' else 180)
         ctx=historical_context(bars)
+        if ctx and ticker in ('SOXX','SOXL'):
+            native_rsi=massive_rsi_latest(ticker,14)
+            if native_rsi and native_rsi.get('value') is not None:
+                ctx['rsi14LocalWilder']=ctx.get('rsi14')
+                ctx['rsi14']=native_rsi['value']
+                ctx['rsi14Source']=native_rsi['source']
+                ctx['rsi14Date']=native_rsi.get('date')
         if ctx: massive_context[ticker]=ctx
         if ticker in ('SOXX','SOXL') and bars:
             history_path=os.path.join(HISTORY_DIR,f'{ticker.lower()}-daily.json')
