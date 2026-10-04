@@ -20867,7 +20867,7 @@
     },
     "2026-10-04": {
       "schemaVersion": 4,
-      "timestampET": "2026-10-04T09:36:24.645634-04:00",
+      "timestampET": "2026-10-04T11:56:38.534997-04:00",
       "market": {
         ".IXIC": {
           "last": 27190.864,
@@ -21815,7 +21815,7 @@
             "interpretation": "Catalyst context modifies confidence/read-through only; price-based Semiconductor Leadership remains unchanged."
           },
           "broadLeadershipTrigger": true,
-          "accelerationFromOpenPoints": null,
+          "accelerationFromOpenPoints": 0,
           "relativeStrengthPp": {
             "soxVsNasdaqPp": 1.55,
             "soxxVsNasdaqPp": 1.31,
@@ -21844,7 +21844,7 @@
           "marketResponseAttenuationPct": 0.0
         },
         "directionalScoreUnchanged": true,
-        "checkpoint": "open",
+        "checkpoint": "intraday",
         "marketResponseApplied": false
       },
       "validation": {
@@ -21888,14 +21888,6 @@
               "regimeMultiplier": 1.0
             },
             {
-              "factor": "Semiconductor leadership",
-              "bucket": "Leadership",
-              "strength": 0.0,
-              "effectiveWeight": 0.2,
-              "freshnessWeight": 0.2,
-              "regimeMultiplier": 1.0
-            },
-            {
               "factor": "Inflation · Labor · Growth",
               "bucket": "Rates / Macro",
               "strength": 0.64,
@@ -21928,7 +21920,15 @@
               "regimeMultiplier": 1.25
             },
             {
-              "factor": "Mega-cap leadership",
+              "factor": "Oil (WTI / Brent)",
+              "bucket": "Rates / Macro",
+              "strength": 0.577,
+              "effectiveWeight": 1.75,
+              "freshnessWeight": 0.7,
+              "regimeMultiplier": 1.25
+            },
+            {
+              "factor": "Semiconductor leadership",
               "bucket": "Leadership",
               "strength": 0.0,
               "effectiveWeight": 0.2,
@@ -21936,12 +21936,12 @@
               "regimeMultiplier": 1.0
             },
             {
-              "factor": "Oil (WTI / Brent)",
-              "bucket": "Rates / Macro",
-              "strength": 0.577,
-              "effectiveWeight": 1.75,
-              "freshnessWeight": 0.7,
-              "regimeMultiplier": 1.25
+              "factor": "Mega-cap leadership",
+              "bucket": "Leadership",
+              "strength": 0.0,
+              "effectiveWeight": 0.2,
+              "freshnessWeight": 0.2,
+              "regimeMultiplier": 1.0
             },
             {
               "factor": "Market breadth",
@@ -21991,17 +21991,17 @@
               "cap": 4.0
             },
             {
-              "bucket": "Leadership",
-              "strength": 0.0,
-              "weight": 3.85,
-              "uncappedWeight": 3.85,
-              "cap": 9.0
-            },
-            {
               "bucket": "Rates / Macro",
               "strength": -0.201,
               "weight": 9.0,
               "uncappedWeight": 15.5,
+              "cap": 9.0
+            },
+            {
+              "bucket": "Leadership",
+              "strength": 0.0,
+              "weight": 3.85,
+              "uncappedWeight": 3.85,
               "cap": 9.0
             }
           ],
@@ -22240,7 +22240,7 @@
                 "interpretation": "Catalyst context modifies confidence/read-through only; price-based Semiconductor Leadership remains unchanged."
               },
               "broadLeadershipTrigger": true,
-              "accelerationFromOpenPoints": null,
+              "accelerationFromOpenPoints": 0,
               "relativeStrengthPp": {
                 "soxVsNasdaqPp": 1.55,
                 "soxxVsNasdaqPp": 1.31,
@@ -22269,7 +22269,7 @@
               "marketResponseAttenuationPct": 0.0
             },
             "directionalScoreUnchanged": true,
-            "checkpoint": "open",
+            "checkpoint": "intraday",
             "marketResponseApplied": false
           },
           "marketResponse": {
@@ -22277,7 +22277,7 @@
             "status": "inactive",
             "mode": null,
             "summary": "No persistent divergence between the macro impulse and live market response.",
-            "observedAt": "2026-10-04T09:39:04.225883-04:00",
+            "observedAt": "2026-10-04T11:59:16.329603-04:00",
             "candidateMode": null,
             "candidateSince": null,
             "persistenceMinutes": 0.0,
@@ -22364,11 +22364,15 @@
                 "role": "SOXL entry-quality momentum / overheating input"
               },
               "STOCH96": {
+                "label": "Stochastic · Daily",
+                "kPeriod": 9,
+                "dPeriod": 6,
                 "k": 82.5,
                 "d": 85.3,
-                "meaning": "Overbought · bearish momentum",
+                "meaning": "Overbought · Momentum cooling",
                 "scored": false,
-                "role": "Observational SOXL momentum / overbought-oversold context only"
+                "timeframe": "Daily",
+                "role": "Observational SOXL range-position and momentum context only"
               },
               "ATR14": {
                 "valuePct": 7.5,
@@ -22753,12 +22757,6 @@
           "trend": "Stable →",
           "latest": "ASML: Oct 14, 2026 · TSM: Oct 15, 2026"
         },
-        "Semiconductor leadership": {
-          "signal": "mixed",
-          "currentImpact": "Low",
-          "trend": "Stable →",
-          "latest": "Awaiting live SOX/Nasdaq quotes"
-        },
         "Inflation · Labor · Growth": {
           "signal": "positive",
           "currentImpact": "High",
@@ -22783,17 +22781,23 @@
           "trend": "Stable →",
           "latest": "Oct 28: Hike 22% / Hold 78% / Cut 0% · Dec 9: Above current 85% / Same 15% / Below 0% · Jan 27: Above current 91% / Same 9% / Below 0%"
         },
-        "Mega-cap leadership": {
-          "signal": "mixed",
-          "currentImpact": "Low",
-          "trend": "Stable →",
-          "latest": "Awaiting live mega-cap quotes"
-        },
         "Oil (WTI / Brent)": {
           "signal": "positive",
           "currentImpact": "Medium",
           "trend": "Improving ↑",
           "latest": "WTI $91.26 (-1.73%) | Brent $102.25 (n/a)"
+        },
+        "Semiconductor leadership": {
+          "signal": "mixed",
+          "currentImpact": "Low",
+          "trend": "Stable →",
+          "latest": "Awaiting live SOX/Nasdaq quotes"
+        },
+        "Mega-cap leadership": {
+          "signal": "mixed",
+          "currentImpact": "Low",
+          "trend": "Stable →",
+          "latest": "Awaiting live mega-cap quotes"
         },
         "Market breadth": {
           "signal": "mixed",
@@ -22819,7 +22823,7 @@
         "status": "inactive",
         "mode": null,
         "summary": "No persistent divergence between the macro impulse and live market response.",
-        "observedAt": "2026-10-04T09:39:04.225883-04:00",
+        "observedAt": "2026-10-04T11:59:16.329603-04:00",
         "candidateMode": null,
         "candidateSince": null,
         "persistenceMinutes": 0.0,
@@ -22906,11 +22910,15 @@
             "role": "SOXL entry-quality momentum / overheating input"
           },
           "STOCH96": {
+            "label": "Stochastic · Daily",
+            "kPeriod": 9,
+            "dPeriod": 6,
             "k": 82.5,
             "d": 85.3,
-            "meaning": "Overbought · bearish momentum",
+            "meaning": "Overbought · Momentum cooling",
             "scored": false,
-            "role": "Observational SOXL momentum / overbought-oversold context only"
+            "timeframe": "Daily",
+            "role": "Observational SOXL range-position and momentum context only"
           },
           "ATR14": {
             "valuePct": 7.5,
