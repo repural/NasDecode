@@ -276,6 +276,127 @@ def main():
         'note':'This is an entry-quality score, not a forecast of the next session return.'
     }
 
+
+    # ---------------- SOXL Buy Score v1 ----------------
+    # Tactical 1-5 session entry score for the 3x daily semiconductor ETF. This is
+    # intentionally separate from the broader Opportunity Score: semiconductor trend
+    # and SOXL's own entry quality dominate, while leverage-sensitive risk can hard-cap it.
+    soxl_ctx=(d.get('historicalContext') or {}).get('SOXL') or {}
+    soxl_obs=market.get('SOXL') or {}
+    soxl_last=num(soxl_obs.get('last')); soxl_change=num(soxl_obs.get('changePct'))
+
+    # Intraday SOXL giveback from the best observed regular-session return.
+    soxl_path=[]
+    for s in intra:
+        try:
+            ts=dt.datetime.fromisoformat(str(s.get('timestampET'))).astimezone(NY)
+        except (TypeError,ValueError):
+            continue
+        if ts.date()!=now.date() or ts.hour*60+ts.minute<9*60+30: continue
+        v=num(((s.get('market') or {}).get('SOXL') or {}).get('changePct'))
+        if v is not None: soxl_path.append(v)
+    if soxl_change is not None: soxl_path.append(soxl_change)
+    soxl_giveback=(max(soxl_path)-soxl_change) if soxl_path and soxl_change is not None else None
+
+    # 1) Semiconductor trend / leadership (30%).
+    semi_score=num(semi.get('score'))
+    semi_trend=avg([
+        semi_score,
+        scale(sox_rs,-1.5,1.5) if sox_rs is not None else None,
+        scale(soxx_rs,-1.5,1.5) if soxx_rs is not None else None,
+        scale(smh_rs,-1.5,1.5) if smh_rs is not None else None
+    ])
+
+    # 2) SOXL entry quality (25%). Reward a controlled pullback/normal extension,
+    # not a falling knife and not a chase after an already extreme leveraged run.
+    sx_ma20=num(soxl_ctx.get('ma20Distance')); sx_r5=num(soxl_ctx.get('return5d'))
+    sx_rsi=num(soxl_ctx.get('rsi14')); sx_highdist=num(soxl_ctx.get('distanceFromWindowHighPct'))
+    ma_entry=clamp(85-8*max(sx_ma20 or 0,0)-5*max(-(sx_ma20 or 0),0)) if sx_ma20 is not None else None
+    r5_entry=clamp(78-5*max((sx_r5 or 0)-4,0)-4*max(-(sx_r5 or 0)-3,0)) if sx_r5 is not None else None
+    rsi_entry=clamp(88-3*abs((sx_rsi or 55)-55)) if sx_rsi is not None else None
+    high_entry=clamp(82-5*abs((sx_highdist or -4)+4)) if sx_highdist is not None else None
+    intraday_entry=clamp(100-25*soxl_giveback) if soxl_giveback is not None else None
+    soxl_entry=avg([ma_entry,r5_entry,rsi_entry,high_entry,intraday_entry])
+
+    # 3) Broader market confirmation (15%).
+    market_confirmation=avg([
+        internal,
+        direction,
+        signal100(row(d,'Market breadth').get('signal')),
+        signal100(row(d,'Mega-cap leadership').get('signal'))
+    ])
+
+    # 4) Volatility / leverage risk (15%). High consolidation risk and a volatility
+    # expansion are especially costly for a daily 3x instrument.
+    leverage_risk=avg([
+        100-risk,
+        signal100(row(d,'Nasdaq volatility (VXN / VIX)').get('signal')),
+        clamp(50-(vxn_ch or 0)*6) if vxn_ch is not None else None
+    ])
+
+    # 5) Rates / macro timing (10%), including the verified release-surprise mix.
+    release_mix=row(d,'Inflation · Labor · Growth')
+    soxl_macro=avg([
+        clamp(50-(y10_bp or 0)*6), clamp(50-(y2_bp or 0)*6),
+        clamp(50+(fed_rep or 0)*0.5), signal100(release_mix.get('signal')),
+        signal100(oil.get('signal'))
+    ])
+
+    # 6) Semiconductor catalyst asymmetry (5%).
+    soxl_catalyst=catalyst_score
+
+    sx_components=[
+        ('Semiconductor trend',semi_trend,0.30),('SOXL entry quality',soxl_entry,0.25),
+        ('Market confirmation',market_confirmation,0.15),('Volatility / leverage risk',leverage_risk,0.15),
+        ('Rates / macro',soxl_macro,0.10),('Catalyst asymmetry',soxl_catalyst,0.05)
+    ]
+    sx_available=[x for x in sx_components if x[1] is not None]
+    soxl_score=round(sum(v*w for _,v,w in sx_available)/sum(w for _,v,w in sx_available)) if sx_available else 50
+    gates=[]
+
+    # Hard gates stop cheap/oversold readings from becoming false buy signals.
+    if semi_trend is not None and semi_trend<40:
+        soxl_score=min(soxl_score,45); gates.append('Weak semiconductor trend caps score at 45')
+    rs_vals=[x for x in (sox_rs,soxx_rs,smh_rs) if x is not None]
+    if len(rs_vals)>=2 and all(x<0 for x in rs_vals):
+        soxl_score=min(soxl_score,50); gates.append('Broad semiconductor underperformance caps score at 50')
+    if risk>=75:
+        soxl_score=min(soxl_score,45); gates.append('High consolidation risk caps score at 45')
+    if sx_ma20 is not None and sx_ma20>8:
+        soxl_score=min(soxl_score,55); gates.append('SOXL >8% above 20DMA caps chase entry at 55')
+    if vxn_ch is not None and y10_bp is not None and vxn_ch>8 and y10_bp>5:
+        soxl_score=min(soxl_score,45); gates.append('Volatility + yield shock caps score at 45')
+    if pending_high:
+        soxl_score=min(soxl_score,64); gates.append('Pending high-impact semiconductor catalyst caps score at 64')
+
+    if soxl_score>=85: sx_label='Exceptional Tactical Entry'; sx_sig='positive'
+    elif soxl_score>=70: sx_label='Attractive'; sx_sig='positive'
+    elif soxl_score>=55: sx_label='Selective / Starter'; sx_sig='mixed'
+    elif soxl_score>=40: sx_label='Wait'; sx_sig='mixed'
+    elif soxl_score>=25: sx_label='Poor Entry'; sx_sig='negative'
+    else: sx_label='Avoid Long'; sx_sig='negative'
+
+    sx_sorted=sorted(((n,round(v)) for n,v,_ in sx_available),key=lambda x:x[1],reverse=True)
+    sx_weak=sorted(((n,round(v)) for n,v,_ in sx_available),key=lambda x:x[1])
+    d['soxlBuyScore']={
+        'version':1,'score':soxl_score,'label':sx_label,'signal':sx_sig,'horizon':'1–5 sessions',
+        'instrument':'SOXL','last':soxl_last,'changePct':soxl_change,
+        'components':{n:round(v) if v is not None else None for n,v,_ in sx_components},
+        'gates':gates,'intradayGivebackPp':round(soxl_giveback,2) if soxl_giveback is not None else None,
+        'technicalContext':{
+            'ma20DistancePct':round(sx_ma20,2) if sx_ma20 is not None else None,
+            'return5dPct':round(sx_r5,2) if sx_r5 is not None else None,
+            'rsi14':round(sx_rsi,1) if sx_rsi is not None else None,
+            'distanceFromWindowHighPct':round(sx_highdist,2) if sx_highdist is not None else None
+        },
+        'strongestDrivers':[f'{n} {v}' for n,v in sx_sorted[:2]],
+        'weakestDrivers':[f'{n} {v}' for n,v in sx_weak[:2]],
+        'explanation':f"SOXL tactical entry quality is {sx_label.lower()} ({soxl_score}/100) for a 1–5 session horizon. "
+                      +('Active gates: '+ '; '.join(gates)+'. ' if gates else '')
+                      +'Strongest inputs: '+', '.join(f'{n} {v}' for n,v in sx_sorted[:2])+'. Weakest: '+', '.join(f'{n} {v}' for n,v in sx_weak[:2])+'.',
+        'note':'Experimental tactical score for a daily 3x leveraged ETF. It measures entry quality, not expected return or position size.'
+    }
+
     DASH.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 
     # Keep today's history synchronized with the refined public scores.
@@ -284,15 +405,17 @@ def main():
         rec['nasdaqScore']={k:v for k,v in d.get('nasdaqScore',{}).items() if k!='model'}
         rec['consolidationRisk']=d['consolidationRisk']
         rec['opportunityScore']=d['opportunityScore']
+        rec['soxlBuyScore']=d['soxlBuyScore']
         if isinstance(rec.get('validation'),dict):
             ms=rec['validation'].setdefault('modelState',{})
-            ms['nasdaqScore']=rec['nasdaqScore']; ms['consolidationRisk']=d['consolidationRisk']; ms['opportunityScore']=d['opportunityScore']
+            ms['nasdaqScore']=rec['nasdaqScore']; ms['consolidationRisk']=d['consolidationRisk']; ms['opportunityScore']=d['opportunityScore']; ms['soxlBuyScore']=d['soxlBuyScore']
         if isinstance(rec.get('closeSnapshot'),dict):
             rec['closeSnapshot']['nasdaqScore']=rec['nasdaqScore']
             rec['closeSnapshot']['consolidationRisk']=d['consolidationRisk']
             rec['closeSnapshot']['opportunityScore']=d['opportunityScore']
+            rec['closeSnapshot']['soxlBuyScore']=d['soxlBuyScore']
         DAILY.write_text(json.dumps(daily,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 
-    print(f'v3 scores: Nasdaq {d.get("nasdaqScore",{}).get("score"):+} | Consolidation {risk} ({risk_level}) | Opportunity {opp} ({label})')
+    print(f'v3 scores: Nasdaq {d.get("nasdaqScore",{}).get("score"):+} | Consolidation {risk} ({risk_level}) | Opportunity {opp} ({label}) | SOXL Buy {soxl_score} ({sx_label})')
 
 if __name__=='__main__': main()
