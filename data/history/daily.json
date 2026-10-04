@@ -20867,7 +20867,7 @@
     },
     "2026-10-04": {
       "schemaVersion": 4,
-      "timestampET": "2026-10-04T05:34:14.414864-04:00",
+      "timestampET": "2026-10-04T05:40:57.575421-04:00",
       "market": {
         ".IXIC": {
           "last": 27190.864,
@@ -21870,22 +21870,6 @@
               "regimeMultiplier": 1.25
             },
             {
-              "factor": "Fed expectations",
-              "bucket": "Rates / Macro",
-              "strength": -0.337,
-              "effectiveWeight": 2.5,
-              "freshnessWeight": 1.0,
-              "regimeMultiplier": 1.25
-            },
-            {
-              "factor": "Mega-cap leadership",
-              "bucket": "Leadership",
-              "strength": 0.456,
-              "effectiveWeight": 1.4,
-              "freshnessWeight": 0.7,
-              "regimeMultiplier": 1.0
-            },
-            {
               "factor": "10Y Treasury Yield",
               "bucket": "Rates / Macro",
               "strength": -0.756,
@@ -21900,6 +21884,22 @@
               "effectiveWeight": 3.75,
               "freshnessWeight": 1.0,
               "regimeMultiplier": 1.25
+            },
+            {
+              "factor": "Fed expectations",
+              "bucket": "Rates / Macro",
+              "strength": -0.337,
+              "effectiveWeight": 2.5,
+              "freshnessWeight": 1.0,
+              "regimeMultiplier": 1.25
+            },
+            {
+              "factor": "Mega-cap leadership",
+              "bucket": "Leadership",
+              "strength": 0.456,
+              "effectiveWeight": 1.4,
+              "freshnessWeight": 0.7,
+              "regimeMultiplier": 1.0
             },
             {
               "factor": "Oil (WTI / Brent)",
@@ -22203,7 +22203,7 @@
             "status": "inactive",
             "mode": null,
             "summary": "No persistent divergence between the macro impulse and live market response.",
-            "observedAt": "2026-10-04T05:36:09.074794-04:00",
+            "observedAt": "2026-10-04T05:42:55.384598-04:00",
             "candidateMode": null,
             "candidateSince": null,
             "persistenceMinutes": 0.0,
@@ -22220,26 +22220,46 @@
             "note": "Market Response only attenuates an existing Rates / Macro contribution; it never reverses its sign."
           },
           "soxlBuyScore": {
-            "version": 1,
-            "score": 55,
-            "label": "Selective / Starter",
-            "signal": "mixed",
+            "version": 2,
+            "score": 25,
+            "label": "Poor Entry",
+            "signal": "negative",
             "horizon": "1–5 sessions",
             "instrument": "SOXL",
             "last": 163.71,
             "changePct": 6.52,
             "components": {
               "Semiconductor trend": 98,
-              "SOXL entry quality": 48,
+              "SOXL entry quality": 31,
               "Market confirmation": 71,
               "Volatility / leverage risk": 89,
               "Rates / macro": 61,
               "Catalyst asymmetry": 100
             },
             "gates": [
-              "SOXL >8% above 20DMA caps chase entry at 55"
+              "SOXL >18% above 20DMA caps chase entry at 30",
+              "Extreme extension (>15% above 20DMA + RSI>80) caps score at 25"
             ],
-            "intradayGivebackPp": 0.0,
+            "intradayGivebackPp": null,
+            "entryQuality": {
+              "score": 31,
+              "factorScores": {
+                "20DMA distance": 0,
+                "5D return": 58,
+                "RSI14": 1,
+                "20D-high distance": 82,
+                "Intraday giveback": null
+              },
+              "factorWeights": {
+                "20DMA distance": 30,
+                "5D return": 20,
+                "RSI14": 20,
+                "20D-high distance": 20,
+                "Intraday giveback": 10
+              },
+              "availableWeightPct": 90,
+              "method": "Weighted available factors; intraday giveback is excluded when there is no current-session SOXL observation."
+            },
             "technicalContext": {
               "ma20DistancePct": 23.91,
               "return5dPct": 8.1,
@@ -22251,10 +22271,10 @@
               "Semiconductor trend 98"
             ],
             "weakestDrivers": [
-              "SOXL entry quality 48",
+              "SOXL entry quality 31",
               "Rates / macro 61"
             ],
-            "explanation": "SOXL tactical entry quality is selective / starter (55/100) for a 1–5 session horizon. Active gates: SOXL >8% above 20DMA caps chase entry at 55. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 98. Weakest: SOXL entry quality 48, Rates / macro 61.",
+            "explanation": "SOXL tactical entry quality is poor entry (25/100) for a 1–5 session horizon. Active gates: SOXL >18% above 20DMA caps chase entry at 30; Extreme extension (>15% above 20DMA + RSI>80) caps score at 25. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 98. Weakest: SOXL entry quality 31, Rates / macro 61.",
             "note": "Experimental tactical score for a daily 3x leveraged ETF. It measures entry quality, not expected return or position size."
           }
         },
@@ -22578,18 +22598,6 @@
           "trend": "Stable →",
           "latest": "Supportive data mix +64 · Nonfarm payrolls 29K vs 90K · Core PCE 0.2% vs 0.3% · Unemployment rate 4.2% vs 4.1%"
         },
-        "Fed expectations": {
-          "signal": "negative",
-          "currentImpact": "Medium",
-          "trend": "Stable →",
-          "latest": "Oct 28: Hike 22% / Hold 78% / Cut 0% · Dec 9: Above current 85% / Same 15% / Below 0% · Jan 27: Above current 91% / Same 9% / Below 0%"
-        },
-        "Mega-cap leadership": {
-          "signal": "positive",
-          "currentImpact": "Medium",
-          "trend": "Improving ↑",
-          "latest": "Previous regular-session close · 7-stock basket +1.59% | 7/7 positive | QQQ +1.02% | relative +0.57 pp"
-        },
         "10Y Treasury Yield": {
           "signal": "negative",
           "currentImpact": "High",
@@ -22601,6 +22609,18 @@
           "currentImpact": "High",
           "trend": "Deteriorating ↓",
           "latest": "4.827% (+4.0 bp vs prev close)"
+        },
+        "Fed expectations": {
+          "signal": "negative",
+          "currentImpact": "Medium",
+          "trend": "Stable →",
+          "latest": "Oct 28: Hike 22% / Hold 78% / Cut 0% · Dec 9: Above current 85% / Same 15% / Below 0% · Jan 27: Above current 91% / Same 9% / Below 0%"
+        },
+        "Mega-cap leadership": {
+          "signal": "positive",
+          "currentImpact": "Medium",
+          "trend": "Improving ↑",
+          "latest": "Previous regular-session close · 7-stock basket +1.59% | 7/7 positive | QQQ +1.02% | relative +0.57 pp"
         },
         "Oil (WTI / Brent)": {
           "signal": "positive",
@@ -22632,7 +22652,7 @@
         "status": "inactive",
         "mode": null,
         "summary": "No persistent divergence between the macro impulse and live market response.",
-        "observedAt": "2026-10-04T05:36:09.074794-04:00",
+        "observedAt": "2026-10-04T05:42:55.384598-04:00",
         "candidateMode": null,
         "candidateSince": null,
         "persistenceMinutes": 0.0,
@@ -22649,26 +22669,46 @@
         "note": "Market Response only attenuates an existing Rates / Macro contribution; it never reverses its sign."
       },
       "soxlBuyScore": {
-        "version": 1,
-        "score": 55,
-        "label": "Selective / Starter",
-        "signal": "mixed",
+        "version": 2,
+        "score": 25,
+        "label": "Poor Entry",
+        "signal": "negative",
         "horizon": "1–5 sessions",
         "instrument": "SOXL",
         "last": 163.71,
         "changePct": 6.52,
         "components": {
           "Semiconductor trend": 98,
-          "SOXL entry quality": 48,
+          "SOXL entry quality": 31,
           "Market confirmation": 71,
           "Volatility / leverage risk": 89,
           "Rates / macro": 61,
           "Catalyst asymmetry": 100
         },
         "gates": [
-          "SOXL >8% above 20DMA caps chase entry at 55"
+          "SOXL >18% above 20DMA caps chase entry at 30",
+          "Extreme extension (>15% above 20DMA + RSI>80) caps score at 25"
         ],
-        "intradayGivebackPp": 0.0,
+        "intradayGivebackPp": null,
+        "entryQuality": {
+          "score": 31,
+          "factorScores": {
+            "20DMA distance": 0,
+            "5D return": 58,
+            "RSI14": 1,
+            "20D-high distance": 82,
+            "Intraday giveback": null
+          },
+          "factorWeights": {
+            "20DMA distance": 30,
+            "5D return": 20,
+            "RSI14": 20,
+            "20D-high distance": 20,
+            "Intraday giveback": 10
+          },
+          "availableWeightPct": 90,
+          "method": "Weighted available factors; intraday giveback is excluded when there is no current-session SOXL observation."
+        },
         "technicalContext": {
           "ma20DistancePct": 23.91,
           "return5dPct": 8.1,
@@ -22680,10 +22720,10 @@
           "Semiconductor trend 98"
         ],
         "weakestDrivers": [
-          "SOXL entry quality 48",
+          "SOXL entry quality 31",
           "Rates / macro 61"
         ],
-        "explanation": "SOXL tactical entry quality is selective / starter (55/100) for a 1–5 session horizon. Active gates: SOXL >8% above 20DMA caps chase entry at 55. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 98. Weakest: SOXL entry quality 48, Rates / macro 61.",
+        "explanation": "SOXL tactical entry quality is poor entry (25/100) for a 1–5 session horizon. Active gates: SOXL >18% above 20DMA caps chase entry at 30; Extreme extension (>15% above 20DMA + RSI>80) caps score at 25. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 98. Weakest: SOXL entry quality 31, Rates / macro 61.",
         "note": "Experimental tactical score for a daily 3x leveraged ETF. It measures entry quality, not expected return or position size."
       }
     }
