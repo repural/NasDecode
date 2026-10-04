@@ -712,21 +712,32 @@ There are TWO different meanings of "UI refresh":
    dashboard refresh unless another publishing path explicitly copies them to public data.
 
 2. BROWSER DISPLAY REFRESH
-   Current index.html does NOT contain a periodic setInterval/automatic browser polling
-   loop for data/dashboard.json.
+   index.html uses adaptive, cache-busted browser polling of data/dashboard.json.
 
-   An open browser fetches the latest published dashboard:
-   - Once when the page is initially loaded/reloaded.
-   - Whenever the user presses "Check Latest".
+   Normal auto-check cadence:
+   - U.S. cash session (weekdays, approximately 09:30-16:20 ET): every 2 minutes.
+   - Weekday premarket from ~04:00 ET and after-hours through ~20:00 ET: every 15 minutes.
+   - Fully closed periods / weekends: every 60 minutes.
+   - Returning to a previously hidden browser tab triggers an immediate latest-data check.
 
-   "Check Latest" uses a cache-busted/no-cache request, so it retrieves the newest
-   already-published dashboard.json. It does NOT itself execute the GitHub data-collection
-   workflow.
+   Scheduled macro-release behavior:
+   - refresh_macro_surprises.py publishes upcoming tracked release timestamps from the
+     economic calendar in macroSurprises.scheduledEvents when available.
+   - The browser schedules a check at the exact published release time.
+   - From approximately 30 seconds before through 10 minutes after a scheduled release,
+     the browser checks every 20 seconds.
+   - This is schedule-aware polling, NOT server push. The browser cannot display a new
+     model result until the backend workflow has fetched, calculated and published it.
+   - Because the backend has its own tighter release-window refresh gate, the 20-second UI
+     checks make a newly published post-release snapshot appear promptly without forcing
+     the full model to run every 20 seconds.
 
-   Consequence:
-   - Backend/public data can be updating every ~5 minutes during the market,
-     while a tab that has remained open will continue displaying its previously loaded
-     snapshot until the page is reloaded or "Check Latest" is pressed.
+   Rendering behavior:
+   - The browser compares dashboard.updatedET with the currently rendered snapshot and
+     only re-renders the quantitative dashboard when a newer published snapshot exists.
+   - "Check Latest" remains available for an immediate manual no-cache check.
+   - "Check Latest" retrieves the newest already-published dashboard.json; it does NOT
+     itself execute the GitHub data-collection workflow.
 
 TIME ZONES
 ----------
