@@ -567,7 +567,7 @@ Quality if SOXX has become technically overextended.
 
 ======================================================================
 
-4. SOXL BUY SCORE v2
+4. SOXL BUY SCORE v3
 ======================================================================
 
 RANGE / HORIZON
@@ -576,8 +576,8 @@ RANGE / HORIZON
 This is an entry-quality score for a DAILY 3x leveraged semiconductor ETF. It is not expected
 return, probability of profit or a position-size recommendation.
 
-MAJOR WEIGHTS
--------------
+MAJOR WEIGHTS — UNCHANGED FROM v2
+---------------------------------
 - Semiconductor trend / leadership: 30%
 - SOXL entry quality:                25%
 - Market confirmation:              15%
@@ -585,75 +585,72 @@ MAJOR WEIGHTS
 - Rates / macro:                    10%
 - Catalyst asymmetry:                5%
 
-The weighted available components are renormalized when a component is unavailable.
+v3 does NOT change these six weights. It changes how RSI and technical extension affect the
+final score so price extension is continuous and regime-aware rather than a set of hard cliffs.
 
 4.1 SEMICONDUCTOR TREND / LEADERSHIP (30%)
 -------------------------------------------
-Equal-weight average of four 0-100 readings:
+Equal-weight average of:
 - Semiconductor Leadership score
-- SOX vs Nasdaq relative strength scaled from -1.5pp=0 to +1.5pp=100
-- SOXX vs Nasdaq relative strength scaled the same way
-- SMH vs Nasdaq relative strength scaled the same way
-
-This deliberately requires broad semiconductor confirmation rather than relying on one stock.
+- SOX vs Nasdaq relative strength scaled -1.5pp=0 to +1.5pp=100
+- SOXX vs Nasdaq relative strength on the same scale
+- SMH vs Nasdaq relative strength on the same scale
 
 4.2 SOXL ENTRY QUALITY (25%)
 ----------------------------
-Internal weights:
-- Distance from 20DMA:       30%
-- 5-day return:              20%
-- RSI14:                     20%
-- Distance from 20-day high: 20%
-- Intraday giveback:         10%
+Entry Quality factor weights remain:
+- Distance from 20DMA: 30%
+- 5D return:           20%
+- RSI14:               20%
+- 20D-high distance:   20%
+- Intraday giveback:   10%
 
-20DMA distance factor:
-If SOXL is above its 20DMA:
-  score = clip(85 - 8 x distance_above_20DMA_pct)
-If below its 20DMA:
-  score = clip(85 - 5 x absolute_distance_below_20DMA_pct)
+20DMA factor:
+  clip(85 - 8 x positive distance_above_20DMA - 5 x distance_below_20DMA)
 
-This makes extreme positive extension expensive rather than treating momentum as a free benefit.
+5D-return factor:
+  clip(78 - 5 x max(5D_return - 4,0) - 4 x max(-5D_return - 3,0))
 
-5-day return factor:
-  score = clip(78
-               - 5 x max(5D_return - 4, 0)
-               - 4 x max(-5D_return - 3, 0))
-Moderate positive momentum is acceptable; excessive upside chase or sharp negative momentum
-reduces entry quality.
+RSI14 factor — v3 momentum-aware curve:
+  RSI 40 -> 40
+  RSI 45 -> 55
+  RSI 50 -> 70
+  RSI 55 -> 85
+  RSI 60 -> 100
+  RSI 65 -> 95
+  RSI 70 -> 80
+  RSI 75 -> 60
+  RSI 80 -> 35
+  RSI 85 -> 10
+  RSI 90+ -> 0
+Values between breakpoints are linearly interpolated.
 
-RSI14 factor:
-  score = clip(88 - 3 x abs(RSI14 - 55))
-The preferred center is RSI 55. Both overbought and very weak RSI reduce entry quality.
+Purpose:
+RSI 55-65 is treated as healthy momentum for a leveraged semiconductor trend rather than as
+overbought. Above 75, overheating increasingly reduces entry quality; above 80 the penalty
+accelerates.
 
-20-day-high factor -- STRONG SOX REGIME:
-Strong regime requires:
-- Semiconductor Trend >=70, AND
-- SOX is positive on the session OR SOX relative strength vs Nasdaq is positive.
+20-day-high factor with strong SOX:
+A controlled pullback from the recent high is rewarded using:
+  0% below high -> 25
+  2% -> 40
+  4% -> 55
+  6% -> 70
+  8% -> 82
+  10% -> 90
+  12% -> 95
+  15% -> 75
+  20% -> 35
+  25% -> 10
+The reward peaks near a 12% pullback and then falls because a deeper drawdown can indicate
+breakdown rather than a bargain.
 
-SOXL pullback from 20-day high -> factor score:
-  0%   -> 25
- -2%   -> 40
- -4%   -> 55
- -6%   -> 70
- -8%   -> 82
--10%   -> 90
--12%   -> 95   preferred tactical discount
--15%   -> 75
--20%   -> 35
--25%+  -> 10
-
-Values between points are linearly interpolated. A controlled pullback from confirmed sector
-strength is rewarded; a very deep drawdown is penalized as possible breakdown/divergence.
-
-20-day-high factor -- WITHOUT STRONG SOX:
+Without strong SOX:
   score = clip(82 - 5 x abs(distanceFrom20dHighPct + 4))
-This conservative profile peaks around 4% below the high and does not automatically treat a
-deep drawdown as a bargain.
 
-Intraday giveback factor:
-  giveback = best observed regular-session SOXL return - current SOXL return
-  score = clip(100 - 25 x giveback_pp)
-Outside a current U.S. session this factor is unavailable and its 10% weight is excluded.
+Intraday giveback:
+  score = clip(100 - 25 x giveback_percentage_points)
+The factor is excluded when no current-session SOXL observation exists.
 
 4.3 MARKET CONFIRMATION (15%)
 -----------------------------
@@ -670,11 +667,9 @@ Equal-weight average of:
 - Nasdaq volatility signal = 100 / 50 / 0
 - clip(50 - 6 x VXN daily change_pct)
 
-Higher values mean the volatility backdrop is safer/more supportive for a leveraged long.
-
 4.5 RATES / MACRO (10%)
 -----------------------
-Equal-weight average of:
+Equal-weight average of available:
 - clip(50 - 6 x 10Y daily bp change)
 - clip(50 - 6 x 2Y daily bp change)
 - clip(50 + 0.5 x Fed Repricing Score)
@@ -683,65 +678,131 @@ Equal-weight average of:
 
 4.6 CATALYST ASYMMETRY (5%)
 ---------------------------
-Uses the same catalyst score as Opportunity Score:
-- Start 50
-- Pending high-impact -15
-- Other pending -5
-- Observed positive +8
-- Positive persistent +15
-- Observed negative -15
-- Clip 0..100
+Uses the same catalyst framework as Opportunity Score.
 
-SOXL HARD GATES
----------------
-Hard gates are applied AFTER the weighted score:
+RAW SCORE
+---------
+Raw SOXL Score =
+  30% Semiconductor Trend
++ 25% SOXL Entry Quality
++ 15% Market Confirmation
++ 15% Volatility / Leverage Risk
++ 10% Rates / Macro
++  5% Catalyst Asymmetry
+
+v3 then applies two CONTINUOUS technical penalties before genuine risk gates.
+
+A. CONTINUOUS 20DMA EXTENSION PENALTY
+-------------------------------------
+Base penalty:
+- <=8% above 20DMA: 0
+- 12% above:         4
+- 18% above:        12
+- 24% above:        24
+- 30%+ above:       35
+Values between points are linearly interpolated.
+
+SEMICONDUCTOR-REGIME RELIEF
+---------------------------
+Strong sector confirmation may reduce, but never reverse, the 20DMA extension penalty:
+
+- Semiconductor Trend >=85 AND Market Confirmation >=60:
+    applied penalty = base penalty x 0.65
+- Otherwise Semiconductor Trend >=75:
+    applied penalty = base penalty x 0.80
+- Otherwise:
+    applied penalty = base penalty x 1.00
+
+This means +18% above the 20DMA is still a negative entry-location input, but it is less
+punitive when SOX/SOXX/SMH and the broader tape strongly confirm the move.
+
+B. RSI x 20DMA EXTREME-OVERHEATING PENALTY
+-------------------------------------------
+RSI heat penalty:
+- RSI <=75: 0
+- RSI 80:  10
+- RSI 85:  20
+- RSI 90+: 30
+Interpolated continuously.
+
+20DMA amplifier:
+- <=8% above: 0.25
+- 15% above:  0.50
+- 20% above:  0.80
+- 25%+ above: 1.00
+Interpolated continuously.
+
+Extreme overheating penalty =
+  RSI heat penalty x 20DMA amplifier
+
+This penalty does NOT receive the full semiconductor-regime relief. Strong SOX can justify
+persistent trend extension, but it does not make RSI in the mid/high-80s harmless for a daily
+3x ETF.
+
+PRE-GATE SCORE
+--------------
+Pre-gate SOXL Score =
+  Raw SOXL Score
+- Regime-adjusted 20DMA extension penalty
+- RSI x 20DMA extreme-overheating penalty
+
+The result is floored at zero.
+
+HARD GATES — ONLY GENUINE REGIME / EVENT RISKS
+-----------------------------------------------
+The old SOXL >8%, >12%, >18% 20DMA hard caps are REMOVED.
+The old >15% above 20DMA + RSI>80 cap-at-25 rule is REMOVED.
+
+Remaining hard gates:
 - Semiconductor Trend <40 -> cap final score at 45.
-- At least two semiconductor relative-strength readings available and ALL negative -> cap 50.
+- At least two semiconductor relative-strength readings available and all negative -> cap 50.
 - Consolidation Risk >=75 -> cap 45.
-- SOXL >8% above 20DMA -> cap 55.
-- SOXL >12% above 20DMA -> cap 40.
-- SOXL >18% above 20DMA -> cap 30.
-- SOXL >15% above 20DMA AND RSI14 >80 -> cap 25.
 - VXN daily change >+8% AND 10Y >+5bp -> cap 45.
 - Pending high-impact semiconductor catalyst -> cap 64.
 
-The most restrictive active gate wins. This is why a strong semiconductor trend cannot turn a
-severely overextended SOXL into a high entry score.
+WHY v3
+------
+v2 correctly warned against chasing SOXL, but a single 20DMA threshold could discard otherwise
+valuable information about a persistent semiconductor momentum regime. v3 keeps extension
+expensive while distinguishing:
+- strong but extended,
+- strong + extended + genuinely overheated,
+- and extended without semiconductor confirmation.
+
+The score publishes rawScore, preGateScore, the RSI factor score, the base/applied 20DMA
+penalty, regime multiplier, RSI heat, RSI/20DMA interaction penalty and final gates.
 
 GUIDANCE
 --------
 Score range       Label                       Operational interpretation
-85-100            Exceptional Tactical Entry  Highest-quality tactical setup. Broad chips,
-                                              entry location and risk backdrop align.
-70-84             Attractive                  Favor a tactical long, preferably with normal
-                                              risk controls and no contradictory active gate.
-55-69             Selective / Starter         Constructive but imperfect. Prefer starter size,
-                                              scaling or confirmation rather than full entry.
-40-54             Wait                        Edge is insufficient. Wait for better price
-                                              location or stronger confirmation.
-25-39             Poor Entry                  Do not chase. Even if sector direction is strong,
-                                              timing/risk is unfavorable.
+85-100            Exceptional Tactical Entry  Rare alignment of trend, price location and risk.
+70-84             Attractive                  Good tactical long setup; normal risk controls.
+55-69             Selective / Starter         Constructive setup. Prefer starter/scaled entry.
+40-54             Wait                        Some edge exists but entry/risk is insufficient.
+25-39             Poor Entry                  Do not chase; timing/extension remains unfavorable.
 0-24              Avoid Long                  Tactical long setup is materially unfavorable.
 
-PRACTICAL COMBINATIONS
-----------------------
-Nasdaq + / SOXL <40:
-  The market can be constructive while SOXL itself is too extended or leverage risk is poor.
-  Do not use Nasdaq direction as permission to chase SOXL.
+PRACTICAL INTERPRETATION
+------------------------
+Strong Semiconductor Trend + RSI 55-65:
+  Healthy momentum. RSI itself should support Entry Quality even if 20DMA distance still
+  imposes an extension penalty.
 
-Semiconductor Trend >70 / SOXL Entry Quality <40:
-  Sector leadership is healthy, but price location is poor. Prefer waiting for a controlled
-  pullback or reset.
+Strong Semiconductor Trend + SOXL far above 20DMA + RSI <75:
+  Strong but extended. Score should usually remain Selective/Wait rather than collapse solely
+  because a hard 20DMA threshold was crossed.
 
-SOXL 55-69 with improving components:
-  Starter/scale-in territory, not an all-clear. Watch 20DMA distance, RSI, giveback and rates.
+SOXL far above 20DMA + RSI >80:
+  Strong and genuinely overheated. Both the normal RSI Entry Quality factor and the separate
+  RSI x 20DMA penalty reduce the score.
 
-SOXL >=70 with no hard gate:
-  Broad leadership and entry conditions are aligned. This is the regime the score is designed
-  to identify as tactically attractive.
+Weak Semiconductor Trend:
+  A technically cheaper SOXL is not automatically a good entry; weak trend remains a hard
+  regime warning.
 
 
 ======================================================================
+
 5. INTERNAL CONFIRMATION
 ======================================================================
 
