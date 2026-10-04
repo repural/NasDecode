@@ -20867,7 +20867,7 @@
     },
     "2026-10-04": {
       "schemaVersion": 4,
-      "timestampET": "2026-10-04T05:29:33.168055-04:00",
+      "timestampET": "2026-10-04T05:34:14.414864-04:00",
       "market": {
         ".IXIC": {
           "last": 27190.864,
@@ -21573,18 +21573,18 @@
       "modelPerformance": {
         "nasdaqCompositeClose": 27190.864,
         "nasdaqCompositeObservationDate": "2026-10-02",
-        "nasdaqScore": 9
+        "nasdaqScore": 0
       },
       "nasdaqScore": {
-        "score": 12,
-        "rawScore": 12,
+        "score": 1,
+        "rawScore": 1,
         "previousScore": -2,
         "trend": "Improving ↑",
         "signal": "mixed",
         "label": "Mixed / Neutral",
         "confidence": 55,
-        "coverage": 84,
-        "effectiveScore": 12.0
+        "coverage": 91,
+        "effectiveScore": 1.0
       },
       "consolidationRisk": {
         "version": 3,
@@ -21610,15 +21610,15 @@
       },
       "opportunityScore": {
         "version": 3,
-        "score": 63,
+        "score": 61,
         "label": "Attractive",
         "signal": "positive",
-        "type": "Trend continuation",
+        "type": "Selective / mixed",
         "components": {
-          "Directional edge": 65,
+          "Directional edge": 51,
           "Entry quality": 37,
           "Recovery confirmation": 86,
-          "Macro timing": 38,
+          "Macro timing": 51,
           "Catalyst asymmetry": 100
         },
         "strongestDrivers": [
@@ -21627,9 +21627,9 @@
         ],
         "weakestDrivers": [
           "Entry quality 37",
-          "Macro timing 38"
+          "Directional edge 51"
         ],
-        "explanation": "Long-entry quality is attractive (63/100; Trend continuation). Strongest inputs: Catalyst asymmetry 100, Recovery confirmation 86. Weakest: Entry quality 37, Macro timing 38.",
+        "explanation": "Long-entry quality is attractive (61/100; Selective / mixed). Strongest inputs: Catalyst asymmetry 100, Recovery confirmation 86. Weakest: Entry quality 37, Directional edge 51.",
         "note": "This is an entry-quality score, not a forecast of the next session return."
       },
       "confirmationLayer": {
@@ -21805,8 +21805,8 @@
           "observationDate": "2026-10-01"
         },
         "macroConstraint": {
-          "ratesMacroBucketStrength": 0.136,
-          "effectiveRatesMacroBucketStrength": 0.136,
+          "ratesMacroBucketStrength": -0.201,
+          "effectiveRatesMacroBucketStrength": -0.201,
           "marketResponseAttenuationPct": 0.0
         },
         "directionalScoreUnchanged": true,
@@ -21818,15 +21818,15 @@
         "snapshotPhase": "premarket",
         "modelState": {
           "nasdaqScore": {
-            "score": 12,
-            "rawScore": 12,
+            "score": 1,
+            "rawScore": 1,
             "previousScore": -2,
             "trend": "Improving ↑",
             "signal": "mixed",
             "label": "Mixed / Neutral",
             "confidence": 55,
-            "coverage": 84,
-            "effectiveScore": 12.0
+            "coverage": 91,
+            "effectiveScore": 1.0
           },
           "nasdaqFactorScores": [
             {
@@ -21889,24 +21889,24 @@
               "factor": "10Y Treasury Yield",
               "bucket": "Rates / Macro",
               "strength": -0.756,
-              "effectiveWeight": 0.438,
-              "freshnessWeight": 0.35,
+              "effectiveWeight": 3.75,
+              "freshnessWeight": 1.0,
               "regimeMultiplier": 1.25
             },
             {
               "factor": "2Y Treasury yield",
               "bucket": "Rates / Macro",
               "strength": -0.76,
-              "effectiveWeight": 0.438,
-              "freshnessWeight": 0.35,
+              "effectiveWeight": 3.75,
+              "freshnessWeight": 1.0,
               "regimeMultiplier": 1.25
             },
             {
               "factor": "Oil (WTI / Brent)",
               "bucket": "Rates / Macro",
-              "strength": 0.305,
-              "effectiveWeight": 0.438,
-              "freshnessWeight": 0.35,
+              "strength": 0.577,
+              "effectiveWeight": 1.75,
+              "freshnessWeight": 0.7,
               "regimeMultiplier": 1.25
             },
             {
@@ -21965,9 +21965,9 @@
             },
             {
               "bucket": "Rates / Macro",
-              "strength": 0.136,
-              "weight": 7.56,
-              "uncappedWeight": 7.56,
+              "strength": -0.201,
+              "weight": 9.0,
+              "uncappedWeight": 15.5,
               "cap": 9.0
             }
           ],
@@ -21995,15 +21995,15 @@
           },
           "opportunityScore": {
             "version": 3,
-            "score": 63,
+            "score": 61,
             "label": "Attractive",
             "signal": "positive",
-            "type": "Trend continuation",
+            "type": "Selective / mixed",
             "components": {
-              "Directional edge": 65,
+              "Directional edge": 51,
               "Entry quality": 37,
               "Recovery confirmation": 86,
-              "Macro timing": 38,
+              "Macro timing": 51,
               "Catalyst asymmetry": 100
             },
             "strongestDrivers": [
@@ -22012,9 +22012,9 @@
             ],
             "weakestDrivers": [
               "Entry quality 37",
-              "Macro timing 38"
+              "Directional edge 51"
             ],
-            "explanation": "Long-entry quality is attractive (63/100; Trend continuation). Strongest inputs: Catalyst asymmetry 100, Recovery confirmation 86. Weakest: Entry quality 37, Macro timing 38.",
+            "explanation": "Long-entry quality is attractive (61/100; Selective / mixed). Strongest inputs: Catalyst asymmetry 100, Recovery confirmation 86. Weakest: Entry quality 37, Directional edge 51.",
             "note": "This is an entry-quality score, not a forecast of the next session return."
           },
           "confirmationLayer": {
@@ -22190,8 +22190,8 @@
               "observationDate": "2026-10-01"
             },
             "macroConstraint": {
-              "ratesMacroBucketStrength": 0.136,
-              "effectiveRatesMacroBucketStrength": 0.136,
+              "ratesMacroBucketStrength": -0.201,
+              "effectiveRatesMacroBucketStrength": -0.201,
               "marketResponseAttenuationPct": 0.0
             },
             "directionalScoreUnchanged": true,
@@ -22203,7 +22203,7 @@
             "status": "inactive",
             "mode": null,
             "summary": "No persistent divergence between the macro impulse and live market response.",
-            "observedAt": "2026-10-04T05:31:23.772190-04:00",
+            "observedAt": "2026-10-04T05:36:09.074794-04:00",
             "candidateMode": null,
             "candidateSince": null,
             "persistenceMinutes": 0.0,
@@ -22212,10 +22212,10 @@
             "positiveResponseScore": 83,
             "negativeResponseScore": 0,
             "attenuationPct": 0.0,
-            "rawRatesMacroStrength": 0.136,
-            "effectiveRatesMacroStrength": 0.136,
-            "rawNasdaqScore": 12,
-            "effectiveNasdaqScore": 12,
+            "rawRatesMacroStrength": -0.201,
+            "effectiveRatesMacroStrength": -0.201,
+            "rawNasdaqScore": 1,
+            "effectiveNasdaqScore": 1,
             "components": {},
             "note": "Market Response only attenuates an existing Rates / Macro contribution; it never reverses its sign."
           },
@@ -22230,10 +22230,10 @@
             "changePct": 6.52,
             "components": {
               "Semiconductor trend": 98,
-              "SOXL entry quality": 32,
-              "Market confirmation": 74,
+              "SOXL entry quality": 48,
+              "Market confirmation": 71,
               "Volatility / leverage risk": 89,
-              "Rates / macro": 51,
+              "Rates / macro": 61,
               "Catalyst asymmetry": 100
             },
             "gates": [
@@ -22244,17 +22244,17 @@
               "ma20DistancePct": 23.91,
               "return5dPct": 8.1,
               "rsi14": 83.9,
-              "distanceFromWindowHighPct": -45.57
+              "distanceFrom20dHighPct": 0.0
             },
             "strongestDrivers": [
               "Catalyst asymmetry 100",
               "Semiconductor trend 98"
             ],
             "weakestDrivers": [
-              "SOXL entry quality 32",
-              "Rates / macro 51"
+              "SOXL entry quality 48",
+              "Rates / macro 61"
             ],
-            "explanation": "SOXL tactical entry quality is selective / starter (55/100) for a 1–5 session horizon. Active gates: SOXL >8% above 20DMA caps chase entry at 55. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 98. Weakest: SOXL entry quality 32, Rates / macro 51.",
+            "explanation": "SOXL tactical entry quality is selective / starter (55/100) for a 1–5 session horizon. Active gates: SOXL >8% above 20DMA caps chase entry at 55. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 98. Weakest: SOXL entry quality 48, Rates / macro 61.",
             "note": "Experimental tactical score for a daily 3x leveraged ETF. It measures entry quality, not expected return or position size."
           }
         },
@@ -22592,21 +22592,21 @@
         },
         "10Y Treasury Yield": {
           "signal": "negative",
-          "currentImpact": "Low",
+          "currentImpact": "High",
           "trend": "Deteriorating ↓",
           "latest": "5.273% (+3.9 bp vs prev close)"
         },
         "2Y Treasury yield": {
           "signal": "negative",
-          "currentImpact": "Low",
+          "currentImpact": "High",
           "trend": "Deteriorating ↓",
           "latest": "4.827% (+4.0 bp vs prev close)"
         },
         "Oil (WTI / Brent)": {
-          "signal": "mixed",
-          "currentImpact": "Low",
-          "trend": "Stable →",
-          "latest": "WTI $91.13 (-1.87%) | Brent $102.35 (+0.04%)"
+          "signal": "positive",
+          "currentImpact": "Medium",
+          "trend": "Improving ↑",
+          "latest": "WTI $91.26 (-1.73%) | Brent $102.25 (n/a)"
         },
         "Market breadth": {
           "signal": "mixed",
@@ -22632,7 +22632,7 @@
         "status": "inactive",
         "mode": null,
         "summary": "No persistent divergence between the macro impulse and live market response.",
-        "observedAt": "2026-10-04T05:31:23.772190-04:00",
+        "observedAt": "2026-10-04T05:36:09.074794-04:00",
         "candidateMode": null,
         "candidateSince": null,
         "persistenceMinutes": 0.0,
@@ -22641,10 +22641,10 @@
         "positiveResponseScore": 83,
         "negativeResponseScore": 0,
         "attenuationPct": 0.0,
-        "rawRatesMacroStrength": 0.136,
-        "effectiveRatesMacroStrength": 0.136,
-        "rawNasdaqScore": 12,
-        "effectiveNasdaqScore": 12,
+        "rawRatesMacroStrength": -0.201,
+        "effectiveRatesMacroStrength": -0.201,
+        "rawNasdaqScore": 1,
+        "effectiveNasdaqScore": 1,
         "components": {},
         "note": "Market Response only attenuates an existing Rates / Macro contribution; it never reverses its sign."
       },
@@ -22659,10 +22659,10 @@
         "changePct": 6.52,
         "components": {
           "Semiconductor trend": 98,
-          "SOXL entry quality": 32,
-          "Market confirmation": 74,
+          "SOXL entry quality": 48,
+          "Market confirmation": 71,
           "Volatility / leverage risk": 89,
-          "Rates / macro": 51,
+          "Rates / macro": 61,
           "Catalyst asymmetry": 100
         },
         "gates": [
@@ -22673,17 +22673,17 @@
           "ma20DistancePct": 23.91,
           "return5dPct": 8.1,
           "rsi14": 83.9,
-          "distanceFromWindowHighPct": -45.57
+          "distanceFrom20dHighPct": 0.0
         },
         "strongestDrivers": [
           "Catalyst asymmetry 100",
           "Semiconductor trend 98"
         ],
         "weakestDrivers": [
-          "SOXL entry quality 32",
-          "Rates / macro 51"
+          "SOXL entry quality 48",
+          "Rates / macro 61"
         ],
-        "explanation": "SOXL tactical entry quality is selective / starter (55/100) for a 1–5 session horizon. Active gates: SOXL >8% above 20DMA caps chase entry at 55. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 98. Weakest: SOXL entry quality 32, Rates / macro 51.",
+        "explanation": "SOXL tactical entry quality is selective / starter (55/100) for a 1–5 session horizon. Active gates: SOXL >8% above 20DMA caps chase entry at 55. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 98. Weakest: SOXL entry quality 48, Rates / macro 61.",
         "note": "Experimental tactical score for a daily 3x leveraged ETF. It measures entry quality, not expected return or position size."
       }
     }
