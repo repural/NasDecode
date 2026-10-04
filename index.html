@@ -91,7 +91,7 @@ function render(d){
     }).join('')+'</div>';
   };
   const summaryCards=(env?`<div class="card setup-card signal-${env.signal}" tabindex="0" data-tip="Nasdaq Score ranges from −100 (strong headwind) to +100 (strong support) and summarizes the current Nasdaq environment. It is calculated by NasDecode's Proprietary AI-led market intelligence model using the latest available inputs; source timing is shown in Debug."><span class="factor-name">13. NASDAQ SCORE</span><span class="card-status ${C[env.signal]}">${dot(env.signal)}${env.label}</span>${ns.score!==undefined?`<span><span class="metric ${C[env.signal]}">${ns.score>0?'+':''}${ns.score}</span> <span class="muted">range −100 to +100 · ${ns.trend||''}</span></span>`:''}${ns.confidence!==undefined?`<span class="card-latest">Confidence ${ns.confidence}%</span>`:''}</div>`:'')+
-  (d.consolidationRisk?`<div class="card factor-card signal-${d.consolidationRisk.level==='Low'?'positive':(d.consolidationRisk.level==='High'?'negative':'mixed')}" tabindex="0" data-tip="${escAttr(d.consolidationRisk.explanation||'')}"><span class="factor-name">14. CONSOLIDATION RISK</span><span class="card-status ${d.consolidationRisk.level==='Low'?'green':(d.consolidationRisk.level==='High'?'red':'amber')}">${dot()}${d.consolidationRisk.level}</span><span><span class="metric ${d.consolidationRisk.level==='Low'?'green':(d.consolidationRisk.level==='High'?'red':'amber')}">${d.consolidationRisk.score??'—'}</span> <span class="muted">/ 100 · ${d.consolidationRisk.coverageWeight}% data coverage</span></span><span class="card-latest">Proprietary AI-led market intelligence model</span></div>`:'');
+  (d.consolidationRisk?`<div class="card factor-card signal-${d.consolidationRisk.level==='Low'?'positive':(d.consolidationRisk.level==='High'?'negative':'mixed')}" tabindex="0" data-tip="${escAttr(d.consolidationRisk.explanation||'')}"><span class="factor-name">14. CONSOLIDATION RISK</span><span class="card-status ${d.consolidationRisk.level==='Low'?'green':(d.consolidationRisk.level==='High'?'red':'amber')}">${dot()}${d.consolidationRisk.level}</span><span><span class="metric ${d.consolidationRisk.level==='Low'?'green':(d.consolidationRisk.level==='High'?'red':'amber')}">${d.consolidationRisk.score??'—'}</span> <span class="muted">/ 100${Number.isFinite(Number(d.consolidationRisk.coverageWeight))?' · '+Number(d.consolidationRisk.coverageWeight)+'% data coverage':''}</span></span><span class="card-latest">Proprietary AI-led market intelligence model</span></div>`:'');
   const rowCards=visibleRows.map((r,i)=>{
     const minis=leadershipMetrics(r);
     const detail=minis?(r.factor==='Semiconductor leadership'?String(r.latest||'').split('|').slice(-2).join(' · ').trim():''):r.latest||'—';
@@ -231,10 +231,11 @@ function render(d){
   };
   const consolidationDetails=()=>{
     const cr=d.consolidationRisk||{}; const s=Number(cr.score);
-    const top=[...(cr.components||[])].filter(x=>x&&x.name).slice(0,3);
+    const top=Object.entries(cr.components||{}).filter(([name,value])=>name!=='Structural floor'&&Number.isFinite(Number(value))).sort((a,b)=>Number(b[1])-Number(a[1])).slice(0,3);
     let t='Consolidation Risk is '+(Number.isFinite(s)?s:'—')+' / 100 ('+(cr.level||'—')+'); higher readings mean the Nasdaq is more extended or vulnerable to a pause/pullback.';
-    if(top.length) t+=' Current context includes '+top.map(x=>x.name+(x.detail?' ('+x.detail+')':'')).join(', ')+'.';
-    t+=' Model coverage is '+(cr.coverageWeight??'—')+'%, using '+(cr.historyDays??'—')+' sessions of stored history where available.';
+    if(Number.isFinite(Number(cr.structuralFloor))) t+=' Structural extension establishes a '+Number(cr.structuralFloor)+'/100 baseline before live rejection/divergence.';
+    if(top.length) t+=' Current context includes '+top.map(([name,value])=>name+' '+Math.round(Number(value))).join(', ')+'.';
+    if(Number.isFinite(Number(cr.coverageWeight))) t+=' Model coverage is '+Number(cr.coverageWeight)+'%'+(Number.isFinite(Number(cr.historyDays))?', using '+Number(cr.historyDays)+' sessions of stored history where available.':'.');
     return t;
   };
   const opportunityDetails=()=>{
@@ -250,7 +251,7 @@ function render(d){
   ].filter(Boolean);
   const modelDebug=r=>{
     if(r.name==='Nasdaq Score'){const mr=d.marketResponse||{};return '<b>Freshness:</b> Current model output<br><b>Model:</b> v'+(ns.model?.version??'—')+' · Coverage '+(ns.coverage??'—')+'% · Confidence '+(ns.confidence??'—')+'% · Raw '+(ns.rawScore??'—')+' · Previous '+(ns.previousScore??'—')+(mr.status==='active'?'<br><b>Market response:</b> '+escHtml(mr.summary||'Active'):'')+'<br><b>Model:</b> Proprietary AI-led market intelligence model.';}
-    if(r.name==='Consolidation Risk') return '<b>Freshness:</b> Current model output · Coverage '+(d.consolidationRisk?.coverageWeight??'—')+'% · History '+(d.consolidationRisk?.historyDays??'—')+' sessions<br><b>Model:</b> Proprietary AI-led market intelligence model.';
+    if(r.name==='Consolidation Risk'){const cr=d.consolidationRisk||{};return '<b>Freshness:</b> Current model output'+(Number.isFinite(Number(cr.coverageWeight))?' · Coverage '+Number(cr.coverageWeight)+'%':'')+(Number.isFinite(Number(cr.historyDays))?' · History '+Number(cr.historyDays)+' sessions':'')+(Number.isFinite(Number(cr.structuralFloor))?'<br><b>Structural floor:</b> '+Number(cr.structuralFloor)+'/100':'')+'<br><b>Model:</b> Consolidation Risk v'+(cr.version??'—')+' · Proprietary AI-led market intelligence model.';}
     return '<b>Freshness:</b> '+escHtml(r.freshness||'—');
   };
   const factorDebug=r=>{
