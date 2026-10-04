@@ -6,7 +6,7 @@
     "calendarMonths": 12,
     "start": "2025-10-03",
     "end": "2026-10-02",
-    "sessions": 253
+    "sessions": 251
   },
   "series": {
     "market": {
@@ -35,6 +35,7 @@
       "MU"
     ]
   },
+  "sessionCalendar": "U.S. equity sessions requiring both SOX and QQQ observations; filters index-only weekend artifacts.",
   "fieldDefinitions": {
     "changeBp": "Yield close-to-close change in basis points.",
     "return1dPct": "Adjusted close-to-close daily percentage return.",
@@ -47,85 +48,113 @@
       "provider": "Massive",
       "ticker": "I:SOX",
       "rows": 11,
-      "available": true
+      "available": true,
+      "storedRows": 251,
+      "coveragePct": 100.0
     },
     "QQQ": {
       "provider": "Massive",
       "ticker": "QQQ",
       "rows": 11,
-      "available": true
+      "available": true,
+      "storedRows": 251,
+      "coveragePct": 100.0
     },
     "SOXX": {
       "provider": "Massive",
       "ticker": "SOXX",
       "rows": 11,
-      "available": true
+      "available": true,
+      "storedRows": 251,
+      "coveragePct": 100.0
     },
     "SMH": {
       "provider": "Massive",
       "ticker": "SMH",
       "rows": 11,
-      "available": true
+      "available": true,
+      "storedRows": 251,
+      "coveragePct": 100.0
     },
     "NVDA": {
       "provider": "Massive",
       "ticker": "NVDA",
       "rows": 11,
-      "available": true
+      "available": true,
+      "storedRows": 251,
+      "coveragePct": 100.0
     },
     "AMD": {
       "provider": "Massive",
       "ticker": "AMD",
       "rows": 11,
-      "available": true
+      "available": true,
+      "storedRows": 251,
+      "coveragePct": 100.0
     },
     "AVGO": {
       "provider": "Massive",
       "ticker": "AVGO",
       "rows": 11,
-      "available": true
+      "available": true,
+      "storedRows": 251,
+      "coveragePct": 100.0
     },
     "TSM": {
       "provider": "Massive",
       "ticker": "TSM",
       "rows": 11,
-      "available": true
+      "available": true,
+      "storedRows": 251,
+      "coveragePct": 100.0
     },
     "MU": {
       "provider": "Massive",
       "ticker": "MU",
       "rows": 11,
-      "available": true
+      "available": true,
+      "storedRows": 251,
+      "coveragePct": 100.0
     },
     "US10Y": {
       "provider": "U.S. Treasury",
       "ticker": "US Treasury BC_10YEAR",
       "rows": 11,
-      "available": true
+      "available": true,
+      "storedRows": 249,
+      "coveragePct": 99.2
     },
     "US2Y": {
       "provider": "U.S. Treasury",
       "ticker": "US Treasury BC_2YEAR",
       "rows": 11,
-      "available": true
+      "available": true,
+      "storedRows": 249,
+      "coveragePct": 99.2
     },
     "VXN": {
       "provider": "Yahoo Finance",
       "ticker": "^VXN",
       "rows": 11,
-      "available": true
+      "available": true,
+      "storedRows": 251,
+      "coveragePct": 100.0
     },
     "Brent": {
       "provider": "Yahoo Finance",
       "ticker": "BZ=F",
       "rows": 11,
-      "available": true
+      "available": true,
+      "storedRows": 251,
+      "coveragePct": 100.0
     },
     "WTI": {
       "provider": "Yahoo Finance",
       "ticker": "CL=F",
       "rows": 11,
-      "available": true
+      "available": true,
+      "storedRows": 251,
+      "coveragePct": 100.0
     }
   },
   "records": {
@@ -2981,59 +3010,6 @@
         },
         "basketPositiveBreadthPct": 100.0,
         "basketOutperformQqqPct": 100.0
-      },
-      "futureInputs": {
-        "fedRepricing": null,
-        "macroSurprise": null,
-        "catalystContext": null,
-        "note": "Reserved for point-in-time enrichment; never backfilled from future knowledge."
-      }
-    },
-    "2025-10-25": {
-      "date": "2025-10-25",
-      "market": {
-        "SOX": {
-          "open": 6976.93758765332,
-          "high": 6977.47994030965,
-          "low": 6976.93758765332,
-          "close": 6977.47994030965,
-          "volume": null,
-          "vwap": null,
-          "source": "Massive adjusted daily aggregate",
-          "previousClose": 6976.93758765332,
-          "return1dPct": 0.0078
-        },
-        "QQQ": null,
-        "SOXX": null,
-        "SMH": null,
-        "NVDA": null,
-        "AMD": null,
-        "AVGO": null,
-        "TSM": null,
-        "MU": null
-      },
-      "macro": {
-        "US10Y": null,
-        "US2Y": null,
-        "VXN": null,
-        "Brent": null,
-        "WTI": null
-      },
-      "derived": {
-        "soxReturn1dPct": 0.0078,
-        "qqqReturn1dPct": null,
-        "soxVsQqqRelative1dPp": null,
-        "soxxVsQqqRelative1dPp": null,
-        "smhVsQqqRelative1dPp": null,
-        "basketReturnsPct": {
-          "NVDA": null,
-          "AMD": null,
-          "AVGO": null,
-          "TSM": null,
-          "MU": null
-        },
-        "basketPositiveBreadthPct": null,
-        "basketOutperformQqqPct": null
       },
       "futureInputs": {
         "fedRepricing": null,
@@ -42614,59 +42590,6 @@
         },
         "basketPositiveBreadthPct": 60.0,
         "basketOutperformQqqPct": 40.0
-      },
-      "futureInputs": {
-        "fedRepricing": null,
-        "macroSurprise": null,
-        "catalystContext": null,
-        "note": "Reserved for point-in-time enrichment; never backfilled from future knowledge."
-      }
-    },
-    "2026-09-12": {
-      "date": "2026-09-12",
-      "market": {
-        "SOX": {
-          "open": 11823.99806856453,
-          "high": 11823.99806856453,
-          "low": 11823.99806856453,
-          "close": 11823.99806856453,
-          "volume": null,
-          "vwap": null,
-          "source": "Massive adjusted daily aggregate",
-          "previousClose": 11823.99806856453,
-          "return1dPct": 0.0
-        },
-        "QQQ": null,
-        "SOXX": null,
-        "SMH": null,
-        "NVDA": null,
-        "AMD": null,
-        "AVGO": null,
-        "TSM": null,
-        "MU": null
-      },
-      "macro": {
-        "US10Y": null,
-        "US2Y": null,
-        "VXN": null,
-        "Brent": null,
-        "WTI": null
-      },
-      "derived": {
-        "soxReturn1dPct": 0.0,
-        "qqqReturn1dPct": null,
-        "soxVsQqqRelative1dPp": null,
-        "soxxVsQqqRelative1dPp": null,
-        "smhVsQqqRelative1dPp": null,
-        "basketReturnsPct": {
-          "NVDA": null,
-          "AMD": null,
-          "AVGO": null,
-          "TSM": null,
-          "MU": null
-        },
-        "basketPositiveBreadthPct": null,
-        "basketOutperformQqqPct": null
       },
       "futureInputs": {
         "fedRepricing": null,
