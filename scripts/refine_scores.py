@@ -113,23 +113,68 @@ def main():
     qqq_giveback=max(qqq_path)-qqq_ret if qqq_path and qqq_ret is not None else None
     giveback=max([x for x in (ix_giveback,qqq_giveback) if x is not None],default=None)
 
-    # ---------------- Consolidation Risk v3 ----------------
-    # 1) Price extension (20%). A stretched tape is vulnerable, but extension alone
-    # no longer dominates the score.
-    extension=avg([
-        scale(num(qqq_ctx.get('return3d')),0.5,4.0),
-        scale(num(qqq_ctx.get('return5d')),1.0,6.0),
-        scale(num(qqq_ctx.get('ma20Distance')),1.0,6.0),
-        scale(num(qqq_ctx.get('rsi14')),55,75),
-        scale(num(soxx_ctx.get('ma20Distance')),2.0,10.0)
-    ])
+    # ---------------- Consolidation Risk v4 ----------------
+    # Separate latent structural extension from confirmation that a consolidation
+    # is actually beginning. Being at a high is not bearish by itself; being near
+    # a high while stretched above the 20DMA and overbought creates baseline risk.
 
-    # 2) Intraday rejection (25%). A 1.25pp giveback from the best observed level
-    # reaches maximum risk. Small givebacks are normal and score near zero.
+    qqq_ma20=num(qqq_ctx.get('ma20Distance'))
+    qqq_rsi=num(qqq_ctx.get('rsi14'))
+    qqq_r3=num(qqq_ctx.get('return3d'))
+    qqq_r5=num(qqq_ctx.get('return5d'))
+    qqq_highdist=num(qqq_ctx.get('distanceFrom20dHighPct'))
+    soxx_ma20=num(soxx_ctx.get('ma20Distance'))
+    soxx_rsi=num(soxx_ctx.get('rsi14'))
+    soxx_highdist=num(soxx_ctx.get('distanceFrom20dHighPct'))
+
+    # Core extension readings. QQQ uses tighter thresholds than SOXX because
+    # semiconductor indices normally carry more volatility.
+    qqq_ma_risk=scale(qqq_ma20,1.0,6.0) if qqq_ma20 is not None else None
+    qqq_rsi_risk=scale(qqq_rsi,60,80) if qqq_rsi is not None else None
+    qqq_momentum_risk=avg([
+        scale(qqq_r3,0.5,4.0) if qqq_r3 is not None else None,
+        scale(qqq_r5,1.0,6.0) if qqq_r5 is not None else None
+    ])
+    soxx_ma_risk=scale(soxx_ma20,2.0,10.0) if soxx_ma20 is not None else None
+    soxx_rsi_risk=scale(soxx_rsi,60,85) if soxx_rsi is not None else None
+
+    # High proximity only matters when extension already exists. At the 20-day
+    # high proximity=100; it fades to zero once price is >=2% below that high.
+    # This avoids an arbitrary ATH penalty: a high near the 20DMA is healthy,
+    # while a high far above the 20DMA with elevated RSI is structurally fragile.
+    qqq_high_proximity=scale(2-abs(qqq_highdist),0,2) if qqq_highdist is not None else None
+    soxx_high_proximity=scale(2-abs(soxx_highdist),0,2) if soxx_highdist is not None else None
+    qqq_extension_pressure=avg([qqq_ma_risk,qqq_rsi_risk])
+    soxx_extension_pressure=avg([soxx_ma_risk,soxx_rsi_risk])
+    qqq_high_interaction=(qqq_extension_pressure*qqq_high_proximity/100
+                          if qqq_extension_pressure is not None and qqq_high_proximity is not None else None)
+    soxx_high_interaction=(soxx_extension_pressure*soxx_high_proximity/100
+                           if soxx_extension_pressure is not None and soxx_high_proximity is not None else None)
+
+    structural_parts=[
+        ('QQQ vs 20DMA',qqq_ma_risk,0.20),
+        ('QQQ RSI14',qqq_rsi_risk,0.15),
+        ('QQQ 3D/5D acceleration',qqq_momentum_risk,0.10),
+        ('QQQ high × extension',qqq_high_interaction,0.15),
+        ('SOXX vs 20DMA',soxx_ma_risk,0.15),
+        ('SOXX RSI14',soxx_rsi_risk,0.10),
+        ('SOXX high × extension',soxx_high_interaction,0.15)
+    ]
+    structural_available=[x for x in structural_parts if x[1] is not None]
+    structural_extension=(sum(v*w for _,v,w in structural_available)/sum(w for _,v,w in structural_available)
+                          if structural_available else None)
+
+    # Structural extension establishes a floor rather than a full forecast.
+    # 65% of structural pressure becomes latent consolidation risk; live
+    # rejection/divergence can then consume the remaining headroom.
+    structural_floor=clamp((structural_extension or 0)*0.65) if structural_extension is not None else 0
+
+    # 2) Intraday rejection. A 1.25pp giveback from the best observed regular-
+    # session Nasdaq/QQQ level reaches maximum confirmation risk.
     rejection=scale(giveback,0.15,1.25) if giveback is not None else None
 
-    # 3) Breadth divergence (20%). Weak breadth under a positive index is much more
-    # dangerous than weak breadth when the index is already falling.
+    # 3) Breadth divergence. Weak breadth under a positive index is more dangerous
+    # than weak breadth when the index is already falling.
     br=row(d,'Market breadth')
     breadth=parse(br.get('latest'),r'advancing\s*\(([0-9.]+)%\)')
     s5=row(d,'S&P 500 50D Breadth / Oversold')
@@ -141,8 +186,7 @@ def main():
     s5_deterioration=scale(-(s5_ch or 0),0,3)
     breadth_div=clamp(0.55*(breadth_weak or 0)+0.20*(s5_weak or 0)+0.10*(s5_deterioration or 0)+divergence_bonus)
 
-    # 4) Leadership divergence (15%). Use the confirmation layer because it is now
-    # current-session aware during cash hours.
+    # 4) Leadership divergence.
     conf=(d.get('confirmationLayer') or {})
     semi=(conf.get('semiconductorLeadership') or {})
     rs=(semi.get('relativeStrengthPp') or {})
@@ -154,8 +198,7 @@ def main():
         scale(-(smh_rs or 0),0,1.0),scale(-(mega_rel or 0),0,0.8)
     ])
 
-    # 5) Stress confirmation (15%). Rising vol/rates while Nasdaq is positive is a
-    # classic fragile-rally signature.
+    # 5) Volatility/rates stress.
     vxn_ch=num(((mc.get('vxn') or {}).get('changePct')))
     y10_bp=num(((mc.get('us10y') or {}).get('changeBp')))
     y2_bp=num(((mc.get('us2y') or {}).get('changeBp')))
@@ -163,8 +206,7 @@ def main():
     if ix_ret is not None and ix_ret>0.25 and avg([x for x in (vxn_ch,y10_bp) if x is not None]) not in (None,):
         if (vxn_ch or 0)>0 and (y10_bp or 0)>0: stress=clamp((stress or 0)+20)
 
-    # 6) Event/catalyst risk (5%). Pending high-read-through events raise near-term
-    # consolidation/gap risk but cannot dominate the score.
+    # 6) Event/catalyst risk.
     catalyst=(d.get('catalystMomentum') or (semi.get('catalystMomentum') or {}))
     events=[]
     if isinstance(catalyst,dict):
@@ -173,26 +215,64 @@ def main():
     pending_high=any(x and x.get('status')=='Pending' and 'high' in str((x.get('event') or {}).get('expectedReadThrough','')).lower() for x in events)
     event_risk=100 if pending_high else 25 if any(x and x.get('status')=='Pending' for x in events) else 0
 
-    risk_components=[
-        ('Price extension',extension,0.20),('Intraday rejection',rejection,0.25),
-        ('Breadth divergence',breadth_div,0.20),('Leadership divergence',leadership_div,0.15),
-        ('Volatility / rates stress',stress,0.15),('Event risk',event_risk,0.05)
+    # Confirmation does not erase structural extension. Instead it raises risk
+    # from the structural floor toward 100 as actual deterioration appears.
+    confirmation_parts=[
+        ('Intraday rejection',rejection,0.30),
+        ('Breadth divergence',breadth_div,0.25),
+        ('Leadership divergence',leadership_div,0.20),
+        ('Volatility / rates stress',stress,0.20),
+        ('Event risk',event_risk,0.05)
     ]
-    available=[x for x in risk_components if x[1] is not None]
-    risk=round(sum(v*w for _,v,w in available)/sum(w for _,v,w in available)) if available else 50
+    confirmation_available=[x for x in confirmation_parts if x[1] is not None]
+    confirmation_risk=(sum(v*w for _,v,w in confirmation_available)/sum(w for _,v,w in confirmation_available)
+                       if confirmation_available else 0)
+    risk=round(structural_floor+(100-structural_floor)*(confirmation_risk/100))
+
     if risk>=75:risk_level='High'
     elif risk>=55:risk_level='Elevated'
     elif risk>=35:risk_level='Moderate'
     else:risk_level='Low'
-    risk_sorted=sorted(((n,round(v)) for n,v,_ in available),key=lambda x:x[1],reverse=True)
+
+    # Coverage is explicit so the UI never prints an undefined value.
+    structural_weight=sum(w for _,v,w in structural_parts if v is not None)
+    confirmation_weight=sum(w for _,v,w in confirmation_parts if v is not None)
+    coverage_weight=round(100*(structural_weight+confirmation_weight)/2)
+    history_days=min([int(x.get('bars')) for x in (qqq_ctx,soxx_ctx) if x.get('bars') is not None] or [0])
+
+    component_values=[
+        ('Structural extension',structural_extension),
+        ('Structural floor',structural_floor),
+        ('Confirmation risk',confirmation_risk),
+        ('Intraday rejection',rejection),
+        ('Breadth divergence',breadth_div),
+        ('Leadership divergence',leadership_div),
+        ('Volatility / rates stress',stress),
+        ('Event risk',event_risk)
+    ]
+    risk_sorted=sorted(((n,round(v)) for n,v in component_values if v is not None and n!='Structural floor'),
+                       key=lambda x:x[1],reverse=True)
     drivers=[f'{n} {v}' for n,v in risk_sorted[:3]]
+
     d['consolidationRisk']={
-        'version':3,'score':risk,'level':risk_level,
+        'version':4,'score':risk,'level':risk_level,
         'horizon':'1–3 sessions',
-        'components':{n:round(v) if v is not None else None for n,v,_ in risk_components},
+        'coverageWeight':coverage_weight,
+        'historyDays':history_days,
+        'structuralFloor':round(structural_floor),
+        'components':{n:round(v) if v is not None else None for n,v in component_values},
+        'structuralComponents':{n:round(v) if v is not None else None for n,v,_ in structural_parts},
+        'technicalContext':{
+            'qqqMa20DistancePct':round(qqq_ma20,2) if qqq_ma20 is not None else None,
+            'qqqRsi14':round(qqq_rsi,1) if qqq_rsi is not None else None,
+            'qqqDistanceFrom20dHighPct':round(qqq_highdist,2) if qqq_highdist is not None else None,
+            'soxxMa20DistancePct':round(soxx_ma20,2) if soxx_ma20 is not None else None,
+            'soxxRsi14':round(soxx_rsi,1) if soxx_rsi is not None else None,
+            'soxxDistanceFrom20dHighPct':round(soxx_highdist,2) if soxx_highdist is not None else None
+        },
         'intradayGivebackPp':round(giveback,2) if giveback is not None else None,
         'dominantDrivers':drivers,
-        'explanation':f"1–3 session fade/consolidation risk is {risk_level.lower()} ({risk}/100). Main drivers: "+', '.join(drivers)+'. It measures extension plus live rejection/divergence; it does not change the directional Nasdaq Score.',
+        'explanation':f"1–3 session fade/consolidation risk is {risk_level.lower()} ({risk}/100). Structural extension creates a {round(structural_floor)}/100 baseline; live confirmation risk is {round(confirmation_risk)}/100. Main drivers: "+', '.join(drivers)+'. A high near the 20DMA is not penalized by itself; high proximity matters when QQQ/SOXX are also stretched or overbought.',
         'note':'Higher means the current move is more vulnerable to a fade or sideways reset; it is not a bearish-direction forecast.'
     }
 
