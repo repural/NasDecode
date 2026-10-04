@@ -977,8 +977,15 @@ SOXL entry-quality subscore:
   unavailable outside a current U.S. session rather than being treated as a perfect score.
 
 Behavior:
-- 20DMA extension is a nonlinear hard gate: >8% caps the final score at 55; >12% caps at 40;
-  >18% caps at 30.
+- When semiconductor trend is >=70 and SOX is positive either absolutely or relative to Nasdaq,
+  distance below the SOXL 20-day high is treated as a tactical discount from confirmed strength.
+  The 20-day-high factor scores 25 at the high, then rises through 40/55/70/82/90 to 95 at a
+  12% pullback. Beyond 12% it declines (75 at 15%, 35 at 20%, 10 at 25%+) because a deep
+  drawdown increasingly resembles breakdown/divergence rather than a healthy dip.
+- Without confirmed SOX strength, the recent-high factor keeps the conservative mean-reversion
+  profile and does not automatically reward a deeper drawdown.
+- 20DMA extension remains a separate nonlinear hard gate: >8% caps the final score at 55;
+  >12% caps at 40; >18% caps at 30.
 - Combined extreme extension (>15% above 20DMA and RSI14 >80) caps the final score at 25.
 - Additional hard caps apply when semiconductor leadership breaks, broad relative strength is
   negative, Consolidation Risk is high, volatility/yields shock together, or a high-impact
