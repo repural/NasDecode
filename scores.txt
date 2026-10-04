@@ -588,13 +588,76 @@ MAJOR WEIGHTS — UNCHANGED FROM v2
 v3 does NOT change these six weights. It changes how RSI and technical extension affect the
 final score so price extension is continuous and regime-aware rather than a set of hard cliffs.
 
-4.1 SEMICONDUCTOR TREND / LEADERSHIP (30%)
--------------------------------------------
-Equal-weight average of:
-- Semiconductor Leadership score
-- SOX vs Nasdaq relative strength scaled -1.5pp=0 to +1.5pp=100
-- SOXX vs Nasdaq relative strength on the same scale
-- SMH vs Nasdaq relative strength on the same scale
+4.1 SEMICONDUCTOR TREND v2 (30%)
+--------------------------------------
+Semiconductor Trend is no longer an average containing the nested Semiconductor Leadership
+score. That structure double-counted SOX/SOXX/SMH relative strength and made the trend overly
+sensitive to one session.
+
+New formula:
+- SOXX Technical Trend:       30%
+- SOX vs Nasdaq relative strength:  25%
+- SOXX vs Nasdaq relative strength: 15%
+- SMH vs Nasdaq relative strength:  10%
+- Semiconductor Breadth:     20%
+
+Relative-strength inputs are continuously scaled:
+  -1.50pp vs Nasdaq = 0
+   0.00pp           = 50
+  +1.50pp           = 100
+Values outside the range are clipped.
+
+SOXX TECHNICAL TREND
+--------------------
+SOXX Technical Trend is itself:
+- 40% SOXX distance from 20DMA
+- 30% SOXX 5D return
+- 30% SOXX RSI14 trend
+
+SOXX vs 20DMA trend curve:
+  <=-10% -> 0
+    -5%  -> 25
+     0%  -> 50
+    +5%  -> 75
+  >=+10% -> 100
+
+SOXX 5D momentum curve:
+  <=-5%  -> 0
+  -2.5%  -> 25
+     0%  -> 50
+   +2.5% -> 75
+  >=+5%  -> 100
+
+SOXX RSI14 trend curve:
+  <=35 -> 0
+   40  -> 20
+   45  -> 35
+   50  -> 50
+   55  -> 65
+   60  -> 80
+   65  -> 90
+   70-80 -> 100
+   >80 gradually eases toward 95 at RSI 100
+
+Values between breakpoints are linearly interpolated.
+
+IMPORTANT DISTINCTION
+---------------------
+SOXX RSI is used here as a TREND-strength measure. RSI 70-80 therefore confirms a powerful
+semiconductor trend. It does not make a new SOXL entry safer.
+
+SOXL's own RSI is separately used inside Entry Quality and in the RSI x 20DMA overheating
+penalty. Therefore the model can simultaneously say:
+- Semiconductor Trend is very strong, AND
+- SOXL itself is too overheated to chase.
+
+Semiconductor Breadth is the confirmation layer's breadth score based on the share of tracked
+semiconductor names outperforming QQQ.
+
+This v2 construction intentionally gives 50% of Semiconductor Trend to persistent structure
+(SOXX Technical Trend + Breadth) and 50% to current relative leadership. A single strong or weak
+session can therefore change the score, but cannot by itself define the entire sector trend.
+
 
 4.2 SOXL ENTRY QUALITY (25%)
 ----------------------------
