@@ -429,7 +429,7 @@ def main():
     }
 
 
-    # ---------------- SOXL Buy Score v3.2 ----------------
+    # ---------------- SOXL Buy Score v3.3 ----------------
     # Tactical 1-5 session entry score for the 3x daily semiconductor ETF. This is
     # intentionally separate from the broader Opportunity Score: semiconductor trend
     # and SOXL's own entry quality dominate, while leverage-sensitive risk can hard-cap it.
@@ -687,7 +687,7 @@ def main():
     sx_sorted=sorted(((n,round(v)) for n,v,_ in sx_available),key=lambda x:x[1],reverse=True)
     sx_weak=sorted(((n,round(v)) for n,v,_ in sx_available),key=lambda x:x[1])
     d['soxlBuyScore']={
-        'version':3.2,'score':soxl_score,'rawScore':soxl_raw,'preGateScore':soxl_pre_gate,
+        'version':3.3,'score':soxl_score,'rawScore':soxl_raw,'preGateScore':soxl_pre_gate,
         'label':sx_label,'signal':sx_sig,'horizon':'1–5 sessions',
         'instrument':'SOXL','last':soxl_last,'changePct':soxl_change,
         'components':{n:round(v) if v is not None else None for n,v,_ in sx_components},
