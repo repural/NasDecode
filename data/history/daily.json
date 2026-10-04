@@ -20867,7 +20867,7 @@
     },
     "2026-10-04": {
       "schemaVersion": 4,
-      "timestampET": "2026-10-04T08:06:49.305072-04:00",
+      "timestampET": "2026-10-04T08:17:25.261474-04:00",
       "market": {
         ".IXIC": {
           "last": 27190.864,
@@ -22273,7 +22273,7 @@
             "status": "inactive",
             "mode": null,
             "summary": "No persistent divergence between the macro impulse and live market response.",
-            "observedAt": "2026-10-04T08:08:38.818103-04:00",
+            "observedAt": "2026-10-04T08:19:26.351322-04:00",
             "candidateMode": null,
             "candidateSince": null,
             "persistenceMinutes": 0.0,
@@ -22290,7 +22290,7 @@
             "note": "Market Response only attenuates an existing Rates / Macro contribution; it never reverses its sign."
           },
           "soxlBuyScore": {
-            "version": 3,
+            "version": 3.1,
             "score": 35,
             "rawScore": 68,
             "preGateScore": 35,
@@ -22301,12 +22301,49 @@
             "last": 163.71,
             "changePct": 6.52,
             "components": {
-              "Semiconductor trend": 98,
+              "Semiconductor trend": 96,
               "SOXL entry quality": 22,
               "Market confirmation": 71,
               "Volatility / leverage risk": 79,
               "Rates / macro": 61,
               "Catalyst asymmetry": 100
+            },
+            "semiconductorTrend": {
+              "version": 2,
+              "score": 96,
+              "components": {
+                "SOXX technical trend": 90,
+                "SOX relative strength": 100,
+                "SOXX relative strength": 94,
+                "SMH relative strength": 97,
+                "Semiconductor breadth": 100
+              },
+              "weights": {
+                "SOXX technical trend": 30,
+                "SOX relative strength": 25,
+                "SOXX relative strength": 15,
+                "SMH relative strength": 10,
+                "Semiconductor breadth": 20
+              },
+              "availableWeightPct": 100,
+              "soxxTechnicalTrend": {
+                "score": 90,
+                "components": {
+                  "SOXX vs 20DMA": 92,
+                  "SOXX 5D momentum": 78,
+                  "SOXX RSI14 trend": 99
+                },
+                "weights": {
+                  "SOXX vs 20DMA": 40,
+                  "SOXX 5D momentum": 30,
+                  "SOXX RSI14 trend": 30
+                },
+                "context": {
+                  "ma20DistancePct": 8.31,
+                  "return5dPct": 2.83,
+                  "rsi14": 85.4
+                }
+              }
             },
             "gates": [],
             "intradayGivebackPp": null,
@@ -22347,13 +22384,13 @@
             },
             "strongestDrivers": [
               "Catalyst asymmetry 100",
-              "Semiconductor trend 98"
+              "Semiconductor trend 96"
             ],
             "weakestDrivers": [
               "SOXL entry quality 22",
               "Rates / macro 61"
             ],
-            "explanation": "SOXL tactical entry quality is poor entry (35/100) for a 1–5 session horizon. Raw score 68; extension/overheating penalty 32.5. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 98. Weakest: SOXL entry quality 22, Rates / macro 61.",
+            "explanation": "SOXL tactical entry quality is poor entry (35/100) for a 1–5 session horizon. Raw score 68; extension/overheating penalty 32.5. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 96. Weakest: SOXL entry quality 22, Rates / macro 61.",
             "note": "Experimental tactical score for a daily 3x leveraged ETF. It measures entry quality, not expected return or position size."
           }
         },
@@ -22731,7 +22768,7 @@
         "status": "inactive",
         "mode": null,
         "summary": "No persistent divergence between the macro impulse and live market response.",
-        "observedAt": "2026-10-04T08:08:38.818103-04:00",
+        "observedAt": "2026-10-04T08:19:26.351322-04:00",
         "candidateMode": null,
         "candidateSince": null,
         "persistenceMinutes": 0.0,
@@ -22748,7 +22785,7 @@
         "note": "Market Response only attenuates an existing Rates / Macro contribution; it never reverses its sign."
       },
       "soxlBuyScore": {
-        "version": 3,
+        "version": 3.1,
         "score": 35,
         "rawScore": 68,
         "preGateScore": 35,
@@ -22759,12 +22796,49 @@
         "last": 163.71,
         "changePct": 6.52,
         "components": {
-          "Semiconductor trend": 98,
+          "Semiconductor trend": 96,
           "SOXL entry quality": 22,
           "Market confirmation": 71,
           "Volatility / leverage risk": 79,
           "Rates / macro": 61,
           "Catalyst asymmetry": 100
+        },
+        "semiconductorTrend": {
+          "version": 2,
+          "score": 96,
+          "components": {
+            "SOXX technical trend": 90,
+            "SOX relative strength": 100,
+            "SOXX relative strength": 94,
+            "SMH relative strength": 97,
+            "Semiconductor breadth": 100
+          },
+          "weights": {
+            "SOXX technical trend": 30,
+            "SOX relative strength": 25,
+            "SOXX relative strength": 15,
+            "SMH relative strength": 10,
+            "Semiconductor breadth": 20
+          },
+          "availableWeightPct": 100,
+          "soxxTechnicalTrend": {
+            "score": 90,
+            "components": {
+              "SOXX vs 20DMA": 92,
+              "SOXX 5D momentum": 78,
+              "SOXX RSI14 trend": 99
+            },
+            "weights": {
+              "SOXX vs 20DMA": 40,
+              "SOXX 5D momentum": 30,
+              "SOXX RSI14 trend": 30
+            },
+            "context": {
+              "ma20DistancePct": 8.31,
+              "return5dPct": 2.83,
+              "rsi14": 85.4
+            }
+          }
         },
         "gates": [],
         "intradayGivebackPp": null,
@@ -22805,13 +22879,13 @@
         },
         "strongestDrivers": [
           "Catalyst asymmetry 100",
-          "Semiconductor trend 98"
+          "Semiconductor trend 96"
         ],
         "weakestDrivers": [
           "SOXL entry quality 22",
           "Rates / macro 61"
         ],
-        "explanation": "SOXL tactical entry quality is poor entry (35/100) for a 1–5 session horizon. Raw score 68; extension/overheating penalty 32.5. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 98. Weakest: SOXL entry quality 22, Rates / macro 61.",
+        "explanation": "SOXL tactical entry quality is poor entry (35/100) for a 1–5 session horizon. Raw score 68; extension/overheating penalty 32.5. Strongest inputs: Catalyst asymmetry 100, Semiconductor trend 96. Weakest: SOXL entry quality 22, Rates / macro 61.",
         "note": "Experimental tactical score for a daily 3x leveraged ETF. It measures entry quality, not expected return or position size."
       }
     }
