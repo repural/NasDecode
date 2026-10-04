@@ -567,7 +567,7 @@ Quality if SOXX has become technically overextended.
 
 ======================================================================
 
-4. SOXL BUY SCORE v3
+4. SOXL BUY SCORE v3.2
 ======================================================================
 
 RANGE / HORIZON
@@ -610,9 +610,10 @@ Values outside the range are clipped.
 SOXX TECHNICAL TREND
 --------------------
 SOXX Technical Trend is itself:
-- 40% SOXX distance from 20DMA
-- 30% SOXX 5D return
-- 30% SOXX RSI14 trend
+- 30% SOXX distance from 20DMA
+- 25% SOXX 5D return
+- 25% SOXX RSI14 trend
+- 20% SOXX directional ADX/DMI trend strength
 
 SOXX vs 20DMA trend curve:
   <=-10% -> 0
@@ -640,6 +641,17 @@ SOXX RSI14 trend curve:
    >80 gradually eases toward 95 at RSI 100
 
 Values between breakpoints are linearly interpolated.
+
+SOXX ADX/DMI trend-strength curve:
+- ADX <=15 -> neutral trend-strength score 50
+- ADX 20 -> 65
+- ADX 25 -> 80
+- ADX 35 -> 95
+- ADX >=45 -> 100
+Values are linearly interpolated. ADX itself is directionless, so +DI/-DI supplies direction:
+when +DI >= -DI the bullish score above is used; when -DI > +DI it is inverted (100-score).
+Thus a high ADX strengthens an established uptrend but strongly penalizes an established
+downtrend. Weak/no-trend ADX remains near neutral rather than pretending to know direction.
 
 IMPORTANT DISTINCTION
 ---------------------
@@ -725,10 +737,38 @@ Equal-weight average of:
 
 4.4 VOLATILITY / LEVERAGE RISK (15%)
 -------------------------------------
-Equal-weight average of:
-- 100 - Consolidation Risk
-- Nasdaq volatility signal = 100 / 50 / 0
-- clip(50 - 6 x VXN daily change_pct)
+Weighted safety score:
+- 35% 100 - Consolidation Risk
+- 25% Nasdaq volatility / VXN condition
+- 15% VXN daily-change safety
+- 25% SOXL ATR regime safety
+
+SOXL ATR REGIME
+---------------
+NasDecode calculates Wilder ATR(14) directly from stored SOXL OHLC bars.
+
+Published context:
+- ATR14 as % of SOXL price
+- ATR14% percentile within the most recent 60 available ATR observations
+- ATR14 / ATR50 ratio
+
+ATR% is descriptive; the score is relative to SOXL's own volatility history rather than using
+a fixed absolute ATR threshold for a naturally volatile 3x ETF.
+
+ATR percentile safety = 100 - ATR14% 60-session percentile.
+
+ATR expansion safety:
+- ATR14/ATR50 <=0.80 -> 100
+- 1.00 -> 80
+- 1.20 -> 55
+- 1.50 -> 25
+- >=1.80 -> 0
+Interpolated continuously.
+
+SOXL ATR regime safety = average(ATR percentile safety, ATR expansion safety).
+
+This means high but contracting/normal-for-SOXL volatility is less punitive than a fresh
+realized-volatility expansion. ATR does not predict direction; it only changes leverage risk.
 
 4.5 RATES / MACRO (10%)
 -----------------------
