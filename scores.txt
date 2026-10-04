@@ -760,15 +760,23 @@ NasDecode calculates daily SOXL stochastic %K over 9 sessions:
 %D(6) is the simple average of the latest six %K values.
 
 Display interpretation:
-- %K >=80: Overbought
-- %K <=20: Oversold
+- %K(9) >=80: Overbought
+- %K(9) <=20: Oversold
 - otherwise: Neutral
-- %K at least 2 points above %D: bullish momentum
-- %K at least 2 points below %D: bearish momentum
-- within 2 points: flat momentum
+- %K at least 2 points above %D: Momentum accelerating
+- %K at least 2 points below %D: Momentum cooling
+- within 2 points: Momentum steady
 
-STOCH(9,6) is stored in SOXL indicator snapshots for later validation, but is NOT scored,
-weighted, gated, or otherwise used in SOXL Buy Score calculations.
+The UI deliberately labels this "Stochastic · Daily" and displays BOTH %K(9) and %D(6).
+This avoids implying that NasDecode's two-line calculation is necessarily identical to a
+third-party site's single value labelled STOCH(9,6).
+
+%K(9) is the fast line: the current daily close's position within the highest-high /
+lowest-low range of the latest 9 trading sessions.
+%D(6) is the slower signal line: the simple average of the latest six daily %K(9) readings.
+
+The stochastic observation is stored in SOXL indicator snapshots for later validation, but is
+NOT scored, weighted, gated, or otherwise used in SOXL Buy Score calculations.
 
 4.5 RATES / MACRO (10%)
 -----------------------
