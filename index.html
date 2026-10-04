@@ -312,7 +312,8 @@ function renderChartVisuals(){
 async function loadChartHistory(){try{const r=await fetch('data/chart-history.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;chartHistory=await r.json();renderChartVisuals()}catch(e){console.warn('Chart history unavailable',e)}}
 
 // Fetch a cache-busted quantitative snapshot; the button refreshes displayed data only.
-async function load(){update.disabled=true;update.textContent='Checking…';try{const r=await fetch('data/dashboard.json?t='+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache'}});if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();render(d);return d}catch(e){console.error(e);update.textContent='Refresh failed';setTimeout(()=>update.textContent='↻ Check Latest',1800);return null}finally{update.disabled=false;if(update.textContent==='Checking…')update.textContent='↻ Check Latest'}}
+let currentDashboard=null,lastRenderedStamp=null,autoRefreshTimer=null;
+async function load(){update.disabled=true;update.textContent='Checking…';try{const r=await fetch('data/dashboard.json?t='+Date.now(),{cache:'no-store',headers:{'Cache-Control':'no-cache'}});if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();currentDashboard=d;if(d.updatedET!==lastRenderedStamp){render(d);lastRenderedStamp=d.updatedET}return d}catch(e){console.error(e);update.textContent='Refresh failed';setTimeout(()=>update.textContent='↻ Check Latest',1800);return null}finally{update.disabled=false;if(update.textContent==='Checking…')update.textContent='↻ Check Latest'}}
 // Load the narrative market brief. Market Analysis times remain in New York / ET; do not localize them to browser/TR time.
 const nearbyMajorEarnings=d=>{
   const events=(d?.upcomingEarnings?.events||[]).filter(e=>{
@@ -375,5 +376,47 @@ async function loadAnalysis(d){try{
   const richMeta=a.bias?'<div class="bias"><b>Pre-market bias:</b> '+escHtml(a.bias)+(a.confidence?' &nbsp; · &nbsp; <b>Confidence:</b> '+escHtml(a.confidence):'')+(a.eventRisk?' &nbsp; · &nbsp; <b>Event risk:</b> '+escHtml(a.eventRisk):'')+'</div>':'<div class="bias"><b>Nasdaq Score:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+'</div>';
   premarketBody.innerHTML=richMeta+paras+(a.watchIntoOpen?'<p>'+analysisText(a.watchIntoOpen)+'</p>':'')+(a.keyTimes?'<p>'+analysisText(a.keyTimes)+'</p>':'')+(catalysts?'<h3>Near-term catalysts</h3><ul>'+catalysts+'</ul>':'')+nearbyMajorEarnings(d);
 }catch(e){premarketMeta.textContent='Analysis not available yet.';premarketBody.innerHTML='';}}
-update.onclick=async()=>{const d=await load();await loadAnalysis(d)};loadChartHistory();(async()=>{const d=await load();await loadAnalysis(d)})();
+update.onclick=async()=>{const d=await load();await loadAnalysis(d);scheduleAutoRefresh()};
+
+function nyClock(){
+  const p=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',weekday:'short',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).formatToParts(new Date());
+  const get=t=>p.find(x=>x.type===t)?.value;
+  return {weekday:get('weekday'),minutes:Number(get('hour'))*60+Number(get('minute')),seconds:Number(get('second'))};
+}
+function upcomingReleaseTimes(){
+  return (currentDashboard?.macroSurprises?.scheduledEvents||[])
+    .map(e=>({time:new Date(e.scheduledAt),name:e.name}))
+    .filter(e=>Number.isFinite(e.time.getTime())&&e.time.getTime()>Date.now()-10*60*1000)
+    .sort((a,b)=>a.time-b.time);
+}
+function nextUiPollMs(){
+  const now=Date.now(), ny=nyClock(), weekday=['Mon','Tue','Wed','Thu','Fri'].includes(ny.weekday);
+  let base=60*60*1000;
+  if(weekday&&ny.minutes>=570&&ny.minutes<=980) base=2*60*1000;          // cash session
+  else if(weekday&&((ny.minutes>=240&&ny.minutes<570)||(ny.minutes>980&&ny.minutes<=1200))) base=15*60*1000;
+
+  // Scheduled macro releases are a special high-attention window. The browser checks
+  // exactly at the release and then every 20 seconds for 10 minutes so a newly
+  // published backend snapshot appears promptly. This is polling, not server push.
+  const releases=upcomingReleaseTimes();
+  for(const r of releases){
+    const delta=r.time.getTime()-now;
+    if(delta>=-30*1000&&delta<=10*60*1000) return 20*1000;
+    if(delta>0) base=Math.min(base,Math.max(5*1000,delta+2*1000));
+  }
+  return base;
+}
+function scheduleAutoRefresh(){
+  if(autoRefreshTimer) clearTimeout(autoRefreshTimer);
+  autoRefreshTimer=setTimeout(async()=>{
+    if(document.hidden){scheduleAutoRefresh();return}
+    const before=lastRenderedStamp,d=await load();
+    if(d&&d.updatedET!==before) await loadAnalysis(d);
+    scheduleAutoRefresh();
+  },nextUiPollMs());
+}
+document.addEventListener('visibilitychange',async()=>{
+  if(!document.hidden){const d=await load();await loadAnalysis(d);scheduleAutoRefresh()}
+});
+loadChartHistory();(async()=>{const d=await load();await loadAnalysis(d);scheduleAutoRefresh()})();
 </script></body></html>
