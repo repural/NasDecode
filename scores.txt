@@ -794,6 +794,24 @@ ATR(14) meaning uses SOXL-relative regime context:
 The ATR score shown on the card is ATR regime safety. Higher means realized volatility is
 more favorable for a leveraged tactical entry; it is not a direction forecast.
 
+STOCH(9,6) — OBSERVATIONAL ONLY
+-------------------------------
+NasDecode calculates daily SOXL stochastic %K over 9 sessions:
+%K = 100 x (close - lowest low9) / (highest high9 - lowest low9)
+
+%D(6) is the simple average of the latest six %K values.
+
+Display interpretation:
+- %K >=80: Overbought
+- %K <=20: Oversold
+- otherwise: Neutral
+- %K at least 2 points above %D: bullish momentum
+- %K at least 2 points below %D: bearish momentum
+- within 2 points: flat momentum
+
+STOCH(9,6) is stored in SOXL indicator snapshots for later validation, but is NOT scored,
+weighted, gated, or otherwise used in SOXL Buy Score calculations.
+
 4.5 RATES / MACRO (10%)
 -----------------------
 Equal-weight average of available:
