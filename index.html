@@ -361,7 +361,7 @@ const nearbyMajorEarnings=d=>{
   }).join(', ');
   return '<h3>Major earnings catalysts:</h3><p>'+items+'. '+analysisText('These SOX/mega-cap reports fall inside the rolling 14-day catalyst window.')+'</p>';
 };
-async function loadAnalysis(d){try{
+async function loadAnalysis(d){if(window.NasDecodeSessionTabs?.render){await window.NasDecodeSessionTabs.render(d);return;}try{
   // After the cash open, this section becomes the live Market Analysis and uses the
   // Nasdaq Score explanation generated from the current dashboard factors.
   const now=new Date(), nyParts=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(now);
