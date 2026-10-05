@@ -15,6 +15,7 @@ from zoneinfo import ZoneInfo
 
 ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT=os.path.join(ROOT,'data','history','resilience-daily.json')
+HYPE=os.path.join(ROOT,'data','history','hype-daily.json')
 NY=ZoneInfo('America/New_York')
 MASSIVE='https://api.massive.com/v2/aggs/ticker/{ticker}/range/1/day/{start}/{end}'
 PACE=12.5
@@ -155,6 +156,11 @@ def main():
             with open(OUT,encoding='utf-8') as f: existing=json.load(f)
         except Exception: existing={}
     old_records=existing.get('records') or {}
+    hype_records={}
+    if os.path.exists(HYPE):
+        try:
+            with open(HYPE,encoding='utf-8') as f: hype_records=(json.load(f).get('records') or {})
+        except Exception: hype_records={}
     needs_full_backfill=not old_records or not ((existing.get('providerAvailability') or {}).get('US2Y') or {}).get('available')
     if old_records and not needs_full_backfill:
         last=max(old_records)
@@ -212,6 +218,7 @@ def main():
                 'basketPositiveBreadthPct':round(breadth,1) if breadth is not None else None,
                 'basketOutperformQqqPct':round(outperform,1) if outperform is not None else None
             },
+            'hype':hype_records.get(day),
             'futureInputs':{
                 'fedRepricing':None,
                 'macroSurprise':None,
@@ -249,6 +256,11 @@ def main():
             'semiconductorBasket':list(BASKET)
         },
         'sessionCalendar':'U.S. equity sessions requiring both SOX and QQQ observations; filters index-only weekend artifacts.',
+        'hypeInput':{
+            'source':'data/history/hype-daily.json',
+            'status':'shadow input only; not consumed by current scores',
+            'antiCircularity':'Hype Acceptance/Efficiency are excluded because they use price response.'
+        },
         'fieldDefinitions':{
             'changeBp':'Yield close-to-close change in basis points.',
             'return1dPct':'Adjusted close-to-close daily percentage return.',
