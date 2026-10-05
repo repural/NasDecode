@@ -131,28 +131,33 @@ def main():
         confirmation=weighted([(bp,.35),(bo,.35),(sx,.20),(sm,.10)])
         confirmation=round(confirmation,1) if finite(confirmation) else None
 
-        score=weighted([(residual_strength,RESIDUAL_STRENGTH_WEIGHT),
-                        (persistence_score,PERSISTENCE_WEIGHT),
-                        (confirmation,CONFIRMATION_WEIGHT)])
-        score=round(score,1) if finite(score) else None
+        # Do not renormalize around a missing 60% core component during warm-up.
+        # A published Resilience Score requires all four residual horizons plus confirmation.
+        horizons_ready=all(horizons[str(h)].get("available") for h in HORIZON_WEIGHTS)
+        score=None
+        if horizons_ready and finite(residual_strength) and finite(confirmation):
+            score=weighted([(residual_strength,RESIDUAL_STRENGTH_WEIGHT),
+                            (persistence_score,PERSISTENCE_WEIGHT),
+                            (confirmation,CONFIRMATION_WEIGHT)])
+            score=round(score,1) if finite(score) else None
 
         # Breakdown logic: require actual negative abnormal response; confirmation controls severity.
         one=horizons["1"]; three=horizons["3"]; five=horizons["5"]
         one_z=one.get("z"); three_z=three.get("z"); five_z=five.get("z")
         breakdown="None"; reasons=[]
-        if finite(one_z) and one_z<=-1.5:
+        if horizons_ready and finite(one_z) and one_z<=-1.5:
             reasons.append("1D residual <= -1.5σ")
-        if finite(three_z) and three_z<=-1.25:
+        if horizons_ready and finite(three_z) and three_z<=-1.25:
             reasons.append("3D residual <= -1.25σ")
-        if finite(five_z) and five_z<=-1.0:
+        if horizons_ready and finite(five_z) and five_z<=-1.0:
             reasons.append("5D residual <= -1.0σ")
-        if finite(confirmation) and confirmation<35:
+        if horizons_ready and finite(confirmation) and confirmation<35:
             reasons.append("semiconductor confirmation <35")
-        if ((finite(one_z) and one_z<=-2.0) or
+        if horizons_ready and ((finite(one_z) and one_z<=-2.0) or
             ((finite(three_z) and three_z<=-1.5) and finite(confirmation) and confirmation<40) or
             ((finite(five_z) and five_z<=-1.25) and persistence_pct<=40)):
             breakdown="Breakdown"
-        elif reasons and ((finite(one_z) and one_z<=-1.5) or
+        elif horizons_ready and reasons and ((finite(one_z) and one_z<=-1.5) or
                           (finite(three_z) and three_z<=-1.25) or
                           (finite(five_z) and five_z<=-1.0)):
             breakdown="Warning"
@@ -192,12 +197,12 @@ def main():
 
     latest=out[max(out)] if out else None
     payload={
-        "schemaVersion":1,"enginePhase":3,"engineVersion":"resilience-engine-1.0",
+        "schemaVersion":1,"enginePhase":3,"engineVersion":"resilience-engine-1.1",
         "status":"shadow / validation only; no production NasDecode score consumes this output",
         "architecture":{
             "score":"60% multi-horizon residual strength + 15% persistence + 25% internal semiconductor confirmation",
             "residualStrength":"1D 15% + 3D 25% + 5D 35% + 10D 25%",
-            "normalization":"Each historical horizon uses only residuals available before that horizon as its baseline.",
+            "normalization":"Each historical horizon uses only residuals available before that horizon as its baseline. Score remains unpublished during warm-up until all four horizons and confirmation are available.",
             "persistence":"Positive Phase 2 residual share over last 10 model sessions.",
             "confirmation":"35% basket positive breadth + 35% basket outperform-QQQ breadth + 20% SOXX/QQQ RS + 10% SMH/QQQ RS.",
             "sensitivities":"Published as diagnostics only in v1.0; they do not receive score points.",
