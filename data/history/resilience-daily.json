@@ -4,9 +4,9 @@
   "purpose": "Canonical observed-input history for future SOX resilience modeling. Not used by current scores.",
   "window": {
     "calendarMonths": 12,
-    "start": "2025-10-03",
+    "start": "2025-10-06",
     "end": "2026-10-02",
-    "sessions": 251
+    "sessions": 250
   },
   "series": {
     "market": {
@@ -36,6 +36,11 @@
     ]
   },
   "sessionCalendar": "U.S. equity sessions requiring both SOX and QQQ observations; filters index-only weekend artifacts.",
+  "hypeInput": {
+    "source": "data/history/hype-daily.json",
+    "status": "shadow input only; not consumed by current scores",
+    "antiCircularity": "Hype Acceptance/Efficiency are excluded because they use price response."
+  },
   "fieldDefinitions": {
     "changeBp": "Yield close-to-close change in basis points.",
     "return1dPct": "Adjusted close-to-close daily percentage return.",
@@ -49,7 +54,7 @@
       "ticker": "I:SOX",
       "rows": 11,
       "available": true,
-      "storedRows": 251,
+      "storedRows": 250,
       "coveragePct": 100.0
     },
     "QQQ": {
@@ -57,7 +62,7 @@
       "ticker": "QQQ",
       "rows": 11,
       "available": true,
-      "storedRows": 251,
+      "storedRows": 250,
       "coveragePct": 100.0
     },
     "SOXX": {
@@ -65,7 +70,7 @@
       "ticker": "SOXX",
       "rows": 11,
       "available": true,
-      "storedRows": 251,
+      "storedRows": 250,
       "coveragePct": 100.0
     },
     "SMH": {
@@ -73,7 +78,7 @@
       "ticker": "SMH",
       "rows": 11,
       "available": true,
-      "storedRows": 251,
+      "storedRows": 250,
       "coveragePct": 100.0
     },
     "NVDA": {
@@ -81,7 +86,7 @@
       "ticker": "NVDA",
       "rows": 11,
       "available": true,
-      "storedRows": 251,
+      "storedRows": 250,
       "coveragePct": 100.0
     },
     "AMD": {
@@ -89,7 +94,7 @@
       "ticker": "AMD",
       "rows": 11,
       "available": true,
-      "storedRows": 251,
+      "storedRows": 250,
       "coveragePct": 100.0
     },
     "AVGO": {
@@ -97,7 +102,7 @@
       "ticker": "AVGO",
       "rows": 11,
       "available": true,
-      "storedRows": 251,
+      "storedRows": 250,
       "coveragePct": 100.0
     },
     "TSM": {
@@ -105,7 +110,7 @@
       "ticker": "TSM",
       "rows": 11,
       "available": true,
-      "storedRows": 251,
+      "storedRows": 250,
       "coveragePct": 100.0
     },
     "MU": {
@@ -113,7 +118,7 @@
       "ticker": "MU",
       "rows": 11,
       "available": true,
-      "storedRows": 251,
+      "storedRows": 250,
       "coveragePct": 100.0
     },
     "US10Y": {
@@ -121,7 +126,7 @@
       "ticker": "US Treasury BC_10YEAR",
       "rows": 11,
       "available": true,
-      "storedRows": 249,
+      "storedRows": 248,
       "coveragePct": 99.2
     },
     "US2Y": {
@@ -129,7 +134,7 @@
       "ticker": "US Treasury BC_2YEAR",
       "rows": 11,
       "available": true,
-      "storedRows": 249,
+      "storedRows": 248,
       "coveragePct": 99.2
     },
     "VXN": {
@@ -137,7 +142,7 @@
       "ticker": "^VXN",
       "rows": 11,
       "available": true,
-      "storedRows": 251,
+      "storedRows": 250,
       "coveragePct": 100.0
     },
     "Brent": {
@@ -145,7 +150,7 @@
       "ticker": "BZ=F",
       "rows": 11,
       "available": true,
-      "storedRows": 251,
+      "storedRows": 250,
       "coveragePct": 100.0
     },
     "WTI": {
@@ -153,191 +158,11 @@
       "ticker": "CL=F",
       "rows": 11,
       "available": true,
-      "storedRows": 251,
+      "storedRows": 250,
       "coveragePct": 100.0
     }
   },
   "records": {
-    "2025-10-03": {
-      "date": "2025-10-03",
-      "market": {
-        "SOX": {
-          "open": 6655.06942874033,
-          "high": 6683.4432908694,
-          "low": 6547.40438252399,
-          "close": 6583.74428982714,
-          "volume": null,
-          "vwap": null,
-          "source": "Massive adjusted daily aggregate",
-          "previousClose": 6626.38192066592,
-          "return1dPct": -0.6435
-        },
-        "QQQ": {
-          "open": 606.51,
-          "high": 607.3255,
-          "low": 601.385,
-          "close": 603.18,
-          "volume": 46482098.0,
-          "vwap": 604.6537,
-          "source": "Massive adjusted daily aggregate",
-          "previousClose": 605.73,
-          "return1dPct": -0.421
-        },
-        "SOXX": {
-          "open": 282.95,
-          "high": 284.34,
-          "low": 278.48,
-          "close": 279.96,
-          "volume": 8629281.0,
-          "vwap": 281.4575,
-          "source": "Massive adjusted daily aggregate",
-          "previousClose": 281.69,
-          "return1dPct": -0.6142
-        },
-        "SMH": {
-          "open": 339.41,
-          "high": 340.78,
-          "low": 335.18,
-          "close": 336.68,
-          "volume": 7769988.0,
-          "vwap": 338.3412,
-          "source": "Massive adjusted daily aggregate",
-          "previousClose": 338.24,
-          "return1dPct": -0.4612
-        },
-        "NVDA": {
-          "open": 189.19,
-          "high": 190.36,
-          "low": 185.38,
-          "close": 187.62,
-          "volume": 137596896.0,
-          "vwap": 188.1292,
-          "source": "Massive adjusted daily aggregate",
-          "previousClose": 188.89,
-          "return1dPct": -0.6723
-        },
-        "AMD": {
-          "open": 170.68,
-          "high": 170.68,
-          "low": 163.14,
-          "close": 164.67,
-          "volume": 42699147.0,
-          "vwap": 166.7864,
-          "source": "Massive adjusted daily aggregate",
-          "previousClose": 169.73,
-          "return1dPct": -2.9812
-        },
-        "AVGO": {
-          "open": 341.5,
-          "high": 344.4,
-          "low": 335.74,
-          "close": 338.37,
-          "volume": 14749068.0,
-          "vwap": 339.4461,
-          "source": "Massive adjusted daily aggregate",
-          "previousClose": 338.18,
-          "return1dPct": 0.0562
-        },
-        "TSM": {
-          "open": 292.86,
-          "high": 296.0634,
-          "low": 290.49,
-          "close": 292.19,
-          "volume": 10572491.0,
-          "vwap": 293.251,
-          "source": "Massive adjusted daily aggregate",
-          "previousClose": 288.11,
-          "return1dPct": 1.4161
-        },
-        "MU": {
-          "open": 185.21,
-          "high": 191.8499,
-          "low": 184.92,
-          "close": 187.83,
-          "volume": 29399259.0,
-          "vwap": 188.4614,
-          "source": "Massive adjusted daily aggregate",
-          "previousClose": 183.75,
-          "return1dPct": 2.2204
-        }
-      },
-      "macro": {
-        "US10Y": {
-          "open": null,
-          "high": null,
-          "low": null,
-          "close": 4.13,
-          "volume": null,
-          "source": "U.S. Treasury daily par yield curve",
-          "previousClose": 4.1,
-          "changeBp": 3.0,
-          "changePct": 0.7317
-        },
-        "US2Y": {
-          "open": null,
-          "high": null,
-          "low": null,
-          "close": 3.58,
-          "volume": null,
-          "source": "U.S. Treasury daily par yield curve",
-          "previousClose": 3.55,
-          "changeBp": 3.0,
-          "changePct": 0.8451
-        },
-        "VXN": {
-          "open": 20.030000686645508,
-          "high": 20.670000076293945,
-          "low": 19.729999542236328,
-          "close": 20.079999923706055,
-          "volume": 0.0,
-          "source": "Yahoo Finance daily chart (^VXN)",
-          "previousClose": 20.010000228881836,
-          "return1dPct": 0.3498
-        },
-        "Brent": {
-          "open": 64.30000305175781,
-          "high": 65.0,
-          "low": 64.20999908447266,
-          "close": 64.52999877929688,
-          "volume": 38970.0,
-          "source": "Yahoo Finance daily chart (BZ=F)",
-          "previousClose": 64.11000061035156,
-          "return1dPct": 0.6551
-        },
-        "WTI": {
-          "open": 60.70000076293945,
-          "high": 61.380001068115234,
-          "low": 60.54999923706055,
-          "close": 60.880001068115234,
-          "volume": 240044.0,
-          "source": "Yahoo Finance daily chart (CL=F)",
-          "previousClose": 60.47999954223633,
-          "return1dPct": 0.6614
-        }
-      },
-      "derived": {
-        "soxReturn1dPct": -0.6435,
-        "qqqReturn1dPct": -0.421,
-        "soxVsQqqRelative1dPp": -0.2225,
-        "soxxVsQqqRelative1dPp": -0.1932,
-        "smhVsQqqRelative1dPp": -0.0402,
-        "basketReturnsPct": {
-          "NVDA": -0.6723,
-          "AMD": -2.9812,
-          "AVGO": 0.0562,
-          "TSM": 1.4161,
-          "MU": 2.2204
-        },
-        "basketPositiveBreadthPct": 60.0,
-        "basketOutperformQqqPct": 60.0
-      },
-      "futureInputs": {
-        "fedRepricing": null,
-        "macroSurprise": null,
-        "catalystContext": null,
-        "note": "Reserved for point-in-time enrichment; never backfilled from future knowledge."
-      }
-    },
     "2025-10-06": {
       "date": "2025-10-06",
       "market": {
@@ -44391,6 +44216,7 @@
         "basketPositiveBreadthPct": 80.0,
         "basketOutperformQqqPct": 20.0
       },
+      "hype": null,
       "futureInputs": {
         "fedRepricing": null,
         "macroSurprise": null,
@@ -44571,6 +44397,7 @@
         "basketPositiveBreadthPct": 40.0,
         "basketOutperformQqqPct": 60.0
       },
+      "hype": null,
       "futureInputs": {
         "fedRepricing": null,
         "macroSurprise": null,
@@ -44751,6 +44578,7 @@
         "basketPositiveBreadthPct": 60.0,
         "basketOutperformQqqPct": 60.0
       },
+      "hype": null,
       "futureInputs": {
         "fedRepricing": null,
         "macroSurprise": null,
@@ -44930,6 +44758,92 @@
         },
         "basketPositiveBreadthPct": 60.0,
         "basketOutperformQqqPct": 40.0
+      },
+      "hype": {
+        "date": "2026-09-30",
+        "observedAtUTC": "2026-10-05T08:21:35+00:00",
+        "provenance": "curated_timestamped_history",
+        "news": {
+          "activeEventCount": 3,
+          "positiveImpulseRaw": 65.0,
+          "negativeImpulseRaw": 0,
+          "positivePressure": 47.8,
+          "negativePressure": 0.0,
+          "netPressureIndex": 78.6,
+          "events": [
+            {
+              "id": "2026-09-30-amd-hpe-vultr-helios-order",
+              "headline": "HPE disclosed a large Vultr order for AMD Helios AI Rack systems.",
+              "category": "semiconductor-demand",
+              "direction": 1,
+              "materiality": 65,
+              "soxRelevance": 1.0,
+              "ageDays": 0,
+              "halfLifeDays": 4.0,
+              "decay": 1.0,
+              "signedImpulse": 65.0,
+              "source": "Reuters",
+              "eventTime": "2026-09-30T10:00:00-04:00",
+              "firstReported": "2026-09-30",
+              "hypeEligible": true
+            },
+            {
+              "id": "2026-09-30-amd-world-labs-acquisition",
+              "headline": "AMD announced an $8.2B all-stock acquisition of World Labs.",
+              "category": "m-and-a",
+              "direction": 0,
+              "materiality": 80,
+              "soxRelevance": 1.0,
+              "ageDays": 0,
+              "halfLifeDays": 2.0,
+              "decay": 1.0,
+              "signedImpulse": 0.0,
+              "source": "Reuters",
+              "eventTime": "2026-09-30T12:00:00-04:00",
+              "firstReported": "2026-09-30",
+              "hypeEligible": true
+            }
+          ],
+          "excludedMacroContextEvents": [
+            {
+              "id": "2026-09-30-us-pce-softer-than-expected",
+              "headline": "August core PCE was softer than expected, reducing immediate Fed-hike pressure.",
+              "category": "macro",
+              "direction": 1,
+              "materiality": 80,
+              "soxRelevance": 0.75,
+              "ageDays": 0,
+              "halfLifeDays": 1.0,
+              "decay": 1.0,
+              "signedImpulse": 60.0,
+              "source": "Reuters",
+              "eventTime": "2026-09-30T08:30:00-04:00",
+              "firstReported": "2026-09-30",
+              "hypeEligible": false
+            }
+          ],
+          "note": "Macro/Fed/oil headlines are retained as context but excluded from Hype Pressure to avoid double-counting Phase 2 macro variables."
+        },
+        "anticipation": {
+          "scheduledEventCount": 0,
+          "attentionRaw": 0,
+          "attentionIndex": 0.0,
+          "directionalPressure": null,
+          "events": [],
+          "note": "Attention is separate from direction. Upcoming earnings are not automatically bullish."
+        },
+        "candidateInputs": {
+          "newsNetPressureIndex": 78.6,
+          "newsPositivePressure": 47.8,
+          "newsNegativePressure": 0.0,
+          "anticipationAttentionIndex": 0.0,
+          "directionalAnticipation": null
+        },
+        "excludedFromInput": {
+          "hypeAcceptance": null,
+          "hypeEfficiency": null,
+          "note": "Price response is deliberately excluded to avoid circularity; calculated in later phases."
+        }
       },
       "futureInputs": {
         "fedRepricing": null,
@@ -45111,6 +45025,140 @@
         "basketPositiveBreadthPct": 80.0,
         "basketOutperformQqqPct": 80.0
       },
+      "hype": {
+        "date": "2026-10-01",
+        "observedAtUTC": "2026-10-05T08:21:35+00:00",
+        "provenance": "curated_timestamped_history",
+        "news": {
+          "activeEventCount": 6,
+          "positiveImpulseRaw": 214.66,
+          "negativeImpulseRaw": 0,
+          "positivePressure": 88.3,
+          "negativePressure": 0.0,
+          "netPressureIndex": 98.7,
+          "events": [
+            {
+              "id": "2026-09-30-amd-hpe-vultr-helios-order",
+              "headline": "HPE disclosed a large Vultr order for AMD Helios AI Rack systems.",
+              "category": "semiconductor-demand",
+              "direction": 1,
+              "materiality": 65,
+              "soxRelevance": 1.0,
+              "ageDays": 1,
+              "halfLifeDays": 4.0,
+              "decay": 0.8409,
+              "signedImpulse": 54.66,
+              "source": "Reuters",
+              "eventTime": "2026-09-30T10:00:00-04:00",
+              "firstReported": "2026-09-30",
+              "hypeEligible": true
+            },
+            {
+              "id": "2026-09-30-amd-world-labs-acquisition",
+              "headline": "AMD announced an $8.2B all-stock acquisition of World Labs.",
+              "category": "m-and-a",
+              "direction": 0,
+              "materiality": 80,
+              "soxRelevance": 1.0,
+              "ageDays": 1,
+              "halfLifeDays": 2.0,
+              "decay": 0.7071,
+              "signedImpulse": 0.0,
+              "source": "Reuters",
+              "eventTime": "2026-09-30T12:00:00-04:00",
+              "firstReported": "2026-09-30",
+              "hypeEligible": true
+            },
+            {
+              "id": "2026-10-01-micron-earnings-ai-memory-demand",
+              "headline": "Micron reported strong results and guidance with sharply higher contracted AI-memory commitments.",
+              "category": "earnings",
+              "direction": 1,
+              "materiality": 80,
+              "soxRelevance": 1.0,
+              "ageDays": 0,
+              "halfLifeDays": 3.0,
+              "decay": 1.0,
+              "signedImpulse": 80.0,
+              "source": "Reuters",
+              "eventTime": "2026-09-30T16:05:00-04:00",
+              "firstReported": "2026-10-01",
+              "hypeEligible": true
+            },
+            {
+              "id": "2026-10-01-broadcom-anthropic-ai-financing",
+              "headline": "Broadcom agreed to provide up to $42B of financing tied to Anthropic AI infrastructure spending.",
+              "category": "ai-infrastructure",
+              "direction": 1,
+              "materiality": 80,
+              "soxRelevance": 1.0,
+              "ageDays": 0,
+              "halfLifeDays": 5.0,
+              "decay": 1.0,
+              "signedImpulse": 80.0,
+              "source": "Reuters",
+              "eventTime": "2026-10-01T11:00:00-04:00",
+              "firstReported": "2026-10-01",
+              "hypeEligible": true
+            }
+          ],
+          "excludedMacroContextEvents": [
+            {
+              "id": "2026-09-30-us-pce-softer-than-expected",
+              "headline": "August core PCE was softer than expected, reducing immediate Fed-hike pressure.",
+              "category": "macro",
+              "direction": 1,
+              "materiality": 80,
+              "soxRelevance": 0.75,
+              "ageDays": 1,
+              "halfLifeDays": 1.0,
+              "decay": 0.5,
+              "signedImpulse": 30.0,
+              "source": "Reuters",
+              "eventTime": "2026-09-30T08:30:00-04:00",
+              "firstReported": "2026-09-30",
+              "hypeEligible": false
+            },
+            {
+              "id": "2026-10-01-fed-jefferson-yield-reversal",
+              "headline": "Fed Vice Chair Philip Jefferson signaled patience on further hikes as the 10Y reversed sharply from a multi-decade high.",
+              "category": "fed-rates",
+              "direction": 1,
+              "materiality": 80,
+              "soxRelevance": 0.75,
+              "ageDays": 0,
+              "halfLifeDays": 1.0,
+              "decay": 1.0,
+              "signedImpulse": 60.0,
+              "source": "Reuters",
+              "eventTime": "2026-10-01T14:00:00-04:00",
+              "firstReported": "2026-10-01",
+              "hypeEligible": false
+            }
+          ],
+          "note": "Macro/Fed/oil headlines are retained as context but excluded from Hype Pressure to avoid double-counting Phase 2 macro variables."
+        },
+        "anticipation": {
+          "scheduledEventCount": 0,
+          "attentionRaw": 0,
+          "attentionIndex": 0.0,
+          "directionalPressure": null,
+          "events": [],
+          "note": "Attention is separate from direction. Upcoming earnings are not automatically bullish."
+        },
+        "candidateInputs": {
+          "newsNetPressureIndex": 98.7,
+          "newsPositivePressure": 88.3,
+          "newsNegativePressure": 0.0,
+          "anticipationAttentionIndex": 0.0,
+          "directionalAnticipation": null
+        },
+        "excludedFromInput": {
+          "hypeAcceptance": null,
+          "hypeEfficiency": null,
+          "note": "Price response is deliberately excluded to avoid circularity; calculated in later phases."
+        }
+      },
       "futureInputs": {
         "fedRepricing": null,
         "macroSurprise": null,
@@ -45149,7 +45197,7 @@
           "low": 587.25,
           "close": 588.9,
           "volume": 6877435.625574,
-          "vwap": 591.387,
+          "vwap": 591.3871,
           "source": "Massive adjusted daily aggregate",
           "previousClose": 576.33,
           "return1dPct": 2.181
@@ -45290,6 +45338,172 @@
         },
         "basketPositiveBreadthPct": 80.0,
         "basketOutperformQqqPct": 80.0
+      },
+      "hype": {
+        "date": "2026-10-02",
+        "observedAtUTC": "2026-10-05T08:21:35+00:00",
+        "provenance": "curated_timestamped_history",
+        "news": {
+          "activeEventCount": 8,
+          "positiveImpulseRaw": 179.1,
+          "negativeImpulseRaw": 0,
+          "positivePressure": 83.3,
+          "negativePressure": 0.0,
+          "netPressureIndex": 97.3,
+          "events": [
+            {
+              "id": "2026-09-30-amd-hpe-vultr-helios-order",
+              "headline": "HPE disclosed a large Vultr order for AMD Helios AI Rack systems.",
+              "category": "semiconductor-demand",
+              "direction": 1,
+              "materiality": 65,
+              "soxRelevance": 1.0,
+              "ageDays": 2,
+              "halfLifeDays": 4.0,
+              "decay": 0.7071,
+              "signedImpulse": 45.96,
+              "source": "Reuters",
+              "eventTime": "2026-09-30T10:00:00-04:00",
+              "firstReported": "2026-09-30",
+              "hypeEligible": true
+            },
+            {
+              "id": "2026-09-30-amd-world-labs-acquisition",
+              "headline": "AMD announced an $8.2B all-stock acquisition of World Labs.",
+              "category": "m-and-a",
+              "direction": 0,
+              "materiality": 80,
+              "soxRelevance": 1.0,
+              "ageDays": 2,
+              "halfLifeDays": 2.0,
+              "decay": 0.5,
+              "signedImpulse": 0.0,
+              "source": "Reuters",
+              "eventTime": "2026-09-30T12:00:00-04:00",
+              "firstReported": "2026-09-30",
+              "hypeEligible": true
+            },
+            {
+              "id": "2026-10-01-micron-earnings-ai-memory-demand",
+              "headline": "Micron reported strong results and guidance with sharply higher contracted AI-memory commitments.",
+              "category": "earnings",
+              "direction": 1,
+              "materiality": 80,
+              "soxRelevance": 1.0,
+              "ageDays": 1,
+              "halfLifeDays": 3.0,
+              "decay": 0.7937,
+              "signedImpulse": 63.5,
+              "source": "Reuters",
+              "eventTime": "2026-09-30T16:05:00-04:00",
+              "firstReported": "2026-10-01",
+              "hypeEligible": true
+            },
+            {
+              "id": "2026-10-01-broadcom-anthropic-ai-financing",
+              "headline": "Broadcom agreed to provide up to $42B of financing tied to Anthropic AI infrastructure spending.",
+              "category": "ai-infrastructure",
+              "direction": 1,
+              "materiality": 80,
+              "soxRelevance": 1.0,
+              "ageDays": 1,
+              "halfLifeDays": 5.0,
+              "decay": 0.8706,
+              "signedImpulse": 69.64,
+              "source": "Reuters",
+              "eventTime": "2026-10-01T11:00:00-04:00",
+              "firstReported": "2026-10-01",
+              "hypeEligible": true
+            }
+          ],
+          "excludedMacroContextEvents": [
+            {
+              "id": "2026-09-30-us-pce-softer-than-expected",
+              "headline": "August core PCE was softer than expected, reducing immediate Fed-hike pressure.",
+              "category": "macro",
+              "direction": 1,
+              "materiality": 80,
+              "soxRelevance": 0.75,
+              "ageDays": 2,
+              "halfLifeDays": 1.0,
+              "decay": 0.25,
+              "signedImpulse": 15.0,
+              "source": "Reuters",
+              "eventTime": "2026-09-30T08:30:00-04:00",
+              "firstReported": "2026-09-30",
+              "hypeEligible": false
+            },
+            {
+              "id": "2026-10-01-fed-jefferson-yield-reversal",
+              "headline": "Fed Vice Chair Philip Jefferson signaled patience on further hikes as the 10Y reversed sharply from a multi-decade high.",
+              "category": "fed-rates",
+              "direction": 1,
+              "materiality": 80,
+              "soxRelevance": 0.75,
+              "ageDays": 1,
+              "halfLifeDays": 1.0,
+              "decay": 0.5,
+              "signedImpulse": 30.0,
+              "source": "Reuters",
+              "eventTime": "2026-10-01T14:00:00-04:00",
+              "firstReported": "2026-10-01",
+              "hypeEligible": false
+            },
+            {
+              "id": "2026-10-02-september-payrolls-rate-repricing",
+              "headline": "September payrolls sharply missed expectations, reducing near-term Fed-hike expectations and Treasury yields.",
+              "category": "macro",
+              "direction": 1,
+              "materiality": 95,
+              "soxRelevance": 0.75,
+              "ageDays": 0,
+              "halfLifeDays": 1.0,
+              "decay": 1.0,
+              "signedImpulse": 71.25,
+              "source": "Reuters",
+              "eventTime": "2026-10-02T08:30:00-04:00",
+              "firstReported": "2026-10-02",
+              "hypeEligible": false
+            },
+            {
+              "id": "2026-10-02-iea-g7-emergency-oil-release",
+              "headline": "G7/IEA countries confirmed a coordinated emergency oil-product release to counter the geopolitical energy shock.",
+              "category": "oil-geopolitics",
+              "direction": 1,
+              "materiality": 80,
+              "soxRelevance": 0.75,
+              "ageDays": 0,
+              "halfLifeDays": 1.0,
+              "decay": 1.0,
+              "signedImpulse": 60.0,
+              "source": "Reuters",
+              "eventTime": "2026-10-02T12:00:00-04:00",
+              "firstReported": "2026-10-02",
+              "hypeEligible": false
+            }
+          ],
+          "note": "Macro/Fed/oil headlines are retained as context but excluded from Hype Pressure to avoid double-counting Phase 2 macro variables."
+        },
+        "anticipation": {
+          "scheduledEventCount": 0,
+          "attentionRaw": 0,
+          "attentionIndex": 0.0,
+          "directionalPressure": null,
+          "events": [],
+          "note": "Attention is separate from direction. Upcoming earnings are not automatically bullish."
+        },
+        "candidateInputs": {
+          "newsNetPressureIndex": 97.3,
+          "newsPositivePressure": 83.3,
+          "newsNegativePressure": 0.0,
+          "anticipationAttentionIndex": 0.0,
+          "directionalAnticipation": null
+        },
+        "excludedFromInput": {
+          "hypeAcceptance": null,
+          "hypeEfficiency": null,
+          "note": "Price response is deliberately excluded to avoid circularity; calculated in later phases."
+        }
       },
       "futureInputs": {
         "fedRepricing": null,
