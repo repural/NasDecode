@@ -97,6 +97,7 @@ jobs:
           python scripts/build_hype_history.py
           python scripts/build_resilience_history.py
           python scripts/build_resilience_model.py
+          python scripts/build_resilience_engine.py
       - name: Commit refreshed snapshot
         if: steps.gate.outputs.run == 'yes'
         shell: bash
@@ -137,6 +138,7 @@ jobs:
             python scripts/build_hype_history.py
             MASSIVE_API_KEY='${{ secrets.MASSIVE_API_KEY }}' python scripts/build_resilience_history.py
             python scripts/build_resilience_model.py
+            python scripts/build_resilience_engine.py
             git add -A data
             mkdir -p public/data
             cp index.html public/index.html
