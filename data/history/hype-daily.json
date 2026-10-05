@@ -1,0 +1,559 @@
+{
+  "schemaVersion": 1,
+  "enginePhase": 1,
+  "methodologyVersion": "hype-inputs-1.0",
+  "purpose": "Point-in-time narrative/catalyst pressure inputs for the future SOX Resilience Engine; not used by current scores.",
+  "rules": {
+    "directionalNews": "Curated Open Watch only; materiality x SOX relevance x time decay.",
+    "scheduledEvents": "Attention/proximity only unless a separately timestamped directional expectation exists.",
+    "autoDetectedNews": "Excluded from directional pressure until curated/deduplicated.",
+    "priceReaction": "Excluded; Hype Acceptance and Hype Efficiency are later validation outputs."
+  },
+  "upcomingCalendarAsOf": "2026-10-05",
+  "records": {
+    "2026-09-30": {
+      "date": "2026-09-30",
+      "observedAtUTC": "2026-10-05T08:06:00+00:00",
+      "provenance": "curated_timestamped_history",
+      "news": {
+        "activeEventCount": 3,
+        "positiveImpulseRaw": 125.0,
+        "negativeImpulseRaw": 0,
+        "positivePressure": 71.3,
+        "negativePressure": 0.0,
+        "netPressureIndex": 92.4,
+        "events": [
+          {
+            "id": "2026-09-30-us-pce-softer-than-expected",
+            "headline": "August core PCE was softer than expected, reducing immediate Fed-hike pressure.",
+            "category": "macro",
+            "direction": 1,
+            "materiality": 80,
+            "soxRelevance": 0.75,
+            "ageDays": 0,
+            "halfLifeDays": 1.0,
+            "decay": 1.0,
+            "signedImpulse": 60.0,
+            "source": "Reuters",
+            "eventTime": "2026-09-30T08:30:00-04:00",
+            "firstReported": "2026-09-30"
+          },
+          {
+            "id": "2026-09-30-amd-hpe-vultr-helios-order",
+            "headline": "HPE disclosed a large Vultr order for AMD Helios AI Rack systems.",
+            "category": "semiconductor-demand",
+            "direction": 1,
+            "materiality": 65,
+            "soxRelevance": 1.0,
+            "ageDays": 0,
+            "halfLifeDays": 4.0,
+            "decay": 1.0,
+            "signedImpulse": 65.0,
+            "source": "Reuters",
+            "eventTime": "2026-09-30T10:00:00-04:00",
+            "firstReported": "2026-09-30"
+          },
+          {
+            "id": "2026-09-30-amd-world-labs-acquisition",
+            "headline": "AMD announced an $8.2B all-stock acquisition of World Labs.",
+            "category": "m-and-a",
+            "direction": 0,
+            "materiality": 80,
+            "soxRelevance": 1.0,
+            "ageDays": 0,
+            "halfLifeDays": 2.0,
+            "decay": 1.0,
+            "signedImpulse": 0.0,
+            "source": "Reuters",
+            "eventTime": "2026-09-30T12:00:00-04:00",
+            "firstReported": "2026-09-30"
+          }
+        ]
+      },
+      "anticipation": {
+        "scheduledEventCount": 0,
+        "attentionRaw": 0,
+        "attentionIndex": 0.0,
+        "directionalPressure": null,
+        "events": [],
+        "note": "Attention is separate from direction. Upcoming earnings are not automatically bullish."
+      },
+      "candidateInputs": {
+        "newsNetPressureIndex": 92.4,
+        "newsPositivePressure": 71.3,
+        "newsNegativePressure": 0.0,
+        "anticipationAttentionIndex": 0.0,
+        "directionalAnticipation": null
+      },
+      "excludedFromInput": {
+        "hypeAcceptance": null,
+        "hypeEfficiency": null,
+        "note": "Price response is deliberately excluded to avoid circularity; calculated in later phases."
+      }
+    },
+    "2026-10-01": {
+      "date": "2026-10-01",
+      "observedAtUTC": "2026-10-05T08:06:00+00:00",
+      "provenance": "curated_timestamped_history",
+      "news": {
+        "activeEventCount": 6,
+        "positiveImpulseRaw": 304.66,
+        "negativeImpulseRaw": 0,
+        "positivePressure": 95.2,
+        "negativePressure": 0.0,
+        "netPressureIndex": 99.8,
+        "events": [
+          {
+            "id": "2026-09-30-us-pce-softer-than-expected",
+            "headline": "August core PCE was softer than expected, reducing immediate Fed-hike pressure.",
+            "category": "macro",
+            "direction": 1,
+            "materiality": 80,
+            "soxRelevance": 0.75,
+            "ageDays": 1,
+            "halfLifeDays": 1.0,
+            "decay": 0.5,
+            "signedImpulse": 30.0,
+            "source": "Reuters",
+            "eventTime": "2026-09-30T08:30:00-04:00",
+            "firstReported": "2026-09-30"
+          },
+          {
+            "id": "2026-09-30-amd-hpe-vultr-helios-order",
+            "headline": "HPE disclosed a large Vultr order for AMD Helios AI Rack systems.",
+            "category": "semiconductor-demand",
+            "direction": 1,
+            "materiality": 65,
+            "soxRelevance": 1.0,
+            "ageDays": 1,
+            "halfLifeDays": 4.0,
+            "decay": 0.8409,
+            "signedImpulse": 54.66,
+            "source": "Reuters",
+            "eventTime": "2026-09-30T10:00:00-04:00",
+            "firstReported": "2026-09-30"
+          },
+          {
+            "id": "2026-09-30-amd-world-labs-acquisition",
+            "headline": "AMD announced an $8.2B all-stock acquisition of World Labs.",
+            "category": "m-and-a",
+            "direction": 0,
+            "materiality": 80,
+            "soxRelevance": 1.0,
+            "ageDays": 1,
+            "halfLifeDays": 2.0,
+            "decay": 0.7071,
+            "signedImpulse": 0.0,
+            "source": "Reuters",
+            "eventTime": "2026-09-30T12:00:00-04:00",
+            "firstReported": "2026-09-30"
+          },
+          {
+            "id": "2026-10-01-micron-earnings-ai-memory-demand",
+            "headline": "Micron reported strong results and guidance with sharply higher contracted AI-memory commitments.",
+            "category": "earnings",
+            "direction": 1,
+            "materiality": 80,
+            "soxRelevance": 1.0,
+            "ageDays": 0,
+            "halfLifeDays": 3.0,
+            "decay": 1.0,
+            "signedImpulse": 80.0,
+            "source": "Reuters",
+            "eventTime": "2026-09-30T16:05:00-04:00",
+            "firstReported": "2026-10-01"
+          },
+          {
+            "id": "2026-10-01-broadcom-anthropic-ai-financing",
+            "headline": "Broadcom agreed to provide up to $42B of financing tied to Anthropic AI infrastructure spending.",
+            "category": "ai-infrastructure",
+            "direction": 1,
+            "materiality": 80,
+            "soxRelevance": 1.0,
+            "ageDays": 0,
+            "halfLifeDays": 5.0,
+            "decay": 1.0,
+            "signedImpulse": 80.0,
+            "source": "Reuters",
+            "eventTime": "2026-10-01T11:00:00-04:00",
+            "firstReported": "2026-10-01"
+          },
+          {
+            "id": "2026-10-01-fed-jefferson-yield-reversal",
+            "headline": "Fed Vice Chair Philip Jefferson signaled patience on further hikes as the 10Y reversed sharply from a multi-decade high.",
+            "category": "fed-rates",
+            "direction": 1,
+            "materiality": 80,
+            "soxRelevance": 0.75,
+            "ageDays": 0,
+            "halfLifeDays": 1.0,
+            "decay": 1.0,
+            "signedImpulse": 60.0,
+            "source": "Reuters",
+            "eventTime": "2026-10-01T14:00:00-04:00",
+            "firstReported": "2026-10-01"
+          }
+        ]
+      },
+      "anticipation": {
+        "scheduledEventCount": 0,
+        "attentionRaw": 0,
+        "attentionIndex": 0.0,
+        "directionalPressure": null,
+        "events": [],
+        "note": "Attention is separate from direction. Upcoming earnings are not automatically bullish."
+      },
+      "candidateInputs": {
+        "newsNetPressureIndex": 99.8,
+        "newsPositivePressure": 95.2,
+        "newsNegativePressure": 0.0,
+        "anticipationAttentionIndex": 0.0,
+        "directionalAnticipation": null
+      },
+      "excludedFromInput": {
+        "hypeAcceptance": null,
+        "hypeEfficiency": null,
+        "note": "Price response is deliberately excluded to avoid circularity; calculated in later phases."
+      }
+    },
+    "2026-10-02": {
+      "date": "2026-10-02",
+      "observedAtUTC": "2026-10-05T08:06:00+00:00",
+      "provenance": "curated_timestamped_history",
+      "news": {
+        "activeEventCount": 8,
+        "positiveImpulseRaw": 355.35,
+        "negativeImpulseRaw": 0,
+        "positivePressure": 97.1,
+        "negativePressure": 0.0,
+        "netPressureIndex": 99.9,
+        "events": [
+          {
+            "id": "2026-09-30-us-pce-softer-than-expected",
+            "headline": "August core PCE was softer than expected, reducing immediate Fed-hike pressure.",
+            "category": "macro",
+            "direction": 1,
+            "materiality": 80,
+            "soxRelevance": 0.75,
+            "ageDays": 2,
+            "halfLifeDays": 1.0,
+            "decay": 0.25,
+            "signedImpulse": 15.0,
+            "source": "Reuters",
+            "eventTime": "2026-09-30T08:30:00-04:00",
+            "firstReported": "2026-09-30"
+          },
+          {
+            "id": "2026-09-30-amd-hpe-vultr-helios-order",
+            "headline": "HPE disclosed a large Vultr order for AMD Helios AI Rack systems.",
+            "category": "semiconductor-demand",
+            "direction": 1,
+            "materiality": 65,
+            "soxRelevance": 1.0,
+            "ageDays": 2,
+            "halfLifeDays": 4.0,
+            "decay": 0.7071,
+            "signedImpulse": 45.96,
+            "source": "Reuters",
+            "eventTime": "2026-09-30T10:00:00-04:00",
+            "firstReported": "2026-09-30"
+          },
+          {
+            "id": "2026-09-30-amd-world-labs-acquisition",
+            "headline": "AMD announced an $8.2B all-stock acquisition of World Labs.",
+            "category": "m-and-a",
+            "direction": 0,
+            "materiality": 80,
+            "soxRelevance": 1.0,
+            "ageDays": 2,
+            "halfLifeDays": 2.0,
+            "decay": 0.5,
+            "signedImpulse": 0.0,
+            "source": "Reuters",
+            "eventTime": "2026-09-30T12:00:00-04:00",
+            "firstReported": "2026-09-30"
+          },
+          {
+            "id": "2026-10-01-micron-earnings-ai-memory-demand",
+            "headline": "Micron reported strong results and guidance with sharply higher contracted AI-memory commitments.",
+            "category": "earnings",
+            "direction": 1,
+            "materiality": 80,
+            "soxRelevance": 1.0,
+            "ageDays": 1,
+            "halfLifeDays": 3.0,
+            "decay": 0.7937,
+            "signedImpulse": 63.5,
+            "source": "Reuters",
+            "eventTime": "2026-09-30T16:05:00-04:00",
+            "firstReported": "2026-10-01"
+          },
+          {
+            "id": "2026-10-01-broadcom-anthropic-ai-financing",
+            "headline": "Broadcom agreed to provide up to $42B of financing tied to Anthropic AI infrastructure spending.",
+            "category": "ai-infrastructure",
+            "direction": 1,
+            "materiality": 80,
+            "soxRelevance": 1.0,
+            "ageDays": 1,
+            "halfLifeDays": 5.0,
+            "decay": 0.8706,
+            "signedImpulse": 69.64,
+            "source": "Reuters",
+            "eventTime": "2026-10-01T11:00:00-04:00",
+            "firstReported": "2026-10-01"
+          },
+          {
+            "id": "2026-10-01-fed-jefferson-yield-reversal",
+            "headline": "Fed Vice Chair Philip Jefferson signaled patience on further hikes as the 10Y reversed sharply from a multi-decade high.",
+            "category": "fed-rates",
+            "direction": 1,
+            "materiality": 80,
+            "soxRelevance": 0.75,
+            "ageDays": 1,
+            "halfLifeDays": 1.0,
+            "decay": 0.5,
+            "signedImpulse": 30.0,
+            "source": "Reuters",
+            "eventTime": "2026-10-01T14:00:00-04:00",
+            "firstReported": "2026-10-01"
+          },
+          {
+            "id": "2026-10-02-september-payrolls-rate-repricing",
+            "headline": "September payrolls sharply missed expectations, reducing near-term Fed-hike expectations and Treasury yields.",
+            "category": "macro",
+            "direction": 1,
+            "materiality": 95,
+            "soxRelevance": 0.75,
+            "ageDays": 0,
+            "halfLifeDays": 1.0,
+            "decay": 1.0,
+            "signedImpulse": 71.25,
+            "source": "Reuters",
+            "eventTime": "2026-10-02T08:30:00-04:00",
+            "firstReported": "2026-10-02"
+          },
+          {
+            "id": "2026-10-02-iea-g7-emergency-oil-release",
+            "headline": "G7/IEA countries confirmed a coordinated emergency oil-product release to counter the geopolitical energy shock.",
+            "category": "oil-geopolitics",
+            "direction": 1,
+            "materiality": 80,
+            "soxRelevance": 0.75,
+            "ageDays": 0,
+            "halfLifeDays": 1.0,
+            "decay": 1.0,
+            "signedImpulse": 60.0,
+            "source": "Reuters",
+            "eventTime": "2026-10-02T12:00:00-04:00",
+            "firstReported": "2026-10-02"
+          }
+        ]
+      },
+      "anticipation": {
+        "scheduledEventCount": 0,
+        "attentionRaw": 0,
+        "attentionIndex": 0.0,
+        "directionalPressure": null,
+        "events": [],
+        "note": "Attention is separate from direction. Upcoming earnings are not automatically bullish."
+      },
+      "candidateInputs": {
+        "newsNetPressureIndex": 99.9,
+        "newsPositivePressure": 97.1,
+        "newsNegativePressure": 0.0,
+        "anticipationAttentionIndex": 0.0,
+        "directionalAnticipation": null
+      },
+      "excludedFromInput": {
+        "hypeAcceptance": null,
+        "hypeEfficiency": null,
+        "note": "Price response is deliberately excluded to avoid circularity; calculated in later phases."
+      }
+    },
+    "2026-10-05": {
+      "date": "2026-10-05",
+      "observedAtUTC": "2026-10-05T08:06:00+00:00",
+      "provenance": "prospective_point_in_time",
+      "news": {
+        "activeEventCount": 8,
+        "positiveImpulseRaw": 127.07,
+        "negativeImpulseRaw": 0,
+        "positivePressure": 71.9,
+        "negativePressure": 0.0,
+        "netPressureIndex": 92.7,
+        "events": [
+          {
+            "id": "2026-09-30-us-pce-softer-than-expected",
+            "headline": "August core PCE was softer than expected, reducing immediate Fed-hike pressure.",
+            "category": "macro",
+            "direction": 1,
+            "materiality": 80,
+            "soxRelevance": 0.75,
+            "ageDays": 5,
+            "halfLifeDays": 1.0,
+            "decay": 0.0312,
+            "signedImpulse": 1.88,
+            "source": "Reuters",
+            "eventTime": "2026-09-30T08:30:00-04:00",
+            "firstReported": "2026-09-30"
+          },
+          {
+            "id": "2026-09-30-amd-hpe-vultr-helios-order",
+            "headline": "HPE disclosed a large Vultr order for AMD Helios AI Rack systems.",
+            "category": "semiconductor-demand",
+            "direction": 1,
+            "materiality": 65,
+            "soxRelevance": 1.0,
+            "ageDays": 5,
+            "halfLifeDays": 4.0,
+            "decay": 0.4204,
+            "signedImpulse": 27.33,
+            "source": "Reuters",
+            "eventTime": "2026-09-30T10:00:00-04:00",
+            "firstReported": "2026-09-30"
+          },
+          {
+            "id": "2026-09-30-amd-world-labs-acquisition",
+            "headline": "AMD announced an $8.2B all-stock acquisition of World Labs.",
+            "category": "m-and-a",
+            "direction": 0,
+            "materiality": 80,
+            "soxRelevance": 1.0,
+            "ageDays": 5,
+            "halfLifeDays": 2.0,
+            "decay": 0.1768,
+            "signedImpulse": 0.0,
+            "source": "Reuters",
+            "eventTime": "2026-09-30T12:00:00-04:00",
+            "firstReported": "2026-09-30"
+          },
+          {
+            "id": "2026-10-01-micron-earnings-ai-memory-demand",
+            "headline": "Micron reported strong results and guidance with sharply higher contracted AI-memory commitments.",
+            "category": "earnings",
+            "direction": 1,
+            "materiality": 80,
+            "soxRelevance": 1.0,
+            "ageDays": 4,
+            "halfLifeDays": 3.0,
+            "decay": 0.3969,
+            "signedImpulse": 31.75,
+            "source": "Reuters",
+            "eventTime": "2026-09-30T16:05:00-04:00",
+            "firstReported": "2026-10-01"
+          },
+          {
+            "id": "2026-10-01-broadcom-anthropic-ai-financing",
+            "headline": "Broadcom agreed to provide up to $42B of financing tied to Anthropic AI infrastructure spending.",
+            "category": "ai-infrastructure",
+            "direction": 1,
+            "materiality": 80,
+            "soxRelevance": 1.0,
+            "ageDays": 4,
+            "halfLifeDays": 5.0,
+            "decay": 0.5743,
+            "signedImpulse": 45.95,
+            "source": "Reuters",
+            "eventTime": "2026-10-01T11:00:00-04:00",
+            "firstReported": "2026-10-01"
+          },
+          {
+            "id": "2026-10-01-fed-jefferson-yield-reversal",
+            "headline": "Fed Vice Chair Philip Jefferson signaled patience on further hikes as the 10Y reversed sharply from a multi-decade high.",
+            "category": "fed-rates",
+            "direction": 1,
+            "materiality": 80,
+            "soxRelevance": 0.75,
+            "ageDays": 4,
+            "halfLifeDays": 1.0,
+            "decay": 0.0625,
+            "signedImpulse": 3.75,
+            "source": "Reuters",
+            "eventTime": "2026-10-01T14:00:00-04:00",
+            "firstReported": "2026-10-01"
+          },
+          {
+            "id": "2026-10-02-september-payrolls-rate-repricing",
+            "headline": "September payrolls sharply missed expectations, reducing near-term Fed-hike expectations and Treasury yields.",
+            "category": "macro",
+            "direction": 1,
+            "materiality": 95,
+            "soxRelevance": 0.75,
+            "ageDays": 3,
+            "halfLifeDays": 1.0,
+            "decay": 0.125,
+            "signedImpulse": 8.91,
+            "source": "Reuters",
+            "eventTime": "2026-10-02T08:30:00-04:00",
+            "firstReported": "2026-10-02"
+          },
+          {
+            "id": "2026-10-02-iea-g7-emergency-oil-release",
+            "headline": "G7/IEA countries confirmed a coordinated emergency oil-product release to counter the geopolitical energy shock.",
+            "category": "oil-geopolitics",
+            "direction": 1,
+            "materiality": 80,
+            "soxRelevance": 0.75,
+            "ageDays": 3,
+            "halfLifeDays": 1.0,
+            "decay": 0.125,
+            "signedImpulse": 7.5,
+            "source": "Reuters",
+            "eventTime": "2026-10-02T12:00:00-04:00",
+            "firstReported": "2026-10-02"
+          }
+        ]
+      },
+      "anticipation": {
+        "scheduledEventCount": 2,
+        "attentionRaw": 46.91,
+        "attentionIndex": 37.4,
+        "directionalPressure": null,
+        "events": [
+          {
+            "ticker": "ASML",
+            "company": "ASML Holding N.V.",
+            "date": "2026-10-14",
+            "session": "before_open",
+            "scope": "sox",
+            "status": "confirmed",
+            "daysAway": 9,
+            "importance": 85,
+            "proximity": 0.2872,
+            "attentionImpulse": 24.41,
+            "direction": null,
+            "note": "Scheduled event creates attention only; no bullish/bearish direction is assumed."
+          },
+          {
+            "ticker": "TSM",
+            "company": "Taiwan Semiconductor Manufacturing Company Limited",
+            "date": "2026-10-15",
+            "session": "before_open",
+            "scope": "sox",
+            "status": "confirmed",
+            "daysAway": 10,
+            "importance": 90,
+            "proximity": 0.25,
+            "attentionImpulse": 22.5,
+            "direction": null,
+            "note": "Scheduled event creates attention only; no bullish/bearish direction is assumed."
+          }
+        ],
+        "note": "Attention is separate from direction. Upcoming earnings are not automatically bullish."
+      },
+      "candidateInputs": {
+        "newsNetPressureIndex": 92.7,
+        "newsPositivePressure": 71.9,
+        "newsNegativePressure": 0.0,
+        "anticipationAttentionIndex": 37.4,
+        "directionalAnticipation": null
+      },
+      "excludedFromInput": {
+        "hypeAcceptance": null,
+        "hypeEfficiency": null,
+        "note": "Price response is deliberately excluded to avoid circularity; calculated in later phases."
+      }
+    }
+  }
+}
