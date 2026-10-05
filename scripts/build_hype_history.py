@@ -31,6 +31,7 @@ HALF_LIFE={
 }
 SOX_RELEVANCE={"Semiconductor sector":1.0,"Semiconductor sector / AI":1.0,
                "Nasdaq-wide":0.75,"Nasdaq-wide macro":0.75}
+MACRO_CONTEXT_CATEGORIES={"macro","fed-rates","oil-geopolitics"}
 SCHEDULED_IMPORTANCE={"NVDA":95,"TSM":90,"ASML":85,"AVGO":85,"AMD":80,"MU":80}
 
 def load(path,default):
@@ -83,7 +84,8 @@ def event_impulse(event, day):
         "direction":d,"materiality":materiality(event),"soxRelevance":round(relevance(event),2),
         "ageDays":age,"halfLifeDays":hl,"decay":round(decay,4),
         "signedImpulse":round(signed,2),"source":event.get("source"),
-        "eventTime":event.get("eventTime"),"firstReported":event.get("firstReported")
+        "eventTime":event.get("eventTime"),"firstReported":event.get("firstReported"),
+        "hypeEligible":str(event.get("category") or "") not in MACRO_CONTEXT_CATEGORIES
     }
 
 def saturation(x):
@@ -114,8 +116,10 @@ def scheduled_for(day, earnings):
 
 def build_record(day, watch_events, scheduled, observed_at, provenance):
     active=[x for e in watch_events if (x:=event_impulse(e,day)) is not None]
-    pos=sum(max(0,x["signedImpulse"]) for x in active)
-    neg=sum(max(0,-x["signedImpulse"]) for x in active)
+    eligible=[x for x in active if x.get("hypeEligible")]
+    macro_context=[x for x in active if not x.get("hypeEligible")]
+    pos=sum(max(0,x["signedImpulse"]) for x in eligible)
+    neg=sum(max(0,-x["signedImpulse"]) for x in eligible)
     attention=sum(x["attentionImpulse"] for x in scheduled)
     return {
         "date":day.isoformat(),"observedAtUTC":observed_at,"provenance":provenance,
@@ -123,7 +127,9 @@ def build_record(day, watch_events, scheduled, observed_at, provenance):
             "activeEventCount":len(active),"positiveImpulseRaw":round(pos,2),
             "negativeImpulseRaw":round(neg,2),"positivePressure":saturation(pos),
             "negativePressure":saturation(neg),"netPressureIndex":net_index(pos,neg),
-            "events":active
+            "events":eligible,
+            "excludedMacroContextEvents":macro_context,
+            "note":"Macro/Fed/oil headlines are retained as context but excluded from Hype Pressure to avoid double-counting Phase 2 macro variables."
         },
         "anticipation":{
             "scheduledEventCount":len(scheduled),"attentionRaw":round(attention,2),
@@ -173,7 +179,7 @@ def main():
         "schemaVersion":1,"enginePhase":1,"methodologyVersion":"hype-inputs-1.0",
         "purpose":"Point-in-time narrative/catalyst pressure inputs for the future SOX Resilience Engine; not used by current scores.",
         "rules":{
-            "directionalNews":"Curated Open Watch only; materiality x SOX relevance x time decay.",
+            "directionalNews":"Curated Open Watch semiconductor/narrative catalysts only; materiality x SOX relevance x time decay. Macro/Fed/oil events are context, not Hype Pressure.",
             "scheduledEvents":"Attention/proximity only unless a separately timestamped directional expectation exists.",
             "autoDetectedNews":"Excluded from directional pressure until curated/deduplicated.",
             "priceReaction":"Excluded; Hype Acceptance and Hype Efficiency are later validation outputs."
