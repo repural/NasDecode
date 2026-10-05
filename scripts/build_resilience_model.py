@@ -5,7 +5,7 @@ Produces a strictly out-of-sample daily expectation for SOX using only informati
 from PRIOR sessions. This is a shadow model and does not change any production score.
 
 Model A (macro baseline):
-  SOX return = f(QQQ return, 10Y change bp, 2Y change bp, VXN return, Brent return)
+  SOX return = f(QQQ return, parallel rates shock, 10s-2s steepening shock, VXN return, Brent return)
 
 Method:
 - rolling 120 valid training sessions
@@ -34,8 +34,8 @@ MIN_RESIDUAL_Z=20
 
 FEATURES=[
     ("qqqReturn1dPct","QQQ daily return","pct"),
-    ("us10yChangeBp","US 10Y daily change","bp"),
-    ("us2yChangeBp","US 2Y daily change","bp"),
+    ("ratesParallelShockBp","Parallel 2Y/10Y rate shock","bp"),
+    ("curveSteepeningShockBp","10Y minus 2Y steepening shock","bp"),
     ("vxnReturn1dPct","VXN daily return","pct"),
     ("brentReturn1dPct","Brent daily return","pct"),
 ]
@@ -69,10 +69,14 @@ def solve(a,b):
 
 def feature_row(r):
     d=r.get("derived") or {}; m=r.get("macro") or {}
+    y10=(m.get("US10Y") or {}).get("changeBp")
+    y2=(m.get("US2Y") or {}).get("changeBp")
+    parallel=(y10+y2)/2 if finite(y10) and finite(y2) else None
+    steepening=y10-y2 if finite(y10) and finite(y2) else None
     return {
         "qqqReturn1dPct":d.get("qqqReturn1dPct"),
-        "us10yChangeBp":(m.get("US10Y") or {}).get("changeBp"),
-        "us2yChangeBp":(m.get("US2Y") or {}).get("changeBp"),
+        "ratesParallelShockBp":parallel,
+        "curveSteepeningShockBp":steepening,
         "vxnReturn1dPct":(m.get("VXN") or {}).get("return1dPct"),
         "brentReturn1dPct":(m.get("Brent") or {}).get("return1dPct"),
     }
@@ -152,6 +156,12 @@ def main():
             "actualSoxReturnPct":round(actual,4),"expectedSoxReturnPct":round(expected,4),
             "residualPct":round(residual,4),"residualZ":round(z,3) if z is not None else None,
             "inputs":{k:round(x[k],4) for k,_,_ in FEATURES},
+            "regimeContext":{
+                "us10yLevelPct":(r.get("macro") or {}).get("US10Y",{}).get("close"),
+                "us2yLevelPct":(r.get("macro") or {}).get("US2Y",{}).get("close"),
+                "vxnLevel":(r.get("macro") or {}).get("VXN",{}).get("close"),
+                "brentLevel":(r.get("macro") or {}).get("Brent",{}).get("close")
+            },
             "featureContributionsPct":contributions,
             "sensitivities":raw_coef,
             "interceptPct":round(model["intercept"],4)
@@ -166,8 +176,8 @@ def main():
         s=latest["sensitivities"]
         interpretation={
             "qqqBeta":round(s["qqqReturn1dPct"],3),
-            "soxPctPer10Bp10Y":round(s["us10yChangeBp"]*10,3),
-            "soxPctPer10Bp2Y":round(s["us2yChangeBp"]*10,3),
+            "soxPctPer10BpParallelRates":round(s["ratesParallelShockBp"]*10,3),
+            "soxPctPer10Bp10s2sSteepening":round(s["curveSteepeningShockBp"]*10,3),
             "soxPctPer10PctVxnMove":round(s["vxnReturn1dPct"]*10,3),
             "soxPctPer5PctBrentMove":round(s["brentReturn1dPct"]*5,3)
         }
@@ -175,7 +185,7 @@ def main():
     hype_days=sum(1 for d in dates if ((records[d].get("hype") or {}).get("provenance")=="prospective_point_in_time"))
     curated_hype_days=sum(1 for d in dates if (records[d].get("hype") or {}).get("candidateInputs"))
     payload={
-        "schemaVersion":1,"enginePhase":2,"modelVersion":"resilience-phase2-ridge-1.0",
+        "schemaVersion":1,"enginePhase":2,"modelVersion":"resilience-phase2-ridge-1.1",
         "status":"shadow / validation only; no production NasDecode score consumes this output",
         "methodology":{
             "target":"SOX adjusted close-to-close daily return (%)",
@@ -185,6 +195,7 @@ def main():
             "ridgeLambda":RIDGE_LAMBDA,"standardization":"Training-window mean/sample SD only.",
             "residual":"Actual SOX return minus macro-baseline expected SOX return.",
             "residualZ":"Current residual standardized against up to 60 PRIOR model residuals only.",
+            "rateTransform":"Parallel shock = (10Y bp change + 2Y bp change)/2; steepening shock = 10Y bp change - 2Y bp change. This reduces 2Y/10Y collinearity and makes rate sensitivity interpretable.",
             "important":"Same-day QQQ/macro changes make this a measured-response model, not a pre-open forecast."
         },
         "modelA":{
