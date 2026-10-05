@@ -4,7 +4,7 @@
   "methodologyVersion": "hype-inputs-1.0",
   "purpose": "Point-in-time narrative/catalyst pressure inputs for the future SOX Resilience Engine; not used by current scores.",
   "rules": {
-    "directionalNews": "Curated Open Watch only; materiality x SOX relevance x time decay.",
+    "directionalNews": "Curated Open Watch semiconductor/narrative catalysts only; materiality x SOX relevance x time decay. Macro/Fed/oil events are context, not Hype Pressure.",
     "scheduledEvents": "Attention/proximity only unless a separately timestamped directional expectation exists.",
     "autoDetectedNews": "Excluded from directional pressure until curated/deduplicated.",
     "priceReaction": "Excluded; Hype Acceptance and Hype Efficiency are later validation outputs."
@@ -13,31 +13,16 @@
   "records": {
     "2026-09-30": {
       "date": "2026-09-30",
-      "observedAtUTC": "2026-10-05T08:06:00+00:00",
+      "observedAtUTC": "2026-10-05T08:09:37+00:00",
       "provenance": "curated_timestamped_history",
       "news": {
         "activeEventCount": 3,
-        "positiveImpulseRaw": 125.0,
+        "positiveImpulseRaw": 65.0,
         "negativeImpulseRaw": 0,
-        "positivePressure": 71.3,
+        "positivePressure": 47.8,
         "negativePressure": 0.0,
-        "netPressureIndex": 92.4,
+        "netPressureIndex": 78.6,
         "events": [
-          {
-            "id": "2026-09-30-us-pce-softer-than-expected",
-            "headline": "August core PCE was softer than expected, reducing immediate Fed-hike pressure.",
-            "category": "macro",
-            "direction": 1,
-            "materiality": 80,
-            "soxRelevance": 0.75,
-            "ageDays": 0,
-            "halfLifeDays": 1.0,
-            "decay": 1.0,
-            "signedImpulse": 60.0,
-            "source": "Reuters",
-            "eventTime": "2026-09-30T08:30:00-04:00",
-            "firstReported": "2026-09-30"
-          },
           {
             "id": "2026-09-30-amd-hpe-vultr-helios-order",
             "headline": "HPE disclosed a large Vultr order for AMD Helios AI Rack systems.",
@@ -51,7 +36,8 @@
             "signedImpulse": 65.0,
             "source": "Reuters",
             "eventTime": "2026-09-30T10:00:00-04:00",
-            "firstReported": "2026-09-30"
+            "firstReported": "2026-09-30",
+            "hypeEligible": true
           },
           {
             "id": "2026-09-30-amd-world-labs-acquisition",
@@ -66,9 +52,29 @@
             "signedImpulse": 0.0,
             "source": "Reuters",
             "eventTime": "2026-09-30T12:00:00-04:00",
-            "firstReported": "2026-09-30"
+            "firstReported": "2026-09-30",
+            "hypeEligible": true
           }
-        ]
+        ],
+        "excludedMacroContextEvents": [
+          {
+            "id": "2026-09-30-us-pce-softer-than-expected",
+            "headline": "August core PCE was softer than expected, reducing immediate Fed-hike pressure.",
+            "category": "macro",
+            "direction": 1,
+            "materiality": 80,
+            "soxRelevance": 0.75,
+            "ageDays": 0,
+            "halfLifeDays": 1.0,
+            "decay": 1.0,
+            "signedImpulse": 60.0,
+            "source": "Reuters",
+            "eventTime": "2026-09-30T08:30:00-04:00",
+            "firstReported": "2026-09-30",
+            "hypeEligible": false
+          }
+        ],
+        "note": "Macro/Fed/oil headlines are retained as context but excluded from Hype Pressure to avoid double-counting Phase 2 macro variables."
       },
       "anticipation": {
         "scheduledEventCount": 0,
@@ -79,8 +85,8 @@
         "note": "Attention is separate from direction. Upcoming earnings are not automatically bullish."
       },
       "candidateInputs": {
-        "newsNetPressureIndex": 92.4,
-        "newsPositivePressure": 71.3,
+        "newsNetPressureIndex": 78.6,
+        "newsPositivePressure": 47.8,
         "newsNegativePressure": 0.0,
         "anticipationAttentionIndex": 0.0,
         "directionalAnticipation": null
@@ -93,31 +99,16 @@
     },
     "2026-10-01": {
       "date": "2026-10-01",
-      "observedAtUTC": "2026-10-05T08:06:00+00:00",
+      "observedAtUTC": "2026-10-05T08:09:37+00:00",
       "provenance": "curated_timestamped_history",
       "news": {
         "activeEventCount": 6,
-        "positiveImpulseRaw": 304.66,
+        "positiveImpulseRaw": 214.66,
         "negativeImpulseRaw": 0,
-        "positivePressure": 95.2,
+        "positivePressure": 88.3,
         "negativePressure": 0.0,
-        "netPressureIndex": 99.8,
+        "netPressureIndex": 98.7,
         "events": [
-          {
-            "id": "2026-09-30-us-pce-softer-than-expected",
-            "headline": "August core PCE was softer than expected, reducing immediate Fed-hike pressure.",
-            "category": "macro",
-            "direction": 1,
-            "materiality": 80,
-            "soxRelevance": 0.75,
-            "ageDays": 1,
-            "halfLifeDays": 1.0,
-            "decay": 0.5,
-            "signedImpulse": 30.0,
-            "source": "Reuters",
-            "eventTime": "2026-09-30T08:30:00-04:00",
-            "firstReported": "2026-09-30"
-          },
           {
             "id": "2026-09-30-amd-hpe-vultr-helios-order",
             "headline": "HPE disclosed a large Vultr order for AMD Helios AI Rack systems.",
@@ -131,7 +122,8 @@
             "signedImpulse": 54.66,
             "source": "Reuters",
             "eventTime": "2026-09-30T10:00:00-04:00",
-            "firstReported": "2026-09-30"
+            "firstReported": "2026-09-30",
+            "hypeEligible": true
           },
           {
             "id": "2026-09-30-amd-world-labs-acquisition",
@@ -146,7 +138,8 @@
             "signedImpulse": 0.0,
             "source": "Reuters",
             "eventTime": "2026-09-30T12:00:00-04:00",
-            "firstReported": "2026-09-30"
+            "firstReported": "2026-09-30",
+            "hypeEligible": true
           },
           {
             "id": "2026-10-01-micron-earnings-ai-memory-demand",
@@ -161,7 +154,8 @@
             "signedImpulse": 80.0,
             "source": "Reuters",
             "eventTime": "2026-09-30T16:05:00-04:00",
-            "firstReported": "2026-10-01"
+            "firstReported": "2026-10-01",
+            "hypeEligible": true
           },
           {
             "id": "2026-10-01-broadcom-anthropic-ai-financing",
@@ -176,7 +170,26 @@
             "signedImpulse": 80.0,
             "source": "Reuters",
             "eventTime": "2026-10-01T11:00:00-04:00",
-            "firstReported": "2026-10-01"
+            "firstReported": "2026-10-01",
+            "hypeEligible": true
+          }
+        ],
+        "excludedMacroContextEvents": [
+          {
+            "id": "2026-09-30-us-pce-softer-than-expected",
+            "headline": "August core PCE was softer than expected, reducing immediate Fed-hike pressure.",
+            "category": "macro",
+            "direction": 1,
+            "materiality": 80,
+            "soxRelevance": 0.75,
+            "ageDays": 1,
+            "halfLifeDays": 1.0,
+            "decay": 0.5,
+            "signedImpulse": 30.0,
+            "source": "Reuters",
+            "eventTime": "2026-09-30T08:30:00-04:00",
+            "firstReported": "2026-09-30",
+            "hypeEligible": false
           },
           {
             "id": "2026-10-01-fed-jefferson-yield-reversal",
@@ -191,9 +204,11 @@
             "signedImpulse": 60.0,
             "source": "Reuters",
             "eventTime": "2026-10-01T14:00:00-04:00",
-            "firstReported": "2026-10-01"
+            "firstReported": "2026-10-01",
+            "hypeEligible": false
           }
-        ]
+        ],
+        "note": "Macro/Fed/oil headlines are retained as context but excluded from Hype Pressure to avoid double-counting Phase 2 macro variables."
       },
       "anticipation": {
         "scheduledEventCount": 0,
@@ -204,8 +219,8 @@
         "note": "Attention is separate from direction. Upcoming earnings are not automatically bullish."
       },
       "candidateInputs": {
-        "newsNetPressureIndex": 99.8,
-        "newsPositivePressure": 95.2,
+        "newsNetPressureIndex": 98.7,
+        "newsPositivePressure": 88.3,
         "newsNegativePressure": 0.0,
         "anticipationAttentionIndex": 0.0,
         "directionalAnticipation": null
@@ -218,31 +233,16 @@
     },
     "2026-10-02": {
       "date": "2026-10-02",
-      "observedAtUTC": "2026-10-05T08:06:00+00:00",
+      "observedAtUTC": "2026-10-05T08:09:37+00:00",
       "provenance": "curated_timestamped_history",
       "news": {
         "activeEventCount": 8,
-        "positiveImpulseRaw": 355.35,
+        "positiveImpulseRaw": 179.1,
         "negativeImpulseRaw": 0,
-        "positivePressure": 97.1,
+        "positivePressure": 83.3,
         "negativePressure": 0.0,
-        "netPressureIndex": 99.9,
+        "netPressureIndex": 97.3,
         "events": [
-          {
-            "id": "2026-09-30-us-pce-softer-than-expected",
-            "headline": "August core PCE was softer than expected, reducing immediate Fed-hike pressure.",
-            "category": "macro",
-            "direction": 1,
-            "materiality": 80,
-            "soxRelevance": 0.75,
-            "ageDays": 2,
-            "halfLifeDays": 1.0,
-            "decay": 0.25,
-            "signedImpulse": 15.0,
-            "source": "Reuters",
-            "eventTime": "2026-09-30T08:30:00-04:00",
-            "firstReported": "2026-09-30"
-          },
           {
             "id": "2026-09-30-amd-hpe-vultr-helios-order",
             "headline": "HPE disclosed a large Vultr order for AMD Helios AI Rack systems.",
@@ -256,7 +256,8 @@
             "signedImpulse": 45.96,
             "source": "Reuters",
             "eventTime": "2026-09-30T10:00:00-04:00",
-            "firstReported": "2026-09-30"
+            "firstReported": "2026-09-30",
+            "hypeEligible": true
           },
           {
             "id": "2026-09-30-amd-world-labs-acquisition",
@@ -271,7 +272,8 @@
             "signedImpulse": 0.0,
             "source": "Reuters",
             "eventTime": "2026-09-30T12:00:00-04:00",
-            "firstReported": "2026-09-30"
+            "firstReported": "2026-09-30",
+            "hypeEligible": true
           },
           {
             "id": "2026-10-01-micron-earnings-ai-memory-demand",
@@ -286,7 +288,8 @@
             "signedImpulse": 63.5,
             "source": "Reuters",
             "eventTime": "2026-09-30T16:05:00-04:00",
-            "firstReported": "2026-10-01"
+            "firstReported": "2026-10-01",
+            "hypeEligible": true
           },
           {
             "id": "2026-10-01-broadcom-anthropic-ai-financing",
@@ -301,7 +304,26 @@
             "signedImpulse": 69.64,
             "source": "Reuters",
             "eventTime": "2026-10-01T11:00:00-04:00",
-            "firstReported": "2026-10-01"
+            "firstReported": "2026-10-01",
+            "hypeEligible": true
+          }
+        ],
+        "excludedMacroContextEvents": [
+          {
+            "id": "2026-09-30-us-pce-softer-than-expected",
+            "headline": "August core PCE was softer than expected, reducing immediate Fed-hike pressure.",
+            "category": "macro",
+            "direction": 1,
+            "materiality": 80,
+            "soxRelevance": 0.75,
+            "ageDays": 2,
+            "halfLifeDays": 1.0,
+            "decay": 0.25,
+            "signedImpulse": 15.0,
+            "source": "Reuters",
+            "eventTime": "2026-09-30T08:30:00-04:00",
+            "firstReported": "2026-09-30",
+            "hypeEligible": false
           },
           {
             "id": "2026-10-01-fed-jefferson-yield-reversal",
@@ -316,7 +338,8 @@
             "signedImpulse": 30.0,
             "source": "Reuters",
             "eventTime": "2026-10-01T14:00:00-04:00",
-            "firstReported": "2026-10-01"
+            "firstReported": "2026-10-01",
+            "hypeEligible": false
           },
           {
             "id": "2026-10-02-september-payrolls-rate-repricing",
@@ -331,7 +354,8 @@
             "signedImpulse": 71.25,
             "source": "Reuters",
             "eventTime": "2026-10-02T08:30:00-04:00",
-            "firstReported": "2026-10-02"
+            "firstReported": "2026-10-02",
+            "hypeEligible": false
           },
           {
             "id": "2026-10-02-iea-g7-emergency-oil-release",
@@ -346,9 +370,11 @@
             "signedImpulse": 60.0,
             "source": "Reuters",
             "eventTime": "2026-10-02T12:00:00-04:00",
-            "firstReported": "2026-10-02"
+            "firstReported": "2026-10-02",
+            "hypeEligible": false
           }
-        ]
+        ],
+        "note": "Macro/Fed/oil headlines are retained as context but excluded from Hype Pressure to avoid double-counting Phase 2 macro variables."
       },
       "anticipation": {
         "scheduledEventCount": 0,
@@ -359,8 +385,8 @@
         "note": "Attention is separate from direction. Upcoming earnings are not automatically bullish."
       },
       "candidateInputs": {
-        "newsNetPressureIndex": 99.9,
-        "newsPositivePressure": 97.1,
+        "newsNetPressureIndex": 97.3,
+        "newsPositivePressure": 83.3,
         "newsNegativePressure": 0.0,
         "anticipationAttentionIndex": 0.0,
         "directionalAnticipation": null
@@ -373,31 +399,16 @@
     },
     "2026-10-05": {
       "date": "2026-10-05",
-      "observedAtUTC": "2026-10-05T08:06:00+00:00",
+      "observedAtUTC": "2026-10-05T08:09:37+00:00",
       "provenance": "prospective_point_in_time",
       "news": {
         "activeEventCount": 8,
-        "positiveImpulseRaw": 127.07,
+        "positiveImpulseRaw": 105.03,
         "negativeImpulseRaw": 0,
-        "positivePressure": 71.9,
+        "positivePressure": 65.0,
         "negativePressure": 0.0,
-        "netPressureIndex": 92.7,
+        "netPressureIndex": 89.1,
         "events": [
-          {
-            "id": "2026-09-30-us-pce-softer-than-expected",
-            "headline": "August core PCE was softer than expected, reducing immediate Fed-hike pressure.",
-            "category": "macro",
-            "direction": 1,
-            "materiality": 80,
-            "soxRelevance": 0.75,
-            "ageDays": 5,
-            "halfLifeDays": 1.0,
-            "decay": 0.0312,
-            "signedImpulse": 1.88,
-            "source": "Reuters",
-            "eventTime": "2026-09-30T08:30:00-04:00",
-            "firstReported": "2026-09-30"
-          },
           {
             "id": "2026-09-30-amd-hpe-vultr-helios-order",
             "headline": "HPE disclosed a large Vultr order for AMD Helios AI Rack systems.",
@@ -411,7 +422,8 @@
             "signedImpulse": 27.33,
             "source": "Reuters",
             "eventTime": "2026-09-30T10:00:00-04:00",
-            "firstReported": "2026-09-30"
+            "firstReported": "2026-09-30",
+            "hypeEligible": true
           },
           {
             "id": "2026-09-30-amd-world-labs-acquisition",
@@ -426,7 +438,8 @@
             "signedImpulse": 0.0,
             "source": "Reuters",
             "eventTime": "2026-09-30T12:00:00-04:00",
-            "firstReported": "2026-09-30"
+            "firstReported": "2026-09-30",
+            "hypeEligible": true
           },
           {
             "id": "2026-10-01-micron-earnings-ai-memory-demand",
@@ -441,7 +454,8 @@
             "signedImpulse": 31.75,
             "source": "Reuters",
             "eventTime": "2026-09-30T16:05:00-04:00",
-            "firstReported": "2026-10-01"
+            "firstReported": "2026-10-01",
+            "hypeEligible": true
           },
           {
             "id": "2026-10-01-broadcom-anthropic-ai-financing",
@@ -456,7 +470,26 @@
             "signedImpulse": 45.95,
             "source": "Reuters",
             "eventTime": "2026-10-01T11:00:00-04:00",
-            "firstReported": "2026-10-01"
+            "firstReported": "2026-10-01",
+            "hypeEligible": true
+          }
+        ],
+        "excludedMacroContextEvents": [
+          {
+            "id": "2026-09-30-us-pce-softer-than-expected",
+            "headline": "August core PCE was softer than expected, reducing immediate Fed-hike pressure.",
+            "category": "macro",
+            "direction": 1,
+            "materiality": 80,
+            "soxRelevance": 0.75,
+            "ageDays": 5,
+            "halfLifeDays": 1.0,
+            "decay": 0.0312,
+            "signedImpulse": 1.88,
+            "source": "Reuters",
+            "eventTime": "2026-09-30T08:30:00-04:00",
+            "firstReported": "2026-09-30",
+            "hypeEligible": false
           },
           {
             "id": "2026-10-01-fed-jefferson-yield-reversal",
@@ -471,7 +504,8 @@
             "signedImpulse": 3.75,
             "source": "Reuters",
             "eventTime": "2026-10-01T14:00:00-04:00",
-            "firstReported": "2026-10-01"
+            "firstReported": "2026-10-01",
+            "hypeEligible": false
           },
           {
             "id": "2026-10-02-september-payrolls-rate-repricing",
@@ -486,7 +520,8 @@
             "signedImpulse": 8.91,
             "source": "Reuters",
             "eventTime": "2026-10-02T08:30:00-04:00",
-            "firstReported": "2026-10-02"
+            "firstReported": "2026-10-02",
+            "hypeEligible": false
           },
           {
             "id": "2026-10-02-iea-g7-emergency-oil-release",
@@ -501,9 +536,11 @@
             "signedImpulse": 7.5,
             "source": "Reuters",
             "eventTime": "2026-10-02T12:00:00-04:00",
-            "firstReported": "2026-10-02"
+            "firstReported": "2026-10-02",
+            "hypeEligible": false
           }
-        ]
+        ],
+        "note": "Macro/Fed/oil headlines are retained as context but excluded from Hype Pressure to avoid double-counting Phase 2 macro variables."
       },
       "anticipation": {
         "scheduledEventCount": 2,
@@ -543,8 +580,8 @@
         "note": "Attention is separate from direction. Upcoming earnings are not automatically bullish."
       },
       "candidateInputs": {
-        "newsNetPressureIndex": 92.7,
-        "newsPositivePressure": 71.9,
+        "newsNetPressureIndex": 89.1,
+        "newsPositivePressure": 65.0,
         "newsNegativePressure": 0.0,
         "anticipationAttentionIndex": 37.4,
         "directionalAnticipation": null
