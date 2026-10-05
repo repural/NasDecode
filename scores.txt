@@ -988,6 +988,162 @@ GUIDANCE
 0-24:   Negative leadership; semiconductor weakness is a major warning.
 
 
+
+======================================================================
+7. SOX RESILIENCE ENGINE v1.0 — SHADOW / VALIDATION ONLY
+======================================================================
+
+STATUS
+------
+The Resilience Engine is NOT currently an input to Nasdaq Score, Opportunity Score,
+SOXL Buy Score, Consolidation Risk, Internal Confirmation or Semiconductor Leadership.
+It runs in shadow mode for validation.
+
+Phase 2 first estimates the SOX return expected from the same-day market/macro environment
+using a strictly walk-forward 120-session ridge regression:
+
+Expected SOX return =
+  f(QQQ return,
+    parallel 2Y/10Y rate shock,
+    10Y-minus-2Y steepening shock,
+    VXN return,
+    Brent return)
+
+Parallel rate shock = (10Y bp change + 2Y bp change) / 2
+Steepening shock    = 10Y bp change - 2Y bp change
+
+Phase 2 residual:
+  Actual SOX return - Expected SOX return
+
+Every historical expectation uses prior sessions only. Same-day QQQ/macro changes make this
+a measured-response model, NOT a pre-open return forecast.
+
+PHASE 3 RESILIENCE SCORE
+------------------------
+Resilience Score =
+  60% Multi-horizon Residual Strength
++ 15% Residual Persistence
++ 25% Internal Semiconductor Confirmation
+
+MULTI-HORIZON RESIDUAL STRENGTH (60%)
+-------------------------------------
+Residual Strength =
+  15% 1D residual strength
++ 25% 3D cumulative residual strength
++ 35% 5D cumulative residual strength
++ 25% 10D cumulative residual strength
+
+Each horizon is standardized against up to 60 residual observations available BEFORE that
+evaluated horizon. Minimum baseline = 20 residual observations.
+
+Horizon z-score is mapped to 0-100 as:
+  score = clamp(50 + 22 x z, 0, 100)
+
+Therefore:
+  0 sigma  -> 50
+ +1 sigma  -> 72
+ +2 sigma  -> 94
+ -1 sigma  -> 28
+ -2 sigma  -> 6
+
+The 5D horizon receives the largest weight because resilience should represent persistence,
+not merely a single-session surprise.
+
+RESIDUAL PERSISTENCE (15%)
+--------------------------
+Persistence measures the share of the latest 10 Phase 2 model sessions with a positive
+residual (SOX beat its expected return).
+
+Positive residual share -> persistence score:
+  0%  -> 0
+ 30%  -> 25
+ 40%  -> 40
+ 50%  -> 50
+ 60%  -> 65
+ 70%  -> 80
+ 80%  -> 90
+100%  -> 100
+Intermediate values are linearly interpolated.
+
+INTERNAL SEMICONDUCTOR CONFIRMATION (25%)
+-----------------------------------------
+Internal Confirmation =
+  35% Semiconductor basket positive breadth
++ 35% Semiconductor basket outperform-QQQ breadth
++ 20% SOXX vs QQQ 1D relative strength
++ 10% SMH vs QQQ 1D relative strength
+
+Semiconductor basket = NVDA, AMD, AVGO, TSM, MU.
+
+Breadth scoring:
+  0% ->0, 20% ->20, 40% ->40, 50% ->50, 60% ->65, 80% ->85, 100% ->100.
+
+SOXX/SMH relative-strength scoring (percentage points vs QQQ):
+ -2.0 ->0
+ -1.0 ->20
+ -0.5 ->35
+  0.0 ->50
+ +0.5 ->65
+ +1.0 ->80
+ +2.0 ->100
+Intermediate values are linearly interpolated.
+
+RESILIENCE LABELS
+-----------------
+80-100   Exceptional
+65-79.9  Strong
+55-64.9  Positive
+45-54.9  Neutral
+35-44.9  Weakening
+20-34.9  Weak
+0-19.9   Broken
+
+RESILIENCE BREAKDOWN DETECTOR
+-----------------------------
+The breakdown detector is separate from the numerical label.
+
+Warning evidence:
+- 1D residual <= -1.5 sigma
+- 3D cumulative residual <= -1.25 sigma
+- 5D cumulative residual <= -1.0 sigma
+- Semiconductor confirmation <35 is an additional confirming warning.
+
+Breakdown is triggered by any of:
+- 1D residual <= -2.0 sigma; OR
+- 3D residual <= -1.5 sigma AND semiconductor confirmation <40; OR
+- 5D residual <= -1.25 sigma AND positive-residual persistence <=40%.
+
+The detector therefore looks for SOX doing materially WORSE than its environment would
+normally imply, rather than treating an ordinary market-driven SOX decline as a resilience
+failure.
+
+SENSITIVITY DIAGNOSTICS
+-----------------------
+The engine publishes rolling QQQ beta and sensitivities to:
+- parallel rates,
+- 10Y-vs-2Y steepening,
+- VXN,
+- Brent.
+
+These sensitivities are diagnostics ONLY in v1.0 and receive zero score weight. This avoids
+assigning arbitrary points before validation shows that sensitivity changes add predictive
+information beyond the residual itself.
+
+HYPE
+----
+Hype Pressure remains a separate point-in-time context layer. Macro + Hype Model B is not
+fitted until sufficient prospective Hype observations exist. Hype Acceptance and Hype
+Efficiency use price response and are deliberately excluded from explanatory model inputs
+to prevent circularity.
+
+DATA OUTPUTS
+------------
+Phase 1 observations: data/history/resilience-daily.json
+Phase 2 model:        data/history/resilience-model.json
+Phase 3 engine:       data/history/resilience-engine.json
+Hype observations:   data/history/hype-daily.json
+
+
 ======================================================================
 HOW TO USE THE SCORE SET TOGETHER
 ======================================================================
