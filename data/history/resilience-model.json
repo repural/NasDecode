@@ -1,0 +1,6620 @@
+{
+  "schemaVersion": 1,
+  "enginePhase": 2,
+  "modelVersion": "resilience-phase2-ridge-1.0",
+  "status": "shadow / validation only; no production NasDecode score consumes this output",
+  "methodology": {
+    "target": "SOX adjusted close-to-close daily return (%)",
+    "features": [
+      {
+        "key": "qqqReturn1dPct",
+        "label": "QQQ daily return",
+        "unit": "pct"
+      },
+      {
+        "key": "us10yChangeBp",
+        "label": "US 10Y daily change",
+        "unit": "bp"
+      },
+      {
+        "key": "us2yChangeBp",
+        "label": "US 2Y daily change",
+        "unit": "bp"
+      },
+      {
+        "key": "vxnReturn1dPct",
+        "label": "VXN daily return",
+        "unit": "pct"
+      },
+      {
+        "key": "brentReturn1dPct",
+        "label": "Brent daily return",
+        "unit": "pct"
+      }
+    ],
+    "training": "Walk-forward rolling ridge regression using prior valid sessions only.",
+    "trainingWindowSessions": 120,
+    "minimumTrainingSessions": 60,
+    "ridgeLambda": 5.0,
+    "standardization": "Training-window mean/sample SD only.",
+    "residual": "Actual SOX return minus macro-baseline expected SOX return.",
+    "residualZ": "Current residual standardized against up to 60 PRIOR model residuals only.",
+    "important": "Same-day QQQ/macro changes make this a measured-response model, not a pre-open forecast."
+  },
+  "modelA": {
+    "name": "Macro baseline",
+    "available": true,
+    "outOfSampleMetrics": {
+      "observations": 188,
+      "maePct": 1.1877,
+      "rmsePct": 1.4678,
+      "outOfSampleR2": 0.761,
+      "directionAccuracyPct": 84.0,
+      "meanResidualPct": -0.0176
+    },
+    "latest": {
+      "date": "2026-10-02",
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-04-13",
+      "trainEnd": "2026-10-01",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.3983,
+      "expectedSoxReturnPct": 2.1405,
+      "residualPct": 0.2578,
+      "residualZ": 0.29,
+      "inputs": {
+        "qqqReturn1dPct": 1.0175,
+        "us10yChangeBp": 4.0,
+        "us2yChangeBp": 5.0,
+        "vxnReturn1dPct": -5.8196,
+        "brentReturn1dPct": -0.0586
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 2.1978,
+        "us10yChangeBp": -0.2016,
+        "us2yChangeBp": 0.2045,
+        "vxnReturn1dPct": -0.0363,
+        "brentReturn1dPct": -0.0067
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.160008,
+        "us10yChangeBp": -0.050405,
+        "us2yChangeBp": 0.040899,
+        "vxnReturn1dPct": 0.006229,
+        "brentReturn1dPct": 0.114375
+      },
+      "interceptPct": -0.0173
+    },
+    "latestSensitivityInterpretation": {
+      "qqqBeta": 2.16,
+      "soxPctPer10Bp10Y": -0.504,
+      "soxPctPer10Bp2Y": 0.409,
+      "soxPctPer10PctVxnMove": 0.062,
+      "soxPctPer5PctBrentMove": 0.572
+    }
+  },
+  "modelB": {
+    "name": "Macro + Hype",
+    "available": false,
+    "status": "collecting_point_in_time_hype_history",
+    "candidateHypeDays": 3,
+    "prospectiveHypeDays": 0,
+    "minimumProspectiveHypeDaysBeforeFit": 60,
+    "note": "Not fitted yet. Historical Hype is sparse and is not fabricated from future knowledge or price response."
+  },
+  "records": {
+    "2025-10-06": {
+      "status": "warming_up",
+      "validPriorSessions": 0,
+      "minimumRequired": 60
+    },
+    "2025-10-07": {
+      "status": "warming_up",
+      "validPriorSessions": 1,
+      "minimumRequired": 60
+    },
+    "2025-10-08": {
+      "status": "warming_up",
+      "validPriorSessions": 2,
+      "minimumRequired": 60
+    },
+    "2025-10-09": {
+      "status": "warming_up",
+      "validPriorSessions": 3,
+      "minimumRequired": 60
+    },
+    "2025-10-10": {
+      "status": "warming_up",
+      "validPriorSessions": 4,
+      "minimumRequired": 60
+    },
+    "2025-10-13": {
+      "status": "unavailable",
+      "reason": "Missing target or one/more baseline features."
+    },
+    "2025-10-14": {
+      "status": "warming_up",
+      "validPriorSessions": 5,
+      "minimumRequired": 60
+    },
+    "2025-10-15": {
+      "status": "warming_up",
+      "validPriorSessions": 6,
+      "minimumRequired": 60
+    },
+    "2025-10-16": {
+      "status": "warming_up",
+      "validPriorSessions": 7,
+      "minimumRequired": 60
+    },
+    "2025-10-17": {
+      "status": "warming_up",
+      "validPriorSessions": 8,
+      "minimumRequired": 60
+    },
+    "2025-10-20": {
+      "status": "warming_up",
+      "validPriorSessions": 9,
+      "minimumRequired": 60
+    },
+    "2025-10-21": {
+      "status": "warming_up",
+      "validPriorSessions": 10,
+      "minimumRequired": 60
+    },
+    "2025-10-22": {
+      "status": "warming_up",
+      "validPriorSessions": 11,
+      "minimumRequired": 60
+    },
+    "2025-10-23": {
+      "status": "warming_up",
+      "validPriorSessions": 12,
+      "minimumRequired": 60
+    },
+    "2025-10-24": {
+      "status": "warming_up",
+      "validPriorSessions": 13,
+      "minimumRequired": 60
+    },
+    "2025-10-27": {
+      "status": "warming_up",
+      "validPriorSessions": 14,
+      "minimumRequired": 60
+    },
+    "2025-10-28": {
+      "status": "warming_up",
+      "validPriorSessions": 15,
+      "minimumRequired": 60
+    },
+    "2025-10-29": {
+      "status": "warming_up",
+      "validPriorSessions": 16,
+      "minimumRequired": 60
+    },
+    "2025-10-30": {
+      "status": "warming_up",
+      "validPriorSessions": 17,
+      "minimumRequired": 60
+    },
+    "2025-10-31": {
+      "status": "warming_up",
+      "validPriorSessions": 18,
+      "minimumRequired": 60
+    },
+    "2025-11-03": {
+      "status": "warming_up",
+      "validPriorSessions": 19,
+      "minimumRequired": 60
+    },
+    "2025-11-04": {
+      "status": "warming_up",
+      "validPriorSessions": 20,
+      "minimumRequired": 60
+    },
+    "2025-11-05": {
+      "status": "warming_up",
+      "validPriorSessions": 21,
+      "minimumRequired": 60
+    },
+    "2025-11-06": {
+      "status": "warming_up",
+      "validPriorSessions": 22,
+      "minimumRequired": 60
+    },
+    "2025-11-07": {
+      "status": "warming_up",
+      "validPriorSessions": 23,
+      "minimumRequired": 60
+    },
+    "2025-11-10": {
+      "status": "warming_up",
+      "validPriorSessions": 24,
+      "minimumRequired": 60
+    },
+    "2025-11-11": {
+      "status": "unavailable",
+      "reason": "Missing target or one/more baseline features."
+    },
+    "2025-11-12": {
+      "status": "warming_up",
+      "validPriorSessions": 25,
+      "minimumRequired": 60
+    },
+    "2025-11-13": {
+      "status": "warming_up",
+      "validPriorSessions": 26,
+      "minimumRequired": 60
+    },
+    "2025-11-14": {
+      "status": "warming_up",
+      "validPriorSessions": 27,
+      "minimumRequired": 60
+    },
+    "2025-11-17": {
+      "status": "warming_up",
+      "validPriorSessions": 28,
+      "minimumRequired": 60
+    },
+    "2025-11-18": {
+      "status": "warming_up",
+      "validPriorSessions": 29,
+      "minimumRequired": 60
+    },
+    "2025-11-19": {
+      "status": "warming_up",
+      "validPriorSessions": 30,
+      "minimumRequired": 60
+    },
+    "2025-11-20": {
+      "status": "warming_up",
+      "validPriorSessions": 31,
+      "minimumRequired": 60
+    },
+    "2025-11-21": {
+      "status": "warming_up",
+      "validPriorSessions": 32,
+      "minimumRequired": 60
+    },
+    "2025-11-24": {
+      "status": "warming_up",
+      "validPriorSessions": 33,
+      "minimumRequired": 60
+    },
+    "2025-11-25": {
+      "status": "warming_up",
+      "validPriorSessions": 34,
+      "minimumRequired": 60
+    },
+    "2025-11-26": {
+      "status": "warming_up",
+      "validPriorSessions": 35,
+      "minimumRequired": 60
+    },
+    "2025-11-28": {
+      "status": "warming_up",
+      "validPriorSessions": 36,
+      "minimumRequired": 60
+    },
+    "2025-12-01": {
+      "status": "warming_up",
+      "validPriorSessions": 37,
+      "minimumRequired": 60
+    },
+    "2025-12-02": {
+      "status": "warming_up",
+      "validPriorSessions": 38,
+      "minimumRequired": 60
+    },
+    "2025-12-03": {
+      "status": "warming_up",
+      "validPriorSessions": 39,
+      "minimumRequired": 60
+    },
+    "2025-12-04": {
+      "status": "warming_up",
+      "validPriorSessions": 40,
+      "minimumRequired": 60
+    },
+    "2025-12-05": {
+      "status": "warming_up",
+      "validPriorSessions": 41,
+      "minimumRequired": 60
+    },
+    "2025-12-08": {
+      "status": "warming_up",
+      "validPriorSessions": 42,
+      "minimumRequired": 60
+    },
+    "2025-12-09": {
+      "status": "warming_up",
+      "validPriorSessions": 43,
+      "minimumRequired": 60
+    },
+    "2025-12-10": {
+      "status": "warming_up",
+      "validPriorSessions": 44,
+      "minimumRequired": 60
+    },
+    "2025-12-11": {
+      "status": "warming_up",
+      "validPriorSessions": 45,
+      "minimumRequired": 60
+    },
+    "2025-12-12": {
+      "status": "warming_up",
+      "validPriorSessions": 46,
+      "minimumRequired": 60
+    },
+    "2025-12-15": {
+      "status": "warming_up",
+      "validPriorSessions": 47,
+      "minimumRequired": 60
+    },
+    "2025-12-16": {
+      "status": "warming_up",
+      "validPriorSessions": 48,
+      "minimumRequired": 60
+    },
+    "2025-12-17": {
+      "status": "warming_up",
+      "validPriorSessions": 49,
+      "minimumRequired": 60
+    },
+    "2025-12-18": {
+      "status": "warming_up",
+      "validPriorSessions": 50,
+      "minimumRequired": 60
+    },
+    "2025-12-19": {
+      "status": "warming_up",
+      "validPriorSessions": 51,
+      "minimumRequired": 60
+    },
+    "2025-12-22": {
+      "status": "warming_up",
+      "validPriorSessions": 52,
+      "minimumRequired": 60
+    },
+    "2025-12-23": {
+      "status": "warming_up",
+      "validPriorSessions": 53,
+      "minimumRequired": 60
+    },
+    "2025-12-24": {
+      "status": "warming_up",
+      "validPriorSessions": 54,
+      "minimumRequired": 60
+    },
+    "2025-12-26": {
+      "status": "warming_up",
+      "validPriorSessions": 55,
+      "minimumRequired": 60
+    },
+    "2025-12-29": {
+      "status": "warming_up",
+      "validPriorSessions": 56,
+      "minimumRequired": 60
+    },
+    "2025-12-30": {
+      "status": "warming_up",
+      "validPriorSessions": 57,
+      "minimumRequired": 60
+    },
+    "2025-12-31": {
+      "status": "warming_up",
+      "validPriorSessions": 58,
+      "minimumRequired": 60
+    },
+    "2026-01-02": {
+      "status": "warming_up",
+      "validPriorSessions": 59,
+      "minimumRequired": 60
+    },
+    "2026-01-05": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-02",
+      "trainingSessions": 60,
+      "actualSoxReturnPct": 1.072,
+      "expectedSoxReturnPct": 1.3422,
+      "residualPct": -0.2702,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": 0.7943,
+        "us10yChangeBp": -2.0,
+        "us2yChangeBp": -1.0,
+        "vxnReturn1dPct": 1.3165,
+        "brentReturn1dPct": 1.6625
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.2843,
+        "us10yChangeBp": -0.0886,
+        "us2yChangeBp": 0.0005,
+        "vxnReturn1dPct": -0.0228,
+        "brentReturn1dPct": -0.004
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.616905,
+        "us10yChangeBp": 0.044306,
+        "us2yChangeBp": -0.000534,
+        "vxnReturn1dPct": -0.017335,
+        "brentReturn1dPct": -0.002404
+      },
+      "interceptPct": 0.1728
+    },
+    "2026-01-06": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-05",
+      "trainingSessions": 61,
+      "actualSoxReturnPct": 2.7459,
+      "expectedSoxReturnPct": 1.6842,
+      "residualPct": 1.0617,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": 0.8787,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": 1.0,
+        "vxnReturn1dPct": -2.3988,
+        "brentReturn1dPct": -1.7163
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.417,
+        "us10yChangeBp": 0.0461,
+        "us2yChangeBp": -0.0012,
+        "vxnReturn1dPct": 0.0434,
+        "brentReturn1dPct": 0.011
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.612583,
+        "us10yChangeBp": 0.046096,
+        "us2yChangeBp": -0.001242,
+        "vxnReturn1dPct": -0.018079,
+        "brentReturn1dPct": -0.006415
+      },
+      "interceptPct": 0.168
+    },
+    "2026-01-07": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-06",
+      "trainingSessions": 62,
+      "actualSoxReturnPct": -0.9941,
+      "expectedSoxReturnPct": 0.1764,
+      "residualPct": -1.1705,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": 0.0962,
+        "us10yChangeBp": -3.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 2.5602,
+        "brentReturn1dPct": -1.2191
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.1568,
+        "us10yChangeBp": -0.1434,
+        "us2yChangeBp": -0.0,
+        "vxnReturn1dPct": -0.0444,
+        "brentReturn1dPct": 0.0248
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.629833,
+        "us10yChangeBp": 0.047796,
+        "us2yChangeBp": -0.00026,
+        "vxnReturn1dPct": -0.017326,
+        "brentReturn1dPct": -0.020309
+      },
+      "interceptPct": 0.1826
+    },
+    "2026-01-08": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-07",
+      "trainingSessions": 63,
+      "actualSoxReturnPct": -1.832,
+      "expectedSoxReturnPct": -0.6055,
+      "residualPct": -1.2265,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": -0.5689,
+        "us10yChangeBp": 4.0,
+        "us2yChangeBp": 2.0,
+        "vxnReturn1dPct": 0.5991,
+        "brentReturn1dPct": 3.3856
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.9242,
+        "us10yChangeBp": 0.2371,
+        "us2yChangeBp": -0.0204,
+        "vxnReturn1dPct": -0.0111,
+        "brentReturn1dPct": -0.0502
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.624553,
+        "us10yChangeBp": 0.059279,
+        "us2yChangeBp": -0.010193,
+        "vxnReturn1dPct": -0.018537,
+        "brentReturn1dPct": -0.014836
+      },
+      "interceptPct": 0.1633
+    },
+    "2026-01-09": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-08",
+      "trainingSessions": 64,
+      "actualSoxReturnPct": 2.7256,
+      "expectedSoxReturnPct": 1.7021,
+      "residualPct": 1.0235,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": 0.996,
+        "us10yChangeBp": -1.0,
+        "us2yChangeBp": 5.0,
+        "vxnReturn1dPct": -5.4094,
+        "brentReturn1dPct": 2.1778
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.6391,
+        "us10yChangeBp": -0.0538,
+        "us2yChangeBp": -0.0352,
+        "vxnReturn1dPct": 0.0946,
+        "brentReturn1dPct": -0.0846
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.645664,
+        "us10yChangeBp": 0.053801,
+        "us2yChangeBp": -0.007042,
+        "vxnReturn1dPct": -0.01748,
+        "brentReturn1dPct": -0.038869
+      },
+      "interceptPct": 0.1421
+    },
+    "2026-01-12": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-09",
+      "trainingSessions": 65,
+      "actualSoxReturnPct": 0.472,
+      "expectedSoxReturnPct": 0.2703,
+      "residualPct": 0.2017,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": 0.083,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 2.4659,
+        "brentReturn1dPct": 0.8368
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.137,
+        "us10yChangeBp": 0.0378,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": -0.0433,
+        "brentReturn1dPct": -0.0218
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.650625,
+        "us10yChangeBp": 0.037778,
+        "us2yChangeBp": 0.008901,
+        "vxnReturn1dPct": -0.017545,
+        "brentReturn1dPct": -0.026051
+      },
+      "interceptPct": 0.1606
+    },
+    "2026-01-13": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-12",
+      "trainingSessions": 66,
+      "actualSoxReturnPct": 0.9532,
+      "expectedSoxReturnPct": -0.2361,
+      "residualPct": 1.1893,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": -0.1483,
+        "us10yChangeBp": -1.0,
+        "us2yChangeBp": -1.0,
+        "vxnReturn1dPct": 2.6626,
+        "brentReturn1dPct": 2.5051
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.2457,
+        "us10yChangeBp": -0.0384,
+        "us2yChangeBp": -0.0084,
+        "vxnReturn1dPct": -0.0443,
+        "brentReturn1dPct": -0.0625
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.656624,
+        "us10yChangeBp": 0.038372,
+        "us2yChangeBp": 0.00836,
+        "vxnReturn1dPct": -0.016642,
+        "brentReturn1dPct": -0.024959
+      },
+      "interceptPct": 0.1631
+    },
+    "2026-01-14": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-13",
+      "trainingSessions": 67,
+      "actualSoxReturnPct": -0.6004,
+      "expectedSoxReturnPct": -1.791,
+      "residualPct": 1.1906,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": -1.0683,
+        "us10yChangeBp": -3.0,
+        "us2yChangeBp": -2.0,
+        "vxnReturn1dPct": 4.5387,
+        "brentReturn1dPct": 1.6038
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -1.7778,
+        "us10yChangeBp": -0.1057,
+        "us2yChangeBp": -0.015,
+        "vxnReturn1dPct": -0.0647,
+        "brentReturn1dPct": -0.0079
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.664116,
+        "us10yChangeBp": 0.03522,
+        "us2yChangeBp": 0.007487,
+        "vxnReturn1dPct": -0.014257,
+        "brentReturn1dPct": -0.004918
+      },
+      "interceptPct": 0.18
+    },
+    "2026-01-15": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-14",
+      "trainingSessions": 68,
+      "actualSoxReturnPct": 1.7636,
+      "expectedSoxReturnPct": 0.9076,
+      "residualPct": 0.856,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": 0.3599,
+        "us10yChangeBp": 2.0,
+        "us2yChangeBp": 5.0,
+        "vxnReturn1dPct": -3.6259,
+        "brentReturn1dPct": -4.1491
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.592,
+        "us10yChangeBp": 0.0559,
+        "us2yChangeBp": 0.0478,
+        "vxnReturn1dPct": 0.0538,
+        "brentReturn1dPct": -0.0403
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.645022,
+        "us10yChangeBp": 0.027971,
+        "us2yChangeBp": 0.009555,
+        "vxnReturn1dPct": -0.014843,
+        "brentReturn1dPct": 0.009711
+      },
+      "interceptPct": 0.1983
+    },
+    "2026-01-16": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-15",
+      "trainingSessions": 69,
+      "actualSoxReturnPct": 1.1498,
+      "expectedSoxReturnPct": 0.293,
+      "residualPct": 0.8568,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": -0.0836,
+        "us10yChangeBp": 7.0,
+        "us2yChangeBp": 3.0,
+        "vxnReturn1dPct": 0.4455,
+        "brentReturn1dPct": 0.5803
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.1373,
+        "us10yChangeBp": 0.1805,
+        "us2yChangeBp": 0.0524,
+        "vxnReturn1dPct": -0.0072,
+        "brentReturn1dPct": -0.0061
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.642861,
+        "us10yChangeBp": 0.02579,
+        "us2yChangeBp": 0.017457,
+        "vxnReturn1dPct": -0.016228,
+        "brentReturn1dPct": -0.010482
+      },
+      "interceptPct": 0.2107
+    },
+    "2026-01-20": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-16",
+      "trainingSessions": 70,
+      "actualSoxReturnPct": -1.6805,
+      "expectedSoxReturnPct": -3.36,
+      "residualPct": 1.6795,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": -2.1247,
+        "us10yChangeBp": 6.0,
+        "us2yChangeBp": 1.0,
+        "vxnReturn1dPct": 19.5663,
+        "brentReturn1dPct": 1.2319
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -3.4953,
+        "us10yChangeBp": 0.2194,
+        "us2yChangeBp": 0.0124,
+        "vxnReturn1dPct": -0.3038,
+        "brentReturn1dPct": -0.0137
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.645094,
+        "us10yChangeBp": 0.036572,
+        "us2yChangeBp": 0.012409,
+        "vxnReturn1dPct": -0.015529,
+        "brentReturn1dPct": -0.011116
+      },
+      "interceptPct": 0.221
+    },
+    "2026-01-21": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-20",
+      "trainingSessions": 71,
+      "actualSoxReturnPct": 3.1803,
+      "expectedSoxReturnPct": 2.3164,
+      "residualPct": 0.8639,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": 1.3518,
+        "us10yChangeBp": -4.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": -12.6546,
+        "brentReturn1dPct": 0.4929
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 2.2234,
+        "us10yChangeBp": -0.219,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 0.0782,
+        "brentReturn1dPct": -0.001
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.644746,
+        "us10yChangeBp": 0.054755,
+        "us2yChangeBp": 0.0039,
+        "vxnReturn1dPct": -0.006181,
+        "brentReturn1dPct": -0.001984
+      },
+      "interceptPct": 0.2348
+    },
+    "2026-01-22": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-21",
+      "trainingSessions": 72,
+      "actualSoxReturnPct": 0.1629,
+      "expectedSoxReturnPct": 1.4985,
+      "residualPct": -1.3356,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": 0.7269,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": 1.0,
+        "vxnReturn1dPct": -5.2383,
+        "brentReturn1dPct": -1.8087
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.1899,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": 0.0087,
+        "vxnReturn1dPct": 0.0516,
+        "brentReturn1dPct": -0.0016
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.636924,
+        "us10yChangeBp": 0.046462,
+        "us2yChangeBp": 0.008717,
+        "vxnReturn1dPct": -0.009847,
+        "brentReturn1dPct": 0.000875
+      },
+      "interceptPct": 0.2499
+    },
+    "2026-01-23": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-22",
+      "trainingSessions": 73,
+      "actualSoxReturnPct": -1.2073,
+      "expectedSoxReturnPct": 0.6759,
+      "residualPct": -1.8832,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": 0.3157,
+        "us10yChangeBp": -2.0,
+        "us2yChangeBp": -1.0,
+        "vxnReturn1dPct": 1.4442,
+        "brentReturn1dPct": 2.8411
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.5173,
+        "us10yChangeBp": -0.0945,
+        "us2yChangeBp": -0.0064,
+        "vxnReturn1dPct": -0.0109,
+        "brentReturn1dPct": 0.0394
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.63845,
+        "us10yChangeBp": 0.047269,
+        "us2yChangeBp": 0.006404,
+        "vxnReturn1dPct": -0.007528,
+        "brentReturn1dPct": 0.013863
+      },
+      "interceptPct": 0.2311
+    },
+    "2026-01-26": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-23",
+      "trainingSessions": 74,
+      "actualSoxReturnPct": -0.3881,
+      "expectedSoxReturnPct": 0.795,
+      "residualPct": -1.1831,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": 0.44,
+        "us10yChangeBp": -2.0,
+        "us2yChangeBp": -4.0,
+        "vxnReturn1dPct": 0.2945,
+        "brentReturn1dPct": -0.4402
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.7133,
+        "us10yChangeBp": -0.1138,
+        "us2yChangeBp": -0.0139,
+        "vxnReturn1dPct": -0.0032,
+        "brentReturn1dPct": 0.0065
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.621034,
+        "us10yChangeBp": 0.0569,
+        "us2yChangeBp": 0.003476,
+        "vxnReturn1dPct": -0.010896,
+        "brentReturn1dPct": -0.014677
+      },
+      "interceptPct": 0.2062
+    },
+    "2026-01-27": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-26",
+      "trainingSessions": 75,
+      "actualSoxReturnPct": 2.3986,
+      "expectedSoxReturnPct": 1.6769,
+      "residualPct": 0.7217,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": 0.9065,
+        "us10yChangeBp": 2.0,
+        "us2yChangeBp": -3.0,
+        "vxnReturn1dPct": 0.5874,
+        "brentReturn1dPct": 3.0188
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.4591,
+        "us10yChangeBp": 0.1076,
+        "us2yChangeBp": -0.034,
+        "vxnReturn1dPct": -0.0067,
+        "brentReturn1dPct": -0.0406
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.609572,
+        "us10yChangeBp": 0.053809,
+        "us2yChangeBp": 0.011335,
+        "vxnReturn1dPct": -0.011479,
+        "brentReturn1dPct": -0.013438
+      },
+      "interceptPct": 0.1915
+    },
+    "2026-01-28": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-27",
+      "trainingSessions": 76,
+      "actualSoxReturnPct": 2.3353,
+      "expectedSoxReturnPct": 0.8698,
+      "residualPct": 1.4655,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": 0.3312,
+        "us10yChangeBp": 2.0,
+        "us2yChangeBp": 3.0,
+        "vxnReturn1dPct": -0.8759,
+        "brentReturn1dPct": 1.2284
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.539,
+        "us10yChangeBp": 0.1195,
+        "us2yChangeBp": 0.0108,
+        "vxnReturn1dPct": 0.0084,
+        "brentReturn1dPct": -0.0059
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.627354,
+        "us10yChangeBp": 0.05976,
+        "us2yChangeBp": 0.003609,
+        "vxnReturn1dPct": -0.009647,
+        "brentReturn1dPct": -0.004766
+      },
+      "interceptPct": 0.1979
+    },
+    "2026-01-29": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-28",
+      "trainingSessions": 77,
+      "actualSoxReturnPct": 0.1643,
+      "expectedSoxReturnPct": -0.9443,
+      "residualPct": 1.1086,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": -0.5985,
+        "us10yChangeBp": -2.0,
+        "us2yChangeBp": -3.0,
+        "vxnReturn1dPct": 5.2528,
+        "brentReturn1dPct": 3.3772
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.9782,
+        "us10yChangeBp": -0.1148,
+        "us2yChangeBp": -0.029,
+        "vxnReturn1dPct": -0.0446,
+        "brentReturn1dPct": 0.006
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.634472,
+        "us10yChangeBp": 0.057389,
+        "us2yChangeBp": 0.009676,
+        "vxnReturn1dPct": -0.008495,
+        "brentReturn1dPct": 0.001777
+      },
+      "interceptPct": 0.2164
+    },
+    "2026-01-30": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-29",
+      "trainingSessions": 78,
+      "actualSoxReturnPct": -3.869,
+      "expectedSoxReturnPct": -1.6682,
+      "residualPct": -2.2008,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": -1.2011,
+        "us10yChangeBp": 2.0,
+        "us2yChangeBp": -1.0,
+        "vxnReturn1dPct": 5.0373,
+        "brentReturn1dPct": -0.0283
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -1.9624,
+        "us10yChangeBp": 0.1096,
+        "us2yChangeBp": -0.0075,
+        "vxnReturn1dPct": -0.0358,
+        "brentReturn1dPct": -0.0005
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.63382,
+        "us10yChangeBp": 0.05479,
+        "us2yChangeBp": 0.007507,
+        "vxnReturn1dPct": -0.007113,
+        "brentReturn1dPct": 0.019278
+      },
+      "interceptPct": 0.2285
+    },
+    "2026-02-02": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-01-30",
+      "trainingSessions": 79,
+      "actualSoxReturnPct": 1.7005,
+      "expectedSoxReturnPct": 1.4551,
+      "residualPct": 0.2454,
+      "residualZ": null,
+      "inputs": {
+        "qqqReturn1dPct": 0.6866,
+        "us10yChangeBp": 3.0,
+        "us2yChangeBp": 5.0,
+        "vxnReturn1dPct": -5.7282,
+        "brentReturn1dPct": -6.2102
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.1474,
+        "us10yChangeBp": 0.1271,
+        "us2yChangeBp": 0.0881,
+        "vxnReturn1dPct": 0.0258,
+        "brentReturn1dPct": -0.1344
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.671135,
+        "us10yChangeBp": 0.042371,
+        "us2yChangeBp": 0.01761,
+        "vxnReturn1dPct": -0.004497,
+        "brentReturn1dPct": 0.02164
+      },
+      "interceptPct": 0.2012
+    },
+    "2026-02-03": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-02-02",
+      "trainingSessions": 80,
+      "actualSoxReturnPct": -2.0672,
+      "expectedSoxReturnPct": -2.4329,
+      "residualPct": 0.3657,
+      "residualZ": 0.17,
+      "inputs": {
+        "qqqReturn1dPct": -1.5364,
+        "us10yChangeBp": -1.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 10.4569,
+        "brentReturn1dPct": 1.5535
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -2.5705,
+        "us10yChangeBp": -0.0429,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": -0.0481,
+        "brentReturn1dPct": 0.0243
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.673042,
+        "us10yChangeBp": 0.042885,
+        "us2yChangeBp": 0.018562,
+        "vxnReturn1dPct": -0.004601,
+        "brentReturn1dPct": 0.015652
+      },
+      "interceptPct": 0.2042
+    },
+    "2026-02-04": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-02-03",
+      "trainingSessions": 81,
+      "actualSoxReturnPct": -4.3581,
+      "expectedSoxReturnPct": -2.6508,
+      "residualPct": -1.7073,
+      "residualZ": -1.584,
+      "inputs": {
+        "qqqReturn1dPct": -1.7469,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 10.9168,
+        "brentReturn1dPct": 3.1635
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -2.9103,
+        "us10yChangeBp": 0.0412,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": -0.0481,
+        "brentReturn1dPct": 0.0574
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.665968,
+        "us10yChangeBp": 0.041177,
+        "us2yChangeBp": 0.020307,
+        "vxnReturn1dPct": -0.004403,
+        "brentReturn1dPct": 0.01815
+      },
+      "interceptPct": 0.209
+    },
+    "2026-02-05": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-02-04",
+      "trainingSessions": 82,
+      "actualSoxReturnPct": -0.0593,
+      "expectedSoxReturnPct": -2.8324,
+      "residualPct": 2.7731,
+      "residualZ": 2.197,
+      "inputs": {
+        "qqqReturn1dPct": -1.4395,
+        "us10yChangeBp": -8.0,
+        "us2yChangeBp": -10.0,
+        "vxnReturn1dPct": 12.2261,
+        "brentReturn1dPct": -2.7498
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -2.4228,
+        "us10yChangeBp": -0.3392,
+        "us2yChangeBp": -0.1781,
+        "vxnReturn1dPct": -0.0837,
+        "brentReturn1dPct": 0.0003
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.683113,
+        "us10yChangeBp": 0.042395,
+        "us2yChangeBp": 0.017806,
+        "vxnReturn1dPct": -0.006847,
+        "brentReturn1dPct": -0.000123
+      },
+      "interceptPct": 0.1911
+    },
+    "2026-02-06": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-02-05",
+      "trainingSessions": 83,
+      "actualSoxReturnPct": 5.6994,
+      "expectedSoxReturnPct": 3.8398,
+      "residualPct": 1.8596,
+      "residualZ": 1.256,
+      "inputs": {
+        "qqqReturn1dPct": 2.1138,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": 3.0,
+        "vxnReturn1dPct": -16.7523,
+        "brentReturn1dPct": 0.7402
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 3.5601,
+        "us10yChangeBp": 0.0387,
+        "us2yChangeBp": -0.0047,
+        "vxnReturn1dPct": 0.0405,
+        "brentReturn1dPct": -0.0143
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.684237,
+        "us10yChangeBp": 0.03874,
+        "us2yChangeBp": -0.001579,
+        "vxnReturn1dPct": -0.002415,
+        "brentReturn1dPct": -0.019262
+      },
+      "interceptPct": 0.2195
+    },
+    "2026-02-09": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-02-06",
+      "trainingSessions": 84,
+      "actualSoxReturnPct": 1.4158,
+      "expectedSoxReturnPct": 1.5396,
+      "residualPct": -0.1238,
+      "residualZ": -0.295,
+      "inputs": {
+        "qqqReturn1dPct": 0.766,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": -2.0,
+        "vxnReturn1dPct": -3.6214,
+        "brentReturn1dPct": 1.4548
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.2826,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": -0.0045,
+        "vxnReturn1dPct": 0.0375,
+        "brentReturn1dPct": -0.0229
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.674388,
+        "us10yChangeBp": 0.034986,
+        "us2yChangeBp": 0.002271,
+        "vxnReturn1dPct": -0.01036,
+        "brentReturn1dPct": -0.01571
+      },
+      "interceptPct": 0.2469
+    },
+    "2026-02-10": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-02-09",
+      "trainingSessions": 85,
+      "actualSoxReturnPct": -0.6793,
+      "expectedSoxReturnPct": -0.7444,
+      "residualPct": 0.0651,
+      "residualZ": -0.145,
+      "inputs": {
+        "qqqReturn1dPct": -0.4639,
+        "us10yChangeBp": -6.0,
+        "us2yChangeBp": -3.0,
+        "vxnReturn1dPct": 0.1708,
+        "brentReturn1dPct": -0.3476
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.7771,
+        "us10yChangeBp": -0.2082,
+        "us2yChangeBp": -0.0085,
+        "vxnReturn1dPct": -0.0017,
+        "brentReturn1dPct": 0.0057
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.675173,
+        "us10yChangeBp": 0.034698,
+        "us2yChangeBp": 0.002828,
+        "vxnReturn1dPct": -0.010104,
+        "brentReturn1dPct": -0.016267
+      },
+      "interceptPct": 0.2455
+    },
+    "2026-02-11": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-02-10",
+      "trainingSessions": 86,
+      "actualSoxReturnPct": 2.2786,
+      "expectedSoxReturnPct": 0.7803,
+      "residualPct": 1.4983,
+      "residualZ": 0.975,
+      "inputs": {
+        "qqqReturn1dPct": 0.2682,
+        "us10yChangeBp": 2.0,
+        "us2yChangeBp": 7.0,
+        "vxnReturn1dPct": -0.8525,
+        "brentReturn1dPct": 0.8721
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.4497,
+        "us10yChangeBp": 0.068,
+        "us2yChangeBp": 0.0221,
+        "vxnReturn1dPct": 0.0085,
+        "brentReturn1dPct": -0.0141
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.676791,
+        "us10yChangeBp": 0.034012,
+        "us2yChangeBp": 0.003153,
+        "vxnReturn1dPct": -0.009915,
+        "brentReturn1dPct": -0.016191
+      },
+      "interceptPct": 0.2462
+    },
+    "2026-02-12": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-02-11",
+      "trainingSessions": 87,
+      "actualSoxReturnPct": -2.4984,
+      "expectedSoxReturnPct": -3.5566,
+      "residualPct": 1.0582,
+      "residualZ": 0.597,
+      "inputs": {
+        "qqqReturn1dPct": -2.0339,
+        "us10yChangeBp": -9.0,
+        "us2yChangeBp": -5.0,
+        "vxnReturn1dPct": 15.5202,
+        "brentReturn1dPct": -2.7089
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -3.4206,
+        "us10yChangeBp": -0.2042,
+        "us2yChangeBp": -0.1059,
+        "vxnReturn1dPct": -0.1224,
+        "brentReturn1dPct": 0.0326
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.681815,
+        "us10yChangeBp": 0.02269,
+        "us2yChangeBp": 0.02117,
+        "vxnReturn1dPct": -0.007884,
+        "brentReturn1dPct": -0.012023
+      },
+      "interceptPct": 0.2639
+    },
+    "2026-02-13": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-02-12",
+      "trainingSessions": 88,
+      "actualSoxReturnPct": 0.6575,
+      "expectedSoxReturnPct": 0.387,
+      "residualPct": 0.2705,
+      "residualZ": -0.04,
+      "inputs": {
+        "qqqReturn1dPct": 0.2131,
+        "us10yChangeBp": -5.0,
+        "us2yChangeBp": -7.0,
+        "vxnReturn1dPct": -1.8608,
+        "brentReturn1dPct": 0.3406
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.3562,
+        "us10yChangeBp": -0.0572,
+        "us2yChangeBp": -0.1925,
+        "vxnReturn1dPct": 0.0113,
+        "brentReturn1dPct": -0.0057
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.671305,
+        "us10yChangeBp": 0.01144,
+        "us2yChangeBp": 0.027507,
+        "vxnReturn1dPct": -0.006083,
+        "brentReturn1dPct": -0.016755
+      },
+      "interceptPct": 0.2749
+    },
+    "2026-02-17": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-02-13",
+      "trainingSessions": 89,
+      "actualSoxReturnPct": -0.0223,
+      "expectedSoxReturnPct": 0.2106,
+      "residualPct": -0.2329,
+      "residualZ": -0.444,
+      "inputs": {
+        "qqqReturn1dPct": -0.103,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": 3.0,
+        "vxnReturn1dPct": -1.479,
+        "brentReturn1dPct": -0.4871
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.1724,
+        "us10yChangeBp": 0.0116,
+        "us2yChangeBp": 0.0766,
+        "vxnReturn1dPct": 0.0091,
+        "brentReturn1dPct": 0.0079
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.673803,
+        "us10yChangeBp": 0.011583,
+        "us2yChangeBp": 0.025548,
+        "vxnReturn1dPct": -0.006184,
+        "brentReturn1dPct": -0.016197
+      },
+      "interceptPct": 0.2777
+    },
+    "2026-02-18": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-02-17",
+      "trainingSessions": 90,
+      "actualSoxReturnPct": 0.9625,
+      "expectedSoxReturnPct": 1.6277,
+      "residualPct": -0.6652,
+      "residualZ": -0.788,
+      "inputs": {
+        "qqqReturn1dPct": 0.7467,
+        "us10yChangeBp": 4.0,
+        "us2yChangeBp": 4.0,
+        "vxnReturn1dPct": -3.9261,
+        "brentReturn1dPct": 4.3459
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.2535,
+        "us10yChangeBp": 0.0484,
+        "us2yChangeBp": 0.0981,
+        "vxnReturn1dPct": 0.0219,
+        "brentReturn1dPct": -0.0688
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.678754,
+        "us10yChangeBp": 0.012095,
+        "us2yChangeBp": 0.024518,
+        "vxnReturn1dPct": -0.005571,
+        "brentReturn1dPct": -0.015826
+      },
+      "interceptPct": 0.2747
+    },
+    "2026-02-19": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-02-18",
+      "trainingSessions": 91,
+      "actualSoxReturnPct": -0.4997,
+      "expectedSoxReturnPct": -0.4462,
+      "residualPct": -0.0535,
+      "residualZ": -0.265,
+      "inputs": {
+        "qqqReturn1dPct": -0.383,
+        "us10yChangeBp": -1.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 2.7244,
+        "brentReturn1dPct": 1.8621
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.6427,
+        "us10yChangeBp": -0.0121,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": -0.0149,
+        "brentReturn1dPct": -0.0443
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.677964,
+        "us10yChangeBp": 0.012095,
+        "us2yChangeBp": 0.023083,
+        "vxnReturn1dPct": -0.005472,
+        "brentReturn1dPct": -0.023782
+      },
+      "interceptPct": 0.2678
+    },
+    "2026-02-20": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-02-19",
+      "trainingSessions": 92,
+      "actualSoxReturnPct": 1.0658,
+      "expectedSoxReturnPct": 1.8023,
+      "residualPct": -0.7365,
+      "residualZ": -0.831,
+      "inputs": {
+        "qqqReturn1dPct": 0.8849,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": 1.0,
+        "vxnReturn1dPct": -5.4992,
+        "brentReturn1dPct": 0.1395
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.4872,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": 0.023,
+        "vxnReturn1dPct": 0.0285,
+        "brentReturn1dPct": -0.0034
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.680586,
+        "us10yChangeBp": 0.012247,
+        "us2yChangeBp": 0.022972,
+        "vxnReturn1dPct": -0.005185,
+        "brentReturn1dPct": -0.024147
+      },
+      "interceptPct": 0.2671
+    },
+    "2026-02-23": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-02-20",
+      "trainingSessions": 93,
+      "actualSoxReturnPct": -0.5685,
+      "expectedSoxReturnPct": -1.9893,
+      "residualPct": 1.4208,
+      "residualZ": 0.999,
+      "inputs": {
+        "qqqReturn1dPct": -1.2155,
+        "us10yChangeBp": -5.0,
+        "us2yChangeBp": -5.0,
+        "vxnReturn1dPct": 8.7908,
+        "brentReturn1dPct": -0.3763
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -2.0406,
+        "us10yChangeBp": -0.066,
+        "us2yChangeBp": -0.1107,
+        "vxnReturn1dPct": -0.0398,
+        "brentReturn1dPct": 0.0091
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.678801,
+        "us10yChangeBp": 0.013203,
+        "us2yChangeBp": 0.022143,
+        "vxnReturn1dPct": -0.004526,
+        "brentReturn1dPct": -0.024097
+      },
+      "interceptPct": 0.2588
+    },
+    "2026-02-24": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-02-23",
+      "trainingSessions": 94,
+      "actualSoxReturnPct": 1.4475,
+      "expectedSoxReturnPct": 2.122,
+      "residualPct": -0.6745,
+      "residualZ": -0.788,
+      "inputs": {
+        "qqqReturn1dPct": 1.0741,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": -5.8422,
+        "brentReturn1dPct": -1.0071
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.7964,
+        "us10yChangeBp": 0.0092,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 0.0208,
+        "brentReturn1dPct": 0.0232
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.672459,
+        "us10yChangeBp": 0.009218,
+        "us2yChangeBp": 0.020721,
+        "vxnReturn1dPct": -0.003563,
+        "brentReturn1dPct": -0.023042
+      },
+      "interceptPct": 0.2724
+    },
+    "2026-02-25": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-02-24",
+      "trainingSessions": 95,
+      "actualSoxReturnPct": 1.6212,
+      "expectedSoxReturnPct": 2.7555,
+      "residualPct": -1.1343,
+      "residualZ": -1.157,
+      "inputs": {
+        "qqqReturn1dPct": 1.4493,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": 2.0,
+        "vxnReturn1dPct": -7.5745,
+        "brentReturn1dPct": 0.113
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 2.4166,
+        "us10yChangeBp": 0.0073,
+        "us2yChangeBp": 0.045,
+        "vxnReturn1dPct": 0.0239,
+        "brentReturn1dPct": -0.0023
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.667447,
+        "us10yChangeBp": 0.007296,
+        "us2yChangeBp": 0.022511,
+        "vxnReturn1dPct": -0.003161,
+        "brentReturn1dPct": -0.020096
+      },
+      "interceptPct": 0.2649
+    },
+    "2026-02-26": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-02-25",
+      "trainingSessions": 96,
+      "actualSoxReturnPct": -3.1907,
+      "expectedSoxReturnPct": -1.8358,
+      "residualPct": -1.3549,
+      "residualZ": -1.306,
+      "inputs": {
+        "qqqReturn1dPct": -1.2065,
+        "us10yChangeBp": -3.0,
+        "us2yChangeBp": -3.0,
+        "vxnReturn1dPct": 2.9207,
+        "brentReturn1dPct": -0.1411
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -1.9944,
+        "us10yChangeBp": -0.0244,
+        "us2yChangeBp": -0.0632,
+        "vxnReturn1dPct": -0.0096,
+        "brentReturn1dPct": 0.0027
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.653062,
+        "us10yChangeBp": 0.008138,
+        "us2yChangeBp": 0.021065,
+        "vxnReturn1dPct": -0.003278,
+        "brentReturn1dPct": -0.019393
+      },
+      "interceptPct": 0.2531
+    },
+    "2026-02-27": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-02-26",
+      "trainingSessions": 97,
+      "actualSoxReturnPct": -1.2064,
+      "expectedSoxReturnPct": -0.4892,
+      "residualPct": -0.7172,
+      "residualZ": -0.728,
+      "inputs": {
+        "qqqReturn1dPct": -0.3201,
+        "us10yChangeBp": -5.0,
+        "us2yChangeBp": -4.0,
+        "vxnReturn1dPct": 3.8543,
+        "brentReturn1dPct": 2.4452
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.5384,
+        "us10yChangeBp": -0.0506,
+        "us2yChangeBp": -0.0891,
+        "vxnReturn1dPct": 0.0004,
+        "brentReturn1dPct": -0.0495
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.682126,
+        "us10yChangeBp": 0.010111,
+        "us2yChangeBp": 0.022274,
+        "vxnReturn1dPct": 0.00011,
+        "brentReturn1dPct": -0.020238
+      },
+      "interceptPct": 0.238
+    },
+    "2026-03-02": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-02-27",
+      "trainingSessions": 98,
+      "actualSoxReturnPct": 0.4814,
+      "expectedSoxReturnPct": 0.5665,
+      "residualPct": -0.0851,
+      "residualZ": -0.184,
+      "inputs": {
+        "qqqReturn1dPct": 0.1317,
+        "us10yChangeBp": 8.0,
+        "us2yChangeBp": 9.0,
+        "vxnReturn1dPct": 3.5889,
+        "brentReturn1dPct": 7.2572
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.2216,
+        "us10yChangeBp": 0.1108,
+        "us2yChangeBp": 0.1966,
+        "vxnReturn1dPct": -0.0005,
+        "brentReturn1dPct": -0.194
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.682421,
+        "us10yChangeBp": 0.013856,
+        "us2yChangeBp": 0.021841,
+        "vxnReturn1dPct": -0.00014,
+        "brentReturn1dPct": -0.026725
+      },
+      "interceptPct": 0.232
+    },
+    "2026-03-03": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-02",
+      "trainingSessions": 99,
+      "actualSoxReturnPct": -4.5773,
+      "expectedSoxReturnPct": -1.6053,
+      "residualPct": -2.972,
+      "residualZ": -2.632,
+      "inputs": {
+        "qqqReturn1dPct": -1.0706,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": 4.0,
+        "vxnReturn1dPct": 8.3071,
+        "brentReturn1dPct": 4.708
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -1.8031,
+        "us10yChangeBp": 0.0139,
+        "us2yChangeBp": 0.0848,
+        "vxnReturn1dPct": -0.0006,
+        "brentReturn1dPct": -0.1315
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.684239,
+        "us10yChangeBp": 0.013925,
+        "us2yChangeBp": 0.021196,
+        "vxnReturn1dPct": -7.7e-05,
+        "brentReturn1dPct": -0.027932
+      },
+      "interceptPct": 0.2313
+    },
+    "2026-03-04": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-03",
+      "trainingSessions": 100,
+      "actualSoxReturnPct": 1.9266,
+      "expectedSoxReturnPct": 2.9376,
+      "residualPct": -1.011,
+      "residualZ": -0.842,
+      "inputs": {
+        "qqqReturn1dPct": 1.5243,
+        "us10yChangeBp": 3.0,
+        "us2yChangeBp": 3.0,
+        "vxnReturn1dPct": -9.5965,
+        "brentReturn1dPct": 0.0
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 2.5882,
+        "us10yChangeBp": 0.0928,
+        "us2yChangeBp": 0.0009,
+        "vxnReturn1dPct": 0.044,
+        "brentReturn1dPct": -0.0
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.697931,
+        "us10yChangeBp": 0.030921,
+        "us2yChangeBp": 0.000315,
+        "vxnReturn1dPct": -0.004586,
+        "brentReturn1dPct": -0.0605
+      },
+      "interceptPct": 0.2118
+    },
+    "2026-03-05": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-04",
+      "trainingSessions": 101,
+      "actualSoxReturnPct": -1.1715,
+      "expectedSoxReturnPct": -0.4973,
+      "residualPct": -0.6742,
+      "residualZ": -0.556,
+      "inputs": {
+        "qqqReturn1dPct": -0.3013,
+        "us10yChangeBp": 4.0,
+        "us2yChangeBp": 3.0,
+        "vxnReturn1dPct": 4.5436,
+        "brentReturn1dPct": 4.9263
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.5091,
+        "us10yChangeBp": 0.1164,
+        "us2yChangeBp": 0.0012,
+        "vxnReturn1dPct": -0.0173,
+        "brentReturn1dPct": -0.2893
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.68974,
+        "us10yChangeBp": 0.029092,
+        "us2yChangeBp": 0.000391,
+        "vxnReturn1dPct": -0.003811,
+        "brentReturn1dPct": -0.058724
+      },
+      "interceptPct": 0.2009
+    },
+    "2026-03-06": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-05",
+      "trainingSessions": 102,
+      "actualSoxReturnPct": -3.9253,
+      "expectedSoxReturnPct": -2.9387,
+      "residualPct": -0.9866,
+      "residualZ": -0.799,
+      "inputs": {
+        "qqqReturn1dPct": -1.5043,
+        "us10yChangeBp": 2.0,
+        "us2yChangeBp": -1.0,
+        "vxnReturn1dPct": 20.9231,
+        "brentReturn1dPct": 8.5236
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -2.5429,
+        "us10yChangeBp": 0.056,
+        "us2yChangeBp": -0.0003,
+        "vxnReturn1dPct": -0.092,
+        "brentReturn1dPct": -0.5558
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.69042,
+        "us10yChangeBp": 0.027987,
+        "us2yChangeBp": 0.000311,
+        "vxnReturn1dPct": -0.004398,
+        "brentReturn1dPct": -0.065212
+      },
+      "interceptPct": 0.1964
+    },
+    "2026-03-09": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-06",
+      "trainingSessions": 103,
+      "actualSoxReturnPct": 3.9344,
+      "expectedSoxReturnPct": 1.9266,
+      "residualPct": 2.0078,
+      "residualZ": 1.63,
+      "inputs": {
+        "qqqReturn1dPct": 1.3356,
+        "us10yChangeBp": -3.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": -11.9275,
+        "brentReturn1dPct": 6.7645
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 2.2317,
+        "us10yChangeBp": -0.0801,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 0.1163,
+        "brentReturn1dPct": -0.537
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.670919,
+        "us10yChangeBp": 0.026716,
+        "us2yChangeBp": 0.002375,
+        "vxnReturn1dPct": -0.009754,
+        "brentReturn1dPct": -0.079382
+      },
+      "interceptPct": 0.1957
+    },
+    "2026-03-10": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-09",
+      "trainingSessions": 104,
+      "actualSoxReturnPct": 0.7006,
+      "expectedSoxReturnPct": 0.8508,
+      "residualPct": -0.1502,
+      "residualZ": -0.144,
+      "inputs": {
+        "qqqReturn1dPct": 0.0016,
+        "us10yChangeBp": 3.0,
+        "us2yChangeBp": 1.0,
+        "vxnReturn1dPct": -1.3001,
+        "brentReturn1dPct": -11.2773
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.0026,
+        "us10yChangeBp": 0.0386,
+        "us2yChangeBp": 0.0066,
+        "vxnReturn1dPct": 0.0217,
+        "brentReturn1dPct": 0.5736
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.65567,
+        "us10yChangeBp": 0.012865,
+        "us2yChangeBp": 0.006554,
+        "vxnReturn1dPct": -0.016656,
+        "brentReturn1dPct": -0.050865
+      },
+      "interceptPct": 0.2077
+    },
+    "2026-03-11": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-10",
+      "trainingSessions": 105,
+      "actualSoxReturnPct": 0.6287,
+      "expectedSoxReturnPct": 0.1055,
+      "residualPct": 0.5232,
+      "residualZ": 0.397,
+      "inputs": {
+        "qqqReturn1dPct": -0.0132,
+        "us10yChangeBp": 6.0,
+        "us2yChangeBp": 7.0,
+        "vxnReturn1dPct": -1.8661,
+        "brentReturn1dPct": 4.7608
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.0219,
+        "us10yChangeBp": 0.0714,
+        "us2yChangeBp": 0.0473,
+        "vxnReturn1dPct": 0.0307,
+        "brentReturn1dPct": -0.2272
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.657688,
+        "us10yChangeBp": 0.011902,
+        "us2yChangeBp": 0.006751,
+        "vxnReturn1dPct": -0.016454,
+        "brentReturn1dPct": -0.04773
+      },
+      "interceptPct": 0.2052
+    },
+    "2026-03-12": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-11",
+      "trainingSessions": 106,
+      "actualSoxReturnPct": -3.429,
+      "expectedSoxReturnPct": -3.0564,
+      "residualPct": -0.3726,
+      "residualZ": -0.332,
+      "inputs": {
+        "qqqReturn1dPct": -1.7163,
+        "us10yChangeBp": 6.0,
+        "us2yChangeBp": 12.0,
+        "vxnReturn1dPct": 11.223,
+        "brentReturn1dPct": 9.2194
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -2.8388,
+        "us10yChangeBp": 0.0732,
+        "us2yChangeBp": 0.104,
+        "vxnReturn1dPct": -0.1893,
+        "brentReturn1dPct": -0.415
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.654012,
+        "us10yChangeBp": 0.012207,
+        "us2yChangeBp": 0.008667,
+        "vxnReturn1dPct": -0.016866,
+        "brentReturn1dPct": -0.045011
+      },
+      "interceptPct": 0.2094
+    },
+    "2026-03-13": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-12",
+      "trainingSessions": 107,
+      "actualSoxReturnPct": 0.0453,
+      "expectedSoxReturnPct": -0.9016,
+      "residualPct": 0.9469,
+      "residualZ": 0.749,
+      "inputs": {
+        "qqqReturn1dPct": -0.5927,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": -3.0,
+        "vxnReturn1dPct": 0.1341,
+        "brentReturn1dPct": 2.6677
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.9813,
+        "us10yChangeBp": 0.0146,
+        "us2yChangeBp": -0.0129,
+        "vxnReturn1dPct": -0.0024,
+        "brentReturn1dPct": -0.1277
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.655566,
+        "us10yChangeBp": 0.014556,
+        "us2yChangeBp": 0.004304,
+        "vxnReturn1dPct": -0.017603,
+        "brentReturn1dPct": -0.047878
+      },
+      "interceptPct": 0.2081
+    },
+    "2026-03-16": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-13",
+      "trainingSessions": 108,
+      "actualSoxReturnPct": 1.9565,
+      "expectedSoxReturnPct": 2.3324,
+      "residualPct": -0.3759,
+      "residualZ": -0.348,
+      "inputs": {
+        "qqqReturn1dPct": 1.1217,
+        "us10yChangeBp": -5.0,
+        "us2yChangeBp": -5.0,
+        "vxnReturn1dPct": -11.8848,
+        "brentReturn1dPct": -2.8408
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.8415,
+        "us10yChangeBp": -0.0991,
+        "us2yChangeBp": 0.0111,
+        "vxnReturn1dPct": 0.2365,
+        "brentReturn1dPct": 0.1257
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.641687,
+        "us10yChangeBp": 0.019812,
+        "us2yChangeBp": -0.002221,
+        "vxnReturn1dPct": -0.019899,
+        "brentReturn1dPct": -0.044256
+      },
+      "interceptPct": 0.2167
+    },
+    "2026-03-17": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-16",
+      "trainingSessions": 109,
+      "actualSoxReturnPct": 0.5205,
+      "expectedSoxReturnPct": 0.9318,
+      "residualPct": -0.4113,
+      "residualZ": -0.373,
+      "inputs": {
+        "qqqReturn1dPct": 0.488,
+        "us10yChangeBp": -3.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": -6.307,
+        "brentReturn1dPct": 3.2033
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.8024,
+        "us10yChangeBp": -0.0611,
+        "us2yChangeBp": -0.0,
+        "vxnReturn1dPct": 0.1179,
+        "brentReturn1dPct": -0.1395
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.644286,
+        "us10yChangeBp": 0.020369,
+        "us2yChangeBp": -0.00129,
+        "vxnReturn1dPct": -0.018696,
+        "brentReturn1dPct": -0.043557
+      },
+      "interceptPct": 0.2121
+    },
+    "2026-03-18": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-17",
+      "trainingSessions": 110,
+      "actualSoxReturnPct": -0.5321,
+      "expectedSoxReturnPct": -2.3662,
+      "residualPct": 1.8341,
+      "residualZ": 1.506,
+      "inputs": {
+        "qqqReturn1dPct": -1.394,
+        "us10yChangeBp": 6.0,
+        "us2yChangeBp": 8.0,
+        "vxnReturn1dPct": 12.4088,
+        "brentReturn1dPct": 3.829
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -2.2987,
+        "us10yChangeBp": 0.1347,
+        "us2yChangeBp": -0.0183,
+        "vxnReturn1dPct": -0.2186,
+        "brentReturn1dPct": -0.174
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.648986,
+        "us10yChangeBp": 0.022448,
+        "us2yChangeBp": -0.002282,
+        "vxnReturn1dPct": -0.017614,
+        "brentReturn1dPct": -0.045444
+      },
+      "interceptPct": 0.2087
+    },
+    "2026-03-19": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-18",
+      "trainingSessions": 111,
+      "actualSoxReturnPct": 0.8746,
+      "expectedSoxReturnPct": -0.3087,
+      "residualPct": 1.1833,
+      "residualZ": 0.922,
+      "inputs": {
+        "qqqReturn1dPct": -0.316,
+        "us10yChangeBp": -1.0,
+        "us2yChangeBp": 3.0,
+        "vxnReturn1dPct": -2.9582,
+        "brentReturn1dPct": 1.1827
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.5202,
+        "us10yChangeBp": -0.0215,
+        "us2yChangeBp": 0.0229,
+        "vxnReturn1dPct": 0.0408,
+        "brentReturn1dPct": -0.0507
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.646224,
+        "us10yChangeBp": 0.021471,
+        "us2yChangeBp": 0.007633,
+        "vxnReturn1dPct": -0.013798,
+        "brentReturn1dPct": -0.042842
+      },
+      "interceptPct": 0.2199
+    },
+    "2026-03-20": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-19",
+      "trainingSessions": 112,
+      "actualSoxReturnPct": -2.4506,
+      "expectedSoxReturnPct": -2.715,
+      "residualPct": 0.2644,
+      "residualZ": 0.146,
+      "inputs": {
+        "qqqReturn1dPct": -1.8482,
+        "us10yChangeBp": 14.0,
+        "us2yChangeBp": 9.0,
+        "vxnReturn1dPct": 8.5502,
+        "brentReturn1dPct": 3.2582
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -3.0107,
+        "us10yChangeBp": 0.2168,
+        "us2yChangeBp": 0.124,
+        "vxnReturn1dPct": -0.1391,
+        "brentReturn1dPct": -0.1367
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.628986,
+        "us10yChangeBp": 0.015485,
+        "us2yChangeBp": 0.013778,
+        "vxnReturn1dPct": -0.01627,
+        "brentReturn1dPct": -0.041942
+      },
+      "interceptPct": 0.2306
+    },
+    "2026-03-23": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-20",
+      "trainingSessions": 113,
+      "actualSoxReturnPct": 1.3366,
+      "expectedSoxReturnPct": 2.2576,
+      "residualPct": -0.921,
+      "residualZ": -0.844,
+      "inputs": {
+        "qqqReturn1dPct": 1.0205,
+        "us10yChangeBp": -5.0,
+        "us2yChangeBp": -5.0,
+        "vxnReturn1dPct": -4.1781,
+        "brentReturn1dPct": -10.919
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.6532,
+        "us10yChangeBp": -0.0906,
+        "us2yChangeBp": -0.0655,
+        "vxnReturn1dPct": 0.0712,
+        "brentReturn1dPct": 0.4567
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.619961,
+        "us10yChangeBp": 0.01813,
+        "us2yChangeBp": 0.013098,
+        "vxnReturn1dPct": -0.017039,
+        "brentReturn1dPct": -0.041831
+      },
+      "interceptPct": 0.2326
+    },
+    "2026-03-24": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-23",
+      "trainingSessions": 114,
+      "actualSoxReturnPct": 1.281,
+      "expectedSoxReturnPct": -0.8872,
+      "residualPct": 2.1682,
+      "residualZ": 1.753,
+      "inputs": {
+        "qqqReturn1dPct": -0.6837,
+        "us10yChangeBp": 5.0,
+        "us2yChangeBp": 7.0,
+        "vxnReturn1dPct": 2.7162,
+        "brentReturn1dPct": 4.5527
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -1.1003,
+        "us10yChangeBp": 0.0935,
+        "us2yChangeBp": 0.0895,
+        "vxnReturn1dPct": -0.0493,
+        "brentReturn1dPct": -0.1411
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.60935,
+        "us10yChangeBp": 0.018691,
+        "us2yChangeBp": 0.012788,
+        "vxnReturn1dPct": -0.018147,
+        "brentReturn1dPct": -0.030989
+      },
+      "interceptPct": 0.2205
+    },
+    "2026-03-25": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-24",
+      "trainingSessions": 115,
+      "actualSoxReturnPct": 1.2071,
+      "expectedSoxReturnPct": 1.1845,
+      "residualPct": 0.0226,
+      "residualZ": -0.072,
+      "inputs": {
+        "qqqReturn1dPct": 0.6576,
+        "us10yChangeBp": -6.0,
+        "us2yChangeBp": -6.0,
+        "vxnReturn1dPct": -3.7926,
+        "brentReturn1dPct": -2.1725
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.0463,
+        "us10yChangeBp": -0.0996,
+        "us2yChangeBp": -0.1257,
+        "vxnReturn1dPct": 0.0737,
+        "brentReturn1dPct": 0.0546
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.591132,
+        "us10yChangeBp": 0.016594,
+        "us2yChangeBp": 0.020944,
+        "vxnReturn1dPct": -0.019426,
+        "brentReturn1dPct": -0.025122
+      },
+      "interceptPct": 0.2351
+    },
+    "2026-03-26": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-25",
+      "trainingSessions": 116,
+      "actualSoxReturnPct": -4.7928,
+      "expectedSoxReturnPct": -3.4621,
+      "residualPct": -1.3307,
+      "residualZ": -1.193,
+      "inputs": {
+        "qqqReturn1dPct": -2.3868,
+        "us10yChangeBp": 9.0,
+        "us2yChangeBp": 12.0,
+        "vxnReturn1dPct": 7.9928,
+        "brentReturn1dPct": 5.6643
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -3.8003,
+        "us10yChangeBp": 0.149,
+        "us2yChangeBp": 0.2507,
+        "vxnReturn1dPct": -0.1544,
+        "brentReturn1dPct": -0.1424
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.592208,
+        "us10yChangeBp": 0.01655,
+        "us2yChangeBp": 0.020892,
+        "vxnReturn1dPct": -0.019318,
+        "brentReturn1dPct": -0.025133
+      },
+      "interceptPct": 0.2353
+    },
+    "2026-03-27": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-26",
+      "trainingSessions": 117,
+      "actualSoxReturnPct": -1.69,
+      "expectedSoxReturnPct": -3.3411,
+      "residualPct": 1.6511,
+      "residualZ": 1.295,
+      "inputs": {
+        "qqqReturn1dPct": -1.9537,
+        "us10yChangeBp": 2.0,
+        "us2yChangeBp": -8.0,
+        "vxnReturn1dPct": 12.3242,
+        "brentReturn1dPct": 4.2218
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -3.1718,
+        "us10yChangeBp": 0.0355,
+        "us2yChangeBp": -0.1039,
+        "vxnReturn1dPct": -0.2122,
+        "brentReturn1dPct": -0.1162
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.623459,
+        "us10yChangeBp": 0.017761,
+        "us2yChangeBp": 0.01299,
+        "vxnReturn1dPct": -0.017222,
+        "brentReturn1dPct": -0.027525
+      },
+      "interceptPct": 0.2275
+    },
+    "2026-03-30": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-27",
+      "trainingSessions": 118,
+      "actualSoxReturnPct": -4.2283,
+      "expectedSoxReturnPct": -1.237,
+      "residualPct": -2.9913,
+      "residualZ": -2.548,
+      "inputs": {
+        "qqqReturn1dPct": -0.7643,
+        "us10yChangeBp": -9.0,
+        "us2yChangeBp": -6.0,
+        "vxnReturn1dPct": -0.8348,
+        "brentReturn1dPct": 0.1865
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -1.2249,
+        "us10yChangeBp": -0.3044,
+        "us2yChangeBp": 0.042,
+        "vxnReturn1dPct": 0.0156,
+        "brentReturn1dPct": -0.0037
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.602612,
+        "us10yChangeBp": 0.033819,
+        "us2yChangeBp": -0.007006,
+        "vxnReturn1dPct": -0.018683,
+        "brentReturn1dPct": -0.019912
+      },
+      "interceptPct": 0.2384
+    },
+    "2026-03-31": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-30",
+      "trainingSessions": 119,
+      "actualSoxReturnPct": 6.2425,
+      "expectedSoxReturnPct": 5.6357,
+      "residualPct": 0.6068,
+      "residualZ": 0.431,
+      "inputs": {
+        "qqqReturn1dPct": 3.3854,
+        "us10yChangeBp": -5.0,
+        "us2yChangeBp": -3.0,
+        "vxnReturn1dPct": -15.0932,
+        "brentReturn1dPct": 4.9388
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 5.6162,
+        "us10yChangeBp": -0.259,
+        "us2yChangeBp": 0.0304,
+        "vxnReturn1dPct": 0.1645,
+        "brentReturn1dPct": -0.1279
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.658939,
+        "us10yChangeBp": 0.0518,
+        "us2yChangeBp": -0.010121,
+        "vxnReturn1dPct": -0.010896,
+        "brentReturn1dPct": -0.025903
+      },
+      "interceptPct": 0.2117
+    },
+    "2026-04-01": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-06",
+      "trainEnd": "2026-03-31",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.8217,
+      "expectedSoxReturnPct": 2.7411,
+      "residualPct": 0.0806,
+      "residualZ": 0.011,
+      "inputs": {
+        "qqqReturn1dPct": 1.2353,
+        "us10yChangeBp": 3.0,
+        "us2yChangeBp": 2.0,
+        "vxnReturn1dPct": -2.4079,
+        "brentReturn1dPct": -14.5247
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 2.0518,
+        "us10yChangeBp": 0.1496,
+        "us2yChangeBp": -0.0215,
+        "vxnReturn1dPct": 0.0294,
+        "brentReturn1dPct": 0.3159
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.660933,
+        "us10yChangeBp": 0.049875,
+        "us2yChangeBp": -0.01074,
+        "vxnReturn1dPct": -0.012215,
+        "brentReturn1dPct": -0.021752
+      },
+      "interceptPct": 0.2158
+    },
+    "2026-04-02": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-07",
+      "trainEnd": "2026-04-01",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.3983,
+      "expectedSoxReturnPct": 0.1691,
+      "residualPct": 0.2292,
+      "residualZ": 0.124,
+      "inputs": {
+        "qqqReturn1dPct": 0.1147,
+        "us10yChangeBp": -2.0,
+        "us2yChangeBp": -2.0,
+        "vxnReturn1dPct": -1.8868,
+        "brentReturn1dPct": 7.7797
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.1878,
+        "us10yChangeBp": -0.0887,
+        "us2yChangeBp": 0.0148,
+        "vxnReturn1dPct": 0.0285,
+        "brentReturn1dPct": -0.1808
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.63752,
+        "us10yChangeBp": 0.044326,
+        "us2yChangeBp": -0.007377,
+        "vxnReturn1dPct": -0.015085,
+        "brentReturn1dPct": -0.023244
+      },
+      "interceptPct": 0.2075
+    },
+    "2026-04-06": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-08",
+      "trainEnd": "2026-04-02",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 1.056,
+      "expectedSoxReturnPct": 1.1235,
+      "residualPct": -0.0675,
+      "residualZ": -0.101,
+      "inputs": {
+        "qqqReturn1dPct": 0.6017,
+        "us10yChangeBp": -1.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 1.2944,
+        "brentReturn1dPct": 0.6787
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.9805,
+        "us10yChangeBp": -0.0411,
+        "us2yChangeBp": -0.0,
+        "vxnReturn1dPct": -0.0207,
+        "brentReturn1dPct": -0.0146
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.629481,
+        "us10yChangeBp": 0.041136,
+        "us2yChangeBp": -0.007376,
+        "vxnReturn1dPct": -0.015963,
+        "brentReturn1dPct": -0.021583
+      },
+      "interceptPct": 0.2195
+    },
+    "2026-04-07": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-09",
+      "trainEnd": "2026-04-06",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 1.1087,
+      "expectedSoxReturnPct": 0.1634,
+      "residualPct": 0.9453,
+      "residualZ": 0.696,
+      "inputs": {
+        "qqqReturn1dPct": 0.0153,
+        "us10yChangeBp": -1.0,
+        "us2yChangeBp": -3.0,
+        "vxnReturn1dPct": 3.797,
+        "brentReturn1dPct": -0.4555
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.0247,
+        "us10yChangeBp": -0.0441,
+        "us2yChangeBp": 0.0295,
+        "vxnReturn1dPct": -0.0657,
+        "brentReturn1dPct": 0.0104
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.613138,
+        "us10yChangeBp": 0.044077,
+        "us2yChangeBp": -0.009846,
+        "vxnReturn1dPct": -0.017304,
+        "brentReturn1dPct": -0.022779
+      },
+      "interceptPct": 0.2086
+    },
+    "2026-04-08": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-10",
+      "trainEnd": "2026-04-07",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 6.3351,
+      "expectedSoxReturnPct": 5.3746,
+      "residualPct": 0.9605,
+      "residualZ": 0.683,
+      "inputs": {
+        "qqqReturn1dPct": 2.9732,
+        "us10yChangeBp": -4.0,
+        "us2yChangeBp": -2.0,
+        "vxnReturn1dPct": -11.2205,
+        "brentReturn1dPct": -13.2882
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 4.8166,
+        "us10yChangeBp": -0.1811,
+        "us2yChangeBp": 0.0229,
+        "vxnReturn1dPct": 0.1804,
+        "brentReturn1dPct": 0.3162
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.62002,
+        "us10yChangeBp": 0.045274,
+        "us2yChangeBp": -0.011463,
+        "vxnReturn1dPct": -0.016073,
+        "brentReturn1dPct": -0.023798
+      },
+      "interceptPct": 0.2195
+    },
+    "2026-04-09": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-14",
+      "trainEnd": "2026-04-08",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.0987,
+      "expectedSoxReturnPct": 1.3994,
+      "residualPct": 0.6993,
+      "residualZ": 0.474,
+      "inputs": {
+        "qqqReturn1dPct": 0.6765,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": -1.0,
+        "vxnReturn1dPct": -6.8938,
+        "brentReturn1dPct": 1.2348
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.1114,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": 0.0089,
+        "vxnReturn1dPct": 0.0874,
+        "brentReturn1dPct": -0.0402
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.642875,
+        "us10yChangeBp": 0.041879,
+        "us2yChangeBp": -0.008897,
+        "vxnReturn1dPct": -0.012683,
+        "brentReturn1dPct": -0.032542
+      },
+      "interceptPct": 0.2319
+    },
+    "2026-04-10": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-15",
+      "trainEnd": "2026-04-09",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.305,
+      "expectedSoxReturnPct": 0.581,
+      "residualPct": 1.724,
+      "residualZ": 1.292,
+      "inputs": {
+        "qqqReturn1dPct": 0.1442,
+        "us10yChangeBp": 2.0,
+        "us2yChangeBp": 3.0,
+        "vxnReturn1dPct": -1.7447,
+        "brentReturn1dPct": -0.7506
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.2366,
+        "us10yChangeBp": 0.0882,
+        "us2yChangeBp": -0.0404,
+        "vxnReturn1dPct": 0.0219,
+        "brentReturn1dPct": 0.025
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.640754,
+        "us10yChangeBp": 0.044101,
+        "us2yChangeBp": -0.013475,
+        "vxnReturn1dPct": -0.012555,
+        "brentReturn1dPct": -0.033311
+      },
+      "interceptPct": 0.2497
+    },
+    "2026-04-13": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-16",
+      "trainEnd": "2026-04-10",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 1.6839,
+      "expectedSoxReturnPct": 1.8307,
+      "residualPct": -0.1468,
+      "residualZ": -0.221,
+      "inputs": {
+        "qqqReturn1dPct": 1.0343,
+        "us10yChangeBp": -1.0,
+        "us2yChangeBp": -3.0,
+        "vxnReturn1dPct": -3.8978,
+        "brentReturn1dPct": 4.3698
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.671,
+        "us10yChangeBp": -0.0427,
+        "us2yChangeBp": 0.0348,
+        "vxnReturn1dPct": 0.0633,
+        "brentReturn1dPct": -0.1487
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.615587,
+        "us10yChangeBp": 0.042729,
+        "us2yChangeBp": -0.011614,
+        "vxnReturn1dPct": -0.016241,
+        "brentReturn1dPct": -0.034018
+      },
+      "interceptPct": 0.2529
+    },
+    "2026-04-14": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-17",
+      "trainEnd": "2026-04-13",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.0421,
+      "expectedSoxReturnPct": 3.1375,
+      "residualPct": -1.0954,
+      "residualZ": -0.968,
+      "inputs": {
+        "qqqReturn1dPct": 1.8157,
+        "us10yChangeBp": -4.0,
+        "us2yChangeBp": -2.0,
+        "vxnReturn1dPct": -1.7576,
+        "brentReturn1dPct": -4.5994
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 2.8555,
+        "us10yChangeBp": -0.173,
+        "us2yChangeBp": 0.013,
+        "vxnReturn1dPct": 0.0441,
+        "brentReturn1dPct": 0.1561
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.572679,
+        "us10yChangeBp": 0.04326,
+        "us2yChangeBp": -0.006479,
+        "vxnReturn1dPct": -0.025077,
+        "brentReturn1dPct": -0.033936
+      },
+      "interceptPct": 0.2419
+    },
+    "2026-04-15": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-20",
+      "trainEnd": "2026-04-14",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.1644,
+      "expectedSoxReturnPct": 2.4059,
+      "residualPct": -2.2415,
+      "residualZ": -1.855,
+      "inputs": {
+        "qqqReturn1dPct": 1.3999,
+        "us10yChangeBp": 3.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 2.0642,
+        "brentReturn1dPct": 0.1477
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 2.0997,
+        "us10yChangeBp": 0.1396,
+        "us2yChangeBp": -0.0,
+        "vxnReturn1dPct": -0.0808,
+        "brentReturn1dPct": -0.0047
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.499922,
+        "us10yChangeBp": 0.046549,
+        "us2yChangeBp": -0.003524,
+        "vxnReturn1dPct": -0.039133,
+        "brentReturn1dPct": -0.031956
+      },
+      "interceptPct": 0.2521
+    },
+    "2026-04-16": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-21",
+      "trainEnd": "2026-04-15",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.9747,
+      "expectedSoxReturnPct": 0.9156,
+      "residualPct": 0.0591,
+      "residualZ": 0.028,
+      "inputs": {
+        "qqqReturn1dPct": 0.4816,
+        "us10yChangeBp": 3.0,
+        "us2yChangeBp": 2.0,
+        "vxnReturn1dPct": -0.3146,
+        "brentReturn1dPct": 4.6982
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.6884,
+        "us10yChangeBp": 0.1081,
+        "us2yChangeBp": 0.0086,
+        "vxnReturn1dPct": 0.0157,
+        "brentReturn1dPct": -0.1519
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.429489,
+        "us10yChangeBp": 0.036037,
+        "us2yChangeBp": 0.004311,
+        "vxnReturn1dPct": -0.050001,
+        "brentReturn1dPct": -0.032336
+      },
+      "interceptPct": 0.2466
+    },
+    "2026-04-17": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-22",
+      "trainEnd": "2026-04-16",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.4282,
+      "expectedSoxReturnPct": 2.3079,
+      "residualPct": 0.1203,
+      "residualZ": 0.098,
+      "inputs": {
+        "qqqReturn1dPct": 1.3084,
+        "us10yChangeBp": -6.0,
+        "us2yChangeBp": -7.0,
+        "vxnReturn1dPct": -2.7502,
+        "brentReturn1dPct": -9.0653
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.8682,
+        "us10yChangeBp": -0.2081,
+        "us2yChangeBp": -0.0336,
+        "vxnReturn1dPct": 0.1381,
+        "brentReturn1dPct": 0.2895
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.427831,
+        "us10yChangeBp": 0.034678,
+        "us2yChangeBp": 0.0048,
+        "vxnReturn1dPct": -0.050224,
+        "brentReturn1dPct": -0.03193
+      },
+      "interceptPct": 0.2538
+    },
+    "2026-04-20": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-23",
+      "trainEnd": "2026-04-17",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.4534,
+      "expectedSoxReturnPct": -0.6809,
+      "residualPct": 1.1343,
+      "residualZ": 0.916,
+      "inputs": {
+        "qqqReturn1dPct": -0.3175,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": 1.0,
+        "vxnReturn1dPct": 6.3051,
+        "brentReturn1dPct": 5.6428
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.4501,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": 0.0056,
+        "vxnReturn1dPct": -0.3218,
+        "brentReturn1dPct": -0.1786
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.417607,
+        "us10yChangeBp": 0.032662,
+        "us2yChangeBp": 0.005626,
+        "vxnReturn1dPct": -0.051044,
+        "brentReturn1dPct": -0.031649
+      },
+      "interceptPct": 0.264
+    },
+    "2026-04-21": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-24",
+      "trainEnd": "2026-04-20",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.5001,
+      "expectedSoxReturnPct": -0.3921,
+      "residualPct": 0.8922,
+      "residualZ": 0.692,
+      "inputs": {
+        "qqqReturn1dPct": -0.3803,
+        "us10yChangeBp": 4.0,
+        "us2yChangeBp": 6.0,
+        "vxnReturn1dPct": 3.7942,
+        "brentReturn1dPct": 3.142
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.5439,
+        "us10yChangeBp": 0.113,
+        "us2yChangeBp": 0.048,
+        "vxnReturn1dPct": -0.1784,
+        "brentReturn1dPct": -0.096
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.430204,
+        "us10yChangeBp": 0.02824,
+        "us2yChangeBp": 0.007993,
+        "vxnReturn1dPct": -0.047025,
+        "brentReturn1dPct": -0.030556
+      },
+      "interceptPct": 0.2653
+    },
+    "2026-04-22": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-27",
+      "trainEnd": "2026-04-21",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.7163,
+      "expectedSoxReturnPct": 2.6216,
+      "residualPct": 0.0947,
+      "residualZ": 0.019,
+      "inputs": {
+        "qqqReturn1dPct": 1.6731,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": 1.0,
+        "vxnReturn1dPct": -0.9244,
+        "brentReturn1dPct": 3.4829
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 2.3988,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": 0.0108,
+        "vxnReturn1dPct": 0.0428,
+        "brentReturn1dPct": -0.1038
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.433749,
+        "us10yChangeBp": 0.02758,
+        "us2yChangeBp": 0.010761,
+        "vxnReturn1dPct": -0.046299,
+        "brentReturn1dPct": -0.029803
+      },
+      "interceptPct": 0.273
+    },
+    "2026-04-23": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-28",
+      "trainEnd": "2026-04-22",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 1.7086,
+      "expectedSoxReturnPct": -0.4255,
+      "residualPct": 2.1341,
+      "residualZ": 1.672,
+      "inputs": {
+        "qqqReturn1dPct": -0.5633,
+        "us10yChangeBp": 4.0,
+        "us2yChangeBp": 4.0,
+        "vxnReturn1dPct": -1.1026,
+        "brentReturn1dPct": 3.1008
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.8113,
+        "us10yChangeBp": 0.1094,
+        "us2yChangeBp": 0.0437,
+        "vxnReturn1dPct": 0.0501,
+        "brentReturn1dPct": -0.0916
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.440182,
+        "us10yChangeBp": 0.027346,
+        "us2yChangeBp": 0.010937,
+        "vxnReturn1dPct": -0.045478,
+        "brentReturn1dPct": -0.029531
+      },
+      "interceptPct": 0.274
+    },
+    "2026-04-24": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-29",
+      "trainEnd": "2026-04-23",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 4.317,
+      "expectedSoxReturnPct": 2.8615,
+      "residualPct": 1.4555,
+      "residualZ": 1.074,
+      "inputs": {
+        "qqqReturn1dPct": 1.9127,
+        "us10yChangeBp": -3.0,
+        "us2yChangeBp": -5.0,
+        "vxnReturn1dPct": 0.2573,
+        "brentReturn1dPct": 0.2475
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 2.7332,
+        "us10yChangeBp": -0.0858,
+        "us2yChangeBp": -0.0648,
+        "vxnReturn1dPct": -0.0122,
+        "brentReturn1dPct": -0.007
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.428976,
+        "us10yChangeBp": 0.028616,
+        "us2yChangeBp": 0.01296,
+        "vxnReturn1dPct": -0.047351,
+        "brentReturn1dPct": -0.028344
+      },
+      "interceptPct": 0.2981
+    },
+    "2026-04-27": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-30",
+      "trainEnd": "2026-04-24",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -1.0047,
+      "expectedSoxReturnPct": 0.4831,
+      "residualPct": -1.4878,
+      "residualZ": -1.287,
+      "inputs": {
+        "qqqReturn1dPct": 0.0527,
+        "us10yChangeBp": 4.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": -1.2831,
+        "brentReturn1dPct": 2.7533
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.0772,
+        "us10yChangeBp": 0.1196,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 0.0552,
+        "brentReturn1dPct": -0.0706
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.464054,
+        "us10yChangeBp": 0.029903,
+        "us2yChangeBp": 0.004469,
+        "vxnReturn1dPct": -0.042997,
+        "brentReturn1dPct": -0.025658
+      },
+      "interceptPct": 0.3018
+    },
+    "2026-04-28": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-10-31",
+      "trainEnd": "2026-04-27",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -3.5786,
+      "expectedSoxReturnPct": -1.2182,
+      "residualPct": -2.3604,
+      "residualZ": -1.937,
+      "inputs": {
+        "qqqReturn1dPct": -1.0057,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": 6.0,
+        "vxnReturn1dPct": 0.6932,
+        "brentReturn1dPct": 2.7996
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -1.4905,
+        "us10yChangeBp": 0.0211,
+        "us2yChangeBp": 0.0685,
+        "vxnReturn1dPct": -0.0272,
+        "brentReturn1dPct": -0.0766
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.482097,
+        "us10yChangeBp": 0.021096,
+        "us2yChangeBp": 0.011424,
+        "vxnReturn1dPct": -0.039216,
+        "brentReturn1dPct": -0.027356
+      },
+      "interceptPct": 0.2865
+    },
+    "2026-04-29": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-11-03",
+      "trainEnd": "2026-04-28",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.3488,
+      "expectedSoxReturnPct": 1.1263,
+      "residualPct": 1.2225,
+      "residualZ": 0.913,
+      "inputs": {
+        "qqqReturn1dPct": 0.6114,
+        "us10yChangeBp": 6.0,
+        "us2yChangeBp": 8.0,
+        "vxnReturn1dPct": 2.2375,
+        "brentReturn1dPct": 6.0848
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.9343,
+        "us10yChangeBp": 0.196,
+        "us2yChangeBp": -0.0262,
+        "vxnReturn1dPct": -0.075,
+        "brentReturn1dPct": -0.173
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.528098,
+        "us10yChangeBp": 0.032659,
+        "us2yChangeBp": -0.003271,
+        "vxnReturn1dPct": -0.033506,
+        "brentReturn1dPct": -0.028439
+      },
+      "interceptPct": 0.2702
+    },
+    "2026-04-30": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-11-04",
+      "trainEnd": "2026-04-29",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.2626,
+      "expectedSoxReturnPct": 2.0004,
+      "residualPct": 0.2622,
+      "residualZ": 0.138,
+      "inputs": {
+        "qqqReturn1dPct": 0.9326,
+        "us10yChangeBp": -2.0,
+        "us2yChangeBp": -4.0,
+        "vxnReturn1dPct": -8.2912,
+        "brentReturn1dPct": -3.4059
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.4478,
+        "us10yChangeBp": -0.0674,
+        "us2yChangeBp": -0.0003,
+        "vxnReturn1dPct": 0.2527,
+        "brentReturn1dPct": 0.0874
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.552402,
+        "us10yChangeBp": 0.033701,
+        "us2yChangeBp": 6.8e-05,
+        "vxnReturn1dPct": -0.030474,
+        "brentReturn1dPct": -0.025661
+      },
+      "interceptPct": 0.2803
+    },
+    "2026-05-01": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-11-05",
+      "trainEnd": "2026-04-30",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.8725,
+      "expectedSoxReturnPct": 1.8538,
+      "residualPct": -0.9813,
+      "residualZ": -0.84,
+      "inputs": {
+        "qqqReturn1dPct": 0.96,
+        "us10yChangeBp": -1.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 0.5966,
+        "brentReturn1dPct": -5.1224
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.4744,
+        "us10yChangeBp": -0.0319,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": -0.0189,
+        "brentReturn1dPct": 0.1382
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.535839,
+        "us10yChangeBp": 0.031881,
+        "us2yChangeBp": 2.3e-05,
+        "vxnReturn1dPct": -0.031706,
+        "brentReturn1dPct": -0.026989
+      },
+      "interceptPct": 0.2919
+    },
+    "2026-05-04": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-11-06",
+      "trainEnd": "2026-05-01",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -0.5727,
+      "expectedSoxReturnPct": -0.1582,
+      "residualPct": -0.4145,
+      "residualZ": -0.407,
+      "inputs": {
+        "qqqReturn1dPct": -0.1884,
+        "us10yChangeBp": 6.0,
+        "us2yChangeBp": 7.0,
+        "vxnReturn1dPct": 5.1095,
+        "brentReturn1dPct": 5.7964
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.2855,
+        "us10yChangeBp": 0.1548,
+        "us2yChangeBp": -0.0057,
+        "vxnReturn1dPct": -0.1732,
+        "brentReturn1dPct": -0.1208
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.51529,
+        "us10yChangeBp": 0.025808,
+        "us2yChangeBp": -0.000818,
+        "vxnReturn1dPct": -0.0339,
+        "brentReturn1dPct": -0.020843
+      },
+      "interceptPct": 0.2722
+    },
+    "2026-05-05": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-11-07",
+      "trainEnd": "2026-05-04",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 4.2329,
+      "expectedSoxReturnPct": 2.3601,
+      "residualPct": 1.8728,
+      "residualZ": 1.515,
+      "inputs": {
+        "qqqReturn1dPct": 1.2974,
+        "us10yChangeBp": -2.0,
+        "us2yChangeBp": -2.0,
+        "vxnReturn1dPct": -2.5174,
+        "brentReturn1dPct": -3.9934
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.9796,
+        "us10yChangeBp": -0.0556,
+        "us2yChangeBp": 0.0023,
+        "vxnReturn1dPct": 0.0854,
+        "brentReturn1dPct": 0.0856
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.525859,
+        "us10yChangeBp": 0.027796,
+        "us2yChangeBp": -0.001173,
+        "vxnReturn1dPct": -0.033936,
+        "brentReturn1dPct": -0.021442
+      },
+      "interceptPct": 0.2627
+    },
+    "2026-05-06": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-11-10",
+      "trainEnd": "2026-05-05",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 4.4822,
+      "expectedSoxReturnPct": 3.3469,
+      "residualPct": 1.1353,
+      "residualZ": 0.904,
+      "inputs": {
+        "qqqReturn1dPct": 2.0774,
+        "us10yChangeBp": -7.0,
+        "us2yChangeBp": -6.0,
+        "vxnReturn1dPct": 4.9866,
+        "brentReturn1dPct": -7.8274
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 3.2059,
+        "us10yChangeBp": -0.2015,
+        "us2yChangeBp": 0.02,
+        "vxnReturn1dPct": -0.1596,
+        "brentReturn1dPct": 0.1969
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.543244,
+        "us10yChangeBp": 0.028786,
+        "us2yChangeBp": -0.003329,
+        "vxnReturn1dPct": -0.032002,
+        "brentReturn1dPct": -0.025156
+      },
+      "interceptPct": 0.2851
+    },
+    "2026-05-07": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-11-12",
+      "trainEnd": "2026-05-06",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -2.7174,
+      "expectedSoxReturnPct": 0.3052,
+      "residualPct": -3.0226,
+      "residualZ": -2.54,
+      "inputs": {
+        "qqqReturn1dPct": -0.1193,
+        "us10yChangeBp": 5.0,
+        "us2yChangeBp": 5.0,
+        "vxnReturn1dPct": -1.8236,
+        "brentReturn1dPct": -1.1948
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.1918,
+        "us10yChangeBp": 0.1292,
+        "us2yChangeBp": -0.0035,
+        "vxnReturn1dPct": 0.0429,
+        "brentReturn1dPct": 0.0332
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.607745,
+        "us10yChangeBp": 0.02585,
+        "us2yChangeBp": -0.000693,
+        "vxnReturn1dPct": -0.023503,
+        "brentReturn1dPct": -0.027814
+      },
+      "interceptPct": 0.2951
+    },
+    "2026-05-08": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-11-13",
+      "trainEnd": "2026-05-07",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 5.5058,
+      "expectedSoxReturnPct": 3.9471,
+      "residualPct": 1.5587,
+      "residualZ": 1.208,
+      "inputs": {
+        "qqqReturn1dPct": 2.3441,
+        "us10yChangeBp": -3.0,
+        "us2yChangeBp": -2.0,
+        "vxnReturn1dPct": 2.635,
+        "brentReturn1dPct": 1.2293
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 3.8318,
+        "us10yChangeBp": -0.078,
+        "us2yChangeBp": 0.0165,
+        "vxnReturn1dPct": -0.0531,
+        "brentReturn1dPct": -0.0228
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.63466,
+        "us10yChangeBp": 0.026002,
+        "us2yChangeBp": -0.008253,
+        "vxnReturn1dPct": -0.020151,
+        "brentReturn1dPct": -0.018514
+      },
+      "interceptPct": 0.2527
+    },
+    "2026-05-11": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-11-14",
+      "trainEnd": "2026-05-08",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.5947,
+      "expectedSoxReturnPct": 0.7145,
+      "residualPct": 1.8802,
+      "residualZ": 1.457,
+      "inputs": {
+        "qqqReturn1dPct": 0.2896,
+        "us10yChangeBp": 4.0,
+        "us2yChangeBp": 5.0,
+        "vxnReturn1dPct": 4.1246,
+        "brentReturn1dPct": 2.8828
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.4897,
+        "us10yChangeBp": 0.0938,
+        "us2yChangeBp": -0.0344,
+        "vxnReturn1dPct": -0.0471,
+        "brentReturn1dPct": -0.0471
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.691103,
+        "us10yChangeBp": 0.023456,
+        "us2yChangeBp": -0.006876,
+        "vxnReturn1dPct": -0.011409,
+        "brentReturn1dPct": -0.016331
+      },
+      "interceptPct": 0.2594
+    },
+    "2026-05-12": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-11-17",
+      "trainEnd": "2026-05-11",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -3.0112,
+      "expectedSoxReturnPct": -1.1299,
+      "residualPct": -1.8813,
+      "residualZ": -1.473,
+      "inputs": {
+        "qqqReturn1dPct": -0.8482,
+        "us10yChangeBp": 4.0,
+        "us2yChangeBp": 5.0,
+        "vxnReturn1dPct": -2.4656,
+        "brentReturn1dPct": 3.4162
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -1.4558,
+        "us10yChangeBp": 0.096,
+        "us2yChangeBp": -0.0103,
+        "vxnReturn1dPct": 0.0181,
+        "brentReturn1dPct": -0.051
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.716331,
+        "us10yChangeBp": 0.02399,
+        "us2yChangeBp": -0.00206,
+        "vxnReturn1dPct": -0.00734,
+        "brentReturn1dPct": -0.014922
+      },
+      "interceptPct": 0.2731
+    },
+    "2026-05-13": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-11-18",
+      "trainEnd": "2026-05-12",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.5665,
+      "expectedSoxReturnPct": 2.1417,
+      "residualPct": 0.4248,
+      "residualZ": 0.328,
+      "inputs": {
+        "qqqReturn1dPct": 1.0562,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": -2.0,
+        "vxnReturn1dPct": 1.9063,
+        "brentReturn1dPct": -1.9857
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.8462,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": 0.0095,
+        "vxnReturn1dPct": -0.0031,
+        "brentReturn1dPct": 0.0325
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.748003,
+        "us10yChangeBp": 0.023264,
+        "us2yChangeBp": -0.004758,
+        "vxnReturn1dPct": -0.001641,
+        "brentReturn1dPct": -0.016344
+      },
+      "interceptPct": 0.2566
+    },
+    "2026-05-14": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-11-19",
+      "trainEnd": "2026-05-13",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.4643,
+      "expectedSoxReturnPct": 1.5201,
+      "residualPct": -1.0558,
+      "residualZ": -0.803,
+      "inputs": {
+        "qqqReturn1dPct": 0.7108,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": 2.0,
+        "vxnReturn1dPct": -2.074,
+        "brentReturn1dPct": 0.0852
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.2463,
+        "us10yChangeBp": 0.024,
+        "us2yChangeBp": -0.012,
+        "vxnReturn1dPct": 0.0004,
+        "brentReturn1dPct": -0.0014
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.753342,
+        "us10yChangeBp": 0.023999,
+        "us2yChangeBp": -0.005993,
+        "vxnReturn1dPct": -0.000206,
+        "brentReturn1dPct": -0.016697
+      },
+      "interceptPct": 0.2628
+    },
+    "2026-05-15": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-11-20",
+      "trainEnd": "2026-05-14",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -4.0196,
+      "expectedSoxReturnPct": -2.2216,
+      "residualPct": -1.798,
+      "residualZ": -1.356,
+      "inputs": {
+        "qqqReturn1dPct": -1.5088,
+        "us10yChangeBp": 12.0,
+        "us2yChangeBp": 9.0,
+        "vxnReturn1dPct": 5.191,
+        "brentReturn1dPct": 3.3485
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -2.6385,
+        "us10yChangeBp": 0.281,
+        "us2yChangeBp": -0.0619,
+        "vxnReturn1dPct": -0.0003,
+        "brentReturn1dPct": -0.0529
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.748724,
+        "us10yChangeBp": 0.023415,
+        "us2yChangeBp": -0.006875,
+        "vxnReturn1dPct": -5.5e-05,
+        "brentReturn1dPct": -0.015798
+      },
+      "interceptPct": 0.251
+    },
+    "2026-05-18": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-11-21",
+      "trainEnd": "2026-05-15",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -2.4675,
+      "expectedSoxReturnPct": -0.5289,
+      "residualPct": -1.9386,
+      "residualZ": -1.418,
+      "inputs": {
+        "qqqReturn1dPct": -0.4302,
+        "us10yChangeBp": 2.0,
+        "us2yChangeBp": -2.0,
+        "vxnReturn1dPct": -4.4216,
+        "brentReturn1dPct": 2.5993
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.754,
+        "us10yChangeBp": 0.0187,
+        "us2yChangeBp": 0.0099,
+        "vxnReturn1dPct": -0.0103,
+        "brentReturn1dPct": -0.0396
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.752648,
+        "us10yChangeBp": 0.009368,
+        "us2yChangeBp": -0.004932,
+        "vxnReturn1dPct": 0.002338,
+        "brentReturn1dPct": -0.015244
+      },
+      "interceptPct": 0.2465
+    },
+    "2026-05-19": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-11-24",
+      "trainEnd": "2026-05-18",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.0264,
+      "expectedSoxReturnPct": -0.8228,
+      "residualPct": 0.8492,
+      "residualZ": 0.661,
+      "inputs": {
+        "qqqReturn1dPct": -0.6163,
+        "us10yChangeBp": 6.0,
+        "us2yChangeBp": 6.0,
+        "vxnReturn1dPct": -0.4957,
+        "brentReturn1dPct": -0.7315
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -1.0928,
+        "us10yChangeBp": 0.0037,
+        "us2yChangeBp": 0.0223,
+        "vxnReturn1dPct": -0.003,
+        "brentReturn1dPct": 0.013
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.773194,
+        "us10yChangeBp": 0.000613,
+        "us2yChangeBp": 0.003715,
+        "vxnReturn1dPct": 0.006049,
+        "brentReturn1dPct": -0.017743
+      },
+      "interceptPct": 0.234
+    },
+    "2026-05-20": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-11-25",
+      "trainEnd": "2026-05-19",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 4.4915,
+      "expectedSoxReturnPct": 3.2066,
+      "residualPct": 1.2849,
+      "residualZ": 0.994,
+      "inputs": {
+        "qqqReturn1dPct": 1.6564,
+        "us10yChangeBp": -10.0,
+        "us2yChangeBp": -9.0,
+        "vxnReturn1dPct": -1.5774,
+        "brentReturn1dPct": -5.6255
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 2.9336,
+        "us10yChangeBp": -0.0247,
+        "us2yChangeBp": -0.0434,
+        "vxnReturn1dPct": -0.0088,
+        "brentReturn1dPct": 0.1088
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.771046,
+        "us10yChangeBp": 0.00247,
+        "us2yChangeBp": 0.004818,
+        "vxnReturn1dPct": 0.005554,
+        "brentReturn1dPct": -0.01934
+      },
+      "interceptPct": 0.241
+    },
+    "2026-05-21": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-11-26",
+      "trainEnd": "2026-05-20",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 1.2765,
+      "expectedSoxReturnPct": 0.6443,
+      "residualPct": 0.6322,
+      "residualZ": 0.485,
+      "inputs": {
+        "qqqReturn1dPct": 0.1907,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": 4.0,
+        "vxnReturn1dPct": -4.0911,
+        "brentReturn1dPct": -2.3234
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.3379,
+        "us10yChangeBp": -0.0,
+        "us2yChangeBp": 0.0102,
+        "vxnReturn1dPct": -0.0189,
+        "brentReturn1dPct": 0.0495
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.771643,
+        "us10yChangeBp": -0.002741,
+        "us2yChangeBp": 0.002561,
+        "vxnReturn1dPct": 0.004622,
+        "brentReturn1dPct": -0.021307
+      },
+      "interceptPct": 0.2656
+    },
+    "2026-05-22": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-11-28",
+      "trainEnd": "2026-05-21",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 1.9931,
+      "expectedSoxReturnPct": 1.0102,
+      "residualPct": 0.9829,
+      "residualZ": 0.723,
+      "inputs": {
+        "qqqReturn1dPct": 0.4241,
+        "us10yChangeBp": -1.0,
+        "us2yChangeBp": 5.0,
+        "vxnReturn1dPct": 0.3518,
+        "brentReturn1dPct": 0.9359
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.7493,
+        "us10yChangeBp": 0.0024,
+        "us2yChangeBp": 0.0147,
+        "vxnReturn1dPct": 0.0017,
+        "brentReturn1dPct": -0.0219
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.766792,
+        "us10yChangeBp": -0.002366,
+        "us2yChangeBp": 0.00293,
+        "vxnReturn1dPct": 0.004914,
+        "brentReturn1dPct": -0.023348
+      },
+      "interceptPct": 0.264
+    },
+    "2026-05-26": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-01",
+      "trainEnd": "2026-05-22",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 5.5264,
+      "expectedSoxReturnPct": 3.471,
+      "residualPct": 2.0554,
+      "residualZ": 1.491,
+      "inputs": {
+        "qqqReturn1dPct": 1.7755,
+        "us10yChangeBp": -6.0,
+        "us2yChangeBp": -12.0,
+        "vxnReturn1dPct": 4.7327,
+        "brentReturn1dPct": -3.8246
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 3.145,
+        "us10yChangeBp": 0.0493,
+        "us2yChangeBp": -0.111,
+        "vxnReturn1dPct": 0.0289,
+        "brentReturn1dPct": 0.0894
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.771358,
+        "us10yChangeBp": -0.008218,
+        "us2yChangeBp": 0.009249,
+        "vxnReturn1dPct": 0.0061,
+        "brentReturn1dPct": -0.023386
+      },
+      "interceptPct": 0.2693
+    },
+    "2026-05-27": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-02",
+      "trainEnd": "2026-05-26",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -1.3568,
+      "expectedSoxReturnPct": 0.1747,
+      "residualPct": -1.5315,
+      "residualZ": -1.177,
+      "inputs": {
+        "qqqReturn1dPct": -0.1137,
+        "us10yChangeBp": -2.0,
+        "us2yChangeBp": -1.0,
+        "vxnReturn1dPct": -2.1339,
+        "brentReturn1dPct": -5.3123
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.2066,
+        "us10yChangeBp": 0.0027,
+        "us2yChangeBp": 0.0047,
+        "vxnReturn1dPct": -0.0277,
+        "brentReturn1dPct": 0.1228
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.816674,
+        "us10yChangeBp": -0.001371,
+        "us2yChangeBp": -0.004664,
+        "vxnReturn1dPct": 0.01298,
+        "brentReturn1dPct": -0.023119
+      },
+      "interceptPct": 0.2787
+    },
+    "2026-05-28": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-03",
+      "trainEnd": "2026-05-27",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.9995,
+      "expectedSoxReturnPct": 1.792,
+      "residualPct": -0.7925,
+      "residualZ": -0.615,
+      "inputs": {
+        "qqqReturn1dPct": 0.8431,
+        "us10yChangeBp": -3.0,
+        "us2yChangeBp": -1.0,
+        "vxnReturn1dPct": -2.0094,
+        "brentReturn1dPct": -0.6151
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.5473,
+        "us10yChangeBp": -0.0007,
+        "us2yChangeBp": 0.0055,
+        "vxnReturn1dPct": -0.0304,
+        "brentReturn1dPct": 0.011
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.835309,
+        "us10yChangeBp": 0.000245,
+        "us2yChangeBp": -0.005518,
+        "vxnReturn1dPct": 0.015121,
+        "brentReturn1dPct": -0.017949
+      },
+      "interceptPct": 0.2592
+    },
+    "2026-05-29": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-04",
+      "trainEnd": "2026-05-28",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.0019,
+      "expectedSoxReturnPct": 0.9347,
+      "residualPct": -0.9328,
+      "residualZ": -0.771,
+      "inputs": {
+        "qqqReturn1dPct": 0.3684,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": -1.0,
+        "vxnReturn1dPct": -1.4834,
+        "brentReturn1dPct": -1.7714
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.6775,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": 0.0066,
+        "vxnReturn1dPct": -0.0242,
+        "brentReturn1dPct": 0.0333
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.838948,
+        "us10yChangeBp": 0.004384,
+        "us2yChangeBp": -0.006556,
+        "vxnReturn1dPct": 0.016329,
+        "brentReturn1dPct": -0.018797
+      },
+      "interceptPct": 0.2416
+    },
+    "2026-06-01": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-05",
+      "trainEnd": "2026-05-29",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 1.0621,
+      "expectedSoxReturnPct": 1.2903,
+      "residualPct": -0.2282,
+      "residualZ": -0.245,
+      "inputs": {
+        "qqqReturn1dPct": 0.6,
+        "us10yChangeBp": 2.0,
+        "us2yChangeBp": 7.0,
+        "vxnReturn1dPct": 2.6572,
+        "brentReturn1dPct": 3.1831
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.1015,
+        "us10yChangeBp": 0.0134,
+        "us2yChangeBp": -0.0493,
+        "vxnReturn1dPct": 0.0411,
+        "brentReturn1dPct": -0.0578
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.835914,
+        "us10yChangeBp": 0.006678,
+        "us2yChangeBp": -0.00704,
+        "vxnReturn1dPct": 0.015452,
+        "brentReturn1dPct": -0.018155
+      },
+      "interceptPct": 0.2414
+    },
+    "2026-06-02": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-08",
+      "trainEnd": "2026-06-01",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 5.8664,
+      "expectedSoxReturnPct": 1.0618,
+      "residualPct": 4.8046,
+      "residualZ": 3.529,
+      "inputs": {
+        "qqqReturn1dPct": 0.4605,
+        "us10yChangeBp": -1.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 0.3883,
+        "brentReturn1dPct": 1.0739
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.8438,
+        "us10yChangeBp": -0.0074,
+        "us2yChangeBp": -0.0,
+        "vxnReturn1dPct": 0.0058,
+        "brentReturn1dPct": -0.0197
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.832405,
+        "us10yChangeBp": 0.007354,
+        "us2yChangeBp": -0.008507,
+        "vxnReturn1dPct": 0.015028,
+        "brentReturn1dPct": -0.018318
+      },
+      "interceptPct": 0.2392
+    },
+    "2026-06-03": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-09",
+      "trainEnd": "2026-06-02",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 1.3892,
+      "expectedSoxReturnPct": -0.2191,
+      "residualPct": 1.6083,
+      "residualZ": 0.966,
+      "inputs": {
+        "qqqReturn1dPct": -0.2613,
+        "us10yChangeBp": 3.0,
+        "us2yChangeBp": 3.0,
+        "vxnReturn1dPct": 2.4495,
+        "brentReturn1dPct": 1.8854
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.4828,
+        "us10yChangeBp": -0.003,
+        "us2yChangeBp": -0.0134,
+        "vxnReturn1dPct": 0.0388,
+        "brentReturn1dPct": -0.0242
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.847677,
+        "us10yChangeBp": -0.001004,
+        "us2yChangeBp": -0.004461,
+        "vxnReturn1dPct": 0.015829,
+        "brentReturn1dPct": -0.012829
+      },
+      "interceptPct": 0.2655
+    },
+    "2026-06-04": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-10",
+      "trainEnd": "2026-06-03",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -2.1518,
+      "expectedSoxReturnPct": -0.6082,
+      "residualPct": -1.5436,
+      "residualZ": -1.202,
+      "inputs": {
+        "qqqReturn1dPct": -0.4837,
+        "us10yChangeBp": -2.0,
+        "us2yChangeBp": -3.0,
+        "vxnReturn1dPct": -2.6007,
+        "brentReturn1dPct": -2.8422
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.8936,
+        "us10yChangeBp": 0.0015,
+        "us2yChangeBp": 0.006,
+        "vxnReturn1dPct": -0.0427,
+        "brentReturn1dPct": 0.0381
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.847484,
+        "us10yChangeBp": -0.000759,
+        "us2yChangeBp": -0.001987,
+        "vxnReturn1dPct": 0.01641,
+        "brentReturn1dPct": -0.013405
+      },
+      "interceptPct": 0.2825
+    },
+    "2026-06-05": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-11",
+      "trainEnd": "2026-06-04",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -10.2569,
+      "expectedSoxReturnPct": -8.0586,
+      "residualPct": -2.1983,
+      "residualZ": -1.619,
+      "inputs": {
+        "qqqReturn1dPct": -4.8001,
+        "us10yChangeBp": 8.0,
+        "us2yChangeBp": 12.0,
+        "vxnReturn1dPct": 31.2231,
+        "brentReturn1dPct": -2.0415
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -9.0099,
+        "us10yChangeBp": -0.0069,
+        "us2yChangeBp": 0.0242,
+        "vxnReturn1dPct": 0.6514,
+        "brentReturn1dPct": 0.0237
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.877015,
+        "us10yChangeBp": -0.000857,
+        "us2yChangeBp": 0.002013,
+        "vxnReturn1dPct": 0.020863,
+        "brentReturn1dPct": -0.011594
+      },
+      "interceptPct": 0.2589
+    },
+    "2026-06-08": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-12",
+      "trainEnd": "2026-06-05",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 5.6128,
+      "expectedSoxReturnPct": 3.1289,
+      "residualPct": 2.4839,
+      "residualZ": 1.576,
+      "inputs": {
+        "qqqReturn1dPct": 1.5616,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": -2.0,
+        "vxnReturn1dPct": -10.9944,
+        "brentReturn1dPct": 1.2461
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 2.9157,
+        "us10yChangeBp": 0.0063,
+        "us2yChangeBp": 0.029,
+        "vxnReturn1dPct": -0.0754,
+        "brentReturn1dPct": -0.0013
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.867115,
+        "us10yChangeBp": 0.006302,
+        "us2yChangeBp": -0.014523,
+        "vxnReturn1dPct": 0.006857,
+        "brentReturn1dPct": -0.001065
+      },
+      "interceptPct": 0.2546
+    },
+    "2026-06-09": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-15",
+      "trainEnd": "2026-06-08",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -1.9283,
+      "expectedSoxReturnPct": -1.8181,
+      "residualPct": -0.1102,
+      "residualZ": -0.187,
+      "inputs": {
+        "qqqReturn1dPct": -1.1507,
+        "us10yChangeBp": -3.0,
+        "us2yChangeBp": -2.0,
+        "vxnReturn1dPct": 9.8083,
+        "brentReturn1dPct": -2.9708
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -2.1348,
+        "us10yChangeBp": -0.0793,
+        "us2yChangeBp": 0.0638,
+        "vxnReturn1dPct": 0.0313,
+        "brentReturn1dPct": 0.0036
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.855255,
+        "us10yChangeBp": 0.026437,
+        "us2yChangeBp": -0.031903,
+        "vxnReturn1dPct": 0.003194,
+        "brentReturn1dPct": -0.001215
+      },
+      "interceptPct": 0.2973
+    },
+    "2026-06-10": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-16",
+      "trainEnd": "2026-06-09",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -3.5658,
+      "expectedSoxReturnPct": -3.3289,
+      "residualPct": -0.2369,
+      "residualZ": -0.259,
+      "inputs": {
+        "qqqReturn1dPct": -1.9977,
+        "us10yChangeBp": 2.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 9.7381,
+        "brentReturn1dPct": 1.8043
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -3.7049,
+        "us10yChangeBp": 0.0533,
+        "us2yChangeBp": -0.0,
+        "vxnReturn1dPct": 0.0282,
+        "brentReturn1dPct": -0.0018
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.854594,
+        "us10yChangeBp": 0.026656,
+        "us2yChangeBp": -0.031993,
+        "vxnReturn1dPct": 0.002893,
+        "brentReturn1dPct": -0.001023
+      },
+      "interceptPct": 0.2964
+    },
+    "2026-06-11": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-17",
+      "trainEnd": "2026-06-10",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 7.9055,
+      "expectedSoxReturnPct": 6.543,
+      "residualPct": 1.3625,
+      "residualZ": 0.791,
+      "inputs": {
+        "qqqReturn1dPct": 3.3776,
+        "us10yChangeBp": -10.0,
+        "us2yChangeBp": -8.0,
+        "vxnReturn1dPct": -6.8543,
+        "brentReturn1dPct": -2.9216
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 6.2268,
+        "us10yChangeBp": -0.2529,
+        "us2yChangeBp": 0.2603,
+        "vxnReturn1dPct": -0.0062,
+        "brentReturn1dPct": 0.0073
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.843555,
+        "us10yChangeBp": 0.02529,
+        "us2yChangeBp": -0.032536,
+        "vxnReturn1dPct": 0.000909,
+        "brentReturn1dPct": -0.002491
+      },
+      "interceptPct": 0.3077
+    },
+    "2026-06-12": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-18",
+      "trainEnd": "2026-06-11",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 1.5187,
+      "expectedSoxReturnPct": 1.3246,
+      "residualPct": 0.1941,
+      "residualZ": 0.003,
+      "inputs": {
+        "qqqReturn1dPct": 0.5885,
+        "us10yChangeBp": 3.0,
+        "us2yChangeBp": 4.0,
+        "vxnReturn1dPct": -10.4139,
+        "brentReturn1dPct": -3.3746
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.0936,
+        "us10yChangeBp": 0.058,
+        "us2yChangeBp": -0.127,
+        "vxnReturn1dPct": -0.0278,
+        "brentReturn1dPct": 0.0058
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.858207,
+        "us10yChangeBp": 0.019336,
+        "us2yChangeBp": -0.031752,
+        "vxnReturn1dPct": 0.002669,
+        "brentReturn1dPct": -0.001717
+      },
+      "interceptPct": 0.3221
+    },
+    "2026-06-15": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-19",
+      "trainEnd": "2026-06-12",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 5.4456,
+      "expectedSoxReturnPct": 6.2137,
+      "residualPct": -0.7681,
+      "residualZ": -0.616,
+      "inputs": {
+        "qqqReturn1dPct": 3.1414,
+        "us10yChangeBp": -1.0,
+        "us2yChangeBp": -2.0,
+        "vxnReturn1dPct": -4.9505,
+        "brentReturn1dPct": -4.7635
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 5.8452,
+        "us10yChangeBp": -0.0188,
+        "us2yChangeBp": 0.063,
+        "vxnReturn1dPct": -0.0111,
+        "brentReturn1dPct": 0.0077
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.86069,
+        "us10yChangeBp": 0.018789,
+        "us2yChangeBp": -0.031492,
+        "vxnReturn1dPct": 0.002245,
+        "brentReturn1dPct": -0.001623
+      },
+      "interceptPct": 0.3277
+    },
+    "2026-06-16": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-22",
+      "trainEnd": "2026-06-15",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -5.7122,
+      "expectedSoxReturnPct": -3.1537,
+      "residualPct": -2.5585,
+      "residualZ": -1.781,
+      "inputs": {
+        "qqqReturn1dPct": -1.9005,
+        "us10yChangeBp": -4.0,
+        "us2yChangeBp": -2.0,
+        "vxnReturn1dPct": 3.9738,
+        "brentReturn1dPct": -5.0619
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -3.4816,
+        "us10yChangeBp": -0.0622,
+        "us2yChangeBp": 0.0618,
+        "vxnReturn1dPct": -0.0006,
+        "brentReturn1dPct": 0.0035
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.831936,
+        "us10yChangeBp": 0.015553,
+        "us2yChangeBp": -0.030885,
+        "vxnReturn1dPct": -0.000143,
+        "brentReturn1dPct": -0.000685
+      },
+      "interceptPct": 0.3254
+    },
+    "2026-06-17": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-23",
+      "trainEnd": "2026-06-16",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 1.3754,
+      "expectedSoxReturnPct": -1.9373,
+      "residualPct": 3.3127,
+      "residualZ": 2.085,
+      "inputs": {
+        "qqqReturn1dPct": -1.007,
+        "us10yChangeBp": 6.0,
+        "us2yChangeBp": 15.0,
+        "vxnReturn1dPct": 5.974,
+        "brentReturn1dPct": 0.7472
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -1.9031,
+        "us10yChangeBp": 0.1471,
+        "us2yChangeBp": -0.5016,
+        "vxnReturn1dPct": 0.0244,
+        "brentReturn1dPct": 0.0053
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.889869,
+        "us10yChangeBp": 0.024525,
+        "us2yChangeBp": -0.033441,
+        "vxnReturn1dPct": 0.004091,
+        "brentReturn1dPct": 0.007066
+      },
+      "interceptPct": 0.2906
+    },
+    "2026-06-18": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-24",
+      "trainEnd": "2026-06-17",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 6.4162,
+      "expectedSoxReturnPct": 4.9833,
+      "residualPct": 1.4329,
+      "residualZ": 0.801,
+      "inputs": {
+        "qqqReturn1dPct": 2.5065,
+        "us10yChangeBp": -3.0,
+        "us2yChangeBp": -1.0,
+        "vxnReturn1dPct": -7.8782,
+        "brentReturn1dPct": 0.3771
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 4.7535,
+        "us10yChangeBp": -0.0178,
+        "us2yChangeBp": 0.0008,
+        "vxnReturn1dPct": -0.0606,
+        "brentReturn1dPct": 0.0004
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.896487,
+        "us10yChangeBp": 0.005937,
+        "us2yChangeBp": -0.000805,
+        "vxnReturn1dPct": 0.007698,
+        "brentReturn1dPct": 0.001114
+      },
+      "interceptPct": 0.307
+    },
+    "2026-06-22": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-26",
+      "trainEnd": "2026-06-18",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.0426,
+      "expectedSoxReturnPct": -0.3187,
+      "residualPct": 2.3613,
+      "residualZ": 1.401,
+      "inputs": {
+        "qqqReturn1dPct": -0.3605,
+        "us10yChangeBp": 5.0,
+        "us2yChangeBp": 5.0,
+        "vxnReturn1dPct": 5.1691,
+        "brentReturn1dPct": -2.4421
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.6883,
+        "us10yChangeBp": 0.0101,
+        "us2yChangeBp": 0.0078,
+        "vxnReturn1dPct": 0.038,
+        "brentReturn1dPct": -0.0071
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.909263,
+        "us10yChangeBp": 0.00202,
+        "us2yChangeBp": 0.001551,
+        "vxnReturn1dPct": 0.007347,
+        "brentReturn1dPct": 0.002903
+      },
+      "interceptPct": 0.3209
+    },
+    "2026-06-23": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-29",
+      "trainEnd": "2026-06-22",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -7.8732,
+      "expectedSoxReturnPct": -5.8324,
+      "residualPct": -2.0408,
+      "residualZ": -1.379,
+      "inputs": {
+        "qqqReturn1dPct": -3.2929,
+        "us10yChangeBp": -1.0,
+        "us2yChangeBp": -8.0,
+        "vxnReturn1dPct": 16.9859,
+        "brentReturn1dPct": -1.0526
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -6.3108,
+        "us10yChangeBp": -0.0073,
+        "us2yChangeBp": -0.026,
+        "vxnReturn1dPct": 0.1685,
+        "brentReturn1dPct": 0.0037
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.916497,
+        "us10yChangeBp": 0.007285,
+        "us2yChangeBp": 0.003248,
+        "vxnReturn1dPct": 0.009921,
+        "brentReturn1dPct": -0.003521
+      },
+      "interceptPct": 0.3394
+    },
+    "2026-06-24": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-30",
+      "trainEnd": "2026-06-23",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -0.1803,
+      "expectedSoxReturnPct": -0.6433,
+      "residualPct": 0.463,
+      "residualZ": 0.182,
+      "inputs": {
+        "qqqReturn1dPct": -0.4246,
+        "us10yChangeBp": -9.0,
+        "us2yChangeBp": -5.0,
+        "vxnReturn1dPct": -6.7655,
+        "brentReturn1dPct": -4.3332
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.8252,
+        "us10yChangeBp": -0.0056,
+        "us2yChangeBp": -0.0798,
+        "vxnReturn1dPct": -0.0544,
+        "brentReturn1dPct": 0.0082
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.943544,
+        "us10yChangeBp": 0.000627,
+        "us2yChangeBp": 0.015961,
+        "vxnReturn1dPct": 0.008043,
+        "brentReturn1dPct": -0.001889
+      },
+      "interceptPct": 0.3136
+    },
+    "2026-06-25": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2025-12-31",
+      "trainEnd": "2026-06-24",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 3.5865,
+      "expectedSoxReturnPct": 1.8666,
+      "residualPct": 1.7199,
+      "residualZ": 0.974,
+      "inputs": {
+        "qqqReturn1dPct": 0.8106,
+        "us10yChangeBp": -1.0,
+        "us2yChangeBp": -2.0,
+        "vxnReturn1dPct": 2.4188,
+        "brentReturn1dPct": 2.0613
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.567,
+        "us10yChangeBp": 0.0021,
+        "us2yChangeBp": -0.0334,
+        "vxnReturn1dPct": 0.0158,
+        "brentReturn1dPct": -0.005
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.933143,
+        "us10yChangeBp": -0.002084,
+        "us2yChangeBp": 0.016686,
+        "vxnReturn1dPct": 0.006512,
+        "brentReturn1dPct": -0.002429
+      },
+      "interceptPct": 0.3202
+    },
+    "2026-06-26": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-02",
+      "trainEnd": "2026-06-25",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -5.2888,
+      "expectedSoxReturnPct": -2.3829,
+      "residualPct": -2.9059,
+      "residualZ": -1.993,
+      "inputs": {
+        "qqqReturn1dPct": -1.3764,
+        "us10yChangeBp": -2.0,
+        "us2yChangeBp": -2.0,
+        "vxnReturn1dPct": -0.2912,
+        "brentReturn1dPct": -4.3449
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -2.6837,
+        "us10yChangeBp": 0.0028,
+        "us2yChangeBp": -0.0295,
+        "vxnReturn1dPct": -0.0026,
+        "brentReturn1dPct": -0.0004
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.949805,
+        "us10yChangeBp": -0.001418,
+        "us2yChangeBp": 0.014763,
+        "vxnReturn1dPct": 0.008997,
+        "brentReturn1dPct": 9.2e-05
+      },
+      "interceptPct": 0.3306
+    },
+    "2026-06-29": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-05",
+      "trainEnd": "2026-06-26",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 3.833,
+      "expectedSoxReturnPct": 5.2633,
+      "residualPct": -1.4303,
+      "residualZ": -0.985,
+      "inputs": {
+        "qqqReturn1dPct": 2.4854,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": 3.0,
+        "vxnReturn1dPct": -4.7047,
+        "brentReturn1dPct": 1.6113
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 5.0112,
+        "us10yChangeBp": -0.0,
+        "us2yChangeBp": 0.0651,
+        "vxnReturn1dPct": -0.0809,
+        "brentReturn1dPct": 0.0135
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.016239,
+        "us10yChangeBp": -0.005737,
+        "us2yChangeBp": 0.021701,
+        "vxnReturn1dPct": 0.017195,
+        "brentReturn1dPct": 0.008366
+      },
+      "interceptPct": 0.2545
+    },
+    "2026-06-30": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-06",
+      "trainEnd": "2026-06-29",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 3.9191,
+      "expectedSoxReturnPct": 3.5665,
+      "residualPct": 0.3526,
+      "residualZ": 0.128,
+      "inputs": {
+        "qqqReturn1dPct": 1.7015,
+        "us10yChangeBp": 6.0,
+        "us2yChangeBp": 4.0,
+        "vxnReturn1dPct": -7.6949,
+        "brentReturn1dPct": -0.3144
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 3.3884,
+        "us10yChangeBp": -0.0307,
+        "us2yChangeBp": 0.0736,
+        "vxnReturn1dPct": -0.1179,
+        "brentReturn1dPct": -0.0024
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.991426,
+        "us10yChangeBp": -0.005122,
+        "us2yChangeBp": 0.018402,
+        "vxnReturn1dPct": 0.015317,
+        "brentReturn1dPct": 0.007779
+      },
+      "interceptPct": 0.2556
+    },
+    "2026-07-01": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-07",
+      "trainEnd": "2026-06-30",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -6.2728,
+      "expectedSoxReturnPct": -2.7284,
+      "residualPct": -3.5444,
+      "residualZ": -2.256,
+      "inputs": {
+        "qqqReturn1dPct": -1.525,
+        "us10yChangeBp": 4.0,
+        "us2yChangeBp": 3.0,
+        "vxnReturn1dPct": 2.1394,
+        "brentReturn1dPct": -1.8513
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -3.0339,
+        "us10yChangeBp": -0.017,
+        "us2yChangeBp": 0.0536,
+        "vxnReturn1dPct": 0.0317,
+        "brentReturn1dPct": -0.0154
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 1.989429,
+        "us10yChangeBp": -0.004254,
+        "us2yChangeBp": 0.01787,
+        "vxnReturn1dPct": 0.0148,
+        "brentReturn1dPct": 0.008297
+      },
+      "interceptPct": 0.2526
+    },
+    "2026-07-02": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-08",
+      "trainEnd": "2026-07-01",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -5.4448,
+      "expectedSoxReturnPct": -3.368,
+      "residualPct": -2.0768,
+      "residualZ": -1.27,
+      "inputs": {
+        "qqqReturn1dPct": -1.7334,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": -3.0,
+        "vxnReturn1dPct": 1.0473,
+        "brentReturn1dPct": 0.3214
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -3.5294,
+        "us10yChangeBp": -0.0173,
+        "us2yChangeBp": -0.0723,
+        "vxnReturn1dPct": 0.0224,
+        "brentReturn1dPct": 0.0047
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.036141,
+        "us10yChangeBp": -0.017265,
+        "us2yChangeBp": 0.024097,
+        "vxnReturn1dPct": 0.021395,
+        "brentReturn1dPct": 0.014673
+      },
+      "interceptPct": 0.2239
+    },
+    "2026-07-06": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-09",
+      "trainEnd": "2026-07-02",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.1695,
+      "expectedSoxReturnPct": 3.0583,
+      "residualPct": -0.8888,
+      "residualZ": -0.537,
+      "inputs": {
+        "qqqReturn1dPct": 1.4342,
+        "us10yChangeBp": -1.0,
+        "us2yChangeBp": -1.0,
+        "vxnReturn1dPct": -4.1816,
+        "brentReturn1dPct": 0.2646
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 2.9637,
+        "us10yChangeBp": 0.021,
+        "us2yChangeBp": -0.0307,
+        "vxnReturn1dPct": -0.1058,
+        "brentReturn1dPct": 0.0042
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.066478,
+        "us10yChangeBp": -0.021034,
+        "us2yChangeBp": 0.030727,
+        "vxnReturn1dPct": 0.025293,
+        "brentReturn1dPct": 0.015686
+      },
+      "interceptPct": 0.2059
+    },
+    "2026-07-07": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-12",
+      "trainEnd": "2026-07-06",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -4.6482,
+      "expectedSoxReturnPct": -3.4303,
+      "residualPct": -1.2179,
+      "residualZ": -0.711,
+      "inputs": {
+        "qqqReturn1dPct": -1.8525,
+        "us10yChangeBp": 7.0,
+        "us2yChangeBp": 6.0,
+        "vxnReturn1dPct": 4.1402,
+        "brentReturn1dPct": 3.0143
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -3.8154,
+        "us10yChangeBp": -0.1364,
+        "us2yChangeBp": 0.1756,
+        "vxnReturn1dPct": 0.105,
+        "brentReturn1dPct": 0.0443
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.05961,
+        "us10yChangeBp": -0.019482,
+        "us2yChangeBp": 0.02926,
+        "vxnReturn1dPct": 0.025368,
+        "brentReturn1dPct": 0.014698
+      },
+      "interceptPct": 0.1966
+    },
+    "2026-07-08": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-13",
+      "trainEnd": "2026-07-07",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.2312,
+      "expectedSoxReturnPct": 0.8781,
+      "residualPct": 1.3531,
+      "residualZ": 0.799,
+      "inputs": {
+        "qqqReturn1dPct": 0.2833,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": 2.0,
+        "vxnReturn1dPct": -0.2149,
+        "brentReturn1dPct": 5.205
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.5863,
+        "us10yChangeBp": -0.0227,
+        "us2yChangeBp": 0.0598,
+        "vxnReturn1dPct": -0.0057,
+        "brentReturn1dPct": 0.0756
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.069532,
+        "us10yChangeBp": -0.022721,
+        "us2yChangeBp": 0.029887,
+        "vxnReturn1dPct": 0.026503,
+        "brentReturn1dPct": 0.014516
+      },
+      "interceptPct": 0.1849
+    },
+    "2026-07-09": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-14",
+      "trainEnd": "2026-07-08",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 3.0619,
+      "expectedSoxReturnPct": 3.4013,
+      "residualPct": -0.3394,
+      "residualZ": -0.179,
+      "inputs": {
+        "qqqReturn1dPct": 1.6642,
+        "us10yChangeBp": -2.0,
+        "us2yChangeBp": -5.0,
+        "vxnReturn1dPct": -3.4099,
+        "brentReturn1dPct": -2.2046
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 3.4485,
+        "us10yChangeBp": 0.0461,
+        "us2yChangeBp": -0.1545,
+        "vxnReturn1dPct": -0.089,
+        "brentReturn1dPct": -0.0368
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.072184,
+        "us10yChangeBp": -0.023027,
+        "us2yChangeBp": 0.030903,
+        "vxnReturn1dPct": 0.026091,
+        "brentReturn1dPct": 0.016678
+      },
+      "interceptPct": 0.187
+    },
+    "2026-07-10": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-15",
+      "trainEnd": "2026-07-09",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.0552,
+      "expectedSoxReturnPct": 0.7278,
+      "residualPct": -0.6726,
+      "residualZ": -0.37,
+      "inputs": {
+        "qqqReturn1dPct": 0.3083,
+        "us10yChangeBp": 2.0,
+        "us2yChangeBp": 5.0,
+        "vxnReturn1dPct": -7.5065,
+        "brentReturn1dPct": -0.3801
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.641,
+        "us10yChangeBp": -0.0408,
+        "us2yChangeBp": 0.158,
+        "vxnReturn1dPct": -0.1963,
+        "brentReturn1dPct": -0.0059
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.079006,
+        "us10yChangeBp": -0.020403,
+        "us2yChangeBp": 0.031599,
+        "vxnReturn1dPct": 0.026144,
+        "brentReturn1dPct": 0.015398
+      },
+      "interceptPct": 0.1717
+    },
+    "2026-07-13": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-16",
+      "trainEnd": "2026-07-10",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -4.7765,
+      "expectedSoxReturnPct": -3.3274,
+      "residualPct": -1.4491,
+      "residualZ": -0.827,
+      "inputs": {
+        "qqqReturn1dPct": -1.898,
+        "us10yChangeBp": 6.0,
+        "us2yChangeBp": 5.0,
+        "vxnReturn1dPct": 9.6826,
+        "brentReturn1dPct": 9.5908
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -3.9576,
+        "us10yChangeBp": -0.1144,
+        "us2yChangeBp": 0.1372,
+        "vxnReturn1dPct": 0.2727,
+        "brentReturn1dPct": 0.1767
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.085153,
+        "us10yChangeBp": -0.019072,
+        "us2yChangeBp": 0.027447,
+        "vxnReturn1dPct": 0.028162,
+        "brentReturn1dPct": 0.018424
+      },
+      "interceptPct": 0.158
+    },
+    "2026-07-14": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-20",
+      "trainEnd": "2026-07-13",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.5442,
+      "expectedSoxReturnPct": 2.242,
+      "residualPct": 0.3022,
+      "residualZ": 0.186,
+      "inputs": {
+        "qqqReturn1dPct": 1.117,
+        "us10yChangeBp": -4.0,
+        "us2yChangeBp": -8.0,
+        "vxnReturn1dPct": -3.7363,
+        "brentReturn1dPct": 1.7167
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 2.3306,
+        "us10yChangeBp": 0.1134,
+        "us2yChangeBp": -0.2596,
+        "vxnReturn1dPct": -0.1041,
+        "brentReturn1dPct": 0.0243
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.086463,
+        "us10yChangeBp": -0.028348,
+        "us2yChangeBp": 0.032451,
+        "vxnReturn1dPct": 0.02785,
+        "brentReturn1dPct": 0.014166
+      },
+      "interceptPct": 0.1373
+    },
+    "2026-07-15": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-21",
+      "trainEnd": "2026-07-14",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -2.0774,
+      "expectedSoxReturnPct": -0.5624,
+      "residualPct": -1.515,
+      "residualZ": -0.883,
+      "inputs": {
+        "qqqReturn1dPct": -0.2709,
+        "us10yChangeBp": -3.0,
+        "us2yChangeBp": -5.0,
+        "vxnReturn1dPct": -2.3973,
+        "brentReturn1dPct": 0.2596
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.5635,
+        "us10yChangeBp": 0.1178,
+        "us2yChangeBp": -0.1948,
+        "vxnReturn1dPct": -0.0495,
+        "brentReturn1dPct": 0.0045
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.080116,
+        "us10yChangeBp": -0.03925,
+        "us2yChangeBp": 0.038959,
+        "vxnReturn1dPct": 0.020636,
+        "brentReturn1dPct": 0.017407
+      },
+      "interceptPct": 0.1231
+    },
+    "2026-07-16": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-22",
+      "trainEnd": "2026-07-15",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -4.2858,
+      "expectedSoxReturnPct": -3.1501,
+      "residualPct": -1.1357,
+      "residualZ": -0.64,
+      "inputs": {
+        "qqqReturn1dPct": -1.644,
+        "us10yChangeBp": 2.0,
+        "us2yChangeBp": 3.0,
+        "vxnReturn1dPct": 6.5887,
+        "brentReturn1dPct": -0.8475
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -3.4496,
+        "us10yChangeBp": -0.0761,
+        "us2yChangeBp": 0.1256,
+        "vxnReturn1dPct": 0.1607,
+        "brentReturn1dPct": -0.0134
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.098272,
+        "us10yChangeBp": -0.038058,
+        "us2yChangeBp": 0.041851,
+        "vxnReturn1dPct": 0.024383,
+        "brentReturn1dPct": 0.015792
+      },
+      "interceptPct": 0.1027
+    },
+    "2026-07-17": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-23",
+      "trainEnd": "2026-07-16",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -1.6315,
+      "expectedSoxReturnPct": -2.6832,
+      "residualPct": 1.0517,
+      "residualZ": 0.658,
+      "inputs": {
+        "qqqReturn1dPct": -1.503,
+        "us10yChangeBp": -2.0,
+        "us2yChangeBp": 2.0,
+        "vxnReturn1dPct": 6.1814,
+        "brentReturn1dPct": 4.5946
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -3.1604,
+        "us10yChangeBp": 0.0755,
+        "us2yChangeBp": 0.0832,
+        "vxnReturn1dPct": 0.1396,
+        "brentReturn1dPct": 0.0741
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.102739,
+        "us10yChangeBp": -0.037747,
+        "us2yChangeBp": 0.041597,
+        "vxnReturn1dPct": 0.022577,
+        "brentReturn1dPct": 0.016129
+      },
+      "interceptPct": 0.1048
+    },
+    "2026-07-20": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-26",
+      "trainEnd": "2026-07-17",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.5993,
+      "expectedSoxReturnPct": 0.2379,
+      "residualPct": 0.3614,
+      "residualZ": 0.254,
+      "inputs": {
+        "qqqReturn1dPct": 0.105,
+        "us10yChangeBp": 5.0,
+        "us2yChangeBp": 3.0,
+        "vxnReturn1dPct": -1.7224,
+        "brentReturn1dPct": 1.2713
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.2202,
+        "us10yChangeBp": -0.2366,
+        "us2yChangeBp": 0.1365,
+        "vxnReturn1dPct": -0.0399,
+        "brentReturn1dPct": 0.028
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.097215,
+        "us10yChangeBp": -0.047318,
+        "us2yChangeBp": 0.045487,
+        "vxnReturn1dPct": 0.023155,
+        "brentReturn1dPct": 0.022034
+      },
+      "interceptPct": 0.1297
+    },
+    "2026-07-21": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-27",
+      "trainEnd": "2026-07-20",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 5.2139,
+      "expectedSoxReturnPct": 4.006,
+      "residualPct": 1.2079,
+      "residualZ": 0.744,
+      "inputs": {
+        "qqqReturn1dPct": 1.8547,
+        "us10yChangeBp": 3.0,
+        "us2yChangeBp": 5.0,
+        "vxnReturn1dPct": -6.5545,
+        "brentReturn1dPct": 2.0063
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 3.8926,
+        "us10yChangeBp": -0.1337,
+        "us2yChangeBp": 0.2098,
+        "vxnReturn1dPct": -0.152,
+        "brentReturn1dPct": 0.0446
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.098776,
+        "us10yChangeBp": -0.044571,
+        "us2yChangeBp": 0.041958,
+        "vxnReturn1dPct": 0.023186,
+        "brentReturn1dPct": 0.022217
+      },
+      "interceptPct": 0.1447
+    },
+    "2026-07-22": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-28",
+      "trainEnd": "2026-07-21",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.4411,
+      "expectedSoxReturnPct": -0.7994,
+      "residualPct": 1.2405,
+      "residualZ": 0.779,
+      "inputs": {
+        "qqqReturn1dPct": -0.5106,
+        "us10yChangeBp": 4.0,
+        "us2yChangeBp": 5.0,
+        "vxnReturn1dPct": 0.3001,
+        "brentReturn1dPct": 3.3623
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -1.0743,
+        "us10yChangeBp": -0.1869,
+        "us2yChangeBp": 0.2315,
+        "vxnReturn1dPct": 0.0067,
+        "brentReturn1dPct": 0.0749
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.103972,
+        "us10yChangeBp": -0.046721,
+        "us2yChangeBp": 0.046297,
+        "vxnReturn1dPct": 0.022383,
+        "brentReturn1dPct": 0.022274
+      },
+      "interceptPct": 0.1487
+    },
+    "2026-07-23": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-29",
+      "trainEnd": "2026-07-22",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -0.5385,
+      "expectedSoxReturnPct": -3.4734,
+      "residualPct": 2.9349,
+      "residualZ": 1.782,
+      "inputs": {
+        "qqqReturn1dPct": -1.8983,
+        "us10yChangeBp": 4.0,
+        "us2yChangeBp": 6.0,
+        "vxnReturn1dPct": 4.9364,
+        "brentReturn1dPct": 7.0373
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -3.9808,
+        "us10yChangeBp": -0.1855,
+        "us2yChangeBp": 0.2765,
+        "vxnReturn1dPct": 0.1063,
+        "brentReturn1dPct": 0.1621
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.097024,
+        "us10yChangeBp": -0.046372,
+        "us2yChangeBp": 0.04609,
+        "vxnReturn1dPct": 0.021526,
+        "brentReturn1dPct": 0.023039
+      },
+      "interceptPct": 0.1479
+    },
+    "2026-07-24": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-01-30",
+      "trainEnd": "2026-07-23",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -4.2527,
+      "expectedSoxReturnPct": -2.3403,
+      "residualPct": -1.9124,
+      "residualZ": -1.097,
+      "inputs": {
+        "qqqReturn1dPct": -1.1171,
+        "us10yChangeBp": -2.0,
+        "us2yChangeBp": -4.0,
+        "vxnReturn1dPct": 1.1761,
+        "brentReturn1dPct": -3.8832
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -2.309,
+        "us10yChangeBp": 0.0997,
+        "us2yChangeBp": -0.2069,
+        "vxnReturn1dPct": 0.0207,
+        "brentReturn1dPct": -0.1078
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.066988,
+        "us10yChangeBp": -0.049834,
+        "us2yChangeBp": 0.051736,
+        "vxnReturn1dPct": 0.017586,
+        "brentReturn1dPct": 0.027771
+      },
+      "interceptPct": 0.1632
+    },
+    "2026-07-27": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-02-02",
+      "trainEnd": "2026-07-24",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -2.2338,
+      "expectedSoxReturnPct": -0.6475,
+      "residualPct": -1.5863,
+      "residualZ": -0.918,
+      "inputs": {
+        "qqqReturn1dPct": -0.3084,
+        "us10yChangeBp": -4.0,
+        "us2yChangeBp": -2.0,
+        "vxnReturn1dPct": 0.9158,
+        "brentReturn1dPct": -8.7001
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.6421,
+        "us10yChangeBp": 0.1886,
+        "us2yChangeBp": -0.1032,
+        "vxnReturn1dPct": 0.0182,
+        "brentReturn1dPct": -0.2646
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.081939,
+        "us10yChangeBp": -0.047149,
+        "us2yChangeBp": 0.051615,
+        "vxnReturn1dPct": 0.019903,
+        "brentReturn1dPct": 0.030413
+      },
+      "interceptPct": 0.1556
+    },
+    "2026-07-28": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-02-03",
+      "trainEnd": "2026-07-27",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -4.4933,
+      "expectedSoxReturnPct": -2.1485,
+      "residualPct": -2.3448,
+      "residualZ": -1.328,
+      "inputs": {
+        "qqqReturn1dPct": -0.972,
+        "us10yChangeBp": -4.0,
+        "us2yChangeBp": -5.0,
+        "vxnReturn1dPct": -0.1396,
+        "brentReturn1dPct": -4.8325
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -2.0333,
+        "us10yChangeBp": 0.1756,
+        "us2yChangeBp": -0.2404,
+        "vxnReturn1dPct": -0.0029,
+        "brentReturn1dPct": -0.1848
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.091837,
+        "us10yChangeBp": -0.04391,
+        "us2yChangeBp": 0.04809,
+        "vxnReturn1dPct": 0.020473,
+        "brentReturn1dPct": 0.038248
+      },
+      "interceptPct": 0.1373
+    },
+    "2026-07-29": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-02-04",
+      "trainEnd": "2026-07-28",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -5.3299,
+      "expectedSoxReturnPct": -4.1614,
+      "residualPct": -1.1685,
+      "residualZ": -0.612,
+      "inputs": {
+        "qqqReturn1dPct": -2.037,
+        "us10yChangeBp": 6.0,
+        "us2yChangeBp": -4.0,
+        "vxnReturn1dPct": 7.7945,
+        "brentReturn1dPct": 7.9082
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -4.3287,
+        "us10yChangeBp": -0.2472,
+        "us2yChangeBp": -0.2035,
+        "vxnReturn1dPct": 0.1802,
+        "brentReturn1dPct": 0.3331
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.125047,
+        "us10yChangeBp": -0.041198,
+        "us2yChangeBp": 0.050877,
+        "vxnReturn1dPct": 0.023114,
+        "brentReturn1dPct": 0.042115
+      },
+      "interceptPct": 0.1048
+    },
+    "2026-07-30": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-02-05",
+      "trainEnd": "2026-07-29",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 8.1886,
+      "expectedSoxReturnPct": 6.7913,
+      "residualPct": 1.3973,
+      "residualZ": 0.855,
+      "inputs": {
+        "qqqReturn1dPct": 3.2974,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": 1.0,
+        "vxnReturn1dPct": -10.668,
+        "brentReturn1dPct": -1.8845
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 7.0211,
+        "us10yChangeBp": -0.0506,
+        "us2yChangeBp": 0.0596,
+        "vxnReturn1dPct": -0.2664,
+        "brentReturn1dPct": -0.0747
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.129273,
+        "us10yChangeBp": -0.050561,
+        "us2yChangeBp": 0.059628,
+        "vxnReturn1dPct": 0.024968,
+        "brentReturn1dPct": 0.039645
+      },
+      "interceptPct": 0.1022
+    },
+    "2026-07-31": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-02-06",
+      "trainEnd": "2026-07-30",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.0716,
+      "expectedSoxReturnPct": 1.4784,
+      "residualPct": -1.4068,
+      "residualZ": -0.759,
+      "inputs": {
+        "qqqReturn1dPct": 0.6496,
+        "us10yChangeBp": 7.0,
+        "us2yChangeBp": 5.0,
+        "vxnReturn1dPct": -5.6261,
+        "brentReturn1dPct": 1.2243
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.3989,
+        "us10yChangeBp": -0.286,
+        "us2yChangeBp": 0.3359,
+        "vxnReturn1dPct": -0.0987,
+        "brentReturn1dPct": 0.0481
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.15345,
+        "us10yChangeBp": -0.040858,
+        "us2yChangeBp": 0.067175,
+        "vxnReturn1dPct": 0.017543,
+        "brentReturn1dPct": 0.03925
+      },
+      "interceptPct": 0.0803
+    },
+    "2026-08-03": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-02-09",
+      "trainEnd": "2026-07-31",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 1.0545,
+      "expectedSoxReturnPct": 3.4915,
+      "residualPct": -2.437,
+      "residualZ": -1.32,
+      "inputs": {
+        "qqqReturn1dPct": 1.7558,
+        "us10yChangeBp": -5.0,
+        "us2yChangeBp": -3.0,
+        "vxnReturn1dPct": -4.7308,
+        "brentReturn1dPct": -7.0462
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 3.7917,
+        "us10yChangeBp": 0.2348,
+        "us2yChangeBp": -0.2015,
+        "vxnReturn1dPct": -0.1159,
+        "brentReturn1dPct": -0.2763
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.159515,
+        "us10yChangeBp": -0.046958,
+        "us2yChangeBp": 0.067152,
+        "vxnReturn1dPct": 0.024506,
+        "brentReturn1dPct": 0.039215
+      },
+      "interceptPct": 0.0587
+    },
+    "2026-08-04": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-02-10",
+      "trainEnd": "2026-08-03",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 6.552,
+      "expectedSoxReturnPct": 7.1357,
+      "residualPct": -0.5837,
+      "residualZ": -0.226,
+      "inputs": {
+        "qqqReturn1dPct": 3.3968,
+        "us10yChangeBp": -7.0,
+        "us2yChangeBp": -5.0,
+        "vxnReturn1dPct": 2.8664,
+        "brentReturn1dPct": -5.2644
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 7.2886,
+        "us10yChangeBp": 0.2972,
+        "us2yChangeBp": -0.3188,
+        "vxnReturn1dPct": 0.0664,
+        "brentReturn1dPct": -0.238
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.145716,
+        "us10yChangeBp": -0.042457,
+        "us2yChangeBp": 0.06376,
+        "vxnReturn1dPct": 0.023175,
+        "brentReturn1dPct": 0.045215
+      },
+      "interceptPct": 0.0403
+    },
+    "2026-08-05": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-02-11",
+      "trainEnd": "2026-08-04",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -1.3989,
+      "expectedSoxReturnPct": -2.1091,
+      "residualPct": 0.7102,
+      "residualZ": 0.494,
+      "inputs": {
+        "qqqReturn1dPct": -0.9049,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": -2.0,
+        "vxnReturn1dPct": -5.2198,
+        "brentReturn1dPct": 0.1134
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -1.9236,
+        "us10yChangeBp": -0.0,
+        "us2yChangeBp": -0.1254,
+        "vxnReturn1dPct": -0.1027,
+        "brentReturn1dPct": 0.0052
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.125716,
+        "us10yChangeBp": -0.040473,
+        "us2yChangeBp": 0.062717,
+        "vxnReturn1dPct": 0.019684,
+        "brentReturn1dPct": 0.045436
+      },
+      "interceptPct": 0.0375
+    },
+    "2026-08-06": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-02-12",
+      "trainEnd": "2026-08-05",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.3315,
+      "expectedSoxReturnPct": -0.4102,
+      "residualPct": 0.7417,
+      "residualZ": 0.523,
+      "inputs": {
+        "qqqReturn1dPct": -0.3694,
+        "us10yChangeBp": 6.0,
+        "us2yChangeBp": 7.0,
+        "vxnReturn1dPct": -0.8282,
+        "brentReturn1dPct": 3.8263
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.7809,
+        "us10yChangeBp": -0.2168,
+        "us2yChangeBp": 0.3901,
+        "vxnReturn1dPct": -0.0147,
+        "brentReturn1dPct": 0.1753
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.113888,
+        "us10yChangeBp": -0.036133,
+        "us2yChangeBp": 0.055726,
+        "vxnReturn1dPct": 0.017741,
+        "brentReturn1dPct": 0.045806
+      },
+      "interceptPct": 0.0368
+    },
+    "2026-08-07": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-02-13",
+      "trainEnd": "2026-08-06",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.5571,
+      "expectedSoxReturnPct": 2.292,
+      "residualPct": 0.2651,
+      "residualZ": 0.26,
+      "inputs": {
+        "qqqReturn1dPct": 1.1726,
+        "us10yChangeBp": -4.0,
+        "us2yChangeBp": -6.0,
+        "vxnReturn1dPct": -4.7182,
+        "brentReturn1dPct": 1.285
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 2.494,
+        "us10yChangeBp": 0.0864,
+        "us2yChangeBp": -0.313,
+        "vxnReturn1dPct": -0.0594,
+        "brentReturn1dPct": 0.0604
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.126873,
+        "us10yChangeBp": -0.021611,
+        "us2yChangeBp": 0.052166,
+        "vxnReturn1dPct": 0.012594,
+        "brentReturn1dPct": 0.04698
+      },
+      "interceptPct": 0.0236
+    },
+    "2026-08-10": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-02-17",
+      "trainEnd": "2026-08-07",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -2.9371,
+      "expectedSoxReturnPct": -0.2014,
+      "residualPct": -2.7357,
+      "residualZ": -1.537,
+      "inputs": {
+        "qqqReturn1dPct": -0.2987,
+        "us10yChangeBp": 7.0,
+        "us2yChangeBp": 6.0,
+        "vxnReturn1dPct": 0.9641,
+        "brentReturn1dPct": 4.991
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.6357,
+        "us10yChangeBp": -0.1489,
+        "us2yChangeBp": 0.3159,
+        "vxnReturn1dPct": 0.0122,
+        "brentReturn1dPct": 0.2338
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.128387,
+        "us10yChangeBp": -0.021276,
+        "us2yChangeBp": 0.052658,
+        "vxnReturn1dPct": 0.012611,
+        "brentReturn1dPct": 0.046844
+      },
+      "interceptPct": 0.0214
+    },
+    "2026-08-11": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-02-18",
+      "trainEnd": "2026-08-10",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.8722,
+      "expectedSoxReturnPct": -0.7927,
+      "residualPct": 1.6649,
+      "residualZ": 1.081,
+      "inputs": {
+        "qqqReturn1dPct": -0.3357,
+        "us10yChangeBp": -2.0,
+        "us2yChangeBp": -3.0,
+        "vxnReturn1dPct": -2.8646,
+        "brentReturn1dPct": 1.3566
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.7132,
+        "us10yChangeBp": 0.0583,
+        "us2yChangeBp": -0.1614,
+        "vxnReturn1dPct": -0.0389,
+        "brentReturn1dPct": 0.0599
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.124614,
+        "us10yChangeBp": -0.029128,
+        "us2yChangeBp": 0.053808,
+        "vxnReturn1dPct": 0.01357,
+        "brentReturn1dPct": 0.044161
+      },
+      "interceptPct": 0.0027
+    },
+    "2026-08-12": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-02-19",
+      "trainEnd": "2026-08-11",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.4871,
+      "expectedSoxReturnPct": 1.4647,
+      "residualPct": 1.0224,
+      "residualZ": 0.676,
+      "inputs": {
+        "qqqReturn1dPct": 0.7307,
+        "us10yChangeBp": -2.0,
+        "us2yChangeBp": -2.0,
+        "vxnReturn1dPct": -6.3003,
+        "brentReturn1dPct": 0.0787
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.5446,
+        "us10yChangeBp": 0.058,
+        "us2yChangeBp": -0.1032,
+        "vxnReturn1dPct": -0.0645,
+        "brentReturn1dPct": 0.0037
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.113822,
+        "us10yChangeBp": -0.029023,
+        "us2yChangeBp": 0.051607,
+        "vxnReturn1dPct": 0.010242,
+        "brentReturn1dPct": 0.047423
+      },
+      "interceptPct": 0.0261
+    },
+    "2026-08-13": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-02-20",
+      "trainEnd": "2026-08-12",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.4567,
+      "expectedSoxReturnPct": 2.2748,
+      "residualPct": -1.8181,
+      "residualZ": -0.995,
+      "inputs": {
+        "qqqReturn1dPct": 1.1566,
+        "us10yChangeBp": -5.0,
+        "us2yChangeBp": -5.0,
+        "vxnReturn1dPct": 1.2399,
+        "brentReturn1dPct": -2.1466
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 2.4411,
+        "us10yChangeBp": 0.1469,
+        "us2yChangeBp": -0.2553,
+        "vxnReturn1dPct": 0.0107,
+        "brentReturn1dPct": -0.103
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.110622,
+        "us10yChangeBp": -0.029382,
+        "us2yChangeBp": 0.051066,
+        "vxnReturn1dPct": 0.008617,
+        "brentReturn1dPct": 0.047972
+      },
+      "interceptPct": 0.0344
+    },
+    "2026-08-14": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-02-23",
+      "trainEnd": "2026-08-13",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -0.3127,
+      "expectedSoxReturnPct": -0.2207,
+      "residualPct": -0.092,
+      "residualZ": 0.004,
+      "inputs": {
+        "qqqReturn1dPct": -0.1366,
+        "us10yChangeBp": 5.0,
+        "us2yChangeBp": 2.0,
+        "vxnReturn1dPct": -2.4023,
+        "brentReturn1dPct": 1.6653
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.2868,
+        "us10yChangeBp": -0.1337,
+        "us2yChangeBp": 0.1051,
+        "vxnReturn1dPct": -0.0118,
+        "brentReturn1dPct": 0.0801
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.099846,
+        "us10yChangeBp": -0.02674,
+        "us2yChangeBp": 0.052555,
+        "vxnReturn1dPct": 0.004928,
+        "brentReturn1dPct": 0.04808
+      },
+      "interceptPct": 0.0265
+    },
+    "2026-08-17": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-02-24",
+      "trainEnd": "2026-08-14",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 1.6425,
+      "expectedSoxReturnPct": -0.1835,
+      "residualPct": 1.826,
+      "residualZ": 1.13,
+      "inputs": {
+        "qqqReturn1dPct": -0.1641,
+        "us10yChangeBp": 4.0,
+        "us2yChangeBp": 2.0,
+        "vxnReturn1dPct": 3.8127,
+        "brentReturn1dPct": 2.6548
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.3466,
+        "us10yChangeBp": -0.0795,
+        "us2yChangeBp": 0.1079,
+        "vxnReturn1dPct": 0.007,
+        "brentReturn1dPct": 0.1253
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.112402,
+        "us10yChangeBp": -0.019869,
+        "us2yChangeBp": 0.05395,
+        "vxnReturn1dPct": 0.001846,
+        "brentReturn1dPct": 0.047194
+      },
+      "interceptPct": 0.0024
+    },
+    "2026-08-18": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-02-25",
+      "trainEnd": "2026-08-17",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -4.9801,
+      "expectedSoxReturnPct": -3.5356,
+      "residualPct": -1.4445,
+      "residualZ": -0.775,
+      "inputs": {
+        "qqqReturn1dPct": -1.6935,
+        "us10yChangeBp": -1.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 4.8814,
+        "brentReturn1dPct": 0.1651
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -3.5908,
+        "us10yChangeBp": 0.0137,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 0.0127,
+        "brentReturn1dPct": 0.0079
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.120358,
+        "us10yChangeBp": -0.013663,
+        "us2yChangeBp": 0.050573,
+        "vxnReturn1dPct": 0.002603,
+        "brentReturn1dPct": 0.04766
+      },
+      "interceptPct": 0.021
+    },
+    "2026-08-19": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-02-26",
+      "trainEnd": "2026-08-18",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -2.12,
+      "expectedSoxReturnPct": -0.3229,
+      "residualPct": -1.7971,
+      "residualZ": -0.956,
+      "inputs": {
+        "qqqReturn1dPct": -0.1993,
+        "us10yChangeBp": -6.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": -2.305,
+        "brentReturn1dPct": 0.6592
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.4262,
+        "us10yChangeBp": 0.056,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": -0.0016,
+        "brentReturn1dPct": 0.0317
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.13841,
+        "us10yChangeBp": -0.009325,
+        "us2yChangeBp": 0.050785,
+        "vxnReturn1dPct": 0.000694,
+        "brentReturn1dPct": 0.048057
+      },
+      "interceptPct": 0.0172
+    },
+    "2026-08-20": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-02-27",
+      "trainEnd": "2026-08-19",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.5264,
+      "expectedSoxReturnPct": -1.4086,
+      "residualPct": 1.935,
+      "residualZ": 1.22,
+      "inputs": {
+        "qqqReturn1dPct": -0.7192,
+        "us10yChangeBp": 4.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 5.5354,
+        "brentReturn1dPct": 2.3576
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -1.5463,
+        "us10yChangeBp": 0.0119,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 0.0137,
+        "brentReturn1dPct": 0.1084
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.150005,
+        "us10yChangeBp": 0.002966,
+        "us2yChangeBp": 0.043123,
+        "vxnReturn1dPct": 0.002481,
+        "brentReturn1dPct": 0.045983
+      },
+      "interceptPct": 0.0037
+    },
+    "2026-08-21": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-02",
+      "trainEnd": "2026-08-20",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -0.5055,
+      "expectedSoxReturnPct": 1.0156,
+      "residualPct": -1.5211,
+      "residualZ": -0.767,
+      "inputs": {
+        "qqqReturn1dPct": 0.3531,
+        "us10yChangeBp": 5.0,
+        "us2yChangeBp": 5.0,
+        "vxnReturn1dPct": -5.503,
+        "brentReturn1dPct": 0.6505
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.7591,
+        "us10yChangeBp": 0.0397,
+        "us2yChangeBp": 0.1862,
+        "vxnReturn1dPct": -0.0241,
+        "brentReturn1dPct": 0.0309
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.149745,
+        "us10yChangeBp": 0.007933,
+        "us2yChangeBp": 0.037242,
+        "vxnReturn1dPct": 0.004376,
+        "brentReturn1dPct": 0.047541
+      },
+      "interceptPct": 0.0238
+    },
+    "2026-08-24": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-03",
+      "trainEnd": "2026-08-21",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -2.7018,
+      "expectedSoxReturnPct": -2.2503,
+      "residualPct": -0.4515,
+      "residualZ": -0.151,
+      "inputs": {
+        "qqqReturn1dPct": -0.998,
+        "us10yChangeBp": -4.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 3.2302,
+        "brentReturn1dPct": -2.3519
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -2.1525,
+        "us10yChangeBp": -0.0208,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 0.0245,
+        "brentReturn1dPct": -0.1168
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.156858,
+        "us10yChangeBp": 0.005206,
+        "us2yChangeBp": 0.037502,
+        "vxnReturn1dPct": 0.007577,
+        "brentReturn1dPct": 0.049666
+      },
+      "interceptPct": 0.0154
+    },
+    "2026-08-25": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-04",
+      "trainEnd": "2026-08-24",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 1.4433,
+      "expectedSoxReturnPct": 0.8298,
+      "residualPct": 0.6135,
+      "residualZ": 0.459,
+      "inputs": {
+        "qqqReturn1dPct": 0.6229,
+        "us10yChangeBp": -6.0,
+        "us2yChangeBp": -7.0,
+        "vxnReturn1dPct": -3.9665,
+        "brentReturn1dPct": -3.895
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.3459,
+        "us10yChangeBp": 0.0129,
+        "us2yChangeBp": -0.3008,
+        "vxnReturn1dPct": -0.047,
+        "brentReturn1dPct": -0.2143
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.160701,
+        "us10yChangeBp": -0.002146,
+        "us2yChangeBp": 0.042966,
+        "vxnReturn1dPct": 0.011855,
+        "brentReturn1dPct": 0.055027
+      },
+      "interceptPct": 0.0332
+    },
+    "2026-08-26": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-05",
+      "trainEnd": "2026-08-25",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.2002,
+      "expectedSoxReturnPct": 0.2727,
+      "residualPct": -0.0725,
+      "residualZ": 0.049,
+      "inputs": {
+        "qqqReturn1dPct": 0.0915,
+        "us10yChangeBp": 2.0,
+        "us2yChangeBp": 2.0,
+        "vxnReturn1dPct": -1.698,
+        "brentReturn1dPct": -0.8354
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.1979,
+        "us10yChangeBp": 0.0013,
+        "us2yChangeBp": 0.0844,
+        "vxnReturn1dPct": -0.0148,
+        "brentReturn1dPct": -0.0454
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.162862,
+        "us10yChangeBp": 0.000638,
+        "us2yChangeBp": 0.042185,
+        "vxnReturn1dPct": 0.008741,
+        "brentReturn1dPct": 0.054298
+      },
+      "interceptPct": 0.0493
+    },
+    "2026-08-27": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-06",
+      "trainEnd": "2026-08-26",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.3334,
+      "expectedSoxReturnPct": 3.1314,
+      "residualPct": -0.798,
+      "residualZ": -0.371,
+      "inputs": {
+        "qqqReturn1dPct": 1.3692,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": 1.0,
+        "vxnReturn1dPct": -5.5089,
+        "brentReturn1dPct": 2.1175
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 2.9669,
+        "us10yChangeBp": 0.0018,
+        "us2yChangeBp": 0.0416,
+        "vxnReturn1dPct": -0.0538,
+        "brentReturn1dPct": 0.1188
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.166917,
+        "us10yChangeBp": 0.001779,
+        "us2yChangeBp": 0.041595,
+        "vxnReturn1dPct": 0.009761,
+        "brentReturn1dPct": 0.056085
+      },
+      "interceptPct": 0.0561
+    },
+    "2026-08-28": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-09",
+      "trainEnd": "2026-08-27",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -3.4716,
+      "expectedSoxReturnPct": -0.8756,
+      "residualPct": -2.596,
+      "residualZ": -1.458,
+      "inputs": {
+        "qqqReturn1dPct": -0.649,
+        "us10yChangeBp": 6.0,
+        "us2yChangeBp": 14.0,
+        "vxnReturn1dPct": -1.581,
+        "brentReturn1dPct": -0.4348
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -1.415,
+        "us10yChangeBp": 0.0054,
+        "us2yChangeBp": 0.5285,
+        "vxnReturn1dPct": -0.0301,
+        "brentReturn1dPct": -0.0266
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.180352,
+        "us10yChangeBp": 0.000897,
+        "us2yChangeBp": 0.037752,
+        "vxnReturn1dPct": 0.019039,
+        "brentReturn1dPct": 0.061122
+      },
+      "interceptPct": 0.0622
+    },
+    "2026-08-31": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-10",
+      "trainEnd": "2026-08-28",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.5701,
+      "expectedSoxReturnPct": 0.2799,
+      "residualPct": 0.2902,
+      "residualZ": 0.376,
+      "inputs": {
+        "qqqReturn1dPct": 0.0461,
+        "us10yChangeBp": 2.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 1.3052,
+        "brentReturn1dPct": 1.3212
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.1012,
+        "us10yChangeBp": 0.0239,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 0.0333,
+        "brentReturn1dPct": 0.0826
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.195496,
+        "us10yChangeBp": 0.011966,
+        "us2yChangeBp": 0.018471,
+        "vxnReturn1dPct": 0.0255,
+        "brentReturn1dPct": 0.062502
+      },
+      "interceptPct": 0.0389
+    },
+    "2026-09-01": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-11",
+      "trainEnd": "2026-08-31",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -2.1364,
+      "expectedSoxReturnPct": -2.081,
+      "residualPct": -0.0554,
+      "residualZ": 0.144,
+      "inputs": {
+        "qqqReturn1dPct": -1.2724,
+        "us10yChangeBp": 4.0,
+        "us2yChangeBp": 5.0,
+        "vxnReturn1dPct": 8.8206,
+        "brentReturn1dPct": 4.5972
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -2.8001,
+        "us10yChangeBp": 0.0205,
+        "us2yChangeBp": 0.0977,
+        "vxnReturn1dPct": 0.2336,
+        "brentReturn1dPct": 0.3365
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.200644,
+        "us10yChangeBp": 0.005132,
+        "us2yChangeBp": 0.019536,
+        "vxnReturn1dPct": 0.026488,
+        "brentReturn1dPct": 0.073187
+      },
+      "interceptPct": 0.0308
+    },
+    "2026-09-02": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-12",
+      "trainEnd": "2026-09-01",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.4486,
+      "expectedSoxReturnPct": 0.4954,
+      "residualPct": -0.0468,
+      "residualZ": 0.129,
+      "inputs": {
+        "qqqReturn1dPct": 0.2261,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": -4.0528,
+        "brentReturn1dPct": 1.0354
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.4972,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": -0.1067,
+        "brentReturn1dPct": 0.0754
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.198913,
+        "us10yChangeBp": 0.004898,
+        "us2yChangeBp": 0.019297,
+        "vxnReturn1dPct": 0.026334,
+        "brentReturn1dPct": 0.072846
+      },
+      "interceptPct": 0.0295
+    },
+    "2026-09-03": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-13",
+      "trainEnd": "2026-09-02",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.1135,
+      "expectedSoxReturnPct": 2.3986,
+      "residualPct": -2.2851,
+      "residualZ": -1.282,
+      "inputs": {
+        "qqqReturn1dPct": 1.1886,
+        "us10yChangeBp": -2.0,
+        "us2yChangeBp": -5.0,
+        "vxnReturn1dPct": -4.3189,
+        "brentReturn1dPct": -0.115
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 2.6201,
+        "us10yChangeBp": -0.0005,
+        "us2yChangeBp": -0.1225,
+        "vxnReturn1dPct": -0.1251,
+        "brentReturn1dPct": -0.0088
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.204363,
+        "us10yChangeBp": 0.000231,
+        "us2yChangeBp": 0.024497,
+        "vxnReturn1dPct": 0.028966,
+        "brentReturn1dPct": 0.076653
+      },
+      "interceptPct": 0.0353
+    },
+    "2026-09-04": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-16",
+      "trainEnd": "2026-09-03",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 3.375,
+      "expectedSoxReturnPct": 0.539,
+      "residualPct": 2.836,
+      "residualZ": 2.011,
+      "inputs": {
+        "qqqReturn1dPct": 0.1797,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": 3.0,
+        "vxnReturn1dPct": -0.5952,
+        "brentReturn1dPct": 0.7956
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.3964,
+        "us10yChangeBp": -0.0064,
+        "us2yChangeBp": 0.1051,
+        "vxnReturn1dPct": -0.0185,
+        "brentReturn1dPct": 0.0583
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.205816,
+        "us10yChangeBp": -0.006359,
+        "us2yChangeBp": 0.035018,
+        "vxnReturn1dPct": 0.031085,
+        "brentReturn1dPct": 0.073231
+      },
+      "interceptPct": 0.0042
+    },
+    "2026-09-08": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-17",
+      "trainEnd": "2026-09-04",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 1.3004,
+      "expectedSoxReturnPct": 0.2893,
+      "residualPct": 1.0111,
+      "residualZ": 0.793,
+      "inputs": {
+        "qqqReturn1dPct": -0.0835,
+        "us10yChangeBp": 2.0,
+        "us2yChangeBp": 2.0,
+        "vxnReturn1dPct": 8.3333,
+        "brentReturn1dPct": 1.7034
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.1845,
+        "us10yChangeBp": -0.0193,
+        "us2yChangeBp": 0.0797,
+        "vxnReturn1dPct": 0.2626,
+        "brentReturn1dPct": 0.1264
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.209206,
+        "us10yChangeBp": -0.009634,
+        "us2yChangeBp": 0.039847,
+        "vxnReturn1dPct": 0.031512,
+        "brentReturn1dPct": 0.07419
+      },
+      "interceptPct": 0.0244
+    },
+    "2026-09-09": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-18",
+      "trainEnd": "2026-09-08",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.3655,
+      "expectedSoxReturnPct": -0.115,
+      "residualPct": 0.4805,
+      "residualZ": 0.472,
+      "inputs": {
+        "qqqReturn1dPct": -0.2854,
+        "us10yChangeBp": 3.0,
+        "us2yChangeBp": 4.0,
+        "vxnReturn1dPct": 2.8098,
+        "brentReturn1dPct": 3.3599
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.6319,
+        "us10yChangeBp": -0.0374,
+        "us2yChangeBp": 0.1654,
+        "vxnReturn1dPct": 0.0932,
+        "brentReturn1dPct": 0.258
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.214052,
+        "us10yChangeBp": -0.012479,
+        "us2yChangeBp": 0.041355,
+        "vxnReturn1dPct": 0.033166,
+        "brentReturn1dPct": 0.076774
+      },
+      "interceptPct": 0.0377
+    },
+    "2026-09-10": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-19",
+      "trainEnd": "2026-09-09",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -2.6582,
+      "expectedSoxReturnPct": -1.3447,
+      "residualPct": -1.3135,
+      "residualZ": -0.637,
+      "inputs": {
+        "qqqReturn1dPct": -1.0638,
+        "us10yChangeBp": 12.0,
+        "us2yChangeBp": 13.0,
+        "vxnReturn1dPct": 4.5251,
+        "brentReturn1dPct": 6.3432
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -2.349,
+        "us10yChangeBp": -0.139,
+        "us2yChangeBp": 0.4971,
+        "vxnReturn1dPct": 0.1296,
+        "brentReturn1dPct": 0.4856
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.208153,
+        "us10yChangeBp": -0.01158,
+        "us2yChangeBp": 0.03824,
+        "vxnReturn1dPct": 0.02865,
+        "brentReturn1dPct": 0.076552
+      },
+      "interceptPct": 0.0309
+    },
+    "2026-09-11": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-20",
+      "trainEnd": "2026-09-10",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 1.8067,
+      "expectedSoxReturnPct": 1.6434,
+      "residualPct": 0.1633,
+      "residualZ": 0.278,
+      "inputs": {
+        "qqqReturn1dPct": 0.8734,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": 7.0,
+        "vxnReturn1dPct": -9.9014,
+        "brentReturn1dPct": -2.8059
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.9337,
+        "us10yChangeBp": -0.009,
+        "us2yChangeBp": 0.2179,
+        "vxnReturn1dPct": -0.3017,
+        "brentReturn1dPct": -0.2077
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.213976,
+        "us10yChangeBp": -0.009026,
+        "us2yChangeBp": 0.031131,
+        "vxnReturn1dPct": 0.030468,
+        "brentReturn1dPct": 0.074038
+      },
+      "interceptPct": 0.0103
+    },
+    "2026-09-14": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-23",
+      "trainEnd": "2026-09-11",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -5.8586,
+      "expectedSoxReturnPct": -1.487,
+      "residualPct": -4.3716,
+      "residualZ": -2.579,
+      "inputs": {
+        "qqqReturn1dPct": -0.7973,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": 2.0,
+        "vxnReturn1dPct": 4.9001,
+        "brentReturn1dPct": 1.0228
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -1.7655,
+        "us10yChangeBp": -0.0186,
+        "us2yChangeBp": 0.0703,
+        "vxnReturn1dPct": 0.1438,
+        "brentReturn1dPct": 0.0778
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.214289,
+        "us10yChangeBp": -0.01864,
+        "us2yChangeBp": 0.035135,
+        "vxnReturn1dPct": 0.029349,
+        "brentReturn1dPct": 0.076048
+      },
+      "interceptPct": 0.0052
+    },
+    "2026-09-15": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-24",
+      "trainEnd": "2026-09-14",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.3977,
+      "expectedSoxReturnPct": -1.2201,
+      "residualPct": 1.6178,
+      "residualZ": 1.229,
+      "inputs": {
+        "qqqReturn1dPct": -0.6543,
+        "us10yChangeBp": 3.0,
+        "us2yChangeBp": 2.0,
+        "vxnReturn1dPct": 0.9524,
+        "brentReturn1dPct": 2.905
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -1.4539,
+        "us10yChangeBp": -0.0401,
+        "us2yChangeBp": 0.0633,
+        "vxnReturn1dPct": 0.0242,
+        "brentReturn1dPct": 0.2203
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.222056,
+        "us10yChangeBp": -0.013376,
+        "us2yChangeBp": 0.031666,
+        "vxnReturn1dPct": 0.025362,
+        "brentReturn1dPct": 0.075837
+      },
+      "interceptPct": -0.0339
+    },
+    "2026-09-16": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-25",
+      "trainEnd": "2026-09-15",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 0.6314,
+      "expectedSoxReturnPct": 0.013,
+      "residualPct": 0.6184,
+      "residualZ": 0.609,
+      "inputs": {
+        "qqqReturn1dPct": 0.0255,
+        "us10yChangeBp": 1.0,
+        "us2yChangeBp": 7.0,
+        "vxnReturn1dPct": 0.8086,
+        "brentReturn1dPct": -2.6851
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.0565,
+        "us10yChangeBp": -0.0102,
+        "us2yChangeBp": 0.1818,
+        "vxnReturn1dPct": 0.0194,
+        "brentReturn1dPct": -0.1983
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.216411,
+        "us10yChangeBp": -0.010194,
+        "us2yChangeBp": 0.025964,
+        "vxnReturn1dPct": 0.024024,
+        "brentReturn1dPct": 0.073856
+      },
+      "interceptPct": -0.0362
+    },
+    "2026-09-17": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-26",
+      "trainEnd": "2026-09-16",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 3.1423,
+      "expectedSoxReturnPct": 3.3463,
+      "residualPct": -0.204,
+      "residualZ": 0.122,
+      "inputs": {
+        "qqqReturn1dPct": 1.7312,
+        "us10yChangeBp": -7.0,
+        "us2yChangeBp": -7.0,
+        "vxnReturn1dPct": -11.0517,
+        "brentReturn1dPct": -0.9544
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 3.8386,
+        "us10yChangeBp": 0.0834,
+        "us2yChangeBp": -0.203,
+        "vxnReturn1dPct": -0.27,
+        "brentReturn1dPct": -0.0693
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.217331,
+        "us10yChangeBp": -0.011914,
+        "us2yChangeBp": 0.029,
+        "vxnReturn1dPct": 0.024426,
+        "brentReturn1dPct": 0.072639
+      },
+      "interceptPct": -0.0334
+    },
+    "2026-09-18": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-27",
+      "trainEnd": "2026-09-17",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.7776,
+      "expectedSoxReturnPct": 1.4101,
+      "residualPct": 1.3675,
+      "residualZ": 1.103,
+      "inputs": {
+        "qqqReturn1dPct": 0.6319,
+        "us10yChangeBp": 7.0,
+        "us2yChangeBp": 9.0,
+        "vxnReturn1dPct": -3.3567,
+        "brentReturn1dPct": -0.9063
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.4025,
+        "us10yChangeBp": -0.08,
+        "us2yChangeBp": 0.2728,
+        "vxnReturn1dPct": -0.0856,
+        "brentReturn1dPct": -0.0659
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.219557,
+        "us10yChangeBp": -0.01143,
+        "us2yChangeBp": 0.03031,
+        "vxnReturn1dPct": 0.025487,
+        "brentReturn1dPct": 0.072766
+      },
+      "interceptPct": -0.0337
+    },
+    "2026-09-21": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-30",
+      "trainEnd": "2026-09-18",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 4.2904,
+      "expectedSoxReturnPct": 6.1455,
+      "residualPct": -1.8551,
+      "residualZ": -0.948,
+      "inputs": {
+        "qqqReturn1dPct": 2.775,
+        "us10yChangeBp": -5.0,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 5.7024,
+        "brentReturn1dPct": -3.3985
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 6.2028,
+        "us10yChangeBp": 0.1156,
+        "us2yChangeBp": 0.0,
+        "vxnReturn1dPct": 0.109,
+        "brentReturn1dPct": -0.2237
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.235228,
+        "us10yChangeBp": -0.023122,
+        "us2yChangeBp": 0.054124,
+        "vxnReturn1dPct": 0.019113,
+        "brentReturn1dPct": 0.065829
+      },
+      "interceptPct": -0.0581
+    },
+    "2026-09-22": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-03-31",
+      "trainEnd": "2026-09-21",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.0642,
+      "expectedSoxReturnPct": 1.368,
+      "residualPct": 0.6962,
+      "residualZ": 0.704,
+      "inputs": {
+        "qqqReturn1dPct": 0.8079,
+        "us10yChangeBp": 0.0,
+        "us2yChangeBp": -5.0,
+        "vxnReturn1dPct": -1.0299,
+        "brentReturn1dPct": -1.0863
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 1.7419,
+        "us10yChangeBp": -0.0,
+        "us2yChangeBp": -0.2587,
+        "vxnReturn1dPct": -0.0068,
+        "brentReturn1dPct": -0.079
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.156059,
+        "us10yChangeBp": -0.036355,
+        "us2yChangeBp": 0.051746,
+        "vxnReturn1dPct": 0.006632,
+        "brentReturn1dPct": 0.072718
+      },
+      "interceptPct": -0.0293
+    },
+    "2026-09-23": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-04-01",
+      "trainEnd": "2026-09-22",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -1.2258,
+      "expectedSoxReturnPct": -1.386,
+      "residualPct": 0.1602,
+      "residualZ": 0.331,
+      "inputs": {
+        "qqqReturn1dPct": -0.8362,
+        "us10yChangeBp": 15.0,
+        "us2yChangeBp": 14.0,
+        "vxnReturn1dPct": 2.8741,
+        "brentReturn1dPct": 3.8589
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -1.8183,
+        "us10yChangeBp": -0.5853,
+        "us2yChangeBp": 0.709,
+        "vxnReturn1dPct": 0.0115,
+        "brentReturn1dPct": 0.3115
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.174539,
+        "us10yChangeBp": -0.039019,
+        "us2yChangeBp": 0.050641,
+        "vxnReturn1dPct": 0.003994,
+        "brentReturn1dPct": 0.080728
+      },
+      "interceptPct": -0.0144
+    },
+    "2026-09-24": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-04-02",
+      "trainEnd": "2026-09-23",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -0.333,
+      "expectedSoxReturnPct": 0.0492,
+      "residualPct": -0.3822,
+      "residualZ": -0.037,
+      "inputs": {
+        "qqqReturn1dPct": -0.0148,
+        "us10yChangeBp": 7.0,
+        "us2yChangeBp": 2.0,
+        "vxnReturn1dPct": 2.3121,
+        "brentReturn1dPct": 3.4148
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -0.0321,
+        "us10yChangeBp": -0.3487,
+        "us2yChangeBp": 0.1046,
+        "vxnReturn1dPct": 0.0075,
+        "brentReturn1dPct": 0.3372
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.168572,
+        "us10yChangeBp": -0.049809,
+        "us2yChangeBp": 0.052316,
+        "vxnReturn1dPct": 0.003227,
+        "brentReturn1dPct": 0.098758
+      },
+      "interceptPct": -0.0193
+    },
+    "2026-09-25": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-04-06",
+      "trainEnd": "2026-09-24",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 1.412,
+      "expectedSoxReturnPct": 0.4853,
+      "residualPct": 0.9267,
+      "residualZ": 0.822,
+      "inputs": {
+        "qqqReturn1dPct": 0.4588,
+        "us10yChangeBp": -1.0,
+        "us2yChangeBp": -6.0,
+        "vxnReturn1dPct": -1.742,
+        "brentReturn1dPct": -2.1388
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.9931,
+        "us10yChangeBp": 0.0553,
+        "us2yChangeBp": -0.3228,
+        "vxnReturn1dPct": -0.0039,
+        "brentReturn1dPct": -0.2219
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.164618,
+        "us10yChangeBp": -0.055323,
+        "us2yChangeBp": 0.053793,
+        "vxnReturn1dPct": 0.002256,
+        "brentReturn1dPct": 0.103766
+      },
+      "interceptPct": -0.0145
+    },
+    "2026-09-28": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-04-07",
+      "trainEnd": "2026-09-25",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -1.6078,
+      "expectedSoxReturnPct": -2.0288,
+      "residualPct": 0.421,
+      "residualZ": 0.46,
+      "inputs": {
+        "qqqReturn1dPct": -1.0705,
+        "us10yChangeBp": 7.0,
+        "us2yChangeBp": 11.0,
+        "vxnReturn1dPct": 6.0374,
+        "brentReturn1dPct": 0.9202
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -2.3174,
+        "us10yChangeBp": -0.3655,
+        "us2yChangeBp": 0.5484,
+        "vxnReturn1dPct": 0.0139,
+        "brentReturn1dPct": 0.0947
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.164818,
+        "us10yChangeBp": -0.052215,
+        "us2yChangeBp": 0.049853,
+        "vxnReturn1dPct": 0.002299,
+        "brentReturn1dPct": 0.102871
+      },
+      "interceptPct": -0.0028
+    },
+    "2026-09-29": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-04-08",
+      "trainEnd": "2026-09-28",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 1.315,
+      "expectedSoxReturnPct": -0.1279,
+      "residualPct": 1.4429,
+      "residualZ": 1.132,
+      "inputs": {
+        "qqqReturn1dPct": 0.1901,
+        "us10yChangeBp": 2.0,
+        "us2yChangeBp": -3.0,
+        "vxnReturn1dPct": -0.2711,
+        "brentReturn1dPct": -2.5551
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.4111,
+        "us10yChangeBp": -0.106,
+        "us2yChangeBp": -0.1603,
+        "vxnReturn1dPct": -0.0003,
+        "brentReturn1dPct": -0.2607
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.162514,
+        "us10yChangeBp": -0.053004,
+        "us2yChangeBp": 0.05344,
+        "vxnReturn1dPct": 0.000992,
+        "brentReturn1dPct": 0.102029
+      },
+      "interceptPct": -0.0117
+    },
+    "2026-09-30": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-04-09",
+      "trainEnd": "2026-09-29",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -0.0043,
+      "expectedSoxReturnPct": 0.446,
+      "residualPct": -0.4503,
+      "residualZ": -0.181,
+      "inputs": {
+        "qqqReturn1dPct": 0.2493,
+        "us10yChangeBp": 3.0,
+        "us2yChangeBp": -1.0,
+        "vxnReturn1dPct": 1.7671,
+        "brentReturn1dPct": 0.9163
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.5386,
+        "us10yChangeBp": -0.1466,
+        "us2yChangeBp": -0.0465,
+        "vxnReturn1dPct": 0.006,
+        "brentReturn1dPct": 0.1017
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.160563,
+        "us10yChangeBp": -0.048878,
+        "us2yChangeBp": 0.046451,
+        "vxnReturn1dPct": 0.003421,
+        "brentReturn1dPct": 0.111025
+      },
+      "interceptPct": -0.0073
+    },
+    "2026-10-01": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-04-10",
+      "trainEnd": "2026-09-30",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 1.5867,
+      "expectedSoxReturnPct": 0.2854,
+      "residualPct": 1.3013,
+      "residualZ": 0.996,
+      "inputs": {
+        "qqqReturn1dPct": 0.3055,
+        "us10yChangeBp": -5.0,
+        "us2yChangeBp": -10.0,
+        "vxnReturn1dPct": 0.2226,
+        "brentReturn1dPct": -1.1784
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 0.6602,
+        "us10yChangeBp": 0.2529,
+        "us2yChangeBp": -0.4826,
+        "vxnReturn1dPct": 0.001,
+        "brentReturn1dPct": -0.1299
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.161168,
+        "us10yChangeBp": -0.050583,
+        "us2yChangeBp": 0.048261,
+        "vxnReturn1dPct": 0.004411,
+        "brentReturn1dPct": 0.110197
+      },
+      "interceptPct": -0.0162
+    },
+    "2026-10-02": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-04-13",
+      "trainEnd": "2026-10-01",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": 2.3983,
+      "expectedSoxReturnPct": 2.1405,
+      "residualPct": 0.2578,
+      "residualZ": 0.29,
+      "inputs": {
+        "qqqReturn1dPct": 1.0175,
+        "us10yChangeBp": 4.0,
+        "us2yChangeBp": 5.0,
+        "vxnReturn1dPct": -5.8196,
+        "brentReturn1dPct": -0.0586
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": 2.1978,
+        "us10yChangeBp": -0.2016,
+        "us2yChangeBp": 0.2045,
+        "vxnReturn1dPct": -0.0363,
+        "brentReturn1dPct": -0.0067
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.160008,
+        "us10yChangeBp": -0.050405,
+        "us2yChangeBp": 0.040899,
+        "vxnReturn1dPct": 0.006229,
+        "brentReturn1dPct": 0.114375
+      },
+      "interceptPct": -0.0173
+    }
+  }
+}
