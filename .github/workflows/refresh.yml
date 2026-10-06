@@ -107,10 +107,12 @@ jobs:
           git config user.name 'nasdecode-bot'
           git config user.email 'actions@users.noreply.github.com'
           git add -A data
-          mkdir -p public/data
+          mkdir -p public/data public/history
           cp index.html public/index.html
           python scripts/inject_session_analysis_ui.py public/index.html
           cp data/dashboard.json public/data/dashboard.json
+          cp data/history/chart-history.json public/data/chart-history.json
+          cp data/history/market-watch-events.json public/history/market-watch-events.json
           cp data/premarket.json public/data/premarket.json
           git add -A public/index.html public/data
           if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
@@ -142,10 +144,12 @@ jobs:
           python scripts/build_directional_edge.py
           python scripts/backtest_directional_edge.py
             git add -A data
-            mkdir -p public/data
+            mkdir -p public/data public/history
             cp index.html public/index.html
             python scripts/inject_session_analysis_ui.py public/index.html
             cp data/dashboard.json public/data/dashboard.json
+          cp data/history/chart-history.json public/data/chart-history.json
+          cp data/history/market-watch-events.json public/history/market-watch-events.json
             cp data/premarket.json public/data/premarket.json
             git add -A public/index.html public/data
             if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
