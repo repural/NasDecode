@@ -20,7 +20,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"data"/"history"/"hype-daily.json"
 RESILIENCE=ROOT/"data"/"history"/"resilience-daily.json"
-WATCH=ROOT/"history"/"market-watch-events.json"
+WATCH=ROOT/"data"/"history"/"market-watch-events.json"
 EARNINGS=ROOT/"data"/"upcoming-earnings.json"
 
 MATERIALITY={"Low":30,"Medium":50,"Medium-High":65,"High":80,"Very High":95}
