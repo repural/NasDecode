@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 """Keep the researched pre-market brief authoritative across refreshes.
 
-The daily research writer may publish the rich brief directly to
-public/data/premarket.json using its research schema (updated/summary/events).
-The quantitative refresh writes data/premarket.json using the dashboard schema.
-This bridge normalizes a same/newer researched public brief back into the
-canonical data file before publication, so a later market-data refresh cannot
-silently replace the researched analysis.
+The Nasdaq Pre-Market Analysis process persists its researched brief to
+data/research/premarket-brief.json. The quantitative refresh owns
+data/premarket.json. This bridge imports a same/newer researched source brief
+into the canonical dashboard file before publication, so intraday refreshes
+cannot destroy the persisted research artifact.
 """
 import json
 import os
@@ -14,6 +13,7 @@ import re
 
 ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA=os.path.join(ROOT,'data','premarket.json')
+SOURCE=os.path.join(ROOT,'data','research','premarket-brief.json')
 PUBLIC=os.path.join(ROOT,'public','data','premarket.json')
 
 
@@ -65,17 +65,17 @@ def normalize(src, fallback_score=None):
 
 
 def main():
-    public=load(PUBLIC)
+    source=load(SOURCE)
     data=load(DATA)
-    if not is_researched(public):
-        print('No researched public pre-market brief to synchronize.')
+    if not is_researched(source):
+        print('No persisted researched pre-market brief to synchronize.')
         return
-    pdate=brief_date(public)
+    pdate=brief_date(source)
     ddate=brief_date(data)
     if not pdate or (ddate and pdate < ddate):
-        print(f'Researched public brief is stale ({pdate}); canonical data is {ddate}.')
+        print(f'Persisted researched brief is stale ({pdate}); canonical data is {ddate}.')
         return
-    normalized=normalize(public, data.get('score'))
+    normalized=normalize(source, data.get('score'))
     if not normalized:
         return
     os.makedirs(os.path.dirname(DATA),exist_ok=True)
@@ -87,7 +87,7 @@ def main():
     with open(PUBLIC,'w',encoding='utf-8') as f:
         json.dump(normalized,f,ensure_ascii=False,indent=2)
         f.write('\n')
-    print(f'Synchronized researched pre-market brief for {pdate}.')
+    print(f'Synchronized persisted researched pre-market brief for {pdate}.')
 
 
 if __name__=='__main__':
