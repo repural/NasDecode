@@ -22,10 +22,12 @@ jobs:
           python scripts/build_directional_edge.py
           python scripts/backtest_directional_edge.py
           python scripts/backtest_directional_edge_walkforward.py
+          python scripts/build_directional_regimes_v2.py
+          python scripts/backtest_directional_regimes_v2.py
       - name: Persist validation outputs
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/history/resilience-daily.json data/history/resilience-model.json data/history/resilience-engine.json data/history/resilience-backtest.json data/history/directional-edge.json data/history/directional-edge-backtest.json data/history/directional-edge-walkforward.json
+          git add data/history/resilience-daily.json data/history/resilience-model.json data/history/resilience-engine.json data/history/resilience-backtest.json data/history/directional-edge.json data/history/directional-edge-backtest.json data/history/directional-edge-walkforward.json data/history/directional-regimes-v2.json data/history/directional-regimes-v2-backtest.json
           git diff --cached --quiet || git commit -m "Validate decision engines"
           git push
