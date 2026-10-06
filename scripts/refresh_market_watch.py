@@ -9,7 +9,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALYST_PATH = ROOT / "data" / "semiconductor-catalysts.json"
-HISTORY_PATH = ROOT / "history" / "market-watch-events.json"
+HISTORY_PATH = ROOT / "data" / "history" / "market-watch-events.json"
 ACTIVE_PATH = ROOT / "public" / "data" / "market-watch.json"
 TAVILY_URL = "https://api.tavily.com/search"
 
