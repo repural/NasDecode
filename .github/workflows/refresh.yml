@@ -100,6 +100,7 @@ jobs:
           python scripts/backtest_resilience_engine.py
           python scripts/build_directional_edge.py
           python scripts/backtest_directional_edge.py
+          python scripts/backtest_directional_edge_walkforward.py
       - name: Commit refreshed snapshot
         if: steps.gate.outputs.run == 'yes'
         shell: bash
@@ -143,6 +144,7 @@ jobs:
             python scripts/backtest_resilience_engine.py
           python scripts/build_directional_edge.py
           python scripts/backtest_directional_edge.py
+          python scripts/backtest_directional_edge_walkforward.py
             git add -A data
             mkdir -p public/data public/history
             cp index.html public/index.html
