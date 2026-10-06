@@ -1187,3 +1187,76 @@ MAINTENANCE RULE
 Whenever a scoring formula, threshold, weight, hard gate, label range or interpretation changes
 in code, update scores.txt in the same change set so this file remains synchronized with the
 implemented model.
+
+
+======================================================================
+8. DIRECTIONAL EDGE v1.0 — SHADOW / VALIDATION ONLY
+======================================================================
+
+STATUS
+------
+Directional Edge is NOT currently an input to Nasdaq Score, Opportunity Score,
+SOXL Buy Score, Consolidation Risk, Internal Confirmation or Semiconductor Leadership.
+It is a separate forward-direction research signal and must pass historical/prospective
+validation before receiving production weight.
+
+PURPOSE
+-------
+Resilience answers: "Is semiconductor leadership surviving its environment better than expected?"
+Directional Edge answers: "Is observed semiconductor momentum currently pointing forward?"
+
+This distinction is intentional. Phase 3 Resilience validation showed weak/non-monotonic
+short-horizon forward-return association, so Resilience remains a structural durability signal
+rather than being repurposed as an entry or direction score.
+
+FORMULA
+-------
+Directional Edge =
+  45% Multi-horizon absolute SOX momentum
++ 35% Multi-horizon SOX-vs-QQQ relative momentum
++ 20% Five-session semiconductor breadth persistence
+
+For both absolute and relative momentum:
+  1D 15% + 3D 25% + 5D 35% + 10D 25%.
+
+Absolute SOX return score anchors:
+ -8% -> 0, -4% -> 15, -2% -> 30, 0% -> 50,
+ +2% -> 65, +4% -> 80, +8% -> 100.
+
+SOX-vs-QQQ relative-return score anchors:
+ -5pp -> 0, -2.5pp -> 20, -1pp -> 35, 0pp -> 50,
+ +1pp -> 65, +2.5pp -> 82, +5pp -> 100.
+
+Breadth persistence is the five-session average of:
+- 45% share of NVDA/AMD/AVGO/TSM/MU with positive daily returns
+- 55% share of that basket outperforming QQQ
+using the existing breadth score mapping.
+
+LABELS
+------
+75-100   Strong Bullish
+60-74.9  Bullish
+45-59.9  Neutral
+30-44.9  Bearish
+0-29.9   Strong Bearish
+
+SEPARATION OF RESPONSIBILITIES
+------------------------------
+Directional Edge: forward price/internal momentum.
+Resilience: abnormal SOX durability after controlling for same-day market/macro environment.
+Hype Pressure: prospective event/narrative support; remains separate until enough point-in-time history.
+SOXL Entry Quality: instrument-specific price location and leverage/volatility timing.
+
+Rates, VXN, oil and Hype are deliberately NOT re-scored inside Directional Edge v1.0. This avoids
+double-counting environment variables already represented by the Resilience and risk layers.
+
+VALIDATION
+----------
+scripts/backtest_directional_edge.py evaluates each completed-close T signal against SOX and SOXL
+T+1/T+3/T+5/T+10 close-to-close forward returns. The signal remains shadow-only until forward-return
+ordering and stability justify production use.
+
+DATA OUTPUTS
+------------
+Directional Edge:             data/history/directional-edge.json
+Directional Edge validation:  data/history/directional-edge-backtest.json
