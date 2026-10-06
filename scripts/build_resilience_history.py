@@ -174,10 +174,23 @@ def main():
 
     series={}
     availability={}
+    # Fetch each market series according to its own stored coverage. This matters
+    # when a new required symbol is introduced after the canonical history already
+    # exists: a global incremental window would otherwise leave that symbol with
+    # only a few recent observations (as happened when SOXL was added).
+    expected_existing=max(len(old_records),1)
     for name,ticker in MARKET.items():
-        s=with_changes(massive_rows(massive_fetch(ticker,request_start.isoformat(),end.isoformat())))
+        stored=sum(1 for r in old_records.values()
+                   if ((r.get('market') or {}).get(name) or {}).get('close') is not None)
+        coverage=(stored/expected_existing) if old_records else 0.0
+        series_start=(target_start-datetime.timedelta(days=7)
+                      if old_records and coverage<0.90 else request_start)
+        if old_records and coverage<0.90:
+            print(f'{name}: stored coverage {stored}/{len(old_records)} ({coverage:.1%}); forcing full rolling-year backfill')
+        s=with_changes(massive_rows(massive_fetch(ticker,series_start.isoformat(),end.isoformat())))
         series[name]=s
-        availability[name]={'provider':'Massive','ticker':ticker,'rows':len(s),'available':bool(s)}
+        availability[name]={'provider':'Massive','ticker':ticker,'rows':len(s),'available':bool(s),
+                            'preRefreshStoredRows':stored,'preRefreshCoveragePct':round(100*coverage,1)}
 
     treasury=treasury_yields(request_start,end)
     for name in ('US10Y','US2Y'):
