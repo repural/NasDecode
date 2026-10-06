@@ -1,23 +1,26 @@
 {
   "schemaVersion": 1,
-  "engineVersion": "directional-edge-1.0",
+  "engineVersion": "directional-edge-1.1",
   "status": "shadow / validation only; no production NasDecode score consumes this output",
-  "purpose": "Forward-direction momentum signal. Separate from Resilience (structural durability), Hype (event/narrative pressure), and SOXL Entry Quality (instrument timing).",
+  "purpose": "Forward-direction continuation/reversal setup signal. Separate from Resilience (structural durability), Hype (event/narrative pressure), and SOXL Entry Quality (instrument timing).",
   "timing": "Completed close T only; all momentum horizons and breadth observations end at T.",
   "architecture": {
-    "score": "45% multi-horizon absolute SOX momentum + 35% multi-horizon SOX-vs-QQQ relative momentum + 20% five-session semiconductor breadth persistence",
+    "score": "45% absolute SOX setup quality + 35% SOX-vs-QQQ relative setup quality + 20% breadth setup quality. Setup quality is U-shaped: washed-out extremes can imply reversal while strong extremes can imply continuation; mid-weak states score lowest.",
     "horizons": "1D 15% + 3D 25% + 5D 35% + 10D 25%",
     "macro": "Not scored here. Rates/VXN/oil belong to the separate environment/resilience layer.",
     "hype": "Not scored here until prospective Hype history is sufficient."
   },
   "latest": {
     "date": "2026-10-05",
-    "score": 78.4,
-    "label": "Strong Bullish",
+    "score": 73.4,
+    "label": "Bullish",
     "components": {
       "absoluteMomentum": 81.6,
       "relativeMomentum": 78.5,
-      "breadthPersistence": 70.8
+      "breadthPersistence": 70.8,
+      "absoluteSetupQuality": 76.6,
+      "relativeSetupQuality": 73.5,
+      "breadthSetupQuality": 65.8
     },
     "weights": {
       "absoluteMomentum": 45,
@@ -69,12 +72,15 @@
   "records": {
     "2025-10-20": {
       "date": "2025-10-20",
-      "score": 59.0,
+      "score": 54.0,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 64.4,
         "relativeMomentum": 59.5,
-        "breadthPersistence": 45.8
+        "breadthPersistence": 45.8,
+        "absoluteSetupQuality": 59.4,
+        "relativeSetupQuality": 54.5,
+        "breadthSetupQuality": 40.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -125,12 +131,15 @@
     },
     "2025-10-21": {
       "date": "2025-10-21",
-      "score": 59.0,
+      "score": 54.0,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 66.5,
         "relativeMomentum": 59.1,
-        "breadthPersistence": 41.8
+        "breadthPersistence": 41.8,
+        "absoluteSetupQuality": 61.5,
+        "relativeSetupQuality": 54.1,
+        "breadthSetupQuality": 36.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -181,12 +190,15 @@
     },
     "2025-10-22": {
       "date": "2025-10-22",
-      "score": 30.2,
-      "label": "Bearish",
+      "score": 55.0,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 32.0,
         "relativeMomentum": 27.8,
-        "breadthPersistence": 30.2
+        "breadthPersistence": 30.2,
+        "absoluteSetupQuality": 51.0,
+        "relativeSetupQuality": 60.5,
+        "breadthSetupQuality": 54.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -237,12 +249,15 @@
     },
     "2025-10-23": {
       "date": "2025-10-23",
-      "score": 47.7,
+      "score": 45.1,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 53.5,
         "relativeMomentum": 47.0,
-        "breadthPersistence": 36.0
+        "breadthPersistence": 36.0,
+        "absoluteSetupQuality": 48.5,
+        "relativeSetupQuality": 42.0,
+        "breadthSetupQuality": 43.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -293,12 +308,15 @@
     },
     "2025-10-24": {
       "date": "2025-10-24",
-      "score": 69.7,
+      "score": 64.7,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 76.1,
         "relativeMomentum": 70.9,
-        "breadthPersistence": 53.0
+        "breadthPersistence": 53.0,
+        "absoluteSetupQuality": 71.1,
+        "relativeSetupQuality": 65.9,
+        "breadthSetupQuality": 48.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -349,12 +367,15 @@
     },
     "2025-10-27": {
       "date": "2025-10-27",
-      "score": 77.9,
-      "label": "Strong Bullish",
+      "score": 72.9,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 86.2,
         "relativeMomentum": 76.4,
-        "breadthPersistence": 61.7
+        "breadthPersistence": 61.7,
+        "absoluteSetupQuality": 81.2,
+        "relativeSetupQuality": 71.4,
+        "breadthSetupQuality": 56.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -405,12 +426,15 @@
     },
     "2025-10-28": {
       "date": "2025-10-28",
-      "score": 78.9,
-      "label": "Strong Bullish",
+      "score": 73.9,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 84.4,
         "relativeMomentum": 72.0,
-        "breadthPersistence": 78.8
+        "breadthPersistence": 78.8,
+        "absoluteSetupQuality": 79.4,
+        "relativeSetupQuality": 67.0,
+        "breadthSetupQuality": 73.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -461,12 +485,15 @@
     },
     "2025-10-29": {
       "date": "2025-10-29",
-      "score": 89.0,
+      "score": 83.6,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 90.9,
         "relativeMomentum": 84.8,
-        "breadthPersistence": 92.1
+        "breadthPersistence": 92.1,
+        "absoluteSetupQuality": 85.4,
+        "relativeSetupQuality": 79.8,
+        "breadthSetupQuality": 86.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -517,12 +544,15 @@
     },
     "2025-10-30": {
       "date": "2025-10-30",
-      "score": 73.7,
+      "score": 68.7,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 72.0,
         "relativeMomentum": 71.8,
-        "breadthPersistence": 81.0
+        "breadthPersistence": 81.0,
+        "absoluteSetupQuality": 67.0,
+        "relativeSetupQuality": 66.8,
+        "breadthSetupQuality": 76.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -573,12 +603,15 @@
     },
     "2025-10-31": {
       "date": "2025-10-31",
-      "score": 69.3,
+      "score": 64.3,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 71.4,
         "relativeMomentum": 69.1,
-        "breadthPersistence": 65.0
+        "breadthPersistence": 65.0,
+        "absoluteSetupQuality": 66.4,
+        "relativeSetupQuality": 64.1,
+        "breadthSetupQuality": 60.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -629,12 +662,15 @@
     },
     "2025-11-03": {
       "date": "2025-11-03",
-      "score": 62.1,
-      "label": "Bullish",
+      "score": 57.1,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 62.0,
         "relativeMomentum": 61.0,
-        "breadthPersistence": 64.5
+        "breadthPersistence": 64.5,
+        "absoluteSetupQuality": 57.0,
+        "relativeSetupQuality": 56.0,
+        "breadthSetupQuality": 59.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -685,12 +721,15 @@
     },
     "2025-11-04": {
       "date": "2025-11-04",
-      "score": 36.4,
+      "score": 44.8,
       "label": "Bearish",
       "components": {
         "absoluteMomentum": 31.6,
         "relativeMomentum": 38.1,
-        "breadthPersistence": 44.4
+        "breadthPersistence": 44.4,
+        "absoluteSetupQuality": 51.8,
+        "relativeSetupQuality": 38.9,
+        "breadthSetupQuality": 39.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -741,12 +780,15 @@
     },
     "2025-11-05": {
       "date": "2025-11-05",
-      "score": 57.2,
+      "score": 54.3,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 57.6,
         "relativeMomentum": 68.5,
-        "breadthPersistence": 36.4
+        "breadthPersistence": 36.4,
+        "absoluteSetupQuality": 52.6,
+        "relativeSetupQuality": 63.5,
+        "breadthSetupQuality": 42.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -797,12 +839,15 @@
     },
     "2025-11-06": {
       "date": "2025-11-06",
-      "score": 42.2,
+      "score": 44.6,
       "label": "Bearish",
       "components": {
         "absoluteMomentum": 34.5,
         "relativeMomentum": 53.1,
-        "breadthPersistence": 40.4
+        "breadthPersistence": 40.4,
+        "absoluteSetupQuality": 45.9,
+        "relativeSetupQuality": 48.1,
+        "breadthSetupQuality": 35.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -853,12 +898,15 @@
     },
     "2025-11-07": {
       "date": "2025-11-07",
-      "score": 41.8,
+      "score": 44.5,
       "label": "Bearish",
       "components": {
         "absoluteMomentum": 34.3,
         "relativeMomentum": 51.0,
-        "breadthPersistence": 42.6
+        "breadthPersistence": 42.6,
+        "absoluteSetupQuality": 46.4,
+        "relativeSetupQuality": 46.0,
+        "breadthSetupQuality": 37.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -909,12 +957,15 @@
     },
     "2025-11-10": {
       "date": "2025-11-10",
-      "score": 48.3,
-      "label": "Neutral",
+      "score": 43.4,
+      "label": "Bearish",
       "components": {
         "absoluteMomentum": 46.4,
         "relativeMomentum": 51.6,
-        "breadthPersistence": 47.2
+        "breadthPersistence": 47.2,
+        "absoluteSetupQuality": 41.4,
+        "relativeSetupQuality": 46.6,
+        "breadthSetupQuality": 42.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -965,12 +1016,15 @@
     },
     "2025-11-11": {
       "date": "2025-11-11",
-      "score": 38.2,
+      "score": 42.9,
       "label": "Bearish",
       "components": {
         "absoluteMomentum": 38.2,
         "relativeMomentum": 33.0,
-        "breadthPersistence": 47.2
+        "breadthPersistence": 47.2,
+        "absoluteSetupQuality": 38.5,
+        "relativeSetupQuality": 48.9,
+        "breadthSetupQuality": 42.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -1021,12 +1075,15 @@
     },
     "2025-11-12": {
       "date": "2025-11-12",
-      "score": 44.9,
+      "score": 39.9,
       "label": "Bearish",
       "components": {
         "absoluteMomentum": 42.5,
         "relativeMomentum": 43.9,
-        "breadthPersistence": 52.2
+        "breadthPersistence": 52.2,
+        "absoluteSetupQuality": 37.5,
+        "relativeSetupQuality": 38.9,
+        "breadthSetupQuality": 47.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -1077,12 +1134,15 @@
     },
     "2025-11-13": {
       "date": "2025-11-13",
-      "score": 23.4,
-      "label": "Strong Bearish",
+      "score": 70.2,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 16.3,
         "relativeMomentum": 21.9,
-        "breadthPersistence": 42.2
+        "breadthPersistence": 42.2,
+        "absoluteSetupQuality": 80.9,
+        "relativeSetupQuality": 75.3,
+        "breadthSetupQuality": 37.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -1133,12 +1193,15 @@
     },
     "2025-11-14": {
       "date": "2025-11-14",
-      "score": 34.0,
-      "label": "Bearish",
+      "score": 55.5,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 26.8,
         "relativeMomentum": 32.5,
-        "breadthPersistence": 53.0
+        "breadthPersistence": 53.0,
+        "absoluteSetupQuality": 63.1,
+        "relativeSetupQuality": 50.1,
+        "breadthSetupQuality": 48.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -1189,12 +1252,15 @@
     },
     "2025-11-17": {
       "date": "2025-11-17",
-      "score": 18.6,
-      "label": "Strong Bearish",
+      "score": 73.8,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 10.1,
         "relativeMomentum": 19.5,
-        "breadthPersistence": 36.0
+        "breadthPersistence": 36.0,
+        "absoluteSetupQuality": 82.5,
+        "relativeSetupQuality": 80.1,
+        "breadthSetupQuality": 43.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -1245,12 +1311,15 @@
     },
     "2025-11-18": {
       "date": "2025-11-18",
-      "score": 22.0,
-      "label": "Strong Bearish",
+      "score": 68.1,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 12.3,
         "relativeMomentum": 25.1,
-        "breadthPersistence": 38.2
+        "breadthPersistence": 38.2,
+        "absoluteSetupQuality": 81.9,
+        "relativeSetupQuality": 67.2,
+        "breadthSetupQuality": 38.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -1301,12 +1370,15 @@
     },
     "2025-11-19": {
       "date": "2025-11-19",
-      "score": 26.8,
-      "label": "Strong Bearish",
+      "score": 63.4,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 20.5,
         "relativeMomentum": 30.8,
-        "breadthPersistence": 34.2
+        "breadthPersistence": 34.2,
+        "absoluteSetupQuality": 78.7,
+        "relativeSetupQuality": 53.4,
+        "breadthSetupQuality": 46.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -1357,12 +1429,15 @@
     },
     "2025-11-20": {
       "date": "2025-11-20",
-      "score": 15.2,
-      "label": "Strong Bearish",
+      "score": 73.7,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 5.9,
         "relativeMomentum": 14.0,
-        "breadthPersistence": 38.6
+        "breadthPersistence": 38.6,
+        "absoluteSetupQuality": 83.5,
+        "relativeSetupQuality": 81.5,
+        "breadthSetupQuality": 37.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -1413,12 +1488,15 @@
     },
     "2025-11-21": {
       "date": "2025-11-21",
-      "score": 21.7,
-      "label": "Strong Bearish",
+      "score": 74.3,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 18.5,
         "relativeMomentum": 22.9,
-        "breadthPersistence": 26.6
+        "breadthPersistence": 26.6,
+        "absoluteSetupQuality": 80.4,
+        "relativeSetupQuality": 72.6,
+        "breadthSetupQuality": 63.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -1469,12 +1547,15 @@
     },
     "2025-11-24": {
       "date": "2025-11-24",
-      "score": 42.9,
+      "score": 37.9,
       "label": "Bearish",
       "components": {
         "absoluteMomentum": 44.8,
         "relativeMomentum": 41.8,
-        "breadthPersistence": 40.4
+        "breadthPersistence": 40.4,
+        "absoluteSetupQuality": 39.8,
+        "relativeSetupQuality": 36.8,
+        "breadthSetupQuality": 35.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -1525,12 +1606,15 @@
     },
     "2025-11-25": {
       "date": "2025-11-25",
-      "score": 53.2,
+      "score": 48.1,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 58.0,
         "relativeMomentum": 51.1,
-        "breadthPersistence": 45.8
+        "breadthPersistence": 45.8,
+        "absoluteSetupQuality": 53.0,
+        "relativeSetupQuality": 46.1,
+        "breadthSetupQuality": 40.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -1581,12 +1665,15 @@
     },
     "2025-11-26": {
       "date": "2025-11-26",
-      "score": 64.3,
-      "label": "Bullish",
+      "score": 59.3,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 68.2,
         "relativeMomentum": 64.2,
-        "breadthPersistence": 55.7
+        "breadthPersistence": 55.7,
+        "absoluteSetupQuality": 63.2,
+        "relativeSetupQuality": 59.2,
+        "breadthSetupQuality": 50.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -1637,12 +1724,15 @@
     },
     "2025-11-28": {
       "date": "2025-11-28",
-      "score": 79.7,
-      "label": "Strong Bullish",
+      "score": 74.7,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 83.7,
         "relativeMomentum": 81.8,
-        "breadthPersistence": 67.1
+        "breadthPersistence": 67.1,
+        "absoluteSetupQuality": 78.7,
+        "relativeSetupQuality": 76.8,
+        "breadthSetupQuality": 62.1
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -1693,12 +1783,15 @@
     },
     "2025-12-01": {
       "date": "2025-12-01",
-      "score": 80.9,
+      "score": 75.9,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 81.3,
         "relativeMomentum": 83.1,
-        "breadthPersistence": 76.2
+        "breadthPersistence": 76.2,
+        "absoluteSetupQuality": 76.3,
+        "relativeSetupQuality": 78.1,
+        "breadthSetupQuality": 71.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -1749,12 +1842,15 @@
     },
     "2025-12-02": {
       "date": "2025-12-02",
-      "score": 80.8,
+      "score": 75.8,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 84.8,
         "relativeMomentum": 84.6,
-        "breadthPersistence": 65.3
+        "breadthPersistence": 65.3,
+        "absoluteSetupQuality": 79.8,
+        "relativeSetupQuality": 79.6,
+        "breadthSetupQuality": 60.3
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -1805,12 +1901,15 @@
     },
     "2025-12-03": {
       "date": "2025-12-03",
-      "score": 85.6,
+      "score": 80.2,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 88.9,
         "relativeMomentum": 92.1,
-        "breadthPersistence": 66.8
+        "breadthPersistence": 66.8,
+        "absoluteSetupQuality": 83.9,
+        "relativeSetupQuality": 86.0,
+        "breadthSetupQuality": 61.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -1861,12 +1960,15 @@
     },
     "2025-12-04": {
       "date": "2025-12-04",
-      "score": 72.6,
+      "score": 67.6,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 77.9,
         "relativeMomentum": 78.6,
-        "breadthPersistence": 50.2
+        "breadthPersistence": 50.2,
+        "absoluteSetupQuality": 72.9,
+        "relativeSetupQuality": 73.6,
+        "breadthSetupQuality": 45.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -1917,12 +2019,15 @@
     },
     "2025-12-05": {
       "date": "2025-12-05",
-      "score": 73.9,
+      "score": 68.9,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 77.6,
         "relativeMomentum": 81.2,
-        "breadthPersistence": 53.0
+        "breadthPersistence": 53.0,
+        "absoluteSetupQuality": 72.6,
+        "relativeSetupQuality": 76.2,
+        "breadthSetupQuality": 48.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -1973,12 +2078,15 @@
     },
     "2025-12-08": {
       "date": "2025-12-08",
-      "score": 77.8,
-      "label": "Strong Bullish",
+      "score": 72.8,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 78.5,
         "relativeMomentum": 84.2,
-        "breadthPersistence": 65.0
+        "breadthPersistence": 65.0,
+        "absoluteSetupQuality": 73.5,
+        "relativeSetupQuality": 79.2,
+        "breadthSetupQuality": 60.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -2029,12 +2137,15 @@
     },
     "2025-12-09": {
       "date": "2025-12-09",
-      "score": 76.1,
-      "label": "Strong Bullish",
+      "score": 71.1,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 74.7,
         "relativeMomentum": 79.8,
-        "breadthPersistence": 73.0
+        "breadthPersistence": 73.0,
+        "absoluteSetupQuality": 69.7,
+        "relativeSetupQuality": 74.8,
+        "breadthSetupQuality": 68.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -2085,12 +2196,15 @@
     },
     "2025-12-10": {
       "date": "2025-12-10",
-      "score": 77.2,
-      "label": "Strong Bullish",
+      "score": 72.2,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 75.2,
         "relativeMomentum": 80.0,
-        "breadthPersistence": 77.0
+        "breadthPersistence": 77.0,
+        "absoluteSetupQuality": 70.2,
+        "relativeSetupQuality": 75.0,
+        "breadthSetupQuality": 72.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -2141,12 +2255,15 @@
     },
     "2025-12-11": {
       "date": "2025-12-11",
-      "score": 71.0,
+      "score": 66.1,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 68.7,
         "relativeMomentum": 73.0,
-        "breadthPersistence": 73.0
+        "breadthPersistence": 73.0,
+        "absoluteSetupQuality": 63.7,
+        "relativeSetupQuality": 68.0,
+        "breadthSetupQuality": 68.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -2197,12 +2314,15 @@
     },
     "2025-12-12": {
       "date": "2025-12-12",
-      "score": 32.8,
-      "label": "Bearish",
+      "score": 58.5,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 23.9,
         "relativeMomentum": 32.8,
-        "breadthPersistence": 53.0
+        "breadthPersistence": 53.0,
+        "absoluteSetupQuality": 70.3,
+        "relativeSetupQuality": 49.4,
+        "breadthSetupQuality": 48.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -2253,12 +2373,15 @@
     },
     "2025-12-15": {
       "date": "2025-12-15",
-      "score": 28.3,
-      "label": "Strong Bearish",
+      "score": 60.0,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 23.1,
         "relativeMomentum": 30.4,
-        "breadthPersistence": 36.0
+        "breadthPersistence": 36.0,
+        "absoluteSetupQuality": 72.1,
+        "relativeSetupQuality": 54.2,
+        "breadthSetupQuality": 43.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -2309,12 +2432,15 @@
     },
     "2025-12-16": {
       "date": "2025-12-16",
-      "score": 21.9,
-      "label": "Strong Bearish",
+      "score": 73.4,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 17.9,
         "relativeMomentum": 21.2,
-        "breadthPersistence": 32.0
+        "breadthPersistence": 32.0,
+        "absoluteSetupQuality": 80.5,
+        "relativeSetupQuality": 77.1,
+        "breadthSetupQuality": 51.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -2365,12 +2491,15 @@
     },
     "2025-12-17": {
       "date": "2025-12-17",
-      "score": 9.9,
-      "label": "Strong Bearish",
+      "score": 82.5,
+      "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 5.5,
         "relativeMomentum": 9.9,
-        "breadthPersistence": 20.0
+        "breadthPersistence": 20.0,
+        "absoluteSetupQuality": 83.6,
+        "relativeSetupQuality": 82.5,
+        "breadthSetupQuality": 80.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -2421,12 +2550,15 @@
     },
     "2025-12-18": {
       "date": "2025-12-18",
-      "score": 24.6,
-      "label": "Strong Bearish",
+      "score": 69.0,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 22.0,
         "relativeMomentum": 22.5,
-        "breadthPersistence": 33.8
+        "breadthPersistence": 33.8,
+        "absoluteSetupQuality": 74.9,
+        "relativeSetupQuality": 73.8,
+        "breadthSetupQuality": 47.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -2477,12 +2609,15 @@
     },
     "2025-12-19": {
       "date": "2025-12-19",
-      "score": 51.4,
+      "score": 46.4,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 50.5,
         "relativeMomentum": 50.0,
-        "breadthPersistence": 55.7
+        "breadthPersistence": 55.7,
+        "absoluteSetupQuality": 45.5,
+        "relativeSetupQuality": 45.0,
+        "breadthSetupQuality": 50.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -2533,12 +2668,15 @@
     },
     "2025-12-22": {
       "date": "2025-12-22",
-      "score": 62.5,
-      "label": "Bullish",
+      "score": 57.5,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 60.8,
         "relativeMomentum": 58.9,
-        "breadthPersistence": 72.6
+        "breadthPersistence": 72.6,
+        "absoluteSetupQuality": 55.8,
+        "relativeSetupQuality": 53.9,
+        "breadthSetupQuality": 67.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -2589,12 +2727,15 @@
     },
     "2025-12-23": {
       "date": "2025-12-23",
-      "score": 62.9,
-      "label": "Bullish",
+      "score": 58.0,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 61.5,
         "relativeMomentum": 59.3,
-        "breadthPersistence": 72.6
+        "breadthPersistence": 72.6,
+        "absoluteSetupQuality": 56.5,
+        "relativeSetupQuality": 54.3,
+        "breadthSetupQuality": 67.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -2645,12 +2786,15 @@
     },
     "2025-12-24": {
       "date": "2025-12-24",
-      "score": 65.5,
+      "score": 60.5,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 62.9,
         "relativeMomentum": 58.8,
-        "breadthPersistence": 83.3
+        "breadthPersistence": 83.3,
+        "absoluteSetupQuality": 57.9,
+        "relativeSetupQuality": 53.8,
+        "breadthSetupQuality": 78.3
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -2701,12 +2845,15 @@
     },
     "2025-12-26": {
       "date": "2025-12-26",
-      "score": 60.7,
-      "label": "Bullish",
+      "score": 55.7,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 57.6,
         "relativeMomentum": 54.5,
-        "breadthPersistence": 78.4
+        "breadthPersistence": 78.4,
+        "absoluteSetupQuality": 52.6,
+        "relativeSetupQuality": 49.5,
+        "breadthSetupQuality": 73.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -2757,12 +2904,15 @@
     },
     "2025-12-29": {
       "date": "2025-12-29",
-      "score": 59.3,
+      "score": 54.3,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 57.1,
         "relativeMomentum": 58.8,
-        "breadthPersistence": 65.3
+        "breadthPersistence": 65.3,
+        "absoluteSetupQuality": 52.1,
+        "relativeSetupQuality": 53.8,
+        "breadthSetupQuality": 60.3
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -2813,12 +2963,15 @@
     },
     "2025-12-30": {
       "date": "2025-12-30",
-      "score": 54.3,
+      "score": 49.3,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 54.3,
         "relativeMomentum": 56.7,
-        "breadthPersistence": 50.2
+        "breadthPersistence": 50.2,
+        "absoluteSetupQuality": 49.3,
+        "relativeSetupQuality": 51.7,
+        "breadthSetupQuality": 45.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -2869,12 +3022,15 @@
     },
     "2025-12-31": {
       "date": "2025-12-31",
-      "score": 46.6,
-      "label": "Neutral",
+      "score": 41.6,
+      "label": "Bearish",
       "components": {
         "absoluteMomentum": 42.3,
         "relativeMomentum": 52.4,
-        "breadthPersistence": 46.2
+        "breadthPersistence": 46.2,
+        "absoluteSetupQuality": 37.3,
+        "relativeSetupQuality": 47.4,
+        "breadthSetupQuality": 41.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -2925,12 +3081,15 @@
     },
     "2026-01-02": {
       "date": "2026-01-02",
-      "score": 79.7,
-      "label": "Strong Bullish",
+      "score": 73.8,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 77.9,
         "relativeMomentum": 94.6,
-        "breadthPersistence": 57.4
+        "breadthPersistence": 57.4,
+        "absoluteSetupQuality": 72.9,
+        "relativeSetupQuality": 87.3,
+        "breadthSetupQuality": 52.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -2981,12 +3140,15 @@
     },
     "2026-01-05": {
       "date": "2026-01-05",
-      "score": 76.7,
-      "label": "Strong Bullish",
+      "score": 71.7,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 79.7,
         "relativeMomentum": 89.6,
-        "breadthPersistence": 47.2
+        "breadthPersistence": 47.2,
+        "absoluteSetupQuality": 74.7,
+        "relativeSetupQuality": 84.6,
+        "breadthSetupQuality": 42.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -3037,12 +3199,15 @@
     },
     "2026-01-06": {
       "date": "2026-01-06",
-      "score": 85.4,
+      "score": 78.6,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 93.1,
         "relativeMomentum": 96.2,
-        "breadthPersistence": 49.0
+        "breadthPersistence": 49.0,
+        "absoluteSetupQuality": 86.6,
+        "relativeSetupQuality": 88.1,
+        "breadthSetupQuality": 44.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -3093,12 +3258,15 @@
     },
     "2026-01-07": {
       "date": "2026-01-07",
-      "score": 72.4,
+      "score": 67.4,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 77.2,
         "relativeMomentum": 81.3,
-        "breadthPersistence": 46.2
+        "breadthPersistence": 46.2,
+        "absoluteSetupQuality": 72.2,
+        "relativeSetupQuality": 76.3,
+        "breadthSetupQuality": 41.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -3149,12 +3317,15 @@
     },
     "2026-01-08": {
       "date": "2026-01-08",
-      "score": 62.3,
-      "label": "Bullish",
+      "score": 57.3,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 65.7,
         "relativeMomentum": 70.6,
-        "breadthPersistence": 40.0
+        "breadthPersistence": 40.0,
+        "absoluteSetupQuality": 60.7,
+        "relativeSetupQuality": 65.6,
+        "breadthSetupQuality": 35.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -3205,12 +3376,15 @@
     },
     "2026-01-09": {
       "date": "2026-01-09",
-      "score": 63.7,
+      "score": 63.4,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 72.3,
         "relativeMomentum": 70.6,
-        "breadthPersistence": 32.0
+        "breadthPersistence": 32.0,
+        "absoluteSetupQuality": 67.3,
+        "relativeSetupQuality": 65.6,
+        "breadthSetupQuality": 51.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -3261,12 +3435,15 @@
     },
     "2026-01-12": {
       "date": "2026-01-12",
-      "score": 67.3,
+      "score": 62.3,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 71.7,
         "relativeMomentum": 74.0,
-        "breadthPersistence": 45.8
+        "breadthPersistence": 45.8,
+        "absoluteSetupQuality": 66.7,
+        "relativeSetupQuality": 69.0,
+        "breadthSetupQuality": 40.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -3317,12 +3494,15 @@
     },
     "2026-01-13": {
       "date": "2026-01-13",
-      "score": 70.7,
+      "score": 65.7,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 74.6,
         "relativeMomentum": 78.6,
-        "breadthPersistence": 48.0
+        "breadthPersistence": 48.0,
+        "absoluteSetupQuality": 69.6,
+        "relativeSetupQuality": 73.6,
+        "breadthSetupQuality": 43.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -3373,12 +3553,15 @@
     },
     "2026-01-14": {
       "date": "2026-01-14",
-      "score": 67.9,
+      "score": 62.9,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 66.8,
         "relativeMomentum": 80.7,
-        "breadthPersistence": 48.0
+        "breadthPersistence": 48.0,
+        "absoluteSetupQuality": 61.8,
+        "relativeSetupQuality": 75.7,
+        "breadthSetupQuality": 43.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -3429,12 +3612,15 @@
     },
     "2026-01-15": {
       "date": "2026-01-15",
-      "score": 82.9,
+      "score": 77.6,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 81.4,
         "relativeMomentum": 91.8,
-        "breadthPersistence": 70.8
+        "breadthPersistence": 70.8,
+        "absoluteSetupQuality": 76.4,
+        "relativeSetupQuality": 85.9,
+        "breadthSetupQuality": 65.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -3485,12 +3671,15 @@
     },
     "2026-01-16": {
       "date": "2026-01-16",
-      "score": 81.6,
+      "score": 76.5,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 77.5,
         "relativeMomentum": 90.8,
-        "breadthPersistence": 74.8
+        "breadthPersistence": 74.8,
+        "absoluteSetupQuality": 72.5,
+        "relativeSetupQuality": 85.4,
+        "breadthSetupQuality": 69.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -3541,12 +3730,15 @@
     },
     "2026-01-20": {
       "date": "2026-01-20",
-      "score": 72.1,
+      "score": 67.1,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 62.1,
         "relativeMomentum": 89.0,
-        "breadthPersistence": 65.0
+        "breadthPersistence": 65.0,
+        "absoluteSetupQuality": 57.1,
+        "relativeSetupQuality": 84.0,
+        "breadthSetupQuality": 60.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -3597,12 +3789,15 @@
     },
     "2026-01-21": {
       "date": "2026-01-21",
-      "score": 80.5,
-      "label": "Strong Bullish",
+      "score": 74.9,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 77.4,
         "relativeMomentum": 93.5,
-        "breadthPersistence": 65.0
+        "breadthPersistence": 65.0,
+        "absoluteSetupQuality": 72.4,
+        "relativeSetupQuality": 86.7,
+        "breadthSetupQuality": 60.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -3653,12 +3848,15 @@
     },
     "2026-01-22": {
       "date": "2026-01-22",
-      "score": 77.8,
-      "label": "Strong Bullish",
+      "score": 72.8,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 75.2,
         "relativeMomentum": 82.9,
-        "breadthPersistence": 74.8
+        "breadthPersistence": 74.8,
+        "absoluteSetupQuality": 70.2,
+        "relativeSetupQuality": 77.9,
+        "breadthSetupQuality": 69.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -3709,12 +3907,15 @@
     },
     "2026-01-23": {
       "date": "2026-01-23",
-      "score": 67.3,
+      "score": 62.3,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 67.4,
         "relativeMomentum": 65.1,
-        "breadthPersistence": 70.8
+        "breadthPersistence": 70.8,
+        "absoluteSetupQuality": 62.4,
+        "relativeSetupQuality": 60.1,
+        "breadthSetupQuality": 65.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -3765,12 +3966,15 @@
     },
     "2026-01-26": {
       "date": "2026-01-26",
-      "score": 51.3,
+      "score": 46.3,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 52.9,
         "relativeMomentum": 46.8,
-        "breadthPersistence": 55.7
+        "breadthPersistence": 55.7,
+        "absoluteSetupQuality": 47.9,
+        "relativeSetupQuality": 41.8,
+        "breadthSetupQuality": 50.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -3821,12 +4025,15 @@
     },
     "2026-01-27": {
       "date": "2026-01-27",
-      "score": 69.7,
+      "score": 64.7,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 74.6,
         "relativeMomentum": 64.0,
-        "breadthPersistence": 68.6
+        "breadthPersistence": 68.6,
+        "absoluteSetupQuality": 69.6,
+        "relativeSetupQuality": 59.0,
+        "breadthSetupQuality": 63.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -3877,12 +4084,15 @@
     },
     "2026-01-28": {
       "date": "2026-01-28",
-      "score": 78.0,
-      "label": "Strong Bullish",
+      "score": 73.0,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 80.8,
         "relativeMomentum": 77.6,
-        "breadthPersistence": 72.2
+        "breadthPersistence": 72.2,
+        "absoluteSetupQuality": 75.8,
+        "relativeSetupQuality": 72.6,
+        "breadthSetupQuality": 67.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -3933,12 +4143,15 @@
     },
     "2026-01-29": {
       "date": "2026-01-29",
-      "score": 79.2,
-      "label": "Strong Bullish",
+      "score": 74.2,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 80.0,
         "relativeMomentum": 84.3,
-        "breadthPersistence": 68.6
+        "breadthPersistence": 68.6,
+        "absoluteSetupQuality": 75.0,
+        "relativeSetupQuality": 79.3,
+        "breadthSetupQuality": 63.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -3989,12 +4202,15 @@
     },
     "2026-01-30": {
       "date": "2026-01-30",
-      "score": 51.4,
+      "score": 46.4,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 46.4,
         "relativeMomentum": 55.4,
-        "breadthPersistence": 55.7
+        "breadthPersistence": 55.7,
+        "absoluteSetupQuality": 41.4,
+        "relativeSetupQuality": 50.4,
+        "breadthSetupQuality": 50.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -4045,12 +4261,15 @@
     },
     "2026-02-02": {
       "date": "2026-02-02",
-      "score": 62.8,
-      "label": "Bullish",
+      "score": 57.8,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 58.5,
         "relativeMomentum": 66.0,
-        "breadthPersistence": 66.8
+        "breadthPersistence": 66.8,
+        "absoluteSetupQuality": 53.5,
+        "relativeSetupQuality": 61.0,
+        "breadthSetupQuality": 61.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -4101,12 +4320,15 @@
     },
     "2026-02-03": {
       "date": "2026-02-03",
-      "score": 41.4,
+      "score": 42.4,
       "label": "Bearish",
       "components": {
         "absoluteMomentum": 35.6,
         "relativeMomentum": 47.5,
-        "breadthPersistence": 44.0
+        "breadthPersistence": 44.0,
+        "absoluteSetupQuality": 43.9,
+        "relativeSetupQuality": 42.5,
+        "breadthSetupQuality": 39.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -4157,12 +4379,15 @@
     },
     "2026-02-04": {
       "date": "2026-02-04",
-      "score": 14.3,
-      "label": "Strong Bearish",
+      "score": 77.6,
+      "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 7.7,
         "relativeMomentum": 14.6,
-        "breadthPersistence": 28.4
+        "breadthPersistence": 28.4,
+        "absoluteSetupQuality": 83.1,
+        "relativeSetupQuality": 81.3,
+        "breadthSetupQuality": 59.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -4213,12 +4438,15 @@
     },
     "2026-02-05": {
       "date": "2026-02-05",
-      "score": 21.7,
-      "label": "Strong Bearish",
+      "score": 67.1,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 11.3,
         "relativeMomentum": 29.1,
-        "breadthPersistence": 32.4
+        "breadthPersistence": 32.4,
+        "absoluteSetupQuality": 82.2,
+        "relativeSetupQuality": 57.3,
+        "breadthSetupQuality": 50.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -4269,12 +4497,15 @@
     },
     "2026-02-06": {
       "date": "2026-02-06",
-      "score": 66.2,
+      "score": 61.2,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 61.5,
         "relativeMomentum": 83.7,
-        "breadthPersistence": 46.2
+        "breadthPersistence": 46.2,
+        "absoluteSetupQuality": 56.5,
+        "relativeSetupQuality": 78.7,
+        "breadthSetupQuality": 41.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -4325,12 +4556,15 @@
     },
     "2026-02-09": {
       "date": "2026-02-09",
-      "score": 71.6,
+      "score": 66.6,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 69.5,
         "relativeMomentum": 86.2,
-        "breadthPersistence": 50.8
+        "breadthPersistence": 50.8,
+        "absoluteSetupQuality": 64.5,
+        "relativeSetupQuality": 81.2,
+        "breadthSetupQuality": 45.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -4381,12 +4615,15 @@
     },
     "2026-02-10": {
       "date": "2026-02-10",
-      "score": 68.2,
+      "score": 63.2,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 63.9,
         "relativeMomentum": 80.6,
-        "breadthPersistence": 56.3
+        "breadthPersistence": 56.3,
+        "absoluteSetupQuality": 58.9,
+        "relativeSetupQuality": 75.6,
+        "breadthSetupQuality": 51.3
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -4437,12 +4674,15 @@
     },
     "2026-02-11": {
       "date": "2026-02-11",
-      "score": 80.2,
+      "score": 75.2,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 75.3,
         "relativeMomentum": 88.2,
-        "breadthPersistence": 77.0
+        "breadthPersistence": 77.0,
+        "absoluteSetupQuality": 70.3,
+        "relativeSetupQuality": 83.2,
+        "breadthSetupQuality": 72.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -4493,12 +4733,15 @@
     },
     "2026-02-12": {
       "date": "2026-02-12",
-      "score": 64.5,
-      "label": "Bullish",
+      "score": 59.4,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 51.8,
         "relativeMomentum": 76.8,
-        "breadthPersistence": 71.2
+        "breadthPersistence": 71.2,
+        "absoluteSetupQuality": 46.8,
+        "relativeSetupQuality": 71.8,
+        "breadthSetupQuality": 66.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -4549,12 +4792,15 @@
     },
     "2026-02-13": {
       "date": "2026-02-13",
-      "score": 64.3,
-      "label": "Bullish",
+      "score": 59.3,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 57.6,
         "relativeMomentum": 80.5,
-        "breadthPersistence": 50.8
+        "breadthPersistence": 50.8,
+        "absoluteSetupQuality": 52.6,
+        "relativeSetupQuality": 75.5,
+        "breadthSetupQuality": 45.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -4605,12 +4851,15 @@
     },
     "2026-02-17": {
       "date": "2026-02-17",
-      "score": 52.6,
+      "score": 47.6,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 44.1,
         "relativeMomentum": 69.4,
-        "breadthPersistence": 42.2
+        "breadthPersistence": 42.2,
+        "absoluteSetupQuality": 39.1,
+        "relativeSetupQuality": 64.4,
+        "breadthSetupQuality": 37.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -4661,12 +4910,15 @@
     },
     "2026-02-18": {
       "date": "2026-02-18",
-      "score": 64.6,
-      "label": "Bullish",
+      "score": 59.6,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 63.4,
         "relativeMomentum": 75.7,
-        "breadthPersistence": 48.0
+        "breadthPersistence": 48.0,
+        "absoluteSetupQuality": 58.4,
+        "relativeSetupQuality": 70.7,
+        "breadthSetupQuality": 43.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -4717,12 +4969,15 @@
     },
     "2026-02-19": {
       "date": "2026-02-19",
-      "score": 55.9,
+      "score": 50.9,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 56.7,
         "relativeMomentum": 63.6,
-        "breadthPersistence": 40.4
+        "breadthPersistence": 40.4,
+        "absoluteSetupQuality": 51.7,
+        "relativeSetupQuality": 58.6,
+        "breadthSetupQuality": 35.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -4773,12 +5028,15 @@
     },
     "2026-02-20": {
       "date": "2026-02-20",
-      "score": 65.2,
+      "score": 60.2,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 72.3,
         "relativeMomentum": 68.2,
-        "breadthPersistence": 44.0
+        "breadthPersistence": 44.0,
+        "absoluteSetupQuality": 67.3,
+        "relativeSetupQuality": 63.2,
+        "breadthSetupQuality": 39.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -4829,12 +5087,15 @@
     },
     "2026-02-23": {
       "date": "2026-02-23",
-      "score": 58.9,
+      "score": 53.9,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 55.4,
         "relativeMomentum": 69.1,
-        "breadthPersistence": 49.0
+        "breadthPersistence": 49.0,
+        "absoluteSetupQuality": 50.4,
+        "relativeSetupQuality": 64.1,
+        "breadthSetupQuality": 44.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -4885,12 +5146,15 @@
     },
     "2026-02-24": {
       "date": "2026-02-24",
-      "score": 64.4,
-      "label": "Bullish",
+      "score": 59.4,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 65.5,
         "relativeMomentum": 70.8,
-        "breadthPersistence": 50.8
+        "breadthPersistence": 50.8,
+        "absoluteSetupQuality": 60.5,
+        "relativeSetupQuality": 65.8,
+        "breadthSetupQuality": 45.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -4941,12 +5205,15 @@
     },
     "2026-02-25": {
       "date": "2026-02-25",
-      "score": 68.2,
+      "score": 63.2,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 72.7,
         "relativeMomentum": 71.1,
-        "breadthPersistence": 53.0
+        "breadthPersistence": 53.0,
+        "absoluteSetupQuality": 67.7,
+        "relativeSetupQuality": 66.1,
+        "breadthSetupQuality": 48.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -4997,12 +5264,15 @@
     },
     "2026-02-26": {
       "date": "2026-02-26",
-      "score": 40.3,
+      "score": 39.6,
       "label": "Bearish",
       "components": {
         "absoluteMomentum": 43.1,
         "relativeMomentum": 35.9,
-        "breadthPersistence": 41.8
+        "breadthPersistence": 41.8,
+        "absoluteSetupQuality": 38.1,
+        "relativeSetupQuality": 43.2,
+        "breadthSetupQuality": 36.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -5053,12 +5323,15 @@
     },
     "2026-02-27": {
       "date": "2026-02-27",
-      "score": 31.9,
-      "label": "Bearish",
+      "score": 51.6,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 35.1,
         "relativeMomentum": 28.8,
-        "breadthPersistence": 29.8
+        "breadthPersistence": 29.8,
+        "absoluteSetupQuality": 44.8,
+        "relativeSetupQuality": 58.0,
+        "breadthSetupQuality": 55.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -5109,12 +5382,15 @@
     },
     "2026-03-02": {
       "date": "2026-03-02",
-      "score": 33.6,
-      "label": "Bearish",
+      "score": 48.2,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 38.7,
         "relativeMomentum": 30.6,
-        "breadthPersistence": 27.2
+        "breadthPersistence": 27.2,
+        "absoluteSetupQuality": 37.6,
+        "relativeSetupQuality": 53.9,
+        "breadthSetupQuality": 62.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -5165,12 +5441,15 @@
     },
     "2026-03-03": {
       "date": "2026-03-03",
-      "score": 9.2,
-      "label": "Strong Bearish",
+      "score": 82.7,
+      "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 9.3,
         "relativeMomentum": 4.5,
-        "breadthPersistence": 17.4
+        "breadthPersistence": 17.4,
+        "absoluteSetupQuality": 82.7,
+        "relativeSetupQuality": 83.9,
+        "breadthSetupQuality": 80.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -5221,12 +5500,15 @@
     },
     "2026-03-04": {
       "date": "2026-03-04",
-      "score": 19.4,
-      "label": "Strong Bearish",
+      "score": 76.5,
+      "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 23.0,
         "relativeMomentum": 13.8,
-        "breadthPersistence": 21.4
+        "breadthPersistence": 21.4,
+        "absoluteSetupQuality": 72.5,
+        "relativeSetupQuality": 81.6,
+        "breadthSetupQuality": 76.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -5277,12 +5559,15 @@
     },
     "2026-03-05": {
       "date": "2026-03-05",
-      "score": 16.9,
-      "label": "Strong Bearish",
+      "score": 76.5,
+      "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 17.7,
         "relativeMomentum": 8.8,
-        "breadthPersistence": 29.4
+        "breadthPersistence": 29.4,
+        "absoluteSetupQuality": 80.6,
+        "relativeSetupQuality": 82.8,
+        "breadthSetupQuality": 56.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -5333,12 +5618,15 @@
     },
     "2026-03-06": {
       "date": "2026-03-06",
-      "score": 12.7,
-      "label": "Strong Bearish",
+      "score": 76.8,
+      "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 8.6,
         "relativeMomentum": 7.3,
-        "breadthPersistence": 31.6
+        "breadthPersistence": 31.6,
+        "absoluteSetupQuality": 82.9,
+        "relativeSetupQuality": 83.2,
+        "breadthSetupQuality": 51.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -5389,12 +5677,15 @@
     },
     "2026-03-09": {
       "date": "2026-03-09",
-      "score": 31.0,
-      "label": "Bearish",
+      "score": 57.6,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 29.2,
         "relativeMomentum": 24.7,
-        "breadthPersistence": 45.8
+        "breadthPersistence": 45.8,
+        "absoluteSetupQuality": 56.9,
+        "relativeSetupQuality": 68.2,
+        "breadthSetupQuality": 40.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -5445,12 +5736,15 @@
     },
     "2026-03-10": {
       "date": "2026-03-10",
-      "score": 47.7,
-      "label": "Neutral",
+      "score": 42.7,
+      "label": "Bearish",
       "components": {
         "absoluteMomentum": 45.0,
         "relativeMomentum": 43.2,
-        "breadthPersistence": 61.7
+        "breadthPersistence": 61.7,
+        "absoluteSetupQuality": 40.0,
+        "relativeSetupQuality": 38.2,
+        "breadthSetupQuality": 56.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -5501,12 +5795,15 @@
     },
     "2026-03-11": {
       "date": "2026-03-11",
-      "score": 52.7,
+      "score": 47.7,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 48.7,
         "relativeMomentum": 52.3,
-        "breadthPersistence": 62.3
+        "breadthPersistence": 62.3,
+        "absoluteSetupQuality": 43.7,
+        "relativeSetupQuality": 47.3,
+        "breadthSetupQuality": 57.3
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -5557,12 +5854,15 @@
     },
     "2026-03-12": {
       "date": "2026-03-12",
-      "score": 31.8,
-      "label": "Bearish",
+      "score": 63.8,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 21.1,
         "relativeMomentum": 31.1,
-        "breadthPersistence": 57.4
+        "breadthPersistence": 57.4,
+        "absoluteSetupQuality": 77.4,
+        "relativeSetupQuality": 52.7,
+        "breadthSetupQuality": 52.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -5613,12 +5913,15 @@
     },
     "2026-03-13": {
       "date": "2026-03-13",
-      "score": 48.3,
+      "score": 46.0,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 38.0,
         "relativeMomentum": 52.4,
-        "breadthPersistence": 64.5
+        "breadthPersistence": 64.5,
+        "absoluteSetupQuality": 39.0,
+        "relativeSetupQuality": 47.4,
+        "breadthSetupQuality": 59.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -5669,12 +5972,15 @@
     },
     "2026-03-16": {
       "date": "2026-03-16",
-      "score": 46.1,
-      "label": "Neutral",
+      "score": 42.5,
+      "label": "Bearish",
       "components": {
         "absoluteMomentum": 38.9,
         "relativeMomentum": 47.8,
-        "breadthPersistence": 59.0
+        "breadthPersistence": 59.0,
+        "absoluteSetupQuality": 37.1,
+        "relativeSetupQuality": 42.8,
+        "breadthSetupQuality": 54.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -5725,12 +6031,15 @@
     },
     "2026-03-17": {
       "date": "2026-03-17",
-      "score": 56.6,
+      "score": 51.6,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 55.8,
         "relativeMomentum": 59.7,
-        "breadthPersistence": 53.0
+        "breadthPersistence": 53.0,
+        "absoluteSetupQuality": 50.8,
+        "relativeSetupQuality": 54.7,
+        "breadthSetupQuality": 48.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -5781,12 +6090,15 @@
     },
     "2026-03-18": {
       "date": "2026-03-18",
-      "score": 51.7,
+      "score": 46.7,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 43.8,
         "relativeMomentum": 64.9,
-        "breadthPersistence": 46.2
+        "breadthPersistence": 46.2,
+        "absoluteSetupQuality": 38.8,
+        "relativeSetupQuality": 59.9,
+        "breadthSetupQuality": 41.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -5837,12 +6149,15 @@
     },
     "2026-03-19": {
       "date": "2026-03-19",
-      "score": 67.0,
+      "score": 62.0,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 61.2,
         "relativeMomentum": 82.5,
-        "breadthPersistence": 53.0
+        "breadthPersistence": 53.0,
+        "absoluteSetupQuality": 56.2,
+        "relativeSetupQuality": 77.5,
+        "breadthSetupQuality": 48.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -5893,12 +6208,15 @@
     },
     "2026-03-20": {
       "date": "2026-03-20",
-      "score": 56.2,
+      "score": 51.2,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 46.0,
         "relativeMomentum": 76.3,
-        "breadthPersistence": 44.0
+        "breadthPersistence": 44.0,
+        "absoluteSetupQuality": 41.0,
+        "relativeSetupQuality": 71.3,
+        "breadthSetupQuality": 39.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -5949,12 +6267,15 @@
     },
     "2026-03-23": {
       "date": "2026-03-23",
-      "score": 55.1,
+      "score": 50.0,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 48.5,
         "relativeMomentum": 70.8,
-        "breadthPersistence": 42.2
+        "breadthPersistence": 42.2,
+        "absoluteSetupQuality": 43.5,
+        "relativeSetupQuality": 65.8,
+        "breadthSetupQuality": 37.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -6005,12 +6326,15 @@
     },
     "2026-03-24": {
       "date": "2026-03-24",
-      "score": 62.3,
-      "label": "Bullish",
+      "score": 57.2,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 53.0,
         "relativeMomentum": 84.3,
-        "breadthPersistence": 44.4
+        "breadthPersistence": 44.4,
+        "absoluteSetupQuality": 48.0,
+        "relativeSetupQuality": 79.3,
+        "breadthSetupQuality": 39.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -6061,12 +6385,15 @@
     },
     "2026-03-25": {
       "date": "2026-03-25",
-      "score": 68.6,
+      "score": 63.6,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 65.7,
         "relativeMomentum": 84.0,
-        "breadthPersistence": 48.0
+        "breadthPersistence": 48.0,
+        "absoluteSetupQuality": 60.7,
+        "relativeSetupQuality": 79.0,
+        "breadthSetupQuality": 43.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -6117,12 +6444,15 @@
     },
     "2026-03-26": {
       "date": "2026-03-26",
-      "score": 37.8,
-      "label": "Bearish",
+      "score": 54.5,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 25.6,
         "relativeMomentum": 53.4,
-        "breadthPersistence": 37.8
+        "breadthPersistence": 37.8,
+        "absoluteSetupQuality": 65.9,
+        "relativeSetupQuality": 48.4,
+        "breadthSetupQuality": 39.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -6173,12 +6503,15 @@
     },
     "2026-03-27": {
       "date": "2026-03-27",
-      "score": 39.7,
-      "label": "Bearish",
+      "score": 59.8,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 22.6,
         "relativeMomentum": 56.8,
-        "breadthPersistence": 48.0
+        "breadthPersistence": 48.0,
+        "absoluteSetupQuality": 73.5,
+        "relativeSetupQuality": 51.8,
+        "breadthSetupQuality": 43.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -6229,12 +6562,15 @@
     },
     "2026-03-30": {
       "date": "2026-03-30",
-      "score": 13.1,
-      "label": "Strong Bearish",
+      "score": 75.8,
+      "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 2.1,
         "relativeMomentum": 15.1,
-        "breadthPersistence": 34.2
+        "breadthPersistence": 34.2,
+        "absoluteSetupQuality": 84.5,
+        "relativeSetupQuality": 81.2,
+        "breadthSetupQuality": 46.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -6285,12 +6621,15 @@
     },
     "2026-03-31": {
       "date": "2026-03-31",
-      "score": 42.2,
+      "score": 40.2,
       "label": "Bearish",
       "components": {
         "absoluteMomentum": 37.8,
         "relativeMomentum": 47.0,
-        "breadthPersistence": 44.0
+        "breadthPersistence": 44.0,
+        "absoluteSetupQuality": 39.4,
+        "relativeSetupQuality": 42.0,
+        "breadthSetupQuality": 39.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -6341,12 +6680,15 @@
     },
     "2026-04-01": {
       "date": "2026-04-01",
-      "score": 53.0,
+      "score": 48.0,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 54.4,
         "relativeMomentum": 55.4,
-        "breadthPersistence": 45.8
+        "breadthPersistence": 45.8,
+        "absoluteSetupQuality": 49.4,
+        "relativeSetupQuality": 50.4,
+        "breadthSetupQuality": 40.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -6397,12 +6739,15 @@
     },
     "2026-04-02": {
       "date": "2026-04-02",
-      "score": 69.7,
+      "score": 64.7,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 70.6,
         "relativeMomentum": 73.1,
-        "breadthPersistence": 61.7
+        "breadthPersistence": 61.7,
+        "absoluteSetupQuality": 65.6,
+        "relativeSetupQuality": 68.1,
+        "breadthSetupQuality": 56.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -6453,12 +6798,15 @@
     },
     "2026-04-06": {
       "date": "2026-04-06",
-      "score": 74.3,
+      "score": 69.3,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 79.3,
         "relativeMomentum": 72.9,
-        "breadthPersistence": 65.3
+        "breadthPersistence": 65.3,
+        "absoluteSetupQuality": 74.3,
+        "relativeSetupQuality": 67.9,
+        "breadthSetupQuality": 60.3
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -6509,12 +6857,15 @@
     },
     "2026-04-07": {
       "date": "2026-04-07",
-      "score": 81.7,
+      "score": 76.7,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 79.2,
         "relativeMomentum": 84.7,
-        "breadthPersistence": 82.0
+        "breadthPersistence": 82.0,
+        "absoluteSetupQuality": 74.2,
+        "relativeSetupQuality": 79.7,
+        "breadthSetupQuality": 77.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -6565,12 +6916,15 @@
     },
     "2026-04-08": {
       "date": "2026-04-08",
-      "score": 94.3,
+      "score": 86.2,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 98.8,
         "relativeMomentum": 97.0,
-        "breadthPersistence": 79.8
+        "breadthPersistence": 79.8,
+        "absoluteSetupQuality": 89.4,
+        "relativeSetupQuality": 88.5,
+        "breadthSetupQuality": 74.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -6621,12 +6975,15 @@
     },
     "2026-04-09": {
       "date": "2026-04-09",
-      "score": 92.2,
+      "score": 85.1,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 94.9,
         "relativeMomentum": 95.5,
-        "breadthPersistence": 80.6
+        "breadthPersistence": 80.6,
+        "absoluteSetupQuality": 87.4,
+        "relativeSetupQuality": 87.7,
+        "breadthSetupQuality": 75.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -6677,12 +7034,15 @@
     },
     "2026-04-10": {
       "date": "2026-04-10",
-      "score": 93.5,
+      "score": 86.2,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 95.1,
         "relativeMomentum": 96.7,
-        "breadthPersistence": 84.2
+        "breadthPersistence": 84.2,
+        "absoluteSetupQuality": 87.5,
+        "relativeSetupQuality": 88.4,
+        "breadthSetupQuality": 79.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -6733,12 +7093,15 @@
     },
     "2026-04-13": {
       "date": "2026-04-13",
-      "score": 90.3,
+      "score": 84.4,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 92.2,
         "relativeMomentum": 92.8,
-        "breadthPersistence": 82.0
+        "breadthPersistence": 82.0,
+        "absoluteSetupQuality": 86.1,
+        "relativeSetupQuality": 86.4,
+        "breadthSetupQuality": 77.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -6789,12 +7152,15 @@
     },
     "2026-04-14": {
       "date": "2026-04-14",
-      "score": 89.7,
+      "score": 84.1,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 92.5,
         "relativeMomentum": 89.7,
-        "breadthPersistence": 83.3
+        "breadthPersistence": 83.3,
+        "absoluteSetupQuality": 86.2,
+        "relativeSetupQuality": 84.7,
+        "breadthSetupQuality": 78.3
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -6845,12 +7211,15 @@
     },
     "2026-04-15": {
       "date": "2026-04-15",
-      "score": 79.4,
-      "label": "Strong Bullish",
+      "score": 74.4,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 87.6,
         "relativeMomentum": 71.9,
-        "breadthPersistence": 74.0
+        "breadthPersistence": 74.0,
+        "absoluteSetupQuality": 82.6,
+        "relativeSetupQuality": 66.9,
+        "breadthSetupQuality": 69.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -6901,12 +7270,15 @@
     },
     "2026-04-16": {
       "date": "2026-04-16",
-      "score": 76.6,
-      "label": "Strong Bullish",
+      "score": 71.6,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 86.0,
         "relativeMomentum": 72.4,
-        "breadthPersistence": 62.9
+        "breadthPersistence": 62.9,
+        "absoluteSetupQuality": 81.0,
+        "relativeSetupQuality": 67.4,
+        "breadthSetupQuality": 57.9
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -6957,12 +7329,15 @@
     },
     "2026-04-17": {
       "date": "2026-04-17",
-      "score": 77.5,
-      "label": "Strong Bullish",
+      "score": 72.5,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 88.6,
         "relativeMomentum": 72.8,
-        "breadthPersistence": 60.7
+        "breadthPersistence": 60.7,
+        "absoluteSetupQuality": 83.6,
+        "relativeSetupQuality": 67.8,
+        "breadthSetupQuality": 55.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -7013,12 +7388,15 @@
     },
     "2026-04-20": {
       "date": "2026-04-20",
-      "score": 76.3,
-      "label": "Strong Bullish",
+      "score": 71.4,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 84.7,
         "relativeMomentum": 79.0,
-        "breadthPersistence": 53.0
+        "breadthPersistence": 53.0,
+        "absoluteSetupQuality": 79.7,
+        "relativeSetupQuality": 74.0,
+        "breadthSetupQuality": 48.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -7069,12 +7447,15 @@
     },
     "2026-04-21": {
       "date": "2026-04-21",
-      "score": 75.6,
-      "label": "Strong Bullish",
+      "score": 70.6,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 81.0,
         "relativeMomentum": 82.6,
-        "breadthPersistence": 51.2
+        "breadthPersistence": 51.2,
+        "absoluteSetupQuality": 76.0,
+        "relativeSetupQuality": 77.6,
+        "breadthSetupQuality": 46.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -7125,12 +7506,15 @@
     },
     "2026-04-22": {
       "date": "2026-04-22",
-      "score": 83.6,
+      "score": 78.6,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 88.7,
         "relativeMomentum": 89.4,
-        "breadthPersistence": 62.0
+        "breadthPersistence": 62.0,
+        "absoluteSetupQuality": 83.7,
+        "relativeSetupQuality": 84.4,
+        "breadthSetupQuality": 57.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -7181,12 +7565,15 @@
     },
     "2026-04-23": {
       "date": "2026-04-23",
-      "score": 85.9,
+      "score": 79.8,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 90.7,
         "relativeMomentum": 95.6,
-        "breadthPersistence": 58.4
+        "breadthPersistence": 58.4,
+        "absoluteSetupQuality": 85.3,
+        "relativeSetupQuality": 87.8,
+        "breadthSetupQuality": 53.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -7237,12 +7624,15 @@
     },
     "2026-04-24": {
       "date": "2026-04-24",
-      "score": 90.5,
+      "score": 82.6,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 97.2,
         "relativeMomentum": 97.1,
-        "breadthPersistence": 63.5
+        "breadthPersistence": 63.5,
+        "absoluteSetupQuality": 88.6,
+        "relativeSetupQuality": 88.6,
+        "breadthSetupQuality": 58.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -7293,12 +7683,15 @@
     },
     "2026-04-27": {
       "date": "2026-04-27",
-      "score": 84.5,
+      "score": 79.5,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 87.3,
         "relativeMomentum": 87.7,
-        "breadthPersistence": 72.6
+        "breadthPersistence": 72.6,
+        "absoluteSetupQuality": 82.3,
+        "relativeSetupQuality": 82.7,
+        "breadthSetupQuality": 67.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -7349,12 +7742,15 @@
     },
     "2026-04-28": {
       "date": "2026-04-28",
-      "score": 62.1,
-      "label": "Bullish",
+      "score": 57.2,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 67.2,
         "relativeMomentum": 60.9,
-        "breadthPersistence": 53.0
+        "breadthPersistence": 53.0,
+        "absoluteSetupQuality": 62.2,
+        "relativeSetupQuality": 55.9,
+        "breadthSetupQuality": 48.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -7405,12 +7801,15 @@
     },
     "2026-04-29": {
       "date": "2026-04-29",
-      "score": 65.7,
+      "score": 60.8,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 69.2,
         "relativeMomentum": 71.5,
-        "breadthPersistence": 48.1
+        "breadthPersistence": 48.1,
+        "absoluteSetupQuality": 64.2,
+        "relativeSetupQuality": 66.5,
+        "breadthSetupQuality": 43.1
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -7461,12 +7860,15 @@
     },
     "2026-04-30": {
       "date": "2026-04-30",
-      "score": 72.3,
+      "score": 67.3,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 77.7,
         "relativeMomentum": 74.9,
-        "breadthPersistence": 55.7
+        "breadthPersistence": 55.7,
+        "absoluteSetupQuality": 72.7,
+        "relativeSetupQuality": 69.9,
+        "breadthSetupQuality": 50.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -7517,12 +7919,15 @@
     },
     "2026-05-01": {
       "date": "2026-05-01",
-      "score": 67.0,
+      "score": 62.0,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 75.0,
         "relativeMomentum": 67.2,
-        "breadthPersistence": 48.5
+        "breadthPersistence": 48.5,
+        "absoluteSetupQuality": 70.0,
+        "relativeSetupQuality": 62.2,
+        "breadthSetupQuality": 43.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -7573,12 +7978,15 @@
     },
     "2026-05-04": {
       "date": "2026-05-04",
-      "score": 63.6,
-      "label": "Bullish",
+      "score": 58.6,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 69.6,
         "relativeMomentum": 64.4,
-        "breadthPersistence": 48.5
+        "breadthPersistence": 48.5,
+        "absoluteSetupQuality": 64.6,
+        "relativeSetupQuality": 59.4,
+        "breadthSetupQuality": 43.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -7629,12 +8037,15 @@
     },
     "2026-05-05": {
       "date": "2026-05-05",
-      "score": 86.8,
+      "score": 80.6,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 92.9,
         "relativeMomentum": 93.2,
-        "breadthPersistence": 62.0
+        "breadthPersistence": 62.0,
+        "absoluteSetupQuality": 86.4,
+        "relativeSetupQuality": 86.6,
+        "breadthSetupQuality": 57.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -7685,12 +8096,15 @@
     },
     "2026-05-06": {
       "date": "2026-05-06",
-      "score": 90.9,
+      "score": 83.0,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 97.4,
         "relativeMomentum": 97.1,
-        "breadthPersistence": 65.3
+        "breadthPersistence": 65.3,
+        "absoluteSetupQuality": 88.7,
+        "relativeSetupQuality": 88.6,
+        "breadthSetupQuality": 60.3
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -7741,12 +8155,15 @@
     },
     "2026-05-07": {
       "date": "2026-05-07",
-      "score": 75.1,
-      "label": "Strong Bullish",
+      "score": 70.1,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 83.1,
         "relativeMomentum": 74.4,
-        "breadthPersistence": 58.4
+        "breadthPersistence": 58.4,
+        "absoluteSetupQuality": 78.1,
+        "relativeSetupQuality": 69.4,
+        "breadthSetupQuality": 53.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -7797,12 +8214,15 @@
     },
     "2026-05-08": {
       "date": "2026-05-08",
-      "score": 89.0,
+      "score": 81.7,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 97.2,
         "relativeMomentum": 94.0,
-        "breadthPersistence": 61.7
+        "breadthPersistence": 61.7,
+        "absoluteSetupQuality": 88.6,
+        "relativeSetupQuality": 87.0,
+        "breadthSetupQuality": 56.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -7853,12 +8273,15 @@
     },
     "2026-05-11": {
       "date": "2026-05-11",
-      "score": 86.3,
+      "score": 80.3,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 92.0,
         "relativeMomentum": 93.0,
-        "breadthPersistence": 61.7
+        "breadthPersistence": 61.7,
+        "absoluteSetupQuality": 86.0,
+        "relativeSetupQuality": 86.5,
+        "breadthSetupQuality": 56.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -7909,12 +8332,15 @@
     },
     "2026-05-12": {
       "date": "2026-05-12",
-      "score": 75.1,
-      "label": "Strong Bullish",
+      "score": 70.1,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 82.3,
         "relativeMomentum": 80.1,
-        "breadthPersistence": 50.2
+        "breadthPersistence": 50.2,
+        "absoluteSetupQuality": 77.3,
+        "relativeSetupQuality": 75.1,
+        "breadthSetupQuality": 45.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -7965,12 +8391,15 @@
     },
     "2026-05-13": {
       "date": "2026-05-13",
-      "score": 73.3,
+      "score": 68.3,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 81.1,
         "relativeMomentum": 80.3,
-        "breadthPersistence": 43.6
+        "breadthPersistence": 43.6,
+        "absoluteSetupQuality": 76.1,
+        "relativeSetupQuality": 75.3,
+        "breadthSetupQuality": 38.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -8021,12 +8450,15 @@
     },
     "2026-05-14": {
       "date": "2026-05-14",
-      "score": 74.0,
+      "score": 69.0,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 80.4,
         "relativeMomentum": 74.8,
-        "breadthPersistence": 58.4
+        "breadthPersistence": 58.4,
+        "absoluteSetupQuality": 75.4,
+        "relativeSetupQuality": 69.8,
+        "breadthSetupQuality": 53.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -8077,12 +8509,15 @@
     },
     "2026-05-15": {
       "date": "2026-05-15",
-      "score": 46.4,
-      "label": "Neutral",
+      "score": 41.4,
+      "label": "Bearish",
       "components": {
         "absoluteMomentum": 48.9,
         "relativeMomentum": 45.8,
-        "breadthPersistence": 41.8
+        "breadthPersistence": 41.8,
+        "absoluteSetupQuality": 43.9,
+        "relativeSetupQuality": 40.8,
+        "breadthSetupQuality": 36.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -8133,12 +8568,15 @@
     },
     "2026-05-18": {
       "date": "2026-05-18",
-      "score": 28.9,
-      "label": "Strong Bearish",
+      "score": 58.1,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 32.0,
         "relativeMomentum": 24.4,
-        "breadthPersistence": 29.8
+        "breadthPersistence": 29.8,
+        "absoluteSetupQuality": 50.9,
+        "relativeSetupQuality": 68.9,
+        "breadthSetupQuality": 55.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -8189,12 +8627,15 @@
     },
     "2026-05-19": {
       "date": "2026-05-19",
-      "score": 31.7,
-      "label": "Bearish",
+      "score": 51.6,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 33.6,
         "relativeMomentum": 30.3,
-        "breadthPersistence": 29.8
+        "breadthPersistence": 29.8,
+        "absoluteSetupQuality": 47.8,
+        "relativeSetupQuality": 54.4,
+        "breadthSetupQuality": 55.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -8245,12 +8686,15 @@
     },
     "2026-05-20": {
       "date": "2026-05-20",
-      "score": 52.4,
+      "score": 50.0,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 58.1,
         "relativeMomentum": 54.7,
-        "breadthPersistence": 35.6
+        "breadthPersistence": 35.6,
+        "absoluteSetupQuality": 53.1,
+        "relativeSetupQuality": 49.7,
+        "breadthSetupQuality": 43.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -8306,7 +8750,10 @@
       "components": {
         "absoluteMomentum": 69.6,
         "relativeMomentum": 74.7,
-        "breadthPersistence": 31.6
+        "breadthPersistence": 31.6,
+        "absoluteSetupQuality": 64.6,
+        "relativeSetupQuality": 69.7,
+        "breadthSetupQuality": 51.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -8357,12 +8804,15 @@
     },
     "2026-05-22": {
       "date": "2026-05-22",
-      "score": 76.3,
-      "label": "Strong Bullish",
+      "score": 73.9,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 84.2,
         "relativeMomentum": 89.3,
-        "breadthPersistence": 35.6
+        "breadthPersistence": 35.6,
+        "absoluteSetupQuality": 79.2,
+        "relativeSetupQuality": 84.3,
+        "breadthSetupQuality": 43.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -8413,12 +8863,15 @@
     },
     "2026-05-26": {
       "date": "2026-05-26",
-      "score": 88.0,
+      "score": 80.3,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 96.4,
         "relativeMomentum": 97.2,
-        "breadthPersistence": 53.0
+        "breadthPersistence": 53.0,
+        "absoluteSetupQuality": 88.2,
+        "relativeSetupQuality": 88.6,
+        "breadthSetupQuality": 48.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -8469,12 +8922,15 @@
     },
     "2026-05-27": {
       "date": "2026-05-27",
-      "score": 82.9,
+      "score": 77.9,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 88.2,
         "relativeMomentum": 88.2,
-        "breadthPersistence": 61.7
+        "breadthPersistence": 61.7,
+        "absoluteSetupQuality": 83.2,
+        "relativeSetupQuality": 83.2,
+        "breadthSetupQuality": 56.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -8525,12 +8981,15 @@
     },
     "2026-05-28": {
       "date": "2026-05-28",
-      "score": 81.2,
+      "score": 76.2,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 88.5,
         "relativeMomentum": 86.5,
-        "breadthPersistence": 55.7
+        "breadthPersistence": 55.7,
+        "absoluteSetupQuality": 83.5,
+        "relativeSetupQuality": 81.5,
+        "breadthSetupQuality": 50.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -8581,12 +9040,15 @@
     },
     "2026-05-29": {
       "date": "2026-05-29",
-      "score": 68.2,
+      "score": 63.2,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 75.6,
         "relativeMomentum": 69.1,
-        "breadthPersistence": 50.2
+        "breadthPersistence": 50.2,
+        "absoluteSetupQuality": 70.6,
+        "relativeSetupQuality": 64.1,
+        "breadthSetupQuality": 45.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -8637,12 +9099,15 @@
     },
     "2026-06-01": {
       "date": "2026-06-01",
-      "score": 77.0,
-      "label": "Strong Bullish",
+      "score": 72.0,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 82.1,
         "relativeMomentum": 76.3,
-        "breadthPersistence": 66.8
+        "breadthPersistence": 66.8,
+        "absoluteSetupQuality": 77.1,
+        "relativeSetupQuality": 71.3,
+        "breadthSetupQuality": 61.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -8693,12 +9158,15 @@
     },
     "2026-06-02": {
       "date": "2026-06-02",
-      "score": 90.5,
+      "score": 82.9,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 94.7,
         "relativeMomentum": 98.5,
-        "breadthPersistence": 66.8
+        "breadthPersistence": 66.8,
+        "absoluteSetupQuality": 87.3,
+        "relativeSetupQuality": 89.3,
+        "breadthSetupQuality": 61.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -8749,12 +9217,15 @@
     },
     "2026-06-03": {
       "date": "2026-06-03",
-      "score": 88.6,
+      "score": 81.6,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 94.1,
         "relativeMomentum": 95.9,
-        "breadthPersistence": 63.5
+        "breadthPersistence": 63.5,
+        "absoluteSetupQuality": 87.0,
+        "relativeSetupQuality": 87.9,
+        "breadthSetupQuality": 58.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -8805,12 +9276,15 @@
     },
     "2026-06-04": {
       "date": "2026-06-04",
-      "score": 80.1,
+      "score": 75.1,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 82.4,
         "relativeMomentum": 89.2,
-        "breadthPersistence": 59.0
+        "breadthPersistence": 59.0,
+        "absoluteSetupQuality": 77.4,
+        "relativeSetupQuality": 84.2,
+        "breadthSetupQuality": 54.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -8861,12 +9335,15 @@
     },
     "2026-06-05": {
       "date": "2026-06-05",
-      "score": 32.4,
-      "label": "Bearish",
+      "score": 57.0,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 20.8,
         "relativeMomentum": 38.5,
-        "breadthPersistence": 48.0
+        "breadthPersistence": 48.0,
+        "absoluteSetupQuality": 78.0,
+        "relativeSetupQuality": 38.0,
+        "breadthSetupQuality": 43.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -8917,12 +9394,15 @@
     },
     "2026-06-08": {
       "date": "2026-06-08",
-      "score": 59.3,
+      "score": 54.3,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 52.1,
         "relativeMomentum": 72.3,
-        "breadthPersistence": 53.0
+        "breadthPersistence": 53.0,
+        "absoluteSetupQuality": 47.1,
+        "relativeSetupQuality": 67.3,
+        "breadthSetupQuality": 48.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -8973,12 +9453,15 @@
     },
     "2026-06-09": {
       "date": "2026-06-09",
-      "score": 27.2,
-      "label": "Strong Bearish",
+      "score": 60.7,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 14.0,
         "relativeMomentum": 34.4,
-        "breadthPersistence": 44.4
+        "breadthPersistence": 44.4,
+        "absoluteSetupQuality": 81.5,
+        "relativeSetupQuality": 46.2,
+        "breadthSetupQuality": 39.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -9029,12 +9512,15 @@
     },
     "2026-06-10": {
       "date": "2026-06-10",
-      "score": 29.2,
-      "label": "Strong Bearish",
+      "score": 58.0,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 18.9,
         "relativeMomentum": 38.3,
-        "breadthPersistence": 36.4
+        "breadthPersistence": 36.4,
+        "absoluteSetupQuality": 80.3,
+        "relativeSetupQuality": 38.4,
+        "breadthSetupQuality": 42.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -9085,12 +9571,15 @@
     },
     "2026-06-11": {
       "date": "2026-06-11",
-      "score": 60.3,
-      "label": "Bullish",
+      "score": 55.3,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 55.9,
         "relativeMomentum": 75.3,
-        "breadthPersistence": 44.0
+        "breadthPersistence": 44.0,
+        "absoluteSetupQuality": 50.9,
+        "relativeSetupQuality": 70.3,
+        "breadthSetupQuality": 39.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -9141,12 +9630,15 @@
     },
     "2026-06-12": {
       "date": "2026-06-12",
-      "score": 82.4,
+      "score": 77.0,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 86.5,
         "relativeMomentum": 92.3,
-        "breadthPersistence": 55.7
+        "breadthPersistence": 55.7,
+        "absoluteSetupQuality": 81.5,
+        "relativeSetupQuality": 86.2,
+        "breadthSetupQuality": 50.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -9197,12 +9689,15 @@
     },
     "2026-06-15": {
       "date": "2026-06-15",
-      "score": 88.7,
+      "score": 80.6,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 98.1,
         "relativeMomentum": 97.0,
-        "breadthPersistence": 53.0
+        "breadthPersistence": 53.0,
+        "absoluteSetupQuality": 89.0,
+        "relativeSetupQuality": 88.5,
+        "breadthSetupQuality": 48.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -9253,12 +9748,15 @@
     },
     "2026-06-16": {
       "date": "2026-06-16",
-      "score": 47.6,
-      "label": "Neutral",
+      "score": 42.7,
+      "label": "Bearish",
       "components": {
         "absoluteMomentum": 50.7,
         "relativeMomentum": 46.0,
-        "breadthPersistence": 43.7
+        "breadthPersistence": 43.7,
+        "absoluteSetupQuality": 45.7,
+        "relativeSetupQuality": 41.0,
+        "breadthSetupQuality": 38.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -9309,12 +9807,15 @@
     },
     "2026-06-17": {
       "date": "2026-06-17",
-      "score": 66.6,
+      "score": 61.6,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 63.3,
         "relativeMomentum": 73.5,
-        "breadthPersistence": 62.0
+        "breadthPersistence": 62.0,
+        "absoluteSetupQuality": 58.3,
+        "relativeSetupQuality": 68.5,
+        "breadthSetupQuality": 57.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -9365,12 +9866,15 @@
     },
     "2026-06-18": {
       "date": "2026-06-18",
-      "score": 85.2,
+      "score": 79.6,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 86.2,
         "relativeMomentum": 93.4,
-        "breadthPersistence": 68.6
+        "breadthPersistence": 68.6,
+        "absoluteSetupQuality": 81.2,
+        "relativeSetupQuality": 86.7,
+        "breadthSetupQuality": 63.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -9421,12 +9925,15 @@
     },
     "2026-06-22": {
       "date": "2026-06-22",
-      "score": 90.8,
+      "score": 83.5,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 94.8,
         "relativeMomentum": 97.1,
-        "breadthPersistence": 70.8
+        "breadthPersistence": 70.8,
+        "absoluteSetupQuality": 87.4,
+        "relativeSetupQuality": 88.6,
+        "breadthSetupQuality": 65.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -9477,12 +9984,15 @@
     },
     "2026-06-23": {
       "date": "2026-06-23",
-      "score": 47.6,
+      "score": 45.3,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 38.0,
         "relativeMomentum": 58.1,
-        "breadthPersistence": 50.8
+        "breadthPersistence": 50.8,
+        "absoluteSetupQuality": 39.0,
+        "relativeSetupQuality": 53.1,
+        "breadthSetupQuality": 45.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -9533,12 +10043,15 @@
     },
     "2026-06-24": {
       "date": "2026-06-24",
-      "score": 61.9,
-      "label": "Bullish",
+      "score": 56.9,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 52.6,
         "relativeMomentum": 71.2,
-        "breadthPersistence": 66.7
+        "breadthPersistence": 66.7,
+        "absoluteSetupQuality": 47.6,
+        "relativeSetupQuality": 66.2,
+        "breadthSetupQuality": 61.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -9589,12 +10102,15 @@
     },
     "2026-06-25": {
       "date": "2026-06-25",
-      "score": 68.4,
+      "score": 63.4,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 66.1,
         "relativeMomentum": 77.5,
-        "breadthPersistence": 57.4
+        "breadthPersistence": 57.4,
+        "absoluteSetupQuality": 61.1,
+        "relativeSetupQuality": 72.5,
+        "breadthSetupQuality": 52.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -9645,12 +10161,15 @@
     },
     "2026-06-26": {
       "date": "2026-06-26",
-      "score": 28.7,
-      "label": "Strong Bearish",
+      "score": 59.4,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 21.9,
         "relativeMomentum": 32.8,
-        "breadthPersistence": 36.8
+        "breadthPersistence": 36.8,
+        "absoluteSetupQuality": 75.2,
+        "relativeSetupQuality": 49.3,
+        "breadthSetupQuality": 41.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -9701,12 +10220,15 @@
     },
     "2026-06-29": {
       "date": "2026-06-29",
-      "score": 44.2,
+      "score": 40.3,
       "label": "Bearish",
       "components": {
         "absoluteMomentum": 47.3,
         "relativeMomentum": 43.8,
-        "breadthPersistence": 38.2
+        "breadthPersistence": 38.2,
+        "absoluteSetupQuality": 42.3,
+        "relativeSetupQuality": 38.8,
+        "breadthSetupQuality": 38.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -9757,12 +10279,15 @@
     },
     "2026-06-30": {
       "date": "2026-06-30",
-      "score": 68.3,
+      "score": 63.4,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 73.9,
         "relativeMomentum": 70.0,
-        "breadthPersistence": 53.0
+        "breadthPersistence": 53.0,
+        "absoluteSetupQuality": 68.9,
+        "relativeSetupQuality": 65.0,
+        "breadthSetupQuality": 48.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -9813,12 +10338,15 @@
     },
     "2026-07-01": {
       "date": "2026-07-01",
-      "score": 38.6,
+      "score": 43.7,
       "label": "Bearish",
       "components": {
         "absoluteMomentum": 43.7,
         "relativeMomentum": 30.4,
-        "breadthPersistence": 41.4
+        "breadthPersistence": 41.4,
+        "absoluteSetupQuality": 38.7,
+        "relativeSetupQuality": 54.3,
+        "breadthSetupQuality": 36.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -9869,12 +10397,15 @@
     },
     "2026-07-02": {
       "date": "2026-07-02",
-      "score": 9.1,
-      "label": "Strong Bearish",
+      "score": 76.3,
+      "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 3.1,
         "relativeMomentum": 1.7,
-        "breadthPersistence": 35.6
+        "breadthPersistence": 35.6,
+        "absoluteSetupQuality": 84.2,
+        "relativeSetupQuality": 84.6,
+        "breadthSetupQuality": 43.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -9925,12 +10456,15 @@
     },
     "2026-07-06": {
       "date": "2026-07-06",
-      "score": 22.7,
-      "label": "Strong Bearish",
+      "score": 74.1,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 19.7,
         "relativeMomentum": 10.3,
-        "breadthPersistence": 51.2
+        "breadthPersistence": 51.2,
+        "absoluteSetupQuality": 80.1,
+        "relativeSetupQuality": 82.4,
+        "breadthSetupQuality": 46.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -9981,12 +10515,15 @@
     },
     "2026-07-07": {
       "date": "2026-07-07",
-      "score": 10.2,
-      "label": "Strong Bearish",
+      "score": 74.9,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 2.0,
         "relativeMomentum": 2.6,
-        "breadthPersistence": 41.8
+        "breadthPersistence": 41.8,
+        "absoluteSetupQuality": 84.5,
+        "relativeSetupQuality": 84.3,
+        "breadthSetupQuality": 36.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -10037,12 +10574,15 @@
     },
     "2026-07-08": {
       "date": "2026-07-08",
-      "score": 27.0,
-      "label": "Strong Bearish",
+      "score": 66.2,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 22.7,
         "relativeMomentum": 23.0,
-        "breadthPersistence": 44.0
+        "breadthPersistence": 44.0,
+        "absoluteSetupQuality": 73.3,
+        "relativeSetupQuality": 72.6,
+        "breadthSetupQuality": 39.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -10093,12 +10633,15 @@
     },
     "2026-07-09": {
       "date": "2026-07-09",
-      "score": 38.4,
-      "label": "Bearish",
+      "score": 47.5,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 36.6,
         "relativeMomentum": 30.9,
-        "breadthPersistence": 55.7
+        "breadthPersistence": 55.7,
+        "absoluteSetupQuality": 41.7,
+        "relativeSetupQuality": 53.2,
+        "breadthSetupQuality": 50.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -10149,12 +10692,15 @@
     },
     "2026-07-10": {
       "date": "2026-07-10",
-      "score": 55.2,
+      "score": 50.2,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 54.9,
         "relativeMomentum": 50.8,
-        "breadthPersistence": 63.5
+        "breadthPersistence": 63.5,
+        "absoluteSetupQuality": 49.9,
+        "relativeSetupQuality": 45.8,
+        "breadthSetupQuality": 58.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -10205,12 +10751,15 @@
     },
     "2026-07-13": {
       "date": "2026-07-13",
-      "score": 21.5,
-      "label": "Strong Bearish",
+      "score": 72.6,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 16.1,
         "relativeMomentum": 15.5,
-        "breadthPersistence": 44.0
+        "breadthPersistence": 44.0,
+        "absoluteSetupQuality": 81.0,
+        "relativeSetupQuality": 81.1,
+        "breadthSetupQuality": 39.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -10261,12 +10810,15 @@
     },
     "2026-07-14": {
       "date": "2026-07-14",
-      "score": 45.1,
-      "label": "Neutral",
+      "score": 40.1,
+      "label": "Bearish",
       "components": {
         "absoluteMomentum": 42.8,
         "relativeMomentum": 41.9,
-        "breadthPersistence": 55.7
+        "breadthPersistence": 55.7,
+        "absoluteSetupQuality": 37.8,
+        "relativeSetupQuality": 36.9,
+        "breadthSetupQuality": 50.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -10317,12 +10869,15 @@
     },
     "2026-07-15": {
       "date": "2026-07-15",
-      "score": 23.7,
-      "label": "Strong Bearish",
+      "score": 72.2,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 20.4,
         "relativeMomentum": 15.1,
-        "breadthPersistence": 46.2
+        "breadthPersistence": 46.2,
+        "absoluteSetupQuality": 79.0,
+        "relativeSetupQuality": 81.2,
+        "breadthSetupQuality": 41.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -10373,12 +10928,15 @@
     },
     "2026-07-16": {
       "date": "2026-07-16",
-      "score": 11.9,
-      "label": "Strong Bearish",
+      "score": 76.0,
+      "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 6.0,
         "relativeMomentum": 6.7,
-        "breadthPersistence": 34.2
+        "breadthPersistence": 34.2,
+        "absoluteSetupQuality": 83.5,
+        "relativeSetupQuality": 83.3,
+        "breadthSetupQuality": 46.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -10429,12 +10987,15 @@
     },
     "2026-07-17": {
       "date": "2026-07-17",
-      "score": 12.0,
-      "label": "Strong Bearish",
+      "score": 76.5,
+      "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 5.7,
         "relativeMomentum": 8.4,
-        "breadthPersistence": 32.8
+        "breadthPersistence": 32.8,
+        "absoluteSetupQuality": 83.6,
+        "relativeSetupQuality": 82.9,
+        "breadthSetupQuality": 49.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -10485,12 +11046,15 @@
     },
     "2026-07-20": {
       "date": "2026-07-20",
-      "score": 25.0,
-      "label": "Strong Bearish",
+      "score": 74.1,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 14.8,
         "relativeMomentum": 20.7,
-        "breadthPersistence": 55.5
+        "breadthPersistence": 55.5,
+        "absoluteSetupQuality": 81.3,
+        "relativeSetupQuality": 78.3,
+        "breadthSetupQuality": 50.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -10541,12 +11105,15 @@
     },
     "2026-07-21": {
       "date": "2026-07-21",
-      "score": 59.1,
+      "score": 54.1,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 55.8,
         "relativeMomentum": 63.0,
-        "breadthPersistence": 59.6
+        "breadthPersistence": 59.6,
+        "absoluteSetupQuality": 50.8,
+        "relativeSetupQuality": 58.0,
+        "breadthSetupQuality": 54.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -10597,12 +11164,15 @@
     },
     "2026-07-22": {
       "date": "2026-07-22",
-      "score": 63.3,
-      "label": "Bullish",
+      "score": 58.3,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 57.9,
         "relativeMomentum": 71.2,
-        "breadthPersistence": 61.8
+        "breadthPersistence": 61.8,
+        "absoluteSetupQuality": 52.9,
+        "relativeSetupQuality": 66.2,
+        "breadthSetupQuality": 56.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -10653,12 +11223,15 @@
     },
     "2026-07-23": {
       "date": "2026-07-23",
-      "score": 69.7,
+      "score": 64.7,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 59.1,
         "relativeMomentum": 81.3,
-        "breadthPersistence": 73.3
+        "breadthPersistence": 73.3,
+        "absoluteSetupQuality": 54.1,
+        "relativeSetupQuality": 76.3,
+        "breadthSetupQuality": 68.3
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -10709,12 +11282,15 @@
     },
     "2026-07-24": {
       "date": "2026-07-24",
-      "score": 41.3,
-      "label": "Bearish",
+      "score": 55.6,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 26.3,
         "relativeMomentum": 44.7,
-        "breadthPersistence": 68.9
+        "breadthPersistence": 68.9,
+        "absoluteSetupQuality": 64.3,
+        "relativeSetupQuality": 39.7,
+        "breadthSetupQuality": 63.9
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -10765,12 +11341,15 @@
     },
     "2026-07-27": {
       "date": "2026-07-27",
-      "score": 29.6,
-      "label": "Strong Bearish",
+      "score": 63.3,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 18.6,
         "relativeMomentum": 31.8,
-        "breadthPersistence": 50.5
+        "breadthPersistence": 50.5,
+        "absoluteSetupQuality": 80.4,
+        "relativeSetupQuality": 51.4,
+        "breadthSetupQuality": 45.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -10821,12 +11400,15 @@
     },
     "2026-07-28": {
       "date": "2026-07-28",
-      "score": 8.5,
-      "label": "Strong Bearish",
+      "score": 76.6,
+      "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 2.0,
         "relativeMomentum": 1.8,
-        "breadthPersistence": 35.0
+        "breadthPersistence": 35.0,
+        "absoluteSetupQuality": 84.5,
+        "relativeSetupQuality": 84.6,
+        "breadthSetupQuality": 45.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -10877,12 +11459,15 @@
     },
     "2026-07-29": {
       "date": "2026-07-29",
-      "score": 6.0,
-      "label": "Strong Bearish",
+      "score": 82.1,
+      "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 1.5,
         "relativeMomentum": 2.1,
-        "breadthPersistence": 23.0
+        "breadthPersistence": 23.0,
+        "absoluteSetupQuality": 84.6,
+        "relativeSetupQuality": 84.5,
+        "breadthSetupQuality": 72.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -10933,12 +11518,15 @@
     },
     "2026-07-30": {
       "date": "2026-07-30",
-      "score": 27.0,
-      "label": "Strong Bearish",
+      "score": 62.5,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 25.2,
         "relativeMomentum": 27.4,
-        "breadthPersistence": 30.2
+        "breadthPersistence": 30.2,
+        "absoluteSetupQuality": 66.9,
+        "relativeSetupQuality": 61.4,
+        "breadthSetupQuality": 54.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -10989,12 +11577,15 @@
     },
     "2026-07-31": {
       "date": "2026-07-31",
-      "score": 32.6,
-      "label": "Bearish",
+      "score": 50.2,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 35.0,
         "relativeMomentum": 27.7,
-        "breadthPersistence": 35.6
+        "breadthPersistence": 35.6,
+        "absoluteSetupQuality": 44.9,
+        "relativeSetupQuality": 60.8,
+        "breadthSetupQuality": 43.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -11045,12 +11636,15 @@
     },
     "2026-08-03": {
       "date": "2026-08-03",
-      "score": 45.9,
+      "score": 45.6,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 53.7,
         "relativeMomentum": 35.5,
-        "breadthPersistence": 46.4
+        "breadthPersistence": 46.4,
+        "absoluteSetupQuality": 48.7,
+        "relativeSetupQuality": 43.9,
+        "breadthSetupQuality": 41.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -11101,12 +11695,15 @@
     },
     "2026-08-04": {
       "date": "2026-08-04",
-      "score": 71.3,
+      "score": 66.2,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 82.5,
         "relativeMomentum": 65.1,
-        "breadthPersistence": 56.6
+        "breadthPersistence": 56.6,
+        "absoluteSetupQuality": 77.5,
+        "relativeSetupQuality": 60.1,
+        "breadthSetupQuality": 51.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -11157,12 +11754,15 @@
     },
     "2026-08-05": {
       "date": "2026-08-05",
-      "score": 66.3,
+      "score": 61.3,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 68.3,
         "relativeMomentum": 60.3,
-        "breadthPersistence": 72.1
+        "breadthPersistence": 72.1,
+        "absoluteSetupQuality": 63.3,
+        "relativeSetupQuality": 55.3,
+        "breadthSetupQuality": 67.1
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -11213,12 +11813,15 @@
     },
     "2026-08-06": {
       "date": "2026-08-06",
-      "score": 65.1,
+      "score": 60.1,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 69.0,
         "relativeMomentum": 58.0,
-        "breadthPersistence": 68.9
+        "breadthPersistence": 68.9,
+        "absoluteSetupQuality": 64.0,
+        "relativeSetupQuality": 53.0,
+        "breadthSetupQuality": 63.9
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -11269,12 +11872,15 @@
     },
     "2026-08-07": {
       "date": "2026-08-07",
-      "score": 75.4,
-      "label": "Strong Bullish",
+      "score": 70.4,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 81.3,
         "relativeMomentum": 69.6,
-        "breadthPersistence": 72.2
+        "breadthPersistence": 72.2,
+        "absoluteSetupQuality": 76.3,
+        "relativeSetupQuality": 64.6,
+        "breadthSetupQuality": 67.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -11325,12 +11931,15 @@
     },
     "2026-08-10": {
       "date": "2026-08-10",
-      "score": 56.5,
+      "score": 51.5,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 64.9,
         "relativeMomentum": 46.1,
-        "breadthPersistence": 55.7
+        "breadthPersistence": 55.7,
+        "absoluteSetupQuality": 59.9,
+        "relativeSetupQuality": 41.1,
+        "breadthSetupQuality": 50.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -11381,12 +11990,15 @@
     },
     "2026-08-11": {
       "date": "2026-08-11",
-      "score": 60.4,
-      "label": "Bullish",
+      "score": 55.4,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 61.9,
         "relativeMomentum": 62.0,
-        "breadthPersistence": 54.1
+        "breadthPersistence": 54.1,
+        "absoluteSetupQuality": 56.9,
+        "relativeSetupQuality": 57.0,
+        "breadthSetupQuality": 49.1
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -11437,12 +12049,15 @@
     },
     "2026-08-12": {
       "date": "2026-08-12",
-      "score": 72.0,
+      "score": 66.9,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 74.5,
         "relativeMomentum": 77.6,
-        "breadthPersistence": 56.3
+        "breadthPersistence": 56.3,
+        "absoluteSetupQuality": 69.5,
+        "relativeSetupQuality": 72.6,
+        "breadthSetupQuality": 51.3
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -11493,12 +12108,15 @@
     },
     "2026-08-13": {
       "date": "2026-08-13",
-      "score": 70.7,
+      "score": 65.8,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 79.1,
         "relativeMomentum": 69.9,
-        "breadthPersistence": 53.5
+        "breadthPersistence": 53.5,
+        "absoluteSetupQuality": 74.1,
+        "relativeSetupQuality": 64.9,
+        "breadthSetupQuality": 48.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -11549,12 +12167,15 @@
     },
     "2026-08-14": {
       "date": "2026-08-14",
-      "score": 62.1,
-      "label": "Bullish",
+      "score": 57.1,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 68.3,
         "relativeMomentum": 59.4,
-        "breadthPersistence": 53.0
+        "breadthPersistence": 53.0,
+        "absoluteSetupQuality": 63.3,
+        "relativeSetupQuality": 54.4,
+        "breadthSetupQuality": 48.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -11605,12 +12226,15 @@
     },
     "2026-08-17": {
       "date": "2026-08-17",
-      "score": 79.5,
-      "label": "Strong Bullish",
+      "score": 74.5,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 80.3,
         "relativeMomentum": 84.6,
-        "breadthPersistence": 69.0
+        "breadthPersistence": 69.0,
+        "absoluteSetupQuality": 75.3,
+        "relativeSetupQuality": 79.6,
+        "breadthSetupQuality": 64.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -11661,12 +12285,15 @@
     },
     "2026-08-18": {
       "date": "2026-08-18",
-      "score": 34.5,
-      "label": "Bearish",
+      "score": 52.3,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 29.1,
         "relativeMomentum": 32.6,
-        "breadthPersistence": 50.2
+        "breadthPersistence": 50.2,
+        "absoluteSetupQuality": 57.3,
+        "relativeSetupQuality": 49.8,
+        "breadthSetupQuality": 45.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -11717,12 +12344,15 @@
     },
     "2026-08-19": {
       "date": "2026-08-19",
-      "score": 19.8,
-      "label": "Strong Bearish",
+      "score": 74.2,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 17.3,
         "relativeMomentum": 15.1,
-        "breadthPersistence": 33.8
+        "breadthPersistence": 33.8,
+        "absoluteSetupQuality": 80.7,
+        "relativeSetupQuality": 81.2,
+        "breadthSetupQuality": 47.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -11773,12 +12403,15 @@
     },
     "2026-08-20": {
       "date": "2026-08-20",
-      "score": 26.9,
-      "label": "Strong Bearish",
+      "score": 64.4,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 20.5,
         "relativeMomentum": 27.2,
-        "breadthPersistence": 40.8
+        "breadthPersistence": 40.8,
+        "absoluteSetupQuality": 78.8,
+        "relativeSetupQuality": 62.1,
+        "breadthSetupQuality": 35.8
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -11829,12 +12462,15 @@
     },
     "2026-08-21": {
       "date": "2026-08-21",
-      "score": 25.0,
-      "label": "Strong Bearish",
+      "score": 70.3,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 20.2,
         "relativeMomentum": 21.2,
-        "breadthPersistence": 42.6
+        "breadthPersistence": 42.6,
+        "absoluteSetupQuality": 79.5,
+        "relativeSetupQuality": 77.1,
+        "breadthSetupQuality": 37.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -11885,12 +12521,15 @@
     },
     "2026-08-24": {
       "date": "2026-08-24",
-      "score": 17.7,
-      "label": "Strong Bearish",
+      "score": 76.0,
+      "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 13.0,
         "relativeMomentum": 16.7,
-        "breadthPersistence": 30.2
+        "breadthPersistence": 30.2,
+        "absoluteSetupQuality": 81.8,
+        "relativeSetupQuality": 80.8,
+        "breadthSetupQuality": 54.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -11941,12 +12580,15 @@
     },
     "2026-08-25": {
       "date": "2026-08-25",
-      "score": 31.1,
-      "label": "Bearish",
+      "score": 57.5,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 27.6,
         "relativeMomentum": 27.1,
-        "breadthPersistence": 46.2
+        "breadthPersistence": 46.2,
+        "absoluteSetupQuality": 61.1,
+        "relativeSetupQuality": 62.2,
+        "breadthSetupQuality": 41.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -11997,12 +12639,15 @@
     },
     "2026-08-26": {
       "date": "2026-08-26",
-      "score": 38.1,
-      "label": "Bearish",
+      "score": 50.1,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 32.7,
         "relativeMomentum": 33.2,
-        "breadthPersistence": 59.0
+        "breadthPersistence": 59.0,
+        "absoluteSetupQuality": 49.5,
+        "relativeSetupQuality": 48.7,
+        "breadthSetupQuality": 54.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -12053,12 +12698,15 @@
     },
     "2026-08-27": {
       "date": "2026-08-27",
-      "score": 49.8,
-      "label": "Neutral",
+      "score": 44.8,
+      "label": "Bearish",
       "components": {
         "absoluteMomentum": 52.6,
         "relativeMomentum": 46.0,
-        "breadthPersistence": 50.2
+        "breadthPersistence": 50.2,
+        "absoluteSetupQuality": 47.6,
+        "relativeSetupQuality": 41.0,
+        "breadthSetupQuality": 45.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -12109,12 +12757,15 @@
     },
     "2026-08-28": {
       "date": "2026-08-28",
-      "score": 23.8,
-      "label": "Strong Bearish",
+      "score": 68.2,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 22.8,
         "relativeMomentum": 15.7,
-        "breadthPersistence": 40.0
+        "breadthPersistence": 40.0,
+        "absoluteSetupQuality": 72.9,
+        "relativeSetupQuality": 81.1,
+        "breadthSetupQuality": 35.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -12165,12 +12816,15 @@
     },
     "2026-08-31": {
       "date": "2026-08-31",
-      "score": 40.3,
-      "label": "Bearish",
+      "score": 45.7,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 39.0,
         "relativeMomentum": 31.3,
-        "breadthPersistence": 59.0
+        "breadthPersistence": 59.0,
+        "absoluteSetupQuality": 36.9,
+        "relativeSetupQuality": 52.4,
+        "breadthSetupQuality": 54.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -12221,12 +12875,15 @@
     },
     "2026-09-01": {
       "date": "2026-09-01",
-      "score": 23.5,
-      "label": "Strong Bearish",
+      "score": 72.2,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 18.1,
         "relativeMomentum": 18.6,
-        "breadthPersistence": 44.4
+        "breadthPersistence": 44.4,
+        "absoluteSetupQuality": 80.5,
+        "relativeSetupQuality": 80.4,
+        "breadthSetupQuality": 39.4
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -12277,12 +12934,15 @@
     },
     "2026-09-02": {
       "date": "2026-09-02",
-      "score": 35.7,
-      "label": "Bearish",
+      "score": 47.9,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 32.1,
         "relativeMomentum": 33.8,
-        "breadthPersistence": 47.2
+        "breadthPersistence": 47.2,
+        "absoluteSetupQuality": 50.8,
+        "relativeSetupQuality": 47.5,
+        "breadthSetupQuality": 42.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -12333,12 +12993,15 @@
     },
     "2026-09-03": {
       "date": "2026-09-03",
-      "score": 25.1,
-      "label": "Strong Bearish",
+      "score": 66.2,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 24.9,
         "relativeMomentum": 15.5,
-        "breadthPersistence": 42.2
+        "breadthPersistence": 42.2,
+        "absoluteSetupQuality": 67.6,
+        "relativeSetupQuality": 81.1,
+        "breadthSetupQuality": 37.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -12389,12 +13052,15 @@
     },
     "2026-09-04": {
       "date": "2026-09-04",
-      "score": 67.4,
+      "score": 62.4,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 67.2,
         "relativeMomentum": 69.1,
-        "breadthPersistence": 65.0
+        "breadthPersistence": 65.0,
+        "absoluteSetupQuality": 62.2,
+        "relativeSetupQuality": 64.1,
+        "breadthSetupQuality": 60.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -12445,12 +13111,15 @@
     },
     "2026-09-08": {
       "date": "2026-09-08",
-      "score": 74.7,
+      "score": 69.7,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 75.6,
         "relativeMomentum": 82.5,
-        "breadthPersistence": 59.0
+        "breadthPersistence": 59.0,
+        "absoluteSetupQuality": 70.6,
+        "relativeSetupQuality": 77.5,
+        "breadthSetupQuality": 54.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -12501,12 +13170,15 @@
     },
     "2026-09-09": {
       "date": "2026-09-09",
-      "score": 78.5,
-      "label": "Strong Bullish",
+      "score": 73.5,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 78.3,
         "relativeMomentum": 87.2,
-        "breadthPersistence": 63.5
+        "breadthPersistence": 63.5,
+        "absoluteSetupQuality": 73.3,
+        "relativeSetupQuality": 82.2,
+        "breadthSetupQuality": 58.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -12557,12 +13229,15 @@
     },
     "2026-09-10": {
       "date": "2026-09-10",
-      "score": 54.0,
+      "score": 48.9,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 50.1,
         "relativeMomentum": 61.0,
-        "breadthPersistence": 50.2
+        "breadthPersistence": 50.2,
+        "absoluteSetupQuality": 45.1,
+        "relativeSetupQuality": 56.0,
+        "breadthSetupQuality": 45.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -12613,12 +13288,15 @@
     },
     "2026-09-11": {
       "date": "2026-09-11",
-      "score": 62.1,
-      "label": "Bullish",
+      "score": 57.0,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 60.2,
         "relativeMomentum": 69.6,
-        "breadthPersistence": 53.0
+        "breadthPersistence": 53.0,
+        "absoluteSetupQuality": 55.2,
+        "relativeSetupQuality": 64.6,
+        "breadthSetupQuality": 48.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -12669,12 +13347,15 @@
     },
     "2026-09-14": {
       "date": "2026-09-14",
-      "score": 15.2,
-      "label": "Strong Bearish",
+      "score": 76.0,
+      "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 11.9,
         "relativeMomentum": 9.8,
-        "breadthPersistence": 32.0
+        "breadthPersistence": 32.0,
+        "absoluteSetupQuality": 82.0,
+        "relativeSetupQuality": 82.6,
+        "breadthSetupQuality": 51.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -12725,12 +13406,15 @@
     },
     "2026-09-15": {
       "date": "2026-09-15",
-      "score": 23.8,
-      "label": "Strong Bearish",
+      "score": 70.7,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 20.1,
         "relativeMomentum": 23.8,
-        "breadthPersistence": 32.0
+        "breadthPersistence": 32.0,
+        "absoluteSetupQuality": 79.6,
+        "relativeSetupQuality": 70.5,
+        "breadthSetupQuality": 51.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -12781,12 +13465,15 @@
     },
     "2026-09-16": {
       "date": "2026-09-16",
-      "score": 29.0,
-      "label": "Strong Bearish",
+      "score": 58.5,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 25.7,
         "relativeMomentum": 27.0,
-        "breadthPersistence": 40.0
+        "breadthPersistence": 40.0,
+        "absoluteSetupQuality": 65.9,
+        "relativeSetupQuality": 62.5,
+        "breadthSetupQuality": 35.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -12837,12 +13524,15 @@
     },
     "2026-09-17": {
       "date": "2026-09-17",
-      "score": 62.7,
-      "label": "Bullish",
+      "score": 57.7,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 65.1,
         "relativeMomentum": 60.1,
-        "breadthPersistence": 61.7
+        "breadthPersistence": 61.7,
+        "absoluteSetupQuality": 60.1,
+        "relativeSetupQuality": 55.1,
+        "breadthSetupQuality": 56.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -12893,12 +13583,15 @@
     },
     "2026-09-18": {
       "date": "2026-09-18",
-      "score": 75.1,
-      "label": "Strong Bullish",
+      "score": 70.1,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 74.9,
         "relativeMomentum": 76.5,
-        "breadthPersistence": 73.0
+        "breadthPersistence": 73.0,
+        "absoluteSetupQuality": 69.9,
+        "relativeSetupQuality": 71.5,
+        "breadthSetupQuality": 68.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -12949,12 +13642,15 @@
     },
     "2026-09-21": {
       "date": "2026-09-21",
-      "score": 91.3,
+      "score": 85.0,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 94.7,
         "relativeMomentum": 91.7,
-        "breadthPersistence": 83.3
+        "breadthPersistence": 83.3,
+        "absoluteSetupQuality": 87.3,
+        "relativeSetupQuality": 85.8,
+        "breadthSetupQuality": 78.3
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -13005,12 +13701,15 @@
     },
     "2026-09-22": {
       "date": "2026-09-22",
-      "score": 91.0,
+      "score": 85.1,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 93.2,
         "relativeMomentum": 91.0,
-        "breadthPersistence": 86.0
+        "breadthPersistence": 86.0,
+        "absoluteSetupQuality": 86.6,
+        "relativeSetupQuality": 85.5,
+        "breadthSetupQuality": 81.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -13061,12 +13760,15 @@
     },
     "2026-09-23": {
       "date": "2026-09-23",
-      "score": 79.6,
-      "label": "Strong Bullish",
+      "score": 74.6,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 83.4,
         "relativeMomentum": 79.7,
-        "breadthPersistence": 70.7
+        "breadthPersistence": 70.7,
+        "absoluteSetupQuality": 78.4,
+        "relativeSetupQuality": 74.7,
+        "breadthSetupQuality": 65.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -13117,12 +13819,15 @@
     },
     "2026-09-24": {
       "date": "2026-09-24",
-      "score": 74.5,
+      "score": 69.5,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 79.3,
         "relativeMomentum": 75.9,
-        "breadthPersistence": 61.0
+        "breadthPersistence": 61.0,
+        "absoluteSetupQuality": 74.3,
+        "relativeSetupQuality": 70.9,
+        "breadthSetupQuality": 56.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -13173,12 +13878,15 @@
     },
     "2026-09-25": {
       "date": "2026-09-25",
-      "score": 70.9,
+      "score": 65.9,
       "label": "Bullish",
       "components": {
         "absoluteMomentum": 77.1,
         "relativeMomentum": 74.6,
-        "breadthPersistence": 50.5
+        "breadthPersistence": 50.5,
+        "absoluteSetupQuality": 72.1,
+        "relativeSetupQuality": 69.6,
+        "breadthSetupQuality": 45.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -13229,12 +13937,15 @@
     },
     "2026-09-28": {
       "date": "2026-09-28",
-      "score": 59.7,
+      "score": 54.7,
       "label": "Neutral",
       "components": {
         "absoluteMomentum": 59.4,
         "relativeMomentum": 66.5,
-        "breadthPersistence": 48.5
+        "breadthPersistence": 48.5,
+        "absoluteSetupQuality": 54.4,
+        "relativeSetupQuality": 61.5,
+        "breadthSetupQuality": 43.5
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -13285,12 +13996,15 @@
     },
     "2026-09-29": {
       "date": "2026-09-29",
-      "score": 63.7,
-      "label": "Bullish",
+      "score": 58.7,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 64.4,
         "relativeMomentum": 74.4,
-        "breadthPersistence": 43.6
+        "breadthPersistence": 43.6,
+        "absoluteSetupQuality": 59.4,
+        "relativeSetupQuality": 69.4,
+        "breadthSetupQuality": 38.6
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -13341,12 +14055,15 @@
     },
     "2026-09-30": {
       "date": "2026-09-30",
-      "score": 63.6,
-      "label": "Bullish",
+      "score": 58.6,
+      "label": "Neutral",
       "components": {
         "absoluteMomentum": 63.7,
         "relativeMomentum": 68.1,
-        "breadthPersistence": 55.7
+        "breadthPersistence": 55.7,
+        "absoluteSetupQuality": 58.7,
+        "relativeSetupQuality": 63.1,
+        "breadthSetupQuality": 50.7
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -13397,12 +14114,15 @@
     },
     "2026-10-01": {
       "date": "2026-10-01",
-      "score": 75.9,
-      "label": "Strong Bullish",
+      "score": 70.9,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 76.8,
         "relativeMomentum": 83.7,
-        "breadthPersistence": 60.2
+        "breadthPersistence": 60.2,
+        "absoluteSetupQuality": 71.8,
+        "relativeSetupQuality": 78.7,
+        "breadthSetupQuality": 55.2
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -13453,12 +14173,15 @@
     },
     "2026-10-02": {
       "date": "2026-10-02",
-      "score": 80.9,
+      "score": 75.9,
       "label": "Strong Bullish",
       "components": {
         "absoluteMomentum": 82.4,
         "relativeMomentum": 85.7,
-        "breadthPersistence": 69.0
+        "breadthPersistence": 69.0,
+        "absoluteSetupQuality": 77.4,
+        "relativeSetupQuality": 80.7,
+        "breadthSetupQuality": 64.0
       },
       "weights": {
         "absoluteMomentum": 45,
@@ -13509,12 +14232,15 @@
     },
     "2026-10-05": {
       "date": "2026-10-05",
-      "score": 78.4,
-      "label": "Strong Bullish",
+      "score": 73.4,
+      "label": "Bullish",
       "components": {
         "absoluteMomentum": 81.6,
         "relativeMomentum": 78.5,
-        "breadthPersistence": 70.8
+        "breadthPersistence": 70.8,
+        "absoluteSetupQuality": 76.6,
+        "relativeSetupQuality": 73.5,
+        "breadthSetupQuality": 65.8
       },
       "weights": {
         "absoluteMomentum": 45,
