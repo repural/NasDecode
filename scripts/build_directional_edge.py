@@ -67,21 +67,29 @@ def main():
         pos=[x for x in pos if finite(x)]; oq=[x for x in oq if finite(x)]
         pos_avg=mean(pos); oq_avg=mean(oq)
         internals=weighted([(breadth_score(pos_avg),.45),(breadth_score(oq_avg),.55)])
-        score=weighted([(trend,.45),(relative,.35),(internals,.20)])
+        # v1.1: continuation/reversal regime. Validation showed a U-shaped relationship:
+        # washed-out momentum often mean-reverted, while strong trend also continued.
+        def regime_quality(s):
+            if not finite(s): return None
+            return round(lerp(s,[(0,85),(20,80),(30,55),(40,35),(50,45),(60,55),(75,70),(90,85),(100,90)]),1)
+        trend_q=regime_quality(trend)
+        relative_q=regime_quality(relative)
+        breadth_q=regime_quality(internals)
+        score=weighted([(trend_q,.45),(relative_q,.35),(breadth_q,.20)])
         if not all(finite(x) for x in (trend,relative,internals,score)):continue
         score=round(score,1)
         out[d]={"date":d,"score":score,"label":label(score),
-          "components":{"absoluteMomentum":round(trend,1),"relativeMomentum":round(relative,1),"breadthPersistence":round(internals,1)},
+          "components":{"absoluteMomentum":round(trend,1),"relativeMomentum":round(relative,1),"breadthPersistence":round(internals,1),"absoluteSetupQuality":trend_q,"relativeSetupQuality":relative_q,"breadthSetupQuality":breadth_q},
           "weights":{"absoluteMomentum":45,"relativeMomentum":35,"breadthPersistence":20},
           "absoluteHorizons":abs_h,"relativeHorizons":rel_h,
           "breadth":{"sessions":len(tail),"positiveBreadthAvgPct":round(pos_avg,1) if finite(pos_avg) else None,
                      "outperformQqqAvgPct":round(oq_avg,1) if finite(oq_avg) else None}}
     latest=out[max(out)] if out else None
-    payload={"schemaVersion":1,"engineVersion":"directional-edge-1.0",
+    payload={"schemaVersion":1,"engineVersion":"directional-edge-1.1",
       "status":"shadow / validation only; no production NasDecode score consumes this output",
-      "purpose":"Forward-direction momentum signal. Separate from Resilience (structural durability), Hype (event/narrative pressure), and SOXL Entry Quality (instrument timing).",
+      "purpose":"Forward-direction continuation/reversal setup signal. Separate from Resilience (structural durability), Hype (event/narrative pressure), and SOXL Entry Quality (instrument timing).",
       "timing":"Completed close T only; all momentum horizons and breadth observations end at T.",
-      "architecture":{"score":"45% multi-horizon absolute SOX momentum + 35% multi-horizon SOX-vs-QQQ relative momentum + 20% five-session semiconductor breadth persistence",
+      "architecture":{"score":"45% absolute SOX setup quality + 35% SOX-vs-QQQ relative setup quality + 20% breadth setup quality. Setup quality is U-shaped: washed-out extremes can imply reversal while strong extremes can imply continuation; mid-weak states score lowest.",
         "horizons":"1D 15% + 3D 25% + 5D 35% + 10D 25%",
         "macro":"Not scored here. Rates/VXN/oil belong to the separate environment/resilience layer.",
         "hype":"Not scored here until prospective Hype history is sufficient."},
