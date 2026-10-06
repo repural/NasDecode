@@ -22,7 +22,7 @@ PACE=12.5
 _last_massive=0.0
 
 MARKET={
-    'SOX':'I:SOX','QQQ':'QQQ','SOXX':'SOXX','SMH':'SMH',
+    'SOX':'I:SOX','QQQ':'QQQ','SOXX':'SOXX','SMH':'SMH','SOXL':'SOXL',
     'NVDA':'NVDA','AMD':'AMD','AVGO':'AVGO','TSM':'TSM','MU':'MU'
 }
 MACRO_YAHOO={'VXN':'^VXN','Brent':'BZ=F','WTI':'CL=F'}
