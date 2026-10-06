@@ -12,7 +12,6 @@ on:
       - 'data/macro-surprises.json'
       - 'public/data/dashboard.json'
       - 'public/data/premarket.json'
-      - 'public/data/session-analyses.json'
       - 'public/index.html'
       - '.github/workflows/test-*.yml'
   workflow_dispatch:
@@ -113,9 +112,6 @@ jobs:
           python scripts/inject_session_analysis_ui.py public/index.html
           cp data/dashboard.json public/data/dashboard.json
           cp data/premarket.json public/data/premarket.json
-          if [ -f data/history/session-analyses.json ]; then
-            cp data/history/session-analyses.json public/data/session-analyses.json
-          fi
           git add -A public/index.html public/data
           if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
           git diff --cached --quiet && exit 0
@@ -151,9 +147,6 @@ jobs:
             python scripts/inject_session_analysis_ui.py public/index.html
             cp data/dashboard.json public/data/dashboard.json
             cp data/premarket.json public/data/premarket.json
-            if [ -f data/history/session-analyses.json ]; then
-              cp data/history/session-analyses.json public/data/session-analyses.json
-            fi
             git add -A public/index.html public/data
             if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
             git diff --cached --quiet && exit 0
