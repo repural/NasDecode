@@ -4,7 +4,7 @@ from datetime import date
 from pathlib import Path
 
 SRC=Path("data/history/daily.json")
-OUT=Path("public/data/chart-history.json")
+OUT=Path("data/history/chart-history.json")
 
 def number(text,pattern):
     m=re.search(pattern,str(text or ""),re.I)
