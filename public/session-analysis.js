@@ -59,8 +59,10 @@
     const metrics=[metric('Score',score,' / 100')].join('');
     const paras=(a.paragraphs||a.summary||[]).map(p=>`<p>${analysisText(p)}</p>`).join('');
     const catalysts=(a.catalysts||a.events||[]).map(e=>`<li><b>${esc(e.date?e.date+' · ':'')}${analysisText(e.title||'')}</b>${e.detail?' — '+analysisText(e.detail):''}</li>`).join('');
+    const watch=a.watchIntoOpen?`<p>${analysisText(a.watchIntoOpen)}</p>`:'';
+    const keyTimes=a.keyTimes?`<p>${analysisText(a.keyTimes)}</p>`:'';
     const bias=a.bias?`<div class="bias"><b>Pre-market bias:</b> ${esc(a.bias)}${a.confidence?' &nbsp; · &nbsp; <b>Confidence:</b> '+esc(a.confidence):''}</div>`:`<div class="bias"><b>Nasdaq Score:</b> ${sig} &nbsp; · &nbsp; <b>Score:</b> ${score} / 100</div>`;
-    return {available:true,title:'Pre-Market Analysis',meta:'Analysis updated: '+esc(a.updatedET||a.updated||'—'),body:bias+(metrics?`<div class="session-analysis-metrics">${metrics}</div>`:'')+paras+(catalysts?`<h3>Near-term catalysts</h3><ul>${catalysts}</ul>`:'')};
+    return {available:true,title:'Pre-Market Analysis',meta:'Analysis updated: '+esc(a.updatedET||a.updated||'—'),body:bias+(metrics?`<div class="session-analysis-metrics">${metrics}</div>`:'')+paras+(catalysts?`<h3>Major events to watch today</h3><ol>${catalysts}</ol>`:'')+watch+keyTimes};
   }
   function checkpointView(key){
     const day=etParts().date;
