@@ -99,6 +99,8 @@ jobs:
           python scripts/build_resilience_model.py
           python scripts/build_resilience_engine.py
           python scripts/backtest_resilience_engine.py
+          python scripts/build_directional_edge.py
+          python scripts/backtest_directional_edge.py
       - name: Commit refreshed snapshot
         if: steps.gate.outputs.run == 'yes'
         shell: bash
@@ -141,6 +143,8 @@ jobs:
             python scripts/build_resilience_model.py
             python scripts/build_resilience_engine.py
             python scripts/backtest_resilience_engine.py
+          python scripts/build_directional_edge.py
+          python scripts/backtest_directional_edge.py
             git add -A data
             mkdir -p public/data
             cp index.html public/index.html
