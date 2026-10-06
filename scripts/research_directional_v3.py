@@ -5,6 +5,7 @@ Pre-registers a chronological development/holdout boundary and diagnoses state
 transitions using DEVELOPMENT data only. The holdout must not be inspected while
 designing the next candidate.
 """
+# Trigger marker: v3 development validation
 import json,math
 from pathlib import Path
 R=Path(__file__).resolve().parents[1]
