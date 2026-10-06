@@ -21,6 +21,11 @@ on:
     # 04:15 ET pre-market refresh. Both UTC hours are scheduled so this remains
     # correct across U.S. daylight-saving changes; the ET gate admits only the right one.
     - cron: '15 8,9 * * 1-5'
+    # Pre-open recovery watchdogs. Dual UTC hours cover EDT/EST; ET gate below
+    # admits 07:30, 08:30 and 09:10 ET. These ensure a failed early snapshot is
+    # regenerated and published before the cash open.
+    - cron: '30 11,12,13 * * 1-5'
+    - cron: '10 13,14 * * 1-5'
     # Cash-session heartbeat every 5 minutes. GitHub cron is UTC; the ET gate below
     # limits execution to the U.S. session. This replaces unsupported timezone keys.
     - cron: '*/5 12-22 * * 1-5'
@@ -47,7 +52,7 @@ jobs:
             exit 0
           fi
           ny_hm=$(TZ=America/New_York date +%H%M)
-          if { [ "$ny_hm" -ge 0825 ] && [ "$ny_hm" -le 0845 ]; } || { [ "$ny_hm" -ge 0930 ] && [ "$ny_hm" -le 1620 ]; }; then
+          if { [ "$ny_hm" -ge 0725 ] && [ "$ny_hm" -le 0735 ]; } || { [ "$ny_hm" -ge 0825 ] && [ "$ny_hm" -le 0845 ]; } || { [ "$ny_hm" -ge 0905 ] && [ "$ny_hm" -le 0915 ]; } || { [ "$ny_hm" -ge 0930 ] && [ "$ny_hm" -le 1620 ]; }; then
             echo "run=yes" >> "$GITHUB_OUTPUT"
           else
             tr_hm=$(TZ=Europe/Istanbul date +%H%M)
