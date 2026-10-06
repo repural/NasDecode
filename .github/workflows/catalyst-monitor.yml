@@ -42,7 +42,7 @@ jobs:
         run: |
           git config user.name 'nasdecode-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add data/semiconductor-catalysts.json data/upcoming-earnings.json data/history/hype-daily.json history/market-watch-events.json public/data/market-watch.json
+          git add data/semiconductor-catalysts.json data/upcoming-earnings.json data/history/hype-daily.json data/history/market-watch-events.json public/data/market-watch.json
           git diff --cached --quiet && exit 0
           git commit -m 'Update detected market catalysts and Market Watch history'
           for attempt in 1 2 3 4; do
@@ -55,7 +55,7 @@ jobs:
             python scripts/refresh_market_watch.py
             python scripts/refresh_upcoming_earnings.py
             python scripts/build_hype_history.py
-            git add data/semiconductor-catalysts.json data/upcoming-earnings.json data/history/hype-daily.json history/market-watch-events.json public/data/market-watch.json
+            git add data/semiconductor-catalysts.json data/upcoming-earnings.json data/history/hype-daily.json data/history/market-watch-events.json public/data/market-watch.json
             git diff --cached --quiet && exit 0
             git commit -m 'Update detected market catalysts and Market Watch history'
           done
