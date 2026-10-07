@@ -107,7 +107,7 @@ def main():
           "trend":"Validation only",
           "signalLabel":"🧪 Shadow",
           "scorecard":{"value":labels.get(setup,setup),"arrow":"","change":"does not affect scores"},
-          "directionalSetup":{"engineVersion":eng.get("engineVersion"),"specSha256":(eng.get("frozenProtocol") or {}).get("specSha256"),"setup":setup,"date":latest["date"],"prospectiveStart":PROSPECTIVE_START}
+          "directionalSetup":{"engineVersion":eng.get("engineVersion"),"specSha256":(eng.get("frozenProtocol") or {}).get("specSha256"),"setup":setup,"date":latest["date"],"inputs":latest.get("inputs") or {},"prospectiveStart":PROSPECTIVE_START}
         }
         rows=dash.setdefault("rows",[])
         rows[:]=[x for x in rows if x.get("factor")!="Directional Setup · v3 shadow"]
