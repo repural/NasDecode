@@ -54,7 +54,8 @@ function render(d){
   const env={...legacyEnv,signal:ns.signal||legacyEnv.signal,label:ns.label||legacyEnv.label};
   const dot=s=>'';
   const orderedRows=[...d.rows].sort((a,b)=>orderOf(a.factor)-orderOf(b.factor));
-  const visibleRows=orderedRows.filter(r=>r.factor!=='Technology earnings calendar');
+  const directionalShadow=orderedRows.find(r=>r.factor==='Directional Setup · v3 shadow')||null;
+  const visibleRows=orderedRows.filter(r=>r.factor!=='Technology earnings calendar'&&r.factor!=='Directional Setup · v3 shadow');
   const factorRank=i=>i+1;
   const awaiting=r=>/awaiting|not available|unavailable|stale/i.test((r.latest||'')+' '+(r.freshness||''))?' awaiting':'';
   const leadershipMetrics=r=>{
@@ -90,7 +91,7 @@ function render(d){
       return '<div class="mini-metric"><b class="'+cls+'">'+(v>0?'+':'')+v+'</b><span>'+escHtml(x.label||k)+'</span></div>';
     }).join('')+'</div>';
   };
-  const summaryCards=(env?`<div class="card setup-card signal-${env.signal}" tabindex="0" data-tip="Nasdaq Score ranges from −100 (strong headwind) to +100 (strong support) and summarizes the current Nasdaq environment. It is calculated by NasDecode's Proprietary AI-led market intelligence model using the latest available inputs; source timing is shown in Debug."><span class="factor-name">13. NASDAQ SCORE</span><span class="card-status ${C[env.signal]}">${dot(env.signal)}${env.label}</span>${ns.score!==undefined?`<span><span class="metric ${C[env.signal]}">${ns.score>0?'+':''}${ns.score}</span> <span class="muted">range −100 to +100 · ${ns.trend||''}</span></span>`:''}${ns.confidence!==undefined?`<span class="card-latest">Confidence ${ns.confidence}%</span>`:''}</div>`:'')+
+  const summaryCards=(env?`<div class="card setup-card signal-${env.signal}" tabindex="0" data-tip="Nasdaq Score ranges from −100 (strong headwind) to +100 (strong support) and summarizes the current Nasdaq environment. It is calculated by NasDecode's Proprietary AI-led market intelligence model using the latest available inputs; source timing is shown in Debug."><span class="factor-name">13. CURRENT NASDAQ SCORE · LEGACY</span><span class="card-status ${C[env.signal]}">${dot(env.signal)}${env.label}</span>${ns.score!==undefined?`<span><span class="metric ${C[env.signal]}">${ns.score>0?'+':''}${ns.score}</span> <span class="muted">range −100 to +100 · ${ns.trend||''}</span></span>`:''}${ns.confidence!==undefined?`<span class="card-latest">Confidence ${ns.confidence}%</span>`:''}</div>`:'')+
   (d.consolidationRisk?`<div class="card factor-card signal-${d.consolidationRisk.level==='Low'?'positive':(d.consolidationRisk.level==='High'?'negative':'mixed')}" tabindex="0" data-tip="${escAttr(d.consolidationRisk.explanation||'')}"><span class="factor-name">14. CONSOLIDATION RISK</span><span class="card-status ${d.consolidationRisk.level==='Low'?'green':(d.consolidationRisk.level==='High'?'red':'amber')}">${dot()}${d.consolidationRisk.level}</span><span><span class="metric ${d.consolidationRisk.level==='Low'?'green':(d.consolidationRisk.level==='High'?'red':'amber')}">${d.consolidationRisk.score??'—'}</span> <span class="muted">/ 100${Number.isFinite(Number(d.consolidationRisk.coverageWeight))?' · '+Number(d.consolidationRisk.coverageWeight)+'% data coverage':''}</span></span><span class="card-latest">Proprietary AI-led market intelligence model</span></div>`:'');
   const rowCards=visibleRows.map((r,i)=>{
     const minis=leadershipMetrics(r);
@@ -151,6 +152,7 @@ function render(d){
     '</div>':'';
   const soxlCard=d.soxlBuyScore?`<div class="card factor-card soxl-card signal-${d.soxlBuyScore.signal}" tabindex="0" data-tip="${escAttr(d.soxlBuyScore.explanation||'Experimental tactical SOXL entry-quality score.')}"><span class="factor-name">16. SOXL BUY SCORE</span><span class="card-status ${C[d.soxlBuyScore.signal]}">${escHtml(d.soxlBuyScore.label||'—')}</span><span><span class="metric ${C[d.soxlBuyScore.signal]}">${d.soxlBuyScore.score??'—'}</span> <span class="muted">/ 100</span></span><span class="card-latest">${d.soxlBuyScore.last!=null?'SOXL '+Number(d.soxlBuyScore.last).toFixed(2)+(d.soxlBuyScore.changePct!=null?' · '+(Number(d.soxlBuyScore.changePct)>0?'+':'')+Number(d.soxlBuyScore.changePct).toFixed(2)+'%':''):'SOXL quote unavailable'} · 1–5 sessions</span>${soxlIndicatorGrid}${soxlComponentGrid}</div>`:'';
 
+  const directionalShadowCard=directionalShadow?`<div class="card factor-card signal-mixed" tabindex="0" data-tip="${escAttr(directionalShadow.explanation||'Frozen Directional Engine v3.0 shadow result. This is a setup classification, not a 0–100 score, and does not affect the current production scores.')}"><span class="factor-name">FINALIZED DIRECTIONAL MODEL · SHADOW</span><span class="card-status amber">${escHtml(directionalShadow.scorecard?.value||directionalShadow.latest||'—')}</span><span class="card-latest">Frozen v3.0 · prospective validation · does not affect scores</span></div>`:'';
   const categoryHeading=(title,desc)=>'<div class="scorecard-category"><div><span>'+escHtml(title)+'</span><small>'+escHtml(desc)+'</small></div></div>';
   factorCards.innerHTML=
     categoryHeading('Macro / Rates','External environment · inflation, policy, yields and oil')+
@@ -158,7 +160,7 @@ function render(d){
     categoryHeading('Market Internals','Volatility, positioning, participation and leadership')+
     rowCards.slice(5).join('')+
     categoryHeading('Market Assessment','NasDecode decision layer')+
-    summaryCards+opportunityCard+soxlCard;
+    summaryCards+directionalShadowCard+opportunityCard+soxlCard;
   // Desktop intelligence layer: synthesize existing outputs without recalculating model logic.
   const rowBy=name=>orderedRows.find(r=>r.factor===name)||{};
   const toneLabel=s=>s==='positive'?'Supportive':s==='negative'?'Headwind':'Mixed';
