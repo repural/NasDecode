@@ -5,7 +5,7 @@ This is an external historical validation. The frozen v3.0 rules/thresholds are
 copied verbatim by importing build_directional_engine_v3.classify; this script
 must not tune them from 2025 outcomes. Dec 2024 is fetched only as feature warm-up.
 """
-import datetime,json,math,os,time,urllib.parse,urllib.request
+import datetime,json,math,os,time,urllib.parse,urllib.request,urllib.error
 from pathlib import Path
 from build_directional_engine_v3 import classify, ENGINE, SPEC
 R=Path(__file__).resolve().parents[1]
@@ -20,7 +20,7 @@ def fetch(t):
  global _last
  key=os.environ.get("MASSIVE_API_KEY","").strip()
  if not key: raise RuntimeError("MASSIVE_API_KEY is missing")
- wait=12.5-(time.monotonic()-_last)
+ wait=15.0-(time.monotonic()-_last)
  if _last and wait>0: time.sleep(wait)
  url=API.format(ticker=urllib.parse.quote(t,safe=""),start=START.isoformat(),end=END.isoformat())+"?adjusted=true&sort=asc&limit=50000"
  req=urllib.request.Request(url,headers={"Authorization":f"Bearer {key}","User-Agent":"NasDecode/1.0"})
