@@ -208,6 +208,22 @@ def main():
     session_days=[d for d in sorted(series['SOX'])
                   if d in series['QQQ'] and fetch_start.isoformat()<=d<=end.isoformat()]
     records=dict(old_records)
+
+    # A newly introduced/incomplete market series may have been fetched for the
+    # full rolling year even though the core SOX/QQQ refresh is incremental.
+    # Merge those fetched bars into already-canonical historical sessions first;
+    # otherwise the full fetch is silently discarded outside session_days.
+    for name in MARKET:
+        pre=((availability.get(name) or {}).get('preRefreshCoveragePct'))
+        if old_records and pre is not None and pre < 90.0:
+            merged=0
+            for day in old_records:
+                bar=series.get(name,{}).get(day)
+                if bar is not None:
+                    records[day].setdefault('market',{})[name]=bar
+                    merged+=1
+            print(f'{name}: merged {merged} full-backfill bars into existing canonical sessions')
+
     for day in session_days:
         market={k:series[k].get(day) for k in MARKET}
         macro={k:series[k].get(day) for k in MACRO}
