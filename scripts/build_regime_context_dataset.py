@@ -12,14 +12,14 @@ from pathlib import Path
 R=Path(__file__).resolve().parents[1]
 CAN=R/"data/history/resilience-daily.json"
 V25=R/"data/history/directional-engine-v3-2025.json"
-V3=R/"data/history/directional-engine-v3.json"
+V3=R/"data/history/directional-engine-v3.json"\nRES=R/"data/history/resilience-engine.json"
 OUT=R/"data/history/regime-context-dataset.json"
 H=(1,3,5,10)
 def f(x):return isinstance(x,(int,float)) and math.isfinite(x)
 def pct(a,b):return 100*(a/b-1) if f(a) and f(b) and b else None
 def main():
  can=json.loads(CAN.read_text()); rec=can.get("records") or {}; dates=sorted(rec); pos={d:i for i,d in enumerate(dates)}
- v3=json.loads(V3.read_text()); setups={x["date"]:x for x in v3.get("records",[])}
+ v3=json.loads(V3.read_text()); setups={x["date"]:x for x in v3.get("records",[])}\n res=json.loads(RES.read_text()) if RES.exists() else {"records":{}}; resrec=res.get("records") or {}
  rows=[]
  # External 2025 frozen validation: preserve its exact recorded inputs/outcomes.
  if V25.exists():
@@ -58,7 +58,7 @@ def main():
    for h in H:
     outcomes[name][str(h)]=pct(close((rec[dates[i+h]].get("market") or {}),key),close(m,key)) if i+h<len(dates) else None
   rows.append({"date":d,"cohort":"canonical_point_in_time","setup":{"directionalV3":setups[d].get("setup")},
-   "features":feat,"outcomes":outcomes,"provenance":{"featureTime":"completed close T","source":"resilience-daily.json + frozen directional v3","lookaheadSafe":True}})
+   "features":feat,"outcomes":outcomes,"provenance":{"featureTime":"completed close T","source":"resilience-daily.json + resilience-engine.json + frozen directional v3","lookaheadSafe":True}})
  rows.sort(key=lambda x:x["date"])
  payload={"schemaVersion":1,"datasetVersion":"regime-context-1.0",
   "purpose":"Reusable point-in-time feature/outcome dataset for regime diagnostics and future scoring mechanisms; this file defines no score.",
