@@ -27,8 +27,12 @@ on:
     - cron: '30 11,12,13 * * 1-5'
     - cron: '10 13,14 * * 1-5'
     # Cash-session heartbeat every 5 minutes. GitHub cron is UTC; the ET gate below
-    # limits execution to the U.S. session. This replaces unsupported timezone keys.
+    # limits execution to the U.S. session. Explicit checkpoint crons below prevent
+    # GitHub's 5-minute cron jitter from skipping named analysis windows.
     - cron: '*/5 12-22 * * 1-5'
+    - cron: '30 14,15 * * 1-5' # 10:30 ET across EDT/EST
+    - cron: '0 17,18 * * 1-5'  # 13:00 ET across EDT/EST
+    - cron: '30 19,20 * * 1-5' # 15:30 ET across EDT/EST
     # Extra post-close trigger improves close-snapshot reliability if the heartbeat is delayed.
     # Dual UTC hours cover EDT/EST; the New York gate admits only the applicable run.
     - cron: '27 20,21 * * 1-5'
@@ -76,11 +80,11 @@ jobs:
           ny_hm=$(TZ=America/New_York date +%H%M)
           # Derive checkpoint type from actual New York time, never from UTC cron text.
           # This keeps the schedule correct through EDT/EST changes.
-          if [ "$ny_hm" -ge 1025 ] && [ "$ny_hm" -le 1040 ]; then
+          if [ "$ny_hm" -ge 1020 ] && [ "$ny_hm" -le 1055 ]; then
             export NASDECODE_ANALYSIS_STAGE=early_market
-          elif [ "$ny_hm" -ge 1255 ] && [ "$ny_hm" -le 1310 ]; then
+          elif [ "$ny_hm" -ge 1250 ] && [ "$ny_hm" -le 1325 ]; then
             export NASDECODE_ANALYSIS_STAGE=mid_market
-          elif [ "$ny_hm" -ge 1525 ] && [ "$ny_hm" -le 1540 ]; then
+          elif [ "$ny_hm" -ge 1520 ] && [ "$ny_hm" -le 1555 ]; then
             export NASDECODE_ANALYSIS_STAGE=near_close
           fi
           if [ "$ny_hm" -ge 1605 ] && [ "$ny_hm" -le 1645 ]; then
