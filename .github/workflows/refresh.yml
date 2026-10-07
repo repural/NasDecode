@@ -111,6 +111,7 @@ jobs:
           python scripts/research_directional_v3.py
           python scripts/build_directional_engine_v3.py
           python scripts/validate_directional_engine_v3_holdout.py
+          python scripts/track_directional_v3_prospective.py
       - name: Commit refreshed snapshot
         if: steps.gate.outputs.run == 'yes'
         shell: bash
@@ -160,6 +161,7 @@ jobs:
           python scripts/research_directional_v3.py
           python scripts/build_directional_engine_v3.py
           python scripts/validate_directional_engine_v3_holdout.py
+          python scripts/track_directional_v3_prospective.py
             git add -A data
             mkdir -p public/data public/history
             cp index.html public/index.html
