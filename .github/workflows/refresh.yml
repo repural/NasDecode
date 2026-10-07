@@ -117,6 +117,7 @@ jobs:
           python scripts/validate_directional_engine_v3_holdout.py
           python scripts/build_regime_context_dataset.py
           python scripts/analyze_regime_context.py
+          python scripts/build_context_engine_v1.py
           python scripts/track_directional_v3_prospective.py
       - name: Commit refreshed snapshot
         if: steps.gate.outputs.run == 'yes'
@@ -169,6 +170,7 @@ jobs:
           python scripts/validate_directional_engine_v3_holdout.py
           python scripts/build_regime_context_dataset.py
           python scripts/analyze_regime_context.py
+          python scripts/build_context_engine_v1.py
           python scripts/track_directional_v3_prospective.py
             git add -A data
             mkdir -p public/data public/history
