@@ -24,8 +24,17 @@ def fetch(t):
  if _last and wait>0: time.sleep(wait)
  url=API.format(ticker=urllib.parse.quote(t,safe=""),start=START.isoformat(),end=END.isoformat())+"?adjusted=true&sort=asc&limit=50000"
  req=urllib.request.Request(url,headers={"Authorization":f"Bearer {key}","User-Agent":"NasDecode/1.0"})
- with urllib.request.urlopen(req,timeout=45) as resp: p=json.load(resp)
- _last=time.monotonic()
+ for attempt in range(5):
+  try:
+   with urllib.request.urlopen(req,timeout=45) as resp: p=json.load(resp)
+   _last=time.monotonic()
+   break
+  except urllib.error.HTTPError as e:
+   _last=time.monotonic()
+   if e.code!=429 or attempt==4: raise
+   delay=30*(attempt+1)
+   print(t,"rate limited; retrying in",delay,"seconds")
+   time.sleep(delay)
  out={}
  for b in p.get("results") or []:
   d=datetime.datetime.fromtimestamp(b["t"]/1000,datetime.timezone.utc).date().isoformat()
