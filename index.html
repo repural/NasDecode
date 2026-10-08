@@ -866,4 +866,114 @@ document.addEventListener('visibilitychange',async()=>{
   if(!document.hidden){const d=await load();await loadAnalysis(d);scheduleAutoRefresh()}
 });
 loadChartHistory();(async()=>{const d=await load();await loadAnalysis(d);scheduleAutoRefresh()})();
+</script></body></html// Load the narrative market brief. Market Analysis times remain in New York / ET; do not localize them to browser/TR time.
+const nearbyMajorEarnings=d=>{
+  const events=(d?.upcomingEarnings?.events||[]).filter(e=>{
+    const ed=new Date(String(e.date)+'T12:00:00Z');
+    const now=new Date(), nyToday=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
+    const today=new Date(nyToday+'T12:00:00Z'), days=Math.round((ed-today)/86400000);
+    return days>=0&&days<=14;
+  });
+  if(!events.length)return '';
+  const items=events.map(e=>{
+    const ed=new Date(String(e.date)+'T12:00:00Z');
+    const date=ed.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'});
+    return escHtml((e.ticker||'')+' · '+date);
+  }).join(', ');
+  return '<h3>Major earnings catalysts:</h3><p>'+items+'. '+analysisText('These SOX/mega-cap reports fall inside the rolling 14-day catalyst window.')+'</p>';
+};
+async function loadAnalysis(d){if(window.NasDecodeSessionTabs?.render){await window.NasDecodeSessionTabs.render(d);return;}try{
+  // After the cash open, this section becomes the live Market Analysis and uses the
+  // Nasdaq Score explanation generated from the current dashboard factors.
+  const now=new Date(), nyParts=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(now);
+  const part=t=>nyParts.find(x=>x.type===t)?.value; const mins=Number(part('hour'))*60+Number(part('minute'));
+  const marketDay=['Mon','Tue','Wed','Thu','Fri'].includes(part('weekday')); const afterOpen=marketDay&&mins>=570;
+  if(afterOpen&&d){
+    // Use the four session phases explicitly. The content remains live; the
+    // scheduled checkpoint snapshots are retained separately for validation.
+    analysisTitle.textContent=mins>=930?'Near-Close Analysis':mins>=780?'Mid-Market Analysis':'Early Market Analysis';
+    premarketMeta.textContent='Analysis updated: '+(d.updatedET||'—')+' (ET)';
+    const ns=d.nasdaqScore||{};
+    const ma=d.marketAnalysis||{};
+    const liveSignal=ns.signal||'mixed';
+    const sig=liveSignal==='positive'?'Positive':liveSignal==='negative'?'Negative':'Mixed';
+    const score=ns.score!==undefined?(ns.score>0?'+':'')+ns.score+' / 100':'—';
+    const trajectory=[];
+    if(ma.preMarketScore!==null&&ma.preMarketScore!==undefined) trajectory.push('Pre-market '+(ma.preMarketScore>0?'+':'')+ma.preMarketScore);
+    if(ma.openScore!==null&&ma.openScore!==undefined) trajectory.push('Open '+(ma.openScore>0?'+':'')+ma.openScore);
+    if(ns.score!==undefined) trajectory.push('Now '+(ns.score>0?'+':'')+ns.score);
+    const paras=(ma.paragraphs||[]).map(x=>'<p>'+analysisText(x)+'</p>').join('');
+    const catalysts=(ma.catalysts||[]).map(e=>'<li><b>'+escHtml(e.date)+' · '+analysisText(e.title)+'</b> — '+analysisText(e.detail)+'</li>').join('');
+    const fallback=(d.groups||[]).find(g=>g.name==='NASDAQ SCORE'||g.name==='NASDAQ SETUP')?.explanation||'Current Nasdaq analysis is not available.';
+    premarketBody.innerHTML=
+      '<div class="bias"><b>Nasdaq Score:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+' &nbsp; · &nbsp; <b>Trend:</b> '+(ns.trend||'—')+
+      (trajectory.length>1?' &nbsp; · &nbsp; <b>Session path:</b> '+trajectory.join(' → '):'')+'</div>'+
+      (paras||'<p>'+analysisText(fallback).replace(/\n\n/g,'</p><p>')+'</p>')+
+      (catalysts?'<h3>Near-term catalysts</h3><ul>'+catalysts+'</ul>':'');
+    return;
+  }
+  const r=await fetch('data/premarket.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const a=await r.json();
+  const nyDate=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+  // Research briefs historically used {updated, summary, events} while the
+  // quantitative pipeline uses {tradingDate, updatedET, paragraphs, catalysts}.
+  // Accept either schema so a valid same-day researched brief is never hidden.
+  const inferredDate=a.tradingDate||String(a.updated||a.updatedET||'').match(/\\b20\\d{2}-\\d{2}-\\d{2}\\b/)?.[0];
+  if(inferredDate!==nyDate){analysisTitle.textContent='Pre-Market Analysis';premarketMeta.textContent='Today’s analysis is being prepared.';premarketBody.innerHTML='';return;}
+  analysisTitle.textContent=(a.stage==='premarket'||a.researchBrief||a.bias)?'Pre-Market Analysis':'Early Market Outlook';
+  premarketMeta.textContent='Analysis updated: '+escHtml(a.updatedET||a.updated||'—');
+  const ns=d?.nasdaqScore||{}; const sig=ns.signal==='positive'?'Positive':ns.signal==='negative'?'Negative':'Mixed';
+  const score=a.score!==null&&a.score!==undefined?(a.score>0?'+':'')+a.score+' / 100':'—';
+  const paras=(a.paragraphs||a.summary||[]).map(x=>'<p>'+analysisText(x)+'</p>').join('');
+  const catalysts=(a.catalysts||a.events||[]).map(e=>'<li><b>'+escHtml(e.date?e.date+' · ':'')+analysisText(e.title)+'</b> — '+analysisText(e.detail)+'</li>').join('');
+  const richMeta=a.bias?'<div class="bias"><b>Pre-market bias:</b> '+escHtml(a.bias)+(a.confidence?' &nbsp; · &nbsp; <b>Confidence:</b> '+escHtml(a.confidence):'')+(a.eventRisk?' &nbsp; · &nbsp; <b>Event risk:</b> '+escHtml(a.eventRisk):'')+'</div>':'<div class="bias"><b>Nasdaq Score:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+'</div>';
+  const todayWatch=document.getElementById('watchConditions');
+  if(todayWatch){
+    const entries=(a.catalysts||[]).filter(x=>x&&typeof x==='object');
+    todayWatch.innerHTML=entries.length?entries.map((e,i)=>'<div class="catalyst"><b>'+escHtml(String(i+1)+'. '+(e.title||'Event'))+'</b><div style="margin-top:5px">'+analysisText(e.detail||e.description||'')+'</div></div>').join(''):'<div class="muted">Today’s major events have not been published yet.</div>';
+  }
+  premarketBody.innerHTML=richMeta+paras+(a.watchIntoOpen?'<p>'+analysisText(a.watchIntoOpen)+'</p>':'')+(a.keyTimes?'<p>'+analysisText(a.keyTimes)+'</p>':'')+(catalysts?'<h3>Near-term catalysts</h3><ul>'+catalysts+'</ul>':'')+nearbyMajorEarnings(d);
+}catch(e){premarketMeta.textContent='Analysis not available yet.';premarketBody.innerHTML='';}}
+update.onclick=async()=>{const d=await load();await Promise.all([loadAnalysis(d),loadTodayWatch()]);scheduleAutoRefresh()};
+
+function nyClock(){
+  const p=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',weekday:'short',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).formatToParts(new Date());
+  const get=t=>p.find(x=>x.type===t)?.value;
+  return {weekday:get('weekday'),minutes:Number(get('hour'))*60+Number(get('minute')),seconds:Number(get('second'))};
+}
+function upcomingReleaseTimes(){
+  return (currentDashboard?.macroSurprises?.scheduledEvents||[])
+    .map(e=>({time:new Date(e.scheduledAt),name:e.name}))
+    .filter(e=>Number.isFinite(e.time.getTime())&&e.time.getTime()>Date.now()-10*60*1000)
+    .sort((a,b)=>a.time-b.time);
+}
+function nextUiPollMs(){
+  const now=Date.now(), ny=nyClock(), weekday=['Mon','Tue','Wed','Thu','Fri'].includes(ny.weekday);
+  let base=60*60*1000;
+  if(weekday&&ny.minutes>=570&&ny.minutes<=980) base=2*60*1000;          // cash session
+  else if(weekday&&((ny.minutes>=240&&ny.minutes<570)||(ny.minutes>980&&ny.minutes<=1200))) base=15*60*1000;
+
+  // Scheduled macro releases are a special high-attention window. The browser checks
+  // exactly at the release and then every 20 seconds for 10 minutes so a newly
+  // published backend snapshot appears promptly. This is polling, not server push.
+  const releases=upcomingReleaseTimes();
+  for(const r of releases){
+    const delta=r.time.getTime()-now;
+    if(delta>=-30*1000&&delta<=10*60*1000) return 20*1000;
+    if(delta>0) base=Math.min(base,Math.max(5*1000,delta+2*1000));
+  }
+  return base;
+}
+function scheduleAutoRefresh(){
+  if(autoRefreshTimer) clearTimeout(autoRefreshTimer);
+  autoRefreshTimer=setTimeout(async()=>{
+    if(document.hidden){scheduleAutoRefresh();return}
+    const before=lastRenderedStamp,d=await load();
+    if(d&&d.updatedET!==before) await loadAnalysis(d);
+    scheduleAutoRefresh();
+  },nextUiPollMs());
+}
+document.addEventListener('visibilitychange',async()=>{
+  if(!document.hidden){const d=await load();await loadAnalysis(d);scheduleAutoRefresh()}
+});
+loadChartHistory();(async()=>{const d=await load();await loadAnalysis(d);scheduleAutoRefresh()})();
 </script></body></html>
