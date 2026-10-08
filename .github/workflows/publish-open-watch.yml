@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'data/history/market-watch-events.json'
+      - 'scripts/validate_open_watch.py'
 
 concurrency:
   group: nasdecode-open-watch-publish
@@ -19,6 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Validate event schema and unique IDs
+        run: python scripts/validate_open_watch.py
       - name: Publish curated Open Watch feed
         shell: bash
         run: |
@@ -37,6 +40,7 @@ jobs:
             fi
             git fetch origin main
             git reset --hard origin/main
+            python scripts/validate_open_watch.py
             python scripts/build_hype_history.py
             mkdir -p public/history
             cp data/history/market-watch-events.json public/history/market-watch-events.json
