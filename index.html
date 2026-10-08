@@ -185,8 +185,9 @@ function render(d){
   // Active lifecycle events come first; newly retained non-historical events follow;
   // scheduled earnings are shown after those. Routine macro/Fed rows are excluded.
   const watchFeed=d.marketWatchEvents||{};
-  const excludedWatchCategories=new Set(['macro','fed-rates','inflation','labor','growth','economic']);
-  const watchEvents=(watchFeed.events||[]).filter(e=>!excludedWatchCategories.has(String(e.category||'').toLowerCase()));
+  // Preserve broad catalyst coverage here. The separate developments panel is
+  // curated-only; this panel includes material discovered events and the archive.
+  const watchEvents=(watchFeed.events||[]).filter(e=>e&&e.id&&e.headline);
   const materialityRank=m=>({'very high':4,'high':3,'medium-high':2,'medium':1}[String(m||'').toLowerCase()]||0);
   const eventTimeMs=e=>Date.parse(e.eventTime||e.firstReported||'')||0;
 
@@ -207,7 +208,7 @@ function render(d){
   }
   const activeWatchEvents=watchEvents.filter(e=>String(e.status||'').toLowerCase()==='active')
     .sort((a,b)=>materialityRank(b.expectedImpact?.materiality)-materialityRank(a.expectedImpact?.materiality)||eventTimeMs(b)-eventTimeMs(a))
-    .slice(0,4);
+    .slice(0,10);
   const activeIds=new Set(activeWatchEvents.map(e=>e.id).filter(Boolean));
   const activeWatchHtml=activeWatchEvents.map(e=>{
     const impact=e.expectedImpact||{}, confirm=e.marketConfirmation||{};
@@ -218,11 +219,8 @@ function render(d){
       (confirmBits?'<div class="muted" style="margin-top:4px">'+analysisText(confirmBits)+'</div>':'')+'</div>';
   }).join('');
 
-  const freshCutoff=Date.now()-72*60*60*1000;
-  const newWatchEvents=watchEvents.filter(e=>{
-    const status=String(e.status||'').toLowerCase();
-    return !activeIds.has(e.id)&&status!=='historical'&&eventTimeMs(e)>=freshCutoff;
-  }).sort((a,b)=>materialityRank(b.expectedImpact?.materiality)-materialityRank(a.expectedImpact?.materiality)||eventTimeMs(b)-eventTimeMs(a)).slice(0,3);
+  const newWatchEvents=watchEvents.filter(e=>!activeIds.has(e.id))
+    .sort((a,b)=>eventTimeMs(b)-eventTimeMs(a)).slice(0,12);
   const newWatchHtml=newWatchEvents.map(e=>{
     const impact=e.expectedImpact||{}, confirm=e.marketConfirmation||{};
     const when=e.eventTime?new Date(e.eventTime).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}):'New';
