@@ -23,7 +23,9 @@ def main():
  can=json.loads(CAN.read_text()); rec=can.get("records") or {}; dates=sorted(rec); pos={d:i for i,d in enumerate(dates)}
  v3=json.loads(V3.read_text()); setups={x["date"]:x for x in v3.get("records",[])}
  res=json.loads(RES.read_text()) if RES.exists() else {"records":{}}; resrec=res.get("records") or {}
- macro25=json.loads(MACRO25.read_text()).get("series",{}) if MACRO25.exists() else {}
+ macro_payload=json.loads(MACRO25.read_text()) if MACRO25.exists() else {}
+ macro25=macro_payload.get("series",{})
+ oil_verified=(macro_payload.get("tickers",{}).get("brent")=="FRED:DCOILBRENTE" and macro_payload.get("tickers",{}).get("wti")=="FRED:DCOILWTICO" and len(macro25.get("brent",{}))>=180 and len(macro25.get("wti",{}))>=180)
  def historical_macro(d):
   def value(k):return macro25.get(k,{}).get(d)
   def delta(k,n,basis=False):
@@ -32,7 +34,7 @@ def main():
    a=value(k);b=macro25[k][prior[-n-1]]
    return (a-b)*100 if basis else pct(a,b)
   y10=value("us10y");y2=value("us2y")
-  return {"rates":{"us10yPct":y10,"us2yPct":y2,"curve2s10sBp":(y10-y2)*100 if f(y10) and f(y2) else None,"us10y5dChangeBp":delta("us10y",5,True),"us10y10dChangeBp":delta("us10y",10,True)}, "volatility":{"vxn":value("vxn"),"vix":value("vix"),"vxn5dPct":delta("vxn",5),"vxn10dPct":delta("vxn",10)},"energy":{"brent":None,"brent5dPct":None,"wti":None,"wti5dPct":None} # Legacy BZ/CL equity aggregates are not verified crude futures}
+  return {"rates":{"us10yPct":y10,"us2yPct":y2,"curve2s10sBp":(y10-y2)*100 if f(y10) and f(y2) else None,"us10y5dChangeBp":delta("us10y",5,True),"us10y10dChangeBp":delta("us10y",10,True)}, "volatility":{"vxn":value("vxn"),"vix":value("vix"),"vxn5dPct":delta("vxn",5),"vxn10dPct":delta("vxn",10)},"energy":{"brent":value("brent") if oil_verified else None,"brent5dPct":delta("brent",5) if oil_verified else None,"wti":value("wti") if oil_verified else None,"wti5dPct":delta("wti",5) if oil_verified else None}}
  rows=[]
  # External 2025 frozen validation: preserve its exact recorded inputs/outcomes.
  if V25.exists():
