@@ -1,12 +1,12 @@
 {
-  "updatedET": "Oct 08, 2026 · 09:26 ET",
+  "updatedET": "Oct 08, 2026 · 09:52 ET",
   "nextUpdateET": "09:30 / 10:30 ET on trading weekdays",
   "groups": [
     {
       "name": "NASDAQ SETUP",
-      "signal": "mixed",
-      "label": "Mixed / Neutral",
-      "explanation": "⚠️ Material bearish change. Treasury yields remain the main pressure point, with the 2Y at 4.804% and the 10Y at 5.294%. Semiconductor momentum remains an important equity confirmation: SOXX has fallen for 2 consecutive sessions. QQQ is +2.43% over five sessions and +3.26% versus its 20-day average. Brent is +5.10% at about $105.31, adding some inflation pressure.\n\nThe Nasdaq Setup is mixed/neutral (-3/100, 52% confidence, deteriorating ↓). The current balance is limited positive confirmation on the supportive side versus elevated/rising Treasury yields as the main headwind.\n\nNear-term risk is concentrated in the 10Y yield is above the 5.05% headwind threshold at 5.294%. Improvement in these conditions would strengthen the setup; further deterioration would reduce conviction."
+      "signal": "negative",
+      "label": "Cautiously Negative",
+      "explanation": "⚠️ Material bearish change. Treasury yields remain the main pressure point, with the 2Y at 4.793% and the 10Y at 5.277%. Semiconductor momentum remains an important equity confirmation: SOXX has fallen for 2 consecutive sessions. QQQ is +2.43% over five sessions and +3.26% versus its 20-day average. Brent is +4.39% at about $104.60, adding some inflation pressure.\n\nThe Nasdaq Setup is cautiously negative (-29/100, 74% confidence, deteriorating ↓). The current balance is semiconductor/AI leaders holding above their earnings AVWAPs on the supportive side versus elevated/rising Treasury yields, weaker intraday semiconductor leadership as the main headwind.\n\nNear-term risk is concentrated in the 10Y yield is above the 5.05% headwind threshold at 5.277%, semiconductor leadership is lagging QQQ. Improvement in these conditions would strengthen the setup; further deterioration would reduce conviction."
     },
     {
       "name": "Rates / Macro",
@@ -16,8 +16,8 @@
     },
     {
       "name": "Semiconductors",
-      "signal": "mixed",
-      "label": "🟡 Mixed",
+      "signal": "negative",
+      "label": "🔴 Negative",
       "explanation": "Tracks semiconductor leadership relative to QQQ. Strong chip participation often confirms Nasdaq technology momentum."
     },
     {
@@ -34,8 +34,8 @@
     },
     {
       "name": "AI / Fundamentals",
-      "signal": "mixed",
-      "label": "🟡 Mixed",
+      "signal": "negative",
+      "label": "🔴 Negative",
       "explanation": "Summarizes earnings revisions, AI capex/monetization and technology earnings-event risk."
     }
   ],
@@ -43,17 +43,38 @@
     {
       "factor": "Technology earnings calendar",
       "latest": "ASML: Oct 14, 2026 · TSM: Oct 15, 2026 · LRCX: Oct 21, 2026 · TSLA: Oct 21, 2026 · TXN: Oct 21, 2026 · INTC: Oct 22, 2026",
-      "direction": "Event risk",
-      "signal": "mixed",
+      "direction": "Risk-off setup",
+      "signal": "negative",
       "freshness": "14-day rolling calendar",
       "source": "Nasdaq earnings calendar / confirmed company IR dates",
-      "explanation": "Current reading: ASML: Oct 14, 2026 · TSM: Oct 15, 2026 · LRCX: Oct 21, 2026 · TSLA: Oct 21, 2026 · TXN: Oct 21, 2026 · INTC: Oct 22, 2026. Direction: Event risk. NasDecode currently classifies this factor as neutral/mixed. This row will become more specific as its underlying live/research source is automated.",
-      "currentImpact": "High",
-      "impactReason": "Calendar: 5.6 days to event; market-reaction score 0/4; directional score +0",
+      "explanation": "Current reading: ASML: Oct 14, 2026 · TSM: Oct 15, 2026 · LRCX: Oct 21, 2026 · TSLA: Oct 21, 2026 · TXN: Oct 21, 2026 · INTC: Oct 22, 2026. Direction: Risk-off setup. NasDecode currently classifies this factor as a headwind. This row will become more specific as its underlying live/research source is automated.",
+      "currentImpact": "Very High",
+      "impactReason": "Calendar: 5.6 days to event; market-reaction score 2/4; directional score -2",
       "trend": "Stable →",
       "displayRank": 1,
-      "signalLabel": "🟡 Mixed",
+      "signalLabel": "🔴 Negative",
       "scorecard": null
+    },
+    {
+      "factor": "Oil (WTI / Brent)",
+      "latest": "WTI $92.22 (+4.46%) | Brent $104.60 (+4.39%)",
+      "direction": "Rising",
+      "signal": "negative",
+      "freshness": "CNBC intraday · 2026-10-08T09:42:38.000-0400",
+      "source": "CNBC futures quotes",
+      "explanation": "WTI $92.22 (+4.46%) | Brent $104.60 (+4.39%). Oil is rising. Large energy moves can alter inflation expectations and therefore Treasury yields/Fed expectations. Current implication: a headwind. The 10Y yield is 5.277% (+0.0 bp vs prev close); oil matters for Nasdaq mainly through inflation expectations and the rate path.",
+      "currentImpact": "Very High",
+      "trend": "Deteriorating ↓",
+      "displayRank": 2,
+      "signalLabel": "🔴 Negative",
+      "scorecard": {
+        "value": "WTI $92.22",
+        "arrow": "↑",
+        "change": "+4.46%",
+        "secondaryValue": "Brent $104.60",
+        "secondaryArrow": "↑",
+        "secondaryChange": "+4.39%"
+      }
     },
     {
       "factor": "S&P 500 50D Breadth / Oversold",
@@ -65,7 +86,7 @@
       "explanation": "29.0% above 50D MA · +0.0 pp vs prior. This is the percentage of S&P 500 stocks above their 50-day moving average. NasDecode interprets it as both breadth and an oversold/extended condition: low readings show weak participation, but a turn upward from below 30% can be an early recovery signal rather than simply bearish. Current state: oversold.",
       "currentImpact": "High",
       "trend": "Stable →",
-      "displayRank": 2,
+      "displayRank": 3,
       "signalLabel": "🟡 Mixed",
       "scorecard": {
         "value": "29.0%",
@@ -80,16 +101,16 @@
       "signal": "positive",
       "freshness": "Decaying verified releases · latest 2026-10-02T08:30:00-04:00",
       "source": "Verified official releases + market consensus",
-      "explanation": "Supportive data mix +65 · Nonfarm payrolls 29K vs 90K · Core PCE 0.2% vs 0.3% · PCE Price Index MoM 0.3% vs 0.4%. This is a decaying macro impulse built from recent verified actual-versus-consensus releases. Positive means the recent data mix is more supportive for rate-sensitive Nasdaq; negative means more restrictive. Older releases fade rather than disappearing after the next refresh. Upcoming releases do not affect the score before publication.",
+      "explanation": "Supportive data mix +65 · Nonfarm payrolls 29K vs 90K · Core PCE 0.2% vs 0.3% · PCE Price Index MoM 0.3% vs 0.4%. This is a decaying macro impulse built from recent verified actual-versus-consensus releases. Positive means the recent data mix is more supportive for rate-sensitive Nasdaq; negative means more restrictive. Older releases fade rather than disappearing after the next refresh. Upcoming releases do not affect the score before publication. Current cross-check: 2Y 4.793% (+2.9 bp vs prev close) and 10Y 5.277% (+0.0 bp vs prev close).",
       "currentImpact": "High",
       "trend": "Stable →",
-      "displayRank": 3,
+      "displayRank": 4,
       "signalLabel": "🟢 Positive",
       "scorecard": null,
       "macroImpulseScore": 65,
       "macroImpulse": {
         "score": 65,
-        "normalized": 0.6491,
+        "normalized": 0.6492,
         "activeReleaseCount": 6,
         "familyScores": {
           "inflation": {
@@ -135,9 +156,9 @@
             "surprise": -61.0,
             "normalizedSurprise": -1.0,
             "nasdaqImpact": 1.0,
-            "decay": 0.4329,
-            "effectiveWeight": 0.4329,
-            "weightedContribution": 0.4329,
+            "decay": 0.4318,
+            "effectiveWeight": 0.4318,
+            "weightedContribution": 0.4318,
             "source": "Primary publisher actual / market consensus",
             "sourceMode": "official_verified",
             "verified": true,
@@ -157,9 +178,9 @@
             "surprise": -0.09999999999999998,
             "normalizedSurprise": -0.6667,
             "nasdaqImpact": 0.6667,
-            "decay": 0.4511,
-            "effectiveWeight": 0.4511,
-            "weightedContribution": 0.3007,
+            "decay": 0.4503,
+            "effectiveWeight": 0.4503,
+            "weightedContribution": 0.3002,
             "source": "Primary publisher actual / market consensus",
             "sourceMode": "official_verified",
             "verified": true,
@@ -179,9 +200,9 @@
             "surprise": -0.10000000000000003,
             "normalizedSurprise": -0.6667,
             "nasdaqImpact": 0.6667,
-            "decay": 0.4511,
-            "effectiveWeight": 0.2707,
-            "weightedContribution": 0.1804,
+            "decay": 0.4503,
+            "effectiveWeight": 0.2702,
+            "weightedContribution": 0.1801,
             "source": "Primary publisher actual / market consensus",
             "sourceMode": "official_verified",
             "verified": true,
@@ -201,9 +222,9 @@
             "surprise": 0.10000000000000053,
             "normalizedSurprise": 0.5,
             "nasdaqImpact": 0.5,
-            "decay": 0.4329,
-            "effectiveWeight": 0.3247,
-            "weightedContribution": 0.1623,
+            "decay": 0.4318,
+            "effectiveWeight": 0.3239,
+            "weightedContribution": 0.1619,
             "source": "Primary publisher actual / market consensus",
             "sourceMode": "official_verified",
             "verified": true,
@@ -223,9 +244,9 @@
             "surprise": -0.5,
             "normalizedSurprise": -0.625,
             "nasdaqImpact": 0.625,
-            "decay": 0.1995,
-            "effectiveWeight": 0.1097,
-            "weightedContribution": 0.0686,
+            "decay": 0.1987,
+            "effectiveWeight": 0.1093,
+            "weightedContribution": 0.0683,
             "source": "Institute for Supply Management / consensus survey",
             "sourceMode": "official_verified",
             "verified": true,
@@ -245,9 +266,9 @@
             "surprise": 0.7000000000000002,
             "normalizedSurprise": 0.875,
             "nasdaqImpact": -0.875,
-            "decay": 0.2483,
-            "effectiveWeight": 0.0745,
-            "weightedContribution": -0.0652,
+            "decay": 0.2475,
+            "effectiveWeight": 0.0743,
+            "weightedContribution": -0.065,
             "source": "U.S. Bureau of Economic Analysis actual / market consensus",
             "sourceMode": "verified_seed",
             "verified": true,
@@ -264,59 +285,107 @@
       "impactReason": "Absolute decaying release impulse 65/100"
     },
     {
-      "factor": "Nasdaq volatility (VXN / VIX)",
-      "latest": "VXN 21.00 (-0.71%) | VIX 15.97 (+5.90%)",
-      "direction": "Diverging",
-      "signal": "mixed",
-      "freshness": "CNBC previous close · 2026-10-07",
-      "source": "CNBC / Cboe quotes",
-      "explanation": "VXN 21.00 (-0.71%) | VIX 15.97 (+5.90%). VXN and VIX are moving in opposite directions, so Nasdaq-specific and broad-market volatility do not confirm each other. VXN is in a normal/moderate regime; VIX is normal/moderate. Overall volatility signal: neutral/mixed.",
+      "factor": "Semiconductor leadership",
+      "latest": "Live · SOX -2.38% | Nasdaq -0.67% | SOX vs Nasdaq -1.71 pp | SOXX vs Nasdaq -1.82 pp | SMH vs Nasdaq -1.38 pp",
+      "direction": "Confirmed weakness",
+      "signal": "negative",
+      "freshness": "Live CNBC quote",
+      "source": "CNBC quotes; SOX relative strength vs Nasdaq is primary, confirmed by SOXX/SMH and broad SOX-member participation",
+      "explanation": "Live · SOX -2.38% | Nasdaq -0.67% | SOX vs Nasdaq -1.71 pp | SOXX vs Nasdaq -1.82 pp | SMH vs Nasdaq -1.38 pp. SOX is the primary semiconductor leadership reference; SOXX, SMH and full-universe semiconductor breadth are confirmation layers.",
       "currentImpact": "High",
-      "trend": "Stable →",
-      "displayRank": 4,
-      "signalLabel": "🟡 Mixed",
+      "trend": "Deteriorating ↓",
+      "displayRank": 5,
+      "signalLabel": "🔴 Negative",
+      "scorecard": null,
+      "catalystMomentum": {
+        "title": "Broadcom (NASDAQ:AVGO) Stock: AI Semiconductor Revenue Keeps Scaling Through Fiscal Q3",
+        "type": "earnings",
+        "status": "Observed",
+        "readThrough": "Positive catalyst; weak/isolated sector read-through",
+        "persistence": "Persisting 2 sessions later"
+      }
+    },
+    {
+      "factor": "2Y Treasury yield",
+      "latest": "4.793% (+2.9 bp vs prev close)",
+      "direction": "Rising",
+      "signal": "negative",
+      "freshness": "CNBC intraday · 2026-10-08T09:52:20.000-0400",
+      "source": "CNBC / Tradeweb quote feed",
+      "explanation": "4.793% (+2.9 bp vs prev close). Level: a headwind. Latest change: a headwind because yields rose. The two Treasury maturities are not giving a fully aligned change signal. Curve context: 2s10s +48.4 bp (upward-sloping), bear flattener, -2.9 bp vs prev close.",
+      "levelSignal": "negative",
+      "changeSignal": "negative",
+      "currentImpact": "High",
+      "trend": "Deteriorating ↓",
+      "displayRank": 6,
+      "signalLabel": "🔴 Negative",
       "scorecard": {
-        "value": "VXN 21.00",
-        "arrow": "↓",
-        "change": "-0.71%",
-        "secondaryValue": "VIX 15.97",
-        "secondaryArrow": "↑",
-        "secondaryChange": "+5.90%"
+        "value": "4.793%",
+        "arrow": "↑",
+        "change": "+2.9 bp"
       },
-      "debug": "NasDecode AI-led volatility model. Proprietary methodology."
+      "curve2s10s": {
+        "spreadBp": 48.4,
+        "changeBp": -2.9,
+        "shape": "upward-sloping",
+        "mechanism": "bear flattener"
+      },
+      "curveContext": "2s10s +48.4 bp (upward-sloping), bear flattener, -2.9 bp vs prev close"
     },
     {
       "factor": "Earnings AVWAP leadership",
-      "latest": "6/6 above Earnings AVWAP · median +8.7%",
-      "direction": "Overextended above earnings anchors",
-      "signal": "mixed",
+      "latest": "5/6 above Earnings AVWAP · median +7.3%",
+      "direction": "Healthy support above earnings anchors",
+      "signal": "positive",
       "freshness": "Massive daily aggregates + CNBC current price",
       "source": "Massive aggregates + verified company earnings dates",
       "currentImpact": "High",
-      "medianDistancePct": 8.745160178516098,
-      "aboveCount": 6,
+      "medianDistancePct": 7.26504973427069,
+      "aboveCount": 5,
       "coveredCount": 6,
-      "explanation": "6/6 above Earnings AVWAP · median +8.7%. The selective semiconductor/AI basket is overextended above earnings anchors. Holding above a post-earnings AVWAP is supportive because price remains above the volume-weighted cost basis established since the latest earnings reset; large positive distances also contribute to Consolidation Risk as extension.",
-      "trend": "Stable →",
+      "explanation": "5/6 above Earnings AVWAP · median +7.3%. The selective semiconductor/AI basket is healthy support above earnings anchors. Holding above a post-earnings AVWAP is supportive because price remains above the volume-weighted cost basis established since the latest earnings reset; large positive distances also contribute to Consolidation Risk as extension.",
+      "trend": "Improving ↑",
       "scorecard": {
-        "value": "6/6 above",
-        "arrow": "→",
-        "change": "median +8.7%"
+        "value": "5/6 above",
+        "arrow": "↑",
+        "change": "median +7.3%"
       },
-      "displayRank": 5,
-      "signalLabel": "🟡 Mixed"
+      "displayRank": 7,
+      "signalLabel": "🟢 Positive"
+    },
+    {
+      "factor": "Nasdaq volatility (VXN / VIX)",
+      "latest": "VXN 21.14 (+0.67%) | VIX 15.43 (+2.32%)",
+      "direction": "Rising together",
+      "signal": "mixed",
+      "freshness": "CNBC intraday · 2026-10-08T09:37:31.000-0400",
+      "source": "CNBC / Cboe quotes",
+      "explanation": "VXN 21.14 (+0.67%) | VIX 15.43 (+2.32%). VXN and VIX are rising together, confirming increasing demand for protection. VXN is in a normal/moderate regime; VIX is normal/moderate. Overall volatility signal: neutral/mixed. Rate levels remain a headwind at the 10Y and a headwind at the 2Y.",
+      "currentImpact": "Medium",
+      "trend": "Stable →",
+      "displayRank": 8,
+      "signalLabel": "🟡 Mixed",
+      "scorecard": {
+        "value": "VXN 21.14",
+        "arrow": "↑",
+        "change": "+0.67%",
+        "secondaryValue": "VIX 15.43",
+        "secondaryArrow": "↑",
+        "secondaryChange": "+2.32%"
+      },
+      "debug": "NasDecode AI-led volatility model. Proprietary methodology."
     },
     {
       "factor": "Fed expectations",
       "latest": "Oct 28: Hike 18% / Hold 82% / Cut 0% · Dec 9: Above current 80% / Same 20% / Below 0% · Jan 27: Above current 87% / Same 13% / Below 0%",
       "direction": "Hawkish / hikes priced",
       "signal": "negative",
-      "freshness": "CME settlement 2026-10-07 · checked 2026-10-08 09:26 ET",
+      "freshness": "CME settlement 2026-10-07 · checked 2026-10-08 09:52 ET",
       "source": "CME Group 30-Day Fed Funds futures settlements; New York Fed EFFR; CME FedWatch methodology",
       "explanation": "Oct 28: Hike 17.7% · Hold 82.3% · Cut 0.0%. By Dec 9: target above current 79.6% · same 20.4% · below 0.0%. By Jan 27: target above current 87.1% · same 12.9% · below 0.0%. The nearest meeting is shown as hike/hold/cut; later meetings are aggregated versus today’s target range.",
       "currentImpact": "Medium",
       "trend": "Stable →",
-      "displayRank": 6,
+      "displayRank": 9,
       "signalLabel": "🔴 Negative",
       "scorecard": {
         "value": "Oct 28",
@@ -377,139 +446,76 @@
       "fedPreviousLevelScore": -46.7
     },
     {
-      "factor": "Semiconductor leadership",
-      "latest": "Awaiting premarket SOX/Nasdaq quotes",
-      "direction": "Awaiting session",
-      "signal": "mixed",
-      "freshness": "STALE — CNBC refresh failed",
-      "source": "CNBC quotes",
-      "explanation": "Awaiting premarket SOX/Nasdaq quotes. Semiconductors are awaiting session. Chips are a major Nasdaq/AI leadership group, so relative strength versus QQQ is an important risk-appetite confirmation. Current implication: neutral/mixed. Catalyst context: Broadcom (NASDAQ:AVGO) Stock: AI Semiconductor Revenue Keeps Scaling Through Fiscal Q3 — Positive catalyst; weak/isolated sector read-through.",
-      "currentImpact": "Low",
-      "trend": "Stable →",
-      "displayRank": 7,
-      "signalLabel": "🟡 Mixed",
-      "scorecard": null,
-      "catalystMomentum": {
-        "title": "Broadcom (NASDAQ:AVGO) Stock: AI Semiconductor Revenue Keeps Scaling Through Fiscal Q3",
-        "type": "earnings",
-        "status": "Observed",
-        "readThrough": "Positive catalyst; weak/isolated sector read-through",
-        "persistence": "Persisting 2 sessions later"
-      }
-    },
-    {
-      "factor": "Market breadth",
-      "latest": "Previous-close breadth unavailable — only 1 constituent quotes",
-      "direction": "Awaiting coverage",
-      "signal": "mixed",
-      "freshness": "STALE — insufficient breadth coverage",
-      "source": "CNBC quotes",
-      "explanation": "Previous-close breadth unavailable — only 1 constituent quotes. Breadth is awaiting coverage. A larger share of advancing Nasdaq-100 constituents means wider participation; weak participation makes index strength less robust. Current implication: neutral/mixed.",
-      "currentImpact": "Low",
-      "trend": "Stable →",
-      "displayRank": 8,
-      "signalLabel": "🟡 Mixed",
-      "scorecard": null
-    },
-    {
       "factor": "10Y Treasury Yield",
-      "latest": "5.294% (+1.7 bp vs prev close)",
-      "direction": "Rising",
+      "latest": "5.277% (+0.0 bp vs prev close)",
+      "direction": "Flat",
       "signal": "negative",
-      "freshness": "STALE — CNBC refresh failed",
+      "freshness": "CNBC intraday · 2026-10-08T09:52:09.000-0400",
       "source": "CNBC / Tradeweb quote feed; U.S. Treasury 10Y TIPS real yield context",
-      "explanation": "5.294% (+1.7 bp vs prev close). Level: a headwind. Latest change: a headwind because yields rose. Curve context: 2s10s +49.0 bp (upward-sloping), bear flattener, -2.3 bp vs prev close. The latest 10Y real yield is 2.92% (2026-10-07), so the real discount-rate backdrop remains a headwind.",
+      "explanation": "5.277% (+0.0 bp vs prev close). Level: a headwind. Latest change: roughly neutral. The two Treasury maturities are not giving a fully aligned change signal. Curve context: 2s10s +48.4 bp (upward-sloping), bear flattener, -2.9 bp vs prev close. The latest 10Y real yield is 2.92% (2026-10-07), so the real discount-rate backdrop remains a headwind.",
       "levelSignal": "negative",
-      "changeSignal": "negative",
-      "currentImpact": "Low",
-      "trend": "Deteriorating ↓",
-      "displayRank": 9,
+      "changeSignal": "mixed",
+      "currentImpact": "Medium",
+      "trend": "Stable →",
+      "displayRank": 10,
       "signalLabel": "🔴 Negative",
       "realYield": 2.92,
       "realYieldDate": "2026-10-07",
       "scorecard": {
-        "value": "5.294%",
-        "arrow": "↑",
-        "change": "+1.7 bp"
+        "value": "5.277%",
+        "arrow": "→",
+        "change": "+0.0 bp"
       },
       "curve2s10s": {
-        "spreadBp": 49.0,
-        "changeBp": -2.3,
+        "spreadBp": 48.4,
+        "changeBp": -2.9,
         "shape": "upward-sloping",
         "mechanism": "bear flattener"
       },
-      "curveContext": "2s10s +49.0 bp (upward-sloping), bear flattener, -2.3 bp vs prev close"
-    },
-    {
-      "factor": "2Y Treasury yield",
-      "latest": "4.804% (+4.0 bp vs prev close)",
-      "direction": "Rising",
-      "signal": "negative",
-      "freshness": "STALE — CNBC refresh failed",
-      "source": "CNBC / Tradeweb quote feed",
-      "explanation": "4.804% (+4.0 bp vs prev close). Level: a headwind. Latest change: a headwind because yields rose. Curve context: 2s10s +49.0 bp (upward-sloping), bear flattener, -2.3 bp vs prev close.",
-      "levelSignal": "negative",
-      "changeSignal": "negative",
-      "currentImpact": "Low",
-      "trend": "Deteriorating ↓",
-      "displayRank": 10,
-      "signalLabel": "🔴 Negative",
-      "scorecard": {
-        "value": "4.804%",
-        "arrow": "↑",
-        "change": "+4.0 bp"
-      },
-      "curve2s10s": {
-        "spreadBp": 49.0,
-        "changeBp": -2.3,
-        "shape": "upward-sloping",
-        "mechanism": "bear flattener"
-      },
-      "curveContext": "2s10s +49.0 bp (upward-sloping), bear flattener, -2.3 bp vs prev close"
-    },
-    {
-      "factor": "Oil (WTI / Brent)",
-      "latest": "WTI $92.70 (+5.01%) | Brent $105.31 (+5.10%)",
-      "direction": "Rising",
-      "signal": "negative",
-      "freshness": "STALE — CNBC refresh failed",
-      "source": "CNBC futures quotes",
-      "explanation": "WTI $92.70 (+5.01%) | Brent $105.31 (+5.10%). Oil is rising. Large energy moves can alter inflation expectations and therefore Treasury yields/Fed expectations. Current implication: a headwind.",
-      "currentImpact": "Low",
-      "trend": "Deteriorating ↓",
-      "displayRank": 11,
-      "signalLabel": "🔴 Negative",
-      "scorecard": {
-        "value": "WTI $92.70",
-        "arrow": "↑",
-        "change": "+5.01%",
-        "secondaryValue": "Brent $105.31",
-        "secondaryArrow": "↑",
-        "secondaryChange": "+5.10%"
-      }
+      "curveContext": "2s10s +48.4 bp (upward-sloping), bear flattener, -2.9 bp vs prev close"
     },
     {
       "factor": "Mega-cap leadership",
-      "latest": "Awaiting premarket mega-cap quotes",
-      "direction": "Awaiting session",
+      "latest": "Live · 7-stock basket -0.30% | 3/7 positive | QQQ -0.56% | relative +0.26 pp",
+      "direction": "In line with QQQ",
       "signal": "mixed",
-      "freshness": "Premarket — insufficient current equity data",
-      "source": "CNBC quotes",
-      "explanation": "Awaiting premarket mega-cap quotes. The mega-cap basket is awaiting session. Nasdaq is more durable when its largest weights participate rather than the index being carried by a narrow subset. Current implication: neutral/mixed.",
+      "freshness": "Live CNBC quote",
+      "source": "CNBC quotes; session-aware mega-cap basket vs QQQ",
+      "explanation": "Live · 7-stock basket -0.30% | 3/7 positive | QQQ -0.56% | relative +0.26 pp. The mega-cap basket is in line with qqq. Nasdaq is more durable when its largest weights participate rather than the index being carried by a narrow subset. Current implication: neutral/mixed. Breadth is mixed; the wider market is giving only partial confirmation. Semiconductor leadership is confirmed weakness.",
+      "currentImpact": "Medium",
+      "trend": "Stable →",
+      "displayRank": 11,
+      "signalLabel": "🟡 Mixed",
+      "scorecard": null
+    },
+    {
+      "factor": "Market breadth",
+      "latest": "Live · Nasdaq-100 breadth: 48/102 advancing (47%) · 53 declining · 1 flat",
+      "direction": "Mixed",
+      "signal": "mixed",
+      "freshness": "Live CNBC constituent quotes",
+      "source": "CNBC quotes; session-aware Nasdaq-100 constituent breadth",
+      "explanation": "Live · Nasdaq-100 breadth: 48/102 advancing (47%) · 53 declining · 1 flat. Breadth is mixed. A larger share of advancing Nasdaq-100 constituents means wider participation; weak participation makes index strength less robust. Current implication: neutral/mixed. At the same time, semiconductors are confirmed weakness and mega-caps are in line with qqq.",
       "currentImpact": "Low",
       "trend": "Stable →",
       "displayRank": 12,
       "signalLabel": "🟡 Mixed",
-      "scorecard": null
+      "scorecard": {
+        "value": "47% advancing",
+        "arrow": "↑",
+        "change": "+22.5 pp",
+        "context": "Mixed participation",
+        "comparisonDate": "2026-10-07"
+      }
     },
     {
       "factor": "Options positioning / sentiment",
       "latest": "Equity P/C 0.63 | 5D avg 0.59 | → stable | Index 0.93 | Total 0.87",
       "direction": "Balanced",
       "signal": "mixed",
-      "freshness": "Cboe daily · latest session 2026-10-07 · checked 2026-10-08 09:26 ET",
+      "freshness": "Cboe daily · latest session 2026-10-07 · checked 2026-10-08 09:52 ET",
       "source": "Cboe Daily Market Statistics — 5-session equity put/call trend; index/total context; not dealer gamma exposure",
-      "explanation": "Equity P/C 0.63 | 5D avg 0.59 | → stable | Index 0.93 | Total 0.87. Equity put/call is compared with its 5-session baseline; Index and Total P/C add context because index puts often reflect institutional hedging. Positioning is balanced and neutral/mixed; this is not dealer gamma.  VXN/VIX are diverging (VXN 21.00 (-0.71%) | VIX 15.97 (+5.90%)), so options positioning and implied volatility together do not currently give the same strong directional signal.",
+      "explanation": "Equity P/C 0.63 | 5D avg 0.59 | → stable | Index 0.93 | Total 0.87. Equity put/call is compared with its 5-session baseline; Index and Total P/C add context because index puts often reflect institutional hedging. Positioning is balanced and neutral/mixed; this is not dealer gamma.  VXN/VIX are rising together (VXN 21.14 (+0.67%) | VIX 15.43 (+2.32%)), so options positioning and implied volatility together do not currently give the same strong directional signal.",
       "currentImpact": "Low",
       "trend": "Stable →",
       "displayRank": 13,
@@ -562,13 +568,13 @@
         {
           "symbol": ".SOX",
           "name": "Philadelphia SE Semiconductor Index",
-          "last": "13,066.15",
+          "last": "12,804.753",
           "previous_day_closing": "13,066.15",
-          "change_pct": "UNCH",
-          "last_time": "2026-10-07",
-          "last_timedate": "10/07/26 EDT",
+          "change_pct": "-2.00%",
+          "last_time": "2026-10-08T09:52:40.000-0400",
+          "last_timedate": "9:52 AM EDT",
           "code": 0,
-          "oneDayPct": null
+          "oneDayPct": -2.0
         }
       ],
       "status": "supported"
@@ -644,169 +650,169 @@
     },
     "cnbcFreshness": {
       ".IXIC": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:52 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "live",
         "realTime": true,
         "marketStatus": "REG_MKT",
         "quoteSource": "Exchange",
         "provider": "CNBC Quote Cache"
       },
       "QQQ": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:52 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "live",
         "realTime": true,
-        "marketStatus": "PRE_MKT",
-        "quoteSource": "Last NYSE Arca, VOL From CTA",
+        "marketStatus": "REG_MKT",
+        "quoteSource": "Last NASDAQ LS, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       ".SOX": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:52 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "live",
         "realTime": true,
         "marketStatus": "REG_MKT",
         "quoteSource": "Exchange",
         "provider": "CNBC Quote Cache"
       },
       "SMH": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:52 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "live",
         "realTime": true,
-        "marketStatus": "PRE_MKT",
-        "quoteSource": "Last NASDAQ LS, VOL From CTA",
+        "marketStatus": "REG_MKT",
+        "quoteSource": "Last NYSE Arca, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "SOXX": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:52 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "live",
         "realTime": true,
-        "marketStatus": "PRE_MKT",
+        "marketStatus": "REG_MKT",
         "quoteSource": "Last NASDAQ LS, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "SOXL": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:52 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "live",
         "realTime": true,
-        "marketStatus": "PRE_MKT",
+        "marketStatus": "REG_MKT",
         "quoteSource": "Last NASDAQ LS, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "NVDA": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:52 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "live",
         "realTime": true,
-        "marketStatus": "PRE_MKT",
+        "marketStatus": "REG_MKT",
         "quoteSource": "Last NASDAQ LS, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "AMD": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:52 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "live",
         "realTime": true,
-        "marketStatus": "PRE_MKT",
+        "marketStatus": "REG_MKT",
         "quoteSource": "Last NASDAQ LS, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "AVGO": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:52 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "live",
         "realTime": true,
-        "marketStatus": "PRE_MKT",
-        "quoteSource": "Last NASDAQ LS, VOL From CTA",
+        "marketStatus": "REG_MKT",
+        "quoteSource": "Last NYSE Arca, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "TSM": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:52 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "live",
         "realTime": true,
-        "marketStatus": "PRE_MKT",
+        "marketStatus": "REG_MKT",
         "quoteSource": "Last NASDAQ LS, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "MU": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:52 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "live",
         "realTime": true,
-        "marketStatus": "PRE_MKT",
-        "quoteSource": "Last NYSE Arca, VOL From CTA",
+        "marketStatus": "REG_MKT",
+        "quoteSource": "Last NASDAQ LS, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "AAPL": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:52 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "live",
         "realTime": true,
-        "marketStatus": "PRE_MKT",
+        "marketStatus": "REG_MKT",
         "quoteSource": "Last NASDAQ LS, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "MSFT": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:52 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "live",
         "realTime": true,
-        "marketStatus": "PRE_MKT",
-        "quoteSource": "Last NYSE Arca, VOL From CTA",
+        "marketStatus": "REG_MKT",
+        "quoteSource": "Last NASDAQ LS, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "AMZN": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:52 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "live",
         "realTime": true,
-        "marketStatus": "PRE_MKT",
+        "marketStatus": "REG_MKT",
         "quoteSource": "Last NASDAQ LS, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "GOOGL": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:52 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "live",
         "realTime": true,
-        "marketStatus": "PRE_MKT",
+        "marketStatus": "REG_MKT",
         "quoteSource": "Last NASDAQ LS, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "META": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:52 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "live",
         "realTime": true,
-        "marketStatus": "PRE_MKT",
+        "marketStatus": "REG_MKT",
         "quoteSource": "Last NASDAQ LS, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "TSLA": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:52 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "live",
         "realTime": true,
-        "marketStatus": "PRE_MKT",
-        "quoteSource": "Last NYSE Arca, VOL From CTA",
+        "marketStatus": "REG_MKT",
+        "quoteSource": "Last NASDAQ LS, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       ".VXN": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:37 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "delayed_or_unspecified",
         "realTime": false,
         "marketStatus": "REG_MKT",
         "quoteSource": "Exchange",
         "provider": "CNBC Quote Cache"
       },
       ".VIX": {
-        "timestamp": "9:25 AM EDT",
+        "timestamp": "9:52 AM EDT",
         "observationDate": "2026-10-08",
         "dataState": "live",
         "realTime": true,
@@ -815,7 +821,7 @@
         "provider": "CNBC Quote Cache"
       },
       "US10Y": {
-        "timestamp": "9:26 AM EDT",
+        "timestamp": "9:52 AM EDT",
         "observationDate": "2026-10-08",
         "dataState": "live",
         "realTime": true,
@@ -824,7 +830,7 @@
         "provider": "CNBC Quote Cache"
       },
       "US2Y": {
-        "timestamp": "9:26 AM EDT",
+        "timestamp": "9:52 AM EDT",
         "observationDate": "2026-10-08",
         "dataState": "live",
         "realTime": true,
@@ -833,7 +839,7 @@
         "provider": "CNBC Quote Cache"
       },
       "@CL.1": {
-        "timestamp": "9:16 AM EDT",
+        "timestamp": "9:42 AM EDT",
         "observationDate": "2026-10-08",
         "dataState": "delayed_or_unspecified",
         "realTime": false,
@@ -842,7 +848,7 @@
         "provider": "CNBC Quote Cache"
       },
       "@LCO.1": {
-        "timestamp": "2:16 PM BST",
+        "timestamp": "2:42 PM BST",
         "observationDate": "2026-10-08",
         "dataState": "delayed_or_unspecified",
         "realTime": false,
@@ -851,21 +857,21 @@
         "provider": "CNBC Quote Cache"
       },
       "HYG": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:52 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "live",
         "realTime": true,
-        "marketStatus": "PRE_MKT",
+        "marketStatus": "REG_MKT",
         "quoteSource": "Last NASDAQ LS, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "LQD": {
-        "timestamp": "10/07/26 EDT",
-        "observationDate": "2026-10-07",
-        "dataState": "previous_close",
+        "timestamp": "9:52 AM EDT",
+        "observationDate": "2026-10-08",
+        "dataState": "live",
         "realTime": true,
-        "marketStatus": "PRE_MKT",
-        "quoteSource": "Last NASDAQ LS, VOL From CTA",
+        "marketStatus": "REG_MKT",
+        "quoteSource": "Last NYSE, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       }
     }
@@ -875,17 +881,17 @@
     "score": 39,
     "level": "Moderate",
     "horizon": "1–3 sessions",
-    "coverageWeight": 85,
+    "coverageWeight": 100,
     "historyDays": 124,
     "structuralFloor": 21,
     "components": {
       "Structural extension": 32,
       "Structural floor": 21,
       "Confirmation risk": 23,
-      "Intraday rejection": null,
-      "Breadth divergence": 11,
-      "Leadership divergence": 31,
-      "Volatility / rates stress": 36,
+      "Intraday rejection": 0,
+      "Breadth divergence": 19,
+      "Leadership divergence": 75,
+      "Volatility / rates stress": 16,
       "Event risk": 0
     },
     "structuralComponents": {
@@ -905,13 +911,13 @@
       "soxxRsi14": 63.0,
       "soxxDistanceFrom20dHighPct": -1.13
     },
-    "intradayGivebackPp": null,
+    "intradayGivebackPp": 0.0,
     "dominantDrivers": [
-      "Volatility / rates stress 36",
+      "Leadership divergence 75",
       "Structural extension 32",
-      "Leadership divergence 31"
+      "Confirmation risk 23"
     ],
-    "explanation": "1–3 session fade/consolidation risk is moderate (39/100). Structural extension creates a 21/100 baseline; live confirmation risk is 23/100. Main drivers: Volatility / rates stress 36, Structural extension 32, Leadership divergence 31. A high near the 20DMA is not penalized by itself; high proximity matters when QQQ/SOXX are also stretched or overbought.",
+    "explanation": "1–3 session fade/consolidation risk is moderate (39/100). Structural extension creates a 21/100 baseline; live confirmation risk is 23/100. Main drivers: Leadership divergence 75, Structural extension 32, Confirmation risk 23. A high near the 20DMA is not penalized by itself; high proximity matters when QQQ/SOXX are also stretched or overbought.",
     "note": "Higher means the current move is more vulnerable to a fade or sideways reset; it is not a bearish-direction forecast."
   },
   "historicalContext": {
@@ -1061,13 +1067,13 @@
   "consolidationPenalty": 0,
   "threeDayWatch": {
     "status": "bearish",
-    "bearishTriggers": 3,
+    "bearishTriggers": 4,
     "bullishTriggers": 0,
     "triggers": [
       {
         "severity": "bearish",
         "title": "10Y above 5.05%",
-        "detail": "US10Y is 294.000%, above the 3-Day Watch significant-headwind threshold. US2Y is 804.000%."
+        "detail": "US10Y is 277.000%, above the 3-Day Watch significant-headwind threshold. US2Y is 793.000%."
       },
       {
         "severity": "bearish",
@@ -1076,8 +1082,13 @@
       },
       {
         "severity": "bearish",
+        "title": "Semiconductor leadership weakened",
+        "detail": "Live · SOX -2.00% | Nasdaq -0.54% | SOX vs Nasdaq -1.46 pp | SOXX vs Nasdaq -1.58 pp | SMH vs Nasdaq -1.20 pp"
+      },
+      {
+        "severity": "bearish",
         "title": "Oil is adding inflation pressure",
-        "detail": "WTI $92.70 (+5.01%) | Brent $105.31 (+5.10%)"
+        "detail": "WTI $92.22 (+4.46%) | Brent $104.60 (+4.39%)"
       }
     ],
     "monitors": [
@@ -1100,17 +1111,17 @@
   },
   "opportunityScore": {
     "version": 5,
-    "score": 54,
-    "rawScore": 54,
-    "label": "Selective",
+    "score": 41,
+    "rawScore": 41,
+    "label": "Wait for Confirmation",
     "signal": "mixed",
-    "type": "Selective / mixed",
+    "type": "Wait for confirmation",
     "components": {
-      "Directional edge": 46,
+      "Directional edge": 14,
       "Entry quality": 59,
-      "Recovery confirmation": 49,
-      "Macro timing": 31,
-      "Catalyst asymmetry": 100
+      "Recovery confirmation": 36,
+      "Macro timing": 35,
+      "Catalyst asymmetry": 50
     },
     "entryQualityComponents": {
       "QQQ vs 20DMA": 36,
@@ -1128,36 +1139,38 @@
       "regimeScore": 89
     },
     "consolidationRiskContext": 39,
-    "gates": [],
+    "gates": [
+      "Weak direction + weak recovery caps opportunity at 44"
+    ],
     "strongestDrivers": [
-      "Catalyst asymmetry 100",
-      "Entry quality 59"
+      "Entry quality 59",
+      "Catalyst asymmetry 50"
     ],
     "weakestDrivers": [
-      "Macro timing 31",
-      "Directional edge 46"
+      "Directional edge 14",
+      "Macro timing 35"
     ],
-    "explanation": "Long-entry quality is selective (54/100; Selective / mixed). Raw weighted score 54/100. Strongest inputs: Catalyst asymmetry 100, Entry quality 59. Weakest: Macro timing 31, Directional edge 46.",
+    "explanation": "Long-entry quality is wait for confirmation (41/100; Wait for confirmation). Raw weighted score 41/100. Strongest inputs: Entry quality 59, Catalyst asymmetry 50. Weakest: Directional edge 14, Macro timing 35. Active gate: Weak direction + weak recovery caps opportunity at 44.",
     "note": "This is an entry-quality score, not a forecast of the next session return. Strong internals can support the trend without making an extended price a good new entry."
   },
   "schemaVersion": 2,
   "nasdaqScore": {
-    "score": -3,
-    "rawScore": -3,
+    "score": -29,
+    "rawScore": -29,
     "previousScore": -2,
     "trend": "Deteriorating ↓",
-    "signal": "mixed",
-    "label": "Mixed / Neutral",
-    "confidence": 52,
-    "coverage": 80,
+    "signal": "negative",
+    "label": "Cautiously Negative",
+    "confidence": 74,
+    "coverage": 100,
     "model": {
       "version": 3,
       "factors": [
         {
           "factor": "Technology earnings calendar",
           "bucket": "Event Risk",
-          "strength": 0.0,
-          "effectiveWeight": 3.0,
+          "strength": -1.0,
+          "effectiveWeight": 4.0,
           "freshnessWeight": 1.0,
           "regimeMultiplier": 1.0
         },
@@ -1178,27 +1191,11 @@
           "regimeMultiplier": 1.25
         },
         {
-          "factor": "Semiconductor leadership",
-          "bucket": "Leadership",
-          "strength": 0.0,
-          "effectiveWeight": 0.35,
-          "freshnessWeight": 0.35,
-          "regimeMultiplier": 1.0
-        },
-        {
           "factor": "Nasdaq volatility (VXN / VIX)",
           "bucket": "Volatility / Positioning",
-          "strength": 0.084,
-          "effectiveWeight": 2.1,
-          "freshnessWeight": 0.7,
-          "regimeMultiplier": 1.0
-        },
-        {
-          "factor": "Market breadth",
-          "bucket": "Breadth",
-          "strength": 0.0,
-          "effectiveWeight": 0.35,
-          "freshnessWeight": 0.35,
+          "strength": 0.094,
+          "effectiveWeight": 2.0,
+          "freshnessWeight": 1.0,
           "regimeMultiplier": 1.0
         },
         {
@@ -1210,35 +1207,51 @@
           "regimeMultiplier": 1.25
         },
         {
+          "factor": "Semiconductor leadership",
+          "bucket": "Leadership",
+          "strength": -0.951,
+          "effectiveWeight": 3.45,
+          "freshnessWeight": 1.0,
+          "regimeMultiplier": 1.15
+        },
+        {
+          "factor": "Market breadth",
+          "bucket": "Breadth",
+          "strength": -0.1,
+          "effectiveWeight": 1.0,
+          "freshnessWeight": 1.0,
+          "regimeMultiplier": 1.0
+        },
+        {
           "factor": "10Y Treasury Yield",
           "bucket": "Rates / Macro",
-          "strength": -0.668,
-          "effectiveWeight": 0.438,
-          "freshnessWeight": 0.35,
+          "strength": -0.6,
+          "effectiveWeight": 2.5,
+          "freshnessWeight": 1.0,
           "regimeMultiplier": 1.25
         },
         {
           "factor": "2Y Treasury yield",
           "bucket": "Rates / Macro",
-          "strength": -0.76,
-          "effectiveWeight": 0.438,
-          "freshnessWeight": 0.35,
+          "strength": -0.716,
+          "effectiveWeight": 3.75,
+          "freshnessWeight": 1.0,
           "regimeMultiplier": 1.25
         },
         {
           "factor": "Oil (WTI / Brent)",
           "bucket": "Rates / Macro",
           "strength": -1.0,
-          "effectiveWeight": 0.438,
-          "freshnessWeight": 0.35,
+          "effectiveWeight": 5.0,
+          "freshnessWeight": 1.0,
           "regimeMultiplier": 1.25
         },
         {
           "factor": "Mega-cap leadership",
           "bucket": "Leadership",
-          "strength": 0.0,
-          "effectiveWeight": 0.2,
-          "freshnessWeight": 0.2,
+          "strength": 0.208,
+          "effectiveWeight": 2.0,
+          "freshnessWeight": 1.0,
           "regimeMultiplier": 1.0
         },
         {
@@ -1260,7 +1273,7 @@
         {
           "factor": "Earnings AVWAP leadership",
           "bucket": "Leadership",
-          "strength": 0.0,
+          "strength": 1.0,
           "effectiveWeight": 3.45,
           "freshnessWeight": 1.0,
           "regimeMultiplier": 1.15
@@ -1269,41 +1282,41 @@
       "buckets": [
         {
           "bucket": "Event Risk",
-          "strength": 0.0,
-          "weight": 3.0,
-          "uncappedWeight": 3.0,
+          "strength": -1.0,
+          "weight": 4.0,
+          "uncappedWeight": 4.0,
           "cap": 4.0
         },
         {
           "bucket": "Breadth",
-          "strength": -0.489,
-          "weight": 3.35,
-          "uncappedWeight": 3.35,
+          "strength": -0.435,
+          "weight": 4.0,
+          "uncappedWeight": 4.0,
           "cap": 6.0
         },
         {
           "bucket": "Rates / Macro",
-          "strength": 0.093,
-          "weight": 7.56,
-          "uncappedWeight": 7.56,
+          "strength": -0.424,
+          "weight": 9.0,
+          "uncappedWeight": 17.5,
           "cap": 9.0,
-          "rawStrength": 0.093,
-          "effectiveStrength": 0.093,
+          "rawStrength": -0.424,
+          "effectiveStrength": -0.424,
           "marketResponseAttenuationPct": 0.0
         },
         {
-          "bucket": "Leadership",
-          "strength": 0.0,
-          "weight": 4.0,
-          "uncappedWeight": 4.0,
-          "cap": 9.0
+          "bucket": "Volatility / Positioning",
+          "strength": 0.101,
+          "weight": 3.0,
+          "uncappedWeight": 3.0,
+          "cap": 7.0
         },
         {
-          "bucket": "Volatility / Positioning",
-          "strength": 0.094,
-          "weight": 3.1,
-          "uncappedWeight": 3.1,
-          "cap": 7.0
+          "bucket": "Leadership",
+          "strength": 0.066,
+          "weight": 8.9,
+          "uncappedWeight": 8.9,
+          "cap": 9.0
         },
         {
           "bucket": "Other",
@@ -1313,19 +1326,169 @@
           "cap": 4.0
         }
       ],
-      "coveragePct": 80,
-      "agreementPct": 10
+      "coveragePct": 100,
+      "agreementPct": 34
     },
-    "effectiveScore": -3.0
+    "effectiveScore": -29.0
   },
-  "marketAnalysis": null,
+  "marketAnalysis": {
+    "version": 2,
+    "asOfET": "2026-10-08 09:52 ET",
+    "score": -29.0,
+    "preMarketScore": -3.0,
+    "openScore": null,
+    "qqqChangePct": -0.56,
+    "paragraphs": [
+      "QQQ is -0.56% versus the prior close. The Nasdaq Score is -29/100 (Cautiously Negative). Score path: pre-market -3 → now -29.",
+      "The main live drivers are Semiconductors are a headwind: Live · SOX -2.00% | Nasdaq -0.54% | SOX vs Nasdaq -1.46 pp | SOXX vs Nasdaq -1.58 pp | SMH vs Nasdaq -1.20 pp. It changed from mixed to negative after the baseline snapshot. Oil is a headwind for Nasdaq: WTI $92.22 (+4.46%) | Brent $104.60 (+4.39%). The 2Y rate signal is a headwind: 4.793% (+2.9 bp vs prev close).",
+      "QQQ and its internal leadership are diverging, so the index move has weaker confirmation (semiconductors negative, mega-caps mixed, breadth mixed).",
+      "What would change the view: improvement would require a sustained 10Y move back below roughly 5.05%, semiconductors regaining leadership versus QQQ, broader participation. Deterioration would be reinforced by the 10Y remaining above 5.05% or extending higher, a material volatility expansion.",
+      "Semiconductor catalyst context: Broadcom (NASDAQ:AVGO) Stock: AI Semiconductor Revenue Keeps Scaling Through Fiscal Q3. Positive catalyst; weak/isolated sector read-through; Persisting 2 sessions later."
+    ],
+    "confirmation": "QQQ and its internal leadership are diverging, so the index move has weaker confirmation",
+    "catalysts": [
+      {
+        "title": "ASML earnings",
+        "date": "2026-10-14",
+        "detail": "Major Nasdaq/technology earnings catalyst in 6 days."
+      }
+    ],
+    "baseline": {
+      "preMarketAvailable": true,
+      "openAvailable": false
+    },
+    "semiconductorCatalystMomentum": {
+      "status": "Observed",
+      "active": {
+        "event": {
+          "id": "auto-2026-10-06-AVGO-06424740",
+          "date": "2026-10-06",
+          "release": "during_session",
+          "ticker": "AVGO",
+          "type": "earnings",
+          "scope": "sector",
+          "title": "Broadcom (NASDAQ:AVGO) Stock: AI Semiconductor Revenue Keeps Scaling Through Fiscal Q3",
+          "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
+          "source": "https://kalkine.ca/news/technology/broadcom-nasdaqavgo-stock-ai-semiconductor-revenue-keeps-scaling-through-fiscal-q3",
+          "autoDetected": true,
+          "materialityScore": 10,
+          "materialityReasons": [
+            "ai"
+          ],
+          "discoveredAtUTC": "2026-10-06T07:54:51+00:00"
+        },
+        "status": "Observed",
+        "daysSince": 2,
+        "basis": "event_day_close",
+        "readThrough": "Positive catalyst; weak/isolated sector read-through",
+        "persistence": "Persisting 2 sessions later",
+        "targetReturnPct": 3.67,
+        "targetVsQqqPp": 3.21,
+        "soxVsNasdaqPp": -0.11,
+        "semiBasketPositive": 3,
+        "semiBasketAvailable": 5,
+        "etfConfirmationsVsQqq": 0
+      },
+      "recent": [
+        {
+          "event": {
+            "id": "auto-2026-10-06-AVGO-06424740",
+            "date": "2026-10-06",
+            "release": "during_session",
+            "ticker": "AVGO",
+            "type": "earnings",
+            "scope": "sector",
+            "title": "Broadcom (NASDAQ:AVGO) Stock: AI Semiconductor Revenue Keeps Scaling Through Fiscal Q3",
+            "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
+            "source": "https://kalkine.ca/news/technology/broadcom-nasdaqavgo-stock-ai-semiconductor-revenue-keeps-scaling-through-fiscal-q3",
+            "autoDetected": true,
+            "materialityScore": 10,
+            "materialityReasons": [
+              "ai"
+            ],
+            "discoveredAtUTC": "2026-10-06T07:54:51+00:00"
+          },
+          "status": "Observed",
+          "daysSince": 2,
+          "basis": "event_day_close",
+          "readThrough": "Positive catalyst; weak/isolated sector read-through",
+          "persistence": "Persisting 2 sessions later",
+          "targetReturnPct": 3.67,
+          "targetVsQqqPp": 3.21,
+          "soxVsNasdaqPp": -0.11,
+          "semiBasketPositive": 3,
+          "semiBasketAvailable": 5,
+          "etfConfirmationsVsQqq": 0
+        },
+        {
+          "event": {
+            "id": "auto-2026-10-08-AVGO-69346061",
+            "date": "2026-10-08",
+            "release": "during_session",
+            "ticker": "AVGO",
+            "type": "regulatory",
+            "scope": "sector",
+            "title": "ASML Holding N.V. vs. Broadcom: Which Technology Stock Is a Better Buy in 2026?",
+            "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
+            "source": "https://finance.yahoo.com/markets/stocks/articles/asml-holding-n-v-vs-162502633.html",
+            "autoDetected": true,
+            "materialityScore": 8,
+            "materialityReasons": [],
+            "discoveredAtUTC": "2026-10-08T05:34:03+00:00"
+          },
+          "status": "Observed",
+          "daysSince": 0,
+          "basis": "current_session",
+          "readThrough": "Strong negative sector read-through",
+          "persistence": "Event-day observation",
+          "targetReturnPct": -2.52,
+          "targetVsQqqPp": -1.96,
+          "soxVsNasdaqPp": -1.46,
+          "semiBasketPositive": 0,
+          "semiBasketAvailable": 5,
+          "etfConfirmationsVsQqq": 0
+        },
+        {
+          "event": {
+            "id": "auto-2026-10-08-AVGO-16147234",
+            "date": "2026-10-08",
+            "release": "during_session",
+            "ticker": "AVGO",
+            "type": "earnings",
+            "scope": "sector",
+            "title": "Broadcom Owns the Backstage; AMD Fights for the Spotlight - 24/7 Wall St.",
+            "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
+            "source": "https://247wallst.com/investing/2026/10/07/broadcom-owns-the-backstage-amd-fights-for-the-spotlight",
+            "autoDetected": true,
+            "materialityScore": 6,
+            "materialityReasons": [],
+            "discoveredAtUTC": "2026-10-08T13:10:46+00:00"
+          },
+          "status": "Observed",
+          "daysSince": 0,
+          "basis": "current_session",
+          "readThrough": "Strong negative sector read-through",
+          "persistence": "Event-day observation",
+          "targetReturnPct": -2.52,
+          "targetVsQqqPp": -1.96,
+          "soxVsNasdaqPp": -1.46,
+          "semiBasketPositive": 0,
+          "semiBasketAvailable": 5,
+          "etfConfirmationsVsQqq": 0
+        }
+      ],
+      "scoreImpact": 0,
+      "directionalScoreUnchanged": true,
+      "interpretation": "Catalyst context modifies confidence/read-through only; price-based Semiconductor Leadership remains unchanged."
+    }
+  },
   "confirmationLayer": {
     "internalConfirmation": {
-      "score": 45,
-      "label": "Mixed",
+      "score": 32,
+      "label": "Weak",
       "components": {
         "breadth": 50,
-        "semiconductorLeadership": 36,
+        "semiconductorLeadership": 0,
         "volatility": 50,
         "megaCapLeadership": 50
       },
@@ -1337,8 +1500,44 @@
       }
     },
     "semiconductorLeadership": {
-      "score": 36,
+      "score": 0,
       "label": "Weak",
+      "broadLeadershipTrigger": false,
+      "relativeStrengthPp": {
+        "soxVsNasdaqPp": -1.71,
+        "soxxVsNasdaqPp": -1.82,
+        "smhVsNasdaqPp": -1.38,
+        "smhVsQqqPp": -1.32,
+        "basis": "current_session",
+        "observationDate": "2026-10-08"
+      },
+      "breadth": {
+        "universeSize": 30,
+        "available": 29,
+        "positive": 1,
+        "outperformingQqq": 2,
+        "outperformingQqqPct": 6.9,
+        "score": 0
+      },
+      "weights": {
+        "SOX": 55,
+        "SOXX": 15,
+        "SMH": 10,
+        "semiconductorBreadth": 20
+      },
+      "sessionReturnsPct": {
+        "SOX": -2.38,
+        "Nasdaq": -0.67,
+        "SOXX": -2.49,
+        "SMH": -2.05
+      },
+      "basis": "current_session",
+      "observationDate": "2026-10-08",
+      "liveCoverage": {
+        "core": 5,
+        "soxMembers": 29,
+        "minimumSoxMembers": 10
+      },
       "catalystMomentum": {
         "status": "Observed",
         "active": {
@@ -1404,64 +1603,57 @@
           },
           {
             "event": {
-              "id": "auto-2026-10-06-AMD-53431243",
-              "date": "2026-10-06",
+              "id": "auto-2026-10-08-AVGO-69346061",
+              "date": "2026-10-08",
               "release": "during_session",
-              "ticker": "AMD",
-              "type": "earnings",
+              "ticker": "AVGO",
+              "type": "regulatory",
               "scope": "sector",
-              "title": "Advanced Micro Devices (NASDAQ:AMD) Stock: World Labs Deal Brings AI Model Research In-House",
+              "title": "ASML Holding N.V. vs. Broadcom: Which Technology Stock Is a Better Buy in 2026?",
               "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
-              "source": "https://kalkine.ca/news/technology/advanced-micro-devices-nasdaqamd-stock-world-labs-deal-brings-ai-model-research-in-house",
+              "source": "https://finance.yahoo.com/markets/stocks/articles/asml-holding-n-v-vs-162502633.html",
               "autoDetected": true,
-              "materialityScore": 18,
-              "materialityReasons": [
-                "ai",
-                "deal"
-              ],
-              "discoveredAtUTC": "2026-10-06T07:54:51+00:00"
+              "materialityScore": 8,
+              "materialityReasons": [],
+              "discoveredAtUTC": "2026-10-08T05:34:03+00:00"
             },
             "status": "Observed",
-            "daysSince": 2,
-            "basis": "event_day_close",
-            "readThrough": "Positive catalyst; weak/isolated sector read-through",
-            "persistence": "Persisting 2 sessions later",
-            "targetReturnPct": 2.8,
-            "targetVsQqqPp": 2.34,
-            "soxVsNasdaqPp": -0.11,
-            "semiBasketPositive": 3,
+            "daysSince": 0,
+            "basis": "current_session",
+            "readThrough": "Strong negative sector read-through",
+            "persistence": "Event-day observation",
+            "targetReturnPct": -2.52,
+            "targetVsQqqPp": -1.96,
+            "soxVsNasdaqPp": -1.46,
+            "semiBasketPositive": 0,
             "semiBasketAvailable": 5,
             "etfConfirmationsVsQqq": 0
           },
           {
             "event": {
-              "id": "auto-2026-10-06-AMD-25778684",
-              "date": "2026-10-06",
+              "id": "auto-2026-10-08-AVGO-16147234",
+              "date": "2026-10-08",
               "release": "during_session",
-              "ticker": "AMD",
-              "type": "capital_return",
+              "ticker": "AVGO",
+              "type": "earnings",
               "scope": "sector",
-              "title": "AI Chips Update - AMD Expands AI Horizons with World Labs Acquisition - Simply Wall St News",
+              "title": "Broadcom Owns the Backstage; AMD Fights for the Spotlight - 24/7 Wall St.",
               "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
-              "source": "https://simplywall.st/stocks/us/semiconductors/nasdaq-nvda/nvidia/news/ai-chips-update-amd-expands-ai-horizons-with-world-labs-acqu",
+              "source": "https://247wallst.com/investing/2026/10/07/broadcom-owns-the-backstage-amd-fights-for-the-spotlight",
               "autoDetected": true,
-              "materialityScore": 14,
-              "materialityReasons": [
-                "acquisition",
-                "ai",
-                "chip"
-              ],
-              "discoveredAtUTC": "2026-10-06T07:54:51+00:00"
+              "materialityScore": 6,
+              "materialityReasons": [],
+              "discoveredAtUTC": "2026-10-08T13:10:46+00:00"
             },
             "status": "Observed",
-            "daysSince": 2,
-            "basis": "event_day_close",
-            "readThrough": "Positive catalyst; weak/isolated sector read-through",
-            "persistence": "Persisting 2 sessions later",
-            "targetReturnPct": 2.8,
-            "targetVsQqqPp": 2.34,
-            "soxVsNasdaqPp": -0.11,
-            "semiBasketPositive": 3,
+            "daysSince": 0,
+            "basis": "current_session",
+            "readThrough": "Strong negative sector read-through",
+            "persistence": "Event-day observation",
+            "targetReturnPct": -2.52,
+            "targetVsQqqPp": -1.96,
+            "soxVsNasdaqPp": -1.46,
+            "semiBasketPositive": 0,
             "semiBasketAvailable": 5,
             "etfConfirmationsVsQqq": 0
           }
@@ -1470,37 +1662,15 @@
         "directionalScoreUnchanged": true,
         "interpretation": "Catalyst context modifies confidence/read-through only; price-based Semiconductor Leadership remains unchanged."
       },
-      "broadLeadershipTrigger": false,
-      "accelerationFromOpenPoints": null,
-      "relativeStrengthPp": {
-        "soxVsNasdaqPp": -0.11,
-        "soxxVsNasdaqPp": -0.46,
-        "smhVsNasdaqPp": -0.67
-      },
-      "breadth": {
-        "universeSize": 30,
-        "available": 5,
-        "positive": 3,
-        "outperformingQqq": 2,
-        "outperformingQqqPct": 40.0,
-        "score": 25
-      },
-      "weights": {
-        "SOX": 55,
-        "SOXX": 15,
-        "SMH": 10,
-        "semiconductorBreadth": 20
-      },
-      "basis": "previous_completed_session",
-      "observationDate": "2026-10-06"
+      "accelerationFromOpenPoints": null
     },
     "macroConstraint": {
-      "ratesMacroBucketStrength": 0.093,
-      "effectiveRatesMacroBucketStrength": 0.093,
+      "ratesMacroBucketStrength": -0.424,
+      "effectiveRatesMacroBucketStrength": -0.424,
       "marketResponseAttenuationPct": 0.0
     },
     "directionalScoreUnchanged": true,
-    "checkpoint": "intraday",
+    "checkpoint": "open",
     "marketResponseApplied": false
   },
   "catalystMomentum": {
@@ -1568,64 +1738,57 @@
       },
       {
         "event": {
-          "id": "auto-2026-10-06-AMD-53431243",
-          "date": "2026-10-06",
+          "id": "auto-2026-10-08-AVGO-69346061",
+          "date": "2026-10-08",
           "release": "during_session",
-          "ticker": "AMD",
-          "type": "earnings",
+          "ticker": "AVGO",
+          "type": "regulatory",
           "scope": "sector",
-          "title": "Advanced Micro Devices (NASDAQ:AMD) Stock: World Labs Deal Brings AI Model Research In-House",
+          "title": "ASML Holding N.V. vs. Broadcom: Which Technology Stock Is a Better Buy in 2026?",
           "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
-          "source": "https://kalkine.ca/news/technology/advanced-micro-devices-nasdaqamd-stock-world-labs-deal-brings-ai-model-research-in-house",
+          "source": "https://finance.yahoo.com/markets/stocks/articles/asml-holding-n-v-vs-162502633.html",
           "autoDetected": true,
-          "materialityScore": 18,
-          "materialityReasons": [
-            "ai",
-            "deal"
-          ],
-          "discoveredAtUTC": "2026-10-06T07:54:51+00:00"
+          "materialityScore": 8,
+          "materialityReasons": [],
+          "discoveredAtUTC": "2026-10-08T05:34:03+00:00"
         },
         "status": "Observed",
-        "daysSince": 2,
-        "basis": "event_day_close",
-        "readThrough": "Positive catalyst; weak/isolated sector read-through",
-        "persistence": "Persisting 2 sessions later",
-        "targetReturnPct": 2.8,
-        "targetVsQqqPp": 2.34,
-        "soxVsNasdaqPp": -0.11,
-        "semiBasketPositive": 3,
+        "daysSince": 0,
+        "basis": "current_session",
+        "readThrough": "Strong negative sector read-through",
+        "persistence": "Event-day observation",
+        "targetReturnPct": -2.52,
+        "targetVsQqqPp": -1.96,
+        "soxVsNasdaqPp": -1.46,
+        "semiBasketPositive": 0,
         "semiBasketAvailable": 5,
         "etfConfirmationsVsQqq": 0
       },
       {
         "event": {
-          "id": "auto-2026-10-06-AMD-25778684",
-          "date": "2026-10-06",
+          "id": "auto-2026-10-08-AVGO-16147234",
+          "date": "2026-10-08",
           "release": "during_session",
-          "ticker": "AMD",
-          "type": "capital_return",
+          "ticker": "AVGO",
+          "type": "earnings",
           "scope": "sector",
-          "title": "AI Chips Update - AMD Expands AI Horizons with World Labs Acquisition - Simply Wall St News",
+          "title": "Broadcom Owns the Backstage; AMD Fights for the Spotlight - 24/7 Wall St.",
           "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
-          "source": "https://simplywall.st/stocks/us/semiconductors/nasdaq-nvda/nvidia/news/ai-chips-update-amd-expands-ai-horizons-with-world-labs-acqu",
+          "source": "https://247wallst.com/investing/2026/10/07/broadcom-owns-the-backstage-amd-fights-for-the-spotlight",
           "autoDetected": true,
-          "materialityScore": 14,
-          "materialityReasons": [
-            "acquisition",
-            "ai",
-            "chip"
-          ],
-          "discoveredAtUTC": "2026-10-06T07:54:51+00:00"
+          "materialityScore": 6,
+          "materialityReasons": [],
+          "discoveredAtUTC": "2026-10-08T13:10:46+00:00"
         },
         "status": "Observed",
-        "daysSince": 2,
-        "basis": "event_day_close",
-        "readThrough": "Positive catalyst; weak/isolated sector read-through",
-        "persistence": "Persisting 2 sessions later",
-        "targetReturnPct": 2.8,
-        "targetVsQqqPp": 2.34,
-        "soxVsNasdaqPp": -0.11,
-        "semiBasketPositive": 3,
+        "daysSince": 0,
+        "basis": "current_session",
+        "readThrough": "Strong negative sector read-through",
+        "persistence": "Event-day observation",
+        "targetReturnPct": -2.52,
+        "targetVsQqqPp": -1.96,
+        "soxVsNasdaqPp": -1.46,
+        "semiBasketPositive": 0,
         "semiBasketAvailable": 5,
         "etfConfirmationsVsQqq": 0
       }
@@ -2557,50 +2720,50 @@
     "status": "inactive",
     "mode": null,
     "summary": "No persistent divergence between the macro impulse and live market response.",
-    "observedAt": "2026-10-08T09:29:25.494564-04:00",
+    "observedAt": "2026-10-08T09:55:24.626121-04:00",
     "candidateMode": null,
     "candidateSince": null,
     "persistenceMinutes": 0.0,
     "requiredPersistenceMinutes": 15,
     "evidenceScore": null,
-    "positiveResponseScore": 0,
-    "negativeResponseScore": 21,
+    "positiveResponseScore": 3,
+    "negativeResponseScore": 46,
     "attenuationPct": 0.0,
-    "rawRatesMacroStrength": 0.093,
-    "effectiveRatesMacroStrength": 0.093,
-    "rawNasdaqScore": -3,
-    "effectiveNasdaqScore": -3,
+    "rawRatesMacroStrength": -0.424,
+    "effectiveRatesMacroStrength": -0.424,
+    "rawNasdaqScore": -29,
+    "effectiveNasdaqScore": -29,
     "components": {},
     "note": "Market Response only attenuates an existing Rates / Macro contribution; it never reverses its sign."
   },
   "soxlBuyScore": {
     "version": 3.3,
-    "score": 46,
-    "rawScore": 54,
-    "preGateScore": 46,
-    "label": "Wait",
-    "signal": "mixed",
+    "score": 36,
+    "rawScore": 44,
+    "preGateScore": 36,
+    "label": "Poor Entry",
+    "signal": "negative",
     "horizon": "1–5 sessions",
     "instrument": "SOXL",
-    "last": 158.91,
-    "changePct": null,
+    "last": 148.38,
+    "changePct": -6.63,
     "components": {
-      "Semiconductor trend": 47,
-      "SOXL entry quality": 53,
-      "Market confirmation": 48,
-      "Volatility / leverage risk": 67,
-      "Rates / macro": 44,
-      "Catalyst asymmetry": 100
+      "Semiconductor trend": 23,
+      "SOXL entry quality": 57,
+      "Market confirmation": 36,
+      "Volatility / leverage risk": 64,
+      "Rates / macro": 48,
+      "Catalyst asymmetry": 50
     },
     "semiconductorTrend": {
       "version": 2.1,
-      "score": 47,
+      "score": 23,
       "components": {
         "SOXX technical trend": 76,
-        "SOX relative strength": 46,
-        "SOXX relative strength": 35,
-        "SMH relative strength": 28,
-        "Semiconductor breadth": 25
+        "SOX relative strength": 0,
+        "SOXX relative strength": 0,
+        "SMH relative strength": 4,
+        "Semiconductor breadth": 0
       },
       "weights": {
         "SOXX technical trend": 30,
@@ -2635,9 +2798,10 @@
       }
     },
     "gates": [
+      "Weak semiconductor trend caps score at 45",
       "Broad semiconductor underperformance caps score at 50"
     ],
-    "intradayGivebackPp": null,
+    "intradayGivebackPp": 0.0,
     "indicatorSnapshot": {
       "RSI14": {
         "value": 61.5,
@@ -2666,11 +2830,11 @@
       }
     },
     "volatilityLeverageRisk": {
-      "score": 67,
+      "score": 64,
       "components": {
         "Consolidation safety": 61,
         "VXN condition": 50,
-        "VXN daily change": null,
+        "VXN daily change": 46,
         "SOXL ATR regime": 91
       },
       "weights": {
@@ -2687,13 +2851,13 @@
       }
     },
     "entryQuality": {
-      "score": 53,
+      "score": 57,
       "factorScores": {
         "20DMA distance": 0,
         "5D return": 61,
         "RSI14": 99,
         "20D-high distance": 78,
-        "Intraday giveback": null
+        "Intraday giveback": 100
       },
       "factorWeights": {
         "20DMA distance": 30,
@@ -2702,7 +2866,7 @@
         "20D-high distance": 20,
         "Intraday giveback": 10
       },
-      "availableWeightPct": 90,
+      "availableWeightPct": 100,
       "method": "Weighted available factors; RSI uses a momentum-aware nonlinear curve. Intraday giveback is excluded when there is no current-session SOXL observation."
     },
     "extensionAdjustment": {
@@ -2722,14 +2886,14 @@
       "distanceFrom20dHighPct": -3.26
     },
     "strongestDrivers": [
-      "Catalyst asymmetry 100",
-      "Volatility / leverage risk 67"
+      "Volatility / leverage risk 64",
+      "SOXL entry quality 57"
     ],
     "weakestDrivers": [
-      "Rates / macro 44",
-      "Semiconductor trend 47"
+      "Semiconductor trend 23",
+      "Market confirmation 36"
     ],
-    "explanation": "SOXL tactical entry quality is wait (46/100) for a 1–5 session horizon. Raw score 54; extension/overheating penalty 8.0. Active gates: Broad semiconductor underperformance caps score at 50. Strongest inputs: Catalyst asymmetry 100, Volatility / leverage risk 67. Weakest: Rates / macro 44, Semiconductor trend 47.",
+    "explanation": "SOXL tactical entry quality is poor entry (36/100) for a 1–5 session horizon. Raw score 44; extension/overheating penalty 8.0. Active gates: Weak semiconductor trend caps score at 45; Broad semiconductor underperformance caps score at 50. Strongest inputs: Volatility / leverage risk 64, SOXL entry quality 57. Weakest: Semiconductor trend 23, Market confirmation 36.",
     "note": "Experimental tactical score for a daily 3x leveraged ETF. It measures entry quality, not expected return or position size."
   }
 }
