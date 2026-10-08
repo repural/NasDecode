@@ -4,7 +4,7 @@ import datetime,json,os,time,urllib.parse,urllib.request,urllib.error
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/"data/history/regime-macro-2025.json"
-SYMBOLS={"us10y":"I:US10Y","us2y":"I:US2Y","vxn":"I:VXN","vix":"I:VIX","brent":"BZ","wti":"CL"}
+SYMBOLS={"us10y":"I:US10Y","us2y":"I:US2Y","vxn":"I:VXN","vix":"I:VIX","brent":None,"wti":None}
 START="2024-12-01";END="2025-12-31"
 def fetch(symbol,key):
  url=f"https://api.massive.com/v2/aggs/ticker/{urllib.parse.quote(symbol,safe='')}/range/1/day/{START}/{END}?adjusted=true&sort=asc&limit=50000"
@@ -20,11 +20,11 @@ def fetch(symbol,key):
 def main():
  key=os.environ["MASSIVE_API_KEY"];series={}
  for name,ticker in SYMBOLS.items():
-  series[name]=fetch(ticker,key)
+  series[name]=fetch(ticker,key) if ticker else {}
   print(name,len(series[name]),flush=True)
   time.sleep(16)
  payload={"schemaVersion":1,"version":"regime-macro-backfill-1.0","start":START,"end":END,
- "source":"Massive daily aggregate close","availability":"historical completed daily close; not verified for intraday availability",
+ "source":"Massive daily aggregate close (oil withheld: BZ/CL symbols were not verified crude futures)","availability":"historical completed daily close; not verified for intraday availability",
  "tickers":SYMBOLS,"series":series,"missingPolicy":"Missing symbols/dates remain absent; do not substitute another instrument silently."}
  OUT.write_text(json.dumps(payload,indent=2)+"\n")
 if __name__=="__main__":main()
