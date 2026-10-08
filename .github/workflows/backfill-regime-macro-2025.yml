@@ -1,0 +1,32 @@
+name: Backfill 2025 Regime Macro
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/backfill_regime_macro_2025.py'
+      - '.github/workflows/backfill-regime-macro-2025.yml'
+permissions:
+  contents: write
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch historical macro series
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: python scripts/backfill_regime_macro_2025.py
+      - name: Rebuild reusable dataset
+        run: python scripts/build_regime_context_dataset.py
+      - name: Persist research files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/history/regime-macro-2025.json data/history/regime-context-dataset.json
+          git diff --cached --quiet || git commit -m "Backfill 2025 macro context for regime research"
+          git pull --rebase
+          git push
