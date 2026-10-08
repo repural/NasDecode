@@ -12,15 +12,29 @@ def query(path,params):
  except urllib.error.HTTPError as e:
   return e.code,{"error":e.reason,"body":e.read(500).decode("utf-8","replace")}
 def main():
- report={"schemaVersion":1,"status":"not_verified","products":{}}
- for name,term in [("wti","CL"),("brent","BZ")]:
-  status,payload=query("/futures/v1/products",{"product_code":term,"limit":100})
-  raw=payload.get("results",[]) if isinstance(payload,dict) else []
-  items=raw if isinstance(raw,list) else raw.get("products",[]) if isinstance(raw,dict) else []
-  print(name,"response keys",list(payload) if isinstance(payload,dict) else [],"result type",type(raw).__name__)
-  report["products"][name]={"httpStatus":status,"candidates":[{"product_code":x.get("product_code"),"name":x.get("name"),"exchange":x.get("exchange_code") or x.get("trading_venue")} for x in items],"error":payload.get("error") if isinstance(payload,dict) else None}
-  print(name,"HTTP",status,"candidates",len(items))
- report["status"]="discovery_complete" if all(x["httpStatus"]==200 for x in report["products"].values()) else "access_or_api_error"
+ report={"schemaVersion":2,"status":"unverified","products":{}}
+ for name,code in [("wti","CL"),("brent","BZ")]:
+  status,payload=query("/futures/v1/products",{"product_code":code,"limit":100})
+  rows=payload.get("results",[]) if isinstance(payload,dict) else []
+  matches=[x for x in rows if x.get("product_code")==code]
+  info={"productQueryHttp":status,"returned":len(rows),"exactMatches":matches[:3],
+        "firstReturnedCodes":[x.get("product_code") for x in rows[:8]]}
+  print(name,"product",status,"returned",len(rows),"exact",len(matches),"first",info["firstReturnedCodes"],flush=True)
+  if matches:
+   cs,cp=query("/futures/v1/contracts",{"product_code":code,"date":"2026-09-15","active":"true","limit":100})
+   contracts=[x for x in cp.get("results",[]) if x.get("product_code")==code] if isinstance(cp,dict) else []
+   info["contractsHttp"]=cs
+   info["contracts"]=[{"ticker":x.get("ticker"),"name":x.get("name"),"last_trade_date":x.get("last_trade_date"),"trading_venue":x.get("trading_venue")} for x in contracts[:12]]
+   print(name,"contracts",cs,len(contracts),"tickers",[x.get("ticker") for x in contracts[:8]],flush=True)
+   if contracts:
+    ticker=next((x["ticker"] for x in contracts if x.get("ticker") and x.get("last_trade_date","")>="2026-09-15"),None)
+    if ticker:
+     hs,hp=query("/futures/v1/aggs/"+urllib.parse.quote(ticker,safe=""),{"resolution":"1session","window_start":"2026-09-01","window_end":"2026-09-15","limit":30})
+     bars=hp.get("results",[]) if isinstance(hp,dict) else []
+     info["historicalProbe"]={"ticker":ticker,"http":hs,"barCount":len(bars),"sample":bars[-2:],"error":hp.get("error") if isinstance(hp,dict) else None}
+     print(name,"historical",ticker,hs,"bars",len(bars),"sample",json.dumps(bars[-1:])[:500],flush=True)
+  report["products"][name]=info
+ report["status"]="validated" if all(v.get("historicalProbe",{}).get("barCount",0)>0 for v in report["products"].values()) else "incomplete"
  OUT.parent.mkdir(parents=True,exist_ok=True)
- OUT.write_text(json.dumps(report,indent=2)+"\n")
+ OUT.write_text(json.dumps(report,indent=2)+"\\n")
 if __name__=="__main__":main()
