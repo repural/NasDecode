@@ -194,7 +194,7 @@ function render(d){
   if(marketMovingBody){
     // Only curated, material and recently verified events; never present auto-detected
     // candidate headlines as editorial Open Watch updates.
-    const curated=watchEvents.filter(e=>!e.autoDetected && e.status!=='historical' && eventTimeMs(e)>=Date.now()-72*3600000)
+    const curated=watchEvents.filter(e=>!e.autoDetected && String(e.status||'').toLowerCase()!=='historical')
       .sort((a,b)=>eventTimeMs(b)-eventTimeMs(a)).slice(0,3);
     marketMovingBody.innerHTML=curated.length?curated.map(e=>{
       const imp=e.initialImpact||e.expectedImpact||{}, confirmation=e.marketConfirmation||{};
@@ -203,7 +203,7 @@ function render(d){
         '<div class="section-kicker" style="margin-top:9px">Why It Matters</div><div>'+analysisText(e.whyItMatters||'Awaiting analyst context')+'</div>'+
         '<div class="section-kicker" style="margin-top:9px">Initial Impact</div><div>'+analysisText(impact||'Pending assessment')+'</div>'+
         '<div class="section-kicker" style="margin-top:9px">Market Confirmation</div><div>'+analysisText([confirmation.state,confirmation.summary].filter(Boolean).join(' · ')||'Not yet confirmed')+'</div></article>';
-    }).join(''):'<div class="muted">No recent curated market-moving developments. Automated discovery candidates are excluded.</div>';
+    }).join(''):'<div class="muted">No curated Open Watch updates have been published yet. Automated discovery candidates are excluded.</div>';
   }
   const activeWatchEvents=watchEvents.filter(e=>String(e.status||'').toLowerCase()==='active')
     .sort((a,b)=>materialityRank(b.expectedImpact?.materiality)-materialityRank(a.expectedImpact?.materiality)||eventTimeMs(b)-eventTimeMs(a))
