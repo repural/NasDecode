@@ -16,6 +16,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Validate Python syntax
+        run: python -m compileall -q scripts
       - name: Fetch historical macro series
         env:
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
