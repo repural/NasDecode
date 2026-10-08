@@ -185,8 +185,9 @@ function render(d){
   // Active lifecycle events come first; newly retained non-historical events follow;
   // scheduled earnings are shown after those. Routine macro/Fed rows are excluded.
   const watchFeed=d.marketWatchEvents||{};
-  const excludedWatchCategories=new Set(['macro','fed-rates','inflation','labor','growth','economic']);
-  const watchEvents=(watchFeed.events||[]).filter(e=>!excludedWatchCategories.has(String(e.category||'').toLowerCase()));
+  // Preserve broad catalyst coverage here. The separate developments panel is
+  // curated-only; this panel includes material discovered events and the archive.
+  const watchEvents=(watchFeed.events||[]).filter(e=>e&&e.id&&e.headline);
   const materialityRank=m=>({'very high':4,'high':3,'medium-high':2,'medium':1}[String(m||'').toLowerCase()]||0);
   const eventTimeMs=e=>Date.parse(e.eventTime||e.firstReported||'')||0;
 
@@ -194,7 +195,7 @@ function render(d){
   if(marketMovingBody){
     // Only curated, material and recently verified events; never present auto-detected
     // candidate headlines as editorial Open Watch updates.
-    const curated=watchEvents.filter(e=>!e.autoDetected && e.status!=='historical' && eventTimeMs(e)>=Date.now()-72*3600000)
+    const curated=watchEvents.filter(e=>!e.autoDetected && String(e.status||'').toLowerCase()!=='historical')
       .sort((a,b)=>eventTimeMs(b)-eventTimeMs(a)).slice(0,3);
     marketMovingBody.innerHTML=curated.length?curated.map(e=>{
       const imp=e.initialImpact||e.expectedImpact||{}, confirmation=e.marketConfirmation||{};
@@ -203,11 +204,11 @@ function render(d){
         '<div class="section-kicker" style="margin-top:9px">Why It Matters</div><div>'+analysisText(e.whyItMatters||'Awaiting analyst context')+'</div>'+
         '<div class="section-kicker" style="margin-top:9px">Initial Impact</div><div>'+analysisText(impact||'Pending assessment')+'</div>'+
         '<div class="section-kicker" style="margin-top:9px">Market Confirmation</div><div>'+analysisText([confirmation.state,confirmation.summary].filter(Boolean).join(' · ')||'Not yet confirmed')+'</div></article>';
-    }).join(''):'<div class="muted">No recent curated market-moving developments. Automated discovery candidates are excluded.</div>';
+    }).join(''):'<div class="muted">No curated Open Watch updates have been published yet. Automated discovery candidates are excluded.</div>';
   }
   const activeWatchEvents=watchEvents.filter(e=>String(e.status||'').toLowerCase()==='active')
     .sort((a,b)=>materialityRank(b.expectedImpact?.materiality)-materialityRank(a.expectedImpact?.materiality)||eventTimeMs(b)-eventTimeMs(a))
-    .slice(0,4);
+    .slice(0,10);
   const activeIds=new Set(activeWatchEvents.map(e=>e.id).filter(Boolean));
   const activeWatchHtml=activeWatchEvents.map(e=>{
     const impact=e.expectedImpact||{}, confirm=e.marketConfirmation||{};
@@ -218,11 +219,8 @@ function render(d){
       (confirmBits?'<div class="muted" style="margin-top:4px">'+analysisText(confirmBits)+'</div>':'')+'</div>';
   }).join('');
 
-  const freshCutoff=Date.now()-72*60*60*1000;
-  const newWatchEvents=watchEvents.filter(e=>{
-    const status=String(e.status||'').toLowerCase();
-    return !activeIds.has(e.id)&&status!=='historical'&&eventTimeMs(e)>=freshCutoff;
-  }).sort((a,b)=>materialityRank(b.expectedImpact?.materiality)-materialityRank(a.expectedImpact?.materiality)||eventTimeMs(b)-eventTimeMs(a)).slice(0,3);
+  const newWatchEvents=watchEvents.filter(e=>!activeIds.has(e.id))
+    .sort((a,b)=>eventTimeMs(b)-eventTimeMs(a)).slice(0,12);
   const newWatchHtml=newWatchEvents.map(e=>{
     const impact=e.expectedImpact||{}, confirm=e.marketConfirmation||{};
     const when=e.eventTime?new Date(e.eventTime).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}):'New';
@@ -385,6 +383,25 @@ async function loadChartHistory(){try{const r=await fetch('data/chart-history.js
 // Fetch a cache-busted quantitative snapshot; the button refreshes displayed data only.
 let currentDashboard=null,lastRenderedStamp=null,autoRefreshTimer=null;
 async function load(){update.disabled=true;update.textContent='Checking…';try{const t=Date.now();const [r,w]=await Promise.all([fetch('data/dashboard.json?t='+t,{cache:'no-store',headers:{'Cache-Control':'no-cache'}}),fetch('history/market-watch-events.json?t='+t,{cache:'no-store'}).catch(()=>null)]);if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();if(w?.ok){try{d.marketWatchEvents=await w.json()}catch(_){d.marketWatchEvents={events:[]}}}else d.marketWatchEvents={events:[]};currentDashboard=d;const renderStamp=d.updatedET+'|'+(d.marketWatchEvents?.updated||'');if(renderStamp!==lastRenderedStamp){render(d);lastRenderedStamp=renderStamp}return d}catch(e){console.error(e);update.textContent='Refresh failed';setTimeout(()=>update.textContent='↻ Check Latest',1800);return null}finally{update.disabled=false;if(update.textContent==='Checking…')update.textContent='↻ Check Latest'}}
+// The decision-frame research feed is independent of session analysis tabs.
+async function loadTodayWatch(){
+  const node=document.getElementById('watchConditions');
+  if(!node)return;
+  try{
+    const response=await fetch('data/premarket.json?t='+Date.now(),{cache:'no-store'});
+    if(!response.ok)throw new Error('Premarket HTTP '+response.status);
+    const brief=await response.json();
+    const entries=Array.isArray(brief.catalysts)?brief.catalysts:[];
+    const html=entries.map((e,i)=>'<div class="catalyst"><b>'+escHtml((i+1)+'. '+(e.title||'Event'))+'</b><div style="margin-top:5px">'+analysisText(e.detail||e.description||'')+'</div></div>').join('');
+    const extra=(brief.watchIntoOpen?'<div class="catalyst"><b>What I’d Watch Into the Open</b><div style="margin-top:5px">'+analysisText(brief.watchIntoOpen)+'</div></div>':'')+
+      (brief.keyTimes?'<div class="catalyst"><b>Key Times</b><div style="margin-top:5px">'+analysisText(brief.keyTimes)+'</div></div>':'');
+    node.innerHTML=html+extra||'<div class="muted">No researched events published for this session.</div>';
+  }catch(e){
+    node.innerHTML='<div class="muted">Today’s researched events are temporarily unavailable.</div>';
+    console.warn('What to Watch research fetch failed',e);
+  }
+}
+loadTodayWatch();
 // Load the narrative market brief. Market Analysis times remain in New York / ET; do not localize them to browser/TR time.
 const nearbyMajorEarnings=d=>{
   const events=(d?.upcomingEarnings?.events||[]).filter(e=>{
@@ -452,7 +469,7 @@ async function loadAnalysis(d){if(window.NasDecodeSessionTabs?.render){await win
   }
   premarketBody.innerHTML=richMeta+paras+(a.watchIntoOpen?'<p>'+analysisText(a.watchIntoOpen)+'</p>':'')+(a.keyTimes?'<p>'+analysisText(a.keyTimes)+'</p>':'')+(catalysts?'<h3>Near-term catalysts</h3><ul>'+catalysts+'</ul>':'')+nearbyMajorEarnings(d);
 }catch(e){premarketMeta.textContent='Analysis not available yet.';premarketBody.innerHTML='';}}
-update.onclick=async()=>{const d=await load();await loadAnalysis(d);scheduleAutoRefresh()};
+update.onclick=async()=>{const d=await load();await Promise.all([loadAnalysis(d),loadTodayWatch()]);scheduleAutoRefresh()};
 
 function nyClock(){
   const p=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',weekday:'short',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).formatToParts(new Date());
