@@ -66,6 +66,9 @@ jobs:
               echo "run=no" >> "$GITHUB_OUTPUT"
             fi
           fi
+      - name: Validate Python syntax
+        if: steps.gate.outputs.run == 'yes'
+        run: python -m compileall -q scripts
       - name: Install FedWatch dependency
         if: steps.gate.outputs.run == 'yes'
         run: pip install 'cme-fedwatch==0.2.1'
