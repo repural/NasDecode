@@ -34,7 +34,7 @@ def main():
   info={"productHttp":ps,"productMatches":len(products),"productSample":products[:1],"outrightCandidates":[]}
   print(name,"product",ps,"matches",len(products),flush=True)
   # Query exact dated outright tickers directly, never take the first spread contract.
-  for month in ("X6","Z6"):
+  for month in ("X6",):
    ticker=code+month
    cs,cp=query("/futures/v1/contracts",{"ticker":ticker,"limit":10})
    candidates=cp.get("results",[]) if isinstance(cp,dict) else []
@@ -45,7 +45,13 @@ def main():
     bars=hp.get("results",[]) if isinstance(hp,dict) else []
     clean=[b for b in bars if b.get("ticker")==ticker and 30<=float(b.get("settlement_price") or b.get("close") or 0)<=200]
     item["historical"]={"http":hs,"bars":len(bars),"plausibleBars":len(clean),"first":clean[:1],"last":clean[-1:],"responseKeys":list(hp) if isinstance(hp,dict) else [],"nextUrlPresent":bool(hp.get("next_url")) if isinstance(hp,dict) else False}
-    print(name,ticker,"bars",len(bars),"plausible",len(clean),"http",hs,flush=True)
+    print(name,ticker,"bars",len(bars),"plausible",len(clean),"http",hs,"metadata",json.dumps({k:v for k,v in hp.items() if k not in ("results","request_id","next_url")})[:1000] if isinstance(hp,dict) else "",flush=True)
+    item["diagnostics"]=[]
+    for label,params in [("start_end",{"resolution":"1day","start":"2026-09-01","end":"2026-09-30","limit":100}),("session_window",{"resolution":"1session","window_start":"2026-09-01","window_end":"2026-09-30","limit":100})]:
+     ds,dp=query("/futures/v1/aggs/"+urllib.parse.quote(ticker,safe=""),params)
+     db=dp.get("results",[]) if isinstance(dp,dict) else []
+     item["diagnostics"].append({"variant":label,"http":ds,"count":len(db),"dates":[x.get("session_end_date") for x in db],"metadata":{k:v for k,v in dp.items() if k not in ("results","request_id","next_url")} if isinstance(dp,dict) else {}})
+     print(name,ticker,label,"http",ds,"bars",len(db),"dates",[x.get("session_end_date") for x in db[:3]],flush=True)
    else:
     print(name,ticker,"exact contracts",0,"http",cs,"keys",list(cp) if isinstance(cp,dict) else [],flush=True)
    info["outrightCandidates"].append(item)
