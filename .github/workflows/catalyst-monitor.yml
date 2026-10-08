@@ -6,7 +6,6 @@ on:
     branches: [main]
     paths:
       - 'scripts/refresh_catalysts.py'
-      - 'scripts/refresh_market_watch.py'
       - 'scripts/refresh_upcoming_earnings.py'
       - 'scripts/build_hype_history.py'
       - 'data/catalyst-universe.json'
@@ -29,39 +28,44 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Discover and persist major SOX and mega-cap catalysts
+
+      - name: Discover major SOX and mega-cap catalyst candidates
         env:
           TAVILY_API_KEY: ${{ secrets.TAVILY_KEY }}
         run: |
           python scripts/refresh_catalysts.py
-          python scripts/refresh_market_watch.py
           python scripts/refresh_upcoming_earnings.py
           python scripts/build_hype_history.py
-          mkdir -p public/history
-          cp data/history/market-watch-events.json public/history/market-watch-events.json
-      - name: Publish catalyst updates
+
+      - name: Publish discovery outputs
         shell: bash
         run: |
+          set -euo pipefail
           git config user.name 'nasdecode-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add data/semiconductor-catalysts.json data/upcoming-earnings.json data/history/hype-daily.json data/history/market-watch-events.json public/history/market-watch-events.json public/data/market-watch.json
+
+          # Raw/automated discovery stays separate from curated Open Watch history.
+          # data/history/market-watch-events.json is written only by curated Open Watch publishing.
+          git add data/semiconductor-catalysts.json data/upcoming-earnings.json data/history/hype-daily.json
           git diff --cached --quiet && exit 0
-          git commit -m 'Update detected market catalysts and Market Watch history'
+          git commit -m 'Update detected market catalyst candidates'
+
           for attempt in 1 2 3 4; do
             if git push; then
               exit 0
             fi
+
             git fetch origin main
             git reset --hard origin/main
+
             TAVILY_API_KEY='${{ secrets.TAVILY_KEY }}' python scripts/refresh_catalysts.py
-            python scripts/refresh_market_watch.py
             python scripts/refresh_upcoming_earnings.py
             python scripts/build_hype_history.py
-          mkdir -p public/history
-          cp data/history/market-watch-events.json public/history/market-watch-events.json
-            git add data/semiconductor-catalysts.json data/upcoming-earnings.json data/history/hype-daily.json data/history/market-watch-events.json public/history/market-watch-events.json public/data/market-watch.json
+
+            git add data/semiconductor-catalysts.json data/upcoming-earnings.json data/history/hype-daily.json
             git diff --cached --quiet && exit 0
-            git commit -m 'Update detected market catalysts and Market Watch history'
+            git commit -m 'Update detected market catalyst candidates'
           done
-          echo "Unable to publish catalyst updates after 4 attempts"
+
+          echo "Unable to publish catalyst candidate updates after 4 attempts"
           exit 1
