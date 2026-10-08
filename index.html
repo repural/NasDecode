@@ -114,6 +114,8 @@ function render(d){
     }
     if(r.factor==='Inflation · Labor · Growth'&&r.macroImpulse){
       const score=Number(r.macroImpulse.score||0), fam=macroImpulseMetrics(r);
+      return `<div class="card factor-card signal-${r.signal}${awaiting(r)}" tabindex="0" data-tip="${escAttr(r.explanation||'No explanation available.')}"><span class="factor-name">${factorRank(i)}. ${r.factor}</span><span><span class="metric ${C[r.signal]}">${score>0?'+':''}${score}</span> <span class="muted">/ 100</span></span>${fam}<span class="card-latest">${escHtml(r.direction||'Data mix')}</span></div>`;
+    }
     if(r.factor==='Fed expectations'&&Array.isArray(r.fedMeetings)&&r.fedMeetings.length){
       const fedRows=r.fedMeetings.slice(0,3).map((m,mi)=>{
         const p=m.probabilities||{},h=Number(p.hike||0),o=Number(p.hold||0),cut=Number(p.cut||0);
