@@ -80,7 +80,6 @@ def main():
   "outcomeHorizonsTradingSessions":list(H),
   "cohorts":{"2025_external_retrospective":"Frozen v3.0 external validation; partial feature coverage.","canonical_point_in_time":"Canonical NasDecode history with context available at T."},
   "records":rows}
- OUT.write_text(json.dumps(payload,indent=2)+"
-")
+ OUT.write_text(json.dumps(payload,indent=2)+chr(10))
  print("stored",len(rows),"rows",rows[0]["date"] if rows else None,"through",rows[-1]["date"] if rows else None)
 if __name__=="__main__":main()
