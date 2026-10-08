@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "engineVersion": "context-engine-v1.0",
+  "status": "shadow research only; no production score consumes this output",
+  "target": "SOXL T+5 return",
+  "methodology": {
+    "minimumSameStateTraining": 20,
+    "validation": "strict chronological expanding window within each frozen v3 state",
+    "models": [
+      "state-only expanding mean baseline",
+      "state-specific ridge linear",
+      "state-specific ridge fixed quadratic basis"
+    ],
+    "selectionRule": "Do not promote unless context improves baseline out-of-sample with economically sensible stability; no thresholds learned from validation."
+  },
+  "states": {
+    "washout_rebound": {
+      "observations": 39,
+      "completeObservations": 39,
+      "features": [
+        "us10y",
+        "vxn",
+        "vxn5d",
+        "brent5d",
+        "breadth",
+        "relative5d",
+        "sox5d"
+      ],
+      "walkForward": {
+        "firstPrediction": "2026-07-16",
+        "lastPrediction": "2026-09-16",
+        "baseline": {
+          "n": 19,
+          "correlation": 0.05,
+          "maePct": 14.97,
+          "directionalHitPct": 78.9
+        },
+        "linear": {
+          "n": 19,
+          "correlation": 0.659,
+          "maePct": 16.334,
+          "directionalHitPct": 63.2
+        },
+        "quadratic": {
+          "n": 19,
+          "correlation": 0.425,
+          "maePct": 16.241,
+          "directionalHitPct": 52.6
+        }
+      }
+    },
+    "uptrend_pullback": {
+      "observations": 19,
+      "completeObservations": 19,
+      "features": [],
+      "walkForward": {
+        "firstPrediction": null,
+        "lastPrediction": null,
+        "baseline": {
+          "n": 0,
+          "correlation": null,
+          "maePct": null,
+          "directionalHitPct": null
+        },
+        "linear": {
+          "n": 0,
+          "correlation": null,
+          "maePct": null,
+          "directionalHitPct": null
+        },
+        "quadratic": {
+          "n": 0,
+          "correlation": null,
+          "maePct": null,
+          "directionalHitPct": null
+        }
+      }
+    },
+    "continuation": {
+      "observations": 46,
+      "completeObservations": 46,
+      "features": [
+        "us10y",
+        "vxn",
+        "vxn5d",
+        "brent5d",
+        "breadth",
+        "relative5d",
+        "sox5d"
+      ],
+      "walkForward": {
+        "firstPrediction": "2026-04-21",
+        "lastPrediction": "2026-09-25",
+        "baseline": {
+          "n": 26,
+          "correlation": 0.324,
+          "maePct": 15.657,
+          "directionalHitPct": 50.0
+        },
+        "linear": {
+          "n": 26,
+          "correlation": 0.296,
+          "maePct": 18.863,
+          "directionalHitPct": 53.8
+        },
+        "quadratic": {
+          "n": 26,
+          "correlation": 0.165,
+          "maePct": 23.064,
+          "directionalHitPct": 42.3
+        }
+      }
+    },
+    "neutral_other": {
+      "observations": 83,
+      "completeObservations": 83,
+      "features": [
+        "us10y",
+        "vxn",
+        "vxn5d",
+        "brent5d",
+        "breadth",
+        "relative5d",
+        "sox5d"
+      ],
+      "walkForward": {
+        "firstPrediction": "2026-03-10",
+        "lastPrediction": "2026-09-29",
+        "baseline": {
+          "n": 63,
+          "correlation": -0.062,
+          "maePct": 17.945,
+          "directionalHitPct": 46.0
+        },
+        "linear": {
+          "n": 63,
+          "correlation": 0.051,
+          "maePct": 18.635,
+          "directionalHitPct": 54.0
+        },
+        "quadratic": {
+          "n": 63,
+          "correlation": 0.116,
+          "maePct": 20.655,
+          "directionalHitPct": 54.0
+        }
+      }
+    }
+  }
+}
