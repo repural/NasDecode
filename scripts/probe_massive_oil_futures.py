@@ -34,7 +34,7 @@ def main():
   info={"productHttp":ps,"productMatches":len(products),"productSample":products[:1],"outrightCandidates":[]}
   print(name,"product",ps,"matches",len(products),flush=True)
   # Query exact dated outright tickers directly, never take the first spread contract.
-  for month in ("X6",):
+  for month in ("X6","Z6"):
    ticker=code+month
    cs,cp=query("/futures/v1/contracts",{"ticker":ticker,"limit":10})
    candidates=cp.get("results",[]) if isinstance(cp,dict) else []
@@ -47,16 +47,21 @@ def main():
     item["historical"]={"http":hs,"bars":len(bars),"plausibleBars":len(clean),"first":clean[:1],"last":clean[-1:],"responseKeys":list(hp) if isinstance(hp,dict) else [],"nextUrlPresent":bool(hp.get("next_url")) if isinstance(hp,dict) else False}
     print(name,ticker,"bars",len(bars),"plausible",len(clean),"http",hs,"metadata",json.dumps({k:v for k,v in hp.items() if k not in ("results","request_id","next_url")})[:1000] if isinstance(hp,dict) else "",flush=True)
     item["diagnostics"]=[]
-    for label,params in [("start_end",{"resolution":"1day","start":"2026-09-01","end":"2026-09-30","limit":100}),("session_window",{"resolution":"1session","window_start":"2026-09-01","window_end":"2026-09-30","limit":100})]:
+    for label,params in [("start_end",{"resolution":"1day","start":"2026-09-01","end":"2026-09-30","limit":500}),("session_window",{"resolution":"1session","window_start":"2026-09-01","window_end":"2026-09-30","limit":100})]:
      ds,dp=query("/futures/v1/aggs/"+urllib.parse.quote(ticker,safe=""),params)
      db=dp.get("results",[]) if isinstance(dp,dict) else []
      item["diagnostics"].append({"variant":label,"http":ds,"count":len(db),"dates":[x.get("session_end_date") for x in db],"metadata":{k:v for k,v in dp.items() if k not in ("results","request_id","next_url")} if isinstance(dp,dict) else {}})
-     print(name,ticker,label,"http",ds,"bars",len(db),"dates",[x.get("session_end_date") for x in db[:3]],flush=True)
+     print(name,ticker,label,"http",ds,"bars",len(db),"first",[x.get("session_end_date") for x in db[:3]],"last",[x.get("session_end_date") for x in db[-3:]],flush=True)
+     if label=="start_end":
+      valid=[x for x in db if "2026-09-01"<=str(x.get("session_end_date",""))<="2026-09-30"]
+      prices=[float(x.get("settlement_price") or x.get("close") or 0) for x in valid]
+      item["dateWindowCheck"]={"returned":len(db),"withinRequestedWindow":len(valid),"outsideWindow":len(db)-len(valid),"distinctDates":len(set(x.get("session_end_date") for x in valid)),"plausibleWithinWindow":sum(30<=v<=200 for v in prices)}
+      print(name,ticker,"window check",json.dumps(item["dateWindowCheck"]),flush=True)
    else:
     print(name,ticker,"exact contracts",0,"http",cs,"keys",list(cp) if isinstance(cp,dict) else [],flush=True)
    info["outrightCandidates"].append(item)
   report["products"][name]=info
- report["status"]="validated" if all(any(x.get("historical",{}).get("plausibleBars",0)>=5 for x in v["outrightCandidates"]) for v in report["products"].values()) else "incomplete"
+ report["status"]="validated" if all(any(x.get("dateWindowCheck",{}).get("plausibleWithinWindow",0)>=5 and x.get("dateWindowCheck",{}).get("outsideWindow",1)==0 for x in v["outrightCandidates"]) for v in report["products"].values()) else "incomplete"
  print("FINAL STATUS",report["status"],flush=True)
  OUT.parent.mkdir(parents=True,exist_ok=True)
  OUT.write_text(json.dumps(report,indent=2)+"\\n")
