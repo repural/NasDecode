@@ -3,6 +3,28 @@
   "description": "Verified U.S. macro actual-vs-consensus observations used by NasDecode's decaying Macro Data Impulse.",
   "events": [
     {
+      "id": "2026-10-08-cpi-mom",
+      "name": "Inflation Rate MoM",
+      "family": "inflation",
+      "subtype": "headline_cpi",
+      "releasedAt": "2026-10-08T08:30:00-04:00",
+      "actual": 0.42,
+      "consensus": 0.43,
+      "unit": "%",
+      "direction": "higher_is_negative",
+      "scale": 0.15,
+      "importance": 0.6,
+      "halfLifeDays": 6,
+      "verified": false,
+      "sourceMode": "calendar_observed",
+      "firstObservedAt": "2026-10-08T12:39:36.264753Z",
+      "source": "Trading Economics public calendar via Tavily; awaiting U.S. Bureau of Labor Statistics verification",
+      "sourceUrl": "https://tradingeconomics.com/united-states/calendar",
+      "officialSource": "U.S. Bureau of Labor Statistics",
+      "consensusSource": "Trading Economics survey consensus",
+      "ingestionLagSeconds": 576
+    },
+    {
       "id": "2026-10-07-ism-services",
       "name": "ISM Services PMI",
       "family": "growth",
@@ -822,7 +844,7 @@
       "latencyTracking": "pre_tracking_release"
     }
   ],
-  "lastOfficialVerificationAt": "2026-10-08T11:14:58.880251Z",
+  "lastOfficialVerificationAt": "2026-10-08T12:39:40.799122Z",
   "latencyDefinition": {
     "ingestionLagSeconds": "Seconds from scheduled release time to first NasDecode observation.",
     "officialVerificationLagSeconds": "Seconds from scheduled release time to first successful primary-source verification."
@@ -834,6 +856,6 @@
   },
   "signalLens": "Rate-sensitive Nasdaq: positive means the recent surprise mix is more supportive for discount rates; negative means more restrictive.",
   "calendarSource": "https://tradingeconomics.com/united-states/calendar",
-  "lastCalendarFetchAt": "2026-10-07T14:23:29.422385Z",
+  "lastCalendarFetchAt": "2026-10-08T12:39:36.264753Z",
   "scheduledEvents": []
 }
