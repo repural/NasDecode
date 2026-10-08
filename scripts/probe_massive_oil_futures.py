@@ -12,29 +12,32 @@ def query(path,params):
  except urllib.error.HTTPError as e:
   return e.code,{"error":e.reason,"body":e.read(500).decode("utf-8","replace")}
 def main():
- report={"schemaVersion":2,"status":"unverified","products":{}}
+ import re
+ report={"schemaVersion":3,"status":"incomplete","products":{}}
  for name,code in [("wti","CL"),("brent","BZ")]:
-  status,payload=query("/futures/v1/products",{"product_code":code,"limit":100})
-  rows=payload.get("results",[]) if isinstance(payload,dict) else []
-  matches=[x for x in rows if x.get("product_code")==code]
-  info={"productQueryHttp":status,"returned":len(rows),"exactMatches":matches[:3],
-        "firstReturnedCodes":[x.get("product_code") for x in rows[:8]]}
-  print(name,"product",status,"returned",len(rows),"exact",len(matches),"first",info["firstReturnedCodes"],flush=True)
-  if matches:
-   cs,cp=query("/futures/v1/contracts",{"product_code":code,"date":"2026-09-15","active":"true","limit":100})
-   contracts=[x for x in cp.get("results",[]) if x.get("product_code")==code] if isinstance(cp,dict) else []
-   info["contractsHttp"]=cs
-   info["contracts"]=[{"ticker":x.get("ticker"),"name":x.get("name"),"last_trade_date":x.get("last_trade_date"),"trading_venue":x.get("trading_venue")} for x in contracts[:12]]
-   print(name,"contracts",cs,len(contracts),"tickers",[x.get("ticker") for x in contracts[:8]],flush=True)
-   if contracts:
-    ticker=next((x["ticker"] for x in contracts if x.get("ticker") and x.get("last_trade_date","")>="2026-09-15"),None)
-    if ticker:
-     hs,hp=query("/futures/v1/aggs/"+urllib.parse.quote(ticker,safe=""),{"resolution":"1session","window_start":"2026-09-01","window_end":"2026-09-15","limit":30})
-     bars=hp.get("results",[]) if isinstance(hp,dict) else []
-     info["historicalProbe"]={"ticker":ticker,"http":hs,"barCount":len(bars),"sample":bars[-2:],"error":hp.get("error") if isinstance(hp,dict) else None}
-     print(name,"historical",ticker,hs,"bars",len(bars),"sample",json.dumps(bars[-1:])[:500],flush=True)
+  ps,pp=query("/futures/v1/products",{"product_code":code,"limit":10})
+  products=[x for x in pp.get("results",[]) if x.get("product_code")==code] if isinstance(pp,dict) else []
+  info={"productHttp":ps,"productMatches":len(products),"productSample":products[:1],"outrightCandidates":[]}
+  print(name,"product",ps,"matches",len(products),flush=True)
+  # Query exact dated outright tickers directly, never take the first spread contract.
+  for month in ("X6","Z6","F7"):
+   ticker=code+month
+   cs,cp=query("/futures/v1/contracts",{"ticker":ticker,"limit":10})
+   candidates=cp.get("results",[]) if isinstance(cp,dict) else []
+   exact=[x for x in candidates if x.get("ticker")==ticker and re.fullmatch(re.escape(code)+r"[FGHJKMNQUVXZ][0-9]{1,2}",x.get("ticker",""))]
+   item={"ticker":ticker,"contractHttp":cs,"exactMatches":len(exact),"contractMetadata":exact[:1]}
+   if exact:
+    hs,hp=query("/futures/v1/aggs/"+urllib.parse.quote(ticker,safe=""),{"resolution":"1session","window_start":"2026-09-01","window_end":"2026-09-30","limit":100})
+    bars=hp.get("results",[]) if isinstance(hp,dict) else []
+    clean=[b for b in bars if b.get("ticker")==ticker and 30<=float(b.get("settlement_price") or b.get("close") or 0)<=200]
+    item["historical"]={"http":hs,"bars":len(bars),"plausibleBars":len(clean),"first":clean[:1],"last":clean[-1:]}
+    print(name,ticker,"bars",len(bars),"plausible",len(clean),"http",hs,flush=True)
+   else:
+    print(name,ticker,"exact contracts",0,"http",cs,"keys",list(cp) if isinstance(cp,dict) else [],flush=True)
+   info["outrightCandidates"].append(item)
   report["products"][name]=info
- report["status"]="validated" if all(v.get("historicalProbe",{}).get("barCount",0)>0 for v in report["products"].values()) else "incomplete"
+ report["status"]="validated" if all(any(x.get("historical",{}).get("plausibleBars",0)>=5 for x in v["outrightCandidates"]) for v in report["products"].values()) else "incomplete"
+ print("FINAL STATUS",report["status"],flush=True)
  OUT.parent.mkdir(parents=True,exist_ok=True)
  OUT.write_text(json.dumps(report,indent=2)+"\\n")
 if __name__=="__main__":main()
