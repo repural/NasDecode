@@ -108,12 +108,12 @@ function render(d){
     const detail=minis?(r.factor==='Semiconductor leadership'?String(r.latest||'').split('|').slice(-2).join(' · ').trim():''):r.latest||'—';
     if(r.factor==='Oil (WTI / Brent)'&&r.scorecard){
       const sc=r.scorecard;
-      const primary=sc.secondaryValue||'Brent unavailable', secondary=sc.value||'WTI unavailable';
-      const spread=(Number(String(primary).match(/\\$([\\d.]+)/)?.[1])-Number(String(secondary).match(/\\$([\\d.]+)/)?.[1]));
-      const spreadText=Number.isFinite(spread)?'Brent–WTI spread 
-      const score=Number(r.macroImpulse.score||0), fam=macroImpulseMetrics(r);
-      return `<div class="card factor-card signal-${r.signal}${awaiting(r)}" tabindex="0" data-tip="${escAttr(r.explanation||'No explanation available.')}"><span class="factor-name">${factorRank(i)}. ${r.factor}</span><span><span class="metric ${C[r.signal]}">${score>0?'+':''}${score}</span> <span class="muted">/ 100</span></span>${fam}<span class="card-latest">${escHtml(r.direction||'Data mix')}</span></div>`;
+      const main=sc.secondaryValue||'Brent unavailable';
+      const sub=sc.value||'WTI unavailable';
+      return '<div class="card factor-card signal-'+r.signal+awaiting(r)+'" tabindex="0" data-tip="'+escAttr(r.explanation||'No explanation available.')+'"><span class="factor-name">'+factorRank(i)+'. OIL (BRENT / WTI)</span><span class="metric">'+escHtml(main)+'</span><span class="metric-change '+C[sc.secondaryChangeSignal||r.signal]+'">'+escHtml((sc.secondaryArrow||'')+' '+(sc.secondaryChange||''))+'</span><span class="metric" style="margin-top:7px;font-size:20px">'+escHtml(sub)+'</span><span class="metric-change '+C[sc.changeSignal||r.signal]+'">'+escHtml((sc.arrow||'')+' '+(sc.change||''))+'</span></div>';
     }
+    if(r.factor==='Inflation · Labor · Growth'&&r.macroImpulse){
+      const score=Number(r.macroImpulse.score||0), fam=macroImpulseMetrics(r);
     if(r.factor==='Fed expectations'&&Array.isArray(r.fedMeetings)&&r.fedMeetings.length){
       const fedRows=r.fedMeetings.slice(0,3).map((m,mi)=>{
         const p=m.probabilities||{},h=Number(p.hike||0),o=Number(p.hold||0),cut=Number(p.cut||0);
