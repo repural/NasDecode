@@ -1,10 +1,12 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "nasboard",
+  "main": "src/index.js",
   "compatibility_date": "2026-09-22",
   // SOX-first deployment refresh: 2026-10-03
   "assets": {
     "directory": "./public",
+    "binding": "ASSETS",
     "not_found_handling": "404-page"
     // Static public assets only; private model code is never deployed.
   }
