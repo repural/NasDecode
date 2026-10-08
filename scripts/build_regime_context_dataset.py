@@ -32,7 +32,7 @@ def main():
    a=value(k);b=macro25[k][prior[-n-1]]
    return (a-b)*100 if basis else pct(a,b)
   y10=value("us10y");y2=value("us2y")
-  return {"rates":{"us10yPct":y10,"us2yPct":y2,"curve2s10sBp":(y10-y2)*100 if f(y10) and f(y2) else None,"us10y5dChangeBp":delta("us10y",5,True),"us10y10dChangeBp":delta("us10y",10,True)}, "volatility":{"vxn":value("vxn"),"vix":value("vix"),"vxn5dPct":delta("vxn",5),"vxn10dPct":delta("vxn",10)},"energy":{"brent":value("brent"),"brent5dPct":delta("brent",5),"wti":value("wti"),"wti5dPct":delta("wti",5)}}
+  return {"rates":{"us10yPct":y10,"us2yPct":y2,"curve2s10sBp":(y10-y2)*100 if f(y10) and f(y2) else None,"us10y5dChangeBp":delta("us10y",5,True),"us10y10dChangeBp":delta("us10y",10,True)}, "volatility":{"vxn":value("vxn"),"vix":value("vix"),"vxn5dPct":delta("vxn",5),"vxn10dPct":delta("vxn",10)},"energy":{"brent":None,"brent5dPct":None,"wti":None,"wti5dPct":None} # Legacy BZ/CL equity aggregates are not verified crude futures}
  rows=[]
  # External 2025 frozen validation: preserve its exact recorded inputs/outcomes.
  if V25.exists():
