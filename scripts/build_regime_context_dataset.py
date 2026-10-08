@@ -13,6 +13,7 @@ R=Path(__file__).resolve().parents[1]
 CAN=R/"data/history/resilience-daily.json"
 V25=R/"data/history/directional-engine-v3-2025.json"
 V3=R/"data/history/directional-engine-v3.json"\nRES=R/"data/history/resilience-engine.json"
+MACRO25=R/"data/history/regime-macro-2025.json"
 OUT=R/"data/history/regime-context-dataset.json"
 H=(1,3,5,10)
 def f(x):return isinstance(x,(int,float)) and math.isfinite(x)
@@ -20,6 +21,16 @@ def pct(a,b):return 100*(a/b-1) if f(a) and f(b) and b else None
 def main():
  can=json.loads(CAN.read_text()); rec=can.get("records") or {}; dates=sorted(rec); pos={d:i for i,d in enumerate(dates)}
  v3=json.loads(V3.read_text()); setups={x["date"]:x for x in v3.get("records",[])}\n res=json.loads(RES.read_text()) if RES.exists() else {"records":{}}; resrec=res.get("records") or {}
+ macro25=json.loads(MACRO25.read_text()).get("series",{}) if MACRO25.exists() else {}
+ def historical_macro(d):
+  def value(k):return macro25.get(k,{}).get(d)
+  def delta(k,n,basis=False):
+   days=sorted(macro25.get(k,{})); prior=[z for z in days if z<=d]
+   if len(prior)<=n or prior[-1]!=d:return None
+   a=value(k);b=macro25[k][prior[-n-1]]
+   return (a-b)*100 if basis else pct(a,b)
+  y10=value("us10y");y2=value("us2y")
+  return {"rates":{"us10yPct":y10,"us2yPct":y2,"curve2s10sBp":(y10-y2)*100 if f(y10) and f(y2) else None,"us10y5dChangeBp":delta("us10y",5,True),"us10y10dChangeBp":delta("us10y",10,True)}, "volatility":{"vxn":value("vxn"),"vix":value("vix"),"vxn5dPct":delta("vxn",5),"vxn10dPct":delta("vxn",10)},"energy":{"brent":value("brent"),"brent5dPct":delta("brent",5),"wti":value("wti"),"wti5dPct":delta("wti",5)}}
  rows=[]
  # External 2025 frozen validation: preserve its exact recorded inputs/outcomes.
  if V25.exists():
@@ -31,7 +42,7 @@ def main():
       "qqq1dPct":inp.get("qqq1"),"qqq5dPct":inp.get("qqq5"),"qqq10dPct":inp.get("qqq10"),
       "soxVsQqq5dPp":inp.get("rs5"),"soxVsQqq10dPp":inp.get("rs10")},
      "internals":{"semiBreadthPositivePct":inp.get("breadth")},
-     "rates":{},"volatility":{},"energy":{},"resilience":{},"valuation":{},"catalyst":{}},
+     **historical_macro(x["date"]),"resilience":{},"valuation":{},"catalyst":{}},
     "outcomes":{"sox":{str(h):out.get(f"sox{h}") for h in H},"soxl":{str(h):out.get(f"soxl{h}") for h in H}},
     "provenance":{"featureTime":"completed close T","source":"directional-engine-v3-2025.json","lookaheadSafe":True}})
  # Canonical 2026+ rows: enrich with market/macro context known at T.
@@ -49,7 +60,7 @@ def main():
     "soxVsQqq5dPp":inp.get("rs5"),"soxVsQqq10dPp":inp.get("rs10")},
    "internals":{"semiBreadthPositivePct":inp.get("breadth"),"semiBreadthOutperformQqqPct":der.get("basketOutperformQqqPct")},
    "rates":{"us10yPct":y10,"us2yPct":y2,"curve2s10sBp":round((y10-y2)*100,3) if f(y10) and f(y2) else None,
-     "us10y5dChangePct":mret("US10Y",5),"us10y10dChangePct":mret("US10Y",10)},
+     "us10y5dChangeBp":(y10-close((rec[dates[i-5]].get("macro") or {}),"US10Y"))*100 if i>=5 and f(y10) and f(close((rec[dates[i-5]].get("macro") or {}),"US10Y")) else None,"us10y10dChangeBp":(y10-close((rec[dates[i-10]].get("macro") or {}),"US10Y"))*100 if i>=10 and f(y10) and f(close((rec[dates[i-10]].get("macro") or {}),"US10Y")) else None},
    "volatility":{"vxn":close(ma,"VXN"),"vxn5dPct":mret("VXN",5),"vxn10dPct":mret("VXN",10)},
    "energy":{"brent":close(ma,"Brent"),"brent5dPct":mret("Brent",5),"wti":close(ma,"WTI"),"wti5dPct":mret("WTI",5)},
    "resilience":{},"valuation":{},"catalyst":{}}
