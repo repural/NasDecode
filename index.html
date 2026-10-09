@@ -544,7 +544,15 @@ function renderChartVisuals(){
     const pts=records.filter(r=>Number.isFinite(Number(r[key]))).map(r=>({date:r.date,value:Number(r[key])}));
     if(pts.length<2)return;
     const first=pts[0],last=pts[pts.length-1],delta=last.value-first.value,div=document.createElement('div');
-    const signalColor=card.classList.contains('signal-positive')?'green':card.classList.contains('signal-negative')?'red':'amber';
+    // Match the chart to the *visible* card signal, not just the model's
+    // underlying classification. A headwind may have a positive raw trend.
+    const visualSignal=card.querySelector('.card-status.red,.card-status.green,.card-status.amber')
+      ||card.querySelector('.metric-change.red,.metric-change.green,.metric-change.amber');
+    const signalColor=visualSignal?.classList.contains('red')?'red':
+      visualSignal?.classList.contains('green')?'green':
+      visualSignal?.classList.contains('amber')?'amber':
+      card.classList.contains('signal-negative')?'red':
+      card.classList.contains('signal-positive')?'green':'amber';
     div.className='sparkline '+signalColor;
     div.innerHTML='<svg viewBox="0 0 180 22" preserveAspectRatio="none">'+svgSeries(pts,180,22)+'</svg><div class="sparkline-meta">'+pts.length+' sessions · '+(delta>=0?'+':'')+delta.toFixed(Math.abs(delta)<1?2:1)+'</div>';
     card.appendChild(div);
