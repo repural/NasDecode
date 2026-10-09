@@ -381,6 +381,23 @@ function render(d){
           : '<b>'+escHtml(m.label||m.date)+'</b>: Above current '+Number(p.hike||0).toFixed(1)+'% · Same '+Number(p.hold||0).toFixed(1)+'% · Below '+Number(p.cut||0).toFixed(1)+'%';
       }).join('<br>');
     }
+    if(r.factor==='Semiconductor leadership'){
+      const a=d.soxEarningsAvwap, z=a?.indicators?.sox, b=a?.indicators?.originalBasket;
+      if(!z)return escHtml(r.explanation||'')+'<br><br><b>SOX Earnings AVWAP:</b> Research diagnostic not yet published.';
+      const fmt=v=>v==null?'unavailable':Number(v).toFixed(2)+'%';
+      const m=z.momentumPp||{}, ext=z.extensionPct||{};
+      const line=(label,v)=>'<b>'+label+':</b> '+v+'<br>';
+      return escHtml(r.explanation||'')+'<br><br><b>Earnings AVWAP · research only (no scoring impact)</b><br>'+
+        line('Membership',escHtml(a.membership?.asOf||'undated')+' official snapshot; not a live membership confirmation')+
+        line('Data as of',escHtml(a.asOf||'—'))+
+        line('SOX AVWAP breadth',fmt(z.breadthPct)+' · '+z.above+'/'+z.covered+' valid, '+z.universe+' constituents')+
+        line('Median distance',fmt(z.medianDistancePct))+
+        line('Momentum 1 / 3 / 5 sessions',fmt(m['1d'])+' / '+fmt(m['3d'])+' / '+fmt(m['5d'])+' pp')+
+        line('Extension above 5 / 10 / 20%',fmt(ext.above5)+' / '+fmt(ext.above10)+' / '+fmt(ext.above20))+
+        line('Original six-name basket',b?fmt(b.breadthPct)+' ('+b.covered+'/'+b.universe+' valid)':'unavailable')+
+        line('Excluded anchors',Object.keys(a.indicators?.excluded||{}).length+' missing, stale or unverified')+
+        '<span class="muted">Research coverage is incomplete until all company earnings releases are verified. Historical SOX membership is only certified for the displayed date.</span>';
+    }
     return r.explanation||'—';
   };
   const modelHtml=modelRows.map(r=>`<tr><td><b>${r.rank}. ${r.name}</b></td><td class="${C[r.signal]}"><b>${r.signal==='positive'?'Positive':r.signal==='negative'?'Negative':'Mixed'}</b></td><td>${r.status}</td><td>${r.trend}</td><td><span class="impact">—</span></td><td class="explain">${String(r.explanation||"—").replace(/\n\n/g,"<br><br>")}</td><td class="debug">${modelDebug(r)}</td></tr>`).join('');
@@ -441,7 +458,7 @@ async function loadChartHistory(){try{const r=await fetch('data/chart-history.js
 
 // Fetch a cache-busted quantitative snapshot; the button refreshes displayed data only.
 let currentDashboard=null,lastRenderedStamp=null,autoRefreshTimer=null;
-async function load(){update.disabled=true;update.textContent='Checking…';try{const t=Date.now();const [r,w]=await Promise.all([fetch('data/dashboard.json?t='+t,{cache:'no-store',headers:{'Cache-Control':'no-cache'}}),fetch('history/market-watch-events.json?t='+t,{cache:'no-store'}).catch(()=>null)]);if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();if(w?.ok){try{d.marketWatchEvents=await w.json()}catch(_){d.marketWatchEvents={events:[]}}}else d.marketWatchEvents={events:[]};currentDashboard=d;const renderStamp=d.updatedET+'|'+(d.marketWatchEvents?.updated||'');if(renderStamp!==lastRenderedStamp){render(d);lastRenderedStamp=renderStamp;await loadTodayWatch()}return d}catch(e){console.error(e);update.textContent='Refresh failed';setTimeout(()=>update.textContent='↻ Check Latest',1800);return null}finally{update.disabled=false;if(update.textContent==='Checking…')update.textContent='↻ Check Latest'}}
+async function load(){update.disabled=true;update.textContent='Checking…';try{const t=Date.now();const [r,w,a]=await Promise.all([fetch('data/dashboard.json?t='+t,{cache:'no-store',headers:{'Cache-Control':'no-cache'}}),fetch('history/market-watch-events.json?t='+t,{cache:'no-store'}).catch(()=>null),fetch('data/sox_avwap_latest.json?t='+t,{cache:'no-store'}).catch(()=>null)]);if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();if(a?.ok){try{d.soxEarningsAvwap=await a.json()}catch(_){d.soxEarningsAvwap=null}}else d.soxEarningsAvwap=null;if(w?.ok){try{d.marketWatchEvents=await w.json()}catch(_){d.marketWatchEvents={events:[]}}}else d.marketWatchEvents={events:[]};currentDashboard=d;const renderStamp=d.updatedET+'|'+(d.marketWatchEvents?.updated||'')+'|'+(d.soxEarningsAvwap?.asOf||'');if(renderStamp!==lastRenderedStamp){render(d);lastRenderedStamp=renderStamp;await loadTodayWatch()}return d}catch(e){console.error(e);update.textContent='Refresh failed';setTimeout(()=>update.textContent='↻ Check Latest',1800);return null}finally{update.disabled=false;if(update.textContent==='Checking…')update.textContent='↻ Check Latest'}}
 // The decision-frame research feed is independent of session analysis tabs.
 async function loadTodayWatch(){
   const node=document.getElementById('watchConditions');
