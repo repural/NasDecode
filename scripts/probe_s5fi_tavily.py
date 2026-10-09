@@ -9,7 +9,7 @@ from pathlib import Path
 
 OUT = Path("data/history/s5fi-tavily-observations.json")
 URLS = [
-    "https://www.investing.com/indices/sp-500-stocks-above-50-day-average-historical-data",
+    "https://www.investing.com/indices/s-p-500-stocks-above-50-day-average-historical-data",
     "https://www.barchart.com/stocks/quotes/$S5FI/historical-prices",
 ]
 
@@ -22,18 +22,31 @@ def extract(urls):
         return json.load(response)
 
 def candidates(raw):
-    # Require an ISO date and nearby percentage on the same text line.
-    # Never infer a historical close from a page's headline/current quote.
-    rows=[]
+    """Read the first Price column of dated historical table rows, not Change %."""
+    rows = {}
     for line in raw.splitlines():
-        m=re.search(r"\b(20\d{2}-\d{2}-\d{2})\b.{0,110}?\b(\d{1,2}(?:\.\d{1,3})?|100(?:\.0+)?)\s*%",line)
-        if not m:continue
-        date,value=m.group(1),float(m.group(2))
-        try:dt.date.fromisoformat(date)
-        except ValueError:continue
-        if 0<=value<=100:rows.append({"date":date,"pctAbove50dma":value})
-    return rows
-
+        cols = [x.strip() for x in line.strip().strip("|").split("|")]
+        if len(cols) < 5:
+            continue
+        date_text = cols[0]
+        date = None
+        for fmt in ("%b %d, %Y", "%b %d %Y", "%d/%m/%Y",
+                    "%d-%m-%Y", "%Y-%m-%d"):
+            try:
+                date = dt.datetime.strptime(date_text, fmt).date()
+                break
+            except ValueError:
+                pass
+        if date is None or date > dt.datetime.now(dt.timezone.utc).date():
+            continue
+        try:
+            price, opening, high, low = (float(cols[i].replace(",", "")) for i in (1, 2, 3, 4))
+        except ValueError:
+            continue
+        if not (0 <= low <= price <= high <= 100 and 0 <= opening <= 100):
+            continue
+        rows[date.isoformat()] = {"date": date.isoformat(), "pctAbove50dma": price}
+    return list(rows.values())
 
 def diagnostic(raw):
     """Sample only date-bearing source lines, never raw pages or secrets."""
