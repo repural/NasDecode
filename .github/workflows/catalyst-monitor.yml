@@ -6,6 +6,8 @@ on:
     branches: [main]
     paths:
       - 'scripts/refresh_catalysts.py'
+      - 'scripts/refresh_market_watch.py'
+      - 'scripts/validate_open_watch.py'
       - 'scripts/refresh_upcoming_earnings.py'
       - 'scripts/build_hype_history.py'
       - 'data/catalyst-universe.json'
@@ -29,26 +31,34 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Discover major SOX and mega-cap catalyst candidates
+      - name: Discover raw catalyst candidates
         env:
           TAVILY_API_KEY: ${{ secrets.TAVILY_KEY }}
         run: |
           python scripts/refresh_catalysts.py
           python scripts/refresh_upcoming_earnings.py
-          python scripts/build_hype_history.py
 
-      - name: Publish discovery outputs
+      - name: Curate and persist Market Watch events
+        env:
+          TAVILY_API_KEY: ${{ secrets.TAVILY_KEY }}
+        run: |
+          python scripts/refresh_market_watch.py
+          python scripts/validate_open_watch.py
+          python scripts/build_hype_history.py
+          mkdir -p public/history
+          cp data/history/market-watch-events.json public/history/market-watch-events.json
+
+      - name: Publish discovery and curated outputs
         shell: bash
         run: |
           set -euo pipefail
           git config user.name 'nasdecode-bot'
           git config user.email 'actions@users.noreply.github.com'
 
-          # Raw/automated discovery stays separate from curated Open Watch history.
-          # data/history/market-watch-events.json is written only by curated Open Watch publishing.
-          git add data/semiconductor-catalysts.json data/upcoming-earnings.json data/history/hype-daily.json
+          git add             data/semiconductor-catalysts.json             data/upcoming-earnings.json             data/history/market-watch-events.json             public/data/market-watch.json             public/history/market-watch-events.json             data/history/hype-daily.json
+
           git diff --cached --quiet && exit 0
-          git commit -m 'Update detected market catalyst candidates'
+          git commit -m 'Update market catalysts and curated Open Watch history'
 
           for attempt in 1 2 3 4; do
             if git push; then
@@ -60,12 +70,17 @@ jobs:
 
             TAVILY_API_KEY='${{ secrets.TAVILY_KEY }}' python scripts/refresh_catalysts.py
             python scripts/refresh_upcoming_earnings.py
+            TAVILY_API_KEY='${{ secrets.TAVILY_KEY }}' python scripts/refresh_market_watch.py
+            python scripts/validate_open_watch.py
             python scripts/build_hype_history.py
+            mkdir -p public/history
+            cp data/history/market-watch-events.json public/history/market-watch-events.json
 
-            git add data/semiconductor-catalysts.json data/upcoming-earnings.json data/history/hype-daily.json
+            git add               data/semiconductor-catalysts.json               data/upcoming-earnings.json               data/history/market-watch-events.json               public/data/market-watch.json               public/history/market-watch-events.json               data/history/hype-daily.json
+
             git diff --cached --quiet && exit 0
-            git commit -m 'Update detected market catalyst candidates'
+            git commit -m 'Update market catalysts and curated Open Watch history'
           done
 
-          echo "Unable to publish catalyst candidate updates after 4 attempts"
+          echo "Unable to publish catalyst updates after 4 attempts"
           exit 1
