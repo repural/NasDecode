@@ -1,0 +1,25 @@
+name: Probe S5FI via Tavily
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 22 * * 1-5'
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Extract and cross-check S5FI
+        env:
+          TAVILY_API_KEY: ${{ secrets.TAVILY_KEY }}
+        run: python scripts/probe_s5fi_tavily.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: s5fi-tavily-probe
+          path: data/history/s5fi-tavily-observations.json
+          if-no-files-found: warn
