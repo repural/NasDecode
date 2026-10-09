@@ -428,7 +428,7 @@ function renderChartVisuals(){
   const keyMap={'OPPORTUNITY SCORE':'opportunity','NASDAQ VOLATILITY (VXN / VIX)':'vxn','10Y TREASURY YIELD':'tenY','2Y TREASURY YIELD':'twoY','OIL (WTI / BRENT)':'oil','MARKET BREADTH':'breadth','SEMICONDUCTOR LEADERSHIP':'semi','MEGA-CAP LEADERSHIP':'mega','S&P 500 50D BREADTH / OVERSOLD':'sp50'};
   document.querySelectorAll('#factorCards .card').forEach(card=>{
     const label=card.querySelector('.factor-name')?.textContent?.replace(/^\d+\.\s*/,'').trim().toUpperCase(),key=keyMap[label];
-    if(!key||card.querySelector('.sparkline'))return;
+    if(!key||card.querySelector('.sparkline')||card.classList.contains('awaiting'))return;
     const pts=records.filter(r=>Number.isFinite(Number(r[key]))).map(r=>({date:r.date,value:Number(r[key])}));
     if(pts.length<2)return;
     const first=pts[0],last=pts[pts.length-1],delta=last.value-first.value,div=document.createElement('div');
