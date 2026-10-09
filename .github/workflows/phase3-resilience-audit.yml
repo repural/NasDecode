@@ -1,0 +1,35 @@
+name: Phase 3 Resilience Audit
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/audit_phase3_resilience.py
+      - .github/workflows/phase3-resilience-audit.yml
+permissions:
+  contents: write
+concurrency:
+  group: phase3-resilience-audit
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Audit point-in-time resilience coverage
+        run: python scripts/audit_phase3_resilience.py
+      - name: Persist research artifact
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/history/phase3-resilience-feature-audit.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Persist Phase 3 resilience feature audit"
+          for attempt in 1 2 3 4 5; do
+            git pull --rebase && git push && exit 0
+            sleep 5
+          done
+          exit 1
