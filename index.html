@@ -407,6 +407,11 @@ async function loadTodayWatch(){
     const response=await fetch('data/premarket.json?t='+Date.now(),{cache:'no-store'});
     if(!response.ok)throw new Error('Premarket HTTP '+response.status);
     const brief=await response.json();
+    const nyDate=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+    if(brief.tradingDate!==nyDate){
+      node.innerHTML='<div class="muted">Today’s researched event watch is being prepared. Latest available brief: '+escHtml(brief.tradingDate||'unknown')+'.</div>';
+      return;
+    }
     const entries=Array.isArray(brief.catalysts)?brief.catalysts:[];
     const html=entries.map((e,i)=>'<div class="catalyst"><b>'+escHtml((i+1)+'. '+(e.title||'Event'))+'</b><div style="margin-top:5px">'+analysisText(e.detail||e.description||'')+'</div></div>').join('');
     const extra=(brief.watchIntoOpen?'<div class="catalyst"><b>What I’d Watch Into the Open</b><div style="margin-top:5px">'+analysisText(brief.watchIntoOpen)+'</div></div>':'')+
@@ -481,8 +486,8 @@ async function loadAnalysis(d){if(window.NasDecodeSessionTabs?.render){await win
   const richMeta=a.bias?'<div class="bias"><b>Pre-market bias:</b> '+escHtml(a.bias)+(a.confidence?' &nbsp; · &nbsp; <b>Confidence:</b> '+escHtml(a.confidence):'')+(a.eventRisk?' &nbsp; · &nbsp; <b>Event risk:</b> '+escHtml(a.eventRisk):'')+'</div>':'<div class="bias"><b>Nasdaq Score:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+'</div>';
   const todayWatch=document.getElementById('watchConditions');
   if(todayWatch){
-    const entries=(a.catalysts||[]).filter(x=>x&&typeof x==='object');
-    todayWatch.innerHTML=entries.length?entries.map((e,i)=>'<div class="catalyst"><b>'+escHtml(String(i+1)+'. '+(e.title||'Event'))+'</b><div style="margin-top:5px">'+analysisText(e.detail||e.description||'')+'</div></div>').join(''):'<div class="muted">Today’s major events have not been published yet.</div>';
+    const entries=priorBrief?[]:(a.catalysts||[]).filter(x=>x&&typeof x==='object');
+    todayWatch.innerHTML=priorBrief?'<div class="muted">Today’s researched event watch is being prepared. Latest available brief: '+escHtml(inferredDate||'unknown')+'.</div>':entries.length?entries.map((e,i)=>'<div class="catalyst"><b>'+escHtml(String(i+1)+'. '+(e.title||'Event'))+'</b><div style="margin-top:5px">'+analysisText(e.detail||e.description||'')+'</div></div>').join(''):'<div class="muted">Today’s major events have not been published yet.</div>';
   }
   premarketBody.innerHTML=(priorBrief?'<p class="muted"><b>Previous-session analysis — not a current market outlook.</b></p>':'')+richMeta+paras+(a.watchIntoOpen?'<p>'+analysisText(a.watchIntoOpen)+'</p>':'')+(a.keyTimes?'<p>'+analysisText(a.keyTimes)+'</p>':'')+(catalysts?'<h3>Near-term catalysts</h3><ul>'+catalysts+'</ul>':'')+nearbyMajorEarnings(d);
 }catch(e){premarketMeta.textContent='Analysis not available yet.';premarketBody.innerHTML='';}}
