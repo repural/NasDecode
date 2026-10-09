@@ -26,7 +26,7 @@ def candidates(raw):
     # Never infer a historical close from a page's headline/current quote.
     rows=[]
     for line in raw.splitlines():
-        m=re.search(r"\\b(20\\d{2}-\\d{2}-\\d{2})\\b.{0,110}?\\b(\\d{1,2}(?:\\.\\d{1,3})?|100(?:\\.0+)?)\\s*%",line)
+        m=re.search(r"\b(20\d{2}-\d{2}-\d{2})\b.{0,110}?\b(\d{1,2}(?:\.\d{1,3})?|100(?:\.0+)?)\s*%",line)
         if not m:continue
         date,value=m.group(1),float(m.group(2))
         try:dt.date.fromisoformat(date)
@@ -52,6 +52,6 @@ def main():
             result["observations"].append({"date":date,"pctAbove50dma":round(sum(values)/len(values),3),"verifiedSources":sorted(hosts)})
     if result["observations"]:result["status"]="cross_verified"
     OUT.parent.mkdir(parents=True,exist_ok=True)
-    OUT.write_text(json.dumps(result,indent=2)+"\\n")
+    OUT.write_text(json.dumps(result,indent=2)+"\n")
     print(json.dumps({"status":result["status"],"verified":len(result["observations"]),"sources":result["sources"]}))
 if __name__=="__main__":main()
