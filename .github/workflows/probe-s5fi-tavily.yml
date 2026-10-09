@@ -1,5 +1,10 @@
 name: Probe S5FI via Tavily
 on:
+  push:
+    branches: [main]
+    paths:
+      - scripts/probe_s5fi_tavily.py
+      - .github/workflows/probe-s5fi-tavily.yml
   workflow_dispatch:
   schedule:
     - cron: '20 22 * * 1-5'
