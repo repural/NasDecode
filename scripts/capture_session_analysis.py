@@ -52,6 +52,8 @@ def main():
     store=load(OUT,{'schemaVersion':1,'records':{}})
     now=dt.datetime.now(NY)
     day=now.date().isoformat()
+    if now.weekday()>=5:
+        print('Weekend: no session checkpoint.');return
     rec=(daily.get('records') or {}).get(day,{})
     market=rec.get('market') or {}
     mc=((rec.get('validation') or {}).get('marketContext') or {})
@@ -74,6 +76,15 @@ def main():
     giveback=num(risk.get('intradayGivebackPp'))
 
     today=store.setdefault('records',{}).setdefault(day,{})
+    if stage in today:
+        print(f'Checkpoint {stage} already exists for {day}; preserving original capture.');return
+    due_hour,due_min={'early_market':(10,30),'mid_market':(13,0),'near_close':(15,30)}[stage]
+    due=now.replace(hour=due_hour,minute=due_min,second=0,microsecond=0)
+    delay=(now-due).total_seconds()/60
+    if not 0<=delay<=40:
+        print(f'Checkpoint {stage} outside capture window ({delay:.1f} minutes); skipping.');return
+    if not d or not rec:
+        raise RuntimeError(f'Cannot capture {stage}: current dashboard or daily market record missing')
     prior=None
     for s in ORDER:
         if s==stage:break
@@ -120,6 +131,7 @@ def main():
             "The main carry signal is whether price, breadth, semiconductor leadership, volatility and rates finish in agreement; the 16:15 ET close snapshot remains the canonical final outcome.")
 
     snap={
+        'captureDelayMinutes':round(delay,2),'captureMode':'late' if delay>10 else 'on_time',
         'version':1,'stage':stage,'label':title,'scheduledET':scheduled,'capturedET':now.isoformat(),
         'tradingDate':day,'nasdaqScore':score,'scoreChangeFromPriorCheckpoint':round(score_delta,1) if score_delta is not None else None,
         'nasdaqChangePct':round(nasdaq,3) if nasdaq is not None else None,'qqqChangePct':round(qqq,3) if qqq is not None else None,
