@@ -27,7 +27,49 @@
 .scorecard-category.assessment{margin-top:42px;background:linear-gradient(90deg,#17283d 0%,#0c192b 80%);border-color:#40536c;box-shadow:inset 4px 0 0 #9fb6d1}
 .scorecard-category.assessment span{font-size:21px}
 @media(max-width:650px){.scorecard-category{margin-top:26px;padding:15px 14px 12px}.scorecard-category.assessment{margin-top:32px}}
-</style></head><body><div class="wrap"><div class="head"><div><h1>NasDecode</h1><div class="muted">Nasdaq • Rates • Semiconductors • Breadth • Risk • AI • Earnings</div></div><div><button id="update">↻ Check Latest</button><span class="stamp" id="updated">Loading…</span></div></div><div class="section-heading"><div><div class="section-kicker">Signal monitor</div><h2>Market Signals</h2></div><span class="muted">Hover for metric definition · use View details for analysis</span></div><div class="factor-cards compact-cards" id="factorCards"></div><section class="premarket" id="premarket"><h2 id="analysisTitle">Pre-Market Analysis</h2><div class="muted" id="premarketMeta">Loading analysis…</div><div id="premarketBody"></div></section><details class="signal-details" open><summary>Signal Explorer</summary><div class="signal-explorer" id="signalExplorer"></div></details><section class="intel-panel setup-wide" id="marketSetup"></section><div class="lower-intel two-col"><section class="intel-panel"><div class="section-kicker">Decision frame</div><h3>What to Watch Today</h3><div id="watchConditions"></div></section><section class="intel-panel"><div class="section-kicker">Upcoming + active</div><h3>Major Catalysts</h3><div class="catalyst-list" id="majorCatalysts"></div></section></div><section class="intel-panel" id="marketMovingDevelopments"><div class="section-kicker">NasDecode Open Watch · curated</div><h3>Market-Moving Developments</h3><div id="marketMovingBody" class="catalyst-list">Loading developments…</div></section><div class="legacy-table" hidden><table><tbody id="rows"></tbody></table></div><section hidden></section><p class="src">Current Impact = estimated magnitude of the factor's present effect on Nasdaq based on the latest reading, move, event proximity and data freshness; it can change on every refresh and is separate from whether the signal is positive or negative. Green = supportive for Nasdaq; red = headwind; amber = mixed/event risk. Free sources can be delayed. NasDecode displays source freshness rather than representing delayed observations as exchange-real-time data.</p></div><script>
+</style><style>
+/* Option 2 charcoal design: purely presentational. Signal calculations and hover content are unchanged. */
+:root{--bg:#050505;--card:#101113;--line:#2b2d30;--text:#f5f5f5;--muted:#a9adb3;--green:#37d68b;--red:#ff6078;--amber:#f6bd4e}
+html{scroll-behavior:smooth;scroll-padding-top:78px}
+body{background:#050505;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:1660px;padding:21px 22px}
+.nd-topbar{position:sticky;top:0;z-index:200;min-height:58px;display:flex;align-items:center;gap:32px;padding:8px 24px;background:rgba(9,10,11,.97);border-bottom:1px solid #252629}
+.nd-brand{display:flex;align-items:center;gap:12px;color:#eef0f1;text-decoration:none;white-space:nowrap}
+.nd-brand-mark{font-size:29px;font-weight:850;letter-spacing:-.1em;line-height:1}
+.nd-brand-word{font-size:14px;letter-spacing:.26em;font-weight:550}
+.nd-nav{display:flex;align-items:center;gap:6px;min-width:0;overflow-x:auto;scrollbar-width:none}
+.nd-nav::-webkit-scrollbar{display:none}
+.nd-nav a{color:#aeb2b7;text-decoration:none;font-size:12px;font-weight:600;white-space:nowrap;padding:10px 13px;border-radius:8px}
+.nd-nav a:hover,.nd-nav a:focus-visible,.nd-nav .nd-current{color:#f5f5f5;background:#1b1c1f}
+.nd-top-actions{margin-left:auto;display:flex;align-items:center;gap:14px;white-space:nowrap}
+.nd-live{display:flex;gap:8px;align-items:center;color:#aeb2b7;font-size:11px}
+.nd-live-dot{width:7px;height:7px;border-radius:50%;background:#37d68b}
+.nd-topbar button{padding:8px 12px;border:1px solid #34363a;background:#191b1e;color:#e6e8ea;border-radius:8px;font-size:12px}
+.nd-topbar button:hover{background:#27292c}
+.card,.premarket,.signal-row,.intel-panel,.confirm-item,.mini-metric,.soxl-indicator,.watch-box{background:#101113;border-color:#2a2c30}
+.card{box-shadow:none}
+.card.signal-positive,.card.signal-negative,.card.signal-mixed{border-top:1px solid var(--line)}
+.card:hover{border-color:#505258}
+.factor-card .factor-name,.setup-card .factor-name{letter-spacing:.075em;font-weight:600}
+.factor-card .metric,.setup-card .metric{font-weight:760;letter-spacing:-.035em}
+.scorecard-category,.scorecard-category.assessment{display:flex;align-items:center;gap:16px;margin-top:27px;padding:17px 21px;border:1px solid #303236;border-radius:12px;background:linear-gradient(110deg,#17191b 0%,#0e0f10 100%);box-shadow:none}
+.scorecard-category:first-child{margin-top:0;padding-top:17px}
+.scorecard-category div{gap:5px}
+.scorecard-category span,.scorecard-category.assessment span{font-size:20px;font-weight:720;letter-spacing:.07em}
+.scorecard-category small{color:#a5a8ae;font-size:12px}
+.nd-section-icon{width:38px;height:38px;flex:none;display:grid;place-items:center;border:1px solid #33363a;border-radius:10px;background:#1c1e20;color:#c8cbd0;font-size:21px!important;font-weight:500!important;letter-spacing:0!important}
+.intel-panel{background:linear-gradient(145deg,#151618,#0f1011)}
+.signal-expand,.confirm-item,.soxl-indicator,.mini-metric{background:#161719}
+th{background:#1b1c1f}
+td,th,.driver,.catalyst{border-color:#303236}
+.card[data-tip]::after{background:#1a1b1d;color:#ebedf0;border-color:#45474c;box-shadow:0 14px 35px rgba(0,0,0,.55)}
+.signal-row summary:after,.signal-row[open] summary:after{background:#1c1d20;color:#d5d8dc;border-color:#393b40}
+.signal-row summary:hover:after{background:#292b2f;border-color:#55585e}
+.premarket p,.premarket ul,.explain{color:#e0e2e5}
+@media(max-width:1120px){.nd-topbar{gap:16px;padding:8px 14px}.nd-brand-word{font-size:12px;letter-spacing:.14em}.nd-nav a{padding:9px}}
+@media(max-width:780px){.nd-topbar{flex-wrap:wrap;gap:6px 12px}.nd-nav{order:3;width:100%}.nd-top-actions{gap:8px}.nd-live{max-width:145px;overflow:hidden;text-overflow:ellipsis}.wrap{padding:16px 12px}}
+@media(max-width:600px){.nd-section-icon{width:33px;height:33px}.scorecard-category,.scorecard-category.assessment{padding:15px 12px;gap:11px}.scorecard-category span,.scorecard-category.assessment span{font-size:17px;letter-spacing:.035em}}
+</style></head><body><header class="nd-topbar"><a class="nd-brand" href="#dashboard" aria-label="NasDecode Dashboard"><span class="nd-brand-mark" aria-hidden="true">N</span><span class="nd-brand-word">NASDECODE</span></a><nav class="nd-nav" aria-label="Dashboard sections"><a href="#dashboard" class="nd-current">Dashboard</a><a href="#macro-rates">Macro</a><a href="#market-internals">Internals</a><a href="#market-assessment">Assessment</a><a href="#premarket">Analysis</a></nav><div class="nd-top-actions"><span class="nd-live" aria-label="Data refresh status"><span class="nd-live-dot" aria-hidden="true"></span><span id="updated" role="status">Loading…</span></span><button id="update" type="button">↻ Refresh</button></div></header><div class="wrap" id="dashboard"><div class="section-heading"><div><div class="section-kicker">Signal monitor</div><h2>Market Signals</h2></div><span class="muted">Hover for metric definition · use View details for analysis</span></div><div class="factor-cards compact-cards" id="factorCards"></div><section class="premarket" id="premarket"><h2 id="analysisTitle">Pre-Market Analysis</h2><div class="muted" id="premarketMeta">Loading analysis…</div><div id="premarketBody"></div></section><details class="signal-details" open><summary>Signal Explorer</summary><div class="signal-explorer" id="signalExplorer"></div></details><section class="intel-panel setup-wide" id="marketSetup"></section><div class="lower-intel two-col"><section class="intel-panel"><div class="section-kicker">Decision frame</div><h3>What to Watch Today</h3><div id="watchConditions"></div></section><section class="intel-panel"><div class="section-kicker">Upcoming + active</div><h3>Major Catalysts</h3><div class="catalyst-list" id="majorCatalysts"></div></section></div><section class="intel-panel" id="marketMovingDevelopments"><div class="section-kicker">NasDecode Open Watch · curated</div><h3>Market-Moving Developments</h3><div id="marketMovingBody" class="catalyst-list">Loading developments…</div></section><div class="legacy-table" hidden><table><tbody id="rows"></tbody></table></div><section hidden></section><p class="src">Current Impact = estimated magnitude of the factor's present effect on Nasdaq based on the latest reading, move, event proximity and data freshness; it can change on every refresh and is separate from whether the signal is positive or negative. Green = supportive for Nasdaq; red = headwind; amber = mixed/event risk. Free sources can be delayed. NasDecode displays source freshness rather than representing delayed observations as exchange-real-time data.</p></div><script>
 /*
  * Presentation layer only.
  * Quantitative decisions belong in scripts/refresh.py; this browser code reads the
@@ -225,7 +267,7 @@ function render(d){
     const details='<div class="state-inputs">'+metric('SOX 5D',inputs.sox5,'%')+metric('vs QQQ 5D',inputs.rs5,' pp')+metric('Breadth',inputs.breadth,'%')+metric('SOX 1D',inputs.sox1,'%')+'</div>';
     return '<div class="card factor-card directional-state-card signal-mixed" tabindex="0" data-tip="'+escAttr(directionalShadow.explanation||'Frozen Directional Engine v3.0 shadow classifier. The highlighted segment is the current semiconductor setup state; it does not alter production scores.')+'"><span class="factor-name">SOXL DIRECTIONAL SETUP · V3 SHADOW</span><div class="state-gauge">'+segments+'</div><span class="card-status amber">'+escHtml(directionalShadow.scorecard?.value||directionalShadow.latest||'—')+'</span>'+details+ev+'<span class="card-latest">Frozen v3.0 · prospective validation · does not affect scores</span></div>';
   })():'';
-  const categoryHeading=(title,desc)=>'<div class="scorecard-category"><div><span>'+escHtml(title)+'</span><small>'+escHtml(desc)+'</small></div></div>';
+  const categoryHeading=(title,desc)=>{const key=title==='Macro / Rates'?'macro-rates':title==='Market Internals'?'market-internals':'market-assessment';const icon=key==='macro-rates'?'◎':key==='market-internals'?'▥':'◉';return '<div id="'+key+'" class="scorecard-category"><span class="nd-section-icon" aria-hidden="true">'+icon+'</span><div><span>'+escHtml(title)+'</span><small>'+escHtml(desc)+'</small></div></div>';};
   factorCards.innerHTML=
     categoryHeading('Macro / Rates','External environment · inflation, policy, yields and oil')+
     rowCards.slice(0,5).join('')+
