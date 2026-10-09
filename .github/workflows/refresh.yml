@@ -50,7 +50,7 @@ on:
     - cron: '27 20,21 * * 1-5'
 concurrency:
   group: nasboard-data-refresh
-  cancel-in-progress: true
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -93,15 +93,6 @@ jobs:
           SCHEDULE_EXPR: ${{ github.event.schedule }}
         run: |
           ny_hm=$(TZ=America/New_York date +%H%M)
-          # Derive checkpoint type from actual New York time, never from UTC cron text.
-          # This keeps the schedule correct through EDT/EST changes.
-          if [ "$ny_hm" -ge 1020 ] && [ "$ny_hm" -le 1055 ]; then
-            export NASDECODE_ANALYSIS_STAGE=early_market
-          elif [ "$ny_hm" -ge 1250 ] && [ "$ny_hm" -le 1325 ]; then
-            export NASDECODE_ANALYSIS_STAGE=mid_market
-          elif [ "$ny_hm" -ge 1520 ] && [ "$ny_hm" -le 1555 ]; then
-            export NASDECODE_ANALYSIS_STAGE=near_close
-          fi
           if [ "$ny_hm" -ge 1605 ] && [ "$ny_hm" -le 1645 ]; then
             export NASDECODE_CLOSE_SNAPSHOT=1
             echo "Capturing canonical post-close NasDecode snapshot"
@@ -116,6 +107,7 @@ jobs:
           python scripts/refine_scores.py
           python scripts/reconcile_premarket_scores.py
           python scripts/fix_three_day_watch.py
+          export NASDECODE_ANALYSIS_STAGE=$(python scripts/select_session_checkpoint.py)
           python scripts/capture_session_analysis.py
           python scripts/build_chart_history.py
           python scripts/build_hype_history.py
@@ -175,7 +167,8 @@ jobs:
             python scripts/refine_scores.py
             python scripts/reconcile_premarket_scores.py
             python scripts/fix_three_day_watch.py
-            python scripts/capture_session_analysis.py
+            export NASDECODE_ANALYSIS_STAGE=$(python scripts/select_session_checkpoint.py)
+          python scripts/capture_session_analysis.py
             python scripts/build_chart_history.py
             python scripts/build_hype_history.py
             python scripts/build_resilience_history.py
