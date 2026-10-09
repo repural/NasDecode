@@ -149,6 +149,7 @@ jobs:
           cp data/history/chart-history.json public/data/chart-history.json
           cp data/history/market-watch-events.json public/history/market-watch-events.json
           cp data/premarket.json public/data/premarket.json
+          cp data/history/session-analyses.json public/data/session-analyses.json
           git add -A public/data/session-research.json
           git add -A public/index.html public/data
           if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
@@ -158,14 +159,17 @@ jobs:
             if git push; then
               exit 0
             fi
-            echo "Push raced with main; regenerating from latest main (attempt $attempt/4)"
+            echo "Push raced with main; regenerate from latest main (attempt $attempt/4)"
             git fetch origin main
             git reset --hard origin/main
-            TAVILY_API_KEY='${{ secrets.TAVILY_KEY }}' TRADING_ECONOMICS_API_KEY='${{ secrets.TRADING_ECONOMICS_API_KEY }}' python scripts/refresh_macro_surprises.py
+            export MASSIVE_API_KEY='${{ secrets.MASSIVE_API_KEY }}'
+            export TAVILY_API_KEY='${{ secrets.TAVILY_KEY }}'
+            export TRADING_ECONOMICS_API_KEY='${{ secrets.TRADING_ECONOMICS_API_KEY }}'
+            python scripts/refresh_macro_surprises.py
             python scripts/verify_macro_actuals.py
-            MASSIVE_API_KEY='${{ secrets.MASSIVE_API_KEY }}' python scripts/refresh.py
+            python scripts/refresh.py
             python scripts/sync_premarket_brief.py
-          python scripts/publish_session_research.py
+            python scripts/publish_session_research.py
             python scripts/live_confirmation.py
             python scripts/apply_market_response.py
             python scripts/refine_scores.py
@@ -174,35 +178,34 @@ jobs:
             python scripts/capture_session_analysis.py
             python scripts/build_chart_history.py
             python scripts/build_hype_history.py
-            MASSIVE_API_KEY='${{ secrets.MASSIVE_API_KEY }}' python scripts/build_resilience_history.py
+            python scripts/build_resilience_history.py
             python scripts/build_resilience_model.py
             python scripts/build_resilience_engine.py
             python scripts/backtest_resilience_engine.py
-          python scripts/build_directional_edge.py
-          python scripts/backtest_directional_edge.py
-          python scripts/backtest_directional_edge_walkforward.py
-          python scripts/build_directional_regimes_v2.py
-          python scripts/backtest_directional_regimes_v2.py
-          python scripts/research_directional_v3.py
-          python scripts/build_directional_engine_v3.py
-          python scripts/validate_directional_engine_v3_holdout.py
-          python scripts/build_regime_context_dataset.py
-          python scripts/analyze_regime_context.py
-          python scripts/build_context_engine_v1.py
-          python scripts/track_directional_v3_prospective.py
-            git add -A data
+            python scripts/build_directional_edge.py
+            python scripts/backtest_directional_edge.py
+            python scripts/backtest_directional_edge_walkforward.py
+            python scripts/build_directional_regimes_v2.py
+            python scripts/backtest_directional_regimes_v2.py
+            python scripts/research_directional_v3.py
+            python scripts/build_directional_engine_v3.py
+            python scripts/validate_directional_engine_v3_holdout.py
+            python scripts/build_regime_context_dataset.py
+            python scripts/analyze_regime_context.py
+            python scripts/build_context_engine_v1.py
+            python scripts/track_directional_v3_prospective.py
             mkdir -p public/data public/history
             cp index.html public/index.html
             python scripts/inject_session_analysis_ui.py public/index.html
             cp data/dashboard.json public/data/dashboard.json
-          cp data/history/chart-history.json public/data/chart-history.json
-          cp data/history/market-watch-events.json public/history/market-watch-events.json
+            cp data/history/chart-history.json public/data/chart-history.json
+            cp data/history/market-watch-events.json public/history/market-watch-events.json
             cp data/premarket.json public/data/premarket.json
-          git add -A public/data/session-research.json
-            git add -A public/index.html public/data
+            cp data/history/session-analyses.json public/data/session-analyses.json
+            git add -A data public/index.html public/data public/history
             if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
             git diff --cached --quiet && exit 0
-            git commit -m 'Refresh dashboard data'
+            git commit -m 'Refresh dashboard data after push race'
           done
           echo "Unable to publish refreshed data after 4 attempts"
           exit 1
