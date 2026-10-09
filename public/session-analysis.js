@@ -64,7 +64,7 @@
         .session-tab:nth-child(-n+2){border-bottom:1px solid #34363a}
         .session-tab{padding:12px}
         .session-tab-panel p{font-size:13px}
-      }`
+      }`;
     document.head.appendChild(s);
   }
   function metric(label,v,suffix=''){
