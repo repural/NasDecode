@@ -49,7 +49,7 @@
       .session-analysis-metrics{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0 18px}
       .session-pill{border:1px solid #373a3e;background:#1c1e20;border-radius:999px;padding:5px 10px;font-size:11px;font-weight:680;color:#e8eaed}
       .session-tab-panel p{color:#dadddf;font-size:14px;font-weight:420;line-height:1.72;margin:0 0 15px;max-width:115ch}
-      .session-tab-panel .analysis-metric{color:#c7cdd4;font-weight:680}
+      .session-tab-panel .analysis-metric{color:#82cbd0;font-weight:650;text-decoration:none}
       .session-tab-panel .bias{font-size:17px;font-weight:590;line-height:1.45;margin:0 0 10px;color:#f3f4f5}
       .session-tab-panel h3{font-size:15px;font-weight:680;margin:22px 0 11px}
       .session-tab-panel ol{padding-left:24px;margin:0 0 18px;max-width:120ch}
