@@ -79,5 +79,5 @@ def main():
  "oilContractRoll":"not applicable to spot benchmark",
  "series":series,"sourceStatus":source_status,
  "missingPolicy":"Missing symbols/dates remain absent; no forward fill or proxy substitution."}
- OUT.write_text(json.dumps(payload,indent=2)+"\\n")
+ OUT.write_text(json.dumps(payload,indent=2)+"\n")
 if __name__=="__main__":main()
