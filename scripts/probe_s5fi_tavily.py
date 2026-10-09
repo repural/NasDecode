@@ -42,7 +42,7 @@ def diagnostic(raw):
     """
     lines = raw.splitlines()
     picks = []
-    keywords = re.compile(r"(?:\\b(?:date|historical|50.day|above|close|oct|sep|2026)\\b|\\b\\d{1,2}[/-]\\d{1,2}[/-]\\d{2,4}\\b|\\b20\\d{2}-\\d\\d-\\d\\d\\b)", re.I)
+    keywords = re.compile(r"(?:\b(?:date|historical|50.day|above|close|oct|sep|2026)\b|\b\d{1,2}[/-]\d{1,2}[/-]\d{2,4}\b|\b20\d{2}-\d\d-\d\d\b)", re.I)
     for line in lines:
         if len(picks) >= 7:
             break
@@ -50,9 +50,9 @@ def diagnostic(raw):
             continue
         # Strip markup and eliminate email/URL/token-like material.
         safe = re.sub(r"<[^>]*>", " ", line)
-        safe = re.sub(r"https?://\\S+|[\\w.+-]+@[\\w.-]+|(?i:(?:api[_-]?key|token|secret))\\s*[:=]\\s*\\S+", "[redacted]", safe)
-        safe = re.sub(r"[\\x00-\\x1f\\x7f]+", " ", safe)
-        safe = re.sub(r"\\s+", " ", safe).strip()[:160]
+        safe = re.sub(r"https?://\S+|[\w.+-]+@[\w.-]+|(?i:(?:api[_-]?key|token|secret))\s*[:=]\s*\S+", "[redacted]", safe)
+        safe = re.sub(r"[\x00-\x1f\x7f]+", " ", safe)
+        safe = re.sub(r"\s+", " ", safe).strip()[:160]
         if safe and safe not in picks:
             picks.append(safe)
     return {"lineCount":len(lines),"samples":picks}
