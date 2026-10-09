@@ -10,6 +10,8 @@ from pathlib import Path
 OUT = Path("data/history/s5fi-tavily-observations.json")
 URLS = [
     "https://www.investing.com/indices/s-p-500-stocks-above-50-day-average-historical-data",
+    "https://uk.investing.com/indices/s-p-500-stocks-above-50-day-average-historical-data",
+    "https://in.investing.com/indices/s-p-500-stocks-above-50-day-average-historical-data",
     "https://www.barchart.com/stocks/quotes/$S5FI/historical-prices",
 ]
 
