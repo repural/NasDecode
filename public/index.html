@@ -122,6 +122,16 @@ td,th,.driver,.catalyst{border-color:#303236}
  .scorecard-category span:not(.nd-section-icon),.scorecard-category.assessment span:not(.nd-section-icon){font-size:15px;letter-spacing:.11em}
  .compact-cards .factor-card,.compact-cards .setup-card{padding:15px}
 }
+</style><style>
+/* Option 2 preview: subtle market-signal top edges; not raw price-direction indicators. */
+#factorCards .card.signal-positive:not(.awaiting){border-top:2px solid var(--green)}
+#factorCards .card.signal-negative:not(.awaiting){border-top:2px solid var(--red)}
+#factorCards .card.signal-mixed:not(.awaiting){border-top:2px solid var(--amber)}
+#factorCards .card.awaiting{border-top:2px solid #55585d}
+#factorCards .card.signal-positive:not(.awaiting),
+#factorCards .card.signal-negative:not(.awaiting),
+#factorCards .card.signal-mixed:not(.awaiting),
+#factorCards .card.awaiting{box-shadow:none}
 </style></head><body><header class="nd-topbar"><a class="nd-brand" href="#dashboard" aria-label="NasDecode Dashboard"><span class="nd-brand-mark" aria-hidden="true">N</span><span class="nd-brand-word">NASDECODE</span></a><nav class="nd-nav" aria-label="Dashboard sections"><a href="#dashboard" class="nd-current">Dashboard</a><a href="#macro-rates">Macro</a><a href="#market-internals">Internals</a><a href="#market-assessment">Assessment</a><a href="#premarket">Analysis</a></nav><div class="nd-top-actions"><span class="nd-live" aria-label="Data refresh status"><span class="nd-live-dot" aria-hidden="true"></span><span id="updated" role="status">Loading…</span></span><button id="update" type="button">↻ Refresh</button></div></header><div class="wrap" id="dashboard"><div class="factor-cards compact-cards" id="factorCards"></div><section class="premarket" id="premarket"><h2 id="analysisTitle">Pre-Market Analysis</h2><div class="muted" id="premarketMeta">Loading analysis…</div><div id="premarketBody"></div></section><details class="signal-details" open><summary>Signal Explorer</summary><div class="signal-explorer" id="signalExplorer"></div></details><section class="intel-panel setup-wide" id="marketSetup"></section><div class="lower-intel two-col"><section class="intel-panel"><div class="section-kicker">Decision frame</div><h3>What to Watch Today</h3><div id="watchConditions"></div></section><section class="intel-panel"><div class="section-kicker">Upcoming + active</div><h3>Major Catalysts</h3><div class="catalyst-list" id="majorCatalysts"></div></section></div><section class="intel-panel" id="marketMovingDevelopments"><div class="section-kicker">NasDecode Open Watch · curated</div><h3>Market-Moving Developments</h3><div id="marketMovingBody" class="catalyst-list">Loading developments…</div></section><div class="legacy-table" hidden><table><tbody id="rows"></tbody></table></div><section hidden></section><p class="src">Current Impact = estimated magnitude of the factor's present effect on Nasdaq based on the latest reading, move, event proximity and data freshness; it can change on every refresh and is separate from whether the signal is positive or negative. Green = supportive for Nasdaq; red = headwind; amber = mixed/event risk. Free sources can be delayed. NasDecode displays source freshness rather than representing delayed observations as exchange-real-time data.</p></div><script>
 /*
  * Presentation layer only.
