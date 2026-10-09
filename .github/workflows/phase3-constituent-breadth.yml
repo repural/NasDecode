@@ -1,0 +1,41 @@
+name: Phase 3 Constituent Breadth Backfill
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/backfill_phase3_constituent_breadth.py'
+      - '.github/workflows/phase3-constituent-breadth.yml'
+permissions:
+  contents: write
+concurrency:
+  group: phase3-constituent-breadth
+  cancel-in-progress: false
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate script
+        run: python -m py_compile scripts/backfill_phase3_constituent_breadth.py
+      - name: Backfill dated adjusted closes
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: python scripts/backfill_phase3_constituent_breadth.py
+      - name: Persist research-only dataset
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/history/phase3-constituent-breadth.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Persist Phase 3 semiconductor proxy breadth history"
+          for attempt in 1 2 3 4 5; do
+            git pull --rebase origin main
+            git push origin HEAD:main && exit 0
+            sleep $((attempt * 2))
+          done
+          exit 1
