@@ -470,9 +470,10 @@ async function loadAnalysis(d){if(window.NasDecodeSessionTabs?.render){await win
   // quantitative pipeline uses {tradingDate, updatedET, paragraphs, catalysts}.
   // Accept either schema so a valid same-day researched brief is never hidden.
   const inferredDate=a.tradingDate||String(a.updated||a.updatedET||'').match(/\\b20\\d{2}-\\d{2}-\\d{2}\\b/)?.[0];
-  if(inferredDate!==nyDate){analysisTitle.textContent='Pre-Market Analysis';premarketMeta.textContent='Today’s analysis is being prepared.';premarketBody.innerHTML='';return;}
+  const priorBrief=inferredDate!==nyDate;
+  if(priorBrief&&!((a.paragraphs||a.summary||[]).length)){analysisTitle.textContent='Pre-Market Analysis';premarketMeta.textContent='Today’s analysis is being prepared.';premarketBody.innerHTML='';return;}
   analysisTitle.textContent=(a.stage==='premarket'||a.researchBrief||a.bias)?'Pre-Market Analysis':'Early Market Outlook';
-  premarketMeta.textContent='Analysis updated: '+escHtml(a.updatedET||a.updated||'—');
+  premarketMeta.textContent=priorBrief?'Latest available analysis: '+escHtml(inferredDate||'undated')+' · Previous session; today’s research is pending.':'Analysis updated: '+escHtml(a.updatedET||a.updated||'—');
   const ns=d?.nasdaqScore||{}; const sig=ns.signal==='positive'?'Positive':ns.signal==='negative'?'Negative':'Mixed';
   const score=a.score!==null&&a.score!==undefined?(a.score>0?'+':'')+a.score+' / 100':'—';
   const paras=(a.paragraphs||a.summary||[]).map(x=>'<p>'+analysisText(x)+'</p>').join('');
@@ -483,7 +484,7 @@ async function loadAnalysis(d){if(window.NasDecodeSessionTabs?.render){await win
     const entries=(a.catalysts||[]).filter(x=>x&&typeof x==='object');
     todayWatch.innerHTML=entries.length?entries.map((e,i)=>'<div class="catalyst"><b>'+escHtml(String(i+1)+'. '+(e.title||'Event'))+'</b><div style="margin-top:5px">'+analysisText(e.detail||e.description||'')+'</div></div>').join(''):'<div class="muted">Today’s major events have not been published yet.</div>';
   }
-  premarketBody.innerHTML=richMeta+paras+(a.watchIntoOpen?'<p>'+analysisText(a.watchIntoOpen)+'</p>':'')+(a.keyTimes?'<p>'+analysisText(a.keyTimes)+'</p>':'')+(catalysts?'<h3>Near-term catalysts</h3><ul>'+catalysts+'</ul>':'')+nearbyMajorEarnings(d);
+  premarketBody.innerHTML=(priorBrief?'<p class="muted"><b>Previous-session analysis — not a current market outlook.</b></p>':'')+richMeta+paras+(a.watchIntoOpen?'<p>'+analysisText(a.watchIntoOpen)+'</p>':'')+(a.keyTimes?'<p>'+analysisText(a.keyTimes)+'</p>':'')+(catalysts?'<h3>Near-term catalysts</h3><ul>'+catalysts+'</ul>':'')+nearbyMajorEarnings(d);
 }catch(e){premarketMeta.textContent='Analysis not available yet.';premarketBody.innerHTML='';}}
 update.onclick=async()=>{const d=await load();await Promise.all([loadAnalysis(d),loadTodayWatch()]);scheduleAutoRefresh()};
 
