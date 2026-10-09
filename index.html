@@ -144,6 +144,9 @@ function render(d){
   const rowCards=visibleRows.map((r,i)=>{
     const minis=leadershipMetrics(r);
     const detail=minis?(r.factor==='Semiconductor leadership'?String(r.latest||'').split('|').slice(-2).join(' · ').trim():''):r.latest||'—';
+    if(r.factor==='S&P 500 50D Breadth / Oversold'&&/awaiting|not connected|unavailable|stale/i.test(String(r.latest||'')+' '+String(r.freshness||''))){
+      return '<div class="card factor-card awaiting" tabindex="0" data-tip="'+escAttr(r.explanation||'S5FI source unavailable')+'"><span class="factor-name">'+factorRank(i)+'. '+escHtml(r.factor)+'</span><span class="card-status">Data unavailable</span><span class="card-latest">S5FI feed not connected · no current breadth signal</span></div>';
+    }
     if(r.factor==='Oil (WTI / Brent)'&&r.scorecard){
       const sc=r.scorecard;
       const main=sc.secondaryValue||'Brent unavailable';
