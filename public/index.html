@@ -192,6 +192,24 @@ td,th,.driver,.catalyst{border-color:#303236}
  #signalExplorer .signal-reading{grid-column:1/3;grid-row:2;color:#bbc1c8}
  #signalExplorer .nd-explorer-chevron{grid-column:3;grid-row:1}
 }
+</style><style>
+/* Vertical rhythm refinement: consistent header/card spacing without hiding values. */
+#factorCards.factor-cards{row-gap:9px;margin-bottom:22px}
+#factorCards .scorecard-category,#factorCards .scorecard-category.assessment{margin-top:15px;margin-bottom:0;min-height:62px;padding:12px 18px}
+#factorCards .scorecard-category:first-child{margin-top:0}
+#factorCards.compact-cards .factor-card,#factorCards.compact-cards .setup-card{padding:14px 16px;min-height:0}
+#factorCards .factor-card .factor-name,#factorCards .setup-card .factor-name{margin-bottom:9px}
+#factorCards .factor-card .card-latest{margin-top:6px;line-height:1.38}
+#factorCards .mini-metrics{margin-top:4px;gap:6px}
+#factorCards .mini-metric{padding:6px 8px}
+#factorCards .sparkline{height:34px;padding-top:3px;margin-top:auto}
+#factorCards .sparkline svg{height:23px}
+#factorCards .sparkline-meta{margin-top:1px}
+@media(max-width:700px){
+ #factorCards.factor-cards{row-gap:8px}
+ #factorCards .scorecard-category,#factorCards .scorecard-category.assessment{margin-top:12px;min-height:58px;padding:11px 13px}
+ #factorCards.compact-cards .factor-card,#factorCards.compact-cards .setup-card{padding:13px}
+}
 </style></head><body><header class="nd-topbar"><a class="nd-brand" href="#dashboard" aria-label="NasDecode Dashboard"><span class="nd-brand-mark" aria-hidden="true">N</span><span class="nd-brand-word">NASDECODE</span></a><nav class="nd-nav" aria-label="Dashboard sections"><a href="#dashboard" class="nd-current">Dashboard</a><a href="#macro-rates">Macro</a><a href="#market-internals">Internals</a><a href="#market-assessment">Assessment</a><a href="#premarket">Analysis</a></nav><div class="nd-top-actions"><span class="nd-live" aria-label="Data refresh status"><span class="nd-live-dot" aria-hidden="true"></span><span id="updated" role="status">Loading…</span></span><button id="update" type="button">↻ Refresh</button></div></header><div class="wrap" id="dashboard"><div class="factor-cards compact-cards" id="factorCards"></div><section class="premarket" id="premarket"><h2 id="analysisTitle">Pre-Market Analysis</h2><div class="muted" id="premarketMeta">Loading analysis…</div><div id="premarketBody"></div></section><details class="signal-details" open><summary>Signal Explorer</summary><div class="signal-explorer" id="signalExplorer"></div></details><section class="intel-panel setup-wide" id="marketSetup"></section><div class="lower-intel two-col"><section class="intel-panel"><div class="section-kicker">Decision frame</div><h3>What to Watch Today</h3><div id="watchConditions"></div></section><section class="intel-panel"><div class="section-kicker">Upcoming + active</div><h3>Major Catalysts</h3><div class="catalyst-list" id="majorCatalysts"></div></section></div><section class="intel-panel" id="marketMovingDevelopments"><div class="section-kicker">NasDecode Open Watch · curated</div><h3>Market-Moving Developments</h3><div id="marketMovingBody" class="catalyst-list">Loading developments…</div></section><div class="legacy-table" hidden><table><tbody id="rows"></tbody></table></div><section hidden></section><p class="src">Current Impact = estimated magnitude of the factor's present effect on Nasdaq based on the latest reading, move, event proximity and data freshness; it can change on every refresh and is separate from whether the signal is positive or negative. Green = supportive for Nasdaq; red = headwind; amber = mixed/event risk. Free sources can be delayed. NasDecode displays source freshness rather than representing delayed observations as exchange-real-time data.</p></div><script>
 /*
  * Presentation layer only.
