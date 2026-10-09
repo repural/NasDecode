@@ -6,6 +6,7 @@ on:
     paths:
       - scripts/audit_phase3_resilience.py
       - scripts/build_phase3_market_structure.py
+      - scripts/audit_phase3_breadth_provenance.py
       - .github/workflows/phase3-resilience-audit.yml
 permissions:
   contents: write
@@ -24,11 +25,13 @@ jobs:
         run: python scripts/audit_phase3_resilience.py
       - name: Build market structure features
         run: python scripts/build_phase3_market_structure.py
+      - name: Audit breadth provenance
+        run: python scripts/audit_phase3_breadth_provenance.py
       - name: Persist research artifact
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/history/phase3-resilience-feature-audit.json data/history/phase3-market-structure-features.json
+          git add data/history/phase3-resilience-feature-audit.json data/history/phase3-market-structure-features.json data/history/phase3-breadth-provenance-audit.json
           git diff --cached --quiet && exit 0
           git commit -m "Persist Phase 3 resilience feature audit"
           for attempt in 1 2 3 4 5; do
