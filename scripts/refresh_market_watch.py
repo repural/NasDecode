@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
+"""Strict repository-side publisher for NasDecode Market Watch.
+
+Raw discovery remains in data/semiconductor-catalysts.json. This script admits only
+fresh, event-like, high-materiality candidates from credible sources into the
+canonical curated archive at data/history/market-watch-events.json.
+"""
 import datetime as dt
 import hashlib
 import json
 import os
 import re
+import urllib.parse
 import urllib.request
 from pathlib import Path
 
@@ -14,326 +21,337 @@ ACTIVE_PATH = ROOT / "public" / "data" / "market-watch.json"
 TAVILY_URL = "https://api.tavily.com/search"
 
 ACTIVE_DAYS = 4
-HIGH_SCORE = 8
-MEDIUM_HIGH_SCORE = 6
-TRUSTED_DOMAINS = (
-    "reuters.com", "bloomberg.com", "cnbc.com", "wsj.com", "ft.com",
-    "marketwatch.com", "federalreserve.gov", "bls.gov", "bea.gov",
-    "treasury.gov", "iea.org", "eia.gov",
-)
-MACRO_QUERIES = (
-    (
-        "fed-rates",
-        'Federal Reserve Treasury yields rate hike rate cut inflation Nasdaq Reuters',
-        ("federal reserve", "fed ", "treasury", "yield", "rate hike", "rate cut"),
-    ),
-    (
-        "macro",
-        'US CPI PCE payrolls unemployment jobs inflation growth Nasdaq Reuters',
-        ("cpi", "pce", "payroll", "unemployment", "employment", "jobs", "inflation", "gdp"),
-    ),
-    (
-        "oil-geopolitics",
-        'oil Brent WTI IEA OPEC sanctions Middle East geopolitical inflation Nasdaq Reuters',
-        ("brent", "wti", "oil", "iea", "opec", "sanction", "middle east", "iran"),
-    ),
-    (
-        "regulatory",
-        'US semiconductor export controls China AI chips restrictions sanctions Reuters',
-        ("export control", "chip restriction", "semiconductor restriction", "sanction", "china chips", "ai chips"),
-    ),
-)
+MIN_SCORE = 8
+
+TRUSTED_DOMAINS = {
+    "reuters.com", "cnbc.com", "wsj.com", "ft.com", "bloomberg.com",
+    "sec.gov", "federalreserve.gov", "bls.gov", "bea.gov", "treasury.gov",
+    "iea.org", "eia.gov",
+}
+
+# These are discovery noise, not discrete market-moving events.
+REJECT_HEADLINE_PATTERNS = [
+    r"better buy", r"should you buy", r"time to buy", r"stock price",
+    r"quote and history", r"price target", r"stock forecast",
+    r"moved (up|down) by", r"what investors need to know",
+    r"what signal does it send", r"largest companies by market cap",
+    r"expected to announce earnings", r"stocks making the biggest moves",
+    r"what you can learn from", r"heads for \$?\d+ trillion",
+    r"stock rises to new highs", r"stock tests all-time highs",
+    r"\bvs\.?\b.*\b(which|better|contrasting)\b",
+    r"etfs? to buy", r"job[s]?$", r"production engineer",
+]
+
+EVENT_TERMS = {
+    "earnings", "reports", "reported", "guidance", "forecast", "outlook",
+    "raises", "raised", "cuts", "cut", "buyback", "repurchase",
+    "acquire", "acquires", "acquisition", "merger", "partnership",
+    "contract", "deal", "agreement", "investment", "invests", "launch",
+    "product", "order", "customer", "capacity", "production", "supply",
+    "export", "restriction", "sanction", "license", "investigation",
+    "lawsuit", "settlement", "ceo", "cfo", "resign", "appoint",
+    "fed", "federal reserve", "treasury", "yield", "inflation", "cpi",
+    "pce", "payroll", "unemployment", "jobs", "gdp", "oil", "brent",
+    "wti", "opec", "iea", "war",
+}
+
+MACRO_SEARCHES = [
+    ("fed-rates", "Federal Reserve Treasury yields rate hike rate cut Nasdaq"),
+    ("macro", "US CPI PCE payrolls unemployment jobs inflation GDP Nasdaq"),
+    ("oil-geopolitics", "Brent WTI IEA OPEC sanctions Middle East oil inflation Nasdaq"),
+    ("regulatory", "US semiconductor export controls China AI chips restrictions sanctions"),
+]
 
 
 def load_json(path, default):
     try:
-        with open(path, encoding="utf-8") as f:
-            return json.load(f)
+        return json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError):
         return default
 
 
-def tavily_search(query, days=2, max_results=10):
+def now_utc():
+    return dt.datetime.now(dt.timezone.utc)
+
+
+def parse_date(value):
+    if not value:
+        return None
+    try:
+        return dt.datetime.fromisoformat(str(value).replace("Z", "+00:00")).date()
+    except ValueError:
+        return None
+
+
+def host(url):
+    try:
+        return urllib.parse.urlparse(url).hostname.lower().removeprefix("www.")
+    except Exception:
+        return ""
+
+
+def trusted_source(url):
+    h = host(url or "")
+    return any(h == d or h.endswith("." + d) for d in TRUSTED_DOMAINS)
+
+
+def rejected_headline(title):
+    low = (title or "").strip().lower()
+    return any(re.search(p, low, re.I) for p in REJECT_HEADLINE_PATTERNS)
+
+
+def event_like(title):
+    low = (title or "").lower()
+    return any(term in low for term in EVENT_TERMS)
+
+
+def fresh(event_date):
+    today = now_utc().date()
+    return event_date is not None and dt.timedelta(days=0) <= (today - event_date) <= dt.timedelta(days=1)
+
+
+def normalize_headline(text):
+    text = re.sub(r"\s*[-|–—]\s*(Reuters|CNBC|WSJ|Bloomberg|FT).*?$", "", text or "", flags=re.I)
+    return re.sub(r"[^a-z0-9]+", " ", text.lower()).strip()
+
+
+def stable_id(date, ticker, title):
+    base = f"{date.isoformat()}|{ticker}|{normalize_headline(title)}"
+    digest = hashlib.sha1(base.encode("utf-8")).hexdigest()[:10]
+    slug = re.sub(r"[^a-z0-9]+", "-", normalize_headline(title)).strip("-")[:44].rstrip("-")
+    return f"{date.isoformat()}-{ticker.lower()}-{slug}-{digest}"
+
+
+def tavily_search(query, max_results=8):
     key = os.environ.get("TAVILY_API_KEY") or os.environ.get("TAVILY_KEY")
     if not key:
         return []
-    payload = json.dumps({
+    payload = {
         "api_key": key,
         "query": query,
         "topic": "news",
         "search_depth": "advanced",
-        "days": days,
+        "days": 1,
         "max_results": max_results,
         "include_answer": False,
         "include_raw_content": False,
-    }).encode()
+        "include_domains": sorted(TRUSTED_DOMAINS),
+    }
     req = urllib.request.Request(
         TAVILY_URL,
-        data=payload,
+        data=json.dumps(payload).encode(),
         headers={"Content-Type": "application/json", "User-Agent": "NasDecode/1.0"},
     )
-    with urllib.request.urlopen(req, timeout=45) as response:
-        return json.load(response).get("results", [])
+    with urllib.request.urlopen(req, timeout=45) as r:
+        return json.load(r).get("results", [])
 
 
-def slugify(text, max_len=72):
-    slug = re.sub(r"[^a-z0-9]+", "-", (text or "").lower()).strip("-")
-    return slug[:max_len].rstrip("-") or "event"
-
-
-def stable_id(date, ticker, title):
-    digest = hashlib.sha1(f"{date}|{ticker}|{title}".encode("utf-8")).hexdigest()[:8]
-    return f"{date}-{ticker.lower()}-{slugify(title, 48)}-{digest}"
-
-
-def materiality_label(score):
-    if score >= HIGH_SCORE:
-        return "High"
-    if score >= MEDIUM_HIGH_SCORE:
-        return "Medium-High"
-    return "Medium"
-
-
-def infer_direction(event):
-    text = f"{event.get('title','')} {event.get('type','')}".lower()
-    negative = (
-        "cuts", "cut ", "restriction", "sanction", "investigation", "lawsuit",
-        "delay", "warning", "miss", "surge in yields", "higher yields", "hot inflation",
-    )
-    positive = (
-        "raises", "raise ", "wins", "launch", "buyback", "repurchase", "acquire",
-        "partnership", "contract", "beats", "beat ", "lower yields", "rate cut",
-    )
-    if any(x in text for x in negative) and not any(x in text for x in positive):
+def infer_direction(title):
+    low = (title or "").lower()
+    neg = ("cuts", "cut ", "restriction", "sanction", "investigation", "lawsuit",
+           "delay", "warning", "misses", "miss ", "surge in yields", "higher yields",
+           "hot inflation", "war", "attack")
+    pos = ("raises", "raised", "wins", "launch", "buyback", "repurchase", "acquire",
+           "partnership", "contract", "agreement", "beats", "beat ", "lower yields",
+           "rate cut", "eases", "falls")
+    has_neg = any(x in low for x in neg)
+    has_pos = any(x in low for x in pos)
+    if has_neg and not has_pos:
         return "Negative"
-    if any(x in text for x in positive) and not any(x in text for x in negative):
+    if has_pos and not has_neg:
         return "Positive"
     return "Mixed"
 
 
-def normalize_date(value):
-    if not value:
-        return dt.datetime.now(dt.timezone.utc).date().isoformat()
-    try:
-        return dt.datetime.fromisoformat(str(value).replace("Z", "+00:00")).date().isoformat()
-    except ValueError:
-        return dt.datetime.now(dt.timezone.utc).date().isoformat()
+def scope_for(candidate):
+    if candidate.get("scope") == "macro":
+        return "Nasdaq-wide macro"
+    if candidate.get("scope") == "sector":
+        return "Semiconductor sector"
+    if candidate.get("scope") == "mega_cap":
+        return "Mega-cap / Nasdaq"
+    return "Single stock"
 
 
-def trusted(url):
-    low = (url or "").lower()
-    return any(domain in low for domain in TRUSTED_DOMAINS)
-
-
-def macro_score(title, content, url, required_terms):
-    text = f"{title} {content}".lower()
-    title_low = (title or "").lower()
-    score = 0
-    if any(term in title_low for term in required_terms):
-        score += 4
-    elif any(term in text for term in required_terms):
-        score += 2
-    if trusted(url):
-        score += 3
-    for term, weight in (
-        ("surge", 2), ("plunge", 2), ("record", 2), ("emergency", 3),
-        ("unexpected", 2), ("unexpectedly", 2), ("hike", 2), ("cut", 2),
-        ("sanction", 3), ("restriction", 3), ("release", 2), ("war", 3),
-    ):
-        if term in title_low:
-            score += weight
-    return score
-
-
-def discover_macro_events():
-    discovered = []
-    for category, query, required_terms in MACRO_QUERIES:
-        try:
-            results = tavily_search(query)
-        except Exception as exc:
-            print("macro Tavily search failed", category, type(exc).__name__, str(exc))
-            continue
-        for result in results:
-            title = str(result.get("title") or "").strip()
-            content = str(result.get("content") or "").strip()
-            url = str(result.get("url") or "").strip()
-            score = macro_score(title, content, url, required_terms)
-            if score < MEDIUM_HIGH_SCORE:
-                continue
-            discovered.append({
-                "date": normalize_date(result.get("published_date")),
-                "ticker": "MARKET",
-                "type": category,
-                "scope": "macro",
-                "title": title[:180],
-                "source": url,
-                "autoDetected": True,
-                "materialityScore": score,
-                "discoveredAtUTC": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
-            })
-    return discovered
-
-
-def company_market(event):
-    ticker = event.get("ticker") or "Market"
-    if ticker == "MARKET":
-        mapping = {
+def company_market(candidate):
+    if candidate.get("scope") == "macro":
+        category = candidate.get("type")
+        return {
             "fed-rates": "Federal Reserve / U.S. Treasuries / Nasdaq",
             "macro": "U.S. macro / Nasdaq",
             "oil-geopolitics": "Oil / Geopolitics / Nasdaq",
             "regulatory": "U.S. policy / Semiconductor sector",
-        }
-        return mapping.get(event.get("type"), "Market / Nasdaq")
-    title = event.get("title") or "Major catalyst"
-    return f"{ticker} / {title[:96]}"
+        }.get(category, "Market / Nasdaq")
+    return candidate.get("ticker") or "Market"
 
 
-def expected_scope(event):
-    scope = event.get("scope")
-    if scope == "sector":
-        return "Semiconductor sector"
-    if scope == "mega_cap":
-        return "Mega-cap / Nasdaq"
-    if scope == "macro":
-        return "Nasdaq-wide macro"
-    return "Single stock"
+def materiality(score):
+    return "Very High" if score >= 12 else "High"
 
 
-def why_it_matters(event):
-    if event.get("scope") == "macro":
-        return "Repository Market Watch classified this as a material macro/policy catalyst capable of affecting yields, inflation expectations, semiconductor leadership or Nasdaq risk appetite. Market reaction must be verified before treating it as confirmed momentum."
-    return "Repository catalyst monitor classified this as a material event in the SOX/mega-cap universe. Market reaction must be verified before treating it as confirmed momentum."
-
-
-def to_history_event(event):
-    score = int(event.get("materialityScore") or 0)
-    date = event.get("date") or dt.datetime.now(dt.timezone.utc).date().isoformat()
-    ticker = event.get("ticker") or "MARKET"
-    title = event.get("title") or "Major market catalyst"
-    direction = infer_direction(event)
-    scope = expected_scope(event)
-    is_macro = event.get("scope") == "macro"
+def build_event(candidate):
+    date = candidate["date_obj"]
+    ticker = candidate.get("ticker") or "MARKET"
+    title = candidate["title"].strip()
+    is_macro = candidate.get("scope") == "macro"
+    direction = infer_direction(title)
     return {
         "id": stable_id(date, ticker, title),
-        "eventTime": f"{date}T12:00:00-04:00",
-        "firstReported": date,
-        "category": event.get("type") or "company_specific",
-        "companyMarket": company_market(event),
+        "eventTime": f"{date.isoformat()}T12:00:00-04:00",
+        "firstReported": date.isoformat(),
+        "category": candidate.get("type") or "company_specific",
+        "companyMarket": company_market(candidate),
         "headline": title,
-        "source": event.get("source") or None,
-        "sourceUrl": event.get("source") or None,
-        "whyItMatters": why_it_matters(event),
+        "source": host(candidate["source"]) or "Credible source",
+        "sourceUrl": candidate["source"],
+        "whyItMatters": (
+            "Validated repository-side as a material macro/policy development capable of affecting "
+            "Treasury yields, inflation expectations, semiconductor leadership or Nasdaq risk appetite."
+            if is_macro else
+            "Validated repository-side as a material company/semiconductor development with plausible "
+            "read-through to the affected stock, SOX leadership or Nasdaq risk appetite."
+        ),
         "expectedImpact": {
             "stock": "Broad technology" if is_macro else ticker,
             "sox": "Potentially material",
             "nasdaq": "Potentially material",
-            "scope": scope,
+            "scope": scope_for(candidate),
             "direction": direction,
-            "materiality": materiality_label(score),
+            "materiality": materiality(int(candidate.get("materialityScore") or MIN_SCORE)),
         },
         "marketConfirmation": {
             "state": "Unconfirmed",
-            "summary": "Auto-persisted by the repository Market Watch. Await QQQ, SOX, SMH/SOXX, breadth and persistence confirmation.",
+            "summary": "Published by the strict GitHub Actions curation gate. Await QQQ, SOX, SMH/SOXX, breadth and persistence confirmation.",
         },
         "status": "active",
-        "autoDetected": True,
-        "materialityScore": score,
-        "discoveredAtUTC": event.get("discoveredAtUTC"),
+        "autoDetected": False,
     }
 
 
-def active_projection(event):
-    impact = event.get("expectedImpact") or {}
-    conf = event.get("marketConfirmation") or {}
-    return {
-        "id": event.get("id"),
-        "eventTime": event.get("eventTime"),
-        "category": event.get("category"),
-        "companyMarket": event.get("companyMarket"),
-        "headline": event.get("headline"),
-        "direction": impact.get("direction"),
-        "materiality": impact.get("materiality"),
-        "scope": impact.get("scope"),
-        "marketConfirmation": conf.get("state"),
-        "whyItMatters": event.get("whyItMatters"),
-    }
+def raw_company_candidates():
+    data = load_json(CATALYST_PATH, {"events": []})
+    for e in data.get("events") or []:
+        score = int(e.get("materialityScore") or 0)
+        date = parse_date(e.get("date"))
+        title = str(e.get("title") or "").strip()
+        source = str(e.get("source") or "").strip()
+        if score < MIN_SCORE or not fresh(date):
+            continue
+        if not trusted_source(source) or rejected_headline(title) or not event_like(title):
+            continue
+        yield {
+            **e,
+            "date_obj": date,
+            "title": title,
+            "source": source,
+        }
+
+
+def macro_candidates():
+    for category, query in MACRO_SEARCHES:
+        try:
+            results = tavily_search(query)
+        except Exception as exc:
+            print("macro search failed", category, type(exc).__name__, str(exc))
+            continue
+        for r in results:
+            title = str(r.get("title") or "").strip()
+            source = str(r.get("url") or "").strip()
+            date = parse_date(r.get("published_date")) or now_utc().date()
+            if not fresh(date) or not trusted_source(source):
+                continue
+            if rejected_headline(title) or not event_like(title):
+                continue
+            yield {
+                "date_obj": date,
+                "ticker": "MARKET",
+                "type": category,
+                "scope": "macro",
+                "title": title,
+                "source": source,
+                "materialityScore": 10,
+            }
 
 
 def main():
-    catalysts = load_json(CATALYST_PATH, {"events": []})
     history = load_json(HISTORY_PATH, {
         "schemaVersion": 1,
         "updated": None,
-        "description": "Append-only history of material catalysts surfaced by the NasDecode Market Watch agent.",
+        "description": "Curated history of material catalysts published by NasDecode Open Watch.",
         "events": [],
     })
-
     events = list(history.get("events") or [])
-    by_id = {e.get("id"): e for e in events if e.get("id")}
 
-    candidates = []
-    for event in catalysts.get("events") or []:
-        if not event.get("autoDetected"):
+    existing_ids = {e.get("id") for e in events}
+    existing_urls = {str(e.get("sourceUrl") or "").strip().lower() for e in events if e.get("sourceUrl")}
+    existing_heads = {normalize_headline(e.get("headline")) for e in events if e.get("headline")}
+
+    accepted = []
+    seen_urls = set()
+    seen_heads = set()
+
+    for c in list(raw_company_candidates()) + list(macro_candidates()):
+        url_key = c["source"].strip().lower()
+        head_key = normalize_headline(c["title"])
+        if url_key in existing_urls or head_key in existing_heads:
             continue
-        score = int(event.get("materialityScore") or 0)
-        if score < MEDIUM_HIGH_SCORE:
+        if url_key in seen_urls or head_key in seen_heads:
             continue
-        candidates.append(event)
-    candidates.extend(discover_macro_events())
+        accepted.append(c)
+        seen_urls.add(url_key)
+        seen_heads.add(head_key)
 
     added = 0
-    for candidate in candidates:
-        normalized = to_history_event(candidate)
-        event_id = normalized["id"]
-        if event_id in by_id:
-            current = by_id[event_id]
-            current["materialityScore"] = max(
-                int(current.get("materialityScore") or 0),
-                normalized["materialityScore"],
-            )
-            if normalized.get("discoveredAtUTC"):
-                current["lastSeenUTC"] = normalized["discoveredAtUTC"]
+    for c in accepted:
+        e = build_event(c)
+        if e["id"] in existing_ids:
             continue
-        events.append(normalized)
-        by_id[event_id] = normalized
+        events.append(e)
+        existing_ids.add(e["id"])
         added += 1
 
-    now = dt.datetime.now(dt.timezone.utc)
-    cutoff = now.date() - dt.timedelta(days=ACTIVE_DAYS)
-
-    for event in events:
-        if not event.get("autoDetected") or event.get("status") != "active":
+    # Age active events without deleting history.
+    cutoff = now_utc().date() - dt.timedelta(days=ACTIVE_DAYS)
+    for e in events:
+        if e.get("status") != "active":
             continue
-        try:
-            d = dt.date.fromisoformat(str(event.get("firstReported") or ""))
-        except ValueError:
-            continue
-        if d < cutoff:
-            event["status"] = "historical"
+        d = parse_date(e.get("firstReported"))
+        if d and d < cutoff:
+            e["status"] = "historical"
 
     events.sort(key=lambda e: (str(e.get("firstReported") or ""), str(e.get("eventTime") or "")), reverse=True)
-    history["schemaVersion"] = int(history.get("schemaVersion") or 1)
-    history["updated"] = now.isoformat(timespec="seconds")
+    history["schemaVersion"] = 1
+    history["updated"] = now_utc().isoformat(timespec="seconds")
+    history["description"] = (
+        "Curated history of material catalysts published by NasDecode Open Watch. "
+        "Repository-side GitHub Actions uses a strict freshness, source-quality and event-quality gate."
+    )
     history["events"] = events
     HISTORY_PATH.parent.mkdir(parents=True, exist_ok=True)
     HISTORY_PATH.write_text(json.dumps(history, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
     active = [e for e in events if e.get("status") == "active"]
-    active.sort(key=lambda e: (
-        1 if (e.get("expectedImpact") or {}).get("materiality") == "Very High" else 0,
-        1 if (e.get("expectedImpact") or {}).get("materiality") == "High" else 0,
-        str(e.get("eventTime") or ""),
-    ), reverse=True)
     feed = {
         "schemaVersion": 1,
-        "updated": now.isoformat(timespec="seconds"),
-        "description": "Compact feed of currently active NasDecode Market Watch catalysts for UI and other apps. Full history is stored in history/market-watch-events.json.",
-        "activeEvents": [active_projection(e) for e in active[:20]],
+        "updated": history["updated"],
+        "description": "Compact feed of currently active NasDecode Market Watch catalysts.",
+        "activeEvents": [{
+            "id": e["id"],
+            "eventTime": e["eventTime"],
+            "category": e["category"],
+            "companyMarket": e["companyMarket"],
+            "headline": e["headline"],
+            "direction": e["expectedImpact"]["direction"],
+            "materiality": e["expectedImpact"]["materiality"],
+            "scope": e["expectedImpact"]["scope"],
+            "marketConfirmation": e["marketConfirmation"]["state"],
+            "whyItMatters": e["whyItMatters"],
+        } for e in active[:20]],
     }
     ACTIVE_PATH.parent.mkdir(parents=True, exist_ok=True)
     ACTIVE_PATH.write_text(json.dumps(feed, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
-    print(f"market watch persistence: {added} added, {len(active)} active, {len(events)} total")
+    print(f"strict Market Watch publisher: {added} new curated events; {len(active)} active; {len(events)} total")
 
 
 if __name__ == "__main__":
