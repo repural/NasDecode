@@ -343,9 +343,13 @@ def build_earnings_avwap_factor(quotes):
                ('Overextended above earnings anchors' if median_dist>8 else
                 ('Weakness below earnings anchors' if signal=='negative' else 'Mixed around earnings anchors')))
     names=', '.join(f"{x['ticker']} {x['distancePct']:+.1f}%" for x in vals)
+    through_dates=[x.get('throughDate') for x in vals if x.get('throughDate')]
+    latest_through=max(through_dates) if through_dates else None
+    avwap_freshness=('Massive daily aggregates through '+latest_through+' + CNBC current price'
+                     if latest_through else 'Massive daily aggregates + CNBC current price')
     row={'factor':'Earnings AVWAP leadership',
          'latest':f"{above}/{len(vals)} above Earnings AVWAP · median {median_dist:+.1f}%",
-         'direction':direction,'signal':signal,'freshness':'Massive daily aggregates + CNBC current price',
+         'direction':direction,'signal':signal,'freshness':avwap_freshness,
          'source':'Massive aggregates + verified company earnings dates',
          'currentImpact':'High' if abs(median_dist)>=3 or ratio in (0,1) else 'Medium',
          'medianDistancePct':median_dist,'aboveCount':above,'coveredCount':len(vals),
@@ -550,8 +554,9 @@ def eoddata_s5fi():
     if last is None or not (0 <= last <= 100):
         raise ValueError('EODData S5FI value not parseable')
     obs_date=None
-    if dm:
-        try: obs_date=datetime.datetime.strptime(dm.group(1),'%d %b %y').date().isoformat()
+    date_text=dm.group(1) if dm else (pairs[0][0] if pairs else None)
+    if date_text:
+        try: obs_date=datetime.datetime.strptime(date_text,'%d %b %y').date().isoformat()
         except Exception: pass
     return {'last':last,'previous':previous,'date':obs_date,'url':url}
 
@@ -1393,6 +1398,8 @@ def main():
     rows=[r for r in rows if r.get('factor')!='Earnings AVWAP leadership']
     if avwap_row: rows.append(avwap_row)
     # Individual AVWAP observations belong in history snapshots, not public dashboard.json.
+    # Explicitly remove any legacy top-level payload so old throughDate values cannot linger.
+    d.pop('earningsAvwap',None)
 
     # Current impact = magnitude of the factor's present Nasdaq effect, not its structural importance.
     # It is intentionally based on current observations/freshness and can change each refresh.
@@ -2776,6 +2783,10 @@ def main():
         'basis':relative_strength_basis,
         'observationDate':relative_strength_date
     }
+    for _lead_name in ('Semiconductor leadership','Mega-cap leadership'):
+        _lead_row=next((x for x in rows if x.get('factor')==_lead_name),None)
+        if _lead_row and relative_strength_date:
+            _lead_row['freshness']='Previous regular session · '+relative_strength_date
     # Independent confirmation layer. This intentionally does NOT change Nasdaq Score.
     # Broad semiconductor indexes lead the signal; the five-stock AI/semi basket is only a sub-component.
     def _signal100(name):
