@@ -80,7 +80,7 @@ def main():
     for page in response.get("results",[]):
         url=page.get("url","")
         rows=candidates(page.get("raw_content") or "")
-        result["sources"].append({"url":url,"candidateCount":len(rows),"contentLength":len(page.get("raw_content") or ""),"diagnostic":diagnostic(page.get("raw_content") or "")})
+        result["sources"].append({"url":url,"candidateCount":len(rows),"candidateObservations":rows[:35],"contentLength":len(page.get("raw_content") or ""),"diagnostic":diagnostic(page.get("raw_content") or "")})
         for row in rows:
             bydate.setdefault(row["date"],[]).append((url,row["pctAbove50dma"]))
     for date,entries in sorted(bydate.items()):
