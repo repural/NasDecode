@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'scripts/backfill_regime_macro_2025.py'
+      - 'scripts/analyze_regime_outcomes.py'
+      - 'scripts/train_sox_shadow_v1.py'
       - '.github/workflows/backfill-regime-macro-2025.yml'
 permissions:
   contents: write
@@ -26,13 +28,15 @@ jobs:
         run: python scripts/build_regime_context_dataset.py
       - name: Analyze regime outcomes (research only)
         run: python scripts/analyze_regime_outcomes.py
+      - name: Train and validate SOX shadow model (research only)
+        run: python scripts/train_sox_shadow_v1.py
       - name: Compare oil features (research only)
         run: python scripts/analyze_oil_pressure.py
       - name: Persist research files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/history/regime-macro-2025.json data/history/regime-context-dataset.json data/history/oil-pressure-research.json data/history/regime-outcomes-research.json
+          git add data/history/regime-macro-2025.json data/history/regime-context-dataset.json data/history/oil-pressure-research.json data/history/regime-outcomes-research.json data/history/sox-shadow-v1-validation.json
           git diff --cached --quiet || git commit -m "Backfill 2025 macro context for regime research"
           git pull --rebase
           git push
