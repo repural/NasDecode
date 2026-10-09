@@ -34,7 +34,7 @@
  * generated JSON and renders cards, model rows, factor rows, and the daily brief.
  */
 const C={positive:'green',negative:'red',mixed:'amber'};
-const STATIC_ORDER=['10Y Treasury Yield','2Y Treasury yield','Oil (WTI / Brent)','Fed expectations','Inflation · Labor · Growth','Nasdaq volatility (VXN / VIX)','Options positioning / sentiment','Market breadth','Semiconductor leadership','Mega-cap leadership','Earnings AVWAP leadership','S&P 500 50D Breadth / Oversold','Technology earnings calendar'];
+const STATIC_ORDER=['10Y Treasury Yield','2Y Treasury yield','Oil (WTI / Brent)','Fed expectations','Inflation · Labor · Growth','Nasdaq volatility (VXN / VIX)','Options positioning / sentiment','Market breadth','Semiconductor leadership','Mega-cap leadership','S&P 500 50D Breadth / Oversold','Technology earnings calendar'];
 const orderOf=name=>{const i=STATIC_ORDER.indexOf(name);return i<0?STATIC_ORDER.length:i};
 const cleanSignal=s=>String(s??'').replace(/[🟢🔴🟡]/g,'').trim();
 // Escape model explanations before placing them in tooltip attributes.
@@ -103,7 +103,7 @@ function render(d){
   const dot=s=>'';
   const orderedRows=[...d.rows].sort((a,b)=>orderOf(a.factor)-orderOf(b.factor));
   const directionalShadow=orderedRows.find(r=>r.factor==='Directional Setup · v3 shadow')||null;
-  const visibleRows=orderedRows.filter(r=>r.factor!=='Technology earnings calendar'&&r.factor!=='Directional Setup · v3 shadow');
+  const visibleRows=orderedRows.filter(r=>r.factor!=='Technology earnings calendar'&&r.factor!=='Directional Setup · v3 shadow'&&r.factor!=='Earnings AVWAP leadership');
   const factorRank=i=>i+1;
   const awaiting=r=>/awaiting|not available|unavailable|stale/i.test((r.latest||'')+' '+(r.freshness||''))?' awaiting':'';
   const leadershipMetrics=r=>{
