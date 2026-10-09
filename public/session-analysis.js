@@ -5,7 +5,7 @@
     {key:'mid_market',label:'Mid-Market',time:'13:00 ET checkpoint'},
     {key:'near_close',label:'Near-Close',time:'15:30 ET checkpoint'}
   ];
-  let sessionData={records:{}}, premarketData=null, dashboard=null, manualTab=null;
+  let sessionData={records:{}}, researchData={sessions:{}}, premarketData=null, dashboard=null, manualTab=null;
 
   const esc=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
   const metricRe=/\b(NasDecode Score|Consolidation Risk|Opportunity Score|SOXL Buy Score|Inflation · Labor · Growth|Semiconductor Leadership|Mega-cap Leadership|Earnings AVWAP Leadership|S&P 500 50D Breadth|Nasdaq(?:-100| 100)?|SOXX|SOX|SMH|Semiconductor(?:s)?|Mega-cap(?:s)?|Market breadth|Breadth|VIX volatility|VIX|VXN|10Y Treasury(?: Yield)?|2Y Treasury(?: Yield)?|Treasury yields?|Treasuries|Fed(?: expectations)?|Federal Reserve|Options positioning|WTI|Brent|Oil|Core CPI|CPI|Core PCE|PCE|Payrolls?|Nonfarm payrolls?|Unemployment|Wages?|Average Hourly Earnings|ISM(?: Manufacturing| Services)?|PMI|Retail Sales|GDP)\b/gi;
@@ -81,7 +81,18 @@
     const captured=a.capturedET?new Date(a.capturedET).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}):'—';
     return {available:true,title:a.label||((def?.label||key)+' Analysis'),meta:`${esc(a.scheduledET||def?.time||'')} · captured ${esc(captured)}`,body:`<div class="session-analysis-metrics">${metrics}</div>${paras}`};
   }
-  function viewFor(key){return key==='premarket'?premarketView():checkpointView(key)}
+  function researchView(key){
+    const day=etParts().date, a=researchData?.sessions?.[day]?.[key];
+    if(!a || a.publicationStatus!=='published')return null;
+    const def=stages.find(s=>s.key===key);
+    const paras=(a.paragraphs||[]).map(p=>'<p>'+analysisText(p)+'</p>').join('');
+    const cats=(a.catalysts||[]).map(e=>'<li><b>'+analysisText(typeof e==='string'?e:e.title||'')+'</b>'+(e.detail?' — '+analysisText(e.detail):'')+'</li>').join('');
+    const changed=a.whatChanged?'<h4>What Changed</h4><p>'+analysisText(a.whatChanged)+'</p>':'';
+    const watch=(a.whatToWatch||[]).map(x=>'<p>'+analysisText(x)+'</p>').join('');
+    const time=new Date(a.updatedET).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'});
+    return {available:true,title:def.label+' Analysis',meta:'Research updated '+esc(time),body:'<div class="bias"><b>Bias:</b> '+esc(a.bias)+' · <b>Confidence:</b> '+esc(a.confidence)+'</div>'+paras+changed+(cats?'<h3>Major Catalysts</h3><ol>'+cats+'</ol>':'')+(watch?'<h3>What to Watch</h3>'+watch:'')};
+  }
+  function viewFor(key){return researchView(key)||(key==='premarket'?premarketView():checkpointView(key))}
   function paint(){
     installStyle();
     const host=document.getElementById('premarket');if(!host)return;
@@ -99,11 +110,12 @@
   async function refreshData(d){
     if(d)dashboard=d;
     const t=Date.now();
-    const [p,s]=await Promise.all([
+    const [p,s,r]=await Promise.all([
       fetch('data/premarket.json?t='+t,{cache:'no-store'}).then(r=>r.ok?r.json():null).catch(()=>null),
-      fetch('data/session-analyses.json?t='+t,{cache:'no-store'}).then(r=>r.ok?r.json():{records:{}}).catch(()=>({records:{}}))
+      fetch('data/session-analyses.json?t='+t,{cache:'no-store'}).then(r=>r.ok?r.json():{records:{}}).catch(()=>({records:{}})),
+      fetch('data/session-research.json?t='+t,{cache:'no-store'}).then(r=>r.ok?r.json():{sessions:{}}).catch(()=>({sessions:{}}))
     ]);
-    premarketData=p;sessionData=s||{records:{}};paint();
+    premarketData=p;sessionData=s||{records:{}};researchData=r||{sessions:{}};paint();
   }
   window.NasDecodeSessionTabs={render:refreshData,select:key=>{manualTab=key;paint()},followTime:()=>{manualTab=null;paint()}};
   const boot=()=>refreshData(window.currentDashboard||null);
