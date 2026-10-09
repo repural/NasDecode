@@ -544,7 +544,8 @@ function renderChartVisuals(){
     const pts=records.filter(r=>Number.isFinite(Number(r[key]))).map(r=>({date:r.date,value:Number(r[key])}));
     if(pts.length<2)return;
     const first=pts[0],last=pts[pts.length-1],delta=last.value-first.value,div=document.createElement('div');
-    div.className='sparkline '+(key==='mega'?'red':key==='oil'||key==='breadth'||key==='semi'||key==='sp50'?'green':'amber');
+    const signalColor=card.classList.contains('signal-positive')?'green':card.classList.contains('signal-negative')?'red':'amber';
+    div.className='sparkline '+signalColor;
     div.innerHTML='<svg viewBox="0 0 180 22" preserveAspectRatio="none">'+svgSeries(pts,180,22)+'</svg><div class="sparkline-meta">'+pts.length+' sessions · '+(delta>=0?'+':'')+delta.toFixed(Math.abs(delta)<1?2:1)+'</div>';
     card.appendChild(div);
   });
