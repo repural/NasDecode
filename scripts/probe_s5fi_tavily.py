@@ -36,26 +36,26 @@ def candidates(raw):
 
 
 def diagnostic(raw):
-    """Bounded, sanitized examples for debugging HTML/markdown date formats.
-
-    Never archive full page contents, script blocks, tokens or URLs with queries.
-    """
+    """Sample only date-bearing source lines, never raw pages or secrets."""
+    patterns = {
+        "iso": r"\\b20\\d{2}[-/]\\d{1,2}[-/]\\d{1,2}\\b",
+        "us_numeric": r"\\b\\d{1,2}/\\d{1,2}/20\\d{2}\\b",
+        "named_month": r"\\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\\s+\\d{1,2},?\\s+20\\d{2}\\b",
+    }
+    matches = {name: [] for name in patterns}
     lines = raw.splitlines()
-    picks = []
-    keywords = re.compile(r"(?:\b(?:date|historical|50.day|above|close|oct|sep|2026)\b|\b\d{1,2}[/-]\d{1,2}[/-]\d{2,4}\b|\b20\d{2}-\d\d-\d\d\b)", re.I)
     for line in lines:
-        if len(picks) >= 7:
-            break
-        if not keywords.search(line):
-            continue
-        # Strip markup and eliminate email/URL/token-like material.
-        safe = re.sub(r"<[^>]*>", " ", line)
-        safe = re.sub(r"https?://\S+|[\w.+-]+@[\w.-]+|(?i:(?:api[_-]?key|token|secret))\s*[:=]\s*\S+", "[redacted]", safe)
-        safe = re.sub(r"[\x00-\x1f\x7f]+", " ", safe)
-        safe = re.sub(r"\s+", " ", safe).strip()[:160]
-        if safe and safe not in picks:
-            picks.append(safe)
-    return {"lineCount":len(lines),"samples":picks}
+        for name, pattern in patterns.items():
+            if len(matches[name]) >= 5 or not re.search(pattern, line, re.I):
+                continue
+            safe = re.sub(r"<[^>]*>", " ", line)
+            safe = re.sub(r"https?://\\S+|[\\w.+-]+@[\\w.-]+", "[redacted]", safe)
+            safe = re.sub(r"(?i)(?:api[_-]?key|token|secret)\\s*[:=]\\s*\\S+", "[redacted]", safe)
+            safe = re.sub(r"[\\x00-\\x1f\\x7f]+", " ", safe)
+            safe = re.sub(r"\\s+", " ", safe).strip()[:190]
+            if safe and safe not in matches[name]:
+                matches[name].append(safe)
+    return {"lineCount": len(lines), "datedSamples": matches, "tableLineCount": sum(1 for line in lines if line.lstrip().startswith("|"))}
 
 def main():
     response=extract(URLS)
