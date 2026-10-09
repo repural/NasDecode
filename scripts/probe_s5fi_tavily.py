@@ -75,7 +75,7 @@ def diagnostic(raw):
 def main():
     response=extract(URLS)
     result={"schemaVersion":1,"source":"Tavily extract","collectedAtUTC":dt.datetime.now(dt.timezone.utc).isoformat(),
-            "status":"unverified","observations":[],"sources":[]}
+            "status":"unverified","observations":[],"sameProviderMatches":[],"sources":[]}
     bydate={}
     for page in response.get("results",[]):
         url=page.get("url","")
@@ -85,11 +85,20 @@ def main():
             bydate.setdefault(row["date"],[]).append((url,row["pctAbove50dma"]))
     for date,entries in sorted(bydate.items()):
         hosts={__import__('urllib.parse',fromlist=['urlparse']).urlparse(u).netloc for u,_ in entries}
+        publishers={("investing.com" if h.endswith("investing.com") else
+                    "barchart.com" if h.endswith("barchart.com") else h) for h in hosts}
         values=[v for _,v in entries]
         if len(hosts)>=2 and max(values)-min(values)<=0.1:
-            result["observations"].append({"date":date,"pctAbove50dma":round(sum(values)/len(values),3),"verifiedSources":sorted(hosts)})
-    if result["observations"]:result["status"]="cross_verified"
+            entry={"date":date,"pctAbove50dma":round(sum(values)/len(values),3),"verifiedSources":sorted(hosts)}
+            if len(publishers)>=2:
+                result["observations"].append(entry)
+            else:
+                result["sameProviderMatches"].append(entry)
+    if result["observations"]:
+        result["status"]="cross_verified"
+    elif result["sameProviderMatches"]:
+        result["status"]="same_provider_correlated"
     OUT.parent.mkdir(parents=True,exist_ok=True)
     OUT.write_text(json.dumps(result,indent=2)+"\n")
-    print(json.dumps({"status":result["status"],"verified":len(result["observations"]),"sources":result["sources"]}))
+    print(json.dumps({"status":result["status"],"verified":len(result["observations"]),"sameProviderMatches":len(result["sameProviderMatches"]),"sources":result["sources"]}))
 if __name__=="__main__":main()
