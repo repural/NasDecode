@@ -24,13 +24,15 @@ jobs:
         run: python scripts/backfill_regime_macro_2025.py
       - name: Rebuild reusable dataset
         run: python scripts/build_regime_context_dataset.py
+      - name: Analyze regime outcomes (research only)
+        run: python scripts/analyze_regime_outcomes.py
       - name: Compare oil features (research only)
         run: python scripts/analyze_oil_pressure.py
       - name: Persist research files
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/history/regime-macro-2025.json data/history/regime-context-dataset.json data/history/oil-pressure-research.json
+          git add data/history/regime-macro-2025.json data/history/regime-context-dataset.json data/history/oil-pressure-research.json data/history/regime-outcomes-research.json
           git diff --cached --quiet || git commit -m "Backfill 2025 macro context for regime research"
           git pull --rebase
           git push
