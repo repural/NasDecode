@@ -79,7 +79,7 @@ def validate(store):
 def main():
     archive=validate(json.loads(SOURCE.read_text(encoding='utf-8'),object_pairs_hook=unique_pairs))
     OUT.parent.mkdir(parents=True,exist_ok=True)
-    OUT.write_text(json.dumps(archive,indent=2,ensure_ascii=False)+'\\n',encoding='utf-8')
+    OUT.write_text(json.dumps(archive,indent=2,ensure_ascii=False)+'\n',encoding='utf-8')
     print('Published validated session research:',sum(len(v) for v in archive['sessions'].values()),'records')
 
 if __name__=='__main__':
