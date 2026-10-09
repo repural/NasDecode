@@ -28,18 +28,25 @@ jobs:
         env:
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
         run: python -m scripts.collect_sox_avwap
-      - name: Commit diagnostics (with retry)
+      - name: Commit diagnostics (recompute after competing pushes)
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
         run: |
+          set -euo pipefail
           git config user.name nasdecode-bot
           git config user.email actions@users.noreply.github.com
-          mkdir -p public/data
-          cp data/sox_avwap_latest.json public/data/sox_avwap_latest.json
-          git add data/sox_avwap_latest.json data/history/sox-avwap-daily.json public/data/sox_avwap_latest.json
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Store daily SOX earnings AVWAP diagnostics"
-          for n in 1 2 3; do
-            if git push; then exit 0; fi
+          for n in 1 2 3 4; do
+            # Each attempt starts from current main, not stale generated JSON.
+            # Rebuild the daily record so previous published dates are preserved.
             git fetch origin main
-            git rebase origin/main || exit 1
+            git reset --hard origin/main
+            python -m scripts.collect_sox_avwap
+            mkdir -p public/data
+            cp data/sox_avwap_latest.json public/data/sox_avwap_latest.json
+            git add data/sox_avwap_latest.json data/history/sox-avwap-daily.json public/data/sox_avwap_latest.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "Store daily SOX earnings AVWAP diagnostics"
+            if git push origin HEAD:main; then exit 0; fi
+            echo "Concurrent update detected (attempt $n); recomputing from latest main"
           done
           exit 1
