@@ -5,7 +5,7 @@
     {key:'mid_market',label:'Mid-Market',time:'13:00 ET checkpoint'},
     {key:'near_close',label:'Near-Close',time:'15:30 ET checkpoint'}
   ];
-  let sessionData={records:{}}, researchData={sessions:{}}, premarketData=null, dashboard=null, manualTab=null;
+  let sessionData={records:{}}, researchData={sessions:{}}, premarketData=null, dashboard=null, manualTab=null, manualDate=null;
 
   const esc=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
   const metricRe=/\b(NasDecode Score|Consolidation Risk|Opportunity Score|SOXL Buy Score|Inflation · Labor · Growth|Semiconductor Leadership|Mega-cap Leadership|Earnings AVWAP Leadership|S&P 500 50D Breadth|Nasdaq(?:-100| 100)?|SOXX|SOX|SMH|Semiconductor(?:s)?|Mega-cap(?:s)?|Market breadth|Breadth|VIX volatility|VIX|VXN|10Y Treasury(?: Yield)?|2Y Treasury(?: Yield)?|Treasury yields?|Treasuries|Fed(?: expectations)?|Federal Reserve|Options positioning|WTI|Brent|Oil|Core CPI|CPI|Core PCE|PCE|Payrolls?|Nonfarm payrolls?|Unemployment|Wages?|Average Hourly Earnings|ISM(?: Manufacturing| Services)?|PMI|Retail Sales|GDP)\b/gi;
@@ -65,7 +65,7 @@
     return {available:true,title:'Pre-Market Analysis',meta:'Analysis updated: '+esc(a.updatedET||a.updated||'—'),body:bias+(metrics?`<div class="session-analysis-metrics">${metrics}</div>`:'')+paras+(catalysts?`<h3>Major events to watch today</h3><ol>${catalysts}</ol>`:'')+watch+keyTimes};
   }
   function checkpointView(key){
-    const day=etParts().date;
+    const day=manualDate||etParts().date;
     const a=(sessionData?.records||{})[day]?.[key];
     const def=stages.find(x=>x.key===key);
     if(!a){
@@ -82,29 +82,34 @@
     return {available:true,title:a.label||((def?.label||key)+' Analysis'),meta:`${esc(a.scheduledET||def?.time||'')} · captured ${esc(captured)}`,body:`<div class="session-analysis-metrics">${metrics}</div>${paras}`};
   }
   function researchView(key){
-    const day=etParts().date, a=researchData?.sessions?.[day]?.[key];
+    const day=manualDate||etParts().date, a=researchData?.sessions?.[day]?.[key];
     if(!a || a.publicationStatus!=='published')return null;
     const def=stages.find(s=>s.key===key);
+    const snapshot=sessionData?.records?.[day]?.[key];
+    const checkpoint=snapshot?'<div class="session-analysis-metrics">'+[metric('Nasdaq',snapshot.nasdaqChangePct,'%'),metric('QQQ',snapshot.qqqChangePct,'%'),metric('Score',snapshot.nasdaqScore,' / 100')].join('')+'</div>':'';
     const paras=(a.paragraphs||[]).map(p=>'<p>'+analysisText(p)+'</p>').join('');
     const cats=(a.catalysts||[]).map(e=>'<li><b>'+analysisText(typeof e==='string'?e:e.title||'')+'</b>'+(e.detail?' — '+analysisText(e.detail):'')+'</li>').join('');
     const changed=a.whatChanged?'<h4>What Changed</h4><p>'+analysisText(a.whatChanged)+'</p>':'';
     const watch=(a.whatToWatch||[]).map(x=>'<p>'+analysisText(x)+'</p>').join('');
     const time=new Date(a.updatedET).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'});
-    return {available:true,title:def.label+' Analysis',meta:'Research updated '+esc(time),body:'<div class="bias"><b>Bias:</b> '+esc(a.bias)+' · <b>Confidence:</b> '+esc(a.confidence)+'</div>'+paras+changed+(cats?'<h3>Major Catalysts</h3><ol>'+cats+'</ol>':'')+(watch?'<h3>What to Watch</h3>'+watch:'')};
+    return {available:true,title:def.label+' Analysis',meta:'Research updated '+esc(time),body:'<div class="bias"><b>Bias:</b> '+esc(a.bias)+' · <b>Confidence:</b> '+esc(a.confidence)+'</div>'+checkpoint+paras+changed+(cats?'<h3>Major Catalysts</h3><ol>'+cats+'</ol>':'')+(watch?'<h3>What to Watch</h3>'+watch:'')};
   }
-  function viewFor(key){const research=researchView(key);if(research)return research;if(key==='premarket')return premarketView();const def=stages.find(s=>s.key===key);const day=etParts().date;const state=researchData?.sessions?.[day]?.[key]?.publicationStatus||'missing';return {available:false,title:def.label+' Analysis',meta:'Research '+state,body:'<div class="session-awaiting">Independent research '+(state==='failed'?'publication failed.':state==='pending'?'is pending.':'has not been published for this session.')+'</div>'}}
+  function viewFor(key){const research=researchView(key);if(research)return research;if(key==='premarket')return premarketView();const def=stages.find(s=>s.key===key);const day=manualDate||etParts().date;const state=researchData?.sessions?.[day]?.[key]?.publicationStatus||'missing';return {available:false,title:def.label+' Analysis',meta:'Research '+state,body:'<div class="session-awaiting">Independent research '+(state==='failed'?'publication failed.':state==='pending'?'is pending.':'has not been published for this session.')+'</div>'}}
   function paint(){
     installStyle();
     const host=document.getElementById('premarket');if(!host)return;
     host.className='premarket session-tabs-shell';
     const auto=automaticTab(), selected=manualTab||auto, view=viewFor(selected);
+    const dates=Object.keys(researchData?.sessions||{}).sort().reverse();
+    const dateSelector=dates.length?'<label class="session-analysis-time">Research date <select id="session-research-date" aria-label="Research date"><option value="">Today</option>'+dates.filter(x=>x!==etParts().date).map(x=>'<option value="'+esc(x)+'" '+(manualDate===x?'selected':'')+'>'+esc(x)+'</option>').join('')+'</select></label>':'';
     const tabs=stages.map(s=>{
       const v=viewFor(s.key), cls=['session-tab',s.key===selected?'active':'',v.available?'has-data':'awaiting'].filter(Boolean).join(' ');
       const current=s.key===auto?'<span class="session-current-note">Current window</span>':'';
       return `<button type="button" class="${cls}" data-session-tab="${s.key}" aria-selected="${s.key===selected?'true':'false'}"><b>${esc(s.label)}</b><span>${esc(s.time)}</span>${current}</button>`;
     }).join('');
-    host.innerHTML=`<div class="session-tabs-head"><div><div class="section-kicker">Session analysis</div><h2>NasDecode Analysis</h2></div><div class="muted">Automatically follows New York market time · click any tab to review</div></div><div class="session-tabbar" role="tablist">${tabs}</div><div class="session-tab-panel" role="tabpanel"><div class="session-analysis-title"><h3>${esc(view.title)}</h3><div class="session-analysis-time">${view.meta}</div></div>${view.body}</div>`;
+    host.innerHTML=`<div class="session-tabs-head"><div><div class="section-kicker">Session analysis</div><h2>NasDecode Analysis</h2></div><div class="muted">Automatically follows New York market time · click any tab to review</div>${dateSelector}</div><div class="session-tabbar" role="tablist">${tabs}</div><div class="session-tab-panel" role="tabpanel"><div class="session-analysis-title"><h3>${esc(view.title)}</h3><div class="session-analysis-time">${view.meta}</div></div>${view.body}</div>`;
     host.querySelectorAll('[data-session-tab]').forEach(btn=>btn.addEventListener('click',()=>{manualTab=btn.dataset.sessionTab;paint()}));
+    host.querySelector('#session-research-date')?.addEventListener('change',e=>{manualDate=e.target.value||null;paint()});
     const old=document.getElementById('session-analysis');if(old)old.remove();
   }
   async function refreshData(d){
