@@ -68,7 +68,7 @@ def diagnostic(raw):
             safe = re.sub(r"\\s+", " ", safe).strip()[:190]
             if safe and safe not in matches[name]:
                 matches[name].append(safe)
-    return {"lineCount": len(lines), "datedSamples": matches, "tableLineCount": sum(1 for line in lines if line.lstrip().startswith("|"))}
+    return {"lineCount": len(lines), "datedSamples": matches, "tableLineCount": sum(1 for line in lines if "|" in line), "tableSamples": [re.sub(r"https?://\\S+", "[url]", line.strip())[:180] for line in lines if "|" in line][:12]}
 
 def main():
     response=extract(URLS)
