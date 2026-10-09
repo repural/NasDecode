@@ -1,0 +1,92 @@
+{
+  "version": "sox-shadow-v1",
+  "status": "research_only_not_production",
+  "train": {
+    "start": "2025-01-02",
+    "end": "2025-12-16",
+    "n": 240
+  },
+  "holdout": {
+    "start": "2026-01-02",
+    "end": "2026-10-01",
+    "n": 188,
+    "purgedTradingSessions": 5
+  },
+  "features": [
+    "trend.sox5dPct",
+    "trend.soxVsQqq5dPp",
+    "rates.us10y5dChangeBp",
+    "volatility.vxn5dPct",
+    "energy.brent5dPct",
+    "energy.wti5dPct"
+  ],
+  "preprocessing": {
+    "missing": "training-median",
+    "medians": [
+      1.2843335491924512,
+      0.6073098225285012,
+      0.0,
+      -0.3903989121841145,
+      -0.26946107784430184,
+      -0.5256721859015101
+    ],
+    "means": [
+      0.8420288231283684,
+      0.44536893770709823,
+      -0.933333333333333,
+      1.0442037571873433,
+      -0.3272223533775904,
+      -0.35667756707754533
+    ],
+    "scales": [
+      5.042034032190372,
+      2.6303400619862063,
+      10.497407087255194,
+      13.838940128948119,
+      4.582686005042106,
+      4.5278961539902465
+    ]
+  },
+  "classification": {
+    "algorithm": "L2 logistic regression",
+    "coefficients": [
+      0.35599589847014496,
+      -0.09561228072765496,
+      -0.027327148345856138,
+      -0.12794777901651846,
+      -0.05835863643442158,
+      -0.00442626023633892,
+      0.06210100892325898
+    ],
+    "trainingBaseRate": 0.5875,
+    "holdout": {
+      "modelMSE": 0.243882,
+      "baselineMSE": 0.237178,
+      "beatsBaseline": false
+    }
+  },
+  "regression": {
+    "algorithm": "L2 linear regression",
+    "coefficients": [
+      0.7602653497323218,
+      -1.15242485027357,
+      0.4525921801080416,
+      0.011991434565536913,
+      -0.4360111619182633,
+      -0.3536570979585396,
+      0.24456374902918948
+    ],
+    "trainingMeanPct": 0.7602653497323246,
+    "holdout": {
+      "modelMSE": 37.198461,
+      "baselineMSE": 37.695796,
+      "beatsBaseline": true
+    }
+  },
+  "limitations": [
+    "Single 2026 chronological holdout",
+    "No nested cross-validation or hyperparameter tuning",
+    "Overlapping 5-session holdout outcomes",
+    "Market-close data timing and historical source alignment require audit"
+  ]
+}
