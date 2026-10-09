@@ -110,6 +110,7 @@ jobs:
           python scripts/verify_macro_actuals.py
           python scripts/refresh.py
           python scripts/sync_premarket_brief.py
+          python scripts/publish_session_research.py
           python scripts/live_confirmation.py
           python scripts/apply_market_response.py
           python scripts/refine_scores.py
@@ -148,6 +149,7 @@ jobs:
           cp data/history/chart-history.json public/data/chart-history.json
           cp data/history/market-watch-events.json public/history/market-watch-events.json
           cp data/premarket.json public/data/premarket.json
+          git add -A public/data/session-research.json
           git add -A public/index.html public/data
           if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
           git diff --cached --quiet && exit 0
@@ -163,6 +165,7 @@ jobs:
             python scripts/verify_macro_actuals.py
             MASSIVE_API_KEY='${{ secrets.MASSIVE_API_KEY }}' python scripts/refresh.py
             python scripts/sync_premarket_brief.py
+          python scripts/publish_session_research.py
             python scripts/live_confirmation.py
             python scripts/apply_market_response.py
             python scripts/refine_scores.py
@@ -195,6 +198,7 @@ jobs:
           cp data/history/chart-history.json public/data/chart-history.json
           cp data/history/market-watch-events.json public/history/market-watch-events.json
             cp data/premarket.json public/data/premarket.json
+          git add -A public/data/session-research.json
             git add -A public/index.html public/data
             if [ -f data/cnbc_probe.json ]; then git add data/cnbc_probe.json; fi
             git diff --cached --quiet && exit 0
