@@ -1,0 +1,132 @@
+{
+  "version": "oil-pressure-research-1.0",
+  "status": "diagnostic_only",
+  "method": "Pearson association of close-T oil features with forward SOX/SOXL T+5 returns; not causal or validated for production",
+  "warnings": [
+    "Overlapping forward returns reduce independent sample size.",
+    "Daily completed-close data are not intraday signals.",
+    "Oil ticker mapping and contract continuity require verification before promoting a feature."
+  ],
+  "cohorts": {
+    "2025_external_retrospective": {
+      "priceQuality": {
+        "brent": {
+          "n": 0,
+          "min": null,
+          "max": null,
+          "suspiciousUnder30": 0
+        },
+        "wti": {
+          "n": 0,
+          "min": null,
+          "max": null,
+          "suspiciousUnder30": 0
+        }
+      },
+      "priceQualityPass": false,
+      "metrics": {
+        "brent5dPct": {
+          "sox": {
+            "n": 0,
+            "pearsonT5": null
+          },
+          "soxl": {
+            "n": 0,
+            "pearsonT5": null
+          }
+        },
+        "wti5dPct": {
+          "sox": {
+            "n": 0,
+            "pearsonT5": null
+          },
+          "soxl": {
+            "n": 0,
+            "pearsonT5": null
+          }
+        },
+        "equalWeightOil5dPct": {
+          "sox": {
+            "n": 0,
+            "pearsonT5": null
+          },
+          "soxl": {
+            "n": 0,
+            "pearsonT5": null
+          }
+        },
+        "brentWtiSpreadUsd": {
+          "sox": {
+            "n": 0,
+            "pearsonT5": null
+          },
+          "soxl": {
+            "n": 0,
+            "pearsonT5": null
+          }
+        }
+      },
+      "eligibleForScoringRecommendation": false
+    },
+    "canonical_point_in_time": {
+      "priceQuality": {
+        "brent": {
+          "n": 193,
+          "min": 59.959999084472656,
+          "max": 118.3499984741211,
+          "suspiciousUnder30": 0
+        },
+        "wti": {
+          "n": 193,
+          "min": 55.9900016784668,
+          "max": 112.94999694824219,
+          "suspiciousUnder30": 0
+        }
+      },
+      "priceQualityPass": true,
+      "metrics": {
+        "brent5dPct": {
+          "sox": {
+            "n": 188,
+            "pearsonT5": -0.13123
+          },
+          "soxl": {
+            "n": 188,
+            "pearsonT5": -0.09783
+          }
+        },
+        "wti5dPct": {
+          "sox": {
+            "n": 188,
+            "pearsonT5": -0.03039
+          },
+          "soxl": {
+            "n": 188,
+            "pearsonT5": 0.00737
+          }
+        },
+        "equalWeightOil5dPct": {
+          "sox": {
+            "n": 188,
+            "pearsonT5": -0.08128
+          },
+          "soxl": {
+            "n": 188,
+            "pearsonT5": -0.04481
+          }
+        },
+        "brentWtiSpreadUsd": {
+          "sox": {
+            "n": 188,
+            "pearsonT5": -0.08841
+          },
+          "soxl": {
+            "n": 188,
+            "pearsonT5": -0.10129
+          }
+        }
+      },
+      "eligibleForScoringRecommendation": false
+    }
+  }
+}
