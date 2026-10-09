@@ -1,0 +1,35 @@
+name: SOX Earnings AVWAP Research
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '40 22 * * 1-5'
+permissions:
+  contents: write
+concurrency:
+  group: nasdecode-sox-avwap-research
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify calculations
+        run: python -m unittest discover -s tests -p test_sox_earnings_avwap.py -v
+      - name: Collect official-snapshot universe diagnostics
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: python -m scripts.collect_sox_avwap
+      - name: Commit diagnostics (with retry)
+        run: |
+          git config user.name nasdecode-bot
+          git config user.email actions@users.noreply.github.com
+          git add data/sox_avwap_latest.json data/history/sox-avwap-daily.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Store daily SOX earnings AVWAP diagnostics"
+          for n in 1 2 3; do
+            if git push; then exit 0; fi
+            git fetch origin main
+            git rebase origin/main || exit 1
+          done
+          exit 1
