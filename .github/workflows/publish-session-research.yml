@@ -1,0 +1,44 @@
+name: Publish NasDecode Research
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/research/session-briefs.json'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: nasdecode-research-publication
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Validate and publish research
+        run: python scripts/publish_session_research.py
+      - name: Commit dashboard research with safe retries
+        shell: bash
+        run: |
+          git config user.name nasdecode-bot
+          git config user.email actions@users.noreply.github.com
+          for attempt in 1 2 3 4; do
+            git add public/data/session-research.json
+            if git diff --cached --quiet; then
+              echo "Published research already up to date"
+              exit 0
+            fi
+            git commit -m "Publish session research to dashboard"
+            if git push; then
+              echo "Research publication committed"
+              exit 0
+            fi
+            echo "Concurrent update detected; retrying against latest main"
+            git fetch origin main
+            git reset --hard origin/main
+            python scripts/publish_session_research.py
+          done
+          echo "Research publication failed after four attempts" >&2
+          exit 1
