@@ -26,7 +26,7 @@ def validate(store):
             if status!='published':
                 continue
             timestamp=dt.datetime.fromisoformat(brief['updatedET'])
-            if timestamp.tzinfo is None or timestamp.astimezone(NY).date().isoformat()!=day:
+            if timestamp.tzinfo is None or (timestamp.astimezone(NY).date().isoformat()!=day and not (stage=='premarket' and timestamp.astimezone(NY).date()==dt.date.fromisoformat(day)-dt.timedelta(days=1))):
                 raise ValueError('Research timestamp must be timezone-aware and match trading day')
             if not isinstance(brief.get('paragraphs'),list) or not brief['paragraphs'] or not all(isinstance(x,str) and x.strip() for x in brief['paragraphs']):
                 raise ValueError('Published research requires narrative paragraphs')
