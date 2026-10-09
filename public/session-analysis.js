@@ -92,7 +92,7 @@
     const time=new Date(a.updatedET).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'});
     return {available:true,title:def.label+' Analysis',meta:'Research updated '+esc(time),body:'<div class="bias"><b>Bias:</b> '+esc(a.bias)+' · <b>Confidence:</b> '+esc(a.confidence)+'</div>'+paras+changed+(cats?'<h3>Major Catalysts</h3><ol>'+cats+'</ol>':'')+(watch?'<h3>What to Watch</h3>'+watch:'')};
   }
-  function viewFor(key){return researchView(key)||(key==='premarket'?premarketView():checkpointView(key))}
+  function viewFor(key){const research=researchView(key);if(research)return research;if(key==='premarket')return premarketView();const def=stages.find(s=>s.key===key);const day=etParts().date;const state=researchData?.sessions?.[day]?.[key]?.publicationStatus||'missing';return {available:false,title:def.label+' Analysis',meta:'Research '+state,body:'<div class="session-awaiting">Independent research '+(state==='failed'?'publication failed.':state==='pending'?'is pending.':'has not been published for this session.')+'</div>'}}
   function paint(){
     installStyle();
     const host=document.getElementById('premarket');if(!host)return;
