@@ -90,6 +90,38 @@ td,th,.driver,.catalyst{border-color:#303236}
 .fed-prob-bar{height:9px;background:#292b2e}
 .fed-prob-chart{gap:12px}
 @media(max-width:650px){.scorecard-category,.scorecard-category.assessment{margin-top:16px;padding:14px;min-height:65px}.scorecard-category span:not(.nd-section-icon){font-size:15px;letter-spacing:.11em}.compact-cards .factor-card,.compact-cards .setup-card{padding:15px}}
+</style><style>
+/* Option 2 typography polish — visual only; preserves hover text and calculations. */
+.wrap{padding-top:10px}
+.factor-cards{margin-top:0;row-gap:10px}
+.scorecard-category,.scorecard-category.assessment{
+ margin-top:12px;padding:14px 20px;min-height:68px;gap:14px;
+ background:linear-gradient(108deg,#141618 0%,#0b0c0d 100%);
+ border:1px solid #2f3236;border-radius:12px
+}
+.scorecard-category:first-child{margin-top:0}
+.scorecard-category span:not(.nd-section-icon),
+.scorecard-category.assessment span:not(.nd-section-icon){
+ font-size:17px;font-weight:560;letter-spacing:.19em;line-height:1.2;text-transform:uppercase
+}
+.scorecard-category small{font-size:12px;font-weight:450;letter-spacing:.01em;color:#a8adb3;line-height:1.35}
+.factor-card .factor-name,.setup-card .factor-name{font-size:11px;font-weight:560;letter-spacing:.09em;line-height:1.35;text-transform:uppercase}
+.compact-cards .metric,.compact-cards .card-status{font-size:28px;font-weight:720;letter-spacing:-.035em;line-height:1.02}
+.factor-card .metric-change{font-size:15px;font-weight:700}
+.compact-cards .factor-card,.compact-cards .setup-card{padding:16px 17px;min-height:136px;justify-content:flex-start}
+.sparkline{height:40px;padding-top:6px}
+.sparkline svg{height:26px}
+.sparkline polyline{stroke-width:1.6;opacity:.98}
+.sparkline-meta{font-size:10px;color:#a4a8ad}
+.fed-prob-chart{gap:11px}
+.fed-prob-label{font-size:11px;font-weight:600;color:#d1d4d8}
+.fed-prob-bar{height:9px;background:#282a2d;border-radius:999px}
+.nd-section-icon{width:36px;height:36px;border:1px solid #303236;background:#181a1c;border-radius:9px}
+@media(max-width:650px){
+ .scorecard-category,.scorecard-category.assessment{padding:13px 12px;min-height:62px}
+ .scorecard-category span:not(.nd-section-icon),.scorecard-category.assessment span:not(.nd-section-icon){font-size:15px;letter-spacing:.11em}
+ .compact-cards .factor-card,.compact-cards .setup-card{padding:15px}
+}
 </style></head><body><header class="nd-topbar"><a class="nd-brand" href="#dashboard" aria-label="NasDecode Dashboard"><span class="nd-brand-mark" aria-hidden="true">N</span><span class="nd-brand-word">NASDECODE</span></a><nav class="nd-nav" aria-label="Dashboard sections"><a href="#dashboard" class="nd-current">Dashboard</a><a href="#macro-rates">Macro</a><a href="#market-internals">Internals</a><a href="#market-assessment">Assessment</a><a href="#premarket">Analysis</a></nav><div class="nd-top-actions"><span class="nd-live" aria-label="Data refresh status"><span class="nd-live-dot" aria-hidden="true"></span><span id="updated" role="status">Loading…</span></span><button id="update" type="button">↻ Refresh</button></div></header><div class="wrap" id="dashboard"><div class="factor-cards compact-cards" id="factorCards"></div><section class="premarket" id="premarket"><h2 id="analysisTitle">Pre-Market Analysis</h2><div class="muted" id="premarketMeta">Loading analysis…</div><div id="premarketBody"></div></section><details class="signal-details" open><summary>Signal Explorer</summary><div class="signal-explorer" id="signalExplorer"></div></details><section class="intel-panel setup-wide" id="marketSetup"></section><div class="lower-intel two-col"><section class="intel-panel"><div class="section-kicker">Decision frame</div><h3>What to Watch Today</h3><div id="watchConditions"></div></section><section class="intel-panel"><div class="section-kicker">Upcoming + active</div><h3>Major Catalysts</h3><div class="catalyst-list" id="majorCatalysts"></div></section></div><section class="intel-panel" id="marketMovingDevelopments"><div class="section-kicker">NasDecode Open Watch · curated</div><h3>Market-Moving Developments</h3><div id="marketMovingBody" class="catalyst-list">Loading developments…</div></section><div class="legacy-table" hidden><table><tbody id="rows"></tbody></table></div><section hidden></section><p class="src">Current Impact = estimated magnitude of the factor's present effect on Nasdaq based on the latest reading, move, event proximity and data freshness; it can change on every refresh and is separate from whether the signal is positive or negative. Green = supportive for Nasdaq; red = headwind; amber = mixed/event risk. Free sources can be delayed. NasDecode displays source freshness rather than representing delayed observations as exchange-real-time data.</p></div><script>
 /*
  * Presentation layer only.
