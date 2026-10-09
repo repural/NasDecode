@@ -132,6 +132,30 @@ td,th,.driver,.catalyst{border-color:#303236}
 #factorCards .card.signal-negative:not(.awaiting),
 #factorCards .card.signal-mixed:not(.awaiting),
 #factorCards .card.awaiting{box-shadow:none}
+</style><style>
+/* Option 2 narrative cards: same typography and keyword accent as Session Analysis. */
+.lower-intel.two-col>.intel-panel,#marketMovingDevelopments{
+  background:#101113;border:1px solid #303236;border-radius:12px;padding:22px 24px;
+}
+.lower-intel.two-col>.intel-panel>.section-kicker,#marketMovingDevelopments>.section-kicker{
+  color:#a8adb3;font-size:11px;letter-spacing:.15em;font-weight:520;margin-bottom:6px
+}
+.lower-intel.two-col>.intel-panel>h3,#marketMovingDevelopments>h3{
+  color:#f3f4f5;font-size:20px;font-weight:690;letter-spacing:-.02em;margin:0 0 18px
+}
+#watchConditions .catalyst,#majorCatalysts .catalyst,#marketMovingBody .catalyst{
+  background:transparent;border-bottom:1px solid #303236;padding:13px 0 16px;
+  color:#dadddf;font-size:13px;font-weight:430;line-height:1.65;overflow-wrap:anywhere
+}
+#watchConditions .catalyst:first-child,#majorCatalysts .catalyst:first-child,#marketMovingBody .catalyst:first-child{padding-top:0}
+#watchConditions .catalyst:last-child,#majorCatalysts .catalyst:last-child,#marketMovingBody .catalyst:last-child{border-bottom:0;padding-bottom:0}
+#watchConditions .catalyst>b,#majorCatalysts .catalyst>b,#marketMovingBody .catalyst>b{display:block;color:#eff1f3;font-size:13px;font-weight:660;line-height:1.45}
+#watchConditions .analysis-metric,#majorCatalysts .analysis-metric,#marketMovingBody .analysis-metric{
+  color:#82cbd0;font-weight:650;text-decoration:none
+}
+#marketMovingBody .section-kicker{color:#a5aab0;font-size:10px;letter-spacing:.12em;font-weight:600;margin-bottom:4px}
+#watchConditions .muted,#majorCatalysts .muted,#marketMovingBody .muted{color:#abb0b6}
+@media(max-width:700px){.lower-intel.two-col>.intel-panel,#marketMovingDevelopments{padding:17px 15px}}
 </style></head><body><header class="nd-topbar"><a class="nd-brand" href="#dashboard" aria-label="NasDecode Dashboard"><span class="nd-brand-mark" aria-hidden="true">N</span><span class="nd-brand-word">NASDECODE</span></a><nav class="nd-nav" aria-label="Dashboard sections"><a href="#dashboard" class="nd-current">Dashboard</a><a href="#macro-rates">Macro</a><a href="#market-internals">Internals</a><a href="#market-assessment">Assessment</a><a href="#premarket">Analysis</a></nav><div class="nd-top-actions"><span class="nd-live" aria-label="Data refresh status"><span class="nd-live-dot" aria-hidden="true"></span><span id="updated" role="status">Loading…</span></span><button id="update" type="button">↻ Refresh</button></div></header><div class="wrap" id="dashboard"><div class="factor-cards compact-cards" id="factorCards"></div><section class="premarket" id="premarket"><h2 id="analysisTitle">Pre-Market Analysis</h2><div class="muted" id="premarketMeta">Loading analysis…</div><div id="premarketBody"></div></section><details class="signal-details" open><summary>Signal Explorer</summary><div class="signal-explorer" id="signalExplorer"></div></details><section class="intel-panel setup-wide" id="marketSetup"></section><div class="lower-intel two-col"><section class="intel-panel"><div class="section-kicker">Decision frame</div><h3>What to Watch Today</h3><div id="watchConditions"></div></section><section class="intel-panel"><div class="section-kicker">Upcoming + active</div><h3>Major Catalysts</h3><div class="catalyst-list" id="majorCatalysts"></div></section></div><section class="intel-panel" id="marketMovingDevelopments"><div class="section-kicker">NasDecode Open Watch · curated</div><h3>Market-Moving Developments</h3><div id="marketMovingBody" class="catalyst-list">Loading developments…</div></section><div class="legacy-table" hidden><table><tbody id="rows"></tbody></table></div><section hidden></section><p class="src">Current Impact = estimated magnitude of the factor's present effect on Nasdaq based on the latest reading, move, event proximity and data freshness; it can change on every refresh and is separate from whether the signal is positive or negative. Green = supportive for Nasdaq; red = headwind; amber = mixed/event risk. Free sources can be delayed. NasDecode displays source freshness rather than representing delayed observations as exchange-real-time data.</p></div><script>
 /*
  * Presentation layer only.
@@ -362,7 +386,7 @@ function render(d){
     marketMovingBody.innerHTML=curated.length?curated.map(e=>{
       const imp=e.initialImpact||e.expectedImpact||{}, confirmation=e.marketConfirmation||{};
       const impact=typeof imp==='string'?imp:[imp.direction,imp.materiality,imp.sox&&'SOX: '+imp.sox,imp.nasdaq&&'Nasdaq: '+imp.nasdaq].filter(Boolean).join(' · ');
-      return '<article class="catalyst"><div class="section-kicker">Event</div><b>'+escHtml(e.headline||e.companyMarket||'Material development')+'</b>'+
+      return '<article class="catalyst"><div class="section-kicker">Event</div><b>'+analysisText(e.headline||e.companyMarket||'Material development')+'</b>'+
         '<div class="muted" style="margin-top:4px">Reported '+escHtml(renderEventWhen(e))+'</div>'+
         '<div class="section-kicker" style="margin-top:9px">Why It Matters</div><div>'+analysisText(e.whyItMatters||'Awaiting analyst context')+'</div>'+
         '<div class="section-kicker" style="margin-top:9px">Initial Impact</div><div>'+analysisText(impact||'Pending assessment')+'</div>'+
@@ -389,7 +413,7 @@ function render(d){
     const impact=e.expectedImpact||{}, confirm=e.marketConfirmation||{};
     const when=e.eventTime?new Date(e.eventTime).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}):'New';
     const bits=[impact.materiality,impact.sox?('SOX '+impact.sox):null,impact.nasdaq?('Nasdaq '+impact.nasdaq):null,confirm.state].filter(Boolean).join(' · ');
-    return '<div class="catalyst"><b>'+escHtml('Open Watch · '+(e.companyMarket||e.category||'Market'))+'</b><div style="margin-top:4px">'+escHtml(e.headline||'Major new event')+'</div><div class="muted" style="margin-top:4px">'+analysisText('Detected '+when+(bits?' · '+bits:''))+'</div></div>';
+    return '<div class="catalyst"><b>'+escHtml('Open Watch · '+(e.companyMarket||e.category||'Market'))+'</b><div style="margin-top:4px">'+analysisText(e.headline||'Major new event')+'</div><div class="muted" style="margin-top:4px">'+analysisText('Detected '+when+(bits?' · '+bits:''))+'</div></div>';
   }).join('');
 
   const earnings=[...(d.upcomingEarnings?.events||[])].filter(e=>{
@@ -587,7 +611,7 @@ async function loadTodayWatch(){
       return;
     }
     const entries=Array.isArray(brief.catalysts)?brief.catalysts:[];
-    const html=entries.map((e,i)=>'<div class="catalyst"><b>'+escHtml((i+1)+'. '+(e.title||'Event'))+'</b><div style="margin-top:5px">'+analysisText(e.detail||e.description||'')+'</div></div>').join('');
+    const html=entries.map((e,i)=>'<div class="catalyst"><b>'+analysisText((i+1)+'. '+(e.title||'Event'))+'</b><div style="margin-top:5px">'+analysisText(e.detail||e.description||'')+'</div></div>').join('');
     const extra=(brief.watchIntoOpen?'<div class="catalyst"><b>What I’d Watch Into the Open</b><div style="margin-top:5px">'+analysisText(brief.watchIntoOpen)+'</div></div>':'')+
       (brief.keyTimes?'<div class="catalyst"><b>Key Times</b><div style="margin-top:5px">'+analysisText(brief.keyTimes)+'</div></div>':'');
     node.innerHTML=html+extra||'<div class="muted">No researched events published for this session.</div>';
