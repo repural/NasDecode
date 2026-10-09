@@ -40,6 +40,9 @@ REJECT_HEADLINE_PATTERNS = [
     r"stock rises to new highs", r"stock tests all-time highs",
     r"\bvs\.?\b.*\b(which|better|contrasting)\b",
     r"etfs? to buy", r"job[s]?$", r"production engineer",
+    r"live updates", r"latest news and analysis", r"latest .* market news",
+    r"selected interest rates", r"\bh\.15\b", r"jim cramer",
+    r"subindex", r"daily rates?", r"market wrap", r"market recap",
 ]
 
 EVENT_TERMS = {
@@ -74,11 +77,29 @@ def now_utc():
     return dt.datetime.now(dt.timezone.utc)
 
 
-def parse_date(value):
+def parse_datetime(value):
     if not value:
         return None
     try:
-        return dt.datetime.fromisoformat(str(value).replace("Z", "+00:00")).date()
+        parsed = dt.datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=dt.timezone.utc)
+        return parsed
+    except ValueError:
+        return None
+
+
+def parse_date(value):
+    parsed = parse_datetime(value)
+    return parsed.date() if parsed else None
+
+
+def date_from_url(url):
+    m = re.search(r"\b(20\d{2})[-/](\d{2})[-/](\d{2})\b", url or "")
+    if not m:
+        return None
+    try:
+        return dt.date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
     except ValueError:
         return None
 
@@ -103,6 +124,29 @@ def rejected_headline(title):
 def event_like(title):
     low = (title or "").lower()
     return any(term in low for term in EVENT_TERMS)
+
+
+def category_title_match(category, title):
+    low = (title or "").lower()
+    patterns = {
+        "fed-rates": r"\b(fed|federal reserve|treasur(?:y|ies)|yield|rate hike|rate cut|rates?)\b",
+        "macro": r"\b(cpi|pce|payrolls?|unemployment|employment|jobs report|inflation|gdp|retail sales|ism|pmi)\b",
+        "oil-geopolitics": r"\b(brent|wti|oil|opec|iea|iran|hormuz|sanction|energy supply|crude)\b",
+        "regulatory": r"\b(export control|export restriction|chip restriction|semiconductor restriction|sanction|ban|license|ai chip|china chip)\b",
+    }
+    return bool(re.search(patterns.get(category, r".+"), low, re.I))
+
+
+def event_action_match(title):
+    low = (title or "").lower()
+    return bool(re.search(
+        r"\b(announce(?:s|d)?|agree(?:s|d)?|sign(?:s|ed)?|raise(?:s|d)?|cut(?:s)?|"
+        r"acquire(?:s|d)?|report(?:s|ed)?|forecast(?:s|ed)?|warn(?:s|ed)?|"
+        r"approve(?:s|d)?|restrict(?:s|ed)?|ban(?:s|ned)?|release(?:s|d)?|"
+        r"rise(?:s|n)?|fall(?:s|en)?|surge(?:s|d)?|plunge(?:s|d)?|hit(?:s)?|"
+        r"order(?:s|ed)?|launch(?:es|ed)?|invest(?:s|ed)?|investigation|sanction(?:s|ed)?|"
+        r"minutes show|data show|payrolls|cpi|pce|unemployment)\b", low, re.I
+    ))
 
 
 def fresh(event_date):
@@ -195,9 +239,12 @@ def build_event(candidate):
     title = candidate["title"].strip()
     is_macro = candidate.get("scope") == "macro"
     direction = infer_direction(title)
+    published_dt = candidate.get("published_dt")
+    event_time = published_dt.isoformat(timespec="seconds") if published_dt else f"{date.isoformat()}T00:00:00-04:00"
     return {
         "id": stable_id(date, ticker, title),
-        "eventTime": f"{date.isoformat()}T12:00:00-04:00",
+        "eventTime": event_time,
+        "timePrecision": "exact" if published_dt else "date",
         "firstReported": date.isoformat(),
         "category": candidate.get("type") or "company_specific",
         "companyMarket": company_market(candidate),
@@ -237,11 +284,12 @@ def raw_company_candidates():
         source = str(e.get("source") or "").strip()
         if score < MIN_SCORE or not fresh(date):
             continue
-        if not trusted_source(source) or rejected_headline(title) or not event_like(title):
+        if not trusted_source(source) or rejected_headline(title) or not event_like(title) or not event_action_match(title):
             continue
         yield {
             **e,
             "date_obj": date,
+            "published_dt": parse_datetime(e.get("published_date")),
             "title": title,
             "source": source,
         }
@@ -257,13 +305,17 @@ def macro_candidates():
         for r in results:
             title = str(r.get("title") or "").strip()
             source = str(r.get("url") or "").strip()
-            date = parse_date(r.get("published_date")) or now_utc().date()
+            published_dt = parse_datetime(r.get("published_date"))
+            date = published_dt.date() if published_dt else date_from_url(source)
+            if date is None:
+                continue
             if not fresh(date) or not trusted_source(source):
                 continue
-            if rejected_headline(title) or not event_like(title):
+            if rejected_headline(title) or not event_like(title) or not category_title_match(category, title) or not event_action_match(title):
                 continue
             yield {
                 "date_obj": date,
+                "published_dt": published_dt,
                 "ticker": "MARKET",
                 "type": category,
                 "scope": "macro",
