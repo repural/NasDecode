@@ -37,13 +37,26 @@ def fetch_fred_spot(series_id):
  return values
 
 def main():
- key=os.environ["MASSIVE_API_KEY"];series={}
+ key=os.environ.get("MASSIVE_API_KEY","")
+ series={}
+ source_status={}
+ # Each series is independent: an unavailable endpoint must not erase valid
+ # observations from other providers or publish old proxy symbols as oil.
  for name,ticker in SYMBOLS.items():
-  series[name]=fetch(ticker,key) if ticker else fetch_fred_spot({"brent":"DCOILBRENTE","wti":"DCOILWTICO"}[name])
-  print(name,len(series[name]),flush=True)
-  time.sleep(16)
+  source=("Massive:"+ticker) if ticker else ("FRED:"+{"brent":"DCOILBRENTE","wti":"DCOILWTICO"}[name])
+  try:
+   if ticker and not key: raise ValueError("MASSIVE_API_KEY missing")
+   values=fetch(ticker,key) if ticker else fetch_fred_spot({"brent":"DCOILBRENTE","wti":"DCOILWTICO"}[name])
+   if not values: raise ValueError("No observations returned")
+   series[name]=values
+   source_status[name]={"status":"verified_source","source":source,"observations":len(values)}
+  except (ValueError,KeyError,TimeoutError,urllib.error.URLError,urllib.error.HTTPError) as exc:
+   series[name]={}
+   source_status[name]={"status":"unavailable","source":source,"observations":0,"reason":str(exc)[:180]}
+  print(name,source_status[name],flush=True)
+  if ticker:time.sleep(16)
  payload={"schemaVersion":1,"version":"regime-macro-backfill-1.0","start":START,"end":END,
  "source":"Massive aggregates for non-oil; FRED-hosted EIA daily spot oil benchmarks DCOILBRENTE/DCOILWTICO","availability":"historical completed daily close; not verified for intraday availability",
- "tickers":{**SYMBOLS,"brent":"FRED:DCOILBRENTE","wti":"FRED:DCOILWTICO"},"oilInstrumentType":"EIA physical spot benchmark, not rolling futures","oilContractRoll":"not applicable to spot benchmark","series":series,"missingPolicy":"Missing symbols/dates remain absent; do not substitute another instrument silently."}
+ "tickers":{**SYMBOLS,"brent":"FRED:DCOILBRENTE","wti":"FRED:DCOILWTICO"},"oilInstrumentType":"EIA physical spot benchmark, not rolling futures","oilContractRoll":"not applicable to spot benchmark","series":series,"sourceStatus":source_status,"missingPolicy":"Missing symbols/dates remain absent; do not substitute another instrument silently."}
  OUT.write_text(json.dumps(payload,indent=2)+"\n")
 if __name__=="__main__":main()
