@@ -545,6 +545,7 @@ def eoddata_s5fi():
     dm=re.search(r'(\\d{1,2}\s+[A-Za-z]{3}\s+\\d{2})\s+\\d{1,2}:\\d{2}',clean)
     last=float(lm.group(1)) if lm else None
     previous=float(pm.group(1)) if pm else None
+    pairs=[]
     if last is None or not (0 <= last <= 100):
         # Fallback to the first two Recent End of Day close observations.
         pairs=re.findall(r'(\\d{1,2}\s+[A-Za-z]{3}\s+\\d{2})\s+([0-9.]+)\s+([0-9.]+)\s+([0-9.]+)\s+([0-9.]+)',clean)
@@ -1066,11 +1067,27 @@ def main():
         sx=None; s5_source=None; s5_freshness=None
         try:
             ex=eoddata_s5fi()
+            # Independent publisher confirmation is mandatory for scoring.
+            # Investing regional endpoints count as ONE source, not two.
+            source_date=ex.get('date')
+            if not source_date:
+                raise ValueError('EODData S5FI quote lacks a dated observation')
+            observation_date=datetime.date.fromisoformat(source_date)
+            if not (0 <= (now.date()-observation_date).days <= 5):
+                raise ValueError('EODData S5FI quote stale or future-dated')
+            with open(os.path.join(HISTORY_DIR,'s5fi-single-provider.json'),encoding='utf-8') as sf:
+                reference=json.load(sf)
+            reference_rows=reference.get('observations') or []
+            match=next((r for r in reference_rows if r.get('date')==source_date and
+                        r.get('verification')=='single_provider_regionally_correlated' and
+                        r.get('independentlyVerified') is False),None)
+            if not match or abs(float(ex['last'])-float(match['pctAbove50dma']))>0.15:
+                raise ValueError('EODData quote lacks matching independent-source confirmation')
             sx={'last':str(ex['last']),'previous_day_closing':str(ex['previous']) if ex['previous'] is not None else ''}
-            s5_source='EODData INDEX:S5FI'
-            s5_freshness='EODData EOD'+((' · '+ex['date']) if ex.get('date') else '')
+            s5_source='EODData INDEX:S5FI + Investing.com (independent publishers)'
+            s5_freshness='Cross-publisher confirmed EOD · '+source_date
         except Exception as e:
-            print('EODData S5FI unavailable:',repr(e))
+            print('S5FI independent verification unavailable:',repr(e))
         if sx and num(sx.get('last')) is not None:
             sv=num(sx.get('last')); sp=num(sx.get('previous_day_closing'))
             delta=(sv-sp) if sp is not None else None
