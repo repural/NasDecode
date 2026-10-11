@@ -57,6 +57,17 @@
       .session-tab-panel li b{font-weight:630}
       .session-awaiting{padding:18px 0;color:var(--muted);line-height:1.55}
       .session-current-note{font-size:10px;color:#e1e4e7;font-weight:650}
+      /* Shared Option 2 readability and tabular market figures. */
+      .session-tabs-shell,.session-tab{font-family:var(--nd-font,"Inter",ui-sans-serif,system-ui,sans-serif)}
+      .session-tab span,.session-analysis-time,.session-current-note{font-size:11px;font-variant-numeric:tabular-nums}
+      .session-tab b{font-size:13px}
+      .session-tab-panel p{font-size:14px;line-height:1.72}
+      .session-tab-panel li{font-size:14px;line-height:1.65}
+      .session-pill{font-size:12px;font-variant-numeric:tabular-nums lining-nums}
+      .session-tab-panel .analysis-metric{font-weight:650}
+      .session-tabs-head .muted,.session-tabs-head .section-kicker{font-size:12px}
+      .session-analysis-title h3{font-weight:690}
+
       @media(max-width:700px){
         .session-tabs-shell{padding:16px 14px}
         .session-tabbar{grid-template-columns:1fr 1fr}
