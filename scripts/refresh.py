@@ -786,7 +786,7 @@ def main():
     d['rows']=rows
 
     # Structured earnings calendar: only future SOX/mega-cap reports inside the next
-    # 14 calendar days belong in the upcoming-catalyst view. This replaces the stale
+    # 28 calendar days belong in the upcoming-catalyst view. This replaces the stale
     # single-company Technology earnings calendar text that previously retained MU.
     try:
         with open(UPCOMING_EARNINGS_PATH,encoding='utf-8') as ef:
@@ -794,7 +794,7 @@ def main():
     except (OSError,json.JSONDecodeError):
         _earnings_doc={'events':[]}
     _earnings=[]
-    _earn_end=now.date()+datetime.timedelta(days=14)
+    _earn_end=now.date()+datetime.timedelta(days=28)
     for _e in _earnings_doc.get('events',[]):
         try: _ed=datetime.date.fromisoformat(str(_e.get('date','')))
         except ValueError: continue
@@ -802,7 +802,7 @@ def main():
             _earnings.append(dict(_e))
     _earnings.sort(key=lambda x:(x.get('date',''),x.get('ticker','')))
     d['upcomingEarnings']={
-        'windowDays':14,
+        'windowDays':28,
         'asOfDate':now.date().isoformat(),
         'windowEnd':_earn_end.isoformat(),
         'events':_earnings
