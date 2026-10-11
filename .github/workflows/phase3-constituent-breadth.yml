@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'scripts/backfill_phase3_constituent_breadth.py'
+      - 'scripts/analyze_phase3_breadth_divergence.py'
       - '.github/workflows/phase3-constituent-breadth.yml'
 permissions:
   contents: write
@@ -26,11 +27,13 @@ jobs:
         env:
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
         run: python scripts/backfill_phase3_constituent_breadth.py
+      - name: Analyze breadth divergence and missing symbols
+        run: python scripts/analyze_phase3_breadth_divergence.py
       - name: Persist research-only dataset
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/history/phase3-constituent-breadth.json
+          git add data/history/phase3-constituent-breadth.json data/history/phase3-breadth-divergence-research.json
           git diff --cached --quiet && exit 0
           git commit -m "Persist Phase 3 semiconductor proxy breadth history"
           for attempt in 1 2 3 4 5; do
