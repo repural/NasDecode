@@ -366,7 +366,7 @@ def pct(q):
     # duplicated from last in delayed equity/ETF snapshots. Prefer the supplied move.
     raw=q.get('change_pct')
     # CNBC sometimes encodes an explicitly unchanged daily move as text.
-    if isinstance(raw,str) and re.fullmatch(r'\\s*(?:UNCH|UNCHANGED|UNCHG|0+(?:\\.0+)?%?)\\s*',raw,re.I):
+    if isinstance(raw,str) and re.fullmatch(r'\s*(?:UNCH|UNCHANGED|UNCHG|0+(?:\.0+)?%?)\s*',raw,re.I):
         return 0.0
     cp=num(raw)
     if cp is not None: return cp
