@@ -1689,6 +1689,10 @@ def main():
     for r in rows:
         base_w=impact_w.get(r.get('currentImpact','Low'),1)
         fw=freshness_w(r); possible_weight+=base_w
+        if r.get('factor')=='S&P 500 50D Breadth / Oversold' and (
+                'NOT independently verified' in r.get('freshness','') or
+                'independently verified S5FI feed unavailable' in r.get('freshness','')):
+            fw=0.0  # research reference, excluded from directional scoring
         if r.get('factor') in research_background: fw=min(fw,0.35)
         w=base_w*fw
         bucket=bucket_of.get(r.get('factor'),'Other')
