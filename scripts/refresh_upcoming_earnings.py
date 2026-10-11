@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Maintain the next-14-day earnings calendar for the NasDecode universe.
+"""Maintain the next-28-day earnings calendar for the NasDecode universe.
 
 Primary source: Nasdaq's public earnings-calendar endpoint. Only SOX constituents and
 NasDecode mega-caps are retained. Existing manually/officially verified rows are kept
@@ -39,12 +39,12 @@ def normalize_session(x):
 
 def main():
     today=dt.datetime.now(dt.timezone.utc).date()
-    end=today+dt.timedelta(days=14)
+    end=today+dt.timedelta(days=28)
     u=load(UNIVERSE,{})
     sox=set(u.get("components",[])); mega=set(u.get("megaCaps",[]))
     wanted=sox|mega
     existing=load(OUT,{"events":[]})
-    if existing.get("asOfDate")==today.isoformat() and int(existing.get("fetchSuccessfulDays",0) or 0)>=15:
+    if existing.get("asOfDate")==today.isoformat() and int(existing.get("fetchSuccessfulDays",0) or 0)>=29:
         print("upcoming earnings already refreshed successfully today")
         return
     retained={}
@@ -55,7 +55,7 @@ def main():
             retained[(e["ticker"],e["date"])]=e
 
     fetched={}; success_days=0
-    for i in range(15):
+    for i in range(29):
         day=today+dt.timedelta(days=i)
         try:
             rows=fetch_day(day); success_days+=1
@@ -84,7 +84,7 @@ def main():
     events=sorted(fetched.values(),key=lambda e:(e["date"],e["ticker"]))
     out={
         "schemaVersion":1,
-        "windowDays":14,
+        "windowDays":28,
         "asOfDate":today.isoformat(),
         "windowEnd":end.isoformat(),
         "source":"Nasdaq public earnings calendar; confirmed company IR rows may be retained as fallback",
@@ -93,7 +93,7 @@ def main():
         "events":events
     }
     OUT.write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    print(f"upcoming earnings: {len(events)} SOX/mega-cap events through {end}; {success_days}/15 Nasdaq dates fetched")
+    print(f"upcoming earnings: {len(events)} SOX/mega-cap events through {end}; {success_days}/29 Nasdaq dates fetched")
 
 if __name__=="__main__":
     main()
