@@ -8,6 +8,7 @@ import urllib.request
 from pathlib import Path
 
 OUT = Path("data/history/s5fi-tavily-observations.json")
+BASELINE = Path("data/history/s5fi-single-provider.json")
 URLS = [
     "https://www.investing.com/indices/s-p-500-stocks-above-50-day-average-historical-data",
     "https://uk.investing.com/indices/s-p-500-stocks-above-50-day-average-historical-data",
@@ -98,6 +99,34 @@ def main():
         result["status"]="cross_verified"
     elif result["sameProviderMatches"]:
         result["status"]="same_provider_correlated"
+    # Explicitly separate source observations from independently verified values.
+    # Require agreement between two Investing.com regional endpoints; this remains
+    # ONE publisher and is never promoted to independent verification.
+    prior = {}
+    if BASELINE.exists():
+        try:
+            previous = json.loads(BASELINE.read_text())
+            if previous.get("schemaVersion") == 1:
+                prior = {v["date"]: v for v in previous.get("observations", [])
+                         if isinstance(v, dict) and isinstance(v.get("date"), str)}
+        except (ValueError, OSError):
+            pass
+    for entry in result["sameProviderMatches"]:
+        prior[entry["date"]] = {
+            "date": entry["date"],
+            "pctAbove50dma": entry["pctAbove50dma"],
+            "source": "Investing.com",
+            "sourceUrls": entry["verifiedSources"],
+            "verification": "single_provider_regionally_correlated",
+            "independentlyVerified": False
+        }
+    baseline = {"schemaVersion": 1, "series": "S5FI",
+                "verification": "single_provider_regionally_correlated",
+                "independentlyVerified": False,
+                "updatedUTC": result["collectedAtUTC"],
+                "observations": sorted(prior.values(), key=lambda x: x["date"])}
+    BASELINE.parent.mkdir(parents=True, exist_ok=True)
+    BASELINE.write_text(json.dumps(baseline, indent=2) + "\\n")
     OUT.parent.mkdir(parents=True,exist_ok=True)
     OUT.write_text(json.dumps(result,indent=2)+"\n")
     print(json.dumps({"status":result["status"],"verified":len(result["observations"]),"sameProviderMatches":len(result["sameProviderMatches"]),"sources":result["sources"]}))
