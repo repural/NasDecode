@@ -1119,7 +1119,7 @@ def main():
                                and isinstance(x.get('pctAbove50dma'),(float,int))
                                and 0<=x['pctAbove50dma']<=100
                                and isinstance(x.get('date'),str)
-                               and re.fullmatch(r'20\\d{2}-\\d{2}-\\d{2}',x['date'])]
+                               and re.fullmatch(r'20\d{2}-\d{2}-\d{2}',x['date'])]
                         valid.sort(key=lambda x:x['date'])
                         if valid:
                             latest_obs=valid[-1]
