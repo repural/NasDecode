@@ -487,16 +487,17 @@ function render(d){
   const earningsNode=document.getElementById('ndUpcomingEarnings');
   if(earningsNode){
     const todayNY=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-    const currentMonth=todayNY.slice(0,7);
-    const endOfMonth=new Date(Date.UTC(Number(currentMonth.slice(0,4)),Number(currentMonth.slice(5,7)),0)).toISOString().slice(0,10);
-    const monthLabel=new Intl.DateTimeFormat('en-US',{month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(currentMonth+'-01T12:00:00Z'));
+    const start=new Date(todayNY+'T12:00:00Z');
+    const finish=new Date(start.getTime()+28*86400000);
+    const endDate=finish.toISOString().slice(0,10);
+    const displayDate=date=>new Date(date+'T12:00:00Z').toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'UTC'});
     const monthNode=document.getElementById('ndEarningsMonth');
-    if(monthNode)monthNode.textContent=monthLabel;
+    if(monthNode)monthNode.textContent=displayDate(todayNY)+' – '+displayDate(endDate)+' · Next 4 weeks';
     const all=d.upcomingEarnings?.events||[];
-    const earnings=all.filter(e=>e.date&&String(e.date)>=todayNY&&String(e.date).slice(0,7)===currentMonth&&['sox','mega_cap'].includes(e.scope))
+    const earnings=all.filter(e=>e.date&&String(e.date)>=todayNY&&String(e.date)<=endDate&&['sox','mega_cap'].includes(e.scope))
       .sort((a,b)=>String(a.date).localeCompare(String(b.date))||String(a.ticker).localeCompare(String(b.ticker)));
     const lastCovered=String(d.upcomingEarnings?.windowEnd||'');
-    const coverageNote=lastCovered&&lastCovered<endOfMonth?'<div class="nd-earnings-coverage">Calendar currently verified through '+escHtml(lastCovered)+'; later '+escHtml(monthLabel)+' dates are not yet covered.</div>':'';
+    const coverageNote=lastCovered&&lastCovered<endDate?'<div class="nd-earnings-coverage">Available earnings feed covers dates through '+escHtml(lastCovered||'unknown')+'. Some earnings later in the next four weeks may be missing until the expanded collector refreshes.</div>':'';
     earningsNode.innerHTML=(earnings.length?earnings.map(e=>{
       const date=new Date(String(e.date)+'T12:00:00Z').toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'UTC'});
       const session=e.session==='before_open'?'Before open':e.session==='after_close'?'After close':'Time not confirmed';
