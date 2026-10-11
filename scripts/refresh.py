@@ -1834,15 +1834,24 @@ def main():
                 first=fm[0]; p=first.get('probabilities',{})
                 card={'value':first.get('label','Next FOMC'),'arrow':'','change':f"Hike {p.get('hike',0):.1f}% · Hold {p.get('hold',0):.1f}% · Cut {p.get('cut',0):.1f}%"}
         elif n=='Oil (WTI / Brent)':
-            m=re.search(r'WTI[^0-9]*([0-9.]+).*?[(]([+-]?[0-9.]+)%[)]',latest,re.I)
-            br=re.search(r'Brent[^0-9]*([0-9.]+).*?[(]([+-]?[0-9.]+)%[)]',latest,re.I)
-            if m:
-                ch=float(m.group(2)); card={'value':'WTI $'+m.group(1),'arrow':'↓' if ch<0 else ('↑' if ch>0 else '→'),'change':f'{ch:+.2f}%'}
-                if br:
-                    bch=float(br.group(2))
-                    card['secondaryValue']='Brent $'+br.group(1)
-                    card['secondaryArrow']='↓' if bch<0 else ('↑' if bch>0 else '→')
-                    card['secondaryChange']=f'{bch:+.2f}%'
+            # Price and percent change are independent: show a valid quote even
+            # when CNBC does not supply the comparison/previous close.
+            def oil_quote(label):
+                match=re.search(r'\\b'+label+r'\\s*\\$([0-9]+(?:\\.[0-9]+)?)\\s*\\(([^)]*)\\)',latest,re.I)
+                if not match: return None
+                movement=re.fullmatch(r'([+-]?[0-9]+(?:\\.[0-9]+)?)%',match.group(2).strip())
+                delta=float(movement.group(1)) if movement else None
+                return {'value':label+' $'+match.group(1),
+                        'arrow':'↓' if delta is not None and delta<0 else ('↑' if delta is not None and delta>0 else ''),
+                        'change':f'{delta:+.2f}%' if delta is not None else ''}
+            wti=oil_quote('WTI')
+            brent=oil_quote('Brent')
+            if wti or brent:
+                card=wti or {'value':'WTI unavailable','arrow':'','change':''}
+                if brent:
+                    card['secondaryValue']=brent['value']
+                    card['secondaryArrow']=brent['arrow']
+                    card['secondaryChange']=brent['change']
         elif n=='Market breadth':
             m=re.search(r'([0-9]+)/([0-9]+) advancing [(]([0-9]+)%[)]',latest)
             if m:
