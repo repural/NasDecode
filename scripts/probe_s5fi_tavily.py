@@ -126,7 +126,7 @@ def main():
                 "updatedUTC": result["collectedAtUTC"],
                 "observations": sorted(prior.values(), key=lambda x: x["date"])}
     BASELINE.parent.mkdir(parents=True, exist_ok=True)
-    BASELINE.write_text(json.dumps(baseline, indent=2) + "\\n")
+    BASELINE.write_text(json.dumps(baseline, indent=2) + "\n")
     OUT.parent.mkdir(parents=True,exist_ok=True)
     OUT.write_text(json.dumps(result,indent=2)+"\n")
     print(json.dumps({"status":result["status"],"verified":len(result["observations"]),"sameProviderMatches":len(result["sameProviderMatches"]),"sources":result["sources"]}))
