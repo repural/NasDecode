@@ -455,7 +455,7 @@ function render(d){
       return `<div class="card factor-card signal-${r.signal}${awaiting(r)}" tabindex="0" data-tip="${escAttr(r.explanation||'No explanation available.')}"><span class="factor-name">${factorRank(i)}. ${r.factor}</span><div class="fed-prob-chart">${fedRows}</div></div>`;
     }
     if(r.factor==='S&P 500 50D Breadth / Oversold' && /unverified|independently verified|single.provider/i.test(String(r.freshness||'')+' '+String(r.signalLabel||''))){
-      const match=String(r.latest||'').match(/S5FI research reference:\\s*([0-9]+(?:\\.[0-9]+)?)%\\s*·\\s*(\\d{4}-\\d{2}-\\d{2})/);
+      const match=String(r.latest||'').match(/S5FI research reference:\s*([0-9]+(?:\.[0-9]+)?)%\s*·\s*(\d{4}-\d{2}-\d{2})/);
       const primary=match?match[1]+'%':'—';
       const date=match?match[2]:'No dated observation';
       return `<div class="card factor-card awaiting s5fi-reference" tabindex="0" data-tip="${escAttr(r.explanation||'Research-only observation, not independently verified.')}"><span class="factor-name">${factorRank(i)}. ${r.factor}</span><span class="metric">${primary}</span><span class="s5fi-reference-status">Single-source reference · Unverified</span><span class="card-latest">${escHtml(date)} · Investing.com</span></div>`;
