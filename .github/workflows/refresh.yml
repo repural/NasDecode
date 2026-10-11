@@ -27,6 +27,11 @@ on:
       - 'scripts/sox_earnings_avwap.py'
       - 'scripts/collect_sox_avwap.py'
       - 'scripts/probe_s5fi_tavily.py'
+      # Tests and validation-only automation must never start a market refresh.
+      - 'tests/**'
+      - '.github/workflows/validate-code.yml'
+      - 'docs/**'
+      - 'README.md'
       - 'scripts/backfill_regime_macro_2025.py'
       - 'scripts/analyze_oil_pressure.py'
   workflow_dispatch:
