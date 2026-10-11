@@ -157,18 +157,18 @@ td,th,.driver,.catalyst{border-color:#303236}
 .lower-intel.two-col>.intel-panel>h3,#marketMovingDevelopments>h3{
   color:#f3f4f5;font-size:20px;font-weight:690;letter-spacing:-.02em;margin:0 0 18px
 }
-#watchConditions .catalyst,#majorCatalysts .catalyst,#marketMovingBody .catalyst{
+#watchConditions .catalyst,#marketMovingBody .catalyst{
   background:transparent;border-bottom:1px solid #303236;padding:13px 0 16px;
   color:#dadddf;font-size:13px;font-weight:430;line-height:1.65;overflow-wrap:anywhere
 }
-#watchConditions .catalyst:first-child,#majorCatalysts .catalyst:first-child,#marketMovingBody .catalyst:first-child{padding-top:0}
-#watchConditions .catalyst:last-child,#majorCatalysts .catalyst:last-child,#marketMovingBody .catalyst:last-child{border-bottom:0;padding-bottom:0}
-#watchConditions .catalyst>b,#majorCatalysts .catalyst>b,#marketMovingBody .catalyst>b{display:block;color:#eff1f3;font-size:13px;font-weight:660;line-height:1.45}
-#watchConditions .analysis-metric,#majorCatalysts .analysis-metric,#marketMovingBody .analysis-metric{
+#watchConditions .catalyst:first-child:first-child,#marketMovingBody .catalyst:first-child{padding-top:0}
+#watchConditions .catalyst:last-child:last-child,#marketMovingBody .catalyst:last-child{border-bottom:0;padding-bottom:0}
+#watchConditions .catalyst>b>b,#marketMovingBody .catalyst>b{display:block;color:#eff1f3;font-size:13px;font-weight:660;line-height:1.45}
+#watchConditions .analysis-metric,#marketMovingBody .analysis-metric{
   color:#82cbd0;font-weight:650;text-decoration:none
 }
 #marketMovingBody .section-kicker{color:#a5aab0;font-size:10px;letter-spacing:.12em;font-weight:600;margin-bottom:4px}
-#watchConditions .muted,#majorCatalysts .muted,#marketMovingBody .muted{color:#abb0b6}
+#watchConditions .muted,#marketMovingBody .muted{color:#abb0b6}
 @media(max-width:700px){.lower-intel.two-col>.intel-panel,#marketMovingDevelopments{padding:17px 15px}}
 
 /* existing stylesheet segment 8 */
@@ -286,8 +286,8 @@ body{font-size:14px;font-weight:400;-webkit-font-smoothing:antialiased}
 #signalExplorer .signal-row>summary{font-size:13px;line-height:1.45}
 #signalExplorer .signal-reading,#signalExplorer .nd-explorer-trend,#signalExplorer .nd-explorer-impact{font-size:13px;font-variant-numeric:tabular-nums lining-nums}
 #signalExplorer .signal-expand .explain,#signalExplorer .signal-debug{font-size:13px;line-height:1.65}
-#watchConditions .catalyst,#majorCatalysts .catalyst,#marketMovingBody .catalyst{font-size:14px;line-height:1.7}
-#watchConditions .catalyst>b,#majorCatalysts .catalyst>b,#marketMovingBody .catalyst>b{font-size:14px}
+#watchConditions .catalyst,#marketMovingBody .catalyst{font-size:14px;line-height:1.7}
+#watchConditions .catalyst>b>b,#marketMovingBody .catalyst>b{font-size:14px}
 .nd-earnings-item,.nd-earnings-meta,.nd-earnings-company{font-size:12px;line-height:1.55}
 .nd-earnings-date,.nd-earnings-header .muted,.nd-earnings-coverage{font-size:12px;font-variant-numeric:tabular-nums}
 .card[data-tip]::after{font-size:13px;line-height:1.55}
@@ -298,6 +298,23 @@ body{font-size:14px;font-weight:400;-webkit-font-smoothing:antialiased}
  #signalExplorer .signal-row>summary{font-size:12px}
 }
 
+
+/* Final accessibility and mobile typography refinements. */
+.nd-explorer-head{font-size:11px;letter-spacing:.085em}
+#signalExplorer .signal-row>summary:focus-visible,.nd-earnings-item a:focus-visible{outline:2px solid #82cbd0;outline-offset:-2px}
+.nd-earnings-item{min-width:0}
+.nd-earnings-item>div{min-width:0;overflow-wrap:anywhere}
+.nd-earnings-company,.nd-earnings-meta{overflow-wrap:anywhere}
+#signalExplorer .signal-reading,#signalExplorer .signal-name,#signalExplorer .nd-explorer-trend{min-width:0;overflow-wrap:anywhere}
+@media(max-width:750px){
+ .nd-earnings-item{grid-template-columns:62px minmax(0,1fr);column-gap:12px}
+ .nd-earnings-item .nd-earnings-meta{line-height:1.55}
+ #signalExplorer .signal-expand{min-width:0;overflow-wrap:anywhere}
+}
+@media(prefers-reduced-motion:reduce){
+ html:focus-within{scroll-behavior:auto}
+ *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
 </style></head><body><header class="nd-topbar"><a class="nd-brand" href="#dashboard" aria-label="NasDecode Dashboard"><span class="nd-brand-mark" aria-hidden="true">N</span><span class="nd-brand-word">NASDECODE</span></a><nav class="nd-nav" aria-label="Dashboard sections"><a href="#dashboard" class="nd-current">Dashboard</a><a href="#macro-rates">Macro</a><a href="#market-internals">Internals</a><a href="#market-assessment">Assessment</a><a href="#premarket">Analysis</a></nav><div class="nd-top-actions"><span class="nd-live" aria-label="Data refresh status"><span class="nd-live-dot" aria-hidden="true"></span><span id="updated" role="status">Loading…</span></span><button id="update" type="button">↻ Refresh</button></div></header><div class="wrap" id="dashboard"><div class="factor-cards compact-cards" id="factorCards"></div><section class="premarket" id="premarket"><h2 id="analysisTitle">Pre-Market Analysis</h2><div class="muted" id="premarketMeta">Loading analysis…</div><div id="premarketBody"></div></section><details class="signal-details" open><summary>Signal Explorer</summary><div class="signal-explorer" id="signalExplorer"></div></details><section class="intel-panel setup-wide" id="marketSetup"></section><div class="lower-intel"><section class="intel-panel"><div class="section-kicker">Decision frame</div><h3>What to Watch Today</h3><div id="watchConditions"></div></section></div><section class="intel-panel" id="marketMovingDevelopments"><div class="section-kicker">NasDecode Open Watch · curated</div><h3>Market-Moving Developments</h3><div id="marketMovingBody" class="catalyst-list">Loading developments…</div><div class="nd-earnings-section"><div class="nd-earnings-header"><h4>Upcoming Major Earnings</h4><span id="ndEarningsMonth" class="muted"></span></div><div id="ndUpcomingEarnings" class="nd-earnings-list"></div></div></section><div class="legacy-table" hidden><table><tbody id="rows"></tbody></table></div><section hidden></section><p class="src">Current Impact = estimated magnitude of the factor's present effect on Nasdaq based on the latest reading, move, event proximity and data freshness; it can change on every refresh and is separate from whether the signal is positive or negative. Green = supportive for Nasdaq; red = headwind; amber = mixed/event risk. Free sources can be delayed. NasDecode displays source freshness rather than representing delayed observations as exchange-real-time data.</p></div><script>
 /*
  * Presentation layer only.
