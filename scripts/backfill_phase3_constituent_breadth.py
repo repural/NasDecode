@@ -9,6 +9,9 @@ R=Path(__file__).resolve().parents[1]
 OUT=R/"data/history/phase3-constituent-breadth.json"
 UNIVERSE="AMD ADI AMAT ARM ASML ALAB AVGO COHR CRDO ENTG GFS INTC KLAC LRCX MTSI MRVL MCHP MU MPWR NVMI NVDA NXPI ON QRVO QCOM RMBS SWKS TSM TER TXN".split()
 BASKET="NVDA AMD AVGO TSM MU".split()
+PROXY_REPLACEMENT={"effectiveDate":"2026-10-05","out":"QRVO","in":"SNDK","officialSoxReplacement":False}
+def active_symbols(date):
+ return [("SNDK" if s=="QRVO" else s) for s in UNIVERSE] if date>=PROXY_REPLACEMENT["effectiveDate"] else UNIVERSE
 CORPORATE_ACTIONS={"QRVO":{"lastTradingDate":"2026-10-02","haltDate":"2026-10-05","reason":"Merger into Skyworks Solutions (SWKS)","sourceUrl":"https://www.nasdaqtrader.com/TraderNews.aspx?id=ECA2026-702","filingUrl":"https://ir.qorvo.com/static-files/97184275-c23b-40b6-8c00-fab7ad1c2258"}}
 START="2024-12-01";END=datetime.date.today().isoformat()
 def fetch(ticker,key):
@@ -27,7 +30,7 @@ def main():
  key=os.environ.get("MASSIVE_API_KEY","").strip()
  if not key:raise RuntimeError("MASSIVE_API_KEY required; refusing to invent historical prices")
  series={}
- for ticker in UNIVERSE:
+ for ticker in list(dict.fromkeys(UNIVERSE+["SNDK"])):
   series[ticker]=fetch(ticker,key)
   print(ticker,len(series[ticker]),flush=True)
   time.sleep(float(os.environ.get("MASSIVE_REQUEST_INTERVAL_SECONDS","15")))
@@ -36,15 +39,16 @@ def main():
  for i,d in enumerate(dates):
   if i==0:continue
   prev=dates[i-1]
-  returns={s:100*(series[s][d]/series[s][prev]-1) for s in UNIVERSE if d in series[s] and prev in series[s] and series[s][prev]>0}
+  active=active_symbols(d)
+  returns={s:100*(series[s][d]/series[s][prev]-1) for s in active if d in series[s] and prev in series[s] and series[s][prev]>0}
   def breadth(stocks):
    valid=[returns[s] for s in stocks if s in returns]
    return 100*sum(x>0 for x in valid)/len(valid) if len(valid)==len(stocks) else None
-  missing=[s for s in UNIVERSE if s not in returns]
+  missing=[s for s in active if s not in returns]
   # A missing ticker invalidates full-universe breadth, rather than silently changing denominator.
   ranked=sorted(returns.items(),key=lambda kv:kv[1],reverse=True)
-  records.append({"date":d,"proxyPositiveBreadthPct":breadth(UNIVERSE),"fiveStockPositiveBreadthPct":breadth(BASKET),"observedCount":len(returns),"missingSymbols":missing,"structuralMissingSymbols":[s for s in missing if s in CORPORATE_ACTIONS and d>CORPORATE_ACTIONS[s]["lastTradingDate"]],"expectedCount":len(UNIVERSE),"topFiveAverageReturnPct":sum(v for _,v in ranked[:5])/5 if len(ranked)==len(UNIVERSE) else None,"allConstituentAverageReturnPct":sum(returns.values())/len(UNIVERSE) if len(returns)==len(UNIVERSE) else None,"topFiveContributionShare":None,"verifiedSoxBreadthPct":None})
- result={"schemaVersion":1,"status":"research_only","universeType":"fixed_30_stock_liquid_semiconductor_proxy_NOT_historical_SOX_membership","universeSource":"scripts/refresh.py SEMI_BREADTH; membership not independently verified","universe":UNIVERSE,"corporateActions":CORPORATE_ACTIONS,"fiveStockBasket":BASKET,"historicalMembershipVerified":False,"priceSource":"Massive adjusted daily aggregates","missingSymbolDiagnostics":"Per-symbol missing returns identify missing current or previous daily close; source does not distinguish no trading from provider gap.","priceWindow":{"start":START,"end":END},"method":"Daily positive close-to-close return; require all 30 constituents observed on current and preceding trading date.","records":records,"limitations":["Current fixed universe creates survivorship and historical membership bias.","Do not call proxy breadth SOX constituent breadth or use for historical causal inference.","Concentration by market-cap weight unavailable; top-five contribution share null.","Absent adjusted prices remain missing, never zero-filled.","QRVO ceased trading after 2026-10-02 following its merger; do not synthesize QRVO returns or silently substitute SWKS.","A verified effective-dated replacement universe is needed for continuous post-merger 30-stock breadth.","Date alignment assumes a shared US equity trading calendar."]}
+  records.append({"date":d,"activeUniverse":active,"proxyPositiveBreadthPct":breadth(active),"fiveStockPositiveBreadthPct":breadth(BASKET),"observedCount":len(returns),"missingSymbols":missing,"structuralMissingSymbols":[s for s in missing if s in CORPORATE_ACTIONS and d>CORPORATE_ACTIONS[s]["lastTradingDate"]],"expectedCount":len(active),"topFiveAverageReturnPct":sum(v for _,v in ranked[:5])/5 if len(ranked)==len(UNIVERSE) else None,"allConstituentAverageReturnPct":sum(returns.values())/len(UNIVERSE) if len(returns)==len(UNIVERSE) else None,"topFiveContributionShare":None,"verifiedSoxBreadthPct":None})
+ result={"schemaVersion":1,"status":"research_only","universeType":"effective_dated_research_proxy_NOT_official_SOX","universeSource":"scripts/refresh.py SEMI_BREADTH; membership not independently verified","universe":UNIVERSE,"researchProxyTransition":PROXY_REPLACEMENT,"corporateActions":CORPORATE_ACTIONS,"fiveStockBasket":BASKET,"historicalMembershipVerified":False,"priceSource":"Massive adjusted daily aggregates","missingSymbolDiagnostics":"Per-symbol missing returns identify missing current or previous daily close; source does not distinguish no trading from provider gap.","priceWindow":{"start":START,"end":END},"method":"Daily positive close-to-close return; require all 30 constituents observed on current and preceding trading date.","records":records,"limitations":["Effective-dated research proxy is not historically verified SOX membership and can contain selection bias.","Do not call proxy breadth SOX constituent breadth or use for historical causal inference.","Concentration by market-cap weight unavailable; top-five contribution share null.","Absent adjusted prices remain missing, never zero-filled.","QRVO ceased trading after 2026-10-02 following its merger; do not synthesize QRVO returns or silently substitute SWKS.","SNDK is a research proxy replacement, not an official SOX replacement; index membership remains unverified.","Date alignment assumes a shared US equity trading calendar."]}
  OUT.write_text(json.dumps(result,indent=2)+"\n")
  print(json.dumps({"sessions":len(records),"fullCoverage":sum(r["proxyPositiveBreadthPct"] is not None for r in records)}))
 if __name__=="__main__":main()
