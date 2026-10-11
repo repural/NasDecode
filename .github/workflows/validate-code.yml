@@ -29,5 +29,7 @@ jobs:
           python-version: '3.11'
       - name: Compile Python (no data collection)
         run: python -m compileall -q scripts tests
-      - name: Offline S5FI parser regression tests
-        run: python -m unittest discover -s tests -p 'test_s5fi_parser.py' -v
+      - name: Offline S5FI and CNBC quote regression tests
+        run: |
+          python -m unittest discover -s tests -p 'test_s5fi_parser.py' -v
+          python -m unittest discover -s tests -p 'test_cnbc_change.py' -v
