@@ -1098,8 +1098,40 @@ def main():
         else:
             rr=next((z for z in rows if z['factor']=='S&P 500 50D Breadth / Oversold'),None)
             if rr:
-                rr['freshness']='STALE — S5FI source not yet connected'
-                rr['latest']='Awaiting S5FI data source'
+                rr['freshness']='STALE — independently verified S5FI feed unavailable'
+                rr['latest']='Independently verified S5FI unavailable'
+                rr['direction']='Unverified'
+                rr['signal']='mixed'
+                rr['source']='S5FI — research baseline pending'
+                rr['explanation']='An independently verified S5FI quote is not available. Provisional historical observations are never used as a confirmed directional signal.'
+                rr['scorecard']=None
+                # Separate research-only reference; never format as "% above 50D MA",
+                # which would cause the scoring engine to mistake it for a verified feed.
+                try:
+                    with open(os.path.join(HISTORY_DIR,'s5fi-single-provider.json'),encoding='utf-8') as sf:
+                        baseline=json.load(sf)
+                    if baseline.get('independentlyVerified') is False:
+                        observations=baseline.get('observations') or []
+                        valid=[x for x in observations
+                               if isinstance(x,dict)
+                               and x.get('verification')=='single_provider_regionally_correlated'
+                               and x.get('independentlyVerified') is False
+                               and isinstance(x.get('pctAbove50dma'),(float,int))
+                               and 0<=x['pctAbove50dma']<=100
+                               and isinstance(x.get('date'),str)
+                               and re.fullmatch(r'20\\d{2}-\\d{2}-\\d{2}',x['date'])]
+                        valid.sort(key=lambda x:x['date'])
+                        if valid:
+                            latest_obs=valid[-1]
+                            obs_date=datetime.date.fromisoformat(latest_obs['date'])
+                            age=(now.date()-obs_date).days
+                            if 0<=age<=5:
+                                rr['latest']=f"S5FI research reference: {latest_obs['pctAbove50dma']:.2f}% · {obs_date.isoformat()}"
+                                rr['freshness']=f"Single-provider EOD · {obs_date.isoformat()} · NOT independently verified"
+                                rr['source']='Investing.com regional comparison (single publisher)'
+                                rr['explanation']='Historical S5FI price-column observation, cross-checked between Investing.com regions. Research reference only; not an independently verified real-time quote and excluded from directional scoring.'
+                except (OSError,ValueError,TypeError,KeyError,json.JSONDecodeError) as e:
+                    print('S5FI research baseline unavailable:',repr(e))
 
         # Volatility: VXN is Nasdaq-specific; VIX is included as confirmation.
         vx=q.get('.VXN'); vi=q.get('.VIX')
@@ -1916,6 +1948,14 @@ def main():
     for i,r in enumerate(visible_rows,1):
         r['displayRank']=i
         r['signalLabel']={'positive':'🟢 Positive','negative':'🔴 Negative','mixed':'🟡 Mixed'}.get(r.get('signal'),'🟡 Mixed')
+        if r.get('factor')=='S&P 500 50D Breadth / Oversold' and (
+                'NOT independently verified' in r.get('freshness','') or
+                'independently verified S5FI feed unavailable' in r.get('freshness','')):
+            r['signalLabel']='⚪ Unverified'
+            r['direction']='Awaiting independent confirmation'
+            r['trend']='—'
+            r['currentImpact']='Low'
+            r['scorecard']=None
 
     # Consolidation / Extension Risk v2. This is separate from Nasdaq direction.
     # Massive history supplies QQQ/SOXX momentum and trend extension immediately; session
