@@ -364,10 +364,14 @@ def num(v):
 def pct(q):
     # CNBC often supplies an authoritative change_pct even when previous_day_closing is
     # duplicated from last in delayed equity/ETF snapshots. Prefer the supplied move.
-    cp=num(q.get('change_pct'))
+    raw=q.get('change_pct')
+    # CNBC sometimes encodes an explicitly unchanged daily move as text.
+    if isinstance(raw,str) and re.fullmatch(r'\\s*(?:UNCH|UNCHANGED|UNCHG|0+(?:\\.0+)?%?)\\s*',raw,re.I):
+        return 0.0
+    cp=num(raw)
     if cp is not None: return cp
     v=num(q.get('last')); p=num(q.get('previous_day_closing'))
-    return ((v/p)-1)*100 if v is not None and p not in (None,0) and v!=p else None
+    return ((v/p)-1)*100 if v is not None and p not in (None,0) else None
 
 def fresh(q):
     t=q.get('last_time') or q.get('last_timedate') or 'timestamp unavailable'
