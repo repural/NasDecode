@@ -228,7 +228,25 @@ td,th,.driver,.catalyst{border-color:#303236}
  #factorCards .scorecard-category,#factorCards .scorecard-category.assessment{margin-top:18px;min-height:68px;padding:14px}
  #factorCards.compact-cards .factor-card,#factorCards.compact-cards .setup-card{min-height:155px;padding:16px}
 }
-</style></head><body><header class="nd-topbar"><a class="nd-brand" href="#dashboard" aria-label="NasDecode Dashboard"><span class="nd-brand-mark" aria-hidden="true">N</span><span class="nd-brand-word">NASDECODE</span></a><nav class="nd-nav" aria-label="Dashboard sections"><a href="#dashboard" class="nd-current">Dashboard</a><a href="#macro-rates">Macro</a><a href="#market-internals">Internals</a><a href="#market-assessment">Assessment</a><a href="#premarket">Analysis</a></nav><div class="nd-top-actions"><span class="nd-live" aria-label="Data refresh status"><span class="nd-live-dot" aria-hidden="true"></span><span id="updated" role="status">Loading…</span></span><button id="update" type="button">↻ Refresh</button></div></header><div class="wrap" id="dashboard"><div class="factor-cards compact-cards" id="factorCards"></div><section class="premarket" id="premarket"><h2 id="analysisTitle">Pre-Market Analysis</h2><div class="muted" id="premarketMeta">Loading analysis…</div><div id="premarketBody"></div></section><details class="signal-details" open><summary>Signal Explorer</summary><div class="signal-explorer" id="signalExplorer"></div></details><section class="intel-panel setup-wide" id="marketSetup"></section><div class="lower-intel two-col"><section class="intel-panel"><div class="section-kicker">Decision frame</div><h3>What to Watch Today</h3><div id="watchConditions"></div></section><section class="intel-panel"><div class="section-kicker">Upcoming + active</div><h3>Major Catalysts</h3><div class="catalyst-list" id="majorCatalysts"></div></section></div><section class="intel-panel" id="marketMovingDevelopments"><div class="section-kicker">NasDecode Open Watch · curated</div><h3>Market-Moving Developments</h3><div id="marketMovingBody" class="catalyst-list">Loading developments…</div></section><div class="legacy-table" hidden><table><tbody id="rows"></tbody></table></div><section hidden></section><p class="src">Current Impact = estimated magnitude of the factor's present effect on Nasdaq based on the latest reading, move, event proximity and data freshness; it can change on every refresh and is separate from whether the signal is positive or negative. Green = supportive for Nasdaq; red = headwind; amber = mixed/event risk. Free sources can be delayed. NasDecode displays source freshness rather than representing delayed observations as exchange-real-time data.</p></div><script>
+</style><style>
+/* Open Watch monthly earnings: same restrained Option 2 language. */
+.lower-intel:not(.two-col){grid-template-columns:1fr}
+.nd-earnings-section{margin-top:25px;padding-top:19px;border-top:1px solid #34363a}
+.nd-earnings-header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px;margin-bottom:13px}
+.nd-earnings-header h4{font-size:16px;font-weight:670;letter-spacing:.015em;margin:0;color:#f2f3f5}
+.nd-earnings-header .muted{font-size:11px}
+.nd-earnings-list{display:grid}
+.nd-earnings-item{display:grid;grid-template-columns:72px minmax(170px,1.1fr) minmax(180px,1fr) auto;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid #303236;color:#dadddf;font-size:12px}
+.nd-earnings-item:last-of-type{border-bottom:0}
+.nd-earnings-date{color:#c6cbd0;font-variant-numeric:tabular-nums;font-weight:660}
+.nd-earnings-item b{color:#f1f3f5;font-weight:710}
+.nd-earnings-company{color:#aeb4b9;margin-left:10px}
+.nd-earnings-meta{color:#b5bac0}
+.nd-earnings-item a{color:#82cbd0;text-decoration:none;font-size:11px}
+.nd-earnings-item a:hover{text-decoration:underline}
+.nd-earnings-coverage{color:#a8adb3;font-size:11px;line-height:1.5;padding-top:12px}
+@media(max-width:750px){.nd-earnings-item{grid-template-columns:56px minmax(0,1fr);gap:5px 10px}.nd-earnings-meta{grid-column:2}.nd-earnings-item a{grid-column:2}.nd-earnings-company{display:block;margin:2px 0 0}}
+</style></head><body><header class="nd-topbar"><a class="nd-brand" href="#dashboard" aria-label="NasDecode Dashboard"><span class="nd-brand-mark" aria-hidden="true">N</span><span class="nd-brand-word">NASDECODE</span></a><nav class="nd-nav" aria-label="Dashboard sections"><a href="#dashboard" class="nd-current">Dashboard</a><a href="#macro-rates">Macro</a><a href="#market-internals">Internals</a><a href="#market-assessment">Assessment</a><a href="#premarket">Analysis</a></nav><div class="nd-top-actions"><span class="nd-live" aria-label="Data refresh status"><span class="nd-live-dot" aria-hidden="true"></span><span id="updated" role="status">Loading…</span></span><button id="update" type="button">↻ Refresh</button></div></header><div class="wrap" id="dashboard"><div class="factor-cards compact-cards" id="factorCards"></div><section class="premarket" id="premarket"><h2 id="analysisTitle">Pre-Market Analysis</h2><div class="muted" id="premarketMeta">Loading analysis…</div><div id="premarketBody"></div></section><details class="signal-details" open><summary>Signal Explorer</summary><div class="signal-explorer" id="signalExplorer"></div></details><section class="intel-panel setup-wide" id="marketSetup"></section><div class="lower-intel"><section class="intel-panel"><div class="section-kicker">Decision frame</div><h3>What to Watch Today</h3><div id="watchConditions"></div></section></div><section class="intel-panel" id="marketMovingDevelopments"><div class="section-kicker">NasDecode Open Watch · curated</div><h3>Market-Moving Developments</h3><div id="marketMovingBody" class="catalyst-list">Loading developments…</div><div class="nd-earnings-section"><div class="nd-earnings-header"><h4>Upcoming Major Earnings</h4><span id="ndEarningsMonth" class="muted"></span></div><div id="ndUpcomingEarnings" class="nd-earnings-list"></div></div></section><div class="legacy-table" hidden><table><tbody id="rows"></tbody></table></div><section hidden></section><p class="src">Current Impact = estimated magnitude of the factor's present effect on Nasdaq based on the latest reading, move, event proximity and data freshness; it can change on every refresh and is separate from whether the signal is positive or negative. Green = supportive for Nasdaq; red = headwind; amber = mixed/event risk. Free sources can be delayed. NasDecode displays source freshness rather than representing delayed observations as exchange-real-time data.</p></div><script>
 /*
  * Presentation layer only.
  * Quantitative decisions belong in scripts/refresh.py; this browser code reads the
@@ -465,42 +483,29 @@ function render(d){
         '<div class="section-kicker" style="margin-top:9px">Market Confirmation</div><div>'+analysisText([confirmation.state,confirmation.summary].filter(Boolean).join(' · ')||'Not yet confirmed')+'</div></article>';
     }).join(''):'<div class="muted">No curated Open Watch updates have been published yet. Automated discovery candidates are excluded.</div>';
   }
-  const activeWatchEvents=watchEvents.filter(e=>String(e.status||'').toLowerCase()==='active')
-    .sort((a,b)=>materialityRank(b.expectedImpact?.materiality)-materialityRank(a.expectedImpact?.materiality)||eventTimeMs(b)-eventTimeMs(a))
-    .slice(0,10);
-  const activeIds=new Set(activeWatchEvents.map(e=>e.id).filter(Boolean));
-  const activeWatchHtml=activeWatchEvents.map(e=>{
-    const impact=e.expectedImpact||{}, confirm=e.marketConfirmation||{};
-    const impactBits=[impact.materiality,impact.sox?('SOX '+impact.sox):null,impact.nasdaq?('Nasdaq '+impact.nasdaq):null].filter(Boolean).join(' · ');
-    const confirmBits=[confirm.state,confirm.summary].filter(Boolean).join(' · ');
-    return '<div class="catalyst"><b>'+escHtml('Active catalyst · '+(e.companyMarket||e.category||'Market'))+'</b><div style="margin-top:4px">'+escHtml(e.headline||'Material market catalyst')+'</div>'+
-      '<div class="muted" style="margin-top:4px">'+escHtml('Reported '+renderEventWhen(e))+'</div>'+
-      (impactBits?'<div class="muted" style="margin-top:4px">'+analysisText(impactBits)+'</div>':'')+
-      (confirmBits?'<div class="muted" style="margin-top:4px">'+analysisText(confirmBits)+'</div>':'')+'</div>';
-  }).join('');
-
-  const newWatchEvents=watchEvents.filter(e=>!activeIds.has(e.id))
-    .sort((a,b)=>eventTimeMs(b)-eventTimeMs(a)).slice(0,12);
-  const newWatchHtml=newWatchEvents.map(e=>{
-    const impact=e.expectedImpact||{}, confirm=e.marketConfirmation||{};
-    const when=e.eventTime?new Date(e.eventTime).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'}):'New';
-    const bits=[impact.materiality,impact.sox?('SOX '+impact.sox):null,impact.nasdaq?('Nasdaq '+impact.nasdaq):null,confirm.state].filter(Boolean).join(' · ');
-    return '<div class="catalyst"><b>'+escHtml('Open Watch · '+(e.companyMarket||e.category||'Market'))+'</b><div style="margin-top:4px">'+analysisText(e.headline||'Major new event')+'</div><div class="muted" style="margin-top:4px">'+analysisText('Detected '+when+(bits?' · '+bits:''))+'</div></div>';
-  }).join('');
-
-  const earnings=[...(d.upcomingEarnings?.events||[])].filter(e=>{
-    const ed=new Date(String(e.date)+'T12:00:00Z'), now=new Date();
-    const days=(ed-now)/86400000;
-    return days>=-1&&days<=14;
-  }).sort((a,b)=>String(a.date).localeCompare(String(b.date)));
-  const earningsHtml=earnings.map(e=>{
-    const ed=new Date(String(e.date)+'T12:00:00Z');
-    const date=ed.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'});
-    const session=e.session==='before_open'?'Before open':(e.session==='after_close'?'After close':'Time TBD');
-    const scope=e.scope==='sox'?'SOX':'Mega-cap';
-    return '<div class="catalyst"><b>'+escHtml(e.ticker+' earnings · '+date)+'</b><div class="muted" style="margin-top:4px">'+analysisText(scope+' · '+session+(e.status==='confirmed'?' · Confirmed':''))+'</div></div>';
-  }).join('');
-  majorCatalysts.innerHTML=activeWatchHtml+newWatchHtml+earningsHtml||'<div class="muted">No major active or upcoming catalyst currently retained.</div>';
+  // Open Watch retains its curated events. Monthly earnings are separate, at its foot.
+  const earningsNode=document.getElementById('ndUpcomingEarnings');
+  if(earningsNode){
+    const todayNY=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+    const currentMonth=todayNY.slice(0,7);
+    const endOfMonth=new Date(Date.UTC(Number(currentMonth.slice(0,4)),Number(currentMonth.slice(5,7)),0)).toISOString().slice(0,10);
+    const monthLabel=new Intl.DateTimeFormat('en-US',{month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(currentMonth+'-01T12:00:00Z'));
+    const monthNode=document.getElementById('ndEarningsMonth');
+    if(monthNode)monthNode.textContent=monthLabel;
+    const all=d.upcomingEarnings?.events||[];
+    const earnings=all.filter(e=>e.date&&String(e.date)>=todayNY&&String(e.date).slice(0,7)===currentMonth&&['sox','mega_cap'].includes(e.scope))
+      .sort((a,b)=>String(a.date).localeCompare(String(b.date))||String(a.ticker).localeCompare(String(b.ticker)));
+    const lastCovered=String(d.upcomingEarnings?.windowEnd||'');
+    const coverageNote=lastCovered&&lastCovered<endOfMonth?'<div class="nd-earnings-coverage">Calendar currently verified through '+escHtml(lastCovered)+'; later '+escHtml(monthLabel)+' dates are not yet covered.</div>':'';
+    earningsNode.innerHTML=(earnings.length?earnings.map(e=>{
+      const date=new Date(String(e.date)+'T12:00:00Z').toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'UTC'});
+      const session=e.session==='before_open'?'Before open':e.session==='after_close'?'After close':'Time not confirmed';
+      const scope=e.scope==='sox'?'SOX':'Mega-cap';
+      const status=e.status==='confirmed'?'Confirmed':'Scheduled';
+      const source=e.sourceUrl?'<a href="'+escAttr(e.sourceUrl)+'" target="_blank" rel="noopener noreferrer">Source ↗</a>':'';
+      return '<div class="nd-earnings-item"><span class="nd-earnings-date">'+escHtml(date)+'</span><div><b>'+escHtml(e.ticker)+'</b><span class="nd-earnings-company">'+escHtml(e.company||'')+'</span></div><div class="nd-earnings-meta">'+escHtml(scope+' · '+session+' · '+status)+'</div>'+source+'</div>';
+    }).join(''):'<div class="muted">No upcoming SOX or mega-cap earnings have verified dates in the available calendar.</div>')+coverageNote;
+  }
   const y=rowBy('10Y Treasury Yield'), semi=rowBy('Semiconductor leadership'), breadth=rowBy('Market breadth'), vol=rowBy('Nasdaq volatility (VXN / VIX)');
   const constructive=[];const risk=[];
   if(y.signal!=='positive')constructive.push('Treasury yields stabilize or ease');risk.push('Treasury yields resume a sustained rise');
