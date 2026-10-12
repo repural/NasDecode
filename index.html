@@ -316,6 +316,21 @@ body{font-size:14px;font-weight:400;-webkit-font-smoothing:antialiased}
  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
 .s5fi-reference{border-top:3px solid var(--amber)!important}.s5fi-reference .metric{color:var(--text);font-weight:760}.s5fi-reference-status{display:block;font-size:12px;line-height:1.45;color:var(--amber);margin-top:8px}.s5fi-reference .card-latest{font-size:12px;color:var(--muted);margin-top:6px}
+
+/* Standalone AVWAP research cards */
+.nd-avwap-card{min-width:0;gap:12px!important}
+.nd-avwap-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.nd-avwap-quote{font-size:22px;font-weight:700}
+.nd-avwap-quote small{display:block;font-size:11px;font-weight:400;color:var(--muted);margin-top:3px}
+.nd-avwap-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px}
+.nd-avwap-metric{display:flex;flex-direction:column;gap:4px;padding:10px;background:rgba(128,128,128,.07);border:1px solid rgba(128,128,128,.14);border-radius:8px;font-size:12px}
+.nd-avwap-label{color:var(--muted);font-size:11px}.nd-avwap-number{font-size:21px}
+.nd-avwap-metric small{font-size:10px;color:var(--muted)}
+.nd-avwap-section{font-size:11px;font-weight:700;letter-spacing:.04em;padding-top:5px}
+.nd-avwap-rules{display:grid;gap:0}
+.nd-avwap-rule{display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-bottom:1px solid rgba(128,128,128,.13);font-size:12px}
+.nd-avwap-foot{font-size:10px;color:var(--muted);line-height:1.5}
+
 </style></head><body><header class="nd-topbar"><a class="nd-brand" href="#dashboard" aria-label="NasDecode Dashboard"><span class="nd-brand-mark" aria-hidden="true">N</span><span class="nd-brand-word">NASDECODE</span></a><nav class="nd-nav" aria-label="Dashboard sections"><a href="#dashboard" class="nd-current">Dashboard</a><a href="#macro-rates">Macro</a><a href="#market-internals">Internals</a><a href="#market-assessment">Assessment</a><a href="#premarket">Analysis</a></nav><div class="nd-top-actions"><span class="nd-live" aria-label="Data refresh status"><span class="nd-live-dot" aria-hidden="true"></span><span id="updated" role="status">Loading…</span></span><button id="update" type="button">↻ Refresh</button></div></header><div class="wrap" id="dashboard"><div class="factor-cards compact-cards" id="factorCards"></div><section class="premarket" id="premarket"><h2 id="analysisTitle">Pre-Market Analysis</h2><div class="muted" id="premarketMeta">Loading analysis…</div><div id="premarketBody"></div></section><details class="signal-details" open><summary>Signal Explorer</summary><div class="signal-explorer" id="signalExplorer"></div></details><section class="intel-panel setup-wide" id="marketSetup"></section><div class="lower-intel"><section class="intel-panel"><div class="section-kicker">Decision frame</div><h3>What to Watch Today</h3><div id="watchConditions"></div></section></div><section class="intel-panel" id="marketMovingDevelopments"><div class="section-kicker">NasDecode Open Watch · curated</div><h3>Market-Moving Developments</h3><div id="marketMovingBody" class="catalyst-list">Loading developments…</div><div class="nd-earnings-section"><div class="nd-earnings-header"><h4>Upcoming Major Earnings</h4><span id="ndEarningsMonth" class="muted"></span></div><div id="ndUpcomingEarnings" class="nd-earnings-list"></div></div></section><div class="legacy-table" hidden><table><tbody id="rows"></tbody></table></div><section hidden></section><p class="src">Current Impact = estimated magnitude of the factor's present effect on Nasdaq based on the latest reading, move, event proximity and data freshness; it can change on every refresh and is separate from whether the signal is positive or negative. Green = supportive for Nasdaq; red = headwind; amber = mixed/event risk. Free sources can be delayed. NasDecode displays source freshness rather than representing delayed observations as exchange-real-time data.</p></div><script>
 /*
  * Presentation layer only.
@@ -503,6 +518,428 @@ function render(d){
     '<div class="soxl-indicator"><div class="soxl-indicator-head"><b>ATR(14) · Daily '+(soxlAtr.valuePct!=null?Number(soxlAtr.valuePct).toFixed(2)+'%':'—')+'</b><span class="soxl-indicator-score '+soxlComponentTone(soxlAtr.regimeSafetyScore)+'">Safety '+(soxlAtr.regimeSafetyScore??'—')+'</span></div><span class="soxl-indicator-meaning">'+escHtml(soxlAtr.meaning||'Unavailable')+'</span><span class="soxl-indicator-meta">'+(soxlAtr.percentile60!=null?'60D percentile '+Number(soxlAtr.percentile60).toFixed(1)+'%':'Relative volatility unavailable')+(soxlAtr.atr14Vs50!=null?' · ATR14/50 '+Number(soxlAtr.atr14Vs50).toFixed(2):'')+'</span></div>'+
     '</div>':'';
   const soxlCard=d.soxlBuyScore?`<div class="card factor-card soxl-card signal-${d.soxlBuyScore.signal}" tabindex="0" data-tip="${escAttr(d.soxlBuyScore.explanation||'Experimental tactical SOXL entry-quality score.')}"><span class="factor-name">16. SOXL BUY SCORE</span><span class="card-status ${C[d.soxlBuyScore.signal]}">${escHtml(d.soxlBuyScore.label||'—')}</span><span><span class="metric ${C[d.soxlBuyScore.signal]}">${d.soxlBuyScore.score??'—'}</span> <span class="muted">/ 100</span></span><span class="card-latest">${d.soxlBuyScore.last!=null?'SOXL '+Number(d.soxlBuyScore.last).toFixed(2)+(d.soxlBuyScore.changePct!=null?' · '+(Number(d.soxlBuyScore.changePct)>0?'+':'')+Number(d.soxlBuyScore.changePct).toFixed(2)+'%':''):'SOXL quote unavailable'} · 1–5 sessions</span>${soxlIndicatorGrid}${soxlComponentGrid}</div>`:'';
+
+
+  const avwapResearchCards=['NVDA','SOXL'].map(function(ticker){
+    const item=(d.avwapStrategyCards||{})[ticker]||{};
+    const anchors=item.anchors||{};
+    const money=function(v){return v!=null&&Number.isFinite(Number(v))?'(()=>{
+    const ds=directionalShadow.directionalSetup||{}, setup=ds.setup||'neutral_other';
+    const states=[['washout_rebound','Washout / Rebound'],['uptrend_pullback','Uptrend Pullback'],['continuation','Continuation'],['neutral_other','Neutral / Other']];
+    const inputs=ds.inputs||{};
+    const evidence={
+      washout_rebound:{mean:8.905,pos:68,n:25},
+      uptrend_pullback:{mean:1.195,pos:75,n:4},
+      continuation:{mean:-5.649,pos:42.9,n:7},
+      neutral_other:{mean:-5.968,pos:33.3,n:27}
+    }[setup];
+    const segments=states.map(([k,label])=>'<div class="state-segment '+(k===setup?'active':'')+'">'+escHtml(label)+'</div>').join('');
+    const ev=evidence?'<div class="state-evidence"><span class="muted">Validated T+5 SOXL</span><br><b>'+(evidence.mean>0?'+':'')+evidence.mean.toFixed(2)+'% avg</b> · <b>'+evidence.pos+'% positive</b><br><span class="muted">Holdout: n='+evidence.n+'</span></div>':'';
+    const metric=(label,v,suffix='')=>Number.isFinite(Number(v))?'<span>'+label+' <b>'+((Number(v)>0&&suffix.includes('%'))?'+':'')+Number(v).toFixed(1)+suffix+'</b></span>':'';
+    const details='<div class="state-inputs">'+metric('SOX 5D',inputs.sox5,'%')+metric('vs QQQ 5D',inputs.rs5,' pp')+metric('Breadth',inputs.breadth,'%')+metric('SOX 1D',inputs.sox1,'%')+'</div>';
+    return '<div class="card factor-card directional-state-card signal-mixed" tabindex="0" data-tip="'+escAttr(directionalShadow.explanation||'Frozen Directional Engine v3.0 shadow classifier. The highlighted segment is the current semiconductor setup state; it does not alter production scores.')+'"><span class="factor-name">SOXL DIRECTIONAL SETUP · V3 SHADOW</span><div class="state-gauge">'+segments+'</div><span class="card-status amber">'+escHtml(directionalShadow.scorecard?.value||directionalShadow.latest||'—')+'</span>'+details+ev+'<span class="card-latest">Frozen v3.0 · prospective validation · does not affect scores</span></div>';
+  })():'';
+  const categoryHeading=(title,desc)=>{const key=title==='Macro / Rates'?'macro-rates':title==='Market Internals'?'market-internals':'market-assessment';const icons={'macro-rates':'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>','market-internals':'<path d="M4 20v-7M9 20V9M14 20V4M19 20v-10"/>','market-assessment':'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>'};const icon='<svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+icons[key]+'</svg>';return '<div id="'+key+'" class="scorecard-category"><span class="nd-section-icon" aria-hidden="true">'+icon+'</span><div><span>'+escHtml(title.toUpperCase())+'</span><small>'+escHtml(desc)+'</small></div></div>';};
+  factorCards.innerHTML=
+    categoryHeading('Macro / Rates','External environment · inflation, policy, yields and oil')+
+    rowCards.slice(0,5).join('')+
+    categoryHeading('Market Internals','Volatility, positioning, participation and leadership')+
+    rowCards.slice(5).join('')+
+    categoryHeading('Market Assessment','NasDecode decision layer')+
+    summaryCards+directionalShadowCard+opportunityCard+soxlCard+categoryHeading('AVWAP Research','NVDA and SOXL · 3-month anchors')+avwapResearchCards;
+  // Desktop intelligence layer: synthesize existing outputs without recalculating model logic.
+  const rowBy=name=>orderedRows.find(r=>r.factor===name)||{};
+  const toneLabel=s=>s==='positive'?'Supportive':s==='negative'?'Headwind':'Mixed';
+  marketSetup.innerHTML='<div class="setup-hero"><div><div class="hero-label">Overall Market Setup</div><div class="hero-state '+(C[env.signal]||'')+'>'+escHtml(env.label||'Mixed')+'</div><div class="hero-score '+(C[env.signal]||'')+'>'+((Number(ns.score)>0?'+':'')+(ns.score??'—'))+'<span style="font-size:20px;color:var(--muted)"> /100</span></div><div class="hero-meta">Confidence '+(ns.confidence??'—')+'% · '+escHtml(ns.trend||'')+'</div></div><div><h3>NasDecode read</h3><p style="line-height:1.6;margin:0">'+analysisText('The current setup is '+String(env.label||'mixed').toLowerCase()+' with '+(ns.confidence??'—')+'% confidence and a '+String(ns.trend||'stable').toLowerCase()+' trend. '+(d.opportunityScore?.score<40?'Opportunity Score remains limited until recovery signals broaden.':'Opportunity Score conditions are improving as recovery signals strengthen.'))+'</p><div class="hero-meta">'+analysisText('Consolidation Risk')+' '+(d.consolidationRisk?.score??'—')+'/100 · '+analysisText('Opportunity Score')+' '+(d.opportunityScore?.score??'—')+'/100</div><div class="setup-chart" id="nasdaqScoreChart"></div></div></div>';
+  // Major Catalysts uses the curated NasDecode Open Watch history as the
+  // authoritative event feed. Discovery candidates are intentionally not rendered.
+  // Active lifecycle events come first; newly retained non-historical events follow;
+  // scheduled earnings are shown after those. Routine macro/Fed rows are excluded.
+  const watchFeed=d.marketWatchEvents||{};
+  // Preserve broad catalyst coverage here. The separate developments panel is
+  // curated-only; this panel includes material discovered events and the archive.
+  const watchEvents=(watchFeed.events||[]).filter(e=>e&&e.id&&e.headline);
+  const materialityRank=m=>({'very high':4,'high':3,'medium-high':2,'medium':1}[String(m||'').toLowerCase()]||0);
+  const eventTimeMs=e=>Date.parse(e.eventTime||e.firstReported||'')||0;
+
+  const marketMovingBody=document.getElementById('marketMovingBody');
+  if(marketMovingBody){
+    // Only curated, material and recently verified events; never present auto-detected
+    // candidate headlines as editorial Open Watch updates.
+    const curated=watchEvents.filter(e=>!e.autoDetected && String(e.status||'').toLowerCase()!=='historical' && recentOpenWatchEvent(e,2))
+      .sort((a,b)=>eventTimeMs(b)-eventTimeMs(a)).slice(0,3);
+    marketMovingBody.innerHTML=curated.length?curated.map(e=>{
+      const imp=e.initialImpact||e.expectedImpact||{}, confirmation=e.marketConfirmation||{};
+      const impact=typeof imp==='string'?imp:[imp.direction,imp.materiality,imp.sox&&'SOX: '+imp.sox,imp.nasdaq&&'Nasdaq: '+imp.nasdaq].filter(Boolean).join(' · ');
+      return '<article class="catalyst"><div class="section-kicker">Event</div><b>'+analysisText(e.headline||e.companyMarket||'Material development')+'</b>'+
+        '<div class="muted" style="margin-top:4px">Reported '+escHtml(renderEventWhen(e))+'</div>'+
+        '<div class="section-kicker" style="margin-top:9px">Why It Matters</div><div>'+analysisText(e.whyItMatters||'Awaiting analyst context')+'</div>'+
+        '<div class="section-kicker" style="margin-top:9px">Initial Impact</div><div>'+analysisText(impact||'Pending assessment')+'</div>'+
+        '<div class="section-kicker" style="margin-top:9px">Market Confirmation</div><div>'+analysisText([confirmation.state,confirmation.summary].filter(Boolean).join(' · ')||'Not yet confirmed')+'</div></article>';
+    }).join(''):'<div class="muted">No curated Open Watch updates have been published yet. Automated discovery candidates are excluded.</div>';
+  }
+  // Open Watch retains its curated events. Monthly earnings are separate, at its foot.
+  const earningsNode=document.getElementById('ndUpcomingEarnings');
+  if(earningsNode){
+    const todayNY=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+    const start=new Date(todayNY+'T12:00:00Z');
+    const finish=new Date(start.getTime()+28*86400000);
+    const endDate=finish.toISOString().slice(0,10);
+    const displayDate=date=>new Date(date+'T12:00:00Z').toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'UTC'});
+    const monthNode=document.getElementById('ndEarningsMonth');
+    if(monthNode)monthNode.textContent=displayDate(todayNY)+' – '+displayDate(endDate)+' · Next 4 weeks';
+    const all=d.upcomingEarnings?.events||[];
+    const earnings=all.filter(e=>e.date&&String(e.date)>=todayNY&&String(e.date)<=endDate&&['sox','mega_cap'].includes(e.scope))
+      .sort((a,b)=>String(a.date).localeCompare(String(b.date))||String(a.ticker).localeCompare(String(b.ticker)));
+    const lastCovered=String(d.upcomingEarnings?.windowEnd||'');
+    const coverageNote=lastCovered&&lastCovered<endDate?'<div class="nd-earnings-coverage">Available earnings feed covers dates through '+escHtml(lastCovered||'unknown')+'. Some earnings later in the next four weeks may be missing until the expanded collector refreshes.</div>':'';
+    earningsNode.innerHTML=(earnings.length?earnings.map(e=>{
+      const date=new Date(String(e.date)+'T12:00:00Z').toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'UTC'});
+      const session=e.session==='before_open'?'Before open':e.session==='after_close'?'After close':'Time not confirmed';
+      const scope=e.scope==='sox'?'SOX':'Mega-cap';
+      const status=e.status==='confirmed'?'Confirmed':'Scheduled';
+      const source=e.sourceUrl?'<a href="'+escAttr(e.sourceUrl)+'" target="_blank" rel="noopener noreferrer">Source ↗</a>':'';
+      return '<div class="nd-earnings-item"><span class="nd-earnings-date">'+escHtml(date)+'</span><div><b>'+escHtml(e.ticker)+'</b><span class="nd-earnings-company">'+escHtml(e.company||'')+'</span></div><div class="nd-earnings-meta">'+escHtml(scope+' · '+session+' · '+status)+'</div>'+source+'</div>';
+    }).join(''):'<div class="muted">No upcoming SOX or mega-cap earnings have verified dates in the available calendar.</div>')+coverageNote;
+  }
+  const y=rowBy('10Y Treasury Yield'), semi=rowBy('Semiconductor leadership'), breadth=rowBy('Market breadth'), vol=rowBy('Nasdaq volatility (VXN / VIX)');
+  const constructive=[];const risk=[];
+  if(y.signal!=='positive')constructive.push('Treasury yields stabilize or ease');risk.push('Treasury yields resume a sustained rise');
+  if(semi.signal!=='positive')constructive.push('Semiconductors regain leadership');risk.push('Semiconductor leadership weakens further');
+  if(breadth.signal!=='positive')constructive.push('Market breadth broadens');risk.push('Breadth narrows or fails to confirm');
+  if(vol.signal==='negative')constructive.push('VXN/VIX cools');risk.push('Volatility expands materially');
+  // What to Watch is rendered independently by loadTodayWatch; do not reset it here.
+
+  const strongestBuckets=()=>{
+    const bs=[...(ns.model?.buckets||[])].filter(x=>Number.isFinite(Number(x.strength)));
+    const pos=bs.filter(x=>Number(x.strength)>0.05).sort((a,b)=>Number(b.strength)-Number(a.strength))[0];
+    const neg=bs.filter(x=>Number(x.strength)<-0.05).sort((a,b)=>Number(a.strength)-Number(b.strength))[0];
+    return {pos,neg};
+  };
+  const nasdaqScoreDetails=()=>{
+    const s=Number(ns.score); const raw=Number(ns.rawScore); const {pos,neg}=strongestBuckets();
+    const band=ns.label||'current band';
+    let t='Nasdaq Score is '+(Number.isFinite(s)?((s>0?'+':'')+s):'—')+' on a −100 to +100 scale, placing the market in the '+band+' regime.';
+    const mr=d.marketResponse||{};
+    if(Number.isFinite(raw)&&Number.isFinite(s)&&raw!==s&&mr.status==='active') t+=' The raw model reading is '+(raw>0?'+':'')+raw+'. '+String(mr.summary||'Live market response is partially moderating the macro contribution.');
+    else t+=' The published score is currently close to the raw multi-factor reading.';
+    const drivers=[]; if(pos) drivers.push(pos.bucket+' is supportive'); if(neg) drivers.push(neg.bucket+' is the main headwind');
+    t+=' '+(drivers.length?drivers.join(', ')+'; ':'')+'model coverage is '+(ns.coverage??'—')+'% with '+(ns.confidence??'—')+'% confidence.';
+    return t;
+  };
+  const consolidationDetails=()=>{
+    const cr=d.consolidationRisk||{}; const s=Number(cr.score);
+    const top=Object.entries(cr.components||{}).filter(([name,value])=>name!=='Structural floor'&&Number.isFinite(Number(value))).sort((a,b)=>Number(b[1])-Number(a[1])).slice(0,3);
+    let t='Consolidation Risk is '+(Number.isFinite(s)?s:'—')+' / 100 ('+(cr.level||'—')+'); higher readings mean the Nasdaq is more extended or vulnerable to a pause/pullback.';
+    if(Number.isFinite(Number(cr.structuralFloor))) t+=' Structural extension establishes a '+Number(cr.structuralFloor)+'/100 baseline before live rejection/divergence.';
+    if(top.length) t+=' Current context includes '+top.map(([name,value])=>name+' '+Math.round(Number(value))).join(', ')+'.';
+    if(Number.isFinite(Number(cr.coverageWeight))) t+=' Model coverage is '+Number(cr.coverageWeight)+'%'+(Number.isFinite(Number(cr.historyDays))?', using '+Number(cr.historyDays)+' sessions of stored history where available.':'.');
+    return t;
+  };
+  const opportunityDetails=()=>{
+    const o=d.opportunityScore||{};
+    let t='Opportunity Score is '+(o.score??'—')+' / 100 ('+(o.label||'—')+'), indicating how attractive the current environment is for deploying new capital rather than simply whether Nasdaq is rising or falling.';
+    t+=' Current setup readiness is '+(o.setupReadiness??'—')+'%, recovery confirmation '+(o.recoveryConfirmation??'—')+'%, and consolidation readiness '+(o.consolidationReadiness??'—')+'%.';
+    t+=' '+((o.recoveryConfirmation??0)<40?'Recovery confirmation remains the main constraint, so the model is not yet treating volatility or weakness as a strong entry opportunity.':'Recovery evidence is sufficiently developed to unlock more of the available opportunity.') ;
+    return t;
+  };
+  const modelRows=[
+    env?{name:'Nasdaq Score',rank:1,signal:env.signal,status:`${ns.score>0?'+':''}${ns.score??'—'} · range −100 to +100 · ${env.label||''}`,trend:ns.trend||'—',explanation:nasdaqScoreDetails(),freshness:'Current model output'}:null,
+    d.consolidationRisk?{name:'Consolidation Risk',rank:2,signal:d.consolidationRisk.level==='Low'?'positive':(d.consolidationRisk.level==='High'?'negative':'mixed'),status:`${d.consolidationRisk.score??'—'} / 100 · ${d.consolidationRisk.level||''}`,trend:'—',explanation:consolidationDetails(),freshness:`${d.consolidationRisk.coverageWeight??'—'}% data coverage`}:null
+  ].filter(Boolean);
+  const modelDebug=r=>{
+    if(r.name==='Nasdaq Score'){const mr=d.marketResponse||{};return '<b>Freshness:</b> Current model output<br><b>Model:</b> v'+(ns.model?.version??'—')+' · Coverage '+(ns.coverage??'—')+'% · Confidence '+(ns.confidence??'—')+'% · Raw '+(ns.rawScore??'—')+' · Previous '+(ns.previousScore??'—')+(mr.status==='active'?'<br><b>Market response:</b> '+escHtml(mr.summary||'Active'):'')+'<br><b>Model:</b> Proprietary AI-led market intelligence model.';}
+    if(r.name==='Consolidation Risk'){const cr=d.consolidationRisk||{};return '<b>Freshness:</b> Current model output'+(Number.isFinite(Number(cr.coverageWeight))?' · Coverage '+Number(cr.coverageWeight)+'%':'')+(Number.isFinite(Number(cr.historyDays))?' · History '+Number(cr.historyDays)+' sessions':'')+(Number.isFinite(Number(cr.structuralFloor))?'<br><b>Structural floor:</b> '+Number(cr.structuralFloor)+'/100':'')+'<br><b>Model:</b> Consolidation Risk v'+(cr.version??'—')+' · Proprietary AI-led market intelligence model.';}
+    return '<b>Freshness:</b> '+escHtml(r.freshness||'—');
+  };
+  const factorDebug=r=>{
+    let out='<b>Freshness:</b> '+escHtml(r.freshness||'—')+'<br><b>Source:</b> '+escHtml(r.source||'—');
+    if(r.factor==='Inflation · Labor · Growth'&&Array.isArray(r.macroImpulse?.drivers)){
+      const ds=r.macroImpulse.drivers.filter(x=>x.verified);
+      const fmt=s=>Number.isFinite(Number(s))?(Number(s)<60?Number(s)+'s':(Number(s)/60).toFixed(1)+' min'):'—';
+      if(ds.length){
+        out+='<br><b>Primary-source verification:</b> '+ds.length+'/'+r.macroImpulse.drivers.length+' active releases';
+        out+='<br>'+ds.slice(0,5).map(x=>escHtml(x.name)+': provider '+fmt(x.providerUpdateLagSeconds)+' · NasDecode observed '+fmt(x.ingestionLagSeconds)+' · official verified '+fmt(x.officialVerificationLagSeconds)+' after scheduled release').join('<br>');
+      }
+    }
+    if(r.debug)out+='<br><b>Model/debug:</b> '+escHtml(r.debug);
+    return out;
+  };
+  const factorDetails=r=>{
+    if(r.factor==='Inflation · Labor · Growth'&&r.macroImpulse){
+      const fs=r.macroImpulse.familyScores||{};
+      const familyLine=['inflation','labor','growth'].map(k=>{
+        const x=fs[k]; if(!x)return null;
+        const v=Number(x.score||0);
+        return '<b>'+escHtml(x.label||k)+'</b>: '+(v>0?'+':'')+v+' / 100'+(x.drivers?.length?' · '+escHtml(x.drivers.join(', ')):'');
+      }).filter(Boolean).join('<br>');
+      return escHtml(r.explanation||'')+(familyLine?'<br><br><b>Family breakdown</b><br>'+familyLine:'');
+    }
+    if(r.factor==='Fed expectations'&&Array.isArray(r.fedMeetings)&&r.fedMeetings.length){
+      return r.fedMeetings.slice(0,3).map((m,i)=>{
+        const p=m.probabilities||{};
+        return i===0
+          ? '<b>'+escHtml(m.label||m.date)+'</b>: Hike '+Number(p.hike||0).toFixed(1)+'% · Hold '+Number(p.hold||0).toFixed(1)+'% · Cut '+Number(p.cut||0).toFixed(1)+'%'
+          : '<b>'+escHtml(m.label||m.date)+'</b>: Above current '+Number(p.hike||0).toFixed(1)+'% · Same '+Number(p.hold||0).toFixed(1)+'% · Below '+Number(p.cut||0).toFixed(1)+'%';
+      }).join('<br>');
+    }
+    if(r.factor==='Semiconductor leadership'){
+      const a=d.soxEarningsAvwap, z=a?.indicators?.sox, b=a?.indicators?.originalBasket;
+      if(!z)return escHtml(r.explanation||'')+'<br><br><b>SOX Earnings AVWAP:</b> Research diagnostic not yet published.';
+      const fmt=v=>v==null?'unavailable':Number(v).toFixed(2)+'%';
+      const m=z.momentumPp||{}, ext=z.extensionPct||{};
+      const line=(label,v)=>'<b>'+label+':</b> '+v+'<br>';
+      return escHtml(r.explanation||'')+'<br><br><b>Earnings AVWAP · research only (no scoring impact)</b><br>'+
+        line('Membership',escHtml(a.membership?.asOf||'undated')+' official snapshot; not a live membership confirmation')+
+        line('Data as of',escHtml(a.asOf||'—'))+
+        line('SOX AVWAP breadth',fmt(z.breadthPct)+' · '+z.above+'/'+z.covered+' valid, '+z.universe+' constituents')+
+        line('Median distance',fmt(z.medianDistancePct))+
+        line('Momentum 1 / 3 / 5 sessions',fmt(m['1d'])+' / '+fmt(m['3d'])+' / '+fmt(m['5d'])+' pp')+
+        line('Extension above 5 / 10 / 20%',fmt(ext.above5)+' / '+fmt(ext.above10)+' / '+fmt(ext.above20))+
+        line('Original six-name basket',b?fmt(b.breadthPct)+' ('+b.covered+'/'+b.universe+' valid)':'unavailable')+
+        line('Excluded anchors',Object.keys(a.indicators?.excluded||{}).length+' missing, stale or unverified')+
+        '<span class="muted">Research coverage is incomplete until all company earnings releases are verified. Historical SOX membership is only certified for the displayed date.</span>';
+    }
+    return r.explanation||'—';
+  };
+  const modelHtml=modelRows.map(r=>`<tr><td><b>${r.rank}. ${r.name}</b></td><td class="${C[r.signal]}"><b>${r.signal==='positive'?'Positive':r.signal==='negative'?'Negative':'Mixed'}</b></td><td>${r.status}</td><td>${r.trend}</td><td><span class="impact">—</span></td><td class="explain">${String(r.explanation||"—").replace(/\n\n/g,"<br><br>")}</td><td class="debug">${modelDebug(r)}</td></tr>`).join('');
+  const factorHtml=visibleRows.map((r,i)=>`<tr><td><b>${factorRank(i)}. ${r.factor}</b></td><td class="${C[r.signal]}"><b>${cleanSignal(r.signalLabel||r.signal)}</b></td><td>${r.latest}</td><td>${r.trend||'—'}</td><td><span class="impact">${r.currentImpact||'Low'}</span></td><td class="explain">${factorDetails(r)}</td><td class="debug">${factorDebug(r)}</td></tr>`);
+  const opportunityHtml=d.opportunityScore?`<tr><td><b>5. Opportunity Score</b></td><td class="${C[d.opportunityScore.signal]}"><b>${d.opportunityScore.label}</b></td><td>${d.opportunityScore.score} / 100</td><td>—</td><td><span class="impact">—</span></td><td class="explain">${opportunityDetails()}</td><td class="debug"><b>Freshness:</b> Current model output<br><b>Model/debug:</b> ${escHtml(d.opportunityScore.debug||'')}</td></tr>`:'';
+  rows.innerHTML=modelHtml+factorHtml.slice(0,2).join('')+opportunityHtml+factorHtml.slice(2).join('');
+  const explorerRows=[
+    ...modelRows.map(r=>({name:r.name,signal:r.signal,status:r.status,trend:r.trend||'—',impact:'—',details:r.explanation,debug:modelDebug(r)})),
+    ...visibleRows.slice(0,2).map(r=>({name:r.factor,signal:r.signal,status:r.latest||'—',trend:r.trend||'—',impact:r.currentImpact||'Low',details:factorDetails(r),debug:factorDebug(r)})),
+    ...(d.opportunityScore?[{name:'Opportunity Score',signal:d.opportunityScore.signal,status:d.opportunityScore.score+' / 100 · '+d.opportunityScore.label,trend:'—',impact:'—',details:opportunityDetails(),debug:'<b>Freshness:</b> Current model output<br><b>Model/debug:</b> '+escHtml(d.opportunityScore.debug||'')}]:[]),
+    ...visibleRows.slice(2).map(r=>({name:r.factor,signal:r.signal,status:r.latest||'—',trend:r.trend||'—',impact:r.currentImpact||'Low',details:factorDetails(r),debug:factorDebug(r)}))
+  ];
+  signalExplorer.innerHTML='<div class="nd-explorer-head" aria-hidden="true"><span>Factor</span><span>Signal</span><span>Reading</span><span>Trend</span><span>Impact</span><span></span></div>'+
+    explorerRows.map((r,i)=>'<details class="signal-row"><summary aria-label="'+escAttr(r.name)+' — expand details"><span class="signal-name">'+(i+1)+'. '+escHtml(r.name)+'</span><span class="nd-explorer-signal '+(C[r.signal]||'amber')+'"><i aria-hidden="true"></i><b>'+escHtml(r.signal==='positive'?'Positive':r.signal==='negative'?'Negative':'Mixed')+'</b></span><span class="signal-reading">'+escHtml(r.status)+'</span><span class="nd-explorer-trend">'+escHtml(r.trend)+'</span><span class="nd-explorer-impact">'+escHtml(r.impact)+'</span><span class="nd-explorer-chevron" aria-hidden="true">⌄</span></summary><div class="signal-expand"><div><h4>Interpretation</h4><div class="explain">'+String(r.details||'—').replace(/\\n\\n/g,'<br><br>')+'</div></div><div><h4>Debug / provenance</h4><div class="signal-debug">'+(r.debug||'—')+'</div></div></div></details>').join('');
+  renderChartVisuals();
+
+}
+let chartHistory=null;
+function svgSeries(points,width=320,height=100,minFixed=null,maxFixed=null,zero=false){const vals=points.map(p=>Number(p.value)).filter(Number.isFinite);if(vals.length<2)return '';let lo=minFixed??Math.min(...vals),hi=maxFixed??Math.max(...vals);if(lo===hi){lo-=1;hi+=1}const pad=5,x=i=>pad+i*(width-pad*2)/(points.length-1),y=v=>pad+(hi-v)*(height-pad*2)/(hi-lo);const coords=points.map((p,i)=>x(i).toFixed(1)+','+y(Number(p.value)).toFixed(1)).join(' ');const z=zero&&lo<0&&hi>0?'<line class="zero" x1="0" x2="'+width+'" y1="'+y(0).toFixed(1)+'" y2="'+y(0).toFixed(1)+'"/>':'';return z+'<polyline class="line" points="'+coords+'"/>'+points.map((p,i)=>'<circle class="dot" cx="'+x(i).toFixed(1)+'" cy="'+y(Number(p.value)).toFixed(1)+'" r="'+(i===points.length-1?3.2:2)+'"/>').join('')}
+function dualHistorySvg(records,width=320,height=100){
+  const aligned=records.filter(r=>Number.isFinite(Number(r.nasdaqScore))&&Number.isFinite(Number(r.nasdaqCumulativePct)));
+  if(aligned.length<2)return '';
+  const pad=5,x=i=>pad+i*(width-pad*2)/(aligned.length-1);
+  const scoreY=v=>pad+(100-v)*(height-pad*2)/200;
+  const nv=aligned.map(r=>Number(r.nasdaqCumulativePct)),nlo=Math.min(...nv,0),nhi=Math.max(...nv,0),span=Math.max(.5,nhi-nlo);
+  const nasY=v=>pad+(nhi-v)*(height-pad*2)/span;
+  const scorePts=aligned.map((r,i)=>x(i).toFixed(1)+','+scoreY(Number(r.nasdaqScore)).toFixed(1)).join(' ');
+  const nasPts=aligned.map((r,i)=>x(i).toFixed(1)+','+nasY(Number(r.nasdaqCumulativePct)).toFixed(1)).join(' ');
+  return '<polyline class="score-series" points="'+scorePts+'"/><polyline class="nasdaq-series" points="'+nasPts+'"/>'+
+    aligned.map((r,i)=>'<circle class="score-dot" cx="'+x(i).toFixed(1)+'" cy="'+scoreY(Number(r.nasdaqScore)).toFixed(1)+'" r="'+(i===aligned.length-1?3:1.8)+'"/>').join('')+
+    aligned.map((r,i)=>'<circle class="nasdaq-dot" cx="'+x(i).toFixed(1)+'" cy="'+nasY(Number(r.nasdaqCumulativePct)).toFixed(1)+'" r="'+(i===aligned.length-1?3:1.8)+'"/>').join('');
+}
+function renderChartVisuals(){
+  if(!chartHistory?.records?.length)return;
+  const records=chartHistory.records;
+  const scores=records.filter(r=>Number.isFinite(Number(r.nasdaqScore))).map(r=>({date:r.date,value:Number(r.nasdaqScore)}));
+  const aligned=records.filter(r=>Number.isFinite(Number(r.nasdaqScore))&&Number.isFinite(Number(r.nasdaqCumulativePct)));
+  const scoreEl=document.getElementById('nasdaqScoreChart');
+  if(scoreEl&&aligned.length>1){
+    const first=aligned[0],last=aligned[aligned.length-1],scoreDelta=Number(last.nasdaqScore)-Number(first.nasdaqScore),nasdaqDelta=Number(last.nasdaqCumulativePct);
+    scoreEl.innerHTML='<div class="chart-head"><b>Score vs Nasdaq</b><span>'+aligned.length+' sessions · Score '+(scoreDelta>=0?'+':'')+scoreDelta+' pts · Nasdaq '+(nasdaqDelta>=0?'+':'')+nasdaqDelta.toFixed(2)+'%</span></div>'+
+      '<svg class="score-chart" viewBox="0 0 320 100" preserveAspectRatio="none">'+dualHistorySvg(records,320,100)+'</svg>'+
+      '<div class="history-legend"><span class="history-key"><i class="history-swatch score"></i>NasDecode Score (left scale −100…+100)</span><span class="history-key"><i class="history-swatch nasdaq"></i>Nasdaq cumulative return (independent scale)</span></div>'+
+      '<div class="chart-axis dual"><span>'+escHtml(first.date.slice(5))+'</span><span>Same trading sessions</span><span>'+escHtml(last.date.slice(5))+'</span></div>';
+  }
+  const keyMap={'OPPORTUNITY SCORE':'opportunity','NASDAQ VOLATILITY (VXN / VIX)':'vxn','10Y TREASURY YIELD':'tenY','2Y TREASURY YIELD':'twoY','OIL (WTI / BRENT)':'oil','MARKET BREADTH':'breadth','SEMICONDUCTOR LEADERSHIP':'semi','MEGA-CAP LEADERSHIP':'mega','S&P 500 50D BREADTH / OVERSOLD':'sp50'};
+  document.querySelectorAll('#factorCards .card').forEach(card=>{
+    const label=card.querySelector('.factor-name')?.textContent?.replace(/^\d+\.\s*/,'').trim().toUpperCase(),key=keyMap[label];
+    if(!key||card.querySelector('.sparkline')||card.classList.contains('awaiting'))return;
+    const pts=records.filter(r=>Number.isFinite(Number(r[key]))).map(r=>({date:r.date,value:Number(r[key])}));
+    if(pts.length<2)return;
+    const first=pts[0],last=pts[pts.length-1],delta=last.value-first.value,div=document.createElement('div');
+    // Match the chart to the *visible* card signal, not just the model's
+    // underlying classification. A headwind may have a positive raw trend.
+    const visualSignal=card.querySelector('.card-status.red,.card-status.green,.card-status.amber')
+      ||card.querySelector('.metric-change.red,.metric-change.green,.metric-change.amber');
+    const signalColor=visualSignal?.classList.contains('red')?'red':
+      visualSignal?.classList.contains('green')?'green':
+      visualSignal?.classList.contains('amber')?'amber':
+      card.classList.contains('signal-negative')?'red':
+      card.classList.contains('signal-positive')?'green':'amber';
+    div.className='sparkline '+signalColor;
+    div.innerHTML='<svg viewBox="0 0 180 22" preserveAspectRatio="none">'+svgSeries(pts,180,22)+'</svg><div class="sparkline-meta">'+pts.length+' sessions · '+(delta>=0?'+':'')+delta.toFixed(Math.abs(delta)<1?2:1)+'</div>';
+    card.appendChild(div);
+  });
+}
+async function loadChartHistory(){try{const r=await fetch('data/chart-history.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;chartHistory=await r.json();renderChartVisuals()}catch(e){console.warn('Chart history unavailable',e)}}
+
+// Fetch a cache-busted quantitative snapshot; the button refreshes displayed data only.
+let currentDashboard=null,lastRenderedStamp=null,autoRefreshTimer=null;
+async function load(){update.disabled=true;update.textContent='Checking…';try{const t=Date.now();const [r,w,a]=await Promise.all([fetch('data/dashboard.json?t='+t,{cache:'no-store',headers:{'Cache-Control':'no-cache'}}),fetch('history/market-watch-events.json?t='+t,{cache:'no-store'}).catch(()=>null),fetch('data/sox_avwap_latest.json?t='+t,{cache:'no-store'}).catch(()=>null)]);if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();if(a?.ok){try{d.soxEarningsAvwap=await a.json()}catch(_){d.soxEarningsAvwap=null}}else d.soxEarningsAvwap=null;if(w?.ok){try{d.marketWatchEvents=await w.json()}catch(_){d.marketWatchEvents={events:[]}}}else d.marketWatchEvents={events:[]};currentDashboard=d;const renderStamp=d.updatedET+'|'+(d.marketWatchEvents?.updated||'')+'|'+(d.soxEarningsAvwap?.asOf||'');if(renderStamp!==lastRenderedStamp){render(d);lastRenderedStamp=renderStamp;await loadTodayWatch()}return d}catch(e){console.error(e);update.textContent='Refresh failed';setTimeout(()=>update.textContent='↻ Check Latest',1800);return null}finally{update.disabled=false;if(update.textContent==='Checking…')update.textContent='↻ Check Latest'}}
+// The decision-frame research feed is independent of session analysis tabs.
+async function loadTodayWatch(){
+  const node=document.getElementById('watchConditions');
+  if(!node)return;
+  try{
+    const response=await fetch('data/premarket.json?t='+Date.now(),{cache:'no-store'});
+    if(!response.ok)throw new Error('Premarket HTTP '+response.status);
+    const brief=await response.json();
+    const nyDate=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+    if(brief.tradingDate!==nyDate){
+      node.innerHTML='<div class="muted">Today’s researched event watch is being prepared. Latest available brief: '+escHtml(brief.tradingDate||'unknown')+'.</div>';
+      return;
+    }
+    const entries=Array.isArray(brief.catalysts)?brief.catalysts:[];
+    const html=entries.map((e,i)=>'<div class="catalyst"><b>'+analysisText((i+1)+'. '+(e.title||'Event'))+'</b><div style="margin-top:5px">'+analysisText(e.detail||e.description||'')+'</div></div>').join('');
+    const extra=(brief.watchIntoOpen?'<div class="catalyst"><b>What I’d Watch Into the Open</b><div style="margin-top:5px">'+analysisText(brief.watchIntoOpen)+'</div></div>':'')+
+      (brief.keyTimes?'<div class="catalyst"><b>Key Times</b><div style="margin-top:5px">'+analysisText(brief.keyTimes)+'</div></div>':'');
+    node.innerHTML=html+extra||'<div class="muted">No researched events published for this session.</div>';
+  }catch(e){
+    node.innerHTML='<div class="muted">Today’s researched events are temporarily unavailable.</div>';
+    console.warn('What to Watch research fetch failed',e);
+  }
+}
+loadTodayWatch();
+// Load the narrative market brief. Market Analysis times remain in New York / ET; do not localize them to browser/TR time.
+const nearbyMajorEarnings=d=>{
+  const events=(d?.upcomingEarnings?.events||[]).filter(e=>{
+    const ed=new Date(String(e.date)+'T12:00:00Z');
+    const now=new Date(), nyToday=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
+    const today=new Date(nyToday+'T12:00:00Z'), days=Math.round((ed-today)/86400000);
+    return days>=0&&days<=14;
+  });
+  if(!events.length)return '';
+  const items=events.map(e=>{
+    const ed=new Date(String(e.date)+'T12:00:00Z');
+    const date=ed.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric',timeZone:'UTC'});
+    return escHtml((e.ticker||'')+' · '+date);
+  }).join(', ');
+  return '<h3>Major earnings catalysts:</h3><p>'+items+'. '+analysisText('These SOX/mega-cap reports fall inside the rolling 14-day catalyst window.')+'</p>';
+};
+async function loadAnalysis(d){if(window.NasDecodeSessionTabs?.render){await window.NasDecodeSessionTabs.render(d);return;}try{
+  // After the cash open, this section becomes the live Market Analysis and uses the
+  // Nasdaq Score explanation generated from the current dashboard factors.
+  const now=new Date(), nyParts=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(now);
+  const part=t=>nyParts.find(x=>x.type===t)?.value; const mins=Number(part('hour'))*60+Number(part('minute'));
+  const marketDay=['Mon','Tue','Wed','Thu','Fri'].includes(part('weekday')); const afterOpen=marketDay&&mins>=570;
+  if(afterOpen&&d){
+    // Use the four session phases explicitly. The content remains live; the
+    // scheduled checkpoint snapshots are retained separately for validation.
+    analysisTitle.textContent=mins>=930?'Near-Close Analysis':mins>=780?'Mid-Market Analysis':'Early Market Analysis';
+    premarketMeta.textContent='Analysis updated: '+(d.updatedET||'—')+' (ET)';
+    const ns=d.nasdaqScore||{};
+    const ma=d.marketAnalysis||{};
+    const liveSignal=ns.signal||'mixed';
+    const sig=liveSignal==='positive'?'Positive':liveSignal==='negative'?'Negative':'Mixed';
+    const score=ns.score!==undefined?(ns.score>0?'+':'')+ns.score+' / 100':'—';
+    const trajectory=[];
+    if(ma.preMarketScore!==null&&ma.preMarketScore!==undefined) trajectory.push('Pre-market '+(ma.preMarketScore>0?'+':'')+ma.preMarketScore);
+    if(ma.openScore!==null&&ma.openScore!==undefined) trajectory.push('Open '+(ma.openScore>0?'+':'')+ma.openScore);
+    if(ns.score!==undefined) trajectory.push('Now '+(ns.score>0?'+':'')+ns.score);
+    const paras=(ma.paragraphs||[]).map(x=>'<p>'+analysisText(x)+'</p>').join('');
+    const catalysts=(ma.catalysts||[]).map(e=>'<li><b>'+escHtml(e.date)+' · '+analysisText(e.title)+'</b> — '+analysisText(e.detail)+'</li>').join('');
+    const fallback=(d.groups||[]).find(g=>g.name==='NASDAQ SCORE'||g.name==='NASDAQ SETUP')?.explanation||'Current Nasdaq analysis is not available.';
+    premarketBody.innerHTML=
+      '<div class="bias"><b>Nasdaq Score:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+' &nbsp; · &nbsp; <b>Trend:</b> '+(ns.trend||'—')+
+      (trajectory.length>1?' &nbsp; · &nbsp; <b>Session path:</b> '+trajectory.join(' → '):'')+'</div>'+
+      (paras||'<p>'+analysisText(fallback).replace(/\n\n/g,'</p><p>')+'</p>')+
+      (catalysts?'<h3>Near-term catalysts</h3><ul>'+catalysts+'</ul>':'');
+    return;
+  }
+  const r=await fetch('data/premarket.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const a=await r.json();
+  const nyDate=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+  // Research briefs historically used {updated, summary, events} while the
+  // quantitative pipeline uses {tradingDate, updatedET, paragraphs, catalysts}.
+  // Accept either schema so a valid same-day researched brief is never hidden.
+  const inferredDate=a.tradingDate||String(a.updated||a.updatedET||'').match(/\\b20\\d{2}-\\d{2}-\\d{2}\\b/)?.[0];
+  const priorBrief=inferredDate!==nyDate;
+  if(priorBrief&&!((a.paragraphs||a.summary||[]).length)){analysisTitle.textContent='Pre-Market Analysis';premarketMeta.textContent='Today’s analysis is being prepared.';premarketBody.innerHTML='';return;}
+  analysisTitle.textContent=(a.stage==='premarket'||a.researchBrief||a.bias)?'Pre-Market Analysis':'Early Market Outlook';
+  premarketMeta.textContent=priorBrief?'Latest available analysis: '+escHtml(inferredDate||'undated')+' · Previous session; today’s research is pending.':'Analysis updated: '+escHtml(a.updatedET||a.updated||'—');
+  const ns=d?.nasdaqScore||{}; const sig=ns.signal==='positive'?'Positive':ns.signal==='negative'?'Negative':'Mixed';
+  const score=a.score!==null&&a.score!==undefined?(a.score>0?'+':'')+a.score+' / 100':'—';
+  const paras=(a.paragraphs||a.summary||[]).map(x=>'<p>'+analysisText(x)+'</p>').join('');
+  const catalysts=(a.catalysts||a.events||[]).map(e=>'<li><b>'+escHtml(e.date?e.date+' · ':'')+analysisText(e.title)+'</b> — '+analysisText(e.detail)+'</li>').join('');
+  const richMeta=a.bias?'<div class="bias"><b>Pre-market bias:</b> '+escHtml(a.bias)+(a.confidence?' &nbsp; · &nbsp; <b>Confidence:</b> '+escHtml(a.confidence):'')+(a.eventRisk?' &nbsp; · &nbsp; <b>Event risk:</b> '+escHtml(a.eventRisk):'')+'</div>':'<div class="bias"><b>Nasdaq Score:</b> '+sig+' &nbsp; · &nbsp; <b>Score:</b> '+score+'</div>';
+  const todayWatch=document.getElementById('watchConditions');
+  if(todayWatch){
+    const entries=priorBrief?[]:(a.catalysts||[]).filter(x=>x&&typeof x==='object');
+    todayWatch.innerHTML=priorBrief?'<div class="muted">Today’s researched event watch is being prepared. Latest available brief: '+escHtml(inferredDate||'unknown')+'.</div>':entries.length?entries.map((e,i)=>'<div class="catalyst"><b>'+escHtml(String(i+1)+'. '+(e.title||'Event'))+'</b><div style="margin-top:5px">'+analysisText(e.detail||e.description||'')+'</div></div>').join(''):'<div class="muted">Today’s major events have not been published yet.</div>';
+  }
+  premarketBody.innerHTML=(priorBrief?'<p class="muted"><b>Previous-session analysis — not a current market outlook.</b></p>':'')+richMeta+paras+(a.watchIntoOpen?'<p>'+analysisText(a.watchIntoOpen)+'</p>':'')+(a.keyTimes?'<p>'+analysisText(a.keyTimes)+'</p>':'')+(catalysts?'<h3>Near-term catalysts</h3><ul>'+catalysts+'</ul>':'')+nearbyMajorEarnings(d);
+}catch(e){premarketMeta.textContent='Analysis not available yet.';premarketBody.innerHTML='';}}
+update.onclick=async()=>{const d=await load();await Promise.all([loadAnalysis(d),loadTodayWatch()]);scheduleAutoRefresh()};
+
+function nyClock(){
+  const p=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',weekday:'short',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).formatToParts(new Date());
+  const get=t=>p.find(x=>x.type===t)?.value;
+  return {weekday:get('weekday'),minutes:Number(get('hour'))*60+Number(get('minute')),seconds:Number(get('second'))};
+}
+function upcomingReleaseTimes(){
+  return (currentDashboard?.macroSurprises?.scheduledEvents||[])
+    .map(e=>({time:new Date(e.scheduledAt),name:e.name}))
+    .filter(e=>Number.isFinite(e.time.getTime())&&e.time.getTime()>Date.now()-10*60*1000)
+    .sort((a,b)=>a.time-b.time);
+}
+function nextUiPollMs(){
+  const now=Date.now(), ny=nyClock(), weekday=['Mon','Tue','Wed','Thu','Fri'].includes(ny.weekday);
+  let base=60*60*1000;
+  if(weekday&&ny.minutes>=570&&ny.minutes<=980) base=2*60*1000;          // cash session
+  else if(weekday&&((ny.minutes>=240&&ny.minutes<570)||(ny.minutes>980&&ny.minutes<=1200))) base=15*60*1000;
+
+  // Scheduled macro releases are a special high-attention window. The browser checks
+  // exactly at the release and then every 20 seconds for 10 minutes so a newly
+  // published backend snapshot appears promptly. This is polling, not server push.
+  const releases=upcomingReleaseTimes();
+  for(const r of releases){
+    const delta=r.time.getTime()-now;
+    if(delta>=-30*1000&&delta<=10*60*1000) return 20*1000;
+    if(delta>0) base=Math.min(base,Math.max(5*1000,delta+2*1000));
+  }
+  return base;
+}
+function scheduleAutoRefresh(){
+  if(autoRefreshTimer) clearTimeout(autoRefreshTimer);
+  autoRefreshTimer=setTimeout(async()=>{
+    if(document.hidden){scheduleAutoRefresh();return}
+    const before=lastRenderedStamp,d=await load();
+    if(d&&d.updatedET!==before) await loadAnalysis(d);
+    scheduleAutoRefresh();
+  },nextUiPollMs());
+}
+document.addEventListener('visibilitychange',async()=>{
+  if(!document.hidden){const d=await load();await loadAnalysis(d);scheduleAutoRefresh()}
+});
+loadChartHistory();(async()=>{const d=await load();await loadAnalysis(d);scheduleAutoRefresh()})();
+</script></body></html>
++Number(v).toFixed(2):'—';};
+    const percent=function(v){return v!=null&&Number.isFinite(Number(v))?(Number(v)>0?'+':'')+Number(v).toFixed(2)+'%':'—';};
+    const anchorLine=function(key,label){
+      const a=anchors[key]||null;
+      const dist=a&&a.distancePct!=null?Number(a.distancePct):null;
+      const tone=dist==null?'muted':dist>=0?'green':'red';
+      return '<div class="nd-avwap-metric"><span class="nd-avwap-label">'+label+'</span>'+
+        '<b class="nd-avwap-number">'+money(a&&a.avwap)+'</b>'+
+        '<span class="'+tone+'">'+percent(dist)+' vs AVWAP</span>'+
+        '<small>'+escHtml(a&&a.anchorDate||'Anchor not available')+
+        (a&&a.anchorPrice!=null?' · Extreme '+money(a.anchorPrice):'')+'</small></div>';
+    };
+    const names=['Buy the Touch','Enter with Momentum','AVWAP Pinch','AVWAP Handoff','Pullbacks and Breakouts','Multi-Day AVWAP','Gap Trading','Short Squeezes','IPO Trading'];
+    const byName={};
+    (item.strategies||[]).forEach(function(s){byName[s.name]=s;});
+    const strategies=names.map(function(name){
+      const s=byName[name],state=s&&s.state||'unverified';
+      const status=state==='match'?'Potential match':state==='no_match'?'No match':state==='unverified'?'Unverified':'N/A';
+      const tone=state==='match'?'green':state==='no_match'?'muted':'amber';
+      return '<div class="nd-avwap-rule" title="'+escAttr(s&&s.evidence||'No verified evidence')+'"><span>'+escHtml(name)+'</span><span class="'+tone+'">'+status+'</span></div>';
+    }).join('');
+    return '<div class="card factor-card nd-avwap-card">'+
+      '<div class="nd-avwap-head"><span class="factor-name">'+ticker+' · AVWAP RESEARCH</span>'+
+      '<span class="card-status '+(item.status==='ready'?'green':'amber')+'">'+escHtml(item.status==='ready'?'63 sessions':item.status||'Awaiting data')+'</span></div>'+
+      '<div class="nd-avwap-quote">'+money(item.price)+' <small>'+escHtml(item.throughDate||'Date unavailable')+' · '+escHtml(item.priceSource||'')+'</small></div>'+
+      '<div class="nd-avwap-metrics">'+anchorLine('highestHigh','Highest-high AVWAP')+
+      anchorLine('lowestLow','Lowest-low AVWAP')+
+      (ticker==='NVDA'?anchorLine('earnings','Earnings AVWAP'):'')+'</div>'+
+      '<div class="nd-avwap-section">SHANNON-INSPIRED STRATEGY SCREEN · '+(item.matchCount||0)+' POTENTIAL MATCHES</div>'+
+      '<div class="nd-avwap-rules">'+strategies+'</div>'+
+      '<small class="nd-avwap-foot">Research only · 63-session extrema; earnings anchored to latest report · Daily-bar strategy proxies, not verified trading signals</small>'+
+      '</div>';
+  }).join('');
 
   const directionalShadowCard=directionalShadow?(()=>{
     const ds=directionalShadow.directionalSetup||{}, setup=ds.setup||'neutral_other';
