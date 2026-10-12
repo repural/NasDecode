@@ -50,7 +50,7 @@ def collect(ticker,days,now):
     for item in raw:
         bar=normalize(item)
         if bar is None: continue
-        previous[bar["date"]]={**previous.get(bar["date"],{}),**bar}
+        previous[bar["date"]]={**previous.get(bar["date"],{}),**{k:v for k,v in bar.items() if v is not None or previous.get(bar["date"],{}).get(k) is None}}
         received+=1
     bars=[previous[k] for k in sorted(previous)]
     # Never delete existing data on provider failure or overwrite non-null fields with missing observations.
@@ -91,7 +91,7 @@ def main():
             print("Source failure",t,repr(exc),flush=True)
             results[t]={"ticker":t,"status":"provider_error","detail":str(exc)[:180]}
     manifest={"schemaVersion":1,"asOfET":now.isoformat(),
-              "universeType":"historical_SO X_snapshot_research_not_verified_current".replace(" ",""),
+              "universeType":"historical_SOX_snapshot_research_not_verified_current",
               "membershipAsOf":cfg.get("membership",{}).get("asOf"),
               "excludedObsoleteTickers":sorted(OBSOLETE),
               "primarySource":"Massive adjusted daily aggregates",
