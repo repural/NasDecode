@@ -96,6 +96,33 @@ def merge_provider_sma(bars,observations,window):
             bar.setdefault(field,None)
     return bars
 
+def apply_sma_fallback(bars):
+    """Persist locally computed SMA only where provider data is missing.
+
+    Requires complete adjusted-close windows. Existing provider values win;
+    legacy SMA values without provenance are checked and then sourced correctly.
+    """
+    local=add_sma([{"date":b["date"],"close":b.get("close")} for b in bars])
+    for actual,calculated in zip(bars,local):
+        for window in (20,50):
+            key="sma"+str(window)
+            source=actual.get(key+"Source")
+            value=actual.get(key)
+            if source=="Massive" and isinstance(value,(int,float)) and value>0:
+                continue
+            fallback=calculated.get(key)
+            if fallback is not None:
+                actual[key]=fallback
+                actual[key+"Source"]="local_adjusted_close_fallback"
+                actual[key+"ValidationStatus"]="fallback_unverified_against_provider"
+            else:
+                # Values without reliable provenance cannot be trusted.
+                actual[key]=None
+                actual[key+"Source"]=None
+                actual[key+"ValidationStatus"]="insufficient_adjusted_close_history"
+    return bars
+
+
 def validate_sma(bars):
     """Compare stored provider values to local close-based estimates for diagnostics only."""
     local=add_sma([{"date":b["date"],"close":b.get("close")} for b in bars])
@@ -148,19 +175,22 @@ def collect(ticker,days,now):
             obs=massive_sma(ticker,window,bars[0]["date"],bars[-1]["date"])
             merge_provider_sma(bars,obs,window)
             observations[window]="available" if obs is not None else "unavailable"
+        apply_sma_fallback(bars)
     # Keep the archive and provider SMA results even if daily aggregates are temporarily unavailable.
     if not bars:
         return {"ticker":ticker,"status":"provider_unavailable","storedSessions":0,
                 "smaProvider":observations}
     document={"schemaVersion":3,"ticker":ticker,"source":"Massive adjusted daily aggregates",
               "adjusted":True,"updatedET":now.isoformat(),
-              "smaSource":"Massive indicators/sma (adjusted close)", "bars":bars}
+              "smaSource":"Massive indicators/sma; local adjusted-close fallback with provenance", "bars":bars}
     path.write_text(json.dumps(document,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     return {"ticker":ticker,"status":"collected" if raw else "bars_unavailable_sma_checked","receivedSessions":received,
             "storedSessions":len(bars),"firstDate":bars[0]["date"] if bars else None,
             "lastDate":bars[-1]["date"] if bars else None,
             "missingFields":sum(sum(b.get(k) is None for k in REQUIRED) for b in bars),
-            "smaProvider":observations,"smaValidation":validate_sma(bars)}
+            "smaProvider":observations,"smaValidation":validate_sma(bars),
+            "sma20FallbackCount":sum(b.get("sma20Source")=="local_adjusted_close_fallback" for b in bars),
+            "sma50FallbackCount":sum(b.get("sma50Source")=="local_adjusted_close_fallback" for b in bars)}
 
 def main():
     parser=argparse.ArgumentParser()
