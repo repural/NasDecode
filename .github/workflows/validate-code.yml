@@ -33,3 +33,8 @@ jobs:
         run: |
           python -m unittest discover -s tests -p 'test_s5fi_parser.py' -v
           python -m unittest discover -s tests -p 'test_cnbc_change.py' -v
+
+      - name: Stored SMA and AVWAP research regression tests
+        run: |
+          python -m unittest discover -s tests -p 'test_daily_bars_sma.py' -v
+          python -m unittest discover -s tests -p 'test_avwap_sma_reader.py' -v
