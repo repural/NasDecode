@@ -21,24 +21,28 @@ jobs:
       - uses: actions/checkout@v4
       - name: Validate collector
         run: |
-          python -m py_compile scripts/collect_daily_bars.py scripts/refresh.py
+          python -m py_compile scripts/collect_daily_bars.py scripts/merge_daily_bars_archive.py scripts/refresh.py
           python -m unittest discover -s tests -p test_daily_bars_sma.py -v
       - name: Collect adjusted daily bars with missing-data retries
         env:
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
           REQUEST_DAYS: ${{ github.event.inputs.days || '14' }}
         run: python -m scripts.collect_daily_bars --days "$REQUEST_DAYS"
-      - name: Persist daily bars and coverage
+      - name: Persist daily bars and coverage without JSON rebase conflicts
         run: |
           set -euo pipefail
           git config user.name nasdecode-bot
           git config user.email actions@users.noreply.github.com
-          git add data/history/*-daily.json data/history/daily-bars-coverage.json
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Archive semiconductor adjusted daily OHLCV VWAP"
-          for n in 1 2 3; do
-            if git push origin HEAD:main; then exit 0; fi
+          mkdir -p /tmp/nasdecode-collected
+          cp data/history/*-daily.json data/history/daily-bars-coverage.json /tmp/nasdecode-collected/
+          for n in 1 2 3 4; do
             git fetch origin main
-            git rebase origin/main
+            git reset --hard origin/main
+            python -m scripts.merge_daily_bars_archive /tmp/nasdecode-collected
+            git add data/history/*-daily.json data/history/daily-bars-coverage.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "Archive semiconductor adjusted daily OHLCV and provider SMA"
+            if git push origin HEAD:main; then exit 0; fi
+            echo "Concurrent update on attempt $n; merging data again against latest main"
           done
           exit 1
