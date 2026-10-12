@@ -316,6 +316,8 @@ body{font-size:14px;font-weight:400;-webkit-font-smoothing:antialiased}
  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
 .s5fi-reference{border-top:3px solid var(--amber)!important}.s5fi-reference .metric{color:var(--text);font-weight:760}.s5fi-reference-status{display:block;font-size:12px;line-height:1.45;color:var(--amber);margin-top:8px}.s5fi-reference .card-latest{font-size:12px;color:var(--muted);margin-top:6px}
+
+.avwap-research-card{min-width:0;gap:12px!important}.avwap-quote{font-size:21px;font-weight:700}.avwap-quote small{font-size:11px;font-weight:400}.avwap-values{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:8px}.avwap-info{display:flex;flex-direction:column;gap:5px;padding:10px;border:1px solid rgba(128,128,128,.2);border-radius:8px;font-size:12px}.avwap-info b{font-size:19px}.avwap-info small{font-size:10px}.avwap-section{font-size:11px}.avwap-rules{display:grid}.avwap-rule{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid rgba(128,128,128,.15);font-size:12px}
 </style></head><body><header class="nd-topbar"><a class="nd-brand" href="#dashboard" aria-label="NasDecode Dashboard"><span class="nd-brand-mark" aria-hidden="true">N</span><span class="nd-brand-word">NASDECODE</span></a><nav class="nd-nav" aria-label="Dashboard sections"><a href="#dashboard" class="nd-current">Dashboard</a><a href="#macro-rates">Macro</a><a href="#market-internals">Internals</a><a href="#market-assessment">Assessment</a><a href="#premarket">Analysis</a></nav><div class="nd-top-actions"><span class="nd-live" aria-label="Data refresh status"><span class="nd-live-dot" aria-hidden="true"></span><span id="updated" role="status">Loading…</span></span><button id="update" type="button">↻ Refresh</button></div></header><div class="wrap" id="dashboard"><div class="factor-cards compact-cards" id="factorCards"></div><section class="premarket" id="premarket"><h2 id="analysisTitle">Pre-Market Analysis</h2><div class="muted" id="premarketMeta">Loading analysis…</div><div id="premarketBody"></div></section><details class="signal-details" open><summary>Signal Explorer</summary><div class="signal-explorer" id="signalExplorer"></div></details><section class="intel-panel setup-wide" id="marketSetup"></section><div class="lower-intel"><section class="intel-panel"><div class="section-kicker">Decision frame</div><h3>What to Watch Today</h3><div id="watchConditions"></div></section></div><section class="intel-panel" id="marketMovingDevelopments"><div class="section-kicker">NasDecode Open Watch · curated</div><h3>Market-Moving Developments</h3><div id="marketMovingBody" class="catalyst-list">Loading developments…</div><div class="nd-earnings-section"><div class="nd-earnings-header"><h4>Upcoming Major Earnings</h4><span id="ndEarningsMonth" class="muted"></span></div><div id="ndUpcomingEarnings" class="nd-earnings-list"></div></div></section><div class="legacy-table" hidden><table><tbody id="rows"></tbody></table></div><section hidden></section><p class="src">Current Impact = estimated magnitude of the factor's present effect on Nasdaq based on the latest reading, move, event proximity and data freshness; it can change on every refresh and is separate from whether the signal is positive or negative. Green = supportive for Nasdaq; red = headwind; amber = mixed/event risk. Free sources can be delayed. NasDecode displays source freshness rather than representing delayed observations as exchange-real-time data.</p></div><script>
 /*
  * Presentation layer only.
@@ -504,6 +506,27 @@ function render(d){
     '</div>':'';
   const soxlCard=d.soxlBuyScore?`<div class="card factor-card soxl-card signal-${d.soxlBuyScore.signal}" tabindex="0" data-tip="${escAttr(d.soxlBuyScore.explanation||'Experimental tactical SOXL entry-quality score.')}"><span class="factor-name">16. SOXL BUY SCORE</span><span class="card-status ${C[d.soxlBuyScore.signal]}">${escHtml(d.soxlBuyScore.label||'—')}</span><span><span class="metric ${C[d.soxlBuyScore.signal]}">${d.soxlBuyScore.score??'—'}</span> <span class="muted">/ 100</span></span><span class="card-latest">${d.soxlBuyScore.last!=null?'SOXL '+Number(d.soxlBuyScore.last).toFixed(2)+(d.soxlBuyScore.changePct!=null?' · '+(Number(d.soxlBuyScore.changePct)>0?'+':'')+Number(d.soxlBuyScore.changePct).toFixed(2)+'%':''):'SOXL quote unavailable'} · 1–5 sessions</span>${soxlIndicatorGrid}${soxlComponentGrid}</div>`:'';
 
+
+  const avwapResearchCards=['NVDA','SOXL'].map(function(t){
+    const data=(d.avwapStrategyCards||{})[t]||{};
+    const fmt=function(v){return v!=null&&Number.isFinite(Number(v))?'USD '+Number(v).toFixed(2):'—';};
+    const pct=function(v){return v!=null&&Number.isFinite(Number(v))?(Number(v)>0?'+':'')+Number(v).toFixed(2)+'%':'—';};
+    const field=function(key,label){
+      const a=(data.anchors||{})[key]||{};
+      const tone=a.distancePct==null?'muted':a.distancePct>=0?'green':'red';
+      return '<div class="avwap-info"><span class="muted">'+label+'</span><b>'+fmt(a.avwap)+'</b><span class="'+tone+'">'+pct(a.distancePct)+' vs AVWAP</span><small class="muted">'+escHtml(a.anchorDate||'Anchor unavailable')+(a.anchorPrice!=null?' · High/low '+fmt(a.anchorPrice):'')+'</small></div>';
+    };
+    const expected=['Buy the Touch','Enter with Momentum','AVWAP Pinch','AVWAP Handoff','Pullbacks and Breakouts','Multi-Day AVWAP','Gap Trading','Short Squeezes','IPO Trading'];
+    const observed={};
+    (data.strategies||[]).forEach(function(s){observed[s.name]=s;});
+    const strategies=expected.map(function(name){
+      const s=observed[name]||{}, state=s.state||'unverified';
+      const label=state==='match'?'Potential match':state==='no_match'?'No match':'Unverified';
+      return '<div class="avwap-rule" title="'+escAttr(s.evidence||'Data not verified')+'"><span>'+escHtml(name)+'</span><span class="'+(state==='match'?'green':state==='no_match'?'muted':'amber')+'">'+label+'</span></div>';
+    }).join('');
+    return '<div class="card factor-card avwap-research-card"><span class="factor-name">'+t+' · AVWAP RESEARCH</span><div class="avwap-quote">'+fmt(data.price)+' <small class="muted">'+escHtml(data.throughDate||'No observation')+'</small></div><div class="avwap-values">'+field('highestHigh','Highest-high AVWAP')+field('lowestLow','Lowest-low AVWAP')+(t==='NVDA'?field('earnings','Earnings AVWAP'):'')+'</div><b class="avwap-section">SHANNON-INSPIRED STRATEGIES · '+(data.matchCount||0)+' POTENTIAL MATCHES</b><div class="avwap-rules">'+strategies+'</div><small class="muted">Research only · high/low anchors use last 63 sessions · earnings anchored to latest verified report · daily-bar rules are preliminary</small></div>';
+  }).join('');
+
   const directionalShadowCard=directionalShadow?(()=>{
     const ds=directionalShadow.directionalSetup||{}, setup=ds.setup||'neutral_other';
     const states=[['washout_rebound','Washout / Rebound'],['uptrend_pullback','Uptrend Pullback'],['continuation','Continuation'],['neutral_other','Neutral / Other']];
@@ -527,7 +550,7 @@ function render(d){
     categoryHeading('Market Internals','Volatility, positioning, participation and leadership')+
     rowCards.slice(5).join('')+
     categoryHeading('Market Assessment','NasDecode decision layer')+
-    summaryCards+directionalShadowCard+opportunityCard+soxlCard;
+    summaryCards+directionalShadowCard+opportunityCard+soxlCard+categoryHeading('AVWAP Research','NVDA and SOXL · 3-month anchors')+avwapResearchCards;
   // Desktop intelligence layer: synthesize existing outputs without recalculating model logic.
   const rowBy=name=>orderedRows.find(r=>r.factor===name)||{};
   const toneLabel=s=>s==='positive'?'Supportive':s==='negative'?'Headwind':'Mixed';
