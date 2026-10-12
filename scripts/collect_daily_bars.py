@@ -148,19 +148,15 @@ def collect(ticker,days,now):
             obs=massive_sma(ticker,window,bars[0]["date"],bars[-1]["date"])
             merge_provider_sma(bars,obs,window)
             observations[window]="available" if obs is not None else "unavailable"
-    # Never delete existing data on provider failure or overwrite non-null fields with missing observations.
-    if not raw:
-        return {"ticker":ticker,"status":"provider_unavailable","storedSessions":len(bars),
-                "firstDate":bars[0]["date"] if bars else None,
-                "lastDate":bars[-1]["date"] if bars else None,
-                "missingFields":sum(sum(b.get(k) is None for k in REQUIRED) for b in bars),
-                "sma20Coverage":sum(b.get("sma20") is not None for b in bars),
-                "sma50Coverage":sum(b.get("sma50") is not None for b in bars)}
+    # Keep the archive and provider SMA results even if daily aggregates are temporarily unavailable.
+    if not bars:
+        return {"ticker":ticker,"status":"provider_unavailable","storedSessions":0,
+                "smaProvider":observations}
     document={"schemaVersion":3,"ticker":ticker,"source":"Massive adjusted daily aggregates",
               "adjusted":True,"updatedET":now.isoformat(),
               "smaSource":"Massive indicators/sma (adjusted close)", "bars":bars}
     path.write_text(json.dumps(document,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    return {"ticker":ticker,"status":"collected","receivedSessions":received,
+    return {"ticker":ticker,"status":"collected" if raw else "bars_unavailable_sma_checked","receivedSessions":received,
             "storedSessions":len(bars),"firstDate":bars[0]["date"] if bars else None,
             "lastDate":bars[-1]["date"] if bars else None,
             "missingFields":sum(sum(b.get(k) is None for k in REQUIRED) for b in bars),
@@ -177,7 +173,7 @@ def main():
     cfg=read(MEMBERSHIP,{})
     selected=[t.strip().upper() for t in args.tickers.split(",") if t.strip()] if args.tickers else [
         t for t in cfg.get("constituents",[]) if t not in OBSOLETE]
-    selected=list(dict.fromkeys(["NVDA",*ETFS]+selected))
+    selected=list(dict.fromkeys((["NVDA",*ETFS]+selected) if not args.tickers else selected))
     HISTORY.mkdir(parents=True,exist_ok=True)
     now=dt.datetime.now(ZoneInfo("America/New_York"))
     results={}
