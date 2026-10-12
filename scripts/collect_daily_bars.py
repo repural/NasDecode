@@ -19,6 +19,20 @@ MANIFEST=HISTORY/"daily-bars-coverage.json"
 # Historical membership isn't verified as current; do not silently include delisted names.
 OBSOLETE={"QRVO","SWKS"}
 REQUIRED=("open","high","low","close","volume","vwap")
+INDICATORS=("sma20","sma50")
+ETFS=("SOXL","SOXX","SMH","QQQ")
+
+def add_sma(bars):
+    """Persist adjusted-close SMAs; never shorten a window to skip missing closes."""
+    for i, bar in enumerate(bars):
+        for window in (20,50):
+            sample=bars[max(0,i-window+1):i+1]
+            prices=[b.get("close") for b in sample]
+            value=sum(prices)/window if len(prices)==window and all(
+                isinstance(x,(float,int)) and x>0 for x in prices) else None
+            bar["sma"+str(window)]=round(value,6) if value is not None else None
+    return bars
+
 
 def normalize(raw):
     try:
@@ -52,14 +66,16 @@ def collect(ticker,days,now):
         if bar is None: continue
         previous[bar["date"]]={**previous.get(bar["date"],{}),**{k:v for k,v in bar.items() if v is not None or previous.get(bar["date"],{}).get(k) is None}}
         received+=1
-    bars=[previous[k] for k in sorted(previous)]
+    bars=add_sma([previous[k] for k in sorted(previous)])
     # Never delete existing data on provider failure or overwrite non-null fields with missing observations.
     if not raw:
         return {"ticker":ticker,"status":"provider_unavailable","storedSessions":len(bars),
                 "firstDate":bars[0]["date"] if bars else None,
                 "lastDate":bars[-1]["date"] if bars else None,
-                "missingFields":sum(sum(b.get(k) is None for k in REQUIRED) for b in bars)}
-    document={"schemaVersion":2,"ticker":ticker,"source":"Massive adjusted daily aggregates",
+                "missingFields":sum(sum(b.get(k) is None for k in REQUIRED) for b in bars),
+                "sma20Coverage":sum(b.get("sma20") is not None for b in bars),
+                "sma50Coverage":sum(b.get("sma50") is not None for b in bars)}
+    document={"schemaVersion":3,"ticker":ticker,"source":"Massive adjusted daily aggregates",
               "adjusted":True,"updatedET":now.isoformat(),"bars":bars}
     path.write_text(json.dumps(document,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
     return {"ticker":ticker,"status":"collected","receivedSessions":received,
@@ -78,7 +94,7 @@ def main():
     cfg=read(MEMBERSHIP,{})
     selected=[t.strip().upper() for t in args.tickers.split(",") if t.strip()] if args.tickers else [
         t for t in cfg.get("constituents",[]) if t not in OBSOLETE]
-    selected=list(dict.fromkeys(["NVDA"]+selected))
+    selected=list(dict.fromkeys(["NVDA",*ETFS]+selected))
     HISTORY.mkdir(parents=True,exist_ok=True)
     now=dt.datetime.now(ZoneInfo("America/New_York"))
     results={}
@@ -95,7 +111,7 @@ def main():
               "membershipAsOf":cfg.get("membership",{}).get("asOf"),
               "excludedObsoleteTickers":sorted(OBSOLETE),
               "primarySource":"Massive adjusted daily aggregates",
-              "fields":["date",*REQUIRED],"tickers":results}
+              "fields":["date",*REQUIRED,*INDICATORS],"tickers":results}
     MANIFEST.write_text(json.dumps(manifest,indent=2)+"\n",encoding="utf-8")
     print("Daily bar coverage:",len(results),"symbols; unavailable:",
           [k for k,v in results.items() if v["status"]!="collected"],flush=True)
