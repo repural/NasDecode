@@ -440,6 +440,10 @@ def build_earnings_avwap_factor(quotes):
             calc['anchors']=extrema
             if ticker=='NVDA': calc['strategyCard']=build_avwap_strategy_card(ticker,bars,current,calc)
             details[ticker]=calc
+        elif ticker=='NVDA':
+            # Still show price-based research if earnings or the live quote is unavailable.
+            details[ticker]={'ticker':ticker,'instrumentType':'equity',
+                             'strategyCard':build_avwap_strategy_card(ticker,bars,current,calc)}
     # ETFs do not have corporate earnings anchors: record only their extrema AVWAPs.
     for ticker in ('SMH','SOXX','SOXL'):
         bars=massive_daily_bars(ticker,180)
@@ -454,6 +458,10 @@ def build_earnings_avwap_factor(quotes):
         if current is not None and any(extrema.values()):
             details[ticker]={'ticker':ticker,'price':current,'anchors':extrema,'instrumentType':'ETF'}
             if ticker=='SOXL': details[ticker]['strategyCard']=build_avwap_strategy_card(ticker,bars,current)
+        elif ticker=='SOXL':
+            # Use the last daily close for a dated research snapshot when CNBC is unavailable.
+            details[ticker]={'ticker':ticker,'instrumentType':'ETF',
+                             'strategyCard':build_avwap_strategy_card(ticker,bars,current)}
     vals=[x for x in details.values() if x.get('earningsDate')]
     if not vals:
         row={'factor':'Earnings AVWAP leadership','latest':'Awaiting Earnings AVWAP data',
