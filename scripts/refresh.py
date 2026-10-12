@@ -325,6 +325,84 @@ def extrema_anchored_avwap_from_daily_bars(bars, kind, lookback=120):
 
 
 
+def build_avwap_strategy_card(ticker, bars, current, earnings=None):
+    """Research-only 63-session AVWAP and conservative daily-bar strategy screen.
+
+    Strategy states are operational hypotheses inspired by Shannon's setups,
+    not rules claimed to be supplied verbatim by the author.
+    """
+    valid=[]
+    for b in bars:
+        try:
+            if any(b.get(k) is None for k in ('t','h','l','c','v','vw')): continue
+            if float(b['v'])<=0: continue
+            valid.append(b)
+        except (TypeError,ValueError): continue
+    valid.sort(key=lambda b:b['t'])
+    window=valid[-63:]
+    card={'ticker':ticker,'lookbackSessions':63,'coverage':len(window),
+          'source':'Massive adjusted daily VWAP and OHLCV; current CNBC quote',
+          'researchOnly':True}
+    if len(window)<45:
+        card.update({'status':'insufficient_history','strategies':[]})
+        return card
+    latest=window[-1]; last_close=float(latest['c'])
+    price=current if current is not None else last_close
+    card.update({'price':price,'priceSource':'CNBC quote' if current is not None else 'last daily close',
+                 'throughDate':datetime.datetime.fromtimestamp(latest['t']/1000,datetime.timezone.utc).date().isoformat(),
+                 'status':'ready' if len(window)==63 else 'partial'})
+    def anchor(kind):
+        idx=(max(range(len(window)),key=lambda i:float(window[i]['h']))
+             if kind=='highestHigh' else min(range(len(window)),key=lambda i:float(window[i]['l'])))
+        seq=window[idx:]; vol=sum(float(b['v']) for b in seq)
+        value=sum(float(b['vw'])*float(b['v']) for b in seq)/vol
+        return {'anchorDate':datetime.datetime.fromtimestamp(seq[0]['t']/1000,datetime.timezone.utc).date().isoformat(),
+                'anchorPrice':float(seq[0]['h' if kind=='highestHigh' else 'l']),
+                'avwap':round(value,4),'distancePct':round((price/value-1)*100,3),
+                'sessions':len(seq)}
+    anchors={'highestHigh':anchor('highestHigh'),'lowestLow':anchor('lowestLow')}
+    if earnings and earnings.get('avwap'):
+        v=earnings['avwap']
+        anchors['earnings']={'anchorDate':earnings.get('anchorDate'),
+                             'avwap':round(v,4),'distancePct':round((price/v-1)*100,3),
+                             'sessions':earnings.get('sessions'),
+                             'note':'Latest verified earnings; may predate three-month window'}
+    card['anchors']=anchors
+    dists=[a['distancePct'] for a in anchors.values() if a.get('distancePct') is not None]
+    vals=list(anchors.values())
+    # Daily-bar proxies: all thresholds are explicit so the research signals can be backtested.
+    volume_avg=sum(float(b['v']) for b in window[-21:-1])/20 if len(window)>=21 else None
+    rv=float(latest['v'])/volume_avg if volume_avg else None
+    prev=float(window[-2]['c'])
+    prior_high=max(float(b['h']) for b in window[-6:-1])
+    near_any=any(abs(a['distancePct'])<=1.5 for a in vals)
+    above_all=all(a['distancePct']>=0 for a in vals)
+    reclaim=any(prev<a['avwap'] and last_close>=a['avwap'] for a in vals)
+    support=any(abs(a['distancePct'])<=1.5 and price>=a['avwap'] for a in vals)
+    momentum=last_close>prior_high and (rv is not None and rv>=1.2) and above_all
+    avs=sorted(a['avwap'] for a in vals)
+    pinch=len(avs)>=2 and (avs[1]/avs[0]-1)*100<=1.5 and near_any
+    gap=abs((float(latest.get('o') or last_close)/prev-1)*100)>=2
+    squeeze=False # short interest, borrow and position data not available from daily OHLCV
+    def item(name,matched,evidence,availability='daily_proxy'):
+        return {'name':name,'state':('match' if matched else 'no_match') if availability=='daily_proxy' else 'unverified',
+                'evidence':evidence,'availability':availability}
+    strategies=[
+        item('Buy the Touch',support,'Price within 1.5% above at least one AVWAP; intraday touch unverified'),
+        item('Enter with Momentum',momentum,'Close above prior 5-session high, volume >=1.2x and above all anchors'),
+        item('AVWAP Pinch',pinch,'Two AVWAPs within 1.5%, price near one anchor'),
+        item('AVWAP Handoff',False,'Requires tracking successive validated anchor reactions','needs_event_sequence'),
+        item('Pullbacks and Breakouts',reclaim or momentum,'Daily AVWAP reclaim or high/volume breakout'),
+        item('Multi-Day AVWAP',False,'Requires a separate shorter event anchor and multi-session confirmation','needs_anchor_definition'),
+        item('Gap Trading',False,('Daily gap >=2%' if gap else 'No >=2% daily gap')+'; intraday acceptance unverified','needs_intraday'),
+        item('Short Squeezes',squeeze,'Requires short-interest and intraday squeeze confirmation','needs_short_data'),
+        item('IPO Trading',False,'Not a new IPO; IPO-date anchor not applicable','not_applicable')]
+    card['strategies']=strategies
+    card['matchCount']=sum(s['state']=='match' for s in strategies)
+    card['relativeVolume']=round(rv,2) if rv is not None else None
+    return card
+
+
 def build_earnings_avwap_factor(quotes):
     """Refresh the selective earnings-AVWAP basket and derive one Nasdaq Setup factor.
 
@@ -359,6 +437,7 @@ def build_earnings_avwap_factor(quotes):
             extrema[kind]=x
         if calc and current is not None:
             calc['anchors']=extrema
+            if ticker=='NVDA': calc['strategyCard']=build_avwap_strategy_card(ticker,bars,current,calc)
             details[ticker]=calc
     # ETFs do not have corporate earnings anchors: record only their extrema AVWAPs.
     for ticker in ('SMH','SOXX','SOXL'):
@@ -373,6 +452,7 @@ def build_earnings_avwap_factor(quotes):
             extrema[kind]=x
         if current is not None and any(extrema.values()):
             details[ticker]={'ticker':ticker,'price':current,'anchors':extrema,'instrumentType':'ETF'}
+            if ticker=='SOXL': details[ticker]['strategyCard']=build_avwap_strategy_card(ticker,bars,current)
     vals=[x for x in details.values() if x.get('earningsDate')]
     if not vals:
         row={'factor':'Earnings AVWAP leadership','latest':'Awaiting Earnings AVWAP data',
@@ -1508,6 +1588,7 @@ def main():
     # Individual AVWAP observations belong in history snapshots, not public dashboard.json.
     # Explicitly remove any legacy top-level payload so old throughDate values cannot linger.
     d.pop('earningsAvwap',None)
+    d['avwapStrategyCards']={t:avwap_details.get(t,{}).get('strategyCard',{'ticker':t,'status':'unavailable','strategies':[]}) for t in ('NVDA','SOXL')}
 
     # Current impact = magnitude of the factor's present Nasdaq effect, not its structural importance.
     # It is intentionally based on current observations/freshness and can change each refresh.
