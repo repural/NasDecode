@@ -359,6 +359,7 @@ def build_avwap_strategy_card(ticker, bars, current, earnings=None):
         return {'anchorDate':datetime.datetime.fromtimestamp(seq[0]['t']/1000,datetime.timezone.utc).date().isoformat(),
                 'anchorPrice':float(seq[0]['h' if kind=='highestHigh' else 'l']),
                 'avwap':round(value,4),'distancePct':round((price/value-1)*100,3),
+                'distanceFromExtremePct':round((price/float(seq[0]['h' if kind=='highestHigh' else 'l'])-1)*100,3),
                 'sessions':len(seq)}
     anchors={'highestHigh':anchor('highestHigh'),'lowestLow':anchor('lowestLow')}
     if earnings and earnings.get('avwap'):
