@@ -23,6 +23,7 @@ jobs:
         run: |
           python -m py_compile scripts/collect_daily_bars.py scripts/merge_daily_bars_archive.py scripts/refresh.py
           python -m unittest discover -s tests -p test_daily_bars_sma.py -v
+          python -m unittest discover -s tests -p test_merge_daily_bars_archive.py -v
       - name: Collect adjusted daily bars with missing-data retries
         env:
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
