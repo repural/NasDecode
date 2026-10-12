@@ -44,6 +44,17 @@ class StoredSMAResearchTests(unittest.TestCase):
         self.assertEqual(r["status"],"partial")
         self.assertIsNone(r["sma20"])
 
+    def test_persisted_fallback_is_accepted_and_labeled(self):
+        self.save([{"date":"2026-10-09","sma20":220.0,
+                    "sma20Source":"local_adjusted_close_fallback",
+                    "sma20ValidationStatus":"fallback_unverified_against_provider",
+                    "sma50":210.0,"sma50Source":"Massive"}])
+        r=refresh.read_persisted_sma("NVDA","2026-10-09")
+        self.assertEqual(r["status"],"ready_with_fallback")
+        self.assertEqual(r["sma20"],220.0)
+        self.assertEqual(r["sma20Source"],"local_adjusted_close_fallback")
+        self.assertEqual(r["sma50Source"],"Massive")
+
     def test_research_only_relations(self):
         self.save([{"date":"2026-10-09","sma20":220.0,"sma20Source":"Massive",
                     "sma50":200.0,"sma50Source":"Massive"}])
