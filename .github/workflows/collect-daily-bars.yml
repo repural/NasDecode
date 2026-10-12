@@ -1,0 +1,42 @@
+name: Semiconductor Daily Bars Archive
+on:
+  workflow_dispatch:
+    inputs:
+      days:
+        description: "Calendar days to request (use 730 for manual full backfill)"
+        required: false
+        default: "14"
+  schedule:
+    - cron: '35 23 * * 1-5'
+permissions:
+  contents: write
+concurrency:
+  group: nasdecode-daily-bars
+  cancel-in-progress: false
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate collector
+        run: python -m py_compile scripts/collect_daily_bars.py scripts/refresh.py
+      - name: Collect adjusted daily bars with missing-data retries
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+          REQUEST_DAYS: ${{ github.event.inputs.days || '14' }}
+        run: python -m scripts.collect_daily_bars --days "$REQUEST_DAYS"
+      - name: Persist daily bars and coverage
+        run: |
+          set -euo pipefail
+          git config user.name nasdecode-bot
+          git config user.email actions@users.noreply.github.com
+          git add data/history/*-daily.json data/history/daily-bars-coverage.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Archive semiconductor adjusted daily OHLCV VWAP"
+          for n in 1 2 3; do
+            if git push origin HEAD:main; then exit 0; fi
+            git fetch origin main
+            git rebase origin/main
+          done
+          exit 1
