@@ -326,23 +326,27 @@ def extrema_anchored_avwap_from_daily_bars(bars, kind, lookback=120):
 
 
 def read_persisted_sma(ticker, asof_date, max_lag_days=5):
-    """Read canonical stored Massive SMA values; never compute replacements.
+    """Read persisted Massive or source-labeled local fallback SMA, without recomputation.
 
-    Use the latest completed observation on/before the card's bar date,
-    preventing future-date leakage. An older observation is marked stale.
+    The last completed observation cannot be later than the research date.
+    Stale values are excluded and fallback provenance is always exposed.
     """
     path=os.path.join(HISTORY_DIR,f'{ticker.lower()}-daily.json')
-    result={'source':'Massive persisted SMA','ticker':ticker,'status':'unavailable',
+    result={'source':'persisted SMA archive','ticker':ticker,'status':'unavailable',
             'observationDate':None,'lagCalendarDays':None,'sma20':None,'sma50':None,
+            'sma20Source':None,'sma50Source':None,
+            'sma20ValidationStatus':None,'sma50ValidationStatus':None,
             'storedSessions':0,'sma20Coverage':0,'sma50Coverage':0}
+    trusted=('Massive','local_adjusted_close_fallback')
     try:
         with open(path,encoding='utf-8') as stream: doc=json.load(stream)
-        records=[b for b in doc.get('bars',[]) if isinstance(b,dict) and b.get('date') and b['date']<=asof_date]
+        records=[b for b in doc.get('bars',[]) if isinstance(b,dict)
+                 and isinstance(b.get('date'),str) and b['date']<=asof_date]
         records.sort(key=lambda b:b['date'])
         result['storedSessions']=len(records)
         for field in ('sma20','sma50'):
             result[field+'Coverage']=sum(isinstance(b.get(field),(int,float)) and b[field]>0
-                                         and b.get(field+'Source')=='Massive' for b in records)
+                                         and b.get(field+'Source') in trusted for b in records)
         if not records: return result
         latest=records[-1]
         day=datetime.date.fromisoformat(latest['date'])
@@ -351,12 +355,18 @@ def read_persisted_sma(ticker, asof_date, max_lag_days=5):
         result['lagCalendarDays']=lag
         for field in ('sma20','sma50'):
             value=latest.get(field)
-            if latest.get(field+'Source')=='Massive' and isinstance(value,(int,float)) and value>0:
+            source=latest.get(field+'Source')
+            if source in trusted and isinstance(value,(int,float)) and value>0:
                 result[field]=round(float(value),6)
+                result[field+'Source']=source
+                result[field+'ValidationStatus']=('provider' if source=='Massive' else
+                    latest.get(field+'ValidationStatus','fallback_unverified_against_provider'))
         if lag>max_lag_days:
             result.update({'status':'stale','sma20':None,'sma50':None})
         elif result['sma20'] is None or result['sma50'] is None:
             result['status']='partial'
+        elif any(result[f+'Source']=='local_adjusted_close_fallback' for f in ('sma20','sma50')):
+            result['status']='ready_with_fallback'
         else: result['status']='ready'
     except (OSError,ValueError,TypeError,KeyError):
         pass
@@ -373,7 +383,7 @@ def avwap_sma_research(card):
         if not isinstance(left,(int,float)) or not isinstance(right,(int,float)) or right<=0:
             return None
         return round((left/right-1)*100,3)
-    if record['status'] not in ('ready','partial'):
+    if record['status'] not in ('ready','ready_with_fallback','partial'):
         return {**record,'priceVsSma20Pct':None,'priceVsSma50Pct':None,
                 'sma20VsSma50Pct':None,'anchors':{},'researchOnly':True}
     twenty,fifty=record['sma20'],record['sma50']
