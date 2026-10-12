@@ -901,7 +901,7 @@ loadChartHistory();(async()=>{const d=await load();await loadAnalysis(d);schedul
       return '<div class="nd-avwap-measure"><div class="nd-avwap-label">'+title+'</div>'+
         '<div class="nd-avwap-price">'+(a?fmt(a.avwap):'—')+'</div>'+
         '<div class="nd-avwap-distance '+(a?.distancePct>=0?'green':'red')+'">'+(a?pct(a.distancePct):'Unavailable')+'</div>'+
-        '<div class="nd-avwap-date">'+escHtml(a?.anchorDate||'No verified anchor')+'</div></div>';
+        '<div class="nd-avwap-date">'+(a?.anchorPrice!=null?'Extreme '+fmt(a.anchorPrice)+' · from extreme '+pct(a.distanceFromExtremePct)+'<br>':'')+escHtml(a?.anchorDate||'No verified anchor')+'</div></div>';
     };
     const strategies=x.strategies||[];
     return '<div class="card nd-avwap-card"><div class="nd-avwap-heading"><span class="factor-name">'+t+' · 3-MONTH AVWAP</span><span class="card-status '+(x.status==='ready'?'green':'amber')+'">'+escHtml(x.status==='ready'?'Research ready':x.status||'Unavailable')+'</span></div>'+
