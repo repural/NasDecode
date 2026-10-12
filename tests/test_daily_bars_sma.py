@@ -1,5 +1,5 @@
 import unittest
-from scripts.collect_daily_bars import add_sma, merge_provider_sma, validate_sma
+from scripts.collect_daily_bars import add_sma, merge_provider_sma, validate_sma, apply_sma_fallback
 
 class TestDailySMA(unittest.TestCase):
     def test_first_full_window(self):
@@ -30,6 +30,25 @@ class TestDailySMA(unittest.TestCase):
         merge_provider_sma(bars,None,20)
         self.assertEqual(bars[1]["sma20"],10.75)
         self.assertEqual(validate_sma(bars)["sma20"]["providerCoverage"],1)
+
+    def test_fallback_source_and_provider_precedence(self):
+        bars=[{"date":str(i),"close":float(i)} for i in range(1,61)]
+        merge_provider_sma(bars,{"20":17.0},20)
+        apply_sma_fallback(bars)
+        self.assertEqual(bars[19]["sma20"],17.0)
+        self.assertEqual(bars[19]["sma20Source"],"Massive")
+        self.assertEqual(bars[20]["sma20Source"],"local_adjusted_close_fallback")
+        self.assertAlmostEqual(bars[20]["sma20"],11.5)
+        self.assertEqual(bars[49]["sma50Source"],"local_adjusted_close_fallback")
+        self.assertIsNone(bars[18]["sma20"])
+
+    def test_fallback_requires_complete_window(self):
+        bars=[{"date":str(i),"close":float(i)} for i in range(1,61)]
+        bars[40]["close"]=None
+        apply_sma_fallback(bars)
+        self.assertIsNone(bars[59]["sma20"])
+        self.assertIsNone(bars[59]["sma50"])
+        self.assertEqual(bars[59]["sma20ValidationStatus"],"insufficient_adjusted_close_history")
 
 if __name__=="__main__":
     unittest.main()
