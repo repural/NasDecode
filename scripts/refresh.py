@@ -293,6 +293,38 @@ def earnings_avwap_from_daily_bars(bars, earnings_date, release_session):
             'slope5dPct':slope,'sessions':len(seq),'throughDate':seq[-1][0].isoformat()}
 
 
+
+def extrema_anchored_avwap_from_daily_bars(bars, kind, lookback=120):
+    """AVWAP anchored at the highest high or lowest low of the last lookback sessions.
+
+    Uses daily traded VWAP * volume; excludes invalid bars and never substitutes
+    a close for a missing daily VWAP. Anchor is selected only from observed bars.
+    """
+    eligible=[]
+    for b in bars:
+        try:
+            if b.get('t') is None or b.get('v') is None or b.get('vw') is None: continue
+            if float(b['v'])<=0: continue
+            high=float(b['h']); low=float(b['l'])
+            day=datetime.datetime.fromtimestamp(b['t']/1000,datetime.timezone.utc).date()
+            eligible.append((day,high,low,float(b['vw']),float(b['v'])))
+        except (KeyError,ValueError,TypeError,OverflowError): continue
+    eligible.sort(key=lambda x:x[0])
+    window=eligible[-lookback:]
+    if not window:return None
+    idx=(max(range(len(window)),key=lambda i:window[i][1]) if kind=='highestHigh'
+         else min(range(len(window)),key=lambda i:window[i][2]))
+    seq=window[idx:]
+    pv=0.0;volume=0.0; values=[]
+    for day,high,low,vw,v in seq:
+        pv+=vw*v;volume+=v;values.append(pv/volume)
+    return {'anchorDate':seq[0][0].isoformat(),'anchorPrice':seq[0][1 if kind=='highestHigh' else 2],
+            'avwap':values[-1],'sessions':len(seq),'throughDate':seq[-1][0].isoformat(),
+            'slope5dPct':(values[-1]/values[-6]-1)*100 if len(values)>=6 else None,
+            'lookbackSessions':lookback,'anchorType':kind}
+
+
+
 def build_earnings_avwap_factor(quotes):
     """Refresh the selective earnings-AVWAP basket and derive one Nasdaq Setup factor.
 
@@ -317,8 +349,31 @@ def build_earnings_avwap_factor(quotes):
             calc.update({'ticker':ticker,'price':current,'distancePct':dist,
                          'above':dist>=0,'earningsDate':item['earningsDate'],
                          'source':item.get('source','company investor relations')})
+        # Both price-extrema anchors use a rolling 120-session window.
+        extrema={}
+        for kind in ('highestHigh','lowestLow'):
+            x=extrema_anchored_avwap_from_daily_bars(bars,kind)
+            if x and current is not None:
+                x['distancePct']=(current/x['avwap']-1)*100
+                x['above']=current>=x['avwap']
+            extrema[kind]=x
+        if calc and current is not None:
+            calc['anchors']=extrema
             details[ticker]=calc
-    vals=list(details.values())
+    # ETFs do not have corporate earnings anchors: record only their extrema AVWAPs.
+    for ticker in ('SMH','SOXX','SOXL'):
+        bars=massive_daily_bars(ticker,180)
+        current=num(quotes.get(ticker,{}).get('last'))
+        extrema={}
+        for kind in ('highestHigh','lowestLow'):
+            x=extrema_anchored_avwap_from_daily_bars(bars,kind)
+            if x and current is not None:
+                x['distancePct']=(current/x['avwap']-1)*100
+                x['above']=current>=x['avwap']
+            extrema[kind]=x
+        if current is not None and any(extrema.values()):
+            details[ticker]={'ticker':ticker,'price':current,'anchors':extrema,'instrumentType':'ETF'}
+    vals=[x for x in details.values() if x.get('earningsDate')]
     if not vals:
         row={'factor':'Earnings AVWAP leadership','latest':'Awaiting Earnings AVWAP data',
              'direction':'Awaiting data','signal':'mixed','freshness':'STALE — Massive/anchor data unavailable',
@@ -2058,7 +2113,7 @@ def main():
         vs=min(100,max(0,-vxmove*10)) if vxmove<0 else max(0,25-vxmove*5)
         a,b=add_component('VXN behavior',vs,5,f'VXN {vxmove:+.2f}%'); weighted+=a; total_w+=b
 
-    avvals=list(avwap_details.values())
+    avvals=[v for v in avwap_details.values() if v.get('earningsDate')]
     if avvals:
         avdist=statistics.median(x['distancePct'] for x in avvals)
         avscore=min(100,max(0,(avdist-2)*8))
@@ -2748,7 +2803,9 @@ def main():
         'throughDate':x.get('throughDate'),'avwap':x.get('avwap'),
         'price':x.get('price'),'distancePct':x.get('distancePct'),
         'above':x.get('above'),'slope5dPct':x.get('slope5dPct'),
-        'sessions':x.get('sessions')
+        'sessions':x.get('sessions'),
+        'instrumentType':x.get('instrumentType','equity'),
+        'anchors':x.get('anchors',{})
     } for ticker,x in avwap_details.items()}
     fed_row_hist=next((r for r in rows if r.get('factor')=='Fed expectations'),{})
     fed_history={
