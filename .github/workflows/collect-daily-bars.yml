@@ -20,7 +20,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Validate collector
-        run: python -m py_compile scripts/collect_daily_bars.py scripts/refresh.py
+        run: |
+          python -m py_compile scripts/collect_daily_bars.py scripts/refresh.py
+          python -m unittest discover -s tests -p test_daily_bars_sma.py -v
       - name: Collect adjusted daily bars with missing-data retries
         env:
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
