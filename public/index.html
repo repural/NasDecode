@@ -446,9 +446,16 @@ function render(d){
     }
     if(r.factor==='Oil (WTI / Brent)'&&r.scorecard){
       const sc=r.scorecard;
-      const main=sc.secondaryValue||'Brent unavailable';
-      const sub=sc.value||'WTI unavailable';
-      return '<div class="card factor-card signal-'+r.signal+awaiting(r)+'" tabindex="0" data-tip="'+escAttr(r.explanation||'No explanation available.')+'"><span class="factor-name">'+factorRank(i)+'. OIL (BRENT / WTI)</span><span class="metric">'+escHtml(main)+'</span><span class="metric-change '+C[sc.secondaryChangeSignal||r.signal]+'">'+escHtml((sc.secondaryArrow||'')+' '+(sc.secondaryChange||''))+'</span><span class="nd-oil-divider" aria-hidden="true"></span><span class="metric nd-oil-secondary">'+escHtml(sub)+'</span><span class="metric-change '+C[sc.changeSignal||r.signal]+'">'+escHtml((sc.arrow||'')+' '+(sc.change||''))+'</span></div>';
+      // Normalize older WTI-first snapshots and newer Brent-first snapshots.
+      const isBrentFirst=String(sc.value||'').startsWith('Brent ');
+      const main=(isBrentFirst||!sc.secondaryValue?sc.value:sc.secondaryValue)||'Oil unavailable';
+      const sub=(isBrentFirst?sc.secondaryValue:sc.value)||'';
+      const mainArrow=isBrentFirst||!sc.secondaryValue?sc.arrow:sc.secondaryArrow;
+      const mainChange=isBrentFirst||!sc.secondaryValue?sc.change:sc.secondaryChange;
+      const subArrow=isBrentFirst?sc.secondaryArrow:sc.arrow;
+      const subChange=isBrentFirst?sc.secondaryChange:sc.change;
+      const second=sub?'<span class="nd-oil-divider" aria-hidden="true"></span><span class="metric nd-oil-secondary">'+escHtml(sub)+'</span><span class="metric-change '+C[r.signal]+'">'+escHtml((subArrow||'')+' '+(subChange||''))+'</span>':'';
+      return '<div class="card factor-card signal-'+r.signal+awaiting(r)+'" tabindex="0" data-tip="'+escAttr(r.explanation||'No explanation available.')+'"><span class="factor-name">'+factorRank(i)+'. OIL (BRENT / WTI)</span><span class="metric">'+escHtml(main)+'</span><span class="metric-change '+C[r.signal]+'">'+escHtml((mainArrow||'')+' '+(mainChange||''))+'</span>'+second+'</div>';
     }
     if(r.factor==='Inflation · Labor · Growth'&&r.macroImpulse){
       const score=Number(r.macroImpulse.score||0), fam=macroImpulseMetrics(r);
