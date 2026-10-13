@@ -1421,16 +1421,24 @@ def main():
             v=num(dx.get('last')); m=pct(dx); sig='positive' if m is not None and m<-0.15 else ('negative' if m is not None and m>0.15 else 'mixed')
             setrow(rows,'U.S. Dollar (DXY)',f'DXY {v:.3f} ({m:+.2f}% vs prev close)','Rising' if m and m>0 else ('Falling' if m and m<0 else 'Flat'),sig,fresh(dx),'CNBC / ICE quote feed')
 
-        # Oil
-        w=q.get('@CL.1'); b=q.get('@LCO.1')
-        if w and b:
-            wv=num(w.get('last')); bv=num(b.get('last')); wm=pct(w); bm=pct(b)
-            oil_moves=[x for x in (wm,bm) if x is not None]
-            avg=sum(oil_moves)/len(oil_moves) if oil_moves else 0.0
-            sig='positive' if avg<-1 else ('negative' if avg>1 else 'mixed')
-            wtxt=f'{wm:+.2f}%' if wm is not None else 'n/a'
-            btxt=f'{bm:+.2f}%' if bm is not None else 'n/a'
-            setrow(rows,'Oil (WTI / Brent)',f'WTI ${wv:.2f} ({wtxt}) | Brent ${bv:.2f} ({btxt})','Falling' if avg<0 else ('Rising' if avg>0 else 'Flat'),sig,fresh(w),'CNBC futures quotes')
+        # Oil: Brent and WTI quotes are independent; an unavailable benchmark
+        # or missing percentage move must never suppress a valid price.
+        oil_parts=[]; oil_moves=[]; oil_freshness=[]
+        for label,symbol in (('Brent','@LCO.1'),('WTI','@CL.1')):
+            quote=q.get(symbol) or {}
+            value=num(quote.get('last'))
+            if value is None:
+                continue
+            move=pct(quote)
+            movement=f'{move:+.2f}%' if move is not None else 'n/a'
+            oil_parts.append(f'{label} ${value:.2f} ({movement})')
+            if move is not None: oil_moves.append(move)
+            oil_freshness.append(f'{label}: {fresh(quote)}')
+        if oil_parts:
+            avg=sum(oil_moves)/len(oil_moves) if oil_moves else None
+            sig='positive' if avg is not None and avg<-1 else ('negative' if avg is not None and avg>1 else 'mixed')
+            direction='Falling' if avg is not None and avg<0 else ('Rising' if avg is not None and avg>0 else 'Flat' if avg is not None else 'Unavailable')
+            setrow(rows,'Oil (WTI / Brent)',' | '.join(oil_parts),direction,sig,' | '.join(oil_freshness),'CNBC futures quotes')
 
     except Exception as e:
         print('CNBC refresh failed:',repr(e))
