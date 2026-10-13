@@ -966,7 +966,7 @@ function scheduleAutoRefresh(){
   },nextUiPollMs());
 }
 document.addEventListener('visibilitychange',async()=>{
-  if(!document.hidden){const d=await load();await loadAnalysis(d);scheduleAutoRefresh()}
+  if(!document.hidden){const d=await load();await loadLiveOil();await loadAnalysis(d);scheduleAutoRefresh()}
 });
-loadChartHistory();(async()=>{const d=await load();await loadAnalysis(d);scheduleAutoRefresh()})();
+loadChartHistory();startLiveOilPolling();(async()=>{const d=await load();await loadLiveOil();await loadAnalysis(d);scheduleAutoRefresh()})();
 </script><script src="session-analysis.js?v=2"></script></body></html>
