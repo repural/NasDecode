@@ -1,0 +1,34 @@
+name: Audit NasDecode Data
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '40 5 * * 1-5'
+  push:
+    branches: [main]
+    paths:
+      - scripts/audit_data.py
+      - .github/workflows/audit-data.yml
+permissions:
+  contents: read
+concurrency:
+  group: nasdecode-data-audit
+  cancel-in-progress: true
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate audit script
+        run: python -m py_compile scripts/audit_data.py
+      - name: Build catalog and record-level audit (read-only)
+        run: python scripts/audit_data.py --output audit-output
+      - name: Upload catalog and audit reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: nasdecode-data-audit
+          path: audit-output/
+          retention-days: 30
