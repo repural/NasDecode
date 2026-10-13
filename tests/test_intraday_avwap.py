@@ -20,7 +20,7 @@ class IntradayAVWAPTests(unittest.TestCase):
         self.assertTrue(result["momentumBreakout5m"])
 
     def test_no_touch_only_proximity(self):
-        bars=[{"timestampET":"2026-10-13T09:30:00-04:00","open":101,"high":102,"low":100.5,
+        bars=[{"timestampET":"2026-10-13T09:30:00-04:00","open":101,"high":102,"low":100.7,
                "close":101,"volume":100,"vwap":101}]
         result=evaluate(bars,{"lowestLow":{"weighted":10000,"volume":100}})
         self.assertEqual(result["signals"][0]["phase"],"approaching")
