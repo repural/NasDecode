@@ -38,3 +38,5 @@ jobs:
         run: |
           python -m unittest discover -s tests -p 'test_daily_bars_sma.py' -v
           python -m unittest discover -s tests -p 'test_avwap_sma_reader.py' -v
+      - name: Verify sole ownership of historical bars
+        run: python -m unittest discover -s tests -p 'test_daily_bars_ownership.py' -v
