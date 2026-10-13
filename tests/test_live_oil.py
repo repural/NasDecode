@@ -42,6 +42,14 @@ class LiveOilQuoteTests(unittest.TestCase):
         quote = {**self.quote, "last_time": None}
         self.assertEqual(build_snapshot({"@LCO.1": quote}, self.now)["quotes"], {})
 
+    def test_browser_initializes_live_quote_polling(self):
+        from pathlib import Path
+        for path in ("index.html", "public/index.html"):
+            script = Path(path).read_text(encoding="utf-8")
+            self.assertIn("startLiveOilPolling();(async()=>", script, path)
+            self.assertIn("const d=await load();await loadLiveOil();", script, path)
+            self.assertIn("liveOilTimer=setInterval(loadLiveOil,30*1000)", script, path)
+
 
 if __name__ == "__main__":
     unittest.main()
