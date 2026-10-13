@@ -10,13 +10,13 @@ import re
 import subprocess
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-DATE = re.compile(r"^20\\d{2}-\\d{2}-\\d{2}$")
+DATE = re.compile(r"^20\d{2}-\d{2}-\d{2}$")
 KNOWN_RECORD_KEYS = ("records", "observations", "bars", "events", "features", "sessions", "series")
 PUBLIC_ROOTS = ("public/data/", "public/history/")
 
 def tracked_paths():
     result = subprocess.check_output(["git", "ls-files", "-z"], cwd=ROOT)
-    return sorted(p.decode() for p in result.split(b"\\0") if p and p.decode().endswith(".json")
+    return sorted(p.decode() for p in result.split(b"\0") if p and p.decode().endswith(".json")
                   and p.decode().startswith(("data/",) + PUBLIC_ROOTS)
                   and not p.decode().startswith(("data/catalog/", "data/audits/")))
 
@@ -37,7 +37,7 @@ def classify(path, obj):
     if path.startswith(PUBLIC_ROOTS): return "publication"
     if path.startswith("data/research/"): return "research"
     if path.startswith("data/history/intraday/"): return "raw_intraday_history"
-    if re.search(r"/(?:soxl|soxx)-daily\\.json$", path): return "raw_price_bars"
+    if re.search(r"/(?:soxl|soxx)-daily\.json$", path): return "raw_price_bars"
     if path == "data/history/daily.json": return "historical_market_snapshot"
     if path.startswith("data/history/"):
         if any(s in path for s in ("backtest", "engine", "model", "validation", "research", "audit")):
@@ -129,8 +129,8 @@ def main():
     catalog,result=audit()
     dest=pathlib.Path(args.output)
     dest.mkdir(parents=True,exist_ok=True)
-    (dest/"datasets.json").write_text(json.dumps(catalog,indent=2,ensure_ascii=False)+"\\n")
-    (dest/"latest.json").write_text(json.dumps(result,indent=2,ensure_ascii=False)+"\\n")
+    (dest/"datasets.json").write_text(json.dumps(catalog,indent=2,ensure_ascii=False)+"\n")
+    (dest/"latest.json").write_text(json.dumps(result,indent=2,ensure_ascii=False)+"\n")
     ranked=sorted(result["checks"],key=lambda x:x.get("duplicateKeyRows",0),reverse=True)
     lines=["# NasDecode record-level data audit","",f"Generated UTC: {result['generatedUTC']}",
            "",f"- JSON files: **{result['files']}**",f"- Current data size: **{result['totalBytes']:,} bytes**",
@@ -142,12 +142,12 @@ def main():
               "|---|---:|---|---:|---|"]
     for row in ranked:
         span=row.get("dateRange") or {}
-        lines.append(f"| \`{row['path']}\` | {row.get('recordCount','—')} | {', '.join(row.get('primaryKeyCandidate') or []) or 'not inferred'} | {row.get('duplicateKeyRows','—')} | {span.get('min','—')} → {span.get('max','—')} |")
+        lines.append(f"| `{row['path']}` | {row.get('recordCount','—')} | {', '.join(row.get('primaryKeyCandidate') or []) or 'not inferred'} | {row.get('duplicateKeyRows','—')} | {span.get('min','—')} → {span.get('max','—')} |")
     lines+=["","## Exact-copy groups",""]
     for group in result["exactDuplicateGroups"]:
-        lines.append("- "+", ".join("\`"+p+"\`" for p in group))
+        lines.append("- "+", ".join("`"+p+"`" for p in group))
     lines+=["","## Limitations",""]
     lines += ["- "+x for x in result["limitations"]]
-    (dest/"report.md").write_text("\\n".join(lines)+"\\n")
+    (dest/"report.md").write_text("\n".join(lines)+"\n")
     print(json.dumps({"files":result["files"],"bytes":result["totalBytes"],"copies":len(result["exactDuplicateGroups"]),"output":str(dest)}))
 if __name__=="__main__": main()
