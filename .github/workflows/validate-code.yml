@@ -40,3 +40,16 @@ jobs:
           python -m unittest discover -s tests -p 'test_avwap_sma_reader.py' -v
       - name: Verify sole ownership of historical bars
         run: python -m unittest discover -s tests -p 'test_daily_bars_ownership.py' -v
+      - name: Validate dashboard embedded JavaScript
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+          for name in ("index.html","public/index.html"):
+              html=Path(name).read_text()
+              scripts=re.findall(r"<script(?:\\s[^>]*)?>([\\s\\S]*?)</script>",html)
+              for i,src in enumerate(scripts):
+                  if not src.strip(): continue
+                  Path(f"/tmp/nasdecode-{name.replace('/','-')}-{i}.js").write_text(src)
+          PY
+          for js in /tmp/nasdecode-*.js; do node --check "$js"; done
