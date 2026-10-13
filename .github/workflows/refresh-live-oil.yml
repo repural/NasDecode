@@ -2,7 +2,7 @@ name: Refresh Live Oil Quotes
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/5 * * * 1-5'
+    - cron: '*/5 * * * 1-5' # GitHub cron is best-effort; not an exact five-minute SLA
   push:
     branches: [main]
     paths:
