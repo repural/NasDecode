@@ -1976,6 +1976,21 @@ def main():
     for ticker in ('QQQ','SOXX','SOXL'):
         bars=massive_daily_bars(ticker,730 if ticker=='SOXL' else 180)
         ctx=historical_context(bars)
+        if ctx and ticker in ('QQQ','SOXX'):
+            # Canonical SMA values come from the daily-bars archive, not this refresh.
+            # Suppress local moving averages if the stored value is stale or missing.
+            _bar_date=(datetime.datetime.fromtimestamp(bars[-1]['t']/1000,datetime.timezone.utc)
+                       .date().isoformat() if bars else now.date().isoformat())
+            _stored=read_persisted_sma(ticker,_bar_date)
+            _close=num(bars[-1].get('c')) if bars else None
+            for _period in (20,50):
+                _level=_stored.get(f'sma{_period}')
+                ctx[f'ma{_period}Distance']=round((_close/_level-1)*100,3) if _close is not None and _level else None
+            ctx['smaSource']='persisted_daily_bars'
+            ctx['smaStatus']=_stored['status']
+            ctx['smaObservationDate']=_stored['observationDate']
+            ctx['sma20']=_stored.get('sma20')
+            ctx['sma50']=_stored.get('sma50')
         if ctx and ticker in ('QQQ','SOXX','SOXL'):
             native_rsi=massive_rsi_latest(ticker,14)
             if native_rsi and native_rsi.get('value') is not None:
