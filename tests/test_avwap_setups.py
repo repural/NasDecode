@@ -8,9 +8,9 @@ def bar(day,o,h,l,c,vw=None):
 
 class AVWAPResearchTests(unittest.TestCase):
     def test_daily_bounce_proxy_vs_approaching(self):
-        bars=[bar(6,103,104,102,103),bar(7,101,103,100,102)]
+        bars=[bar(6,103,104,102,103),bar(7,101,104,100,103)]
         anchors={"lowestLow":{"anchorDate":"2026-10-06","avwap":102}}
-        touch,_,_=assess(bars,anchors,102,1.0,False)
+        touch,_,_=assess(bars,anchors,103,1.0,False)
         self.assertEqual(touch["state"],"match")
         self.assertEqual(touch["phase"],"bounce_confirmed_daily_proxy")
         self.assertTrue(touch["aggressiveTouch"])
