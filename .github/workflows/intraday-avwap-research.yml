@@ -1,0 +1,71 @@
+name: Intraday AVWAP Research
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/15 13-21 * * 1-5'
+permissions:
+  contents: write
+concurrency:
+  group: nasdecode-intraday-avwap-research
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate intraday research logic
+        run: |
+          python -m py_compile scripts/collect_intraday_avwap.py
+          python -m unittest discover -s tests -p test_intraday_avwap.py -v
+      - name: Collect intraday observations during NY regular trading
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          python - <<'PY'
+          import datetime
+          import os
+          from zoneinfo import ZoneInfo
+          from scripts.collect_intraday_avwap import run
+          now=datetime.datetime.now(ZoneInfo("America/New_York"))
+          if os.getenv("EVENT_NAME")!="workflow_dispatch":
+              if now.weekday()>4 or not (datetime.time(9,30)<=now.time()<datetime.time(16,10)):
+                  print("Outside US regular-market collection window; skipping")
+                  raise SystemExit(0)
+          run(now)
+          PY
+      - name: Commit research snapshot without overwriting dashboard data
+        run: |
+          set -euo pipefail
+          test -f data/research/intraday-avwap.json || exit 0
+          mkdir -p /tmp/intraday-avwap
+          cp data/research/intraday-avwap.json /tmp/intraday-avwap/research.json
+          cp public/data/intraday-avwap.json /tmp/intraday-avwap/public.json
+          git config user.name nasdecode-bot
+          git config user.email actions@users.noreply.github.com
+          for n in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+            # Do not replace a newer snapshot with an older concurrent run.
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          src=json.loads(Path("/tmp/intraday-avwap/research.json").read_text())
+          old=Path("data/research/intraday-avwap.json")
+          if old.exists():
+              try:
+                  if json.loads(old.read_text()).get("asOfET","")>src.get("asOfET",""):
+                      raise SystemExit(0)
+              except (ValueError,KeyError): pass
+          Path("data/research").mkdir(exist_ok=True,parents=True)
+          Path("public/data").mkdir(exist_ok=True,parents=True)
+          Path("data/research/intraday-avwap.json").write_text(json.dumps(src,indent=2)+"\n")
+          Path("public/data/intraday-avwap.json").write_text(json.dumps(src,indent=2)+"\n")
+          PY
+            git add data/research/intraday-avwap.json public/data/intraday-avwap.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "Publish timestamped NVDA SOXL intraday AVWAP research"
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
