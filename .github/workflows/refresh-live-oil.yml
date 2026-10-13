@@ -1,0 +1,40 @@
+name: Refresh Live Oil Quotes
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/5 * * * 1-5'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/collect_live_oil.py'
+      - '.github/workflows/refresh-live-oil.yml'
+permissions:
+  contents: write
+concurrency:
+  group: nasdecode-live-oil-quotes
+  cancel-in-progress: false
+jobs:
+  quotes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Collect validated Brent and WTI snapshots
+        run: |
+          python -m py_compile scripts/collect_live_oil.py
+          python scripts/collect_live_oil.py
+      - name: Publish only lightweight quote JSON
+        shell: bash
+        run: |
+          git config user.name 'nasdecode-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add public/data/live-oil.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Update live oil quotes'
+          for attempt in 1 2 3 4 5; do
+            if git push origin HEAD:main; then exit 0; fi
+            echo "Concurrent publication; retrying after fetching latest main ($attempt)"
+            git fetch origin main
+            git rebase origin/main || exit 1
+          done
+          exit 1
