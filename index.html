@@ -814,7 +814,7 @@ async function loadLiveOil(){
       const quote=snapshot.quotes?.[name];
       const quoteTime=Date.parse(quote?.quoteTime||'');
       const price=Number(quote?.price);
-      if(!quote||!Number.isFinite(price)||price<=0||!Number.isFinite(quoteTime)||Date.now()-quoteTime>12*60*1000||quoteTime>Date.now()+120000)return;
+      if(!quote||!Number.isFinite(price)||price<=0||!Number.isFinite(quoteTime)||Date.now()-quoteTime>20*60*1000||quoteTime>Date.now()+120000)return;
       if(!metrics[i]||!changes[i])return;
       metrics[i].textContent=(name==='brent'?'Brent':'WTI')+' '+String.fromCharCode(36)+price.toFixed(2);
       const movement=quote.changePct;
@@ -824,7 +824,7 @@ async function loadLiveOil(){
     });
     let note=card.querySelector('.oil-quote-freshness');
     if(!note){note=document.createElement('span');note.className='card-latest oil-quote-freshness';card.appendChild(note)}
-    note.textContent='Quote collected '+new Date(collected).toLocaleTimeString()+' · CNBC (may be delayed)';
+    note.textContent='CNBC quote as of '+new Date(Math.max(...Object.values(snapshot.quotes||{}).map(q=>Date.parse(q.quoteTime)).filter(Number.isFinite))).toLocaleTimeString()+' · retrieved '+new Date(collected).toLocaleTimeString()+' (delayed)';
   }catch(err){console.warn('Independent oil quote unavailable; using dashboard snapshot',err)}
 }
 function startLiveOilPolling(){
@@ -833,7 +833,7 @@ function startLiveOilPolling(){
 }
 // Fetch a cache-busted quantitative snapshot; the button refreshes displayed data only.
 let currentDashboard=null,lastRenderedStamp=null,autoRefreshTimer=null;
-async function load(){update.disabled=true;update.textContent='Checking…';try{const t=Date.now();const [r,w,a]=await Promise.all([fetch('data/dashboard.json?t='+t,{cache:'no-store',headers:{'Cache-Control':'no-cache'}}),fetch('history/market-watch-events.json?t='+t,{cache:'no-store'}).catch(()=>null),fetch('data/sox_avwap_latest.json?t='+t,{cache:'no-store'}).catch(()=>null)]);if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();if(a?.ok){try{d.soxEarningsAvwap=await a.json()}catch(_){d.soxEarningsAvwap=null}}else d.soxEarningsAvwap=null;if(w?.ok){try{d.marketWatchEvents=await w.json()}catch(_){d.marketWatchEvents={events:[]}}}else d.marketWatchEvents={events:[]};currentDashboard=d;const renderStamp=d.updatedET+'|'+(d.marketWatchEvents?.updated||'')+'|'+(d.soxEarningsAvwap?.asOf||'');if(renderStamp!==lastRenderedStamp){render(d);lastRenderedStamp=renderStamp;await loadTodayWatch()}return d}catch(e){console.error(e);update.textContent='Refresh failed';setTimeout(()=>update.textContent='↻ Check Latest',1800);return null}finally{update.disabled=false;if(update.textContent==='Checking…')update.textContent='↻ Check Latest'}}
+async function load(){update.disabled=true;update.textContent='Checking…';try{const t=Date.now();const [r,w,a]=await Promise.all([fetch('data/dashboard.json?t='+t,{cache:'no-store',headers:{'Cache-Control':'no-cache'}}),fetch('history/market-watch-events.json?t='+t,{cache:'no-store'}).catch(()=>null),fetch('data/sox_avwap_latest.json?t='+t,{cache:'no-store'}).catch(()=>null)]);if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();if(a?.ok){try{d.soxEarningsAvwap=await a.json()}catch(_){d.soxEarningsAvwap=null}}else d.soxEarningsAvwap=null;if(w?.ok){try{d.marketWatchEvents=await w.json()}catch(_){d.marketWatchEvents={events:[]}}}else d.marketWatchEvents={events:[]};currentDashboard=d;const renderStamp=d.updatedET+'|'+(d.marketWatchEvents?.updated||'')+'|'+(d.soxEarningsAvwap?.asOf||'');if(renderStamp!==lastRenderedStamp){render(d);lastRenderedStamp=renderStamp;await loadLiveOil();await loadTodayWatch()}return d}catch(e){console.error(e);update.textContent='Refresh failed';setTimeout(()=>update.textContent='↻ Check Latest',1800);return null}finally{update.disabled=false;if(update.textContent==='Checking…')update.textContent='↻ Check Latest'}}
 // The decision-frame research feed is independent of session analysis tabs.
 async function loadTodayWatch(){
   const node=document.getElementById('watchConditions');
