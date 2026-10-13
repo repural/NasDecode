@@ -27,9 +27,10 @@ jobs:
         run: |
           git config user.name 'NasDecode Bot'
           git config user.email 'actions@users.noreply.github.com'
-          # Commit the collector's changed baseline BEFORE rebasing. A pull
-          # on a dirty worktree exits with code 128 and discards publication.
-          git add data/history/s5fi-single-provider.json
+          # Stage both generated data files before rebasing. Otherwise the
+          # refreshed observation report remains unstaged and git pull --rebase
+          # exits with code 128 in a dirty worktree.
+          git add data/history/s5fi-single-provider.json data/history/s5fi-tavily-observations.json
           if ! git diff --cached --quiet; then
             git commit -m 'Update S5FI single-provider historical observations'
             for attempt in 1 2 3 4; do
