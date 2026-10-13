@@ -2096,11 +2096,12 @@ def main():
             wti=oil_quote('WTI')
             brent=oil_quote('Brent')
             if wti or brent:
-                card=wti or {'value':'WTI unavailable','arrow':'','change':''}
-                if brent:
-                    card['secondaryValue']=brent['value']
-                    card['secondaryArrow']=brent['arrow']
-                    card['secondaryChange']=brent['change']
+                # Brent is the primary benchmark; WTI is secondary when available.
+                card=brent or wti
+                if brent and wti:
+                    card['secondaryValue']=wti['value']
+                    card['secondaryArrow']=wti['arrow']
+                    card['secondaryChange']=wti['change']
         elif n=='Market breadth':
             m=re.search(r'([0-9]+)/([0-9]+) advancing [(]([0-9]+)%[)]',latest)
             if m:
