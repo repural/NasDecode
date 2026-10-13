@@ -51,6 +51,16 @@
       .session-tab-panel p{color:#dadddf;font-size:14px;font-weight:420;line-height:1.72;margin:0 0 15px;max-width:115ch}
       .session-tab-panel .analysis-metric{color:#82cbd0;font-weight:650;text-decoration:none}
 
+      /* Align summary metrics and editorial copy to a shared readable measure. */
+      .session-tab-panel{--nd-analysis-reading-width:950px}
+      .session-tab-panel .nd-analysis-summary{width:100%;max-width:var(--nd-analysis-reading-width)}
+      .session-tab-panel>p,.session-tab-panel>h3,.session-tab-panel>h4,
+      .session-tab-panel>ol,.session-tab-panel>ul,
+      .session-tab-panel>.session-analysis-metrics,
+      .session-tab-panel>.session-awaiting{max-width:var(--nd-analysis-reading-width)}
+      .session-tab-panel p{max-width:var(--nd-analysis-reading-width)}
+      .nd-analysis-summary-card{padding:15px 16px;gap:9px}
+      @media(max-width:700px){.nd-analysis-summary-card{padding:14px 15px}}
       /* Session overview cards share the Option 2 charcoal palette. */
       .session-analysis-title h3{font-size:30px;font-weight:700;line-height:1.2;letter-spacing:-.03em}
       .nd-analysis-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:8px 0 23px}
