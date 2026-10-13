@@ -47,9 +47,12 @@ jobs:
           from pathlib import Path
           for name in ("index.html","public/index.html"):
               html=Path(name).read_text()
-              scripts=re.findall(r"<script(?:\\s[^>]*)?>([\\s\\S]*?)</script>",html)
+              scripts=re.findall(r"<script(?:\s[^>]*)?>([\s\S]*?)</script>",html)
               for i,src in enumerate(scripts):
                   if not src.strip(): continue
                   Path(f"/tmp/nasdecode-{name.replace('/','-')}-{i}.js").write_text(src)
           PY
-          for js in /tmp/nasdecode-*.js; do node --check "$js"; done
+          shopt -s nullglob
+          files=(/tmp/nasdecode-*.js)
+          test "${#files[@]}" -gt 0
+          for js in "${files[@]}"; do node --check "$js"; done
