@@ -134,7 +134,7 @@ def massive_index_latest(candidates):
                 return {'ticker':ticker,'value':v,'date':datetime.datetime.fromtimestamp(b['t']/1000,datetime.timezone.utc).date().isoformat()}
     return None
 
-def historical_context(bars):
+def historical_context(bars, calculate_sma=True):
     """Summarize objective historical context from daily OHLC bars.
 
     In addition to close-based trend measures, calculate Wilder ATR(14) and
@@ -156,8 +156,8 @@ def historical_context(bars):
     ret1=(closes[-1]/closes[-2]-1)*100 if len(closes)>=2 else None
     ret3=(closes[-1]/closes[-4]-1)*100 if len(closes)>=4 else None
     ret5=(closes[-1]/closes[-6]-1)*100 if len(closes)>=6 else None
-    ma20=sum(closes[-20:])/20 if len(closes)>=20 else None
-    ma50=sum(closes[-50:])/50 if len(closes)>=50 else None
+    ma20=sum(closes[-20:])/20 if calculate_sma and len(closes)>=20 else None
+    ma50=sum(closes[-50:])/50 if calculate_sma and len(closes)>=50 else None
     ma20dist=(closes[-1]/ma20-1)*100 if ma20 else None
     ma50dist=(closes[-1]/ma50-1)*100 if ma50 else None
     # Wilder RSI(14). The previous implementation used a simple average of only the
@@ -1975,7 +1975,7 @@ def main():
     massive_context={}
     for ticker in ('QQQ','SOXX','SOXL'):
         bars=massive_daily_bars(ticker,730 if ticker=='SOXL' else 180)
-        ctx=historical_context(bars)
+        ctx=historical_context(bars,calculate_sma=ticker not in ('QQQ','SOXX'))
         if ctx and ticker in ('QQQ','SOXX'):
             # Canonical SMA values come from the daily-bars archive, not this refresh.
             # Suppress local moving averages if the stored value is stale or missing.
