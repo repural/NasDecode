@@ -25,7 +25,7 @@ class AVWAPResearchTests(unittest.TestCase):
     def test_pinch_checks_pair_not_just_two_lowest(self):
         bars=[bar(6,100,105,95,101,100),bar(7,100,105,95,101,101)]
         anchors={"a":{"anchorDate":"2026-10-06","avwap":100},
-                 "b":{"anchorDate":"2026-10-07","avwap":101},
+                 "b":{"anchorDate":"2026-10-06","avwap":101},
                  "c":{"anchorDate":"2026-10-06","avwap":101}}
         _,_,pinch=assess(bars,anchors,101,1.0,False)
         self.assertEqual(len(pinch["pairs"]),3)
