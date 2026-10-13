@@ -11,7 +11,7 @@ class IntradayAVWAPTests(unittest.TestCase):
     def test_touch_then_followthrough(self):
         bars=[{"timestampET":"2026-10-13T09:30:00-04:00","open":99.5,"high":101,"low":99,
                "close":100,"volume":100,"vwap":100},
-              {"timestampET":"2026-10-13T09:35:00-04:00","open":100,"high":103,"low":100.5,
+              {"timestampET":"2026-10-13T09:35:00-04:00","open":101.5,"high":103,"low":101.5,
                "close":102,"volume":100,"vwap":102}]
         total={"lowestLow":{"weighted":10000,"volume":100}}
         result=evaluate(bars,total)
