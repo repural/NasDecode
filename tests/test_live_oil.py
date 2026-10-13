@@ -4,6 +4,7 @@ import unittest
 from scripts.collect_live_oil import build_snapshot, change_percent
 
 
+# Collector tests run independently of the dashboard's full data refresh.
 class LiveOilQuoteTests(unittest.TestCase):
     def setUp(self):
         self.now = dt.datetime(2026, 10, 13, 9, 30, tzinfo=dt.timezone.utc)
