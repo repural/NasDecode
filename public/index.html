@@ -532,7 +532,7 @@ function render(d){
     (data.strategies||[]).forEach(function(s){observed[s.name]=s;});
     const strategies=expected.map(function(name){
       const s=observed[name]||{}, state=s.state||'unverified';
-      const label=state==='match'?'Potential match':state==='no_match'?'No match':'Unverified';
+      const label=state==='match'?(s.phase==='bounce_confirmed_daily_proxy'?'Daily bounce proxy':'Potential match'):state==='watch'?(s.phase==='approaching'?'Near AVWAP':s.phase==='touch_detected'?'Touch detected':s.phase==='failed_touch_daily_proxy'?'Failed touch':'Watch'):state==='no_match'?'No match':'Unverified';
       return '<div class="avwap-rule" title="'+escAttr(s.evidence||'Data not verified')+'"><span>'+escHtml(name)+'</span><span class="'+(state==='match'?'green':state==='no_match'?'muted':'amber')+'">'+label+'</span></div>';
     }).join('');
     return '<div class="card factor-card avwap-research-card"><span class="factor-name">'+t+' · AVWAP RESEARCH</span><div class="avwap-quote">'+fmt(data.price)+' <small class="muted">'+escHtml(data.throughDate||'No observation')+'</small></div><div class="avwap-values">'+field('highestHigh','Highest-high AVWAP')+field('lowestLow','Lowest-low AVWAP')+(t==='NVDA'?field('earnings','Earnings AVWAP'):'')+'</div>'+smaSection+'<b class="avwap-section">SHANNON-INSPIRED STRATEGIES · '+(data.matchCount||0)+' POTENTIAL MATCHES</b><div class="avwap-rules">'+strategies+'</div><small class="muted">Research only · high/low anchors use last 63 sessions · earnings anchored to latest verified report · daily-bar rules are preliminary</small></div>';
