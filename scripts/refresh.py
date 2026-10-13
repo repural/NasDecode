@@ -1984,14 +1984,8 @@ def main():
                 ctx['rsi14Source']=native_rsi['source']
                 ctx['rsi14Date']=native_rsi.get('date')
         if ctx: massive_context[ticker]=ctx
-        if ticker in ('SOXX','SOXL') and bars:
-            history_path=os.path.join(HISTORY_DIR,f'{ticker.lower()}-daily.json')
-            ticker_daily={'schemaVersion':1,'ticker':ticker,'source':'Massive adjusted daily aggregates','updatedET':now.isoformat(),'bars':[]}
-            for b in bars:
-                try: day=datetime.datetime.fromtimestamp(float(b.get('t'))/1000,datetime.timezone.utc).date().isoformat()
-                except (TypeError,ValueError): continue
-                ticker_daily['bars'].append({'date':day,'open':num(b.get('o')),'high':num(b.get('h')),'low':num(b.get('l')),'close':num(b.get('c')),'volume':num(b.get('v')),'vwap':num(b.get('vw'))})
-            with open(history_path,'w',encoding='utf-8') as _sf: json.dump(ticker_daily,_sf,ensure_ascii=False,indent=2)
+        # Per-ticker adjusted OHLCV/VWAP/SMA history is owned exclusively by
+        # scripts.collect_daily_bars. Never rewrite those files during dashboard refresh.
     d['historicalContext']=massive_context
 
     explain_current_rows(rows)
