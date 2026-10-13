@@ -463,12 +463,17 @@ def build_avwap_strategy_card(ticker, bars, current, earnings=None):
     def item(name,matched,evidence,availability='daily_proxy'):
         return {'name':name,'state':('match' if matched else 'no_match') if availability=='daily_proxy' else 'unverified',
                 'evidence':evidence,'availability':availability}
+    try:
+        from scripts.avwap_setups import assess as assess_avwap_setups
+    except ModuleNotFoundError:
+        from avwap_setups import assess as assess_avwap_setups
+    touch_setup,pullback_setup,pinch_setup=assess_avwap_setups(window,anchors,price,rv,momentum)
     strategies=[
-        item('Buy the Touch',support,'Price within 1.5% above at least one AVWAP; intraday touch unverified'),
+        touch_setup,
         item('Enter with Momentum',momentum,'Close above prior 5-session high, volume >=1.2x and above all anchors'),
-        item('AVWAP Pinch',pinch,'Two AVWAPs within 1.5%, price near one anchor'),
+        pinch_setup,
         item('AVWAP Handoff',False,'Requires tracking successive validated anchor reactions','needs_event_sequence'),
-        item('Pullbacks and Breakouts',reclaim or momentum,'Daily AVWAP reclaim or high/volume breakout'),
+        pullback_setup,
         item('Multi-Day AVWAP',False,'Requires a separate shorter event anchor and multi-session confirmation','needs_anchor_definition'),
         item('Gap Trading',False,('Daily gap >=2%' if gap else 'No >=2% daily gap')+'; intraday acceptance unverified','needs_intraday'),
         item('Short Squeezes',squeeze,'Requires short-interest and intraday squeeze confirmation','needs_short_data'),
