@@ -50,6 +50,18 @@
       .session-pill{border:1px solid #373a3e;background:#1c1e20;border-radius:999px;padding:5px 10px;font-size:11px;font-weight:680;color:#e8eaed}
       .session-tab-panel p{color:#dadddf;font-size:14px;font-weight:420;line-height:1.72;margin:0 0 15px;max-width:115ch}
       .session-tab-panel .analysis-metric{color:#82cbd0;font-weight:650;text-decoration:none}
+
+      /* Session overview cards share the Option 2 charcoal palette. */
+      .session-analysis-title h3{font-size:30px;font-weight:700;line-height:1.2;letter-spacing:-.03em}
+      .nd-analysis-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:8px 0 23px}
+      .nd-analysis-summary-card{min-width:0;background:#151719;border:1px solid #34373b;border-radius:11px;padding:17px 19px;display:flex;flex-direction:column;gap:12px}
+      .nd-summary-label{font-size:12px;font-weight:550;letter-spacing:.015em;color:#adb3bb}
+      .nd-summary-value{font-size:22px;font-weight:650;line-height:1.23;letter-spacing:-.02em;color:#f1f3f4;overflow-wrap:anywhere}
+      .nd-summary-cautious .nd-summary-value{color:#f3bd55}
+      .nd-summary-negative .nd-summary-value{color:#ff6078}
+      .nd-summary-positive .nd-summary-value{color:#37d68b}
+      @media(max-width:700px){.session-analysis-title h3{font-size:25px}.nd-analysis-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.nd-analysis-summary-card{padding:14px 15px}}
+      @media(max-width:440px){.nd-analysis-summary{grid-template-columns:1fr}.nd-analysis-summary-card{gap:7px}.nd-summary-value{font-size:20px}}
       .session-tab-panel .bias{font-size:17px;font-weight:590;line-height:1.45;margin:0 0 10px;color:#f3f4f5}
       .session-tab-panel h3{font-size:15px;font-weight:680;margin:22px 0 11px}
       .session-tab-panel ol{padding-left:24px;margin:0 0 18px;max-width:120ch}
@@ -81,6 +93,18 @@
   function metric(label,v,suffix=''){
     return v===null||v===undefined||v===''?'':`<span class="session-pill">${esc(label)} ${esc(v)}${suffix}</span>`;
   }
+  function summaryCards(a, fallback){
+    const entries=[];
+    const add=(label,value,kind)=>{
+      if(value===null||value===undefined||String(value).trim()==='')return;
+      entries.push('<div class="nd-analysis-summary-card'+(kind?' nd-summary-'+kind:'')+'"><div class="nd-summary-label">'+esc(label)+'</div><div class="nd-summary-value">'+esc(value)+'</div></div>');
+    };
+    if(a&&a.bias)add('Nasdaq Bias',a.bias,/cautious|mixed|neutral/i.test(String(a.bias))?'cautious':/bearish|negative/i.test(String(a.bias))?'negative':/bullish|positive/i.test(String(a.bias))?'positive':'');
+    if(a&&a.confidence)add('Confidence',a.confidence,'');
+    const risk=a?.eventRisk??a?.event_risk;
+    if(typeof risk==='string'||typeof risk==='number')add('Event Risk',risk,/high|elevated|severe/i.test(String(risk))?'negative':/low/i.test(String(risk))?'positive':'');
+    return entries.length?'<div class="nd-analysis-summary" aria-label="Session outlook">'+entries.join('')+'</div>':(fallback||'');
+  }
   function premarketView(){
     const a=premarketData||{};
     const today=etParts().date;
@@ -96,7 +120,7 @@
     const catalysts=(a.catalysts||a.events||[]).map(e=>`<li><b>${esc(e.date?e.date+' · ':'')}${analysisText(e.title||'')}</b>${e.detail?' — '+analysisText(e.detail):''}</li>`).join('');
     const watch=a.watchIntoOpen?`<p>${analysisText(a.watchIntoOpen)}</p>`:'';
     const keyTimes=a.keyTimes?`<p>${analysisText(a.keyTimes)}</p>`:'';
-    const bias=a.bias?`<div class="bias"><b>Pre-market bias:</b> ${esc(a.bias)}${a.confidence?' &nbsp; · &nbsp; <b>Confidence:</b> '+esc(a.confidence):''}</div>`:`<div class="bias"><b>Nasdaq Score:</b> ${sig} &nbsp; · &nbsp; <b>Score:</b> ${score} / 100</div>`;
+    const bias=summaryCards(a,`<div class="nd-analysis-summary"><div class="nd-analysis-summary-card"><div class="nd-summary-label">Nasdaq Score</div><div class="nd-summary-value">${esc(sig)} · ${esc(score)} / 100</div></div></div>`);
     return {available:true,title:'Pre-Market Analysis',meta:'Analysis updated: '+esc(a.updatedET||a.updated||'—'),body:bias+(metrics?`<div class="session-analysis-metrics">${metrics}</div>`:'')+paras+(catalysts?`<h3>Major events to watch today</h3><ol>${catalysts}</ol>`:'')+watch+keyTimes};
   }
   function checkpointView(key){
@@ -127,7 +151,7 @@
     const changed=a.whatChanged?'<h4>What Changed</h4><p>'+analysisText(a.whatChanged)+'</p>':'';
     const watch=(a.whatToWatch||[]).map(x=>'<p>'+analysisText(x)+'</p>').join('');
     const time=new Date(a.updatedET).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'});
-    return {available:true,title:def.label+' Analysis',meta:'Research updated '+esc(time),body:'<div class="bias"><b>Bias:</b> '+esc(a.bias)+' · <b>Confidence:</b> '+esc(a.confidence)+'</div>'+checkpoint+paras+changed+(cats?'<h3>Major Catalysts</h3><ol>'+cats+'</ol>':'')+(watch?'<h3>What to Watch</h3>'+watch:'')};
+    return {available:true,title:def.label+' Analysis',meta:'Research updated '+esc(time),body:summaryCards(a)+checkpoint+paras+changed+(cats?'<h3>Major Catalysts</h3><ol>'+cats+'</ol>':'')+(watch?'<h3>What to Watch</h3>'+watch:'')};
   }
   function viewFor(key){const research=researchView(key);if(research)return research;if(key==='premarket')return premarketView();const def=stages.find(s=>s.key===key);const day=manualDate||etParts().date;const state=researchData?.sessions?.[day]?.[key]?.publicationStatus||'missing';return {available:false,title:def.label+' Analysis',meta:'Research '+state,body:'<div class="session-awaiting">Independent research '+(state==='failed'?'publication failed.':state==='pending'?'is pending.':'has not been published for this session.')+'</div>'}}
   function paint(){
