@@ -27,15 +27,15 @@ jobs:
         run: |
           git config user.name 'NasDecode Bot'
           git config user.email 'actions@users.noreply.github.com'
-          git fetch origin main
-          git pull --rebase origin main
+          # Commit the collector's changed baseline BEFORE rebasing. A pull
+          # on a dirty worktree exits with code 128 and discards publication.
           git add data/history/s5fi-single-provider.json
           if ! git diff --cached --quiet; then
             git commit -m 'Update S5FI single-provider historical observations'
             for attempt in 1 2 3 4; do
-              if git push origin HEAD:main; then exit 0; fi
               git fetch origin main
               git rebase origin/main || exit 1
+              if git push origin HEAD:main; then exit 0; fi
             done
             exit 1
           fi
