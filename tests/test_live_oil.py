@@ -42,6 +42,20 @@ class LiveOilQuoteTests(unittest.TestCase):
         quote = {**self.quote, "last_time": None}
         self.assertEqual(build_snapshot({"@LCO.1": quote}, self.now)["quotes"], {})
 
+    def test_dashboard_oil_scorecard_parses_published_quote_format(self):
+        import re
+        from pathlib import Path
+        source = Path("scripts/refresh.py").read_text(encoding="utf-8")
+        pattern = r'\b' + 'Brent' + r'\s*\$([0-9]+(?:\.[0-9]+)?)\s*\(([^)]*)\)'
+        self.assertIn("match=re.search(r'\\b'+label+r'\\s*\\$([0-9]+(?:\\.[0-9]+)?)\\s*\\(([^)]*)\\)'", source)
+        latest = "Brent $106.19 (+0.47%) | WTI $95.59 (+1.54%)"
+        brent = re.search(pattern, latest, re.I)
+        wti = re.search(pattern.replace("Brent", "WTI"), latest, re.I)
+        self.assertIsNotNone(brent)
+        self.assertIsNotNone(wti)
+        self.assertEqual(brent.groups(), ("106.19", "+0.47%"))
+        self.assertEqual(wti.groups(), ("95.59", "+1.54%"))
+
     def test_browser_initializes_live_quote_polling(self):
         from pathlib import Path
         for path in ("index.html", "public/index.html"):
