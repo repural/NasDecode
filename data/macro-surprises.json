@@ -8,21 +8,25 @@
       "family": "inflation",
       "subtype": "headline_cpi",
       "releasedAt": "2026-10-14T08:30:00-04:00",
-      "actual": 0.2,
+      "actual": 0.6,
       "consensus": 0.3,
       "unit": "%",
       "direction": "higher_is_negative",
       "scale": 0.15,
       "importance": 0.6,
       "halfLifeDays": 6,
-      "verified": false,
-      "sourceMode": "calendar_observed",
+      "verified": true,
+      "sourceMode": "official_verified",
       "firstObservedAt": "2026-10-14T08:05:21.251313Z",
-      "source": "Trading Economics public calendar via Tavily; awaiting U.S. Bureau of Labor Statistics verification",
+      "source": "U.S. Bureau of Labor Statistics actual / Trading Economics survey consensus",
       "sourceUrl": "https://tradingeconomics.com/united-states/calendar",
       "officialSource": "U.S. Bureau of Labor Statistics",
       "consensusSource": "Trading Economics survey consensus",
-      "ingestionLagSeconds": 0
+      "ingestionLagSeconds": 0,
+      "calendarActual": 0.2,
+      "officialSourceUrl": "https://www.bls.gov/news.release/cpi.htm",
+      "officialVerifiedAt": "2026-10-14T13:43:35.261796Z",
+      "officialVerificationLagSeconds": 4415
     },
     {
       "id": "2026-10-14-gdp-adv",
@@ -45,6 +49,31 @@
       "officialSource": "U.S. Bureau of Economic Analysis",
       "consensusSource": "Trading Economics survey consensus",
       "ingestionLagSeconds": 0
+    },
+    {
+      "id": "2026-10-14-core-cpi-mom",
+      "name": "Core Inflation Rate MoM",
+      "family": "inflation",
+      "subtype": "core_cpi",
+      "releasedAt": "2026-10-14T08:30:00-04:00",
+      "actual": 0.3,
+      "consensus": 0.2,
+      "unit": "%",
+      "direction": "higher_is_negative",
+      "scale": 0.1,
+      "importance": 1.0,
+      "halfLifeDays": 7,
+      "verified": true,
+      "sourceMode": "official_verified",
+      "firstObservedAt": "2026-10-14T13:43:26.610410Z",
+      "source": "U.S. Bureau of Labor Statistics actual / Trading Economics survey consensus",
+      "sourceUrl": "https://tradingeconomics.com/united-states/calendar",
+      "officialSource": "U.S. Bureau of Labor Statistics",
+      "consensusSource": "Trading Economics survey consensus",
+      "ingestionLagSeconds": 4407,
+      "officialSourceUrl": "https://www.bls.gov/news.release/cpi.htm",
+      "officialVerifiedAt": "2026-10-14T13:43:35.261796Z",
+      "officialVerificationLagSeconds": 4415
     },
     {
       "id": "2026-10-12-unemployment",
@@ -1174,7 +1203,7 @@
       "latencyTracking": "pre_tracking_release"
     }
   ],
-  "lastOfficialVerificationAt": "2026-10-14T12:21:08.108137Z",
+  "lastOfficialVerificationAt": "2026-10-14T13:43:35.261796Z",
   "latencyDefinition": {
     "ingestionLagSeconds": "Seconds from scheduled release time to first NasDecode observation.",
     "officialVerificationLagSeconds": "Seconds from scheduled release time to first successful primary-source verification."
@@ -1186,6 +1215,6 @@
   },
   "signalLens": "Rate-sensitive Nasdaq: positive means the recent surprise mix is more supportive for discount rates; negative means more restrictive.",
   "calendarSource": "https://tradingeconomics.com/united-states/calendar",
-  "lastCalendarFetchAt": "2026-10-14T12:21:05.294304Z",
+  "lastCalendarFetchAt": "2026-10-14T13:43:26.610410Z",
   "scheduledEvents": []
 }
