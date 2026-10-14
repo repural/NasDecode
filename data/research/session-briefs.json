@@ -960,15 +960,32 @@
         },
         "verification": {
           "chatDelivered": true,
+          "verifiedAt": "2026-10-14T19:39:13.806083Z",
+          "verifiedResearchUpdatedET": "2026-10-14T15:38:07.000-04:00",
           "sourceCommit": {
-            "status": "not_yet_verified_at_write"
+            "status": "verified",
+            "sha": "732e3fc17a331e87ffed11a85ad4281ba57cb637"
           },
           "publicRepository": {
-            "status": "not_yet_verified_at_write"
+            "status": "verified",
+            "researchBlobSha": "e6732d867e155ca10505882467b8777859090033"
+          },
+          "publisher": {
+            "status": "success",
+            "runUrl": "https://github.com/repural/NasDecode/actions/runs/38625335122"
           },
           "liveEndpoint": {
-            "status": "not_yet_verified_at_write"
-          }
+            "status": "verified",
+            "url": "https://nasdecode.com/data/session-research.json",
+            "httpStatus": 200,
+            "fullResearchRecordMatched": true
+          },
+          "wwwDiagnostic": {
+            "status": "verified",
+            "httpStatus": 200,
+            "fullResearchRecordMatched": true
+          },
+          "notes": "Full records for all four sessions matched GitHub source, GitHub public copy and both live endpoints. Initial live responses lacked near-close; bounded retries succeeded, including an unparameterized canonical request. This receipt was recorded after verification and does not imply all checkpoints ran on time or future reliability."
         },
         "retrievalNotes": [
           "CNBC Treasury and Brent endpoints inaccessible; alternative reporting and FT observations retained only as earlier context, not fresh near-close quotes.",
@@ -997,6 +1014,43 @@
             "recordPresent": false,
             "timing": "delayed_fresh",
             "chatDelivery": "delivered_now"
+          }
+        },
+        "dailyCompletionAudit": {
+          "verifiedAt": "2026-10-14T19:39:13.806083Z",
+          "sessions": {
+            "premarket": {
+              "sourceRecordPresent": true,
+              "publicRepositoryRecordMatched": true,
+              "liveRecordMatched": true,
+              "chatDelivered": "not_independently_reverified",
+              "timing": "delayed_fresh",
+              "updatedET": "2026-10-14T03:30:00-04:00"
+            },
+            "early_market": {
+              "sourceRecordPresent": true,
+              "publicRepositoryRecordMatched": true,
+              "liveRecordMatched": true,
+              "chatDelivered": true,
+              "timing": "retrospective",
+              "updatedET": "2026-10-14T11:00:00-04:00"
+            },
+            "mid_market": {
+              "sourceRecordPresent": true,
+              "publicRepositoryRecordMatched": true,
+              "liveRecordMatched": true,
+              "chatDelivered": true,
+              "timing": "delayed_fresh",
+              "updatedET": "2026-10-14T13:07:28.000-04:00"
+            },
+            "near_close": {
+              "sourceRecordPresent": true,
+              "publicRepositoryRecordMatched": true,
+              "liveRecordMatched": true,
+              "chatDelivered": true,
+              "timing": "delayed_fresh",
+              "updatedET": "2026-10-14T15:38:07.000-04:00"
+            }
           }
         }
       }
