@@ -2086,9 +2086,9 @@ def main():
             # Price and percent change are independent: show a valid quote even
             # when CNBC does not supply the comparison/previous close.
             def oil_quote(label):
-                match=re.search(r'\\b'+label+r'\\s*\\$([0-9]+(?:\\.[0-9]+)?)\\s*\\(([^)]*)\\)',latest,re.I)
+                match=re.search(r'\b'+label+r'\s*\$([0-9]+(?:\.[0-9]+)?)\s*\(([^)]*)\)',latest,re.I)
                 if not match: return None
-                movement=re.fullmatch(r'([+-]?[0-9]+(?:\\.[0-9]+)?)%',match.group(2).strip())
+                movement=re.fullmatch(r'([+-]?[0-9]+(?:\.[0-9]+)?)%',match.group(2).strip())
                 delta=float(movement.group(1)) if movement else None
                 return {'value':label+' $'+match.group(1),
                         'arrow':'↓' if delta is not None and delta<0 else ('↑' if delta is not None and delta>0 else ''),
