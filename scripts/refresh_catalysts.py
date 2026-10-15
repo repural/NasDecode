@@ -3,7 +3,7 @@ import datetime as dt
 import json, os, re, urllib.request, urllib.error
 from pathlib import Path
 
-from market_watch_global import discover_global_candidates, GLOBAL_SOURCE_DOMAINS
+from market_watch_global import discover_global_candidates, GLOBAL_SOURCE_DOMAINS, parse_source_datetime, rejected_global_headline
 
 ROOT=Path(__file__).resolve().parents[1]
 UNIVERSE_PATH=ROOT/"data"/"catalyst-universe.json"
@@ -169,14 +169,37 @@ def main():
         if e.get("autoDetected"):
             # Company rows retain the strict headline-attribution rule. Global
             # semiconductor rows are market-level events and intentionally do not
-            # require a SOX ticker in the headline.
-            if e.get("type") != "global-semiconductor":
+            # require a SOX ticker in the headline, but they must remain fresh and
+            # event-like under the same publication-time rules as new discovery.
+            if e.get("type") == "global-semiconductor":
+                published=parse_source_datetime(e.get("published_date"))
+                if rejected_global_headline(str(e.get("title") or "")):
+                    continue
+                if published and (dt.datetime.now(dt.timezone.utc).date()-published.date()) > dt.timedelta(days=1):
+                    continue
+            else:
                 ticker=e.get("ticker")
                 if ticker not in mentioned_tickers(str(e.get("title") or ""),[ticker] if ticker else []):
                     continue
             if d<cutoff:
                 continue
         keep.append(e)
+
+    # Global rows can be rediscovered under multiple regional queries. Keep one
+    # canonical raw candidate per source URL/headline, preferring the row whose
+    # date matches the parsed source publication date.
+    deduped=[]
+    global_seen=set()
+    for e in keep:
+        if e.get("type") != "global-semiconductor":
+            deduped.append(e)
+            continue
+        key=(str(e.get("source") or "").strip().lower(), str(e.get("title") or "").strip().lower())
+        if key in global_seen:
+            continue
+        global_seen.add(key)
+        deduped.append(e)
+    keep=deduped
     keep.sort(key=lambda x:(x.get("date",""),x.get("materialityScore",0)),reverse=True)
     out={
       "schemaVersion":2,
