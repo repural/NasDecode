@@ -152,6 +152,29 @@ def severity_from_moves(moves: Iterable[float], daily_vol_pct: float | None = No
     return None
 
 
+PRIMARY_REGION_RULES = [
+    (r"\basml\b", "Europe"),
+    (r"\bcerebras\b", "United States"),
+    (r"\bnvidia\b|\bamd\b|\bbroadcom\b|\bqualcomm\b", "United States"),
+    (r"\btsmc\b|\btaiwan semiconductor\b|\bmediatek\b|\btaiex\b", "Taiwan"),
+    (r"\bsamsung\b|\bsk hynix\b|\bkospi\b|\bkosdaq\b", "South Korea"),
+    (r"\btokyo electron\b|\badvantest\b|\brenesas\b|\bscreen holdings\b|\bnikkei\b|\btopix\b", "Japan"),
+    (r"\bsmic\b|\bcxmt\b|\bhuawei\b", "China"),
+]
+
+
+def primary_region(title: str, query_region: str, markets: list[str]) -> str:
+    low = title or ""
+    for pattern, region in PRIMARY_REGION_RULES:
+        if re.search(pattern, low, re.I):
+            return region
+    if query_region and query_region != "Global":
+        return query_region
+    if len(markets) == 1:
+        return markets[0]
+    return "Global"
+
+
 def affected_entities(text: str) -> tuple[list[str], list[str], list[str]]:
     low = (text or "").lower()
     entities, markets, tickers = [], [], []
@@ -224,10 +247,13 @@ def qualify_global_result(region: str, result: dict, discovered_at: dt.datetime 
             return None
 
     moves = extract_percent_moves(text)
+    event_region = primary_region(title, region, markets)
     transmission = classify_transmission(text, markets)
-    etype = event_type_for(title, content, transmission)
     hard = bool(HARD_CATALYST.search(text))
     selloff = bool(SELL_CONTEXT.search(text))
+    if event_region not in {"South Korea", "Taiwan", "Japan", "China", "Asia"} and not selloff:
+        transmission = "global-external"
+    etype = event_type_for(title, content, transmission)
     severity = severity_from_moves(moves, market_count=max(1, len(set(markets))))
 
     # Routine market movement is deliberately rejected. A qualifying record must
@@ -268,7 +294,7 @@ def qualify_global_result(region: str, result: dict, discovered_at: dt.datetime 
         "discoveredAtUTC": observed.isoformat(timespec="seconds"),
         "published_date": published,
         "eventType": etype,
-        "region": "Asia" if any(m in {"South Korea", "Taiwan", "Japan", "China"} for m in markets) else region,
+        "region": event_region,
         "affectedMarkets": sorted(set(markets)),
         "affectedEntities": entities,
         "affectedTickers": tickers,
