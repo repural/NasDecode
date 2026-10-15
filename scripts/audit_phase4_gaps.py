@@ -21,6 +21,12 @@ def audit(today=None):
     session_gaps = {d: [stage for stage in STAGES if stage not in source[d] or
                      source[d][stage].get("publicationStatus") != "published"] for d in past}
     session_gaps = {d: gaps for d, gaps in session_gaps.items() if gaps}
+    recovery_decisions = [
+        {"date": date, "checkpoint": stage, "status": "not_reconstructed",
+         "reason": "No independently verified timestamped checkpoint market snapshot; do not infer intraday state from the completed day's price bars.",
+         "recoveryMode": "retrospective_only_if_timestamped_evidence_available"}
+        for date, missing in session_gaps.items() for stage in missing
+    ]
     publication_diff = [d for d in sorted(set(source)|set(public))
                         if source.get(d) != public.get(d)]
 
@@ -78,6 +84,7 @@ def audit(today=None):
         "schemaVersion":1, "auditedUTC":dt.datetime.now(dt.timezone.utc).isoformat(),
         "asOfTradingDate":today.isoformat(), "status":"read_only",
         "research": {"archivedDays":len(source),"missingPastCheckpoints":session_gaps,
+                     "recoveryDecisions":recovery_decisions,
                      "sourceVsPublishedMismatchedDates":publication_diff,
                      "limitation":"Only dates present in the archive are checked; missing entire trading dates require an exchange calendar."},
         "dailyBars":{"reference":"QQQ", "referenceSessions":len(reference),
