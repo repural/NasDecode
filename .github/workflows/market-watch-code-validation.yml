@@ -1,0 +1,31 @@
+name: Validate Market Watch Code
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/refresh_catalysts.py'
+      - 'scripts/refresh_market_watch.py'
+      - 'scripts/market_watch_global.py'
+      - 'scripts/validate_open_watch.py'
+      - 'tests/test_market_watch_global.py'
+      - '.github/workflows/market-watch-code-validation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Python syntax
+        run: |
+          python -m py_compile scripts/refresh_catalysts.py scripts/refresh_market_watch.py scripts/market_watch_global.py scripts/validate_open_watch.py
+      - name: Focused unit and regression tests
+        run: |
+          python -m unittest tests.test_market_watch_global -v
+      - name: Validate current canonical event archive
+        run: |
+          python scripts/validate_open_watch.py
