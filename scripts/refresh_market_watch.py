@@ -12,6 +12,7 @@ import os
 import re
 import urllib.parse
 import urllib.request
+from email.utils import parsedate_to_datetime
 from pathlib import Path
 
 from market_watch_global import GLOBAL_SOURCE_DOMAINS
@@ -45,7 +46,8 @@ REJECT_HEADLINE_PATTERNS = [
     r"etfs? to buy", r"job[s]?$", r"production engineer",
     r"live updates", r"latest news and analysis", r"latest .* market news",
     r"selected interest rates", r"\bh\.15\b", r"jim cramer",
-    r"subindex", r"daily rates?", r"market wrap", r"market recap",
+    r"subindex", r"daily rates?", r"market wrap", r"markets wrap", r"market recap",
+    r"market talk", r"stock market news for", r"expected to report", r"earnings coming up",
 ]
 
 EVENT_TERMS = {
@@ -83,12 +85,20 @@ def now_utc():
 def parse_datetime(value):
     if not value:
         return None
+    raw = str(value).strip()
     try:
-        parsed = dt.datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        parsed = dt.datetime.fromisoformat(raw.replace("Z", "+00:00"))
         if parsed.tzinfo is None:
             parsed = parsed.replace(tzinfo=dt.timezone.utc)
         return parsed
     except ValueError:
+        pass
+    try:
+        parsed = parsedate_to_datetime(raw)
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=dt.timezone.utc)
+        return parsed
+    except (TypeError, ValueError, OverflowError):
         return None
 
 
@@ -267,12 +277,15 @@ def build_event(candidate):
     direction = infer_direction(title)
     published_dt = candidate.get("published_dt")
     event_time = published_dt.isoformat(timespec="seconds") if published_dt else f"{date.isoformat()}T00:00:00-04:00"
+    global_negative = candidate.get("type") == "global-semiconductor" and candidate.get("eventType") in {
+        "regional-selloff", "global-selloff", "circuit-breaker", "export-restriction", "supply-chain-disruption"
+    }
     expected_impact = {
         "stock": "Broad technology" if is_macro else ticker,
-        "sox": "Negative" if candidate.get("type") == "global-semiconductor" and direction != "Positive" else "Potentially material",
-        "nasdaq": "Negative" if candidate.get("type") == "global-semiconductor" and direction != "Positive" else "Potentially material",
+        "sox": "Negative" if global_negative else "Potentially material",
+        "nasdaq": "Negative" if global_negative else "Potentially material",
         "scope": "Global semiconductor / Nasdaq" if candidate.get("type") == "global-semiconductor" else scope_for(candidate),
-        "direction": "Negative" if candidate.get("type") == "global-semiconductor" and candidate.get("eventType") in {"regional-selloff", "global-selloff", "circuit-breaker"} else direction,
+        "direction": "Negative" if global_negative else direction,
         "materiality": candidate.get("severity") or materiality(int(candidate.get("materialityScore") or MIN_SCORE)),
     }
     confirmation = {
