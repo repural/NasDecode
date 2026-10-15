@@ -14,10 +14,13 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
+from market_watch_global import discover_global_candidates, GLOBAL_SOURCE_DOMAINS
+
 ROOT = Path(__file__).resolve().parents[1]
 CATALYST_PATH = ROOT / "data" / "semiconductor-catalysts.json"
 HISTORY_PATH = ROOT / "data" / "history" / "market-watch-events.json"
 ACTIVE_PATH = ROOT / "public" / "data" / "market-watch.json"
+STATUS_PATH = ROOT / "data" / "research" / "market-watch-monitor-status.json"
 TAVILY_URL = "https://api.tavily.com/search"
 
 ACTIVE_DAYS = 4
@@ -27,7 +30,7 @@ TRUSTED_DOMAINS = {
     "reuters.com", "cnbc.com", "wsj.com", "ft.com", "bloomberg.com",
     "sec.gov", "federalreserve.gov", "bls.gov", "bea.gov", "treasury.gov",
     "iea.org", "eia.gov",
-}
+} | set(GLOBAL_SOURCE_DOMAINS)
 
 # These are discovery noise, not discrete market-moving events.
 REJECT_HEADLINE_PATTERNS = [
@@ -233,6 +236,29 @@ def materiality(score):
     return "Very High" if score >= 12 else "High"
 
 
+def global_semantic_duplicate(candidate, events):
+    """Deduplicate regional/global reports without hiding genuinely new escalation."""
+    if candidate.get("type") != "global-semiconductor":
+        return False
+    c_markets = set(candidate.get("affectedMarkets") or [])
+    c_type = candidate.get("eventType")
+    c_transmission = candidate.get("transmissionType")
+    c_date = candidate.get("date_obj")
+    for event in events:
+        if event.get("category") != "global-semiconductor":
+            continue
+        if parse_date(event.get("firstReported")) != c_date:
+            continue
+        if event.get("eventType") != c_type or event.get("transmissionType") != c_transmission:
+            continue
+        e_markets = set(event.get("affectedMarkets") or [])
+        overlap = len(c_markets & e_markets)
+        denom = max(1, min(len(c_markets), len(e_markets)))
+        if overlap / denom >= 0.5:
+            return True
+    return False
+
+
 def build_event(candidate):
     date = candidate["date_obj"]
     ticker = candidate.get("ticker") or "MARKET"
@@ -241,38 +267,73 @@ def build_event(candidate):
     direction = infer_direction(title)
     published_dt = candidate.get("published_dt")
     event_time = published_dt.isoformat(timespec="seconds") if published_dt else f"{date.isoformat()}T00:00:00-04:00"
-    return {
+    expected_impact = {
+        "stock": "Broad technology" if is_macro else ticker,
+        "sox": "Negative" if candidate.get("type") == "global-semiconductor" and direction != "Positive" else "Potentially material",
+        "nasdaq": "Negative" if candidate.get("type") == "global-semiconductor" and direction != "Positive" else "Potentially material",
+        "scope": "Global semiconductor / Nasdaq" if candidate.get("type") == "global-semiconductor" else scope_for(candidate),
+        "direction": "Negative" if candidate.get("type") == "global-semiconductor" and candidate.get("eventType") in {"regional-selloff", "global-selloff", "circuit-breaker"} else direction,
+        "materiality": candidate.get("severity") or materiality(int(candidate.get("materialityScore") or MIN_SCORE)),
+    }
+    confirmation = {
+        "state": "Unconfirmed",
+        "summary": (
+            "Asian/global semiconductor shock detected; awaiting U.S. SOX/QQQ confirmation."
+            if candidate.get("type") == "global-semiconductor" else
+            "Published by the strict GitHub Actions curation gate. Await QQQ, SOX, SMH/SOXX, breadth and persistence confirmation."
+        ),
+    }
+    event = {
         "id": stable_id(date, ticker, title),
         "eventTime": event_time,
         "timePrecision": "exact" if published_dt else "date",
         "firstReported": date.isoformat(),
         "category": candidate.get("type") or "company_specific",
-        "companyMarket": company_market(candidate),
+        "companyMarket": (
+            "Global semiconductor markets / SOX / Nasdaq"
+            if candidate.get("type") == "global-semiconductor" else company_market(candidate)
+        ),
         "headline": title,
         "source": host(candidate["source"]) or "Credible source",
         "sourceUrl": candidate["source"],
         "whyItMatters": (
+            "A material global semiconductor development can transmit into SOX, SOXL and Nasdaq through "
+            "memory, foundry, equipment, AI-capex and risk-appetite channels."
+            if candidate.get("type") == "global-semiconductor" else
             "Validated repository-side as a material macro/policy development capable of affecting "
             "Treasury yields, inflation expectations, semiconductor leadership or Nasdaq risk appetite."
             if is_macro else
             "Validated repository-side as a material company/semiconductor development with plausible "
             "read-through to the affected stock, SOX leadership or Nasdaq risk appetite."
         ),
-        "expectedImpact": {
-            "stock": "Broad technology" if is_macro else ticker,
-            "sox": "Potentially material",
-            "nasdaq": "Potentially material",
-            "scope": scope_for(candidate),
-            "direction": direction,
-            "materiality": materiality(int(candidate.get("materialityScore") or MIN_SCORE)),
-        },
-        "marketConfirmation": {
-            "state": "Unconfirmed",
-            "summary": "Published by the strict GitHub Actions curation gate. Await QQQ, SOX, SMH/SOXX, breadth and persistence confirmation.",
-        },
+        "expectedImpact": expected_impact,
+        "marketConfirmation": confirmation,
         "status": "active",
         "autoDetected": False,
+        "materialityScore": int(candidate.get("materialityScore") or MIN_SCORE),
+        "firstDetectedAtUTC": candidate.get("discoveredAtUTC"),
+        "observationTimeUTC": candidate.get("observationTimeUTC"),
+        "confidence": candidate.get("confidence"),
+        "informationNovelty": candidate.get("informationNovelty"),
+        "initialAssessment": {
+            "capturedAtUTC": candidate.get("discoveredAtUTC"),
+            "expectedImpact": expected_impact.copy(),
+            "marketConfirmation": confirmation.copy(),
+        },
+        "confirmationHistory": [],
     }
+    if candidate.get("type") == "global-semiconductor":
+        for field in (
+            "eventType", "region", "affectedMarkets", "affectedEntities", "affectedTickers",
+            "transmissionType", "severity", "observedMovesPct", "volatilityNormalized", "provenance",
+        ):
+            event[field] = candidate.get(field)
+        if published_dt and candidate.get("discoveredAtUTC"):
+            detected = parse_datetime(candidate.get("discoveredAtUTC"))
+            event["retrospectivelyDiscovered"] = bool(detected and (detected - published_dt).total_seconds() > 7200)
+        else:
+            event["retrospectivelyDiscovered"] = False
+    return event
 
 
 def raw_company_candidates():
@@ -342,16 +403,33 @@ def main():
     seen_urls = set()
     seen_heads = set()
 
-    for c in list(raw_company_candidates()) + list(macro_candidates()):
-        url_key = c["source"].strip().lower()
-        head_key = normalize_headline(c["title"])
-        if url_key in existing_urls or head_key in existing_heads:
-            continue
-        if url_key in seen_urls or head_key in seen_heads:
-            continue
-        accepted.append(c)
-        seen_urls.add(url_key)
-        seen_heads.add(head_key)
+    global_candidates, global_diagnostics = discover_global_candidates(
+        lambda query: tavily_search(query, max_results=10)
+    )
+    for c in global_candidates:
+        c["date_obj"] = parse_date(c.get("published_date")) or parse_date(c.get("date"))
+        c["published_dt"] = parse_datetime(c.get("published_date"))
+
+    candidate_groups = [
+        ("company", list(raw_company_candidates())),
+        ("macro", list(macro_candidates())),
+        ("global-semiconductor", global_candidates),
+    ]
+    acceptance = {"company": 0, "macro": 0, "global-semiconductor": 0, "duplicatesRejected": 0}
+    for origin, group in candidate_groups:
+        for c in group:
+            url_key = c["source"].strip().lower()
+            head_key = normalize_headline(c["title"])
+            if url_key in existing_urls or head_key in existing_heads or global_semantic_duplicate(c, events):
+                acceptance["duplicatesRejected"] += 1
+                continue
+            if url_key in seen_urls or head_key in seen_heads:
+                acceptance["duplicatesRejected"] += 1
+                continue
+            accepted.append(c)
+            acceptance[origin] += 1
+            seen_urls.add(url_key)
+            seen_heads.add(head_key)
 
     added = 0
     for c in accepted:
@@ -403,7 +481,31 @@ def main():
     ACTIVE_PATH.parent.mkdir(parents=True, exist_ok=True)
     ACTIVE_PATH.write_text(json.dumps(feed, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
-    print(f"strict Market Watch publisher: {added} new curated events; {len(active)} active; {len(events)} total")
+    status = {
+        "schemaVersion": 1,
+        "updated": history["updated"],
+        "stage": "published" if added else "no-new-publication",
+        "sourceRetrieval": global_diagnostics,
+        "candidateAcceptance": acceptance,
+        "acceptedForPublication": len(accepted),
+        "newEventsPublished": added,
+        "activeEvents": len(active),
+        "totalEvents": len(events),
+        "notes": {
+            "sourceFailure": "See sourceRetrieval.searchesFailed/failures.",
+            "noQualifyingEvents": bool(global_diagnostics["resultsReturned"] and not global_diagnostics["resultsQualified"]),
+            "validation": "Performed by scripts/validate_open_watch.py in workflow.",
+            "publication": "Git push result is determined by the workflow publish step.",
+        },
+    }
+    STATUS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    STATUS_PATH.write_text(json.dumps(status, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    print(
+        f"strict Market Watch publisher: {added} new curated events; {len(active)} active; {len(events)} total; "
+        f"global searches={global_diagnostics['searchesAttempted']} failed={global_diagnostics['searchesFailed']} "
+        f"returned={global_diagnostics['resultsReturned']} qualified={global_diagnostics['resultsQualified']}"
+    )
 
 
 if __name__ == "__main__":
