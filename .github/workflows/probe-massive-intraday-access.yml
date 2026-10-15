@@ -1,0 +1,29 @@
+name: Probe Massive Intraday Access
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/probe_massive_intraday_access.py'
+      - '.github/workflows/probe-massive-intraday-access.yml'
+permissions:
+  contents: read
+jobs:
+  test-entitlements:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate probe syntax
+        run: python -m py_compile scripts/probe_massive_intraday_access.py
+      - name: Test NVDA historical, previous-session, and current 5-minute aggregates
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: python scripts/probe_massive_intraday_access.py
+      - name: Preserve read-only probe report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: massive-intraday-access-probe
+          path: audit-output/massive-intraday-access.json
+          retention-days: 14
