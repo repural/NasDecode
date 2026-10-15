@@ -162,6 +162,28 @@ def aggregate(bars, hours):
     return out
 
 
+def crossover_records(rows):
+    """Store both chart candle start and confirmation time with actual OHLC.
+
+    'priceAtConfirmation' is the finished candle close, NOT the intrabar
+    price at which the WT oscillator line crossed.
+    """
+    return [{
+        "candleStartET": x["startET"],
+        "confirmedAtET": x["endET"],
+        "endET": x["endET"],  # Backward-compatible field.
+        "direction": x["cross"],
+        "open": x["open"],
+        "high": x["high"],
+        "low": x["low"],
+        "close": x["close"],
+        "priceAtConfirmation": x["close"],
+        "priceInterpretation": "Close of the completed crossover candle; not the precise tick of oscillator crossover",
+        "wt1": x["wt1"],
+        "wt2": x["wt2"]
+    } for x in rows if x["cross"]]
+
+
 def build(days=145, now=None):
     now=now or dt.datetime.now(NY)
     key=os.environ.get("MASSIVE_API_KEY","").strip()
@@ -178,20 +200,7 @@ def build(days=145, now=None):
     for hours in (4,8):
         candles=aggregate(bars,hours)
         rows=wavetrend(candles)
-        crosses=[{
-            "candleStartET":x["startET"],
-            "confirmedAtET":x["endET"],
-            "endET":x["endET"],  # Backward-compatible field.
-            "direction":x["cross"],
-            "open":x["open"],
-            "high":x["high"],
-            "low":x["low"],
-            "close":x["close"],
-            "priceAtConfirmation":x["close"],
-            "priceInterpretation":"Close of the completed crossover candle; not the precise tick of oscillator crossover",
-            "wt1":x["wt1"],
-            "wt2":x["wt2"]
-        } for x in rows if x["cross"]]
+        crosses=crossover_records(rows)
         output["timeframes"][str(hours)+"h"]={
             "candleCount":len(candles),"warmupCandles":MIN_HISTORY,
             "firstStartET":candles[0]["startET"] if candles else None,
