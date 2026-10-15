@@ -14,7 +14,7 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
-from market_watch_global import discover_global_candidates, GLOBAL_SOURCE_DOMAINS
+from market_watch_global import GLOBAL_SOURCE_DOMAINS
 
 ROOT = Path(__file__).resolve().parents[1]
 CATALYST_PATH = ROOT / "data" / "semiconductor-catalysts.json"
@@ -356,6 +356,32 @@ def raw_company_candidates():
         }
 
 
+def raw_global_candidates():
+    data = load_json(CATALYST_PATH, {"events": [], "globalDiscovery": {}})
+    diagnostics = data.get("globalDiscovery") or {
+        "searchesAttempted": 0, "searchesFailed": 0, "resultsReturned": 0,
+        "resultsQualified": 0, "resultsRejected": 0, "failures": [],
+    }
+    rows = []
+    for e in data.get("events") or []:
+        if e.get("type") != "global-semiconductor":
+            continue
+        score = int(e.get("materialityScore") or 0)
+        date = parse_date(e.get("date"))
+        title = str(e.get("title") or "").strip()
+        source = str(e.get("source") or "").strip()
+        if score < MIN_SCORE or not fresh(date) or not trusted_source(source) or rejected_headline(title):
+            continue
+        rows.append({
+            **e,
+            "date_obj": date,
+            "published_dt": parse_datetime(e.get("published_date")),
+            "title": title,
+            "source": source,
+        })
+    return rows, diagnostics
+
+
 def macro_candidates():
     for category, query in MACRO_SEARCHES:
         try:
@@ -403,12 +429,7 @@ def main():
     seen_urls = set()
     seen_heads = set()
 
-    global_candidates, global_diagnostics = discover_global_candidates(
-        lambda query: tavily_search(query, max_results=10)
-    )
-    for c in global_candidates:
-        c["date_obj"] = parse_date(c.get("published_date")) or parse_date(c.get("date"))
-        c["published_dt"] = parse_datetime(c.get("published_date"))
+    global_candidates, global_diagnostics = raw_global_candidates()
 
     candidate_groups = [
         ("company", list(raw_company_candidates())),
