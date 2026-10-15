@@ -15,7 +15,7 @@ concurrency:
 jobs:
   calculate:
     runs-on: ubuntu-latest
-    timeout-minutes: 18
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - name: Validate WaveTrend code and candle alignment tests
@@ -25,7 +25,7 @@ jobs:
       - name: Collect historical NVDA and calculate WT cross signals
         env:
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
-        run: python scripts/research_nvda_wavetrend.py --days 145
+        run: python scripts/research_nvda_wavetrend.py --days 365
       - name: Commit research output with retries (no scoring or UI changes)
         shell: bash
         run: |
