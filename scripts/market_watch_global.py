@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import datetime as dt
 import re
+import urllib.parse
 from typing import Callable, Iterable
 
 GLOBAL_SEARCHES = [
@@ -68,6 +69,18 @@ SELL_CONTEXT = re.compile(
 
 def now_utc() -> dt.datetime:
     return dt.datetime.now(dt.timezone.utc)
+
+
+def source_host(url: str) -> str:
+    try:
+        return (urllib.parse.urlparse(url).hostname or "").lower().removeprefix("www.")
+    except Exception:
+        return ""
+
+
+def trusted_global_source(url: str) -> bool:
+    h = source_host(url)
+    return any(h == d or h.endswith("." + d) for d in GLOBAL_SOURCE_DOMAINS)
 
 
 def extract_percent_moves(text: str) -> list[float]:
@@ -161,7 +174,7 @@ def qualify_global_result(region: str, result: dict, discovered_at: dt.datetime 
     content = str(result.get("content") or "").strip()
     source = str(result.get("url") or "").strip()
     text = f"{title} {content}".strip()
-    if not title or not source:
+    if not title or not source or not trusted_global_source(source):
         return None
     entities, markets, tickers = affected_entities(text)
     if region not in ("Global", "") and region not in markets:
