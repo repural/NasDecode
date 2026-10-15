@@ -1,6 +1,6 @@
 import datetime as dt
 import unittest
-from scripts.research_nvda_wavetrend import aggregate, ema, sma, wavetrend
+from scripts.research_nvda_wavetrend import aggregate, crossover_records, ema, sma, wavetrend
 
 
 class WaveTrendTests(unittest.TestCase):
@@ -27,6 +27,26 @@ class WaveTrendTests(unittest.TestCase):
         rows=[{"timestampET":f"2026-10-14T04:{i:02d}:00-04:00","dateET":"2026-10-14",
                "hourET":4,"open":10,"high":11,"low":9,"close":10} for i in range(0,55,5)]
         self.assertEqual(aggregate(rows,4),[])
+
+    def test_crossover_records_preserve_open_and_close_times_and_prices(self):
+        rows=[{"startET":"2026-10-14T08:00:00-04:00",
+               "endET":"2026-10-14T12:00:00-04:00",
+               "direction":"unused","cross":"bearish",
+               "open":228.0,"high":229.0,"low":223.0,"close":224.1,
+               "wt1":-39.4,"wt2":-38.6},
+              {"startET":"2026-10-14T12:00:00-04:00",
+               "endET":"2026-10-14T16:00:00-04:00",
+               "cross":None,"open":224.1,"high":225.0,"low":220.0,
+               "close":221.0,"wt1":-41.0,"wt2":-40.0}]
+        exported=crossover_records(rows)
+        self.assertEqual(len(exported),1)
+        event=exported[0]
+        self.assertEqual(event["candleStartET"],"2026-10-14T08:00:00-04:00")
+        self.assertEqual(event["confirmedAtET"],"2026-10-14T12:00:00-04:00")
+        self.assertEqual(event["endET"],event["confirmedAtET"])
+        self.assertEqual(event["low"],223.0)
+        self.assertEqual(event["priceAtConfirmation"],224.1)
+        self.assertNotEqual(event["priceAtConfirmation"],event["low"])
 
     def test_no_crosses_before_warmup(self):
         rows=[{"startET":f"2026-09-{i%28+1:02d}T04:00:00-04:00",
