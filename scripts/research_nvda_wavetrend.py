@@ -178,8 +178,20 @@ def build(days=145, now=None):
     for hours in (4,8):
         candles=aggregate(bars,hours)
         rows=wavetrend(candles)
-        crosses=[{"endET":x["endET"],"direction":x["cross"],"wt1":x["wt1"],"wt2":x["wt2"]}
-                 for x in rows if x["cross"]]
+        crosses=[{
+            "candleStartET":x["startET"],
+            "confirmedAtET":x["endET"],
+            "endET":x["endET"],  # Backward-compatible field.
+            "direction":x["cross"],
+            "open":x["open"],
+            "high":x["high"],
+            "low":x["low"],
+            "close":x["close"],
+            "priceAtConfirmation":x["close"],
+            "priceInterpretation":"Close of the completed crossover candle; not the precise tick of oscillator crossover",
+            "wt1":x["wt1"],
+            "wt2":x["wt2"]
+        } for x in rows if x["cross"]]
         output["timeframes"][str(hours)+"h"]={
             "candleCount":len(candles),"warmupCandles":MIN_HISTORY,
             "firstStartET":candles[0]["startET"] if candles else None,
