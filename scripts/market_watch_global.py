@@ -107,7 +107,7 @@ def parse_source_datetime(value):
 def rejected_global_headline(title: str) -> bool:
     low = (title or "").lower()
     patterns = (
-        r"market talk", r"stock market news for", r"live updates",
+        r"market talk", r"markets? wrap", r"stock market news for", r"live updates",
         r"expected to report", r"earnings coming up", r"how should you play",
         r"stock forecast", r"what to expect",
     )
