@@ -50,6 +50,30 @@ def audit(today=None):
                   "sessions":b["recordCount"]} for ticker,b in sorted(bars.items())
                  if b["first"] and reference and b["first"] > min(reference)]
     events = load("data/history/market-watch-events.json").get("events",[])
+    from collections import Counter
+    event_days = Counter()
+    event_categories = Counter()
+    seen_ids = set()
+    duplicates = []
+    undated = []
+    missing_sources = []
+    for e in events:
+        stamp = e.get("eventTime") or ""
+        try:
+            day = dt.datetime.fromisoformat(stamp.replace("Z", "+00:00")).date().isoformat()
+            event_days[day] += 1
+        except (ValueError, TypeError):
+            undated.append(e.get("id"))
+        event_categories[e.get("category") or "unspecified"] += 1
+        if e.get("id") in seen_ids:
+            duplicates.append(e.get("id"))
+        seen_ids.add(e.get("id"))
+        if not e.get("sourceUrl"):
+            missing_sources.append(e.get("id"))
+    market_watch_coverage = {"countsByEventDate": dict(sorted(event_days.items())),
+                             "categories": dict(sorted(event_categories.items())),
+                             "duplicateIds": duplicates, "invalidEventTimes": undated,
+                             "eventsWithoutSourceUrl": missing_sources}
     result = {
         "schemaVersion":1, "auditedUTC":dt.datetime.now(dt.timezone.utc).isoformat(),
         "asOfTradingDate":today.isoformat(), "status":"read_only",
@@ -60,8 +84,8 @@ def audit(today=None):
                      "trackedSymbols":len(bars),"missingWithinCoveredDateRanges":price_gaps,
                      "shorterHistoryCandidates":truncated,
                      "limitation":"QQQ is a trading-date proxy, not an official exchange calendar; dates outside a symbol's known range are not classified as missing."},
-        "marketWatch":{"storedEvents":len(events),
-                       "limitation":"Event-count completeness cannot be established without independent time-stamped source coverage."},
+        "marketWatch":{"storedEvents":len(events), **market_watch_coverage,
+                       "limitation":"Zero-event dates do not establish missed reporting; independent time-stamped source coverage is required."},
         "backfillPolicy":"Price bars: recover from provider with provenance. Session research: retrospective only, no invented checkpoint quotes. Market events: source-verified, dated.",
     }
     return result
