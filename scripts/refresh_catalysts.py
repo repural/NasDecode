@@ -3,7 +3,7 @@ import datetime as dt
 import json, os, re, urllib.request, urllib.error
 from pathlib import Path
 
-from market_watch_global import discover_global_candidates
+from market_watch_global import discover_global_candidates, GLOBAL_SOURCE_DOMAINS
 
 ROOT=Path(__file__).resolve().parents[1]
 UNIVERSE_PATH=ROOT/"data"/"catalyst-universe.json"
@@ -41,14 +41,17 @@ def load_json(path, default):
         with open(path,encoding="utf-8") as f: return json.load(f)
     except (OSError,json.JSONDecodeError): return default
 
-def tavily_search(query, days=2, max_results=12):
+def tavily_search(query, days=2, max_results=12, include_domains=None):
     key=os.environ.get("TAVILY_API_KEY") or os.environ.get("TAVILY_KEY")
     if not key: raise RuntimeError("TAVILY_API_KEY/TAVILY_KEY missing")
-    payload=json.dumps({
+    body={
       "api_key":key,"query":query,"topic":"news","search_depth":"advanced",
       "days":days,"max_results":max_results,"include_answer":False,
       "include_raw_content":False
-    }).encode()
+    }
+    if include_domains:
+        body["include_domains"]=list(include_domains)
+    payload=json.dumps(body).encode()
     req=urllib.request.Request(TAVILY_URL,data=payload,headers={"Content-Type":"application/json","User-Agent":"NasDecode/1.0"})
     with urllib.request.urlopen(req,timeout=45) as r:
         return json.load(r).get("results",[])
@@ -147,7 +150,7 @@ def main():
     # It captures material Asia/Europe semiconductor shocks even when no SOX
     # ticker is present in the headline.
     global_rows, global_diagnostics = discover_global_candidates(
-        lambda query: tavily_search(query, days=2, max_results=12)
+        lambda query: tavily_search(query, days=2, max_results=12, include_domains=sorted(GLOBAL_SOURCE_DOMAINS))
     )
     discovered.extend(global_rows)
 
