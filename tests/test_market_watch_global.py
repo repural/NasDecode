@@ -114,6 +114,21 @@ class GlobalSemiconductorDetectionTests(unittest.TestCase):
             discovered_at=dt.datetime(2026, 10, 15, 2, 0, tzinfo=dt.timezone.utc),
         ))
 
+    def test_primary_region_for_asml_is_europe(self):
+        result = {
+            "title": "ASML reports record profit and raises outlook - CNBC",
+            "url": "https://www.cnbc.com/2026/10/15/asml-results.html",
+            "published_date": "Thu, 15 Oct 2026 01:00:00 GMT",
+            "content": "Semiconductor equipment demand remained strong with TSMC and Samsung customers.",
+        }
+        event = qualify_global_result(
+            "South Korea", result,
+            discovered_at=dt.datetime(2026, 10, 15, 2, 0, tzinfo=dt.timezone.utc),
+        )
+        self.assertIsNotNone(event)
+        self.assertEqual(event["region"], "Europe")
+        self.assertEqual(event["transmissionType"], "global-external")
+
 
 if __name__ == "__main__":
     unittest.main()
