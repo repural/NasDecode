@@ -7,16 +7,20 @@ on:
     paths:
       - 'scripts/refresh_catalysts.py'
       - 'scripts/refresh_market_watch.py'
+      - 'scripts/market_watch_global.py'
+      - 'tests/test_market_watch_global.py'
       - 'scripts/validate_open_watch.py'
       - 'scripts/refresh_upcoming_earnings.py'
       - 'scripts/build_hype_history.py'
       - 'data/catalyst-universe.json'
       - '.github/workflows/catalyst-monitor.yml'
   schedule:
-    # Near-real-time monitoring during the main U.S. pre-market/regular/after-hours window.
+    # Asia session: 30-minute cadence so severe regional semiconductor shocks are not delayed.
+    - cron: '*/30 0-8 * * 1-5'
+    # Europe transition: hourly scan until the main U.S. monitoring window begins.
+    - cron: '0 9-10 * * 1-5'
+    # U.S. pre-market/regular/after-hours window: retain the existing 30-minute cadence.
     - cron: '*/30 11-23 * * 1-5'
-    # Lower-frequency overnight scan so important Asia/Europe semiconductor news is still captured.
-    - cron: '0 0-10/2 * * 1-5'
 
 concurrency:
   group: nasdecode-catalyst-monitor
@@ -55,7 +59,7 @@ jobs:
           git config user.name 'nasdecode-bot'
           git config user.email 'actions@users.noreply.github.com'
 
-          git add             data/semiconductor-catalysts.json             data/upcoming-earnings.json             data/history/market-watch-events.json             public/data/market-watch.json             public/history/market-watch-events.json             data/history/hype-daily.json
+          git add             data/semiconductor-catalysts.json             data/upcoming-earnings.json             data/history/market-watch-events.json             data/research/market-watch-monitor-status.json             public/data/market-watch.json             public/history/market-watch-events.json             data/history/hype-daily.json
 
           git diff --cached --quiet && exit 0
           git commit -m 'Update market catalysts and curated Open Watch history'
@@ -76,7 +80,7 @@ jobs:
             mkdir -p public/history
             cp data/history/market-watch-events.json public/history/market-watch-events.json
 
-            git add               data/semiconductor-catalysts.json               data/upcoming-earnings.json               data/history/market-watch-events.json               public/data/market-watch.json               public/history/market-watch-events.json               data/history/hype-daily.json
+            git add               data/semiconductor-catalysts.json               data/upcoming-earnings.json               data/history/market-watch-events.json               data/research/market-watch-monitor-status.json               public/data/market-watch.json               public/history/market-watch-events.json               data/history/hype-daily.json
 
             git diff --cached --quiet && exit 0
             git commit -m 'Update market catalysts and curated Open Watch history'
