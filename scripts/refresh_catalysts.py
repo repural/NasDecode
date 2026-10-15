@@ -3,6 +3,8 @@ import datetime as dt
 import json, os, re, urllib.request, urllib.error
 from pathlib import Path
 
+from market_watch_global import discover_global_candidates
+
 ROOT=Path(__file__).resolve().parents[1]
 UNIVERSE_PATH=ROOT/"data"/"catalyst-universe.json"
 OUT_PATH=ROOT/"data"/"semiconductor-catalysts.json"
@@ -102,6 +104,7 @@ def main():
     symbols=list(dict.fromkeys(sox+mega))
     batches=[symbols[i:i+10] for i in range(0,len(symbols),10)]
     discovered=[]
+    global_diagnostics={"searchesAttempted":0,"searchesFailed":0,"resultsReturned":0,"resultsQualified":0,"resultsRejected":0,"failures":[]}
     for batch in batches:
         names=[]
         for t in batch:
@@ -140,6 +143,14 @@ def main():
                   "materialityReasons":reasons[:6],
                   "discoveredAtUTC":dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
                 })
+    # Global semiconductor discovery complements the ticker-centric U.S. scan.
+    # It captures material Asia/Europe semiconductor shocks even when no SOX
+    # ticker is present in the headline.
+    global_rows, global_diagnostics = discover_global_candidates(
+        lambda query: tavily_search(query, days=2, max_results=12)
+    )
+    discovered.extend(global_rows)
+
     existing=load_json(OUT_PATH,{"schemaVersion":1,"events":[]})
     events=existing.get("events",[])
     seen={fingerprint(e) for e in events}
@@ -167,10 +178,15 @@ def main():
       "description":"Semiconductor and mega-cap catalysts. Auto-detected events are retained for reaction/persistence analysis; manual events remain authoritative.",
       "universe":{"soxComponents":sox,"megaCaps":mega},
       "lastDiscoveryUTC":dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
+      "globalDiscovery":global_diagnostics,
       "events":keep
     }
     OUT_PATH.write_text(json.dumps(out,ensure_ascii=False,indent=2)+"\n",encoding="utf-8")
-    print(f"catalyst monitor: {len(discovered)} candidate rows, {len(keep)} stored events")
+    print(
+      f"catalyst monitor: {len(discovered)} candidate rows, {len(keep)} stored events; "
+      f"global searches={global_diagnostics['searchesAttempted']} failed={global_diagnostics['searchesFailed']} "
+      f"returned={global_diagnostics['resultsReturned']} qualified={global_diagnostics['resultsQualified']}"
+    )
 
 if __name__=="__main__":
     main()
