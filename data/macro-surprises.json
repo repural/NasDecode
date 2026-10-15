@@ -30,8 +30,8 @@
       "family": "inflation",
       "subtype": "headline_cpi",
       "releasedAt": "2026-10-15T08:30:00-04:00",
-      "actual": 0.3,
-      "consensus": 0.2,
+      "actual": 0.0,
+      "consensus": 0.1,
       "unit": "%",
       "direction": "higher_is_negative",
       "scale": 0.15,
@@ -65,6 +65,28 @@
       "source": "Trading Economics public calendar via Tavily; awaiting U.S. Bureau of Economic Analysis verification",
       "sourceUrl": "https://tradingeconomics.com/united-states/calendar",
       "officialSource": "U.S. Bureau of Economic Analysis",
+      "consensusSource": "Trading Economics survey consensus",
+      "ingestionLagSeconds": 0
+    },
+    {
+      "id": "2026-10-15-unemployment",
+      "name": "Unemployment Rate",
+      "family": "labor",
+      "subtype": "labor_slack",
+      "releasedAt": "2026-10-15T08:30:00-04:00",
+      "actual": 4.7,
+      "consensus": 4.6,
+      "unit": "%",
+      "direction": "higher_is_positive",
+      "scale": 0.2,
+      "importance": 0.75,
+      "halfLifeDays": 5,
+      "verified": false,
+      "sourceMode": "calendar_observed",
+      "firstObservedAt": "2026-10-15T10:16:59.481782Z",
+      "source": "Trading Economics public calendar via Tavily; awaiting U.S. Bureau of Labor Statistics verification",
+      "sourceUrl": "https://tradingeconomics.com/united-states/calendar",
+      "officialSource": "U.S. Bureau of Labor Statistics",
       "consensusSource": "Trading Economics survey consensus",
       "ingestionLagSeconds": 0
     },
@@ -1269,7 +1291,7 @@
       "latencyTracking": "pre_tracking_release"
     }
   ],
-  "lastOfficialVerificationAt": "2026-10-15T07:11:00.899444Z",
+  "lastOfficialVerificationAt": "2026-10-15T10:17:09.291654Z",
   "latencyDefinition": {
     "ingestionLagSeconds": "Seconds from scheduled release time to first NasDecode observation.",
     "officialVerificationLagSeconds": "Seconds from scheduled release time to first successful primary-source verification."
@@ -1281,6 +1303,6 @@
   },
   "signalLens": "Rate-sensitive Nasdaq: positive means the recent surprise mix is more supportive for discount rates; negative means more restrictive.",
   "calendarSource": "https://tradingeconomics.com/united-states/calendar",
-  "lastCalendarFetchAt": "2026-10-15T07:10:54.619509Z",
+  "lastCalendarFetchAt": "2026-10-15T10:16:59.481782Z",
   "scheduledEvents": []
 }
