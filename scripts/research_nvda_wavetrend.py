@@ -72,31 +72,46 @@ def wavetrend(candles):
 
 
 def fetch_bars(start, end, key):
-    """Fetch <=21 calendar days per request to stay under 5000-bar pagination limit."""
+    """Fetch all pages for a dated range with plan-aware throttling and no truncation."""
     global LAST_FETCH
-    wait = max(0, 12.5 - (time.monotonic()-LAST_FETCH)) if LAST_FETCH else 0
-    if wait: time.sleep(wait)
-    url = BASE + start.isoformat()+"/"+end.isoformat()+"?adjusted=true&sort=asc&limit=5000"
-    req=urllib.request.Request(url,headers={"Authorization":"Bearer "+key,"User-Agent":"NasDecode-WaveTrend-Research/1.0"})
-    for attempt in range(3):
-        try:
-            with urllib.request.urlopen(req,timeout=45) as resp: doc=json.load(resp)
-            LAST_FETCH=time.monotonic()
-            if doc.get("status") not in ("OK","DELAYED"):
-                return [],"provider_status_"+str(doc.get("status"))
-            rows=doc.get("results") or []
-            if doc.get("next_url"):
-                return [],"unhandled_pagination"  # never silently truncate
-            return rows,"ok"
-        except urllib.error.HTTPError as e:
-            LAST_FETCH=time.monotonic()
-            if e.code!=429 or attempt==2: return [],"http_"+str(e.code)
-            delay = 15*(attempt+1)
-            print("rate-limited; waiting",delay,"seconds",flush=True)
-            time.sleep(delay)
-        except (OSError,ValueError) as e:
-            return [],type(e).__name__
-    return [],"failed"
+    url=BASE + start.isoformat()+"/"+end.isoformat()+"?adjusted=true&sort=asc&limit=5000"
+    rows=[]
+    seen=set()
+    for page in range(30):
+        if url in seen: return [],"repeated_pagination_url"
+        seen.add(url)
+        wait = max(0, 12.5-(time.monotonic()-LAST_FETCH)) if LAST_FETCH else 0
+        if wait: time.sleep(wait)
+        request=urllib.request.Request(url,headers={
+            "Authorization":"Bearer "+key,
+            "User-Agent":"NasDecode-WaveTrend-Research/1.0"
+        })
+        payload=None
+        for attempt in range(4):
+            try:
+                with urllib.request.urlopen(request,timeout=45) as resp:
+                    payload=json.load(resp)
+                LAST_FETCH=time.monotonic()
+                break
+            except urllib.error.HTTPError as exc:
+                LAST_FETCH=time.monotonic()
+                if exc.code!=429 or attempt==3: return [],"http_"+str(exc.code)
+                delay=(15,30,60)[attempt]
+                print("rate-limited; waiting",delay,"seconds",flush=True)
+                time.sleep(delay)
+            except (OSError,ValueError) as exc:
+                return [],type(exc).__name__
+        if payload is None:return [],"provider_no_response"
+        if payload.get("status") not in ("OK","DELAYED"):
+            return [],"provider_status_"+str(payload.get("status"))
+        rows.extend(payload.get("results") or [])
+        next_url=payload.get("next_url")
+        if not next_url: return rows,"ok"
+        # The provider's next_url may omit the API key; use the Authorization header.
+        if urllib.parse.urlsplit(next_url).hostname!="api.massive.com":
+            return [],"invalid_pagination_domain"
+        url=next_url
+    return [],"too_many_pages"
 
 
 def load_extended_bars(days, today, key):
