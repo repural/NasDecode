@@ -177,6 +177,10 @@ def main():
                     continue
                 if published and (dt.datetime.now(dt.timezone.utc).date()-published.date()) > dt.timedelta(days=1):
                     continue
+                if published:
+                    e["date"]=published.date().isoformat()
+                    e["published_date"]=published.isoformat(timespec="seconds")
+                    e["observationTimeUTC"]=published.isoformat(timespec="seconds")
             else:
                 ticker=e.get("ticker")
                 if ticker not in mentioned_tickers(str(e.get("title") or ""),[ticker] if ticker else []):
@@ -188,18 +192,16 @@ def main():
     # Global rows can be rediscovered under multiple regional queries. Keep one
     # canonical raw candidate per source URL/headline, preferring the row whose
     # date matches the parsed source publication date.
-    deduped=[]
-    global_seen=set()
+    non_global=[e for e in keep if e.get("type") != "global-semiconductor"]
+    global_best={}
     for e in keep:
         if e.get("type") != "global-semiconductor":
-            deduped.append(e)
             continue
         key=(str(e.get("source") or "").strip().lower(), str(e.get("title") or "").strip().lower())
-        if key in global_seen:
-            continue
-        global_seen.add(key)
-        deduped.append(e)
-    keep=deduped
+        prior=global_best.get(key)
+        if prior is None or str(e.get("discoveredAtUTC") or "") > str(prior.get("discoveredAtUTC") or ""):
+            global_best[key]=e
+    keep=non_global+list(global_best.values())
     keep.sort(key=lambda x:(x.get("date",""),x.get("materialityScore",0)),reverse=True)
     out={
       "schemaVersion":2,
