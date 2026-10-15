@@ -1,0 +1,53 @@
+name: Phase 4 SOXX Historical Recovery
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/phase4-soxx-recovery.yml'
+permissions:
+  contents: write
+concurrency:
+  group: nasdecode-daily-bars
+  cancel-in-progress: false
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify targeted collector
+        run: |
+          python -m py_compile scripts/collect_daily_bars.py scripts/merge_daily_bars_archive.py
+          python -m unittest discover -s tests -p test_merge_daily_bars_archive.py -v
+      - name: Backfill historical SOXX only from Massive
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: |
+          python -m scripts.collect_daily_bars --days 760 --tickers SOXX
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          b=json.loads(Path('data/history/soxx-daily.json').read_text())['bars']
+          print('SOXX observed sessions:',len(b),'first:',b[0]['date'],'last:',b[-1]['date'])
+          if len({x['date'] for x in b})!=len(b): raise ValueError('SOXX duplicate dates')
+          if not all(x.get('close') is not None for x in b): raise ValueError('Missing SOXX close')
+          PY
+      - name: Merge new dates without discarding original bars
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name nasdecode-bot
+          git config user.email actions@users.noreply.github.com
+          mkdir -p /tmp/phase4-soxx
+          cp data/history/soxx-daily.json data/history/daily-bars-coverage.json /tmp/phase4-soxx/
+          for n in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+            python -m scripts.merge_daily_bars_archive /tmp/phase4-soxx
+            git add data/history/soxx-daily.json data/history/daily-bars-coverage.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'Phase 4 recover available SOXX adjusted daily bars'
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
