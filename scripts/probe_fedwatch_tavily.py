@@ -24,8 +24,9 @@ def request(endpoint, payload):
         return json.load(res)
 
 
-def parse_table(raw):
+def parse_table(raw, today=None):
     """Only parse complete meeting rows aligned to a rate-range table header."""
+    today = today or dt.datetime.now(NY).date()
     lines = raw.splitlines()
     header = None
     for index, line in enumerate(lines):
@@ -52,7 +53,7 @@ def parse_table(raw):
             continue
         if not 99.5 <= sum(values) <= 100.5 or any(not 0 <= v <= 100 for v in values):
             continue
-        if day < dt.datetime.now(NY).date():
+        if day < today:
             continue
         rows.append({"date": day.isoformat(), "targetProbabilities":
                      {f"{lo}-{hi}": p for (lo,hi),p in zip(ranges,values)}})
