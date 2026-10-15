@@ -184,19 +184,19 @@ def crossover_records(rows):
     } for x in rows if x["cross"]]
 
 
-def build(days=145, now=None):
+def build(days=365, now=None):
     now=now or dt.datetime.now(NY)
     key=os.environ.get("MASSIVE_API_KEY","").strip()
     if not key: raise RuntimeError("MASSIVE_API_KEY missing; no fabricated signals")
     bars,errors=load_extended_bars(days,now.date(),key)
-    output={"schemaVersion":1,"symbol":"NVDA","source":"Massive adjusted 5-minute stock aggregates",
+    output={"schemaVersion":2,"symbol":"NVDA","source":"Massive adjusted 5-minute stock aggregates",
             "generatedET":now.isoformat(),"researchOnly":True,"scoringImpact":"none",
             "validationStatus":"not_yet_compared_to_TradingView",
             "session":"04:00-20:00 America/New_York incl extended-hours",
             "boundaryAssumption":"4H blocks 04,08,12,16 ET; 8H blocks 04,12 ET; verify against TradingView",
             "method":"LazyBear WT Cross LB: AP=HLC3; ESA=EMA(AP,10); D=EMA(abs(AP-ESA),10); CI=(AP-ESA)/(0.015*D); WT1=EMA(CI,21); WT2=SMA(WT1,4)",
             "historicalDataEndET":max((b["timestampET"] for b in bars),default=None),
-            "underlying5mCount":len(bars),"fetchErrors":errors,"timeframes":{}}
+            "requestedHistoryCalendarDays":days,"underlying5mCount":len(bars),"fetchErrors":errors,"timeframes":{}}
     for hours in (4,8):
         candles=aggregate(bars,hours)
         rows=wavetrend(candles)
@@ -207,20 +207,23 @@ def build(days=145, now=None):
             "lastEndET":candles[-1]["endET"] if candles else None,
             "latest":rows[-1] if rows and rows[-1]["isWarm"] else None,
             "recentCrosses":crosses[-20:],
-            "last20Candles":rows[-20:]}
+            "last20Candles":rows[-20:],
+            "crossCount":len(crosses),
+            "crosses":crosses,
+            "candles":rows}
     return output
 
 
 def main():
     p=argparse.ArgumentParser()
-    p.add_argument("--days",type=int,default=145)
+    p.add_argument("--days",type=int,default=365)
     p.add_argument("--output",default=str(OUT))
     args=p.parse_args()
     document=build(args.days)
     out=Path(args.output)
     out.parent.mkdir(parents=True,exist_ok=True)
     out.write_text(json.dumps(document,indent=2)+"\n")
-    print(json.dumps({k:{"candles":v["candleCount"],"crosses":len(v["recentCrosses"]),
+    print(json.dumps({k:{"candles":v["candleCount"],"crosses":v["crossCount"],
                           "lastEndET":v["lastEndET"],"latest":v["latest"]}
                       for k,v in document["timeframes"].items()},indent=2))
     if document["fetchErrors"]:
