@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Hourly FedWatch Tavily source probe. Never treat undated search results as live market data."""
+# A probe failure must never update published Fed expectations.
 import datetime as dt
 import json
 import os
