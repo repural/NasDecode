@@ -1,0 +1,45 @@
+name: Research NVDA WaveTrend 4H 8H
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/research_nvda_wavetrend.py'
+      - 'tests/test_nvda_wavetrend.py'
+      - '.github/workflows/research-nvda-wavetrend.yml'
+permissions:
+  contents: write
+concurrency:
+  group: nasdecode-nvda-wavetrend
+  cancel-in-progress: false
+jobs:
+  calculate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate WaveTrend code and candle alignment tests
+        run: |
+          python -m py_compile scripts/research_nvda_wavetrend.py
+          python -m unittest discover -s tests -p test_nvda_wavetrend.py -v
+      - name: Collect historical NVDA and calculate WT cross signals
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: python scripts/research_nvda_wavetrend.py --days 145
+      - name: Commit research output with retries (no scoring or UI changes)
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name nasdecode-bot
+          git config user.email actions@users.noreply.github.com
+          cp data/research/nvda-wavetrend.json /tmp/nvda-wavetrend.json
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp /tmp/nvda-wavetrend.json data/research/nvda-wavetrend.json
+            git add data/research/nvda-wavetrend.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "Publish research-only NVDA WaveTrend 4H and 8H history"
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
