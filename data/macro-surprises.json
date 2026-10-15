@@ -91,6 +91,31 @@
       "ingestionLagSeconds": 0
     },
     {
+      "id": "2026-10-15-retail-sales-mom",
+      "name": "Retail Sales MoM",
+      "family": "growth",
+      "subtype": "consumer_demand",
+      "releasedAt": "2026-10-15T08:30:00-04:00",
+      "actual": 0.8,
+      "consensus": 0.3,
+      "unit": "%",
+      "direction": "higher_is_negative",
+      "scale": 0.5,
+      "importance": 0.7,
+      "halfLifeDays": 4,
+      "verified": true,
+      "sourceMode": "official_verified",
+      "firstObservedAt": "2026-10-15T16:27:35.750377Z",
+      "source": "U.S. Census Bureau actual / Trading Economics survey consensus",
+      "sourceUrl": "https://tradingeconomics.com/united-states/calendar",
+      "officialSource": "U.S. Census Bureau",
+      "consensusSource": "Trading Economics survey consensus",
+      "ingestionLagSeconds": 14256,
+      "officialSourceUrl": "https://www.census.gov/retail/sales.html",
+      "officialVerifiedAt": "2026-10-15T16:27:40.909717Z",
+      "officialVerificationLagSeconds": 14261
+    },
+    {
       "id": "2026-10-14-cpi-mom",
       "name": "Inflation Rate MoM",
       "family": "inflation",
@@ -1291,7 +1316,7 @@
       "latencyTracking": "pre_tracking_release"
     }
   ],
-  "lastOfficialVerificationAt": "2026-10-15T15:39:52.608762Z",
+  "lastOfficialVerificationAt": "2026-10-15T16:27:40.909717Z",
   "latencyDefinition": {
     "ingestionLagSeconds": "Seconds from scheduled release time to first NasDecode observation.",
     "officialVerificationLagSeconds": "Seconds from scheduled release time to first successful primary-source verification."
@@ -1303,6 +1328,6 @@
   },
   "signalLens": "Rate-sensitive Nasdaq: positive means the recent surprise mix is more supportive for discount rates; negative means more restrictive.",
   "calendarSource": "https://tradingeconomics.com/united-states/calendar",
-  "lastCalendarFetchAt": "2026-10-15T15:39:46.155260Z",
+  "lastCalendarFetchAt": "2026-10-15T16:27:35.750377Z",
   "scheduledEvents": []
 }
