@@ -10,6 +10,7 @@ from __future__ import annotations
 import datetime as dt
 import re
 import urllib.parse
+from email.utils import parsedate_to_datetime
 from typing import Callable, Iterable
 
 GLOBAL_SEARCHES = [
@@ -81,6 +82,36 @@ def source_host(url: str) -> str:
 def trusted_global_source(url: str) -> bool:
     h = source_host(url)
     return any(h == d or h.endswith("." + d) for d in GLOBAL_SOURCE_DOMAINS)
+
+
+def parse_source_datetime(value):
+    if not value:
+        return None
+    raw = str(value).strip()
+    try:
+        parsed = dt.datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=dt.timezone.utc)
+        return parsed.astimezone(dt.timezone.utc)
+    except ValueError:
+        pass
+    try:
+        parsed = parsedate_to_datetime(raw)
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=dt.timezone.utc)
+        return parsed.astimezone(dt.timezone.utc)
+    except (TypeError, ValueError, OverflowError):
+        return None
+
+
+def rejected_global_headline(title: str) -> bool:
+    low = (title or "").lower()
+    patterns = (
+        r"market talk", r"stock market news for", r"live updates",
+        r"expected to report", r"earnings coming up", r"how should you play",
+        r"stock forecast", r"what to expect",
+    )
+    return any(re.search(p, low, re.I) for p in patterns)
 
 
 def extract_percent_moves(text: str) -> list[float]:
@@ -174,7 +205,7 @@ def qualify_global_result(region: str, result: dict, discovered_at: dt.datetime 
     content = str(result.get("content") or "").strip()
     source = str(result.get("url") or "").strip()
     text = f"{title} {content}".strip()
-    if not title or not source or not trusted_global_source(source):
+    if not title or not source or not trusted_global_source(source) or rejected_global_headline(title):
         return None
     entities, markets, tickers = affected_entities(text)
     if region not in ("Global", "") and region not in markets:
@@ -182,6 +213,14 @@ def qualify_global_result(region: str, result: dict, discovered_at: dt.datetime 
     semiconductor_context = bool(SECTOR_CONTEXT.search(text) or entities)
     if not semiconductor_context:
         return None
+
+    published_raw = result.get("published_date")
+    published_dt = parse_source_datetime(published_raw)
+    observed = discovered_at or now_utc()
+    if published_dt:
+        age = observed.date() - published_dt.date()
+        if age < dt.timedelta(days=0) or age > dt.timedelta(days=1):
+            return None
 
     moves = extract_percent_moves(text)
     transmission = classify_transmission(text, markets)
@@ -211,11 +250,10 @@ def qualify_global_result(region: str, result: dict, discovered_at: dt.datetime 
     if transmission == "globally-synchronized":
         score += 2
 
-    observed = discovered_at or now_utc()
-    published = result.get("published_date")
+    published = published_dt.isoformat(timespec="seconds") if published_dt else None
     confidence = "High" if moves or hard else "Medium"
     return {
-        "date": observed.date().isoformat(),
+        "date": (published_dt.date() if published_dt else observed.date()).isoformat(),
         "release": "during_session",
         "ticker": "MARKET",
         "type": "global-semiconductor",
@@ -237,13 +275,13 @@ def qualify_global_result(region: str, result: dict, discovered_at: dt.datetime 
         "severity": severity or ("High" if hard else "Medium"),
         "observedMovesPct": moves,
         "volatilityNormalized": None,
-        "observationTimeUTC": published if published else None,
+        "observationTimeUTC": published,
         "confidence": confidence,
         "informationNovelty": "New candidate; publisher deduplication required",
         "provenance": [{
             "sourceUrl": source,
             "headline": title,
-            "publishedDate": published if published else None,
+            "publishedDate": published,
             "retrievedAtUTC": observed.isoformat(timespec="seconds"),
         }],
     }
