@@ -164,11 +164,13 @@ def main():
         try: d=dt.date.fromisoformat(e.get("date",""))
         except ValueError: d=cutoff
         if e.get("autoDetected"):
-            # Revalidate older auto-detected rows with the stricter headline rule so
-            # previously stored roundup/body-text false positives disappear immediately.
-            ticker=e.get("ticker")
-            if ticker not in mentioned_tickers(str(e.get("title") or ""),[ticker] if ticker else []):
-                continue
+            # Company rows retain the strict headline-attribution rule. Global
+            # semiconductor rows are market-level events and intentionally do not
+            # require a SOX ticker in the headline.
+            if e.get("type") != "global-semiconductor":
+                ticker=e.get("ticker")
+                if ticker not in mentioned_tickers(str(e.get("title") or ""),[ticker] if ticker else []):
+                    continue
             if d<cutoff:
                 continue
         keep.append(e)
