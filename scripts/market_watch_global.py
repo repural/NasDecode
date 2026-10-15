@@ -185,17 +185,18 @@ def classify_transmission(text: str, markets: list[str]) -> str:
     return "global-external"
 
 
-def event_type_for(text: str, transmission: str) -> str:
-    low = (text or "").lower()
+def event_type_for(title: str, content: str, transmission: str) -> str:
+    headline = (title or "").lower()
+    low = f"{title or ''} {content or ''}".lower()
     if "circuit breaker" in low or "trading halt" in low or "halted" in low:
         return "circuit-breaker"
     if re.search(r"\b(export control|export restriction|sanction|chip restriction|license restriction)\b", low):
         return "export-restriction"
-    if re.search(r"\b(earnings|guidance|forecast|outlook|profit warning)\b", low):
-        return "earnings-guidance"
-    if re.search(r"\b(supply disruption|factory shutdown|production halt|earthquake|fire)\b", low):
+    if re.search(r"\b(supply disruption|factory shutdown|production halt|capacity shortfall|earthquake|fire)\b", headline):
         return "supply-chain-disruption"
-    if SELL_CONTEXT.search(low):
+    if re.search(r"\b(earnings|guidance|forecast|outlook|profit|results?|beats? estimates?|beating estimates?|misses? estimates?)\b", headline):
+        return "earnings-guidance"
+    if SELL_CONTEXT.search(headline):
         return "global-selloff" if transmission == "globally-synchronized" else "regional-selloff"
     return "global-semiconductor-catalyst"
 
@@ -224,7 +225,7 @@ def qualify_global_result(region: str, result: dict, discovered_at: dt.datetime 
 
     moves = extract_percent_moves(text)
     transmission = classify_transmission(text, markets)
-    etype = event_type_for(text, transmission)
+    etype = event_type_for(title, content, transmission)
     hard = bool(HARD_CATALYST.search(text))
     selloff = bool(SELL_CONTEXT.search(text))
     severity = severity_from_moves(moves, market_count=max(1, len(set(markets))))
