@@ -26,6 +26,8 @@ jobs:
         run: python -m py_compile scripts/audit_data.py
       - name: Build catalog and record-level audit (read-only)
         run: python scripts/audit_data.py --output audit-output
+      - name: Audit historical gaps and recovery candidates
+        run: python scripts/audit_phase4_gaps.py --out audit-output/phase4-gaps.json
       - name: Upload catalog and audit reports
         uses: actions/upload-artifact@v4
         with:
