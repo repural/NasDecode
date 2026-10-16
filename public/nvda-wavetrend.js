@@ -68,7 +68,14 @@
     const analysis=root.querySelector('.nd-wt-interpretation');
     if(analysis)analysis.textContent=interpretation();
     const freshness=root.querySelector('.nd-wt-freshness');
-    if(freshness)freshness.textContent=state.data?.historicalDataEndET?'Data through '+date(state.data.historicalDataEndET,true)+' ET · Research only':'Research feed unavailable';
+    if(freshness){
+      const end=state.data?.timeframes?.['4h']?.latest?.endET;
+      const end8=state.data?.timeframes?.['8h']?.latest?.endET;
+      const last=end&&end8&&new Date(end)<new Date(end8)?end:end8||end;
+      const ageHours=last?(Date.now()-new Date(last).getTime())/3600000:Infinity;
+      const status=Number.isFinite(ageHours)&&ageHours>=0?(ageHours>36?'Stale historical data':'Delayed historical data'):'Historical data';
+      freshness.textContent=last?status+' · Last confirmed 4H '+date(end,true)+' ET · 8H '+date(end8,true)+' ET':'Research feed unavailable';
+    }
     root.querySelectorAll('[data-nd-wt-tf]').forEach(btn=>{
       btn.setAttribute('aria-pressed',String(btn.dataset.ndWtTf===state.timeframe));
       btn.classList.toggle('active',btn.dataset.ndWtTf===state.timeframe);
@@ -97,5 +104,9 @@
     root.querySelector('.nd-wt-chart').innerHTML=graph();
     root.querySelectorAll('[data-nd-wt-tf]').forEach(b=>{b.classList.toggle('active',b===btn);b.setAttribute('aria-pressed',String(b===btn))});
   });
+  // Re-fetch on an independent cadence even when the main dashboard snapshot does not change.
+  // Never display a future/provisional candle or label delayed research as live.
+  setInterval(()=>{if(!document.hidden && document.getElementById('nd-wave-trend'))load()},5*60*1000);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden && document.getElementById('nd-wave-trend'))load()});
   window.NDWaveTrend={load,update};
 })();
