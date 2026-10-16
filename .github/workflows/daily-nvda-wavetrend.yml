@@ -31,6 +31,8 @@ jobs:
         env:
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
         run: python -m scripts.refresh_nvda_wavetrend
+      - name: Publish updated confirmed candles to the website feed
+        run: python scripts/publish_nvda_wavetrend.py
       - name: Save refresh audit artifact
         uses: actions/upload-artifact@v4
         if: always()
@@ -45,18 +47,20 @@ jobs:
           git config user.name nasdecode-bot
           git config user.email actions@users.noreply.github.com
           cp data/research/nvda-wavetrend.json /tmp/new-nvda-wavetrend.json
+          cp public/data/nvda-wavetrend.json /tmp/new-nvda-wavetrend-web.json
           for attempt in 1 2 3 4; do
             git fetch origin main
             git reset --hard origin/main
             cp /tmp/new-nvda-wavetrend.json data/research/nvda-wavetrend.json
-            git add data/research/nvda-wavetrend.json
+            cp /tmp/new-nvda-wavetrend-web.json public/data/nvda-wavetrend.json
+            git add data/research/nvda-wavetrend.json public/data/nvda-wavetrend.json
             if git diff --cached --quiet; then
               echo 'No newly confirmed candles; no publication'
               exit 0
             fi
             git commit -m 'Update confirmed historical NVDA WaveTrend 4H and 8H candles'
             if git push origin HEAD:main; then
-              echo 'Research advanced; downstream card publication triggered'
+              echo 'Research and website card data published atomically'
               exit 0
             fi
           done
