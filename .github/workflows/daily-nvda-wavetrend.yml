@@ -1,0 +1,57 @@
+name: Daily NVDA WaveTrend Incremental Refresh
+on:
+  workflow_dispatch:
+  schedule:
+    # 12:15 UTC Tue-Sat = 07:15/08:15 ET; prior U.S. trading day has completed.
+    # Historical Massive entitlement does not support current ET trading date.
+    - cron: '15 12 * * 2-6'
+permissions:
+  contents: write
+concurrency:
+  group: nasdecode-daily-nvda-wt
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate incremental implementation and tests
+        run: |
+          python -m py_compile scripts/refresh_nvda_wavetrend.py
+          python -m unittest discover -s tests -p test_refresh_nvda_wavetrend.py -v
+          python -m unittest discover -s tests -p test_nvda_wavetrend.py -v
+      - name: Query recent completed Massive sessions and update saved 4H and 8H WT
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: python -m scripts.refresh_nvda_wavetrend
+      - name: Save refresh audit artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nvda-wave-trend-incremental-report
+          path: audit-output/nvda-wavetrend-refresh.json
+          retention-days: 30
+      - name: Commit research only when completed candle advances
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name nasdecode-bot
+          git config user.email actions@users.noreply.github.com
+          cp data/research/nvda-wavetrend.json /tmp/new-nvda-wavetrend.json
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp /tmp/new-nvda-wavetrend.json data/research/nvda-wavetrend.json
+            git add data/research/nvda-wavetrend.json
+            if git diff --cached --quiet; then
+              echo 'No newly confirmed candles; no publication'
+              exit 0
+            fi
+            git commit -m 'Update confirmed historical NVDA WaveTrend 4H and 8H candles'
+            if git push origin HEAD:main; then
+              echo 'Research advanced; downstream card publication triggered'
+              exit 0
+            fi
+          done
+          exit 1
