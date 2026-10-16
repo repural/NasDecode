@@ -323,6 +323,30 @@ body{font-size:14px;font-weight:400;-webkit-font-smoothing:antialiased}
 #factorCards .nd-oil-pair .metric{display:block}
 #factorCards .nd-oil-pair .nd-oil-secondary{margin-top:7px}
 #factorCards .nd-oil-pair .metric-change{display:block}
+
+/* Technical Analysis / NVDA WaveTrend: compact black-first design. */
+#factorCards .nd-wt-card{grid-column:1/-1;display:flex;flex-direction:column;gap:14px;min-width:0;background:#0d0f11;border:1px solid #292d32;border-radius:14px;padding:19px 20px;color:#f5f5f5}
+.nd-wt-header,.nd-wt-panel-head,.nd-wt-pair,.nd-wt-chart-head,.nd-wt-bottom,.nd-wt-chart-legend{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.nd-wt-header h3{margin:0;font-size:18px;line-height:1.3;letter-spacing:-.01em}
+.nd-wt-header small,.nd-wt-bottom,.nd-wt-wait{font-size:11px;color:#999fa8}
+.nd-wt-alignment{font-size:11px;font-weight:750;border-radius:99px;padding:6px 9px;background:#251c1f;color:#fda4af}
+.nd-wt-panels{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.nd-wt-panel{min-width:0;border:1px solid #292d32;background:#15181a;border-radius:10px;padding:13px;display:flex;flex-direction:column;gap:10px}
+.nd-wt-panel-head{font-size:13px;color:#d1d5db}
+.nd-wt-panel strong{font-size:23px;line-height:1.1;letter-spacing:-.03em}
+.nd-wt-up{color:#34d399}.nd-wt-down{color:#fb7185}
+.nd-wt-pair{font-size:12px}.nd-wt-pair span{color:#9299a1}.nd-wt-pair b{font-variant-numeric:tabular-nums}
+.nd-wt-cross{background:#1c2023;padding:10px;display:flex;flex-direction:column;gap:5px;border-radius:7px;font-size:12px}
+.nd-wt-cross small{color:#9299a1;font-size:10px;letter-spacing:.04em}.nd-wt-cross span{color:#b8bfc7}
+.nd-wt-chart-head b{font-size:13px}.nd-wt-selector{display:flex;gap:3px;padding:3px;background:#202428;border-radius:9px}
+.nd-wt-selector button{background:transparent;color:#aeb6bf;font-weight:750;font-size:12px;border:0;padding:6px 13px;border-radius:6px;cursor:pointer}
+.nd-wt-selector button.active{background:#40474f;color:#fff}.nd-wt-selector button:focus-visible{outline:2px solid #8caef9;outline-offset:2px}
+.nd-wt-chart-wrap{background:#121518;border:1px solid #292d32;border-radius:9px;padding:6px;overflow:hidden}
+.nd-wt-plot{width:100%;height:auto;display:block}.nd-wt-chart-legend{justify-content:center;gap:21px;color:#aab2ba;font-size:11px;padding-bottom:4px}
+.nd-wt-chart-legend i{display:inline-block;vertical-align:middle;width:13px;height:3px;margin-right:5px;border-radius:3px}
+.nd-wt-bottom{border-top:1px solid #292d32;padding-top:11px}
+.nd-wt-summary{display:flex;flex-direction:column;gap:5px}.nd-wt-summary b{font-size:13px}.nd-wt-interpretation{color:#bfc5cb;font-size:12px;line-height:1.55}
+@media(max-width:590px){#factorCards .nd-wt-card{padding:13px}.nd-wt-panels{grid-template-columns:1fr}.nd-wt-panel{padding:12px}.nd-wt-header h3{font-size:16px}.nd-wt-plot{min-width:0}.nd-wt-chart-legend{gap:12px}}
 </style></head><body><header class="nd-topbar"><a class="nd-brand" href="#dashboard" aria-label="NasDecode Dashboard"><span class="nd-brand-mark" aria-hidden="true">N</span><span class="nd-brand-word">NASDECODE</span></a><nav class="nd-nav" aria-label="Dashboard sections"><a href="#dashboard" class="nd-current">Dashboard</a><a href="#macro-rates">Macro</a><a href="#market-internals">Internals</a><a href="#market-assessment">Assessment</a><a href="#premarket">Analysis</a></nav><div class="nd-top-actions"><span class="nd-live" aria-label="Data refresh status"><span class="nd-live-dot" aria-hidden="true"></span><span id="updated" role="status">Loading…</span></span><button id="update" type="button">↻ Refresh</button></div></header><div class="wrap" id="dashboard"><div class="factor-cards compact-cards" id="factorCards"></div><section class="premarket" id="premarket"><h2 id="analysisTitle">Pre-Market Analysis</h2><div class="muted" id="premarketMeta">Loading analysis…</div><div id="premarketBody"></div></section><details class="signal-details" open><summary>Signal Explorer</summary><div class="signal-explorer" id="signalExplorer"></div></details><section class="intel-panel setup-wide" id="marketSetup"></section><div class="lower-intel"><section class="intel-panel"><div class="section-kicker">Decision frame</div><h3>What to Watch Today</h3><div id="watchConditions"></div></section></div><section class="intel-panel" id="marketMovingDevelopments"><div class="section-kicker">NasDecode Open Watch · curated</div><h3>Market-Moving Developments</h3><div id="marketMovingBody" class="catalyst-list">Loading developments…</div><div class="nd-earnings-section"><div class="nd-earnings-header"><h4>Upcoming Major Earnings</h4><span id="ndEarningsMonth" class="muted"></span></div><div id="ndUpcomingEarnings" class="nd-earnings-list"></div></div></section><div class="legacy-table" hidden><table><tbody id="rows"></tbody></table></div><section hidden></section><p class="src">Current Impact = estimated magnitude of the factor's present effect on Nasdaq based on the latest reading, move, event proximity and data freshness; it can change on every refresh and is separate from whether the signal is positive or negative. Green = supportive for Nasdaq; red = headwind; amber = mixed/event risk. Free sources can be delayed. NasDecode displays source freshness rather than representing delayed observations as exchange-real-time data.</p></div><script>
 /*
  * Presentation layer only.
@@ -566,14 +590,21 @@ function render(d){
     const details='<div class="state-inputs">'+metric('SOX 5D',inputs.sox5,'%')+metric('vs QQQ 5D',inputs.rs5,' pp')+metric('Breadth',inputs.breadth,'%')+metric('SOX 1D',inputs.sox1,'%')+'</div>';
     return '<div class="card factor-card directional-state-card signal-mixed" tabindex="0" data-tip="'+escAttr(directionalShadow.explanation||'Frozen Directional Engine v3.0 shadow classifier. The highlighted segment is the current semiconductor setup state; it does not alter production scores.')+'"><span class="factor-name">SOXL DIRECTIONAL SETUP · V3 SHADOW</span><div class="state-gauge">'+segments+'</div><span class="card-status amber">'+escHtml(directionalShadow.scorecard?.value||directionalShadow.latest||'—')+'</span>'+details+ev+'<span class="card-latest">Frozen v3.0 · prospective validation · does not affect scores</span></div>';
   })():'';
-  const categoryHeading=(title,desc)=>{const key=title==='Macro / Rates'?'macro-rates':title==='Market Internals'?'market-internals':'market-assessment';const icons={'macro-rates':'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>','market-internals':'<path d="M4 20v-7M9 20V9M14 20V4M19 20v-10"/>','market-assessment':'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>'};const icon='<svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+icons[key]+'</svg>';return '<div id="'+key+'" class="scorecard-category"><span class="nd-section-icon" aria-hidden="true">'+icon+'</span><div><span>'+escHtml(title.toUpperCase())+'</span><small>'+escHtml(desc)+'</small></div></div>';};
+  const categoryHeading=(title,desc)=>{const key=title==='Macro / Rates'?'macro-rates':title==='Market Internals'?'market-internals':title==='Technical Analysis'?'technical-analysis':'market-assessment';const icons={'macro-rates':'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>','market-internals':'<path d="M4 20v-7M9 20V9M14 20V4M19 20v-10"/>','market-assessment':'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>','technical-analysis':'<path d="M3 17l5-6 4 3 5-8 4 3"/><path d="M3 21h18"/>'};const icon='<svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+icons[key]+'</svg>';return '<div id="'+key+'" class="scorecard-category"><span class="nd-section-icon" aria-hidden="true">'+icon+'</span><div><span>'+escHtml(title.toUpperCase())+'</span><small>'+escHtml(desc)+'</small></div></div>';};
+  const ndWaveTrendCard='<section class="nd-wt-card" id="nd-wave-trend" aria-label="NVDA WaveTrend technical analysis">'+
+    '<div class="nd-wt-header"><div><h3>NVDA WaveTrend</h3><small>WT Cross LB · Confirmed signals</small></div><span class="nd-wt-alignment">Loading research</span></div>'+
+    '<div class="nd-wt-panels"><div class="nd-wt-wait">Loading NVDA historical WaveTrend…</div></div>'+
+    '<div class="nd-wt-chart-head"><b>WaveTrend oscillator · Last 48 candles</b><div class="nd-wt-selector" role="group" aria-label="Oscillator timeframe"><button type="button" data-nd-wt-tf="4h" class="active" aria-pressed="true">4H</button><button type="button" data-nd-wt-tf="8h" aria-pressed="false">8H</button></div></div>'+
+    '<div class="nd-wt-chart-wrap"><div class="nd-wt-chart" aria-live="polite"><p class="nd-wt-wait">Loading oscillator…</p></div><div class="nd-wt-chart-legend"><span><i style="background:#34d399"></i>WT1</span><span><i style="background:#fb7185"></i>WT2</span><span>● Confirmed cross</span></div></div>'+
+    '<div class="nd-wt-summary"><b>NasDecode interpretation</b><span class="nd-wt-interpretation">Loading research…</span></div>'+
+    '<div class="nd-wt-bottom"><span class="nd-wt-freshness">Research feed pending</span><span>Not scored</span></div></section>'; 
   factorCards.innerHTML=
     categoryHeading('Macro / Rates','External environment · inflation, policy, yields and oil')+
     rowCards.slice(0,5).join('')+
     categoryHeading('Market Internals','Volatility, positioning, participation and leadership')+
     rowCards.slice(5).join('')+
     categoryHeading('Market Assessment','NasDecode decision layer')+
-    summaryCards+directionalShadowCard+opportunityCard+soxlCard+categoryHeading('AVWAP Research','NVDA and SOXL · 3-month anchors')+avwapResearchCards;
+    summaryCards+directionalShadowCard+opportunityCard+soxlCard+categoryHeading('Technical Analysis','NVDA WaveTrend and AVWAP research')+ndWaveTrendCard+avwapResearchCards;
   // Desktop intelligence layer: synthesize existing outputs without recalculating model logic.
   const rowBy=name=>orderedRows.find(r=>r.factor===name)||{};
   const toneLabel=s=>s==='positive'?'Supportive':s==='negative'?'Headwind':'Mixed';
@@ -832,7 +863,7 @@ function startLiveOilPolling(){
 }
 // Fetch a cache-busted quantitative snapshot; the button refreshes displayed data only.
 let currentDashboard=null,lastRenderedStamp=null,autoRefreshTimer=null;
-async function load(){update.disabled=true;update.textContent='Checking…';try{const t=Date.now();const [r,w,a]=await Promise.all([fetch('data/dashboard.json?t='+t,{cache:'no-store',headers:{'Cache-Control':'no-cache'}}),fetch('history/market-watch-events.json?t='+t,{cache:'no-store'}).catch(()=>null),fetch('data/sox_avwap_latest.json?t='+t,{cache:'no-store'}).catch(()=>null)]);if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();if(a?.ok){try{d.soxEarningsAvwap=await a.json()}catch(_){d.soxEarningsAvwap=null}}else d.soxEarningsAvwap=null;if(w?.ok){try{d.marketWatchEvents=await w.json()}catch(_){d.marketWatchEvents={events:[]}}}else d.marketWatchEvents={events:[]};currentDashboard=d;const renderStamp=d.updatedET+'|'+(d.marketWatchEvents?.updated||'')+'|'+(d.soxEarningsAvwap?.asOf||'');if(renderStamp!==lastRenderedStamp){render(d);lastRenderedStamp=renderStamp;await loadLiveOil();await loadTodayWatch()}return d}catch(e){console.error(e);update.textContent='Refresh failed';setTimeout(()=>update.textContent='↻ Check Latest',1800);return null}finally{update.disabled=false;if(update.textContent==='Checking…')update.textContent='↻ Check Latest'}}
+async function load(){update.disabled=true;update.textContent='Checking…';try{const t=Date.now();const [r,w,a]=await Promise.all([fetch('data/dashboard.json?t='+t,{cache:'no-store',headers:{'Cache-Control':'no-cache'}}),fetch('history/market-watch-events.json?t='+t,{cache:'no-store'}).catch(()=>null),fetch('data/sox_avwap_latest.json?t='+t,{cache:'no-store'}).catch(()=>null)]);if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();if(a?.ok){try{d.soxEarningsAvwap=await a.json()}catch(_){d.soxEarningsAvwap=null}}else d.soxEarningsAvwap=null;if(w?.ok){try{d.marketWatchEvents=await w.json()}catch(_){d.marketWatchEvents={events:[]}}}else d.marketWatchEvents={events:[]};currentDashboard=d;const renderStamp=d.updatedET+'|'+(d.marketWatchEvents?.updated||'')+'|'+(d.soxEarningsAvwap?.asOf||'');if(renderStamp!==lastRenderedStamp){render(d);lastRenderedStamp=renderStamp;if(window.NDWaveTrend)await window.NDWaveTrend.load();await loadLiveOil();await loadTodayWatch()}return d}catch(e){console.error(e);update.textContent='Refresh failed';setTimeout(()=>update.textContent='↻ Check Latest',1800);return null}finally{update.disabled=false;if(update.textContent==='Checking…')update.textContent='↻ Check Latest'}}
 // The decision-frame research feed is independent of session analysis tabs.
 async function loadTodayWatch(){
   const node=document.getElementById('watchConditions');
@@ -968,4 +999,4 @@ document.addEventListener('visibilitychange',async()=>{
   if(!document.hidden){const d=await load();await loadLiveOil();await loadAnalysis(d);scheduleAutoRefresh()}
 });
 loadChartHistory();startLiveOilPolling();(async()=>{const d=await load();await loadLiveOil();await loadAnalysis(d);scheduleAutoRefresh()})();
-</script><script src="session-analysis.js?v=2"></script></body></html>
+</script><script src="nvda-wavetrend.js?v=1"></script><script src="session-analysis.js?v=2"></script></body></html>
