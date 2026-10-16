@@ -26,13 +26,17 @@
     return candles.map((c,i)=>{const v=Number(c[key]);return (i?'L':'M')+(xMin+i*width/(candles.length-1)).toFixed(2)+','+(yTop+(100-v)/200*height).toFixed(2)}).join(' ');
   }
   function graph(){
-    const data=state.data?.timeframes?.[state.timeframe],candles=data?.candles;
+    // Keep the full published research history; display only 32 completed bars.\n    const data=state.data?.timeframes?.[state.timeframe],candles=data?.candles?.slice(-32);
     if(!candles?.length)return '<p class="nd-wt-wait">No historical oscillator candles available.</p>';
     const x0=44,y0=15,w=695,h=180,y=(v)=>y0+(100-v)/200*h;
     const x=(i)=>x0+i*w/(candles.length-1);
     const levels=[60,53,0,-53,-60].map(v=>'<line x1="'+x0+'" x2="'+(x0+w)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="'+(v===0?'#586069':'#343940')+'" stroke-dasharray="'+(v===0?'none':'4 5')+'" opacity=".8"/>'+
-       '<text x="37" y="'+(y(v)+4)+'" fill="#929aa4" font-size="11" text-anchor="end">'+(v>0?'+':'')+v+'</text>').join('');
-    const ticks=[0,12,24,36,47].map((i,n)=>'<text x="'+x(i)+'" y="226" text-anchor="'+(n===0?'start':n===4?'end':'middle')+'" fill="#a0a8b1" font-size="12">'+date(candles[i].endET)+'</text>').join('');
+       ([60,0,-60].includes(v)?'<text x="37" y="'+(y(v)+4)+'" fill="#929aa4" font-size="11" text-anchor="end">'+(v>0?'+':'')+v+'</text>':'')).join('');
+    const tickIndices=[0,8,16,24,31];
+    const ticks=tickIndices.map((i,n)=>{
+      const candle=candles[i],label=date(candle.endET,state.timeframe==='4h');
+      return '<text x="'+x(i)+'" y="225" text-anchor="'+(n===0?'start':n===tickIndices.length-1?'end':'middle')+'" fill="#a0a8b1" font-size="11">'+safe(label)+'</text>';
+    }).join('');
     const dividers=candles.map((v,i)=>i>0&&v.startET.slice(0,10)!==candles[i-1].startET.slice(0,10)?
       '<line x1="'+x(i)+'" x2="'+x(i)+'" y1="'+y0+'" y2="'+(y0+h)+'" stroke="#41464c" stroke-dasharray="2 5" opacity=".52"/>':'').join('');
     const marks=candles.map((c,i)=>{
@@ -41,7 +45,7 @@
       return '<circle cx="'+x(i)+'" cy="'+y(v)+'" r="4.5" fill="#121518" stroke="'+(positive?'#34d399':'#fb7185')+'" stroke-width="2"/>';
     }).join('');
     const touch=candles.map((c,i)=>'<rect x="'+(x(i)-w/(candles.length-1)/2)+'" y="'+y0+'" width="'+(w/(candles.length-1))+'" height="'+h+'" fill="transparent"><title>'+
-      safe(date(c.endET,true)+' ET | WT1 '+fixed(c.wt1,2)+' | WT2 '+fixed(c.wt2,2)+(c.cross?' | '+c.cross+' crossover':'') )+'</title></rect>').join('');
+      safe('Candle '+date(c.startET,true)+' to '+date(c.endET,true)+' ET | Confirmed on close | WT1 '+fixed(c.wt1,2)+' | WT2 '+fixed(c.wt2,2)+(c.cross?' | '+c.cross+' crossover':''))+'</title></rect>').join('');
     return '<svg class="nd-wt-plot" role="img" aria-label="NVDA WaveTrend '+state.timeframe.toUpperCase()+' oscillator; green WT1, red WT2, confirmed bullish and bearish crossovers" viewBox="0 0 760 239" preserveAspectRatio="xMidYMid meet">'+
       levels+dividers+'<path d="'+path(candles,'wt1',x0,y0,w,h)+'" stroke="#34d399" fill="none" stroke-width="2.5" stroke-linejoin="round"/>'+
       '<path d="'+path(candles,'wt2',x0,y0,w,h)+'" stroke="#fb7185" fill="none" stroke-width="2.5" stroke-linejoin="round"/>'+
