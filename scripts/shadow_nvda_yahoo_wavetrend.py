@@ -132,6 +132,43 @@ def main():
         report["retrievedYahoo5m"] = len(bars)
         report["malformedYahoo5m"] = malformed
         report["fetchErrors"] = errors
+    # Retain prior shadow observations for next-day Massive reconciliation.
+    # Never overwrite a previously captured Yahoo value for the same startET.
+    previous = json.loads(OUTPUT.read_text()) if OUTPUT.exists() else {}
+    saved = previous.get("observations", {})
+    for tf, data in report.get("timeframes", {}).items():
+        ledger = saved.setdefault(tf, {})
+        for candle in data.get("yahooCandles", []):
+            ledger.setdefault(candle["startET"], candle)
+    archive = baseline.get("timeframes", {})
+    reconciled = {}
+    for tf, ledger in saved.items():
+        authoritative = {c["startET"]: c for c in archive.get(tf, {}).get("candles", [])}
+        reconciled[tf] = []
+        for start, observation in sorted(ledger.items()):
+            canonical = authoritative.get(start)
+            if not canonical:
+                continue
+            compare = {"startET": start}
+            for metric in ("open", "high", "low", "close", "wt1", "wt2"):
+                source = observation.get(metric)
+                target = canonical.get(metric)
+                if source is not None and target is not None:
+                    compare[metric + "Delta"] = round(source - target, 6)
+                    if metric in ("open", "high", "low", "close") and target:
+                        compare[metric + "DiffPct"] = round(100 * (source / target - 1), 5)
+            compare["yahooCross"] = observation.get("cross")
+            compare["massiveCross"] = canonical.get("cross")
+            compare["crossMatches"] = observation.get("cross") == canonical.get("cross")
+            reconciled[tf].append(compare)
+        # Keep a bounded 30-calendar-day research record.
+        threshold = (now.date() - dt.timedelta(days=30)).isoformat()
+        saved[tf] = {k: v for k, v in ledger.items() if k[:10] >= threshold}
+    report["observations"] = saved
+    report["reconciliation"] = {tf: {"matchedCandles": len(items),
+                                    "crossDisagreements": sum(not x["crossMatches"] for x in items),
+                                    "samples": items[-24:]}
+                                for tf, items in reconciled.items()}
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps({"status": report["status"],
