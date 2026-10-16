@@ -18,6 +18,7 @@ jobs:
         run: |
           python -m py_compile scripts/collect_intraday_avwap.py
           python -m unittest discover -s tests -p test_intraday_avwap.py -v
+          python -m unittest discover -s tests -p test_intraday_access_diagnostic.py -v
       - name: Compare historical and current Massive access
         if: github.event_name == 'workflow_dispatch'
         env:
