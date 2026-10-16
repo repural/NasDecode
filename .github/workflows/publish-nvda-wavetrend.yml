@@ -1,0 +1,76 @@
+name: Publish NVDA WaveTrend Card Data
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'data/research/nvda-wavetrend.json'
+      - 'scripts/publish_nvda_wavetrend.py'
+      - 'public/index.html'
+      - 'public/nvda-wavetrend.js'
+      - '.github/workflows/publish-nvda-wavetrend.yml'
+permissions:
+  contents: write
+concurrency:
+  group: nasdecode-publish-nvda-wt
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate publisher and browser script
+        run: |
+          python -m py_compile scripts/publish_nvda_wavetrend.py
+          node --check public/nvda-wavetrend.js
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          class Check(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.scripts=[]
+                  self.current=None
+              def handle_starttag(self,tag,attrs):
+                  if tag=='script' and not dict(attrs).get('src'):
+                      self.current=[]
+              def handle_data(self,data):
+                  if self.current is not None:
+                      self.current.append(data)
+              def handle_endtag(self,tag):
+                  if tag=='script' and self.current is not None:
+                      self.scripts.append(''.join(self.current))
+                      self.current=None
+          p=Check()
+          p.feed(Path('public/index.html').read_text())
+          for i,script in enumerate(p.scripts):
+              Path('/tmp/nd_inline_'+str(i)+'.js').write_text(script)
+          print('Found',len(p.scripts),'inline JS scripts')
+          PY
+          for script in /tmp/nd_inline_*.js; do node --check "$script"; done
+      - name: Publish compact NVDA WT 48-candle feed
+        run: python scripts/publish_nvda_wavetrend.py
+      - name: Upload data artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nvda-wavetrend-web-feed
+          path: public/data/nvda-wavetrend.json
+          retention-days: 30
+      - name: Commit published technical analysis feed
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name nasdecode-bot
+          git config user.email actions@users.noreply.github.com
+          cp public/data/nvda-wavetrend.json /tmp/nvda-wavetrend.json
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp /tmp/nvda-wavetrend.json public/data/nvda-wavetrend.json
+            git add public/data/nvda-wavetrend.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'Publish NVDA WaveTrend 48-candle technical-analysis data'
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
