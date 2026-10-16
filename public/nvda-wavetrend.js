@@ -26,7 +26,8 @@
     return candles.map((c,i)=>{const v=Number(c[key]);return (i?'L':'M')+(xMin+i*width/(candles.length-1)).toFixed(2)+','+(yTop+(100-v)/200*height).toFixed(2)}).join(' ');
   }
   function graph(){
-    // Keep the full published research history; display only 32 completed bars.\n    const data=state.data?.timeframes?.[state.timeframe],candles=data?.candles?.slice(-32);
+    // Keep full published history; display only 32 confirmed candles.
+    const data=state.data?.timeframes?.[state.timeframe],candles=data?.candles?.slice(-32);
     if(!candles?.length)return '<p class="nd-wt-wait">No historical oscillator candles available.</p>';
     const x0=44,y0=15,w=695,h=180,y=(v)=>y0+(100-v)/200*h;
     const x=(i)=>x0+i*w/(candles.length-1);
