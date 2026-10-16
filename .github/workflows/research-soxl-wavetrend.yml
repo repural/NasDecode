@@ -30,6 +30,14 @@ jobs:
         run: python scripts/research_soxl_wavetrend.py --days 365
       - name: Simulate both SOXL strategies and hold comparison
         run: python scripts/backtest_wavetrend.py --input data/research/soxl-wavetrend.json --output data/research/soxl-wavetrend-backtest.json
+      - name: Upload complete SOXL WaveTrend and backtest as recoverable artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: soxl-wavetrend-full-year
+          path: |
+            data/research/soxl-wavetrend.json
+            data/research/soxl-wavetrend-backtest.json
+          retention-days: 30
       - name: Commit research-only artifacts safely
         shell: bash
         run: |
@@ -45,7 +53,7 @@ jobs:
             cp /tmp/soxl-wavetrend-backtest.json data/research/soxl-wavetrend-backtest.json
             git add data/research/soxl-wavetrend.json data/research/soxl-wavetrend-backtest.json
             if git diff --cached --quiet; then exit 0; fi
-            git commit -m "Persist full-year SOXL 4h 8h WT Cross LB and $10k backtest"
+            git commit -m 'Persist full-year SOXL 4h and 8h WT Cross LB research and ten-thousand-dollar backtest'
             if git push origin HEAD:main; then exit 0; fi
           done
           exit 1
