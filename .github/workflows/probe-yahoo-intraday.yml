@@ -1,0 +1,39 @@
+name: Probe Yahoo Intraday Coverage
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/probe_yahoo_intraday.py'
+      - '.github/workflows/probe-yahoo-intraday.yml'
+permissions:
+  contents: write
+jobs:
+  yahoo-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate probe syntax
+        run: python -m py_compile scripts/probe_yahoo_intraday.py
+      - name: Fetch Yahoo intraday candles and compare with Massive archive
+        run: python scripts/probe_yahoo_intraday.py
+      - name: Upload research-only report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: yahoo-intraday-probe
+          path: data/research/yahoo-intraday-probe.json
+          if-no-files-found: warn
+      - name: Commit probe report only
+        run: |
+          git config user.name 'nasdecode-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add data/research/yahoo-intraday-probe.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Record Yahoo intraday research probe'
+          for i in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push; then exit 0; fi
+          done
+          exit 1
