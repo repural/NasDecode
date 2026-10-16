@@ -1,0 +1,101 @@
+/* NasDecode research-only NVDA WaveTrend display. Never modifies score calculations. */
+(function(){
+  'use strict';
+  const state={data:null,timeframe:'4h',loading:null};
+  const safe=(value)=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const fixed=(n,d=1)=>Number.isFinite(Number(n))?Number(n).toFixed(d):'—';
+  const date=(s,withTime=false)=>{
+    const d=new Date(s);
+    return Number.isFinite(d.getTime())?new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',
+      month:'short',day:'numeric',...(withTime?{hour:'numeric',minute:'2-digit',hour12:true}:{})}).format(d):'—';
+  };
+  const condition=(x)=>!x?'Unavailable':Number(x.wt1)>Number(x.wt2)?'Bullish':'Bearish';
+  const tone=(x)=>condition(x)==='Bullish'?'positive':'negative';
+  function panel(tf){
+    const d=state.data?.timeframes?.[tf];
+    if(!d||!d.latest)return '<div class="nd-wt-panel"><b>'+tf.toUpperCase()+' Momentum</b><span class="nd-wt-wait">Historical data unavailable</span></div>';
+    const p=d.latest, c=d.lastCross, direction=condition(p),positive=direction==='Bullish';
+    return '<div class="nd-wt-panel"><div class="nd-wt-panel-head"><b>'+tf.toUpperCase()+' Momentum</b><span class="'+(positive?'nd-wt-up':'nd-wt-down')+'">'+(positive?'↗':'↘')+'</span></div>'+
+      '<strong class="'+(positive?'nd-wt-up':'nd-wt-down')+'">'+direction+'</strong>'+
+      '<div class="nd-wt-pair"><span>WT1 / WT2</span><b>'+fixed(p.wt1)+' / '+fixed(p.wt2)+'</b></div>'+
+      '<div class="nd-wt-cross"><small>LAST CROSS</small><b class="'+(c?.direction==='bullish'?'nd-wt-up':'nd-wt-down')+'">'+
+      (c?.direction==='bullish'?'↗ Green':c?.direction==='bearish'?'↘ Red':'None')+' · '+date(c?.confirmedAtET||c?.endET)+'</b>'+
+      '<span>NVDA close: '+(c?.close!=null?'$'+fixed(c.close,2):'—')+'</span></div></div>';
+  }
+  function path(candles,key,xMin,yTop,width,height){
+    return candles.map((c,i)=>{const v=Number(c[key]);return (i?'L':'M')+(xMin+i*width/(candles.length-1)).toFixed(2)+','+(yTop+(100-v)/200*height).toFixed(2)}).join(' ');
+  }
+  function graph(){
+    const data=state.data?.timeframes?.[state.timeframe],candles=data?.candles;
+    if(!candles?.length)return '<p class="nd-wt-wait">No historical oscillator candles available.</p>';
+    const x0=44,y0=15,w=695,h=180,y=(v)=>y0+(100-v)/200*h;
+    const x=(i)=>x0+i*w/(candles.length-1);
+    const levels=[60,53,0,-53,-60].map(v=>'<line x1="'+x0+'" x2="'+(x0+w)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="'+(v===0?'#586069':'#343940')+'" stroke-dasharray="'+(v===0?'none':'4 5')+'" opacity=".8"/>'+
+       '<text x="37" y="'+(y(v)+4)+'" fill="#929aa4" font-size="11" text-anchor="end">'+(v>0?'+':'')+v+'</text>').join('');
+    const ticks=[0,12,24,36,47].map((i,n)=>'<text x="'+x(i)+'" y="226" text-anchor="'+(n===0?'start':n===4?'end':'middle')+'" fill="#a0a8b1" font-size="12">'+date(candles[i].endET)+'</text>').join('');
+    const dividers=candles.map((v,i)=>i>0&&v.startET.slice(0,10)!==candles[i-1].startET.slice(0,10)?
+      '<line x1="'+x(i)+'" x2="'+x(i)+'" y1="'+y0+'" y2="'+(y0+h)+'" stroke="#41464c" stroke-dasharray="2 5" opacity=".52"/>':'').join('');
+    const marks=candles.map((c,i)=>{
+      if(!c.cross)return '';
+      const positive=c.cross==='bullish',v=Number(c.wt1);
+      return '<circle cx="'+x(i)+'" cy="'+y(v)+'" r="4.5" fill="#121518" stroke="'+(positive?'#34d399':'#fb7185')+'" stroke-width="2"/>';
+    }).join('');
+    const touch=candles.map((c,i)=>'<rect x="'+(x(i)-w/(candles.length-1)/2)+'" y="'+y0+'" width="'+(w/(candles.length-1))+'" height="'+h+'" fill="transparent"><title>'+
+      safe(date(c.endET,true)+' ET | WT1 '+fixed(c.wt1,2)+' | WT2 '+fixed(c.wt2,2)+(c.cross?' | '+c.cross+' crossover':'') )+'</title></rect>').join('');
+    return '<svg class="nd-wt-plot" role="img" aria-label="NVDA WaveTrend '+state.timeframe.toUpperCase()+' oscillator; green WT1, red WT2, confirmed bullish and bearish crossovers" viewBox="0 0 760 239" preserveAspectRatio="xMidYMid meet">'+
+      levels+dividers+'<path d="'+path(candles,'wt1',x0,y0,w,h)+'" stroke="#34d399" fill="none" stroke-width="2.5" stroke-linejoin="round"/>'+
+      '<path d="'+path(candles,'wt2',x0,y0,w,h)+'" stroke="#fb7185" fill="none" stroke-width="2.5" stroke-linejoin="round"/>'+
+      marks+ticks+touch+'</svg>';
+  }
+  function interpretation(){
+    const a=state.data?.timeframes?.['4h']?.latest,b=state.data?.timeframes?.['8h']?.latest;
+    if(!a||!b)return 'Waiting for independently published WaveTrend research.';
+    const four=condition(a),eight=condition(b);
+    if(four===eight)return 'Both timeframes are '+four.toLowerCase()+' (WT1 '+(four==='Bullish'?'above':'below')+' WT2). '+
+      (four==='Bearish'?'A confirmed green crossover would be needed before 4H turns bullish.':'A confirmed red crossover would signal 4H momentum weakening.');
+    return four==='Bullish'?'4H momentum has turned bullish while the 8H trend remains bearish — a recovery attempt, not full alignment.':
+      '4H momentum has turned bearish while the 8H trend remains bullish — near-term momentum weakening.';
+  }
+  function update(){
+    const root=document.getElementById('nd-wave-trend');
+    if(!root)return;
+    const existing=root.querySelector('.nd-wt-panels');
+    if(existing)existing.innerHTML=panel('4h')+panel('8h');
+    const graphNode=root.querySelector('.nd-wt-chart');
+    if(graphNode)graphNode.innerHTML=graph();
+    const status=root.querySelector('.nd-wt-alignment'),a=state.data?.timeframes?.['4h']?.latest,b=state.data?.timeframes?.['8h']?.latest;
+    if(status)status.textContent=a&&b?(condition(a)===condition(b)?condition(a)+' alignment':'Mixed momentum'):'Research unavailable';
+    const analysis=root.querySelector('.nd-wt-interpretation');
+    if(analysis)analysis.textContent=interpretation();
+    const freshness=root.querySelector('.nd-wt-freshness');
+    if(freshness)freshness.textContent=state.data?.historicalDataEndET?'Data through '+date(state.data.historicalDataEndET,true)+' ET · Research only':'Research feed unavailable';
+    root.querySelectorAll('[data-nd-wt-tf]').forEach(btn=>{
+      btn.setAttribute('aria-pressed',String(btn.dataset.ndWtTf===state.timeframe));
+      btn.classList.toggle('active',btn.dataset.ndWtTf===state.timeframe);
+    });
+  }
+  async function load(){
+    if(state.loading)return state.loading;
+    state.loading=(async()=>{
+      try{
+        const response=await fetch('data/nvda-wavetrend.json?t='+Date.now(),{cache:'no-store'});
+        if(!response.ok)throw Error('HTTP '+response.status);
+        const data=await response.json();
+        if(data.symbol!=='NVDA'||!data.timeframes?.['4h']?.candles?.length||!data.timeframes?.['8h']?.candles?.length)throw Error('Unexpected WaveTrend schema');
+        state.data=data;
+      }catch(error){console.warn('NVDA WaveTrend research unavailable:',error)}
+      update();
+    })();
+    try{await state.loading}finally{state.loading=null}
+  }
+  document.addEventListener('click',e=>{
+    const btn=e.target.closest('[data-nd-wt-tf]');
+    if(!btn||!btn.closest('#nd-wave-trend'))return;
+    state.timeframe=btn.dataset.ndWtTf;
+    // The selector affects only the oscillator and selected button.
+    const root=document.getElementById('nd-wave-trend');
+    root.querySelector('.nd-wt-chart').innerHTML=graph();
+    root.querySelectorAll('[data-nd-wt-tf]').forEach(b=>{b.classList.toggle('active',b===btn);b.setAttribute('aria-pressed',String(b===btn))});
+  });
+  window.NDWaveTrend={load,update};
+})();
