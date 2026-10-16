@@ -9,6 +9,7 @@ on:
       - 'public/index.html'
       - 'public/nvda-wavetrend.js'
       - '.github/workflows/publish-nvda-wavetrend.yml'
+      - 'tests/test_nvda_wavetrend_browser.cjs'
 permissions:
   contents: write
 concurrency:
@@ -24,6 +25,7 @@ jobs:
         run: |
           python -m py_compile scripts/publish_nvda_wavetrend.py
           node --check public/nvda-wavetrend.js
+          node tests/test_nvda_wavetrend_browser.cjs
           python - <<'PY'
           from html.parser import HTMLParser
           from pathlib import Path
