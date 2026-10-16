@@ -594,7 +594,7 @@ function render(d){
   const ndWaveTrendCard='<section class="nd-wt-card" id="nd-wave-trend" aria-label="NVDA WaveTrend technical analysis">'+
     '<div class="nd-wt-header"><div><h3>NVDA WaveTrend</h3><small>WT Cross LB · Confirmed signals</small></div><span class="nd-wt-alignment">Loading research</span></div>'+
     '<div class="nd-wt-panels"><div class="nd-wt-wait">Loading NVDA historical WaveTrend…</div></div>'+
-    '<div class="nd-wt-chart-head"><b>WaveTrend oscillator · Last 48 candles</b><div class="nd-wt-selector" role="group" aria-label="Oscillator timeframe"><button type="button" data-nd-wt-tf="4h" class="active" aria-pressed="true">4H</button><button type="button" data-nd-wt-tf="8h" aria-pressed="false">8H</button></div></div>'+
+    '<div class="nd-wt-chart-head"><b>WaveTrend oscillator · Last 32 candles</b><div class="nd-wt-selector" role="group" aria-label="Oscillator timeframe"><button type="button" data-nd-wt-tf="4h" class="active" aria-pressed="true">4H</button><button type="button" data-nd-wt-tf="8h" aria-pressed="false">8H</button></div></div>'+
     '<div class="nd-wt-chart-wrap"><div class="nd-wt-chart" aria-live="polite"><p class="nd-wt-wait">Loading oscillator…</p></div><div class="nd-wt-chart-legend"><span><i style="background:#34d399"></i>WT1</span><span><i style="background:#fb7185"></i>WT2</span><span>● Confirmed cross</span></div></div>'+
     '<div class="nd-wt-summary"><b>NasDecode interpretation</b><span class="nd-wt-interpretation">Loading research…</span></div>'+
     '<div class="nd-wt-bottom"><span class="nd-wt-freshness">Research feed pending</span><span>Not scored</span></div></section>'; 
@@ -999,4 +999,4 @@ document.addEventListener('visibilitychange',async()=>{
   if(!document.hidden){const d=await load();await loadLiveOil();await loadAnalysis(d);scheduleAutoRefresh()}
 });
 loadChartHistory();startLiveOilPolling();(async()=>{const d=await load();await loadLiveOil();await loadAnalysis(d);scheduleAutoRefresh()})();
-</script><script src="nvda-wavetrend.js?v=1"></script></body></html>
+</script><script src="nvda-wavetrend.js?v=2"></script></body></html>
