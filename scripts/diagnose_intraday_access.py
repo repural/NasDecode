@@ -5,6 +5,7 @@ Reads the GitHub Actions secret at runtime; never prints a key, response body, o
 import datetime as dt
 import json
 import os
+import time
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -43,7 +44,11 @@ def compare(now=None,request=None):
         return out
     request=request or probe
     for symbol in SYMBOLS:
-        out["results"][symbol]={label:request(symbol,day,key) for label,day in days.items()}
+        out["results"][symbol]={}
+        for label,day in days.items():
+            if request is probe and (symbol!=SYMBOLS[0] or label!="olderTradingDay"):
+                time.sleep(12.5)  # Respect the free-tier five-requests/minute rate limit.
+            out["results"][symbol][label]=request(symbol,day,key)
     out["status"]="completed"
     return out
 
