@@ -18,6 +18,12 @@ jobs:
         run: |
           python -m py_compile scripts/collect_intraday_avwap.py
           python -m unittest discover -s tests -p test_intraday_avwap.py -v
+      - name: Compare historical and current Massive access
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: |
+          python scripts/diagnose_intraday_access.py
       - name: Collect intraday observations during NY regular trading
         env:
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
