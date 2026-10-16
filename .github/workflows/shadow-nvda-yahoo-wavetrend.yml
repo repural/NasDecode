@@ -1,0 +1,49 @@
+name: Shadow NVDA Yahoo WaveTrend
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/shadow_nvda_yahoo_wavetrend.py'
+      - 'tests/test_shadow_nvda_yahoo_wavetrend.py'
+      - '.github/workflows/shadow-nvda-yahoo-wavetrend.yml'
+  schedule:
+    # Every two hours on weekdays, spanning US extended hours across DST.
+    - cron: '17 9-23/2 * * 1-5'
+    - cron: '17 1 * * 2-6'
+permissions:
+  contents: write
+concurrency:
+  group: nvda-yahoo-wavetrend-shadow
+  cancel-in-progress: false
+jobs:
+  shadow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate and test isolated research
+        run: |
+          python -m compileall -q scripts/shadow_nvda_yahoo_wavetrend.py
+          python -m unittest discover -s tests -p test_shadow_nvda_yahoo_wavetrend.py -v
+      - name: Calculate Yahoo shadow against Massive history
+        run: python -m scripts.shadow_nvda_yahoo_wavetrend
+      - name: Upload shadow report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nvda-yahoo-wavetrend-shadow
+          path: data/research/nvda-wavetrend-yahoo-shadow.json
+          if-no-files-found: warn
+      - name: Commit shadow report, never public data
+        run: |
+          git config user.name 'nasdecode-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add data/research/nvda-wavetrend-yahoo-shadow.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'Record NVDA Yahoo WaveTrend shadow'
+          for i in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push; then exit 0; fi
+          done
+          exit 1
