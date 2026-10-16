@@ -18,7 +18,7 @@ class IntradayAccessTests(unittest.TestCase):
         now=dt.datetime(2026,10,16,9,40,tzinfo=ZoneInfo("America/New_York"))
         with patch.dict(os.environ,{"MASSIVE_API_KEY":"dummy"}):
             result=compare(now,request=stub)
-        self.assertEqual(result["dates"],{"olderTradingDay":"2026-10-08",
+        self.assertEqual(result["dates"],{"olderTradingDay":"2026-10-09",
                                            "previousTradingDay":"2026-10-15",
                                            "currentSession":"2026-10-16"})
         self.assertEqual(len(calls),6)
