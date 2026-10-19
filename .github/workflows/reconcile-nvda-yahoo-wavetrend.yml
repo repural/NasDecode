@@ -1,0 +1,69 @@
+name: Reconcile NVDA Yahoo Against Massive
+on:
+  workflow_run:
+    workflows:
+      - Daily NVDA WaveTrend Incremental Refresh
+    types: [completed]
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/reconcile_nvda_yahoo_wavetrend.py'
+      - 'tests/test_reconcile_nvda_yahoo_wavetrend.py'
+      - '.github/workflows/reconcile-nvda-yahoo-wavetrend.yml'
+permissions:
+  contents: write
+concurrency:
+  group: nvda-yahoo-wt-reconciliation
+  cancel-in-progress: false
+jobs:
+  reconcile:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - name: Validate offline reconciliation
+        run: |
+          python -m py_compile scripts/reconcile_nvda_yahoo_wavetrend.py
+          python -m unittest discover -s tests -p 'test_reconcile_nvda_yahoo_wavetrend.py' -v
+      - name: Reconcile and commit only research shadow report
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name nasdecode-bot
+          git config user.email actions@users.noreply.github.com
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+            python -m scripts.reconcile_nvda_yahoo_wavetrend
+            git add data/research/nvda-wavetrend-yahoo-shadow.json
+            if git diff --cached --quiet; then
+              echo 'No shadow report to update'
+              exit 0
+            fi
+            git commit -m 'Reconcile saved Yahoo WaveTrend against Massive'
+            if git push origin HEAD:main; then
+              echo 'Offline reconciliation saved'
+              exit 0
+            fi
+          done
+          exit 1
+      - name: Verify resulting reconciliation
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("data/research/nvda-wavetrend-yahoo-shadow.json")
+          if p.exists():
+              doc=json.loads(p.read_text())
+              for tf, stats in doc.get("reconciliation",{}).items():
+                  print(tf, "matched:",stats["matchedCandles"],
+                        "cross disagreements:",stats["crossDisagreements"],
+                        "unmatched:",stats.get("unmatchedYahooCandles"))
+          else:
+              print("No research shadow file yet")
+          PY
