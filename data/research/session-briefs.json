@@ -3761,17 +3761,68 @@
             "status": "complete",
             "narrativeDeliveredBeforeWrite": true
           },
+          "verifiedAt": "2026-10-19T21:40:51Z",
           "sourceCommit": {
-            "status": "pending"
+            "status": "verified",
+            "sha": "f614d53d464ae69f886e42b7c981c628a41c9118",
+            "immutableCommitReadMatched": true
           },
           "publicRepository": {
-            "status": "pending"
+            "status": "verified",
+            "blobSha": "d8c40e439d52eb1c17f41945ae4365be036cc0b6",
+            "allFourCompleteRecordsMatched": true
+          },
+          "publisher": {
+            "status": "success",
+            "runUrl": "https://github.com/repural/NasDecode/actions/runs/39328817994",
+            "jobId": 118321467074,
+            "logsInspected": true,
+            "publicCommitShortSha": "a9935d6"
           },
           "liveEndpoint": {
             "status": "unverified",
-            "lastError": "Earlier check returned HTTP403; current check pending"
+            "url": "https://nasdecode.com/data/session-research.json",
+            "httpStatus": 403,
+            "error": "HTTP Error 403: Forbidden",
+            "checkedDuringExecution": true
           },
-          "notes": "publicationStatus published means narrative eligibility, not verified deployment. Delivery-time status table preserved unchanged."
+          "wwwDiagnostic": {
+            "status": "unverified",
+            "url": "https://www.nasdecode.com/data/session-research.json",
+            "httpStatus": 403,
+            "error": "HTTP Error 403: Forbidden"
+          },
+          "allSessionStatus": {
+            "premarket": {
+              "delivery": "delivered earlier; delayed retrospective",
+              "source": "verified",
+              "publicRepository": "verified",
+              "live": "unverified HTTP403; earlier successful match is historical only"
+            },
+            "early_market": {
+              "delivery": "retrospective recovery delivered before write",
+              "source": "verified",
+              "sourceCommitSha": "9a621fcf9e249afc7c415661442e9b4aa5b918cc",
+              "publicRepository": "verified",
+              "publisherRunUrl": "https://github.com/repural/NasDecode/actions/runs/39329077545",
+              "live": "unverified HTTP403"
+            },
+            "mid_market": {
+              "delivery": "retrospective recovery delivered before write",
+              "source": "verified",
+              "sourceCommitSha": "fb4f2798cac25d97edd09ecd84019b5d07ff098d",
+              "publicRepository": "verified",
+              "publisherRunUrl": "https://github.com/repural/NasDecode/actions/runs/39329259671",
+              "live": "unverified HTTP403"
+            },
+            "near_close": {
+              "delivery": "delayed retrospective post-close delivered before write",
+              "source": "verified",
+              "publicRepository": "verified",
+              "live": "unverified HTTP403"
+            }
+          },
+          "notes": "Independent immutable source checks and complete main source/public archive comparison passed for all four records before this receipt. All prior unrelated records preserved. Current canonical and www checks failed HTTP403; no live success asserted. Publication workflow logs inspected and successful; blocked stage is live endpoint read, not source write or public JSON generation. Narrative and delivery-time tables unchanged. Receipt propagation verified separately; no on-time reliability inferred."
         },
         "retrievalNotes": [
           "Sources researched2026-10-19T21:33:35Z through21:34:44Z. Individual retrieval instants not captured; retrievedAt null. Individual quote times retained when exposed, daily/reference observation times null.",
