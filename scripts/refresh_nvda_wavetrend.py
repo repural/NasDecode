@@ -17,9 +17,9 @@ SOURCE=Path("data/research/nvda-wavetrend.json")
 REPORT=Path("audit-output/nvda-wavetrend-refresh.json")
 
 
-def refresh(document, bars, checked_at):
-    if document.get("symbol") != "NVDA" or document.get("fetchErrors"):
-        raise ValueError("Cannot incrementally refresh invalid NVDA research source")
+def refresh(document, bars, checked_at, symbol="NVDA"):
+    if document.get("symbol") != symbol or document.get("fetchErrors"):
+        raise ValueError("Cannot incrementally refresh invalid " + symbol + " research source")
     if document.get("timeframes",{}).keys() != {"4h","8h"}:
         raise ValueError("Missing 4H or 8H historical series")
     result=json.loads(json.dumps(document))

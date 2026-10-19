@@ -1,0 +1,72 @@
+name: Daily SOXL WaveTrend Analysis and Publication
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/refresh_soxl_wavetrend.py'
+      - 'scripts/publish_soxl_wavetrend.py'
+      - 'tests/test_soxl_wavetrend.py'
+      - 'tests/test_wavetrend_widgets.cjs'
+      - 'public/nvda-wavetrend.js'
+      - '.github/workflows/daily-soxl-wavetrend.yml'
+  schedule:
+    # Prior completed U.S. session, using the historical Massive entitlement.
+    - cron: '30 12 * * 2-6'
+permissions:
+  contents: write
+concurrency:
+  group: nasdecode-daily-soxl-wt
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify SOXL analysis and independent browser selectors
+        run: |
+          python -m py_compile scripts/refresh_soxl_wavetrend.py scripts/publish_soxl_wavetrend.py
+          python -m unittest discover -s tests -p test_soxl_wavetrend.py -v
+          python -m unittest discover -s tests -p test_refresh_nvda_wavetrend.py -v
+          node tests/test_nvda_wavetrend_browser.cjs
+          node tests/test_wavetrend_widgets.cjs
+      - name: Refresh completed SOXL historical candles
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: python -m scripts.refresh_soxl_wavetrend
+      - name: Recalculate comparable backtest and publish current analysis
+        run: |
+          python scripts/backtest_wavetrend.py --input data/research/soxl-wavetrend.json --output data/research/soxl-wavetrend-backtest.json
+          python -m scripts.publish_soxl_wavetrend
+      - name: Save SOXL research and public feed together
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name nasdecode-bot
+          git config user.email actions@users.noreply.github.com
+          mkdir -p /tmp/soxl-wt-output
+          cp data/research/soxl-wavetrend.json /tmp/soxl-wt-output/source.json
+          cp data/research/soxl-wavetrend-backtest.json /tmp/soxl-wt-output/backtest.json
+          cp public/data/soxl-wavetrend.json /tmp/soxl-wt-output/feed.json
+          for attempt in 1 2 3 4; do
+            git fetch origin main
+            git reset --hard origin/main
+            # Do not overwrite a newer research snapshot from another workflow.
+            python - <<'PY'
+          import json
+          from pathlib import Path
+          incoming = json.loads(Path('/tmp/soxl-wt-output/source.json').read_text())
+          current = json.loads(Path('data/research/soxl-wavetrend.json').read_text())
+          if current['historicalDataEndET'] > incoming['historicalDataEndET']:
+              raise SystemExit('Newer SOXL research exists; refusing stale replacement')
+          PY
+            cp /tmp/soxl-wt-output/source.json data/research/soxl-wavetrend.json
+            cp /tmp/soxl-wt-output/backtest.json data/research/soxl-wavetrend-backtest.json
+            cp /tmp/soxl-wt-output/feed.json public/data/soxl-wavetrend.json
+            git add data/research/soxl-wavetrend.json data/research/soxl-wavetrend-backtest.json public/data/soxl-wavetrend.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'Update confirmed SOXL WaveTrend analysis and historical simulation'
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
