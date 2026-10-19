@@ -28,6 +28,29 @@ jobs:
         env:
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
         run: python scripts/research_soxl_wavetrend.py --days 365
+      - name: Verify SOXL historical coverage and candle integrity
+        run: |
+          python - <<'PYCODE'
+          import json
+          import math
+          from collections import Counter
+          from pathlib import Path
+          doc = json.loads(Path("data/research/soxl-wavetrend.json").read_text())
+          assert doc["symbol"] == "SOXL" and not doc["fetchErrors"]
+          summaries = []
+          for tf, expected in (("4h", 48), ("8h", 96)):
+              series = doc["timeframes"][tf]
+              rows = series["candles"]
+              starts = [row["startET"] for row in rows]
+              assert starts == sorted(set(starts)), "Duplicate or unsorted candles: " + tf
+              assert len(rows) == series["candleCount"] and len(rows) > 100
+              assert all(row["underlying5mBars"] == expected for row in rows), "Incomplete source bars: " + tf
+              assert all(all(math.isfinite(row[k]) and row[k] > 0 for k in ("open", "high", "low", "close")) for row in rows)
+              assert all(row["low"] <= min(row["open"], row["close"]) <= max(row["open"], row["close"]) <= row["high"] for row in rows)
+              summaries.append(f"{tf}: {len(rows)} candles; {starts[0]} through {rows[-1]['endET']}; {len(Counter(x[:10] for x in starts))} sessions")
+          assert doc["timeframes"]["4h"]["lastEndET"] == doc["timeframes"]["8h"]["lastEndET"]
+          print("\n".join(summaries))
+          PYCODE
       - name: Simulate both SOXL strategies and hold comparison
         run: python scripts/backtest_wavetrend.py --input data/research/soxl-wavetrend.json --output data/research/soxl-wavetrend-backtest.json
       - name: Upload complete SOXL WaveTrend and backtest as recoverable artifacts
