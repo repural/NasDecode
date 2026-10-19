@@ -15,11 +15,12 @@ text=path.read_text(encoding='utf-8')
 required=(
     "categoryHeading('Technical Analysis'",
     "ndWaveTrendCard",
+    "soxlWaveTrendCard",
     "nvda-wavetrend.js",
 )
 missing=[token for token in required if token not in text]
 if missing:
-    raise SystemExit("Canonical dashboard template is missing NVDA Technical Analysis: "+", ".join(missing))
+    raise SystemExit("Canonical dashboard template is missing WaveTrend Technical Analysis: "+", ".join(missing))
 
 tag='<script src="session-analysis.js?v=2"></script>'
 if tag not in text:
