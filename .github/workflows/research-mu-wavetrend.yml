@@ -1,0 +1,53 @@
+name: Research MU WaveTrend and Companion Indicators
+on:
+  workflow_dispatch:
+  push:
+    branches: ['research/wt-timeframe-comparison-2026-10-20']
+    paths:
+      - 'scripts/audit_mu_wavetrend.py'
+      - '.github/workflows/research-mu-wavetrend.yml'
+permissions:
+  contents: write
+concurrency:
+  group: nasdecode-mu-wt-research
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate unchanged simulation rules and collector
+        run: |
+          python -m compileall -q scripts tests
+          python -m unittest discover -s tests -p '*wavetrend*.py' -v
+      - name: Collect one year of adjusted MU five-minute history
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: python -m scripts.research_nvda_wavetrend --symbol MU --days 365
+      - name: Verify MU coverage, warm-up and OHLC integrity
+        run: python -m scripts.audit_mu_wavetrend
+      - name: Run six timeframe strategies with identical costs
+        run: python -m scripts.compare_wavetrend_timeframes --symbols MU --end-date 2026-10-16 --output-prefix mu-wavetrend-timeframe-comparison
+      - name: Run frozen companion experiments and period diagnostics
+        run: python -m scripts.research_wavetrend_companions --symbols MU --comparison-prefix mu-wavetrend-timeframe-comparison --output-prefix mu-wavetrend-companion-comparison
+      - name: Preserve MU artifacts even if validation fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mu-wavetrend-research
+          path: data/research/mu-wavetrend*
+          retention-days: 30
+      - name: Save validated MU research on the research branch
+        run: |
+          set -euo pipefail
+          git config user.name nasdecode-bot
+          git config user.email actions@users.noreply.github.com
+          git add data/research/mu-wavetrend*
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Persist MU historical WT, timeframe comparisons and frozen companion simulations'
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin research/wt-timeframe-comparison-2026-10-20
+            if git push origin HEAD:research/wt-timeframe-comparison-2026-10-20; then exit 0; fi
+          done
+          exit 1

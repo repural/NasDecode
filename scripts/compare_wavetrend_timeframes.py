@@ -5,6 +5,7 @@ strategies, higher timeframes gate entries and exits use the lower-timeframe red
 Standalone strategies use their own timeframe's bearish crossover for exits.
 """
 import bisect
+import argparse
 import datetime as dt
 import hashlib
 import json
@@ -328,8 +329,13 @@ def render_report(report):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--symbols', nargs='+', choices=('NVDA', 'SOXL', 'MU'), default=['NVDA', 'SOXL'])
+    parser.add_argument('--output-prefix', default='wavetrend-timeframe-comparison')
+    parser.add_argument('--end-date')
+    args = parser.parse_args()
     inputs, datasets = {}, {}
-    for symbol in ('NVDA', 'SOXL'):
+    for symbol in args.symbols:
         paths = [Path(f'data/research/{symbol.lower()}-wavetrend.json'),
                  Path(f'data/history/{symbol.lower()}-daily.json')]
         intraday, daily = [json.loads(p.read_text()) for p in paths]
@@ -345,6 +351,8 @@ def main():
                             'extended': ext, 'excluded': excluded,
                             'intradayEndET': four[-1]['endET'], 'dailyEndET': one_day[-1]['endET']}
     end = min(min(d['dailyEndET'][:10], d['intradayEndET'][:10]) for d in datasets.values())
+    if args.end_date:
+        end = min(end, args.end_date)
     ext_warm = max(next(c['endET'][:10] for c in d['extended'] if c['isWarm']) for d in datasets.values())
     sensitivity_start = (dt.date.fromisoformat(ext_warm) + dt.timedelta(days=1)).isoformat()
     report = {'schemaVersion': 1, 'researchOnly': True,
@@ -368,7 +376,7 @@ def main():
                   'Retrospective 2026 comparison, not an untouched prospective holdout or proof of predictive advantage. No rule, threshold or WT parameter was selected by maximizing returns.',
                   'The daily archive ends October 16 although intraday history reaches October 19. All variants stop October 16 for a common fully covered period.',
                   'Daily regular-session and extended intraday histories are different session definitions; the shorter session-matched sensitivity isolates this issue.',
-                  'Extended-hours opens are idealized fills. Friction scenarios do not model varying spreads, market impact, liquidity, dividends, taxes or cash interest. SOXL leverage is embedded in its price series.',
+                  'Extended-hours opens are idealized fills. Friction scenarios do not model varying spreads, market impact, liquidity, dividends, taxes or cash interest. Leveraged ETF leverage, where applicable, is embedded in its price series.',
                   'Rebound windows can overlap and are descriptive event counts, not independent statistical trials. A missed start may be entered later; complete misses are shown separately.',
                   'TradingView candle alignment and numerical equivalence remain unverified. Only fully completed stored bars are used.'],
               'inputs': inputs, 'symbols': {}}
@@ -384,9 +392,11 @@ def main():
             'sessionSensitivityStart': sensitivity_start,
             'regularDailySameWindow': evaluate(*args, d['daily'], sensitivity_start, end),
             'extendedDailySameWindow': evaluate(*args, d['extended'], sensitivity_start, end)}
-    OUTPUT.write_text(json.dumps(report, separators=(',', ':')) + '\n')
-    REPORT.write_text(render_report(report))
-    print(REPORT.read_text())
+    output = Path('data/research') / (args.output_prefix + '.json')
+    report_path = output.with_suffix('.md')
+    output.write_text(json.dumps(report, separators=(',', ':')) + '\n')
+    report_path.write_text(render_report(report))
+    print(report_path.read_text())
 
 
 if __name__ == '__main__':

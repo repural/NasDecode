@@ -71,10 +71,12 @@ def wavetrend(candles):
     return rows
 
 
-def fetch_bars(start, end, key):
+def fetch_bars(start, end, key, symbol="NVDA"):
     """Fetch all pages for a dated range with plan-aware throttling and no truncation."""
     global LAST_FETCH
-    url=BASE + start.isoformat()+"/"+end.isoformat()+"?adjusted=true&sort=asc&limit=5000"
+    if symbol not in ("NVDA", "SOXL", "MU"):
+        raise ValueError("Unsupported research symbol")
+    url=BASE.replace('/NVDA/', '/' + symbol + '/') + start.isoformat()+"/"+end.isoformat()+"?adjusted=true&sort=asc&limit=5000"
     rows=[]
     seen=set()
     for page in range(30):
@@ -114,7 +116,7 @@ def fetch_bars(start, end, key):
     return [],"too_many_pages"
 
 
-def load_extended_bars(days, today, key):
+def load_extended_bars(days, today, key, symbol="NVDA"):
     start=today-dt.timedelta(days=days)
     end=today-dt.timedelta(days=1)  # no current-session entitlement
     all_raw=[]
@@ -122,7 +124,7 @@ def load_extended_bars(days, today, key):
     cursor=start
     while cursor<=end:
         chunk_end=min(cursor+dt.timedelta(days=19),end)
-        raw,status=fetch_bars(cursor,chunk_end,key)
+        raw,status=fetch_bars(cursor,chunk_end,key,symbol)
         print(cursor,chunk_end,status,len(raw),flush=True)
         if status!="ok": errors.append({"from":cursor.isoformat(),"to":chunk_end.isoformat(),"status":status})
         all_raw.extend(raw)
@@ -184,12 +186,12 @@ def crossover_records(rows):
     } for x in rows if x["cross"]]
 
 
-def build(days=365, now=None):
+def build(days=365, now=None, symbol="NVDA"):
     now=now or dt.datetime.now(NY)
     key=os.environ.get("MASSIVE_API_KEY","").strip()
     if not key: raise RuntimeError("MASSIVE_API_KEY missing; no fabricated signals")
-    bars,errors=load_extended_bars(days,now.date(),key)
-    output={"schemaVersion":2,"symbol":"NVDA","source":"Massive adjusted 5-minute stock aggregates",
+    bars,errors=load_extended_bars(days,now.date(),key,symbol)
+    output={"schemaVersion":2,"symbol":symbol,"source":"Massive adjusted 5-minute stock aggregates",
             "generatedET":now.isoformat(),"researchOnly":True,"scoringImpact":"none",
             "validationStatus":"not_yet_compared_to_TradingView",
             "session":"04:00-20:00 America/New_York incl extended-hours",
@@ -217,10 +219,11 @@ def build(days=365, now=None):
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--days",type=int,default=365)
-    p.add_argument("--output",default=str(OUT))
+    p.add_argument("--symbol",choices=("NVDA","SOXL","MU"),default="NVDA")
+    p.add_argument("--output")
     args=p.parse_args()
-    document=build(args.days)
-    out=Path(args.output)
+    document=build(args.days,symbol=args.symbol)
+    out=Path(args.output) if args.output else Path("data/research/"+args.symbol.lower()+"-wavetrend.json")
     out.parent.mkdir(parents=True,exist_ok=True)
     out.write_text(json.dumps(document,indent=2)+"\n")
     print(json.dumps({k:{"candles":v["candleCount"],"crosses":v["crossCount"],

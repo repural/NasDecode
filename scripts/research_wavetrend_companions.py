@@ -1,5 +1,6 @@
 """Frozen single-addition experiments around 4H WT. Research only, no optimization."""
 import datetime as dt
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -149,20 +150,28 @@ def render(report):
 
 
 def main():
-    previous = json.loads((ROOT / 'wavetrend-timeframe-comparison.json').read_text())
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--symbols', nargs='+', choices=('NVDA', 'SOXL', 'MU'), default=['NVDA', 'SOXL'])
+    parser.add_argument('--comparison-prefix', default='wavetrend-timeframe-comparison')
+    parser.add_argument('--output-prefix', default='wavetrend-companion-comparison')
+    args = parser.parse_args()
+    previous = json.loads((ROOT / (args.comparison_prefix + '.json')).read_text())
+    design_path = ROOT / (args.output_prefix.replace('-comparison', '-design') + '.json')
+    output = ROOT / (args.output_prefix + '.json')
+    report_path = output.with_suffix('.md')
     start, end = previous['commonStartDate'], previous['commonEndDate']
     # Freeze parameters and definitions before any simulation, never pick a best parameter from results.
     design = {'frozenAtET': dt.datetime.now(ZoneInfo('America/New_York')).isoformat(),
               'startDate': start, 'endDate': end, 'rules': RULES,
               'WT': [10, 21, 4], 'emaLength': 20, 'wilderLength': 14,
               'atrMultiplier': 2, 'costPerSide': COSTS, 'combinationSearch': False}
-    if DESIGN.exists():
-        frozen = json.loads(DESIGN.read_text())
+    if design_path.exists():
+        frozen = json.loads(design_path.read_text())
         if {k: v for k, v in frozen.items() if k != 'frozenAtET'} != {k: v for k, v in design.items() if k != 'frozenAtET'}:
             raise ValueError('Frozen design changed; use a separately versioned experiment')
         design = frozen
     else:
-        DESIGN.write_text(json.dumps(design, indent=2) + '\n')
+        design_path.write_text(json.dumps(design, indent=2) + '\n')
     report = {'schemaVersion': 1, 'researchOnly': True, 'design': design,
               'startDate': start, 'endDate': end, 'sourceCommit': previous['sourceCommit'],
               'metricDefinitions': [
@@ -180,7 +189,7 @@ def main():
                   'Historic extended-hours opens are idealized fills. Costs are fixed friction scenarios, not a full liquidity/impact model. No cash interest, dividends or taxes are modeled.',
                   'The source is the frozen adjusted Massive 4H archive used in the prior comparison. WT and companion indicator numerical equivalence to TradingView is not independently verified.'],
               'inputs': {}, 'symbols': {}}
-    for symbol in ('NVDA', 'SOXL'):
+    for symbol in args.symbols:
         path = ROOT / f'{symbol.lower()}-wavetrend.json'
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
         if digest != previous['inputs'][str(path)]['sha256']:
@@ -199,9 +208,9 @@ def main():
         new = report['symbols'][symbol]['primary']['baseline']['cost10bps']
         if any(old[k] != new[k] for k in ('finalValue', 'executions', 'maxCloseDrawdownPct')):
             raise ValueError('Baseline does not reproduce previous comparison')
-    OUTPUT.write_text(json.dumps(report, separators=(',', ':')) + '\n')
-    REPORT.write_text(render(report))
-    print(REPORT.read_text())
+    output.write_text(json.dumps(report, separators=(',', ':')) + '\n')
+    report_path.write_text(render(report))
+    print(report_path.read_text())
 
 
 if __name__ == '__main__':
