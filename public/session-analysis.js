@@ -11,6 +11,31 @@
   const metricRe=/\b(NasDecode Score|Consolidation Risk|Opportunity Score|SOXL Buy Score|Inflation · Labor · Growth|Semiconductor Leadership|Mega-cap Leadership|Earnings AVWAP Leadership|S&P 500 50D Breadth|Nasdaq(?:-100| 100)?|SOXX|SOX|SMH|Semiconductor(?:s)?|Mega-cap(?:s)?|Market breadth|Breadth|VIX volatility|VIX|VXN|10Y Treasury(?: Yield)?|2Y Treasury(?: Yield)?|Treasury yields?|Treasuries|Fed(?: expectations)?|Federal Reserve|Options positioning|WTI|Brent|Oil|Core CPI|CPI|Core PCE|PCE|Payrolls?|Nonfarm payrolls?|Unemployment|Wages?|Average Hourly Earnings|ISM(?: Manufacturing| Services)?|PMI|Retail Sales|GDP)\b/gi;
   const analysisText=s=>esc(s).replace(metricRe,'<span class="analysis-metric">$1</span>');
 
+  // Escape-first Markdown renderer for published research. No raw HTML is trusted.
+  const mdInline=value=>{
+    let t=esc(value);
+    t=t.replace(/\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)/g,(_,label,url)=>'<a href="'+url.replace(/&amp;/g,'&')+'" target="_blank" rel="noopener noreferrer">'+label+'</a>');
+    t=t.replace(/\*\*([^*\n]+)\*\*/g,'<strong>$1</strong>').replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g,'<em>$1</em>').replace(/`([^`\n]+)`/g,'<code>$1</code>');
+    return t.replace(metricRe,'<span class="analysis-metric">$1</span>');
+  };
+  function researchMarkdown(value){
+    const lines=String(value??'').replace(/\r\n?/g,'\n').split('\n');
+    const result=[];let list='',table=[];
+    const flushList=()=>{if(list){result.push('</'+list+'>');list=''}};
+    const flushTable=()=>{if(!table.length)return;const rows=table.filter(x=>!/^\s*\|?\s*:?-{3,}/.test(x));if(rows.length){result.push('<div class="nd-research-table-wrap"><table class="nd-research-table">'+rows.map((line,i)=>'<tr>'+line.trim().replace(/^\||\|$/g,'').split('|').map(cell=>'<'+(i?'td':'th')+'>'+mdInline(cell.trim())+'</'+(i?'td':'th')+'>').join('')+'</tr>').join('')+'</table></div>')}table=[]};
+    for(const line of lines){
+      const t=line.trim();
+      if(t.includes('|')&&/^\|/.test(t)){flushList();table.push(t);continue}
+      flushTable();
+      if(!t){flushList();continue}
+      const heading=t.match(/^#{1,4}\s+(.+)$/);
+      if(heading){flushList();result.push('<h4 class="nd-research-heading">'+mdInline(heading[1])+'</h4>');continue}
+      const bullet=t.match(/^(?:[-*]\s+|\d+\.\s+)(.+)$/);
+      if(bullet){const kind=/^\d/.test(t)?'ol':'ul';if(list!==kind){flushList();result.push('<'+kind+'>');list=kind}result.push('<li>'+mdInline(bullet[1])+'</li>');continue}
+      flushList();result.push('<p>'+mdInline(t)+'</p>');
+    }
+    flushList();flushTable();return result.join('');
+  }
   function etParts(){
     const p=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());
     const g=t=>p.find(x=>x.type===t)?.value;
@@ -72,6 +97,13 @@
       .nd-summary-positive .nd-summary-value{color:#37d68b}
       @media(max-width:700px){.session-analysis-title h3{font-size:25px}.nd-analysis-summary{grid-template-columns:repeat(2,minmax(0,1fr))}.nd-analysis-summary-card{padding:14px 15px}}
       @media(max-width:440px){.nd-analysis-summary{grid-template-columns:1fr}.nd-analysis-summary-card{gap:7px}.nd-summary-value{font-size:20px}}
+      .session-tab-panel .nd-research-heading{font-size:17px;font-weight:670;line-height:1.4;margin:22px 0 10px;color:#f2f3f5}
+      .session-tab-panel .nd-research-table-wrap{max-width:950px;overflow-x:auto;margin:12px 0 20px;border:1px solid #373a3e;border-radius:9px}
+      .session-tab-panel .nd-research-table{border-collapse:collapse;width:100%;font-size:12px;line-height:1.55}
+      .session-tab-panel .nd-research-table th,.session-tab-panel .nd-research-table td{padding:10px 12px;border-bottom:1px solid #34373b;text-align:left;vertical-align:top}
+      .session-tab-panel .nd-research-table th{color:#edf0f3;background:#1b1d20;font-weight:650}
+      .session-tab-panel a{color:#82cbd0;text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere}
+      .session-tab-panel p{overflow-wrap:anywhere}
       .session-tab-panel .bias{font-size:17px;font-weight:590;line-height:1.45;margin:0 0 10px;color:#f3f4f5}
       .session-tab-panel h3{font-size:15px;font-weight:680;margin:22px 0 11px}
       .session-tab-panel ol{padding-left:24px;margin:0 0 18px;max-width:120ch}
@@ -156,10 +188,10 @@
     const def=stages.find(s=>s.key===key);
     const snapshot=sessionData?.records?.[day]?.[key];
     const checkpoint=snapshot?'<div class="session-analysis-metrics">'+[metric('Nasdaq',snapshot.nasdaqChangePct,'%'),metric('QQQ',snapshot.qqqChangePct,'%'),metric('Score',snapshot.nasdaqScore,' / 100')].join('')+'</div>':'';
-    const paras=(a.paragraphs||[]).map(p=>'<p>'+analysisText(p)+'</p>').join('');
-    const cats=(a.catalysts||[]).map(e=>'<li><b>'+analysisText(typeof e==='string'?e:e.title||'')+'</b>'+(e.detail?' — '+analysisText(e.detail):'')+'</li>').join('');
-    const changed=a.whatChanged?'<h4>What Changed</h4><p>'+analysisText(a.whatChanged)+'</p>':'';
-    const watch=(a.whatToWatch||[]).map(x=>'<p>'+analysisText(x)+'</p>').join('');
+    const paras=(a.paragraphs||[]).map(researchMarkdown).join('');
+    const cats=(a.catalysts||[]).map(e=>'<li><b>'+mdInline(typeof e==='string'?e:e.title||'')+'</b>'+(e.detail?' — '+mdInline(e.detail):'')+'</li>').join('');
+    const changed=a.whatChanged?'<h4>What Changed</h4>'+researchMarkdown(a.whatChanged):'';
+    const watch=(a.whatToWatch||[]).map(researchMarkdown).join('');
     const time=new Date(a.updatedET).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'});
     return {available:true,title:def.label+' Analysis',meta:'Research updated '+esc(time),body:summaryCards(a)+checkpoint+paras+changed+(cats?'<h3>Major Catalysts</h3><ol>'+cats+'</ol>':'')+(watch?'<h3>What to Watch</h3>'+watch:'')};
   }
