@@ -889,20 +889,47 @@ async function load(){update.disabled=true;update.textContent='Checking…';try{
 async function loadTodayWatch(){
   const node=document.getElementById('watchConditions');
   if(!node)return;
+  const day=nyDateKey();
+  const cleanMarkdown=s=>String(s||'').replace(/\[([^\]]+)\]\(https?:\/\/[^)]+\)/g,'$1').replace(/\*\*/g,'').replace(/\s+/g,' ').trim();
+  const itemsFromNarrative=s=>{
+    const match=String(s||'').match(/^## What to Watch Today\s*\n([\s\S]*?)(?=^## |$(?![\s\S]))/m);
+    if(!match)return [];
+    return match[1].split(/\n\s*(?=\d+\.\s)/).map(p=>cleanMarkdown(p.replace(/^\s*\d+\.\s*/,''))).filter(Boolean);
+  };
+  const renderItems=items=>items.map((item,i)=>'<div class="catalyst"><b>'+analysisText((i+1)+'. '+item.title)+'</b>'+(item.detail?'<div style="margin-top:5px">'+analysisText(item.detail)+'</div>':'')+'</div>').join('');
   try{
+    // Research owns the event selection; the quantitative premarket refresh does not.
+    const res=await fetch('data/session-research.json?t='+Date.now(),{cache:'no-store'});
+    if(res.ok){
+      const archive=await res.json(), session=archive.sessions?.[day]||{};
+      const research=session.premarket?.publicationStatus==='published'?session.premarket:null;
+      if(research){
+        const paragraphs=itemsFromNarrative(research.narrativeMarkdown);
+        if(paragraphs.length){
+          node.innerHTML=renderItems(paragraphs.map(p=>{
+            const cut=p.indexOf('. ');
+            return cut>0&&cut<120?{title:p.slice(0,cut+1),detail:p.slice(cut+2)}:{title:p,detail:''};
+          }));
+          return;
+        }
+        const catalysts=Array.isArray(research.catalysts)?research.catalysts.filter(x=>x?.title):[];
+        if(catalysts.length){
+          node.innerHTML=renderItems(catalysts.map(x=>({title:x.title,detail:x.detail||''})));
+          return;
+        }
+      }
+    }
+    // Explicit fallback, never mislabel the quantitative forecast as researched events.
     const response=await fetch('data/premarket.json?t='+Date.now(),{cache:'no-store'});
     if(!response.ok)throw new Error('Premarket HTTP '+response.status);
     const brief=await response.json();
-    const nyDate=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
-    if(brief.tradingDate!==nyDate){
+    if(brief.tradingDate!==day){
       node.innerHTML='<div class="muted">Today’s researched event watch is being prepared. Latest available brief: '+escHtml(brief.tradingDate||'unknown')+'.</div>';
       return;
     }
-    const entries=Array.isArray(brief.catalysts)?brief.catalysts:[];
-    const html=entries.map((e,i)=>'<div class="catalyst"><b>'+analysisText((i+1)+'. '+(e.title||'Event'))+'</b><div style="margin-top:5px">'+analysisText(e.detail||e.description||'')+'</div></div>').join('');
-    const extra=(brief.watchIntoOpen?'<div class="catalyst"><b>What I’d Watch Into the Open</b><div style="margin-top:5px">'+analysisText(brief.watchIntoOpen)+'</div></div>':'')+
-      (brief.keyTimes?'<div class="catalyst"><b>Key Times</b><div style="margin-top:5px">'+analysisText(brief.keyTimes)+'</div></div>':'');
-    node.innerHTML=html+extra||'<div class="muted">No researched events published for this session.</div>';
+    const entries=Array.isArray(brief.catalysts)?brief.catalysts.filter(x=>x?.title):[];
+    if(entries.length)node.innerHTML=renderItems(entries);
+    else node.innerHTML='<div class="muted">Today’s event research has not reached the decision frame. The quantitative market snapshot is available, but has no researched event list.</div>';
   }catch(e){
     node.innerHTML='<div class="muted">Today’s researched events are temporarily unavailable.</div>';
     console.warn('What to Watch research fetch failed',e);
