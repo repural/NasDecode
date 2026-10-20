@@ -1,0 +1,27 @@
+{
+  "frozenAtET": "2026-10-20T08:59:28.992558-04:00",
+  "startDate": "2026-01-01",
+  "endDate": "2026-10-16",
+  "rules": {
+    "baseline": "Enter while completed 4H WT1 > WT2; exit on completed 4H bearish crossover.",
+    "ema20": "Baseline entry AND completed 4H close > EMA(close,20). Baseline WT exit.",
+    "dmi14": "Baseline entry AND Wilder +DI(14) > -DI(14). Baseline WT exit.",
+    "dmi_adx": "DMI14 entry condition AND ADX(14) > its previous completed 4H value. Baseline WT exit.",
+    "atr_exit": "Baseline entries. Sell at next 4H open after either WT red cross or close < trailing stop. Stop = max(previous stop, highest completed high since entry - 2 * ATR(14)). After an ATR exit wait for a new WT green cross before re-entry; no intrabar stop execution.",
+    "price_confirmation": "Baseline entry AND close strictly above the most recent WT green crossover candle high in the current bullish phase. Re-evaluate at each completed close; red cross cancels setup. Baseline WT exit."
+  },
+  "WT": [
+    10,
+    21,
+    4
+  ],
+  "emaLength": 20,
+  "wilderLength": 14,
+  "atrMultiplier": 2,
+  "costPerSide": {
+    "zeroCosts": 0,
+    "cost10bps": 0.001,
+    "cost25bps": 0.0025
+  },
+  "combinationSearch": false
+}
