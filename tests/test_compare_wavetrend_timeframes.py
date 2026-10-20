@@ -90,6 +90,18 @@ class ComparisonTests(unittest.TestCase):
                 self.assertEqual(old['finalValue'], new['finalValue'])
                 self.assertEqual(old['numberOfExecutions'], new['executions'])
 
+    def test_eight_hour_daily_pair_waits_for_daily_and_ignores_four_hour_exit(self):
+        four = [dict(c) for c in self.four]
+        four[4]['cross'] = 'bearish'
+        eight = [dict(four[0], startET='2025-12-31T12:00:00-05:00', cross=None),
+                 dict(four[1], endET='2026-01-02T12:00:00-05:00', cross='bullish'),
+                 dict(four[3], endET='2026-01-02T20:00:00-05:00', cross=None)]
+        daily = [dict(four[0], endET='2025-12-31T16:00:00-05:00', wt1=-1),
+                 dict(four[1], endET='2026-01-02T16:00:00-05:00', wt1=1)]
+        r = simulate(four, higher=daily, signal=eight, initially_long=False)
+        self.assertEqual([e['action'] for e in r['executionLedger']], ['BUY'])
+        self.assertEqual(r['executionLedger'][0]['executedAtET'], '2026-01-02T16:00:00-05:00')
+
     def test_incomplete_extended_daily_is_excluded(self):
         daily, excluded = extended_daily(self.four[1:4])
         self.assertFalse(daily)

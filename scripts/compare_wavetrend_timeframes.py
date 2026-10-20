@@ -1,7 +1,7 @@
 """Causal, research-only WT timeframe comparison. Never changes live scores or feeds.
 
 All decisions use completed bars; all fills use the next 4H open. For paired
-strategies, higher timeframes gate entries and exits use the 4H red cross.
+strategies, higher timeframes gate entries and exits use the lower-timeframe red cross.
 Standalone strategies use their own timeframe's bearish crossover for exits.
 """
 import bisect
@@ -16,8 +16,8 @@ from zoneinfo import ZoneInfo
 from scripts.research_nvda_wavetrend import wavetrend
 
 NY = ZoneInfo('America/New_York')
-STRATEGIES = ('4h_alone', '8h_alone', '1d_alone', '4h_8h', '4h_1d')
-PAIR_STRATEGIES = ('4h_8h', '4h_1d')
+STRATEGIES = ('4h_alone', '8h_alone', '1d_alone', '4h_8h', '4h_1d', '8h_1d')
+PAIR_STRATEGIES = ('4h_8h', '4h_1d', '8h_1d')
 COSTS = {'zeroCosts': 0, 'cost10bps': .001, 'cost25bps': .0025}
 INITIAL = 10000
 OUTPUT = Path('data/research/wavetrend-timeframe-comparison.json')
@@ -200,7 +200,7 @@ def compact(value):
 
 def evaluate(four, eight, daily, start, end, initially_long=True, include_ledgers=False):
     answer = {}
-    configurations = ((four, None), (eight, None), (daily, None), (four, eight), (four, daily))
+    configurations = ((four, None), (eight, None), (daily, None), (four, eight), (four, daily), (eight, daily))
     for strategy, (signal, higher) in zip(STRATEGIES, configurations):
         answer[strategy] = {}
         for label, cost in COSTS.items():
@@ -216,11 +216,11 @@ def render_report(report):
              f"Common window: {report['commonStartDate']} to {report['commonEndDate']}. "
              'Daily filter uses adjusted regular-session OHLC; 4H/8H retain the existing 04:00–20:00 ET session.', '',
              'Initially invested at the last completed 2025 candle close, matching the earlier backtest. '
-             'For pairs, higher timeframe gates entry only and exits use the 4H bearish crossover. '
+             'For pairs, higher timeframe gates entry only and exits use the lower-timeframe bearish crossover (4H or 8H). '
              'Standalone 8H/1D use their own WT entries and bearish-cross exits. '
              'Every variant executes on the next available 4H open and is marked on the same 4H closes.', '']
     names = {'4h_alone': '4H alone', '8h_alone': '8H alone', '1d_alone': '1D alone',
-             '4h_8h': '4H + 8H', '4h_1d': '4H + 1D'}
+             '4h_8h': '4H + 8H', '4h_1d': '4H + 1D', '8h_1d': '8H + 1D'}
     for symbol, data in report['symbols'].items():
         lines += [f'### {symbol}', '',
                   '| Strategy | Return, no costs | Return, 0.10%/side | Return, 0.25%/side | Max drawdown, 0.10% | Losing entry trades | Missed rebound starts | Fully missed rebounds |',
@@ -244,11 +244,11 @@ def render_report(report):
                   '| Strategy | Daily session | Return, 0.10%/side | Max drawdown |', '|---|---|---:|---:|']
         for mode in ('regularDailySameWindow', 'extendedDailySameWindow'):
             for strategy, cases in data[mode].items():
-                if mode == 'extendedDailySameWindow' and strategy not in ('4h_1d', '1d_alone'):
+                if mode == 'extendedDailySameWindow' and strategy not in ('4h_1d', '1d_alone', '8h_1d'):
                     continue
                 r = cases['cost10bps']
                 session = 'Regular' if mode == 'regularDailySameWindow' else 'Extended'
-                lines.append(f"| {names[strategy]} | {session if strategy in ('4h_1d', '1d_alone') else '—'} | "
+                lines.append(f"| {names[strategy]} | {session if strategy in ('4h_1d', '1d_alone', '8h_1d') else '—'} | "
                              f"{r['returnPct']:+.2f}% | {r['maxCloseDrawdownPct']:.2f}% |")
         lines += ['']
     lines += ['## Interpretation', '']
@@ -271,7 +271,7 @@ def render_report(report):
               'Compare losing trades as a proportion of completed signal trades. '
               'Missed rebound starts include delayed entries and do not imply the entire rebound was untraded. '
               'Rebound windows are defined from 4H green crosses, so zero missed starts for 4H alone is by construction.', '',
-              'The paired strategies test a specific higher-timeframe entry gate, with unchanged 4H exits; '
+              'The paired strategies test a specific higher-timeframe entry gate, with lower-timeframe bearish-cross exits; '
               'the standalone strategies use their own timeframe exits. '
               'They do not measure every possible way to combine timeframes or establish universal predictive superiority. '
               'Session-matched and initial-position sensitivity results above show how dependent the findings are on those assumptions.', '',
@@ -309,8 +309,8 @@ def main():
                              'initialValue': INITIAL, 'costPerSide': COSTS,
                              'primaryReboundThresholdPct': 5, 'reboundForward4hBars': 20},
               'definitions': {
-                  'entry': 'Standalone strategies enter when their last completed 4H, 8H or daily WT is bullish while in cash. Pairs require bullish 4H AND last completed higher-timeframe WT bullish. If the higher timeframe confirms later while 4H remains bullish, entry is then allowed.',
-                  'exit': 'Standalone strategies sell on a new confirmed bearish crossover of their own timeframe. Pairs sell on a confirmed 4H bearish crossover; a higher-timeframe bearish turn alone does not trigger an exit.',
+                  'entry': 'Standalone strategies enter when their last completed 4H, 8H or daily WT is bullish while in cash. Pairs require bullish lower-timeframe WT (4H or 8H) AND last completed higher-timeframe WT bullish. If the higher timeframe confirms later while the lower timeframe remains bullish, entry is then allowed.',
+                  'exit': 'Standalone strategies sell on a new confirmed bearish crossover of their own timeframe. Pairs sell on a confirmed lower-timeframe bearish crossover (4H for 4H pairs; 8H for 8H + 1D); a higher-timeframe bearish turn alone does not trigger an exit.',
                   'timing': 'Decide at 4H close using only higher candles whose end timestamp is at or before that close; execute at the next available 4H open, never on the signal close.',
                   'costs': 'Apply identical friction to each buy and sell: 0%, 0.10%, or 0.25% per side. Initial inherited position and final open position are not forced-liquidated or charged entry/exit fees.',
                   'drawdown': 'Largest peak-to-trough portfolio decline measured at completed 4H closes, including initial capital. Does not capture intrabar drawdown.',
