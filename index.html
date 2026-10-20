@@ -950,8 +950,8 @@ async function renderEditorialAnalysis(){
  if(!record){root.innerHTML='<div class="nd-report-empty">No '+escape(stages.find(x=>x[0]===phase)[1])+' analysis was published for '+day+'. Missing reports are not treated as neutral market assessments.</div>';return}
  const bias=record.bias||'Unavailable',conf=record.confidence||'Unavailable',risk=record.eventRisk||'Unavailable';
  const raw=String(record.narrativeMarkdown||record.paragraphs?.join('\n\n')||'');
- const sectionMap={};let section='intro';
- for(const line of raw.split(/\r?\n/)){const h=line.match(/^##\s+(.+)$/);if(h){section=h[1].toLowerCase().trim();sectionMap[section]=[];}else{(sectionMap[section]??=[]).push(line)}}
+ const sectionMap={};let sectionName='intro';
+ for(const line of raw.split(/\r?\n/)){const h=line.match(/^##\s+(.+)$/);if(h){sectionName=h[1].toLowerCase().trim();sectionMap[sectionName]=[];}else{(sectionMap[sectionName]??=[]).push(line)}}
  const renderLines=lines=>{let out='',para=[],list=false;const flush=()=>{if(para.length){out+='<p>'+fmt(para.join(' '))+'</p>';para=[]}};for(let line of lines||[]){line=line.trim();if(!line){flush();if(list){out+='</ol>';list=false}continue}if(/^\d+[.)]\s+/.test(line)){flush();if(!list){out+='<ol>';list=true}out+='<li>'+fmt(line.replace(/^\d+[.)]\s+/,''))+'</li>';continue}if(line.startsWith('|')){flush();continue}if(/^#{1,4}\s/.test(line)){flush();out+='<h3>'+fmt(line.replace(/^#+\s*/,''))+'</h3>';continue}para.push(line)}flush();if(list)out+='</ol>';return out};
  const section=(name,klass='')=>{const lines=sectionMap[name];return lines?.some(x=>x.trim())?'<section class="nd-report-section '+klass+'"><h2>'+escape(name.replace(/\b\w/g,c=>c.toUpperCase()))+'</h2>'+renderLines(lines)+'</section>':''};
  const overview=section('market overview');
