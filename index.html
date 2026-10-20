@@ -1128,5 +1128,5 @@ function scheduleAutoRefresh(){
 document.addEventListener('visibilitychange',async()=>{
   if(!document.hidden){const d=await load();await loadLiveOil();await loadLiveIndices();await loadAnalysis(d);scheduleAutoRefresh()}
 });
-loadChartHistory();startLiveOilPolling();setInterval(loadLiveIndices,30000);(async()=>{const d=await load();await loadLiveOil();await loadAnalysis(d);scheduleAutoRefresh()})();
+loadChartHistory();setInterval(loadLiveIndices,30000);startLiveOilPolling();(async()=>{const d=await load();await loadLiveOil();await loadAnalysis(d);scheduleAutoRefresh()})();
 </script><script src="nvda-wavetrend.js?v=5"></script><script src="/section-router.js?v=3"></script></body></html>
