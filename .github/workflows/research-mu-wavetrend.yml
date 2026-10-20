@@ -22,6 +22,7 @@ jobs:
           python -m compileall -q scripts tests
           python -m unittest discover -s tests -p '*wavetrend*.py' -v
       - name: Collect one year of adjusted MU five-minute history
+        if: ${{ hashFiles('data/research/mu-wavetrend.json') == '' }}
         env:
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
         run: python -m scripts.research_nvda_wavetrend --symbol MU --days 365

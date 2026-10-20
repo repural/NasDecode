@@ -381,17 +381,19 @@ def main():
                   'TradingView candle alignment and numerical equivalence remain unverified. Only fully completed stored bars are used.'],
               'inputs': inputs, 'symbols': {}}
     for symbol, d in datasets.items():
-        args = d['four'], d['eight']
+        row_args = d['four'], d['eight']
         report['symbols'][symbol] = {
             'coverage': {'intradayEndET': d['intradayEndET'], 'regularDailyEndET': d['dailyEndET'],
                          'regularDailyWarmupFirstEndET': next(c['endET'] for c in d['daily'] if c['isWarm']),
                          'extendedDailyWarmupFirstEndET': next(c['endET'] for c in d['extended'] if c['isWarm']),
                          'excludedIncompleteExtendedDailyDates': d['excluded']},
-            'primary': evaluate(*args, d['daily'], '2026-01-01', end, include_ledgers=True),
-            'startInCash': evaluate(*args, d['daily'], '2026-01-01', end, initially_long=False),
+            'primary': evaluate(*row_args, d['daily'], '2026-01-01', end, include_ledgers=True),
+            'startInCash': evaluate(*row_args, d['daily'], '2026-01-01', end, initially_long=False),
             'sessionSensitivityStart': sensitivity_start,
-            'regularDailySameWindow': evaluate(*args, d['daily'], sensitivity_start, end),
-            'extendedDailySameWindow': evaluate(*args, d['extended'], sensitivity_start, end)}
+            'regularDailySameWindow': evaluate(*row_args, d['daily'], sensitivity_start, end),
+            'extendedDailySameWindow': evaluate(*row_args, d['extended'], sensitivity_start, end)}
+    if 'MU' in datasets:
+        report['limitations'].append('MU warm-up history omits the 04:00–08:00 ET candle on December 8, 2025 under the existing end-of-bucket rule. No candle is synthesized. All 2026 evaluation sessions have complete 4H/8H bucket coverage; sparse underlying five-minute intervals and holiday warm-up sessions are disclosed in mu-wavetrend-coverage.json.')
     output = Path('data/research') / (args.output_prefix + '.json')
     report_path = output.with_suffix('.md')
     output.write_text(json.dumps(report, separators=(',', ':')) + '\n')

@@ -189,6 +189,8 @@ def main():
                   'Historic extended-hours opens are idealized fills. Costs are fixed friction scenarios, not a full liquidity/impact model. No cash interest, dividends or taxes are modeled.',
                   'The source is the frozen adjusted Massive 4H archive used in the prior comparison. WT and companion indicator numerical equivalence to TradingView is not independently verified.'],
               'inputs': {}, 'symbols': {}}
+    if 'MU' in args.symbols:
+        report['limitations'].append('MU warm-up history omits the 04:00–08:00 ET candle on December 8, 2025 under the existing end-of-bucket rule. No candle is synthesized. All 2026 evaluation sessions have complete 4H/8H bucket coverage; sparse underlying five-minute intervals and holiday warm-up sessions are disclosed in mu-wavetrend-coverage.json.')
     for symbol in args.symbols:
         path = ROOT / f'{symbol.lower()}-wavetrend.json'
         digest = hashlib.sha256(path.read_bytes()).hexdigest()

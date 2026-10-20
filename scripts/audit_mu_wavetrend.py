@@ -30,8 +30,10 @@ def audit(source, daily, end_date='2026-10-16'):
         by_day = Counter(c['startET'][:10] for c in rows)
         short = {day: count for day, count in by_day.items()
                  if count != (4 if tf == '4h' else 2)}
+        # Warm-up gaps are disclosed rather than filled. Require every bucket
+        # during the evaluation period; the 100-observation warm-up still applies.
         unexpected = {day: count for day, count in short.items()
-                      if day not in ('2025-11-28', '2025-12-24')}
+                      if day >= '2026-01-01'}
         if unexpected:
             raise ValueError('Unexpected missing MU timeframe buckets: ' + str(unexpected))
         first_2026 = next(c for c in rows if c['startET'][:10] >= '2026-01-01')
@@ -40,10 +42,14 @@ def audit(source, daily, end_date='2026-10-16'):
         result['timeframes'][tf] = {'candles': len(rows), 'firstStartET': rows[0]['startET'],
                                    'lastEndET': rows[-1]['endET'],
                                    'shortSessions': short,
+                                   'warmupShortSessions': {day: count for day, count in short.items()
+                                                           if day < '2026-01-01'},
+                                   'evaluationMissingBuckets': unexpected,
                                    'source5mCountDistribution': dict(Counter(c['underlying5mBars'] for c in rows)),
                                    'sparseSourceCandles': sum(c['underlying5mBars'] < expected for c in rows)}
     result['notes'] = ['Provider five-minute intervals with no reported trade may be absent; no intervals or candles are fabricated.',
-                       'Aggregation and end-of-bucket checks match the existing NVDA collector. Sparse source candles are counted explicitly.']
+                       'Aggregation and end-of-bucket checks match the existing NVDA collector. Sparse source candles are counted explicitly.',
+                       'Incomplete warm-up sessions are disclosed without filling gaps; evaluation sessions require all timeframe buckets and at least 100 earlier observations.']
     return result
 
 

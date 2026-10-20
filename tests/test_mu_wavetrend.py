@@ -42,9 +42,18 @@ class MUResearchTests(unittest.TestCase):
 
     def test_audit_rejects_missing_timeframe_bucket(self):
         source, daily = self.fixture()
-        source['timeframes']['4h']['candles'].pop(105)
+        rows = source['timeframes']['4h']['candles']
+        rows.pop(next(i for i, c in enumerate(rows) if c['startET'][:10] == '2026-01-05'))
         with self.assertRaisesRegex(ValueError, 'missing MU timeframe buckets'):
             audit(source, daily)
+
+    def test_audit_discloses_warmup_gap_without_filling_it(self):
+        source, daily = self.fixture()
+        rows = source['timeframes']['4h']['candles']
+        index = next(i for i, c in enumerate(rows) if c['startET'][:10] == '2025-12-08')
+        day = rows.pop(index)['startET'][:10]
+        result = audit(source, daily)
+        self.assertEqual(result['timeframes']['4h']['warmupShortSessions'][day], 3)
 
     def test_audit_rejects_duplicate_timestamp(self):
         source, daily = self.fixture()
