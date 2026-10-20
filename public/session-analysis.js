@@ -40,6 +40,8 @@
       if(heading){flushList();result.push('<h4 class="nd-research-heading">'+mdInline(heading[1])+'</h4>');continue}
       const bullet=t.match(/^(?:[-*]\s+|\d+\.\s+)(.+)$/);
       if(bullet){const kind=/^\d/.test(t)?'ol':'ul';if(list!==kind){flushList();result.push('<'+kind+'>');list=kind}result.push('<li>'+mdInline(bullet[1])+'</li>');continue}
+      const assessment=t.match(/^Overall assessment:\s*(.+)$/i);
+      if(assessment){flushList();result.push('<h4 class="nd-research-heading">Overall assessment</h4><p>'+mdInline(assessment[1])+'</p>');continue}
       flushList();result.push('<p>'+mdInline(t)+'</p>');
     }
     flushList();flushTable();return result.join('');
