@@ -902,7 +902,26 @@ async function loadTodayWatch(){
     const html=entries.map((e,i)=>'<div class="catalyst"><b>'+analysisText((i+1)+'. '+(e.title||'Event'))+'</b><div style="margin-top:5px">'+analysisText(e.detail||e.description||'')+'</div></div>').join('');
     const extra=(brief.watchIntoOpen?'<div class="catalyst"><b>What I’d Watch Into the Open</b><div style="margin-top:5px">'+analysisText(brief.watchIntoOpen)+'</div></div>':'')+
       (brief.keyTimes?'<div class="catalyst"><b>Key Times</b><div style="margin-top:5px">'+analysisText(brief.keyTimes)+'</div></div>':'');
-    node.innerHTML=html+extra||'<div class="muted">No researched events published for this session.</div>';
+    if(html||extra){node.innerHTML=html+extra;return}
+    // Independent four-session research is canonical when the legacy premarket
+    // brief contains no catalysts. Never equate an empty legacy feed with no research.
+    const researchResponse=await fetch('data/session-research.json?t='+Date.now(),{cache:'no-store'});
+    if(!researchResponse.ok)throw new Error('Session research HTTP '+researchResponse.status);
+    const research=await researchResponse.json();
+    const published=research?.sessions?.[nyDate]?.premarket;
+    const paras=published?.publicationStatus==='published'&&Array.isArray(published.paragraphs)?published.paragraphs:[];
+    const start=paras.findIndex(x=>/^#{1,4}\\s+What to Watch Today\\s*$/i.test(String(x).trim()));
+    const items=[];
+    if(start>=0){
+      for(const p of paras.slice(start+1)){
+        const line=String(p).trim();
+        if(/^#{1,4}\\s+/.test(line))break;
+        if(/^\\d+\\.\\s+/.test(line))items.push(line.replace(/^\\d+\\.\\s+/,''));
+      }
+    }
+    const plain=s=>String(s).replace(/\\[([^\\]]+)\\]\\(https?:\\/\\/[^)]+\\)/g,'$1').replace(/\\*\\*/g,'');
+    node.innerHTML=items.length?items.map((item,i)=>'<div class="catalyst"><div style="margin-top:5px">'+analysisText((i+1)+'. '+plain(item))+'</div></div>').join(''):'<div class="muted">No researched events are available from today’s published feeds.</div>';
+
   }catch(e){
     node.innerHTML='<div class="muted">Today’s researched events are temporarily unavailable.</div>';
     console.warn('What to Watch research fetch failed',e);
