@@ -62,9 +62,12 @@ def bullish(candle):
 
 
 def simulate(four, higher=None, start_date='2026-01-01', end_date='9999-12-31',
-             cost=.001, initially_long=True, signal=None):
+             cost=.001, initially_long=True, signal=None, entry_filter=None,
+             atr_multiplier=None):
     if not 0 <= cost < 1:
         raise ValueError('Invalid transaction cost')
+    if atr_multiplier is not None and atr_multiplier <= 0:
+        raise ValueError('ATR multiplier must be positive')
     rows = [b for b in four if b['endET'][:10] <= end_date]
     start = next((i for i, c in enumerate(rows) if c['startET'][:10] >= start_date), None)
     if start is None or start == 0 or not rows[start - 1].get('isWarm'):
@@ -87,6 +90,9 @@ def simulate(four, higher=None, start_date='2026-01-01', end_date='9999-12-31',
     cash = 0 if initially_long else INITIAL
     peak, max_dd = INITIAL, 0
     pending, entry = None, None
+    trail_high = reference['close'] if initially_long else None
+    trail_stop, wait_for_green = None, False
+    entry_checks, blocked_checks = 0, 0
     executions, trades, equity, exposure, opening_equity = [], [], [], {}, {}
     for i in range(start, len(rows)):
         candle = rows[i]
@@ -99,14 +105,18 @@ def simulate(four, higher=None, start_date='2026-01-01', end_date='9999-12-31',
                 entry = {'entryAtET': candle['startET'], 'entryPrice': price,
                          'capitalBeforeEntry': cash, 'entryIndex': i}
                 shares, cash = cash * (1 - cost) / price, 0
+                trail_high, trail_stop = price, None
             else:
                 cash, shares = shares * price * (1 - cost), 0
                 if entry is not None:
                     ret = 100 * (cash / entry['capitalBeforeEntry'] - 1)
                     trades.append({**entry, 'exitAtET': candle['startET'],
                                    'exitPrice': price, 'netReturnPct': round(ret, 6),
+                                   'netProfit': round(cash - entry['capitalBeforeEntry'], 6),
                                    'holding4hBars': i - entry['entryIndex']})
                 entry = None
+                wait_for_green = pending.get('reason') == 'atr_trail'
+                trail_high, trail_stop = None, None
             executions.append({**pending, 'executedAtET': candle['startET'],
                                'executionPrice': price})
             pending = None
@@ -121,21 +131,46 @@ def simulate(four, higher=None, start_date='2026-01-01', end_date='9999-12-31',
         signal_idx = bisect.bisect_right(signal_ends, stamp(candle['endET'])) - 1
         primary = signal[signal_idx] if signal_idx >= 0 else None
         fresh_signal = primary and stamp(primary['endET']) > last_signal_end
+        if fresh_signal and primary.get('cross') == 'bullish':
+            wait_for_green = False
+        atr_breach = False
+        if shares > 0 and atr_multiplier is not None and candle.get('atr14') is not None:
+            trail_high = max(trail_high or candle['open'], candle['high'])
+            proposed = trail_high - atr_multiplier * candle['atr14']
+            trail_stop = max(trail_stop, proposed) if trail_stop is not None else proposed
+            # Close-based exit only. No assumption about intrabar high/low ordering or stop fills.
+            atr_breach = candle['close'] < trail_stop
         decision = {'confirmedAtET': candle['endET'], 'signal4hStartET': candle['startET'],
                     'signalStartET': primary['startET'] if primary else None,
                     'signalConfirmedAtET': primary['endET'] if primary else None}
         if shares > 0 and fresh_signal and primary.get('cross') == 'bearish':
-            pending = {**decision, 'action': 'SELL'}
-        elif cash > 0 and bullish(primary):
+            pending = {**decision, 'action': 'SELL', 'reason': 'wt_red'}
+        elif shares > 0 and atr_breach:
+            pending = {**decision, 'action': 'SELL', 'reason': 'atr_trail',
+                       'trailAtConfirmation': trail_stop}
+        elif cash > 0 and bullish(primary) and not wait_for_green:
             idx = bisect.bisect_right(ht_ends, stamp(candle['endET'])) - 1
             higher_bar = higher[idx] if idx >= 0 else None
             if not use_higher or bullish(higher_bar):
-                pending = {**decision, 'action': 'BUY',
-                           'higherConfirmedAtET': higher_bar['endET'] if higher_bar else None}
+                entry_checks += 1
+                if entry_filter is None or entry_filter(primary, i):
+                    pending = {**decision, 'action': 'BUY',
+                               'higherConfirmedAtET': higher_bar['endET'] if higher_bar else None}
+                    if entry_filter is not None:
+                        pending['entryFeatures'] = {k: primary.get(k) for k in
+                            ('close', 'ema20', 'plusDI14', 'minusDI14', 'adx14', 'adx14Rising', 'wtGreenHigh')}
+                else:
+                    blocked_checks += 1
         last_signal_end = stamp(candle['endET'])
     final = equity[-1]['value']
     buy_hold = INITIAL * rows[-1]['close'] / reference['close']
     losing = sum(t['netReturnPct'] < 0 for t in trades)
+    winning = [t for t in trades if t['netReturnPct'] > 0]
+    losses = [t for t in trades if t['netReturnPct'] < 0]
+    gross_profit = sum(t['netProfit'] for t in winning)
+    gross_loss = -sum(t['netProfit'] for t in losses)
+    average_win = sum(t['netReturnPct'] for t in winning) / len(winning) if winning else None
+    average_loss = sum(t['netReturnPct'] for t in losses) / len(losses) if losses else None
     monthly, last = {}, INITIAL
     month_end = {}
     for item in equity:
@@ -183,6 +218,17 @@ def simulate(four, higher=None, start_date='2026-01-01', end_date='9999-12-31',
             'buyAndHoldReturnPct': round(100 * (buy_hold / INITIAL - 1), 2),
             'executions': len(executions), 'closedSignalTrades': len(trades),
             'losingSignalTrades': losing,
+            'winningSignalTrades': len(winning),
+            'breakevenSignalTrades': len(trades) - len(winning) - len(losses),
+            'winRatePct': round(100 * len(winning) / len(trades), 2) if trades else None,
+            'averageWinPct': round(average_win, 4) if average_win is not None else None,
+            'averageLossPct': round(average_loss, 4) if average_loss is not None else None,
+            'payoffRatio': round(average_win / -average_loss, 4) if average_win is not None and average_loss else None,
+            'netProfitFactor': round(gross_profit / gross_loss, 4) if gross_loss else None,
+            'profitFactorHasNoLossDenominator': not bool(gross_loss),
+            'meanClosedTradeReturnPct': round(sum(t['netReturnPct'] for t in trades) / len(trades), 4) if trades else None,
+            'entryChecks': entry_checks, 'blockedEntryChecks': blocked_checks,
+            'atrExitExecutions': sum(e.get('reason') == 'atr_trail' for e in executions),
             'falseSignalRatePct': round(100 * losing / len(trades), 2) if trades else None,
             'losingWhipsawsWithin4Bars': sum(t['netReturnPct'] < 0 and t['holding4hBars'] <= 4 for t in trades),
             'exposure4hBarsPct': round(100 * sum(exposure.values()) / len(exposure), 2),
