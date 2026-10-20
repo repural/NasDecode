@@ -197,16 +197,23 @@
     const snapshot=sessionData?.records?.[day]?.[key];
     const checkpoint=snapshot?'<div class="session-analysis-metrics">'+[metric('Nasdaq',snapshot.nasdaqChangePct,'%'),metric('QQQ',snapshot.qqqChangePct,'%'),metric('Score',snapshot.nasdaqScore,' / 100')].join('')+'</div>':'';
     const paragraphs=Array.isArray(a.paragraphs)?a.paragraphs:[];
-    const filtered=[];let suppress=false;
+    const filtered=[];
+    let suppress=false, skipValue=false;
     for(const p of paragraphs){
       const plain=String(p||'').trim();
-      if(/^#{0,4}\s*publication status\s*$/i.test(plain)){suppress=true;continue}
-      if(suppress){if(/^#{1,4}\s+/.test(plain)&&!/publication status/i.test(plain))suppress=false;else continue}
-      if(/^#{0,4}\s*(nasdaq bias|confidence|event risk)\s*$/i.test(plain))continue;
-      if(/^\*\*(neutral|moderate|high|low|cautious|bullish|bearish)/i.test(plain)&&filtered.length<4)continue;
+      if(/^#{0,4}\s*(publication status|research integrity)\s*$/i.test(plain)){suppress=true;continue}
+      if(suppress){if(/^#{1,4}\s+(?!publication status|research integrity)/i.test(plain))suppress=false;else continue}
+      if(/^#{0,4}\s*(nasdaq bias|confidence|event risk)\s*$/i.test(plain)){skipValue=true;continue}
+      if(skipValue){skipValue=false;continue}
       filtered.push(p);
     }
-    const paras=filtered.map(researchMarkdown).join('');
+    // Consecutive ordered items must share one <ol>; rendering each separately restarts at 1.
+    const grouped=[];
+    for(const p of filtered){
+      if(/^\d+\.\s/.test(String(p).trim())&&grouped.length&&/^\d+\.\s/.test(grouped[grouped.length-1].split('\n').slice(-1)[0].trim()))grouped[grouped.length-1]+='\n'+p;
+      else grouped.push(p);
+    }
+    const paras=grouped.map(researchMarkdown).join('');
     // Corrupted auxiliary extracts are intentionally omitted from public output.
     // The complete, better-preserved research narrative above contains the watch items.
     const cats='',changed='',watch='';
