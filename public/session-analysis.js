@@ -13,10 +13,18 @@
 
   // Escape-first Markdown renderer for published research. No raw HTML is trusted.
   const mdInline=value=>{
-    let t=esc(value);
-    t=t.replace(/\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)/g,(_,label,url)=>'<a href="'+url.replace(/&amp;/g,'&')+'" target="_blank" rel="noopener noreferrer">'+label+'</a>');
-    t=t.replace(/\*\*([^*\n]+)\*\*/g,'<strong>$1</strong>').replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g,'<em>$1</em>').replace(/`([^`\n]+)`/g,'<code>$1</code>');
-    return t.replace(metricRe,'<span class="analysis-metric">$1</span>');
+    const links=[];
+    let raw=String(value??'').replace(/\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)/g,(_,label,url)=>{
+      const token='NDLINKTOKEN'+links.length+'END';
+      links.push({label,url});return token;
+    });
+    let t=esc(raw).replace(/\*\*([^*\n]+)\*\*/g,'<strong>$1</strong>').replace(/(?<!\*)\*([^*\n]+)\*(?!\*)/g,'<em>$1</em>').replace(/`([^`\n]+)`/g,'<code>$1</code>');
+    t=t.replace(metricRe,'<span class="analysis-metric">$1</span>');
+    return t.replace(/NDLINKTOKEN(\d+)END/g,(_,i)=>{
+      const item=links[Number(i)];if(!item)return '';
+      const safeUrl=/^https?:\/\//i.test(item.url)?esc(item.url):'';
+      return safeUrl?'<a href="'+safeUrl+'" target="_blank" rel="noopener noreferrer">'+esc(item.label)+'</a>':esc(item.label);
+    });
   };
   function researchMarkdown(value){
     const lines=String(value??'').replace(/\r\n?/g,'\n').split('\n');
@@ -188,10 +196,20 @@
     const def=stages.find(s=>s.key===key);
     const snapshot=sessionData?.records?.[day]?.[key];
     const checkpoint=snapshot?'<div class="session-analysis-metrics">'+[metric('Nasdaq',snapshot.nasdaqChangePct,'%'),metric('QQQ',snapshot.qqqChangePct,'%'),metric('Score',snapshot.nasdaqScore,' / 100')].join('')+'</div>':'';
-    const paras=(a.paragraphs||[]).map(researchMarkdown).join('');
-    const cats=(a.catalysts||[]).map(e=>'<li><b>'+mdInline(typeof e==='string'?e:e.title||'')+'</b>'+(e.detail?' — '+mdInline(e.detail):'')+'</li>').join('');
-    const changed=a.whatChanged?'<h4>What Changed</h4>'+researchMarkdown(a.whatChanged):'';
-    const watch=(a.whatToWatch||[]).map(researchMarkdown).join('');
+    const paragraphs=Array.isArray(a.paragraphs)?a.paragraphs:[];
+    const filtered=[];let suppress=false;
+    for(const p of paragraphs){
+      const plain=String(p||'').trim();
+      if(/^#{0,4}\s*publication status\s*$/i.test(plain)){suppress=true;continue}
+      if(suppress){if(/^#{1,4}\s+/.test(plain)&&!/publication status/i.test(plain))suppress=false;else continue}
+      if(/^#{0,4}\s*(nasdaq bias|confidence|event risk)\s*$/i.test(plain))continue;
+      if(/^\*\*(neutral|moderate|high|low|cautious|bullish|bearish)/i.test(plain)&&filtered.length<4)continue;
+      filtered.push(p);
+    }
+    const paras=filtered.map(researchMarkdown).join('');
+    // Corrupted auxiliary extracts are intentionally omitted from public output.
+    // The complete, better-preserved research narrative above contains the watch items.
+    const cats='',changed='',watch='';
     const time=new Date(a.updatedET).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'});
     return {available:true,title:def.label+' Analysis',meta:'Research updated '+esc(time),body:summaryCards(a)+checkpoint+paras+changed+(cats?'<h3>Major Catalysts</h3><ol>'+cats+'</ol>':'')+(watch?'<h3>What to Watch</h3>'+watch:'')};
   }
