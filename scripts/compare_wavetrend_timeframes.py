@@ -1,7 +1,8 @@
 """Causal, research-only WT timeframe comparison. Never changes live scores or feeds.
 
-All decisions use completed bars; all fills use the next 4H open. Higher
-timeframes gate entries, while every variant exits on the same 4H red cross.
+All decisions use completed bars; all fills use the next 4H open. For paired
+strategies, higher timeframes gate entries and exits use the 4H red cross.
+Standalone strategies use their own timeframe's bearish crossover for exits.
 """
 import bisect
 import datetime as dt
@@ -15,7 +16,8 @@ from zoneinfo import ZoneInfo
 from scripts.research_nvda_wavetrend import wavetrend
 
 NY = ZoneInfo('America/New_York')
-STRATEGIES = ('4h_alone', '4h_8h', '4h_1d')
+STRATEGIES = ('4h_alone', '8h_alone', '1d_alone', '4h_8h', '4h_1d')
+PAIR_STRATEGIES = ('4h_8h', '4h_1d')
 COSTS = {'zeroCosts': 0, 'cost10bps': .001, 'cost25bps': .0025}
 INITIAL = 10000
 OUTPUT = Path('data/research/wavetrend-timeframe-comparison.json')
@@ -60,7 +62,7 @@ def bullish(candle):
 
 
 def simulate(four, higher=None, start_date='2026-01-01', end_date='9999-12-31',
-             cost=.001, initially_long=True):
+             cost=.001, initially_long=True, signal=None):
     if not 0 <= cost < 1:
         raise ValueError('Invalid transaction cost')
     rows = [b for b in four if b['endET'][:10] <= end_date]
@@ -72,6 +74,11 @@ def simulate(four, higher=None, start_date='2026-01-01', end_date='9999-12-31',
             raise ValueError('Overlapping/noncausal execution candles')
     use_higher = higher is not None
     higher = higher if higher is not None else []
+    signal = four if signal is None else signal
+    signal_ends = [stamp(c['endET']) for c in signal]
+    if not signal_ends or signal_ends != sorted(set(signal_ends)):
+        raise ValueError('Signal candles must be nonempty, unique and ordered')
+    last_signal_end = stamp(rows[start - 1]['endET'])
     ht_ends = [stamp(c['endET']) for c in higher]
     if ht_ends != sorted(set(ht_ends)):
         raise ValueError('Higher-timeframe timestamps must be unique and ordered')
@@ -111,15 +118,21 @@ def simulate(four, higher=None, start_date='2026-01-01', end_date='9999-12-31',
                        'heldShares': shares > 0})
         if i == len(rows) - 1:
             continue
-        decision = {'confirmedAtET': candle['endET'], 'signal4hStartET': candle['startET']}
-        if shares > 0 and candle.get('cross') == 'bearish':
+        signal_idx = bisect.bisect_right(signal_ends, stamp(candle['endET'])) - 1
+        primary = signal[signal_idx] if signal_idx >= 0 else None
+        fresh_signal = primary and stamp(primary['endET']) > last_signal_end
+        decision = {'confirmedAtET': candle['endET'], 'signal4hStartET': candle['startET'],
+                    'signalStartET': primary['startET'] if primary else None,
+                    'signalConfirmedAtET': primary['endET'] if primary else None}
+        if shares > 0 and fresh_signal and primary.get('cross') == 'bearish':
             pending = {**decision, 'action': 'SELL'}
-        elif cash > 0 and bullish(candle):
+        elif cash > 0 and bullish(primary):
             idx = bisect.bisect_right(ht_ends, stamp(candle['endET'])) - 1
             higher_bar = higher[idx] if idx >= 0 else None
             if not use_higher or bullish(higher_bar):
                 pending = {**decision, 'action': 'BUY',
                            'higherConfirmedAtET': higher_bar['endET'] if higher_bar else None}
+        last_signal_end = stamp(candle['endET'])
     final = equity[-1]['value']
     buy_hold = INITIAL * rows[-1]['close'] / reference['close']
     losing = sum(t['netReturnPct'] < 0 for t in trades)
@@ -187,10 +200,11 @@ def compact(value):
 
 def evaluate(four, eight, daily, start, end, initially_long=True, include_ledgers=False):
     answer = {}
-    for strategy, higher in zip(STRATEGIES, (None, eight, daily)):
+    configurations = ((four, None), (eight, None), (daily, None), (four, eight), (four, daily))
+    for strategy, (signal, higher) in zip(STRATEGIES, configurations):
         answer[strategy] = {}
         for label, cost in COSTS.items():
-            r = simulate(four, higher, start, end, cost, initially_long)
+            r = simulate(four, higher, start, end, cost, initially_long, signal=signal)
             answer[strategy][label] = r if include_ledgers and label == 'cost10bps' else compact(r)
     return answer
 
@@ -202,8 +216,11 @@ def render_report(report):
              f"Common window: {report['commonStartDate']} to {report['commonEndDate']}. "
              'Daily filter uses adjusted regular-session OHLC; 4H/8H retain the existing 04:00–20:00 ET session.', '',
              'Initially invested at the last completed 2025 candle close, matching the earlier backtest. '
-             'Higher timeframe gates entry only; every exit uses the same 4H bearish crossover.', '']
-    names = {'4h_alone': '4H alone', '4h_8h': '4H + 8H', '4h_1d': '4H + 1D'}
+             'For pairs, higher timeframe gates entry only and exits use the 4H bearish crossover. '
+             'Standalone 8H/1D use their own WT entries and bearish-cross exits. '
+             'Every variant executes on the next available 4H open and is marked on the same 4H closes.', '']
+    names = {'4h_alone': '4H alone', '8h_alone': '8H alone', '1d_alone': '1D alone',
+             '4h_8h': '4H + 8H', '4h_1d': '4H + 1D'}
     for symbol, data in report['symbols'].items():
         lines += [f'### {symbol}', '',
                   '| Strategy | Return, no costs | Return, 0.10%/side | Return, 0.25%/side | Max drawdown, 0.10% | Losing entry trades | Missed rebound starts | Fully missed rebounds |',
@@ -227,18 +244,18 @@ def render_report(report):
                   '| Strategy | Daily session | Return, 0.10%/side | Max drawdown |', '|---|---|---:|---:|']
         for mode in ('regularDailySameWindow', 'extendedDailySameWindow'):
             for strategy, cases in data[mode].items():
-                if mode == 'extendedDailySameWindow' and strategy != '4h_1d':
+                if mode == 'extendedDailySameWindow' and strategy not in ('4h_1d', '1d_alone'):
                     continue
                 r = cases['cost10bps']
                 session = 'Regular' if mode == 'regularDailySameWindow' else 'Extended'
-                lines.append(f"| {names[strategy]} | {session if strategy == '4h_1d' else '—'} | "
+                lines.append(f"| {names[strategy]} | {session if strategy in ('4h_1d', '1d_alone') else '—'} | "
                              f"{r['returnPct']:+.2f}% | {r['maxCloseDrawdownPct']:.2f}% |")
         lines += ['']
     lines += ['## Interpretation', '']
     for symbol, data in report['symbols'].items():
         cases = data['primary']
         best = max(STRATEGIES, key=lambda k: cases[k]['cost10bps']['returnPct'])
-        pair = max(STRATEGIES[1:], key=lambda k: cases[k]['cost10bps']['returnPct'])
+        pair = max(PAIR_STRATEGIES, key=lambda k: cases[k]['cost10bps']['returnPct'])
         rankings = {cost: max(STRATEGIES, key=lambda k: cases[k][cost]['returnPct']) for cost in COSTS}
         cash_best = max(STRATEGIES, key=lambda k: data['startInCash'][k]['cost10bps']['returnPct'])
         lines += [f"{symbol}: {names[best]} has the highest main-test net return at 0.10% per side. "
@@ -254,7 +271,8 @@ def render_report(report):
               'Compare losing trades as a proportion of completed signal trades. '
               'Missed rebound starts include delayed entries and do not imply the entire rebound was untraded. '
               'Rebound windows are defined from 4H green crosses, so zero missed starts for 4H alone is by construction.', '',
-              'These are tests of a specific higher-timeframe entry gate, with unchanged 4H exits. '
+              'The paired strategies test a specific higher-timeframe entry gate, with unchanged 4H exits; '
+              'the standalone strategies use their own timeframe exits. '
               'They do not measure every possible way to combine timeframes or establish universal predictive superiority. '
               'Session-matched and initial-position sensitivity results above show how dependent the findings are on those assumptions.', '',
               '## Definitions and limitations', '', *['- ' + text for text in report['definitions'].values()], '',
@@ -291,8 +309,8 @@ def main():
                              'initialValue': INITIAL, 'costPerSide': COSTS,
                              'primaryReboundThresholdPct': 5, 'reboundForward4hBars': 20},
               'definitions': {
-                  'entry': '4H alone: bullish 4H while in cash. Pairs: bullish 4H AND last completed higher-timeframe WT bullish. If the higher timeframe confirms later while 4H remains bullish, entry is then allowed.',
-                  'exit': 'All variants sell on a confirmed 4H bearish crossover. A higher-timeframe bearish turn alone does not trigger an exit.',
+                  'entry': 'Standalone strategies enter when their last completed 4H, 8H or daily WT is bullish while in cash. Pairs require bullish 4H AND last completed higher-timeframe WT bullish. If the higher timeframe confirms later while 4H remains bullish, entry is then allowed.',
+                  'exit': 'Standalone strategies sell on a new confirmed bearish crossover of their own timeframe. Pairs sell on a confirmed 4H bearish crossover; a higher-timeframe bearish turn alone does not trigger an exit.',
                   'timing': 'Decide at 4H close using only higher candles whose end timestamp is at or before that close; execute at the next available 4H open, never on the signal close.',
                   'costs': 'Apply identical friction to each buy and sell: 0%, 0.10%, or 0.25% per side. Initial inherited position and final open position are not forced-liquidated or charged entry/exit fees.',
                   'drawdown': 'Largest peak-to-trough portfolio decline measured at completed 4H closes, including initial capital. Does not capture intrabar drawdown.',

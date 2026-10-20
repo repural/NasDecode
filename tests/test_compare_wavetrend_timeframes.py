@@ -72,6 +72,24 @@ class ComparisonTests(unittest.TestCase):
         d = daily_rows([{'date': '2026-01-02', 'open': 100, 'high': 101, 'low': 99, 'close': 100}])
         self.assertEqual(d[0]['endET'], '2026-01-02T16:00:00-05:00')
 
+    def test_standalone_daily_exit_waits_for_new_daily_close(self):
+        signals = [dict(self.four[0], endET='2025-12-31T16:00:00-05:00', cross='bearish'),
+                   dict(self.four[1], endET='2026-01-02T16:00:00-05:00', cross='bearish', wt1=-1)]
+        r = simulate(self.four, signal=signals)
+        self.assertEqual(r['executionLedger'][0]['action'], 'SELL')
+        self.assertEqual(r['executionLedger'][0]['executedAtET'], '2026-01-02T16:00:00-05:00')
+
+    def test_standalone_eight_hour_matches_existing_eight_hour_simulator(self):
+        for symbol in ('nvda', 'soxl'):
+            source = json.loads(Path(f'data/research/{symbol}-wavetrend.json').read_text())
+            four = source['timeframes']['4h']['candles']
+            eight = [c for c in source['timeframes']['8h']['candles'] if c['endET'][:10] <= '2026-10-16']
+            for cost in (0, .001, .0025):
+                old = prior_simulate(eight, friction=cost)
+                new = simulate(four, cost=cost, end_date='2026-10-16', signal=eight)
+                self.assertEqual(old['finalValue'], new['finalValue'])
+                self.assertEqual(old['numberOfExecutions'], new['executions'])
+
     def test_incomplete_extended_daily_is_excluded(self):
         daily, excluded = extended_daily(self.four[1:4])
         self.assertFalse(daily)
