@@ -893,6 +893,30 @@ async function loadLiveOil(){
     note.textContent='CNBC quote as of '+new Date(Math.max(...Object.values(snapshot.quotes||{}).map(q=>Date.parse(q.quoteTime)).filter(Number.isFinite))).toLocaleTimeString()+' · retrieved '+new Date(collected).toLocaleTimeString()+' (delayed)';
   }catch(err){console.warn('Independent oil quote unavailable; using dashboard snapshot',err)}
 }
+
+// Independent five-minute index/futures feed. Display only; not part of scoring.
+async function loadLiveIndices(){
+ if(document.hidden)return;
+ const strip=document.getElementById('ndIndexStrip');if(!strip)return;
+ try{
+  const response=await fetch('data/live-indices.json?t='+Date.now(),{cache:'no-store'});
+  if(!response.ok)return;
+  const d=await response.json(),collected=Date.parse(d.collectedAt||'');
+  if(!Number.isFinite(collected)||Math.abs(Date.now()-collected)>15*60*1000)return;
+  const parts=[['nasdaq','NASDAQ'],['sp500','S&P 500']];
+  const fmt=n=>Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  strip.innerHTML=parts.map(([key,base])=>{
+    const q=d.quotes?.[key],stamp=Date.parse(q?.quoteTime||''),price=Number(q?.price);
+    const label=q?.instrument||base;
+    if(!q||q.status!=='ok'||!Number.isFinite(stamp)||Date.now()-stamp>20*60*1000||stamp>Date.now()+120000||!Number.isFinite(price)||price<=0)
+      return '<div class="nd-index-tile"><div class="nd-index-name">'+escHtml(label)+'</div><div class="nd-index-value">Quote unavailable</div><div class="nd-index-meta">No sufficiently fresh verified observation</div></div>';
+    const ch=q.changePct===null?null:Number(q.changePct),valid=ch!==null&&Number.isFinite(ch);
+    const change=valid?'<span class="nd-index-change '+(ch>0?'nd-index-up':ch<0?'nd-index-down':'')+'">'+(ch>0?'+':'')+ch.toFixed(2)+'%</span>':'';
+    return '<div class="nd-index-tile"><div class="nd-index-name">'+escHtml(label)+'</div><div><span class="nd-index-value">'+fmt(price)+'</span>'+change+'</div><div class="nd-index-meta">Yahoo · 5m data, possibly delayed · '+escHtml(new Date(stamp).toLocaleString('en-US',{timeZone:'America/New_York',timeZoneName:'short'}))+'</div></div>';
+  }).join('');
+ }catch(e){console.warn('Live market indices unavailable',e)}
+}
+
 function startLiveOilPolling(){
   if(liveOilTimer)clearInterval(liveOilTimer);
   liveOilTimer=setInterval(loadLiveOil,30*1000);
@@ -1104,7 +1128,7 @@ function scheduleAutoRefresh(){
   },nextUiPollMs());
 }
 document.addEventListener('visibilitychange',async()=>{
-  if(!document.hidden){const d=await load();await loadLiveOil();await loadAnalysis(d);scheduleAutoRefresh()}
+  if(!document.hidden){const d=await load();await loadLiveOil();await loadLiveIndices();await loadAnalysis(d);scheduleAutoRefresh()}
 });
-loadChartHistory();startLiveOilPolling();(async()=>{const d=await load();await loadLiveOil();await loadAnalysis(d);scheduleAutoRefresh()})();
+loadChartHistory();startLiveOilPolling();setInterval(loadLiveIndices,30000);(async()=>{const d=await load();await loadLiveOil();await loadAnalysis(d);scheduleAutoRefresh()})();
 </script><script src="nvda-wavetrend.js?v=5"></script><script src="/section-router.js?v=3"></script></body></html>
