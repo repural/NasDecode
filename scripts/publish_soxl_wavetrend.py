@@ -1,6 +1,10 @@
 """Publish confirmed SOXL WT observations, interpretation and comparable simulations."""
 import json
 from pathlib import Path
+import sys
+if not __package__:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from scripts.wavetrend_presentation import presentation
 
 SOURCE = Path("data/research/soxl-wavetrend.json")
 BACKTEST = Path("data/research/soxl-wavetrend-backtest.json")
@@ -42,8 +46,12 @@ def publish(src=SOURCE, backtest=BACKTEST, dst=TARGET):
     if (report.get("symbol") != "SOXL" or report.get("sourceResearchGeneratedET") != source["generatedET"]
             or report.get("historicalDataEndET") != source["historicalDataEndET"]):
         raise ValueError("SOXL backtest does not match research snapshot")
+    source = presentation(source)
     result = {k: source[k] for k in ("symbol", "generatedET", "historicalDataEndET", "validationStatus", "boundaryAssumption")}
     result.update(schemaVersion=1, researchOnly=True, timeframes={})
+    for key in ('collectionCheckedAtET', 'collectionStatus', 'massiveHistoricalEndET',
+                'displaySource', 'displayThroughET', 'reconciliation'):
+        result[key] = source.get(key)
     for tf in ("4h", "8h"):
         series = source["timeframes"][tf]
         candles = series["candles"]

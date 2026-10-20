@@ -47,7 +47,7 @@
       return '<circle cx="'+x(i)+'" cy="'+y(v)+'" r="4.5" fill="#121518" stroke="'+(positive?'#34d399':'#fb7185')+'" stroke-width="2"/>';
     }).join('');
     const touch=candles.map((c,i)=>'<rect x="'+(x(i)-w/(candles.length-1)/2)+'" y="'+y0+'" width="'+(w/(candles.length-1))+'" height="'+h+'" fill="transparent"><title>'+
-      safe('Candle '+date(c.startET,true)+' to '+date(c.endET,true)+' ET | Confirmed on close | WT1 '+fixed(c.wt1,2)+' | WT2 '+fixed(c.wt2,2)+(c.cross?' | '+c.cross+' crossover':''))+'</title></rect>').join('');
+      safe('Candle '+date(c.startET,true)+' to '+date(c.endET,true)+' ET | '+(c.provider||'Massive')+' | Confirmed on close | WT1 '+fixed(c.wt1,2)+' | WT2 '+fixed(c.wt2,2)+(c.cross?' | '+c.cross+' crossover':''))+'</title></rect>').join('');
     return '<svg class="nd-wt-plot" role="img" aria-label="'+symbol+' WaveTrend '+state.timeframe.toUpperCase()+' oscillator; green WT1, red WT2, confirmed bullish and bearish crossovers" viewBox="0 0 760 239" preserveAspectRatio="xMidYMid meet">'+
       levels+dividers+'<path d="'+path(candles,'wt1',x0,y0,w,h)+'" stroke="#34d399" fill="none" stroke-width="2.5" stroke-linejoin="round"/>'+
       '<path d="'+path(candles,'wt2',x0,y0,w,h)+'" stroke="#fb7185" fill="none" stroke-width="2.5" stroke-linejoin="round"/>'+
@@ -99,8 +99,11 @@
       const end8=state.data?.timeframes?.['8h']?.latest?.endET;
       const last=end&&end8&&new Date(end)<new Date(end8)?end:end8||end;
       const ageHours=last?(Date.now()-new Date(last).getTime())/3600000:Infinity;
-      const status=Number.isFinite(ageHours)&&ageHours>=0?(ageHours>36?'Stale historical data':'Delayed historical data'):'Historical data';
-      freshness.textContent=last?status+' · Last confirmed 4H '+date(end,true)+' ET · 8H '+date(end8,true)+' ET':'Research feed unavailable';
+      const status=Number.isFinite(ageHours)&&ageHours>=0?(ageHours>36?'Older completed candles':'Completed candles'):'Historical data';
+      const source=state.data?.displaySource||'Massive';
+      const checked=state.data?.collectionCheckedAtET;
+      const health=state.data?.collectionStatus==='yahoo_fetch_failed'?' · Yahoo fetch failed; retaining last complete candles':'';
+      freshness.textContent=last?source+' · '+status+' · Last confirmed 4H '+date(end,true)+' ET · 8H '+date(end8,true)+' ET'+(checked?' · Checked '+date(checked,true)+' ET':'')+health:'Research feed unavailable';
     }
     root.querySelectorAll('[data-nd-wt-tf]').forEach(btn=>{
       btn.setAttribute('aria-pressed',String(btn.dataset.ndWtTf===state.timeframe));

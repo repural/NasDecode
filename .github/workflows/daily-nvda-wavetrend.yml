@@ -1,20 +1,11 @@
 name: Daily NVDA WaveTrend Incremental Refresh
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'scripts/refresh_nvda_wavetrend.py'
-      - 'tests/test_refresh_nvda_wavetrend.py'
-      - '.github/workflows/daily-nvda-wavetrend.yml'
-  schedule:
-    # 12:15 UTC Tue-Sat = 07:15/08:15 ET; prior U.S. trading day has completed.
-    # Historical Massive entitlement does not support current ET trading date.
-    - cron: '15 12 * * 2-6'
+  # Scheduled collection/publication is owned by update-wavetrend-feeds.yml.
 permissions:
   contents: write
 concurrency:
-  group: nasdecode-daily-nvda-wt
+  group: nasdecode-wavetrend-data
   cancel-in-progress: false
 jobs:
   refresh:

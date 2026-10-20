@@ -2,6 +2,10 @@
 """Publish only presentation-ready, research-only NVDA WaveTrend observations."""
 import json
 from pathlib import Path
+import sys
+if not __package__:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from scripts.wavetrend_presentation import presentation
 
 SOURCE=Path("data/research/nvda-wavetrend.json")
 TARGET=Path("public/data/nvda-wavetrend.json")
@@ -10,10 +14,14 @@ def publish(src=SOURCE,dst=TARGET):
     original=json.loads(src.read_text())
     if original.get("symbol")!="NVDA" or original.get("fetchErrors"):
         raise ValueError("NVDA WaveTrend source unavailable or incomplete")
+    original = presentation(original)
     result={"schemaVersion":1,"symbol":"NVDA","generatedET":original.get("generatedET"),
             "historicalDataEndET":original.get("historicalDataEndET"),
             "researchOnly":True,"validationStatus":original.get("validationStatus"),
             "boundaryAssumption":original.get("boundaryAssumption"),"timeframes":{}}
+    for key in ('collectionCheckedAtET', 'collectionStatus', 'massiveHistoricalEndET',
+                'displaySource', 'displayThroughET', 'reconciliation'):
+        result[key] = original.get(key)
     for tf in ("4h","8h"):
         item=original["timeframes"][tf]
         candles=item["candles"]

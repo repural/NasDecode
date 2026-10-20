@@ -3,18 +3,13 @@ on:
   workflow_run:
     workflows:
       - Daily NVDA WaveTrend Incremental Refresh
+      - Update NVDA and SOXL WaveTrend Feeds
     types: [completed]
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'scripts/reconcile_nvda_yahoo_wavetrend.py'
-      - 'tests/test_reconcile_nvda_yahoo_wavetrend.py'
-      - '.github/workflows/reconcile-nvda-yahoo-wavetrend.yml'
 permissions:
   contents: write
 concurrency:
-  group: nvda-yahoo-wt-reconciliation
+  group: nasdecode-wavetrend-data
   cancel-in-progress: false
 jobs:
   reconcile:
@@ -39,8 +34,9 @@ jobs:
           for attempt in 1 2 3 4; do
             git fetch origin main
             git reset --hard origin/main
-            python -m scripts.reconcile_nvda_yahoo_wavetrend
-            git add data/research/nvda-wavetrend-yahoo-shadow.json
+            python -m scripts.reconcile_nvda_yahoo_wavetrend --symbol NVDA
+            python -m scripts.reconcile_nvda_yahoo_wavetrend --symbol SOXL
+            git add data/research/*-wavetrend-yahoo-shadow.json
             if git diff --cached --quiet; then
               echo 'No shadow report to update'
               exit 0

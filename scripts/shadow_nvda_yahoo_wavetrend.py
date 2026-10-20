@@ -5,6 +5,7 @@ Never writes canonical Massive history, website data, or scores. Yahoo completed
 candles must pass strict timestamp coverage and end-of-bar validation.
 """
 import datetime as dt
+import argparse
 import json
 from collections import defaultdict
 from pathlib import Path
@@ -55,9 +56,10 @@ def confirmed_yahoo_candles(rows, hours, now):
 
 
 def build_shadow(baseline, rows, now):
-    if baseline.get("symbol") != "NVDA" or baseline.get("fetchErrors"):
-        raise ValueError("Massive NVDA archive missing or invalid")
-    report = {"schemaVersion": 1, "symbol": "NVDA", "checkedAtET": now.isoformat(),
+    symbol = baseline.get("symbol")
+    if symbol not in ("NVDA", "SOXL") or baseline.get("fetchErrors"):
+        raise ValueError("Massive archive missing or invalid")
+    report = {"schemaVersion": 1, "symbol": symbol, "checkedAtET": now.isoformat(),
               "researchOnly": True, "publicationAllowed": False,
               "canonicalArchiveModified": False, "provider": "Yahoo unofficial chart API",
               "baseline": "Massive adjusted historical 4H/8H",
@@ -119,11 +121,16 @@ def build_shadow(baseline, rows, now):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--symbol', choices=('NVDA', 'SOXL'), default='NVDA')
+    symbol = parser.parse_args().symbol
+    baseline_path = Path('data/research/' + symbol.lower() + '-wavetrend.json')
+    output_path = Path('data/research/' + symbol.lower() + '-wavetrend-yahoo-shadow.json')
     now = dt.datetime.now(NY)
-    baseline = json.loads(BASELINE.read_text())
-    result, errors = get_yahoo("NVDA")
+    baseline = json.loads(baseline_path.read_text())
+    result, errors = get_yahoo(symbol)
     if result is None:
-        report = {"checkedAtET": now.isoformat(), "status": "yahoo_fetch_failed",
+        report = {"symbol": symbol, "checkedAtET": now.isoformat(), "status": "yahoo_fetch_failed",
                   "researchOnly": True, "publicationAllowed": False, "errors": errors}
     else:
         bars, malformed = parse_rows(result)
@@ -134,7 +141,7 @@ def main():
         report["fetchErrors"] = errors
     # Retain prior shadow observations for next-day Massive reconciliation.
     # Never overwrite a previously captured Yahoo value for the same startET.
-    previous = json.loads(OUTPUT.read_text()) if OUTPUT.exists() else {}
+    previous = json.loads(output_path.read_text()) if output_path.exists() else {}
     saved = previous.get("observations", {})
     for tf, data in report.get("timeframes", {}).items():
         ledger = saved.setdefault(tf, {})
@@ -169,8 +176,8 @@ def main():
                                     "crossDisagreements": sum(not x["crossMatches"] for x in items),
                                     "samples": items[-24:]}
                                 for tf, items in reconciled.items()}
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT.write_text(json.dumps(report, indent=2) + "\n")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(json.dumps(report, indent=2) + "\n")
     print(json.dumps({"status": report["status"],
                       "checkedAtET": report["checkedAtET"],
                       "timeframes": {k: {"newYahooCandles": v["newYahooCandles"],

@@ -1,0 +1,51 @@
+name: Update NVDA and SOXL WaveTrend Feeds
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/wavetrend_presentation.py'
+      - 'scripts/update_wavetrend_feeds.py'
+      - '.github/workflows/update-wavetrend-feeds.yml'
+  schedule:
+    # Includes premarket and postmarket across DST. GitHub schedules can be delayed.
+    - cron: '7,22,37,52 8-23 * * 1-5'
+    - cron: '7,22,37,52 0-1 * * 2-6'
+permissions:
+  contents: write
+concurrency:
+  group: nasdecode-wavetrend-data
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate publication and reconciliation
+        run: |
+          python -m unittest discover -s tests -p '*wavetrend*.py' -v
+          node tests/test_nvda_wavetrend_browser.cjs
+          node tests/test_wavetrend_widgets.cjs
+      - name: Collect latest historical and Yahoo candles, reconcile and publish
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: python -m scripts.update_wavetrend_feeds
+      - name: Save data without overwriting concurrent updates
+        run: |
+          set -euo pipefail
+          git config user.name nasdecode-bot
+          git config user.email actions@users.noreply.github.com
+          git add data/research/nvda-wavetrend.json data/research/soxl-wavetrend.json data/research/*-wavetrend-yahoo-shadow.json data/research/soxl-wavetrend-backtest.json public/data/nvda-wavetrend.json public/data/soxl-wavetrend.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Reconcile and publish latest complete NVDA and SOXL WaveTrend candles'
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: wavetrend-publication-audit
+          path: audit-output/*wavetrend*.json

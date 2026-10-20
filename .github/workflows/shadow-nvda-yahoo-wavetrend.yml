@@ -1,20 +1,11 @@
 name: Shadow NVDA Yahoo WaveTrend
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'scripts/shadow_nvda_yahoo_wavetrend.py'
-      - 'tests/test_shadow_nvda_yahoo_wavetrend.py'
-      - '.github/workflows/shadow-nvda-yahoo-wavetrend.yml'
-  schedule:
-    # Every two hours on weekdays, spanning US extended hours across DST.
-    - cron: '17 9-23/2 * * 1-5'
-    - cron: '17 1 * * 2-6'
+  # Scheduled collection and publication are owned by update-wavetrend-feeds.yml.
 permissions:
   contents: write
 concurrency:
-  group: nvda-yahoo-wavetrend-shadow
+  group: nasdecode-wavetrend-data
   cancel-in-progress: false
 jobs:
   shadow:

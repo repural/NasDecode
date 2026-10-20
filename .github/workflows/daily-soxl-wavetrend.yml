@@ -1,22 +1,11 @@
 name: Daily SOXL WaveTrend Analysis and Publication
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'scripts/refresh_soxl_wavetrend.py'
-      - 'scripts/publish_soxl_wavetrend.py'
-      - 'tests/test_soxl_wavetrend.py'
-      - 'tests/test_wavetrend_widgets.cjs'
-      - 'public/nvda-wavetrend.js'
-      - '.github/workflows/daily-soxl-wavetrend.yml'
-  schedule:
-    # Prior completed U.S. session, using the historical Massive entitlement.
-    - cron: '30 12 * * 2-6'
+  # Scheduled collection/publication is owned by update-wavetrend-feeds.yml.
 permissions:
   contents: write
 concurrency:
-  group: nasdecode-daily-soxl-wt
+  group: nasdecode-wavetrend-data
   cancel-in-progress: false
 jobs:
   refresh:

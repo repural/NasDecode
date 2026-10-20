@@ -1,19 +1,11 @@
 name: Publish NVDA WaveTrend Card Data
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - 'data/research/nvda-wavetrend.json'
-      - 'scripts/publish_nvda_wavetrend.py'
-      - 'public/index.html'
-      - 'public/nvda-wavetrend.js'
-      - '.github/workflows/publish-nvda-wavetrend.yml'
-      - 'tests/test_nvda_wavetrend_browser.cjs'
+  # Scheduled collection/publication is owned by update-wavetrend-feeds.yml.
 permissions:
   contents: write
 concurrency:
-  group: nasdecode-publish-nvda-wt
+  group: nasdecode-wavetrend-data
   cancel-in-progress: false
 jobs:
   publish:
