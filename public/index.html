@@ -910,16 +910,16 @@ async function loadTodayWatch(){
     const research=await researchResponse.json();
     const published=research?.sessions?.[nyDate]?.premarket;
     const paras=published?.publicationStatus==='published'&&Array.isArray(published.paragraphs)?published.paragraphs:[];
-    const start=paras.findIndex(x=>/^#{1,4}\\s+What to Watch Today\\s*$/i.test(String(x).trim()));
+    const start=paras.findIndex(x=>/^#{1,4}\s+What to Watch Today\s*$/i.test(String(x).trim()));
     const items=[];
     if(start>=0){
       for(const p of paras.slice(start+1)){
         const line=String(p).trim();
-        if(/^#{1,4}\\s+/.test(line))break;
-        if(/^\\d+\\.\\s+/.test(line))items.push(line.replace(/^\\d+\\.\\s+/,''));
+        if(/^#{1,4}\s+/.test(line))break;
+        if(/^\d+\.\s+/.test(line))items.push(line.replace(/^\d+\.\s+/,''));
       }
     }
-    const plain=s=>String(s).replace(/\\[([^\\]]+)\\]\\(https?:\\/\\/[^)]+\\)/g,'$1').replace(/\\*\\*/g,'');
+    const plain=s=>String(s).replace(/\[([^\]]+)\]\(https?:\/\/[^)]+\)/g,'$1').replace(/\*\*/g,'');
     node.innerHTML=items.length?items.map((item,i)=>'<div class="catalyst"><div style="margin-top:5px">'+analysisText((i+1)+'. '+plain(item))+'</div></div>').join(''):'<div class="muted">No researched events are available from today’s published feeds.</div>';
 
   }catch(e){
