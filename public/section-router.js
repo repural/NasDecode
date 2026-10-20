@@ -1,6 +1,7 @@
 (()=>{'use strict';
-const pages={overview:'Overview',macro:'Macro / Rates',internals:'Market Internals',assessment:'Assessment',analysis:'Analysis',watch:'Open Watch'};
-const requested=new URLSearchParams(location.search).get('view')||'overview';
+const pages={overview:'Overview',assessment:'Assessment',analysis:'Analysis',watch:'Open Watch'};
+const rawView=new URLSearchParams(location.search).get('view')||'overview';
+const requested=['macro','internals'].includes(rawView)?'overview':rawView;
 const view=Object.prototype.hasOwnProperty.call(pages,requested)?requested:'overview';
 document.documentElement.dataset.ndPage=view;
 document.title='NasDecode — '+pages[view];
@@ -24,15 +25,11 @@ if(cards){
 }
 const style=document.createElement('style');
 style.textContent=`
-html[data-nd-page="overview"] #factorCards,
+html[data-nd-page="overview"] #factorCards > :not([data-nd-section="macro"]):not([data-nd-section="internals"]),
 html[data-nd-page="overview"] #premarket,
 html[data-nd-page="overview"] .signal-details,
 html[data-nd-page="overview"] #marketMovingDevelopments{display:none!important}
-html[data-nd-page="macro"] #factorCards > :not([data-nd-section="macro"]),
-html[data-nd-page="internals"] #factorCards > :not([data-nd-section="internals"]),
 html[data-nd-page="assessment"] #factorCards > :not([data-nd-section="assessment"]){display:none!important}
-html[data-nd-page="macro"] #premarket,html[data-nd-page="macro"] .signal-details,html[data-nd-page="macro"] #marketSetup,html[data-nd-page="macro"] .lower-intel,html[data-nd-page="macro"] #marketMovingDevelopments,
-html[data-nd-page="internals"] #premarket,html[data-nd-page="internals"] .signal-details,html[data-nd-page="internals"] #marketSetup,html[data-nd-page="internals"] .lower-intel,html[data-nd-page="internals"] #marketMovingDevelopments,
 html[data-nd-page="assessment"] #premarket,html[data-nd-page="assessment"] .lower-intel,html[data-nd-page="assessment"] #marketMovingDevelopments,
 html[data-nd-page="analysis"] #factorCards,html[data-nd-page="analysis"] .signal-details,html[data-nd-page="analysis"] #marketSetup,html[data-nd-page="analysis"] .lower-intel,html[data-nd-page="analysis"] #marketMovingDevelopments,
 html[data-nd-page="watch"] #factorCards,html[data-nd-page="watch"] #premarket,html[data-nd-page="watch"] .signal-details,html[data-nd-page="watch"] #marketSetup{display:none!important}
