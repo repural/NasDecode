@@ -29,7 +29,7 @@ MEGACAPS=['AAPL','MSFT','AMZN','GOOGL','META','NVDA','TSLA']
 # Liquid/large semiconductor universe used for leadership breadth confirmation.
 SEMI_BREADTH=['AMD','ADI','AMAT','ARM','ASML','ALAB','AVGO','COHR','CRDO','ENTG','GFS','INTC','KLAC','LRCX','MTSI','MRVL','MCHP','MU','MPWR','NVMI','NVDA','NXPI','ON','QRVO','QCOM','RMBS','SWKS','TSM','TER','TXN']
 BREADTH=['NVDA','AAPL','MU','MSFT','AMD','AMZN','TSLA','GOOGL','INTC','GOOG','AVGO','META','AMAT','WMT','LRCX','CSCO','COST','KLAC','SNDK','NFLX','PANW','TXN','PLTR','MRVL','LIN','WDC','STX','AMGN','QCOM','CRWD','ADI','PEP','ASML','TMUS','APP','GILD','ARM','ISRG','SHOP','BKNG','VRTX','SBUX','FTNT','CDNS','MAR','MNST','CEG','ADP','CSX','CMCSA','DDOG','MELI','SNPS','ADBE','ALAB','ORLY','DASH','TER','AEP','MDLZ','INTU','NXPI','HON','HONA','ROST','CTAS','MPWR','WBD','LITE','REGN','RBLX','NBIS','ABNB','RKLB','FAST','BKR','PDD','XEL','FANG','MCHP','FER','EXC','TTWO','AXON','ODFL','CCEP','CRWV','KDP','IDXX','ADSK','ALNY','PYPL','PAYX','ROP','TRI','GEHC','MSTR','KHC','CPRT','DXCM','WDAY','SPCX']
-SYMBOLS=list(dict.fromkeys(['US10Y','US2Y','ZQU6','ZQV6','ZQX6','ZQZ6','ZQF7','ZQG7','ZQH7','.IXIC','QQQ','SOXL','NVDA','AMD','AVGO','TSM','MU','SMH','SOXX','.VIX','.VXN','@CL.1','@LCO.1','HYG','LQD','S5FI','.SOX','SOX']+MEGACAPS+BREADTH))
+SYMBOLS=list(dict.fromkeys(['US10Y','US2Y','ZQU6','ZQV6','ZQX6','ZQZ6','ZQF7','ZQG7','ZQH7','.IXIC','QQQ','SOXL','.SPX','NVDA','AMD','AVGO','TSM','MU','SMH','SOXX','.VIX','.VXN','@CL.1','@LCO.1','HYG','LQD','S5FI','.SOX','SOX']+MEGACAPS+BREADTH))
 
 def cnbc_quotes(symbols):
     params={'symbols':'|'.join(symbols),'requestMethod':'itv','noform':'1','partnerId':'2','fund':'1','exthrs':'1','output':'json','events':'1'}
@@ -1062,6 +1062,19 @@ def main():
     previous={r.get('factor'):{'signal':r.get('signal','mixed'),'currentImpact':r.get('currentImpact','Low'),'latest':r.get('latest','')} for r in rows}
     try:
         q=cnbc_quotes(SYMBOLS)
+        # Display-only index quotes. Never feed these cards back into model weights.
+        index_tiles={}
+        for _name,_symbol in (('nasdaq','.IXIC'),('sp500','.SPX')):
+            _quote=q.get(_symbol,{})
+            _price=num(_quote.get('last')) if isinstance(_quote,dict) else None
+            _prior=num(_quote.get('previous_day_closing')) if isinstance(_quote,dict) else None
+            _change=round((_price/_prior-1)*100,3) if _price is not None and _prior and _prior>0 else None
+            index_tiles[_name]={'symbol':_symbol,'price':_price,'changePct':_change,
+                                'source':'CNBC quote service','quoteTime':_quote.get('last_timedate') or _quote.get('last_time'),
+                                'collectedAtET':datetime.datetime.now(NY).isoformat(),
+                                'status':'available' if _price is not None else 'unavailable',
+                                'realtimeGuaranteed':False}
+        d['marketIndexQuotes']=index_tiles
         # Probe the public CME FedWatch page first. We publish no probability unless the
         # actual aggregated table is retrievable; stale prior values are safer than fabrication.
         try:
