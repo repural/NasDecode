@@ -9,6 +9,7 @@ import argparse
 import datetime as dt
 import hashlib
 import json
+import math
 import subprocess
 from collections import defaultdict
 from pathlib import Path
@@ -64,11 +65,13 @@ def bullish(candle):
 
 def simulate(four, higher=None, start_date='2026-01-01', end_date='9999-12-31',
              cost=.001, initially_long=True, signal=None, entry_filter=None,
-             atr_multiplier=None):
+             atr_multiplier=None, zone_threshold=None):
     if not 0 <= cost < 1:
         raise ValueError('Invalid transaction cost')
     if atr_multiplier is not None and atr_multiplier <= 0:
         raise ValueError('ATR multiplier must be positive')
+    if zone_threshold is not None and (not math.isfinite(zone_threshold) or zone_threshold <= 0):
+        raise ValueError('Zone threshold must be finite and positive')
     rows = [b for b in four if b['endET'][:10] <= end_date]
     start = next((i for i, c in enumerate(rows) if c['startET'][:10] >= start_date), None)
     if start is None or start == 0 or not rows[start - 1].get('isWarm'):
@@ -144,12 +147,17 @@ def simulate(four, higher=None, start_date='2026-01-01', end_date='9999-12-31',
         decision = {'confirmedAtET': candle['endET'], 'signal4hStartET': candle['startET'],
                     'signalStartET': primary['startET'] if primary else None,
                     'signalConfirmedAtET': primary['endET'] if primary else None}
-        if shares > 0 and fresh_signal and primary.get('cross') == 'bearish':
+        zone_sell = zone_threshold is None or (primary and primary.get('wt1') is not None and primary['wt1'] >= zone_threshold)
+        zone_buy = zone_threshold is None or (fresh_signal and primary.get('cross') == 'bullish'
+                                              and primary.get('wt1') is not None and primary['wt1'] <= -zone_threshold)
+        if zone_threshold is not None and primary:
+            decision.update(signalWT1=primary.get('wt1'), signalWT2=primary.get('wt2'), zoneThreshold=zone_threshold)
+        if shares > 0 and fresh_signal and primary.get('cross') == 'bearish' and zone_sell:
             pending = {**decision, 'action': 'SELL', 'reason': 'wt_red'}
         elif shares > 0 and atr_breach:
             pending = {**decision, 'action': 'SELL', 'reason': 'atr_trail',
                        'trailAtConfirmation': trail_stop}
-        elif cash > 0 and bullish(primary) and not wait_for_green:
+        elif cash > 0 and bullish(primary) and not wait_for_green and zone_buy:
             idx = bisect.bisect_right(ht_ends, stamp(candle['endET'])) - 1
             higher_bar = higher[idx] if idx >= 0 else None
             if not use_higher or bullish(higher_bar):
