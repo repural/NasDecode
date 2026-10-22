@@ -1,0 +1,21 @@
+{
+  "startDate": "2026-01-01",
+  "endDate": "2026-10-16",
+  "symbol": "NVDA",
+  "timeframe": "4h",
+  "entryWT1Threshold": -45,
+  "atrLength": 14,
+  "atrMultiplier": 2,
+  "costPerSide": {
+    "zeroCosts": 0,
+    "cost10bps": 0.001,
+    "cost25bps": 0.0025
+  },
+  "optimization": false,
+  "rules": {
+    "baseline": "Original: enter while completed WT1 > WT2; exit on any confirmed red crossover.",
+    "oversold_entry": "Oversold entry: enter only on a new confirmed green cross with WT1 \u2264 -45; exit on any confirmed red crossover.",
+    "atr_exit": "ATR exit: original entries; exit on any red cross OR completed-close ATR trailing breach.",
+    "oversold_and_atr": "Combined: oversold entries; exit on any red cross OR completed-close ATR trailing breach."
+  }
+}
