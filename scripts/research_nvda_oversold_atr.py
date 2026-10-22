@@ -1,4 +1,5 @@
-"""Four fixed NVDA experiments isolating oversold entries and ATR exits."""
+"""Four fixed stock experiments isolating oversold entries and ATR exits."""
+import argparse
 import datetime as dt
 import hashlib
 import json
@@ -7,7 +8,6 @@ from scripts.compare_wavetrend_timeframes import COSTS, compact, simulate
 from scripts.research_wavetrend_companions import features
 
 ROOT=Path('data/research')
-PREFIX='nvda-wavetrend-oversold-atr'
 CONFIGS={'baseline':(False,None),'oversold_entry':(True,None),
          'atr_exit':(False,2),'oversold_and_atr':(True,2)}
 NAMES={'baseline':'Original 4H WT','oversold_entry':'Oversold entry only',
@@ -33,7 +33,7 @@ def pct(v):return '—' if v is None else f'{v:+.2f}%'
 
 
 def render(r):
-    lines=['# NVDA: oversold entries and ATR exits','','Fixed comparison: January 2–October 16, 2026; identical frozen adjusted Massive 4H input. Primary results use $10,000 inherited stock at the last 2025 close, next available 4H-open execution, 0.10% costs per buy/sell, and end-period marking without forced liquidation.','',
+    lines=[f"# {r['design']['symbol']}: oversold entries and ATR exits",'','Fixed comparison: January 2–October 16, 2026; identical frozen adjusted Massive 4H input. Primary results use $10,000 inherited stock at the last 2025 close, next available 4H-open execution, 0.10% costs per buy/sell, and end-period marking without forced liquidation.','',
            '## Primary comparison','','| Strategy | Net return | Final value | Max close drawdown | Win rate | Wins/closed | Profit factor | Missed/delayed rebound starts | ATR exits |','|---|---:|---:|---:|---:|---:|---:|---:|---:|']
     for name,costs in r['primary'].items():
         v=costs['cost10bps'];b=v['rebounds']['5'];wr='—' if v['winRatePct'] is None else f"{v['winRatePct']:.2f}%"
@@ -63,18 +63,22 @@ def render(r):
 
 
 def main():
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--symbol',choices=['NVDA','SOXL'],default='NVDA')
+    symbol=parser.parse_args().symbol
+    prefix=symbol.lower()+'-wavetrend-oversold-atr'
     previous=json.loads((ROOT/'wavetrend-companion-comparison.json').read_text())
-    design={'startDate':'2026-01-01','endDate':'2026-10-16','symbol':'NVDA','timeframe':'4h',
+    design={'startDate':'2026-01-01','endDate':'2026-10-16','symbol':symbol,'timeframe':'4h',
             'entryWT1Threshold':-45,'atrLength':14,'atrMultiplier':2,'costPerSide':COSTS,'optimization':False,
             'rules':{
                 'baseline':'Original: enter while completed WT1 > WT2; exit on any confirmed red crossover.',
                 'oversold_entry':'Oversold entry: enter only on a new confirmed green cross with WT1 ≤ -45; exit on any confirmed red crossover.',
                 'atr_exit':'ATR exit: original entries; exit on any red cross OR completed-close ATR trailing breach.',
                 'oversold_and_atr':'Combined: oversold entries; exit on any red cross OR completed-close ATR trailing breach.'}}
-    design_path=ROOT/(PREFIX+'-design.json')
+    design_path=ROOT/(prefix+'-design.json')
     if design_path.exists():assert json.loads(design_path.read_text())==design
     else:design_path.write_text(json.dumps(design,indent=2)+'\n')
-    source_path=ROOT/'nvda-wavetrend.json';digest=hashlib.sha256(source_path.read_bytes()).hexdigest()
+    source_path=ROOT/(symbol.lower()+'-wavetrend.json');digest=hashlib.sha256(source_path.read_bytes()).hexdigest()
     assert digest==previous['inputs'][str(source_path)]['sha256'],'Prior input changed'
     source=json.loads(source_path.read_text());assert not source.get('fetchErrors')
     rows=features(source['timeframes']['4h']['candles']);start,end=design['startDate'],design['endDate']
@@ -86,7 +90,7 @@ def main():
         report['codeHashes'][p.name]=hashlib.sha256(p.read_bytes()).hexdigest()
     for key in ['primary','startInCash','firstHalf','secondHalf']:
         for name in ['baseline','atr_exit']:
-            old=previous['symbols']['NVDA'][key][name]
+            old=previous['symbols'][symbol][key][name]
             for label in COSTS:
                 new=report[key][name][label]
                 for metric in ['returnPct','finalValue','executions','maxCloseDrawdownPct','winningSignalTrades','closedSignalTrades']:
@@ -103,8 +107,8 @@ def main():
             e=v['executionLedger'][-1];assert e['action']=='BUY'
             v['openPositionAtFinalMark']={'entryAtET':e['executedAtET'],
                                          'netMarkReturnPct':round(100*((1-.001)*close/e['executionPrice']-1),2)}
-    (ROOT/(PREFIX+'.json')).write_text(json.dumps(report,separators=(',',':'))+'\n')
-    (ROOT/(PREFIX+'.md')).write_text(render(report))
+    (ROOT/(prefix+'.json')).write_text(json.dumps(report,separators=(',',':'))+'\n')
+    (ROOT/(prefix+'.md')).write_text(render(report))
     print(render(report))
 
 
