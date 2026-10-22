@@ -59,15 +59,18 @@ def render(r):
               '- The -45 entry threshold and 2×ATR14 exit were chosen before this run, based on earlier analysis of this same 2026 period. No grid search was performed. These results are not independent validation; all rules require testing on later untouched data.',
               '- Buy-and-hold on the inherited-position convention returned '+pct(r['primary']['baseline']['cost10bps']['buyAndHoldReturnPct'])+' before costs. TradingView candle/numerical equivalence remains unverified.',
               '- The adjacent JSON contains the frozen design, source/code hashes, cost scenarios, full primary ledgers, cash-start and half-year diagnostics.','']
+    if r['design']['symbol']=='MU':
+        lines += ['MU data coverage: all 2026 evaluation sessions have complete 4H/8H bucket coverage. The December 8, 2025 04:00–08:00 ET warm-up bucket is excluded by the existing collector rule; it is not synthesized. Sparse five-minute source intervals and short warm-up sessions are documented in mu-wavetrend-coverage.json.','']
     return '\n'.join(lines)
 
 
 def main():
     parser=argparse.ArgumentParser()
-    parser.add_argument('--symbol',choices=['NVDA','SOXL'],default='NVDA')
+    parser.add_argument('--symbol',choices=['NVDA','SOXL','MU'],default='NVDA')
     symbol=parser.parse_args().symbol
     prefix=symbol.lower()+'-wavetrend-oversold-atr'
-    previous=json.loads((ROOT/'wavetrend-companion-comparison.json').read_text())
+    previous_path=ROOT/('mu-wavetrend-companion-comparison.json' if symbol=='MU' else 'wavetrend-companion-comparison.json')
+    previous=json.loads(previous_path.read_text())
     design={'startDate':'2026-01-01','endDate':'2026-10-16','symbol':symbol,'timeframe':'4h',
             'entryWT1Threshold':-45,'atrLength':14,'atrMultiplier':2,'costPerSide':COSTS,'optimization':False,
             'rules':{
@@ -81,6 +84,9 @@ def main():
     source_path=ROOT/(symbol.lower()+'-wavetrend.json');digest=hashlib.sha256(source_path.read_bytes()).hexdigest()
     assert digest==previous['inputs'][str(source_path)]['sha256'],'Prior input changed'
     source=json.loads(source_path.read_text());assert not source.get('fetchErrors')
+    if symbol=='MU':
+        from scripts.audit_mu_wavetrend import audit
+        audit(source,json.loads(Path('data/history/mu-daily.json').read_text()))
     rows=features(source['timeframes']['4h']['candles']);start,end=design['startDate'],design['endDate']
     report={'researchOnly':True,'generatedUTC':dt.datetime.now(dt.timezone.utc).isoformat(),'design':design,
             'inputs':{str(source_path):digest},'codeHashes':{},
