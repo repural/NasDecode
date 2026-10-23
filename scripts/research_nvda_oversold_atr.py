@@ -32,6 +32,19 @@ def run(rows,start,end,initially_long=True,ledgers=False):
 def pct(v):return '—' if v is None else f'{v:+.2f}%'
 
 
+def buy_and_hold(rows,start,end):
+    selected=[c for c in rows if c['startET'][:10]>=start and c['endET'][:10]<=end]
+    reference=next(c for c in reversed(rows) if c['startET'][:10]<start)
+    peak=10000;drawdown=0
+    for c in selected:
+        value=10000*c['close']/reference['close']
+        peak=max(peak,value);drawdown=min(drawdown,100*(value/peak-1))
+    return {'returnPct':round(100*(value/10000-1),2),'finalValue':round(value,2),
+            'maxCloseDrawdownPct':round(drawdown,2),'referenceAtET':reference['endET'],
+            'lastMarkET':selected[-1]['endET'],
+            'costConvention':'Same inherited starting shares; no trades or forced sale, so no transaction costs.'}
+
+
 def render(r):
     lines=[f"# {r['design']['symbol']}: oversold entries and ATR exits",'','Fixed comparison: January 2–October 16, 2026; identical frozen adjusted Massive 4H input. Primary results use $10,000 inherited stock at the last 2025 close, next available 4H-open execution, 0.10% costs per buy/sell, and end-period marking without forced liquidation.','',
            '## Primary comparison','','| Strategy | Net return | Final value | Max close drawdown | Win rate | Wins/closed | Profit factor | Missed/delayed rebound starts | ATR exits |','|---|---:|---:|---:|---:|---:|---:|---:|---:|']
@@ -39,6 +52,10 @@ def render(r):
         v=costs['cost10bps'];b=v['rebounds']['5'];wr='—' if v['winRatePct'] is None else f"{v['winRatePct']:.2f}%"
         pf='—' if v['netProfitFactor'] is None else f"{v['netProfitFactor']:.2f}"
         lines.append(f"| {NAMES[name]} | {pct(v['returnPct'])} | ${v['finalValue']:,.2f} | {pct(v['maxCloseDrawdownPct'])} | {wr} | {v['winningSignalTrades']}/{v['closedSignalTrades']} | {pf} | {b['missedStarts']}/{b['qualifyingWindows']} | {v['atrExitExecutions']} |")
+    if r.get('buyAndHold'):
+        b=r['buyAndHold']
+        lines.append(f"| Buy and hold | {pct(b['returnPct'])} | ${b['finalValue']:,.2f} | {pct(b['maxCloseDrawdownPct'])} | — | — | — | — | — |")
+        lines += ['', 'Buy-and-hold uses the identical inherited starting shares and ending mark. It makes no trades and is not sold at the end, so no transaction costs apply. Win rate is not applicable.']
     lines += ['','## Sensitivities','','| Strategy | No costs | 0.25%/side | Full period starting cash | Jan–Jun return | Jul–Oct return | Exposure |','|---|---:|---:|---:|---:|---:|---:|']
     for name,costs in r['primary'].items():
         v=costs['cost10bps']
@@ -89,9 +106,10 @@ def main():
         audit(source,json.loads(Path('data/history/mu-daily.json').read_text()))
     rows=features(source['timeframes']['4h']['candles']);start,end=design['startDate'],design['endDate']
     report={'researchOnly':True,'generatedUTC':dt.datetime.now(dt.timezone.utc).isoformat(),'design':design,
-            'inputs':{str(source_path):digest},'codeHashes':{},
+            'inputs':{str(source_path):digest},'codeHashes':{},'buyAndHold':buy_and_hold(rows,start,end),
             'primary':run(rows,start,end,ledgers=True),'startInCash':run(rows,start,end,False),
             'firstHalf':run(rows,start,'2026-06-30'),'secondHalf':run(rows,'2026-07-01',end)}
+    assert report['buyAndHold']['returnPct']==report['primary']['baseline']['cost10bps']['buyAndHoldReturnPct']
     for p in [Path(__file__),Path('scripts/compare_wavetrend_timeframes.py'),Path('scripts/research_wavetrend_companions.py')]:
         report['codeHashes'][p.name]=hashlib.sha256(p.read_bytes()).hexdigest()
     for key in ['primary','startInCash','firstHalf','secondHalf']:

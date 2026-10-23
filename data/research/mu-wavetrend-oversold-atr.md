@@ -10,6 +10,9 @@ Fixed comparison: January 2–October 16, 2026; identical frozen adjusted Massiv
 | Oversold entry only | +12.63% | $11,263.25 | -17.42% | 40.00% | 4/10 | 1.10 | 14/19 | 0 |
 | ATR exit only | +121.42% | $22,142.26 | -28.54% | 44.44% | 24/54 | 1.53 | 0/19 | 3 |
 | Oversold entry + ATR exit | +13.22% | $11,322.07 | -17.42% | 40.00% | 4/10 | 1.10 | 14/19 | 1 |
+| Buy and hold | +206.17% | $30,616.90 | -40.40% | — | — | — | — | — |
+
+Buy-and-hold uses the identical inherited starting shares and ending mark. It makes no trades and is not sold at the end, so no transaction costs apply. Win rate is not applicable.
 
 ## Sensitivities
 
