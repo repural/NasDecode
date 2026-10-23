@@ -1,6 +1,8 @@
 name: Phase 3 Constituent Breadth Backfill
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '20 5 * * 2-6'
   push:
     branches: [main]
     paths:
@@ -24,7 +26,7 @@ jobs:
         with:
           python-version: '3.11'
       - name: Validate script
-        run: python -m py_compile scripts/backfill_phase3_constituent_breadth.py
+        run: python -m py_compile scripts/backfill_phase3_constituent_breadth.py scripts/analyze_phase3_breadth_recovery.py scripts/analyze_phase3_validation_macro.py
       - name: Backfill dated adjusted closes
         env:
           MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
@@ -40,7 +42,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # Generated datasets must be applied to the latest main, not rebased as concurrent JSON edits.
-          # Fetch once per attempt and replace only the two generated artifacts.
+          # Fetch once per attempt and replace generated research artifacts.
           cp data/history/phase3-constituent-breadth.json /tmp/phase3-breadth.json
           cp data/history/phase3-breadth-divergence-research.json /tmp/phase3-divergence.json
           cp data/history/phase3-breadth-recovery-research.json /tmp/phase3-recovery.json
