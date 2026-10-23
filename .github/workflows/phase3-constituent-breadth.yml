@@ -7,6 +7,7 @@ on:
       - 'scripts/backfill_phase3_constituent_breadth.py'
       - 'scripts/analyze_phase3_breadth_divergence.py'
       - 'scripts/analyze_phase3_breadth_recovery.py'
+      - 'scripts/analyze_phase3_validation_macro.py'
       - '.github/workflows/phase3-constituent-breadth.yml'
 permissions:
   contents: write
@@ -32,6 +33,8 @@ jobs:
         run: python scripts/analyze_phase3_breadth_divergence.py
       - name: Analyze current-constituent breadth recovery
         run: python scripts/analyze_phase3_breadth_recovery.py
+      - name: Validate breadth outcomes and macro associations
+        run: python scripts/analyze_phase3_validation_macro.py
       - name: Persist research-only dataset
         run: |
           git config user.name "github-actions[bot]"
@@ -41,13 +44,15 @@ jobs:
           cp data/history/phase3-constituent-breadth.json /tmp/phase3-breadth.json
           cp data/history/phase3-breadth-divergence-research.json /tmp/phase3-divergence.json
           cp data/history/phase3-breadth-recovery-research.json /tmp/phase3-recovery.json
+          cp data/history/phase3-validation-macro-interactions.json /tmp/phase3-validation.json
           for attempt in 1 2 3 4 5; do
             git fetch origin main
             git reset --hard origin/main
             cp /tmp/phase3-breadth.json data/history/phase3-constituent-breadth.json
             cp /tmp/phase3-divergence.json data/history/phase3-breadth-divergence-research.json
             cp /tmp/phase3-recovery.json data/history/phase3-breadth-recovery-research.json
-            git add data/history/phase3-constituent-breadth.json data/history/phase3-breadth-divergence-research.json data/history/phase3-breadth-recovery-research.json
+            cp /tmp/phase3-validation.json data/history/phase3-validation-macro-interactions.json
+            git add data/history/phase3-constituent-breadth.json data/history/phase3-breadth-divergence-research.json data/history/phase3-breadth-recovery-research.json data/history/phase3-validation-macro-interactions.json
             git diff --cached --quiet && exit 0
             git commit -m "Persist Phase 3 semiconductor breadth history"
             git push origin HEAD:main && exit 0
