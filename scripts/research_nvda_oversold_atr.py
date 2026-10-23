@@ -78,16 +78,18 @@ def render(r):
               '- The adjacent JSON contains the frozen design, source/code hashes, cost scenarios, full primary ledgers, cash-start and half-year diagnostics.','']
     if r['design']['symbol']=='MU':
         lines += ['MU data coverage: all 2026 evaluation sessions have complete 4H/8H bucket coverage. The December 8, 2025 04:00–08:00 ET warm-up bucket is excluded by the existing collector rule; it is not synthesized. Sparse five-minute source intervals and short warm-up sessions are documented in mu-wavetrend-coverage.json.','']
+    if r['design']['symbol']=='GOOGL':
+        lines += ['GOOGL Class A data coverage is audited against existing US exchange trading dates. No GOOG or NVDA prices enter GOOGL calculations. Warm-up short sessions and sparse five-minute source intervals are disclosed in googl-wavetrend-coverage.json.','']
     return '\n'.join(lines)
 
 
 def main():
     parser=argparse.ArgumentParser()
-    parser.add_argument('--symbol',choices=['NVDA','SOXL','MU'],default='NVDA')
+    parser.add_argument('--symbol',choices=['NVDA','SOXL','MU','GOOGL'],default='NVDA')
     symbol=parser.parse_args().symbol
     prefix=symbol.lower()+'-wavetrend-oversold-atr'
     previous_path=ROOT/('mu-wavetrend-companion-comparison.json' if symbol=='MU' else 'wavetrend-companion-comparison.json')
-    previous=json.loads(previous_path.read_text())
+    previous=None if symbol=='GOOGL' else json.loads(previous_path.read_text())
     design={'startDate':'2026-01-01','endDate':'2026-10-16','symbol':symbol,'timeframe':'4h',
             'entryWT1Threshold':-45,'atrLength':14,'atrMultiplier':2,'costPerSide':COSTS,'optimization':False,
             'rules':{
@@ -99,21 +101,33 @@ def main():
     if design_path.exists():assert json.loads(design_path.read_text())==design
     else:design_path.write_text(json.dumps(design,indent=2)+'\n')
     source_path=ROOT/(symbol.lower()+'-wavetrend.json');digest=hashlib.sha256(source_path.read_bytes()).hexdigest()
-    assert digest==previous['inputs'][str(source_path)]['sha256'],'Prior input changed'
+    if previous is not None:
+        assert digest==previous['inputs'][str(source_path)]['sha256'],'Prior input changed'
     source=json.loads(source_path.read_text());assert not source.get('fetchErrors')
     if symbol=='MU':
         from scripts.audit_mu_wavetrend import audit
         audit(source,json.loads(Path('data/history/mu-daily.json').read_text()))
+    if symbol=='GOOGL':
+        from scripts.audit_googl_wavetrend import audit
+        audit(source,json.loads(Path('data/history/nvda-daily.json').read_text()))
     rows=features(source['timeframes']['4h']['candles']);start,end=design['startDate'],design['endDate']
     report={'researchOnly':True,'generatedUTC':dt.datetime.now(dt.timezone.utc).isoformat(),'design':design,
             'inputs':{str(source_path):digest},'codeHashes':{},'buyAndHold':buy_and_hold(rows,start,end),
             'primary':run(rows,start,end,ledgers=True),'startInCash':run(rows,start,end,False),
             'firstHalf':run(rows,start,'2026-06-30'),'secondHalf':run(rows,'2026-07-01',end)}
     assert report['buyAndHold']['returnPct']==report['primary']['baseline']['cost10bps']['buyAndHoldReturnPct']
+    if symbol=='GOOGL':
+        from scripts.backtest_wavetrend import simulate as independent_simulate
+        for label,cost in COSTS.items():
+            check=independent_simulate([c for c in rows if c['endET'][:10]<=end],friction=cost)
+            actual=report['primary']['baseline'][label]
+            assert check['finalValue']==actual['finalValue']
+            assert check['numberOfExecutions']==actual['executions']
     for p in [Path(__file__),Path('scripts/compare_wavetrend_timeframes.py'),Path('scripts/research_wavetrend_companions.py')]:
         report['codeHashes'][p.name]=hashlib.sha256(p.read_bytes()).hexdigest()
     for key in ['primary','startInCash','firstHalf','secondHalf']:
         for name in ['baseline','atr_exit']:
+            if previous is None:continue
             old=previous['symbols'][symbol][key][name]
             for label in COSTS:
                 new=report[key][name][label]

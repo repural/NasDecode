@@ -74,9 +74,10 @@ def wavetrend(candles):
 def fetch_bars(start, end, key, symbol="NVDA"):
     """Fetch all pages for a dated range with plan-aware throttling and no truncation."""
     global LAST_FETCH
-    if symbol not in ("NVDA", "SOXL", "MU"):
+    if symbol not in ("NVDA", "SOXL", "MU", "GOOGL"):
         raise ValueError("Unsupported research symbol")
-    url=BASE.replace('/NVDA/', '/' + symbol + '/') + start.isoformat()+"/"+end.isoformat()+"?adjusted=true&sort=asc&limit=5000"
+    limit=50000 if symbol=="GOOGL" else 5000
+    url=BASE.replace('/NVDA/', '/' + symbol + '/') + start.isoformat()+"/"+end.isoformat()+"?adjusted=true&sort=asc&limit="+str(limit)
     rows=[]
     seen=set()
     for page in range(30):
@@ -219,7 +220,7 @@ def build(days=365, now=None, symbol="NVDA"):
 def main():
     p=argparse.ArgumentParser()
     p.add_argument("--days",type=int,default=365)
-    p.add_argument("--symbol",choices=("NVDA","SOXL","MU"),default="NVDA")
+    p.add_argument("--symbol",choices=("NVDA","SOXL","MU","GOOGL"),default="NVDA")
     p.add_argument("--output")
     args=p.parse_args()
     document=build(args.days,symbol=args.symbol)

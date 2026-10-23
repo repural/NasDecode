@@ -1,0 +1,50 @@
+name: Research GOOGL WaveTrend oversold entries and ATR exits
+on:
+  workflow_dispatch:
+  push:
+    branches: ['research/wt-timeframe-comparison-2026-10-20']
+    paths: ['.github/workflows/research-googl-wavetrend.yml']
+permissions:
+  contents: write
+concurrency:
+  group: nasdecode-googl-wt-research
+  cancel-in-progress: false
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate collector and unchanged simulation rules
+        run: |
+          python -m compileall -q scripts tests
+          python -m unittest discover -s tests -p '*wavetrend*.py' -v
+      - name: Collect adjusted GOOGL five-minute history with warm-up
+        if: ${{ hashFiles('data/research/googl-wavetrend.json') == '' }}
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: python -m scripts.research_nvda_wavetrend --symbol GOOGL --days 400
+      - name: Audit GOOGL session coverage and candle integrity
+        run: python -m scripts.audit_googl_wavetrend
+      - name: Run unchanged four-strategy experiment and buy-and-hold
+        run: python -m scripts.research_nvda_oversold_atr --symbol GOOGL
+      - name: Preserve downloaded data even if audit fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: googl-wavetrend-research
+          path: data/research/googl-wavetrend*
+          retention-days: 30
+      - name: Save validated GOOGL research
+        run: |
+          set -euo pipefail
+          git config user.name nasdecode-bot
+          git config user.email actions@users.noreply.github.com
+          git add data/research/googl-wavetrend*
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Persist GOOGL adjusted WT history and fixed oversold ATR comparison'
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin research/wt-timeframe-comparison-2026-10-20
+            if git push origin HEAD:research/wt-timeframe-comparison-2026-10-20; then exit 0; fi
+          done
+          exit 1
