@@ -1,195 +1,668 @@
 {
-  "status": "research_only",
-  "method": "Chronological non-overlap by horizon; Pearson correlations for continuous macro variables.",
+  "schemaVersion": 2,
+  "status": "research_only_no_production_change",
   "sourceDates": {
     "breadth": "2026-10-22",
-    "regime": "2026-10-21"
+    "regime": "2026-10-21",
+    "commonLast": "2026-10-21"
   },
-  "cohorts": {
+  "alignment": {
+    "breadthSessions": 473,
+    "regimeSessions": 452,
+    "joinedSessions": 452,
+    "breadthMissingRegimeDates": [
+      "2024-12-03",
+      "2024-12-04",
+      "2024-12-05",
+      "2024-12-06",
+      "2024-12-09",
+      "2024-12-10",
+      "2024-12-11",
+      "2024-12-12",
+      "2024-12-13",
+      "2024-12-16",
+      "2024-12-17",
+      "2024-12-18",
+      "2024-12-19",
+      "2024-12-20",
+      "2024-12-23",
+      "2024-12-24",
+      "2024-12-26",
+      "2024-12-27",
+      "2024-12-30",
+      "2024-12-31",
+      "2026-10-22"
+    ],
+    "regimeMissingBreadthDates": [],
+    "policy": "Join only on exact date; do not forward-fill macro or fabricate missing rows. Refresh upstream datasets independently."
+  },
+  "offsetSensitivity": {
     "2025_external_retrospective": {
       "sessions": 250,
       "horizons": {
         "1": {
-          "nonOverlapping": {
-            "all": {
-              "n": 125,
-              "meanPct": -0.1433,
-              "positiveRate": 0.56
+          "offsets": {
+            "0": {
+              "all": {
+                "n": 125,
+                "meanPct": -0.14334,
+                "positiveRate": 0.56
+              },
+              "deteriorating": {
+                "n": 29,
+                "meanPct": -0.6281,
+                "positiveRate": 0.48276
+              },
+              "stabilizing": {
+                "n": 10,
+                "meanPct": -0.27038,
+                "positiveRate": 0.4
+              },
+              "recovering": {
+                "n": 27,
+                "meanPct": -0.46205,
+                "positiveRate": 0.51852
+              }
             },
-            "deteriorating": {
-              "n": 29,
-              "meanPct": -0.6281,
-              "positiveRate": 0.4828
-            },
-            "stabilizing": {
-              "n": 10,
-              "meanPct": -0.2704,
-              "positiveRate": 0.4
-            },
-            "recovering": {
-              "n": 27,
-              "meanPct": -0.462,
-              "positiveRate": 0.5185
+            "1": {
+              "all": {
+                "n": 124,
+                "meanPct": 0.48732,
+                "positiveRate": 0.57258
+              },
+              "deteriorating": {
+                "n": 36,
+                "meanPct": 0.21769,
+                "positiveRate": 0.5
+              },
+              "stabilizing": {
+                "n": 6,
+                "meanPct": 0.00135,
+                "positiveRate": 0.5
+              },
+              "recovering": {
+                "n": 20,
+                "meanPct": 0.5994,
+                "positiveRate": 0.8
+              }
             }
           },
-          "macroAssociations": {
-            "sox5d": {
-              "n": 125,
-              "pearsonR": 0.0892
+          "stability": {
+            "all": {
+              "eligibleOffsets": 2,
+              "minMeanPct": -0.14334,
+              "maxMeanPct": 0.48732,
+              "medianMeanPct": 0.17199
             },
-            "relative5d": {
-              "n": 125,
-              "pearsonR": 0.0905
+            "deteriorating": {
+              "eligibleOffsets": 2,
+              "minMeanPct": -0.6281,
+              "maxMeanPct": 0.21769,
+              "medianMeanPct": -0.2052
             },
-            "yield5d": {
-              "n": 124,
-              "pearsonR": 0.095
+            "stabilizing": {
+              "eligibleOffsets": 2,
+              "minMeanPct": -0.27038,
+              "maxMeanPct": 0.00135,
+              "medianMeanPct": -0.13451
             },
-            "vxn": {
-              "n": 125,
-              "pearsonR": -0.1529
-            },
-            "oil5d": {
-              "n": 123,
-              "pearsonR": 0.1291
+            "recovering": {
+              "eligibleOffsets": 2,
+              "minMeanPct": -0.46205,
+              "maxMeanPct": 0.5994,
+              "medianMeanPct": 0.06868
             }
           }
         },
         "3": {
-          "nonOverlapping": {
-            "all": {
-              "n": 62,
-              "meanPct": 0.2883,
-              "positiveRate": 0.6452
+          "offsets": {
+            "0": {
+              "all": {
+                "n": 62,
+                "meanPct": 0.2883,
+                "positiveRate": 0.64516
+              },
+              "deteriorating": {
+                "n": 16,
+                "meanPct": -0.01416,
+                "positiveRate": 0.5625
+              },
+              "stabilizing": {
+                "n": 4,
+                "meanPct": -0.07995,
+                "positiveRate": 0.5
+              },
+              "recovering": {
+                "n": 14,
+                "meanPct": -1.10481,
+                "positiveRate": 0.57143
+              }
             },
-            "deteriorating": {
-              "n": 16,
-              "meanPct": -0.0142,
-              "positiveRate": 0.5625
+            "1": {
+              "all": {
+                "n": 62,
+                "meanPct": 0.81665,
+                "positiveRate": 0.64516
+              },
+              "deteriorating": {
+                "n": 19,
+                "meanPct": 0.63096,
+                "positiveRate": 0.57895
+              },
+              "stabilizing": {
+                "n": 4,
+                "meanPct": 0.18376,
+                "positiveRate": 0.5
+              },
+              "recovering": {
+                "n": 10,
+                "meanPct": -0.37773,
+                "positiveRate": 0.6
+              }
             },
-            "stabilizing": {
-              "n": 4,
-              "meanPct": -0.0799,
-              "positiveRate": 0.5
+            "2": {
+              "all": {
+                "n": 62,
+                "meanPct": 0.05983,
+                "positiveRate": 0.5
+              },
+              "deteriorating": {
+                "n": 13,
+                "meanPct": -1.28578,
+                "positiveRate": 0.46154
+              },
+              "stabilizing": {
+                "n": 6,
+                "meanPct": -0.08167,
+                "positiveRate": 0.5
+              },
+              "recovering": {
+                "n": 13,
+                "meanPct": 1.18298,
+                "positiveRate": 0.46154
+              }
             },
-            "recovering": {
-              "n": 14,
-              "meanPct": -1.1048,
-              "positiveRate": 0.5714
+            "3": {
+              "all": {
+                "n": 61,
+                "meanPct": 0.76448,
+                "positiveRate": 0.55738
+              },
+              "deteriorating": {
+                "n": 16,
+                "meanPct": 1.36093,
+                "positiveRate": 0.5
+              },
+              "stabilizing": {
+                "n": 2,
+                "meanPct": 0.57736,
+                "positiveRate": 0.5
+              },
+              "recovering": {
+                "n": 10,
+                "meanPct": 1.93899,
+                "positiveRate": 0.9
+              }
             }
           },
-          "macroAssociations": {
-            "sox5d": {
-              "n": 62,
-              "pearsonR": -0.0666
+          "stability": {
+            "all": {
+              "eligibleOffsets": 4,
+              "minMeanPct": 0.05983,
+              "maxMeanPct": 0.81665,
+              "medianMeanPct": 0.52639
             },
-            "relative5d": {
-              "n": 62,
-              "pearsonR": -0.0544
+            "deteriorating": {
+              "eligibleOffsets": 4,
+              "minMeanPct": -1.28578,
+              "maxMeanPct": 1.36093,
+              "medianMeanPct": 0.3084
             },
-            "yield5d": {
-              "n": 62,
-              "pearsonR": 0.0646
+            "stabilizing": {
+              "eligibleOffsets": 1,
+              "minMeanPct": -0.08167,
+              "maxMeanPct": -0.08167,
+              "medianMeanPct": -0.08167
             },
-            "vxn": {
-              "n": 62,
-              "pearsonR": 0.052
-            },
-            "oil5d": {
-              "n": 61,
-              "pearsonR": -0.1354
+            "recovering": {
+              "eligibleOffsets": 4,
+              "minMeanPct": -1.10481,
+              "maxMeanPct": 1.93899,
+              "medianMeanPct": 0.40262
             }
           }
         },
         "5": {
-          "nonOverlapping": {
-            "all": {
-              "n": 41,
-              "meanPct": 0.5717,
-              "positiveRate": 0.561
+          "offsets": {
+            "0": {
+              "all": {
+                "n": 41,
+                "meanPct": 0.57165,
+                "positiveRate": 0.56098
+              },
+              "deteriorating": {
+                "n": 10,
+                "meanPct": 2.21628,
+                "positiveRate": 0.7
+              },
+              "stabilizing": {
+                "n": 2,
+                "meanPct": 6.82889,
+                "positiveRate": 1.0
+              },
+              "recovering": {
+                "n": 10,
+                "meanPct": -1.53074,
+                "positiveRate": 0.6
+              }
             },
-            "deteriorating": {
-              "n": 10,
-              "meanPct": 2.2163,
-              "positiveRate": 0.7
+            "1": {
+              "all": {
+                "n": 41,
+                "meanPct": 0.93948,
+                "positiveRate": 0.56098
+              },
+              "deteriorating": {
+                "n": 10,
+                "meanPct": 0.29594,
+                "positiveRate": 0.5
+              },
+              "stabilizing": {
+                "n": 1,
+                "meanPct": 3.25001,
+                "positiveRate": 1.0
+              },
+              "recovering": {
+                "n": 6,
+                "meanPct": 1.56402,
+                "positiveRate": 0.33333
+              }
             },
-            "stabilizing": {
-              "n": 2,
-              "meanPct": 6.8289,
-              "positiveRate": 1.0
+            "2": {
+              "all": {
+                "n": 41,
+                "meanPct": 0.85444,
+                "positiveRate": 0.58537
+              },
+              "deteriorating": {
+                "n": 11,
+                "meanPct": 0.5577,
+                "positiveRate": 0.54545
+              },
+              "stabilizing": {
+                "n": 4,
+                "meanPct": 0.53804,
+                "positiveRate": 0.5
+              },
+              "recovering": {
+                "n": 10,
+                "meanPct": 2.16517,
+                "positiveRate": 0.7
+              }
             },
-            "recovering": {
-              "n": 10,
-              "meanPct": -1.5307,
-              "positiveRate": 0.6
+            "3": {
+              "all": {
+                "n": 41,
+                "meanPct": 1.42474,
+                "positiveRate": 0.63415
+              },
+              "deteriorating": {
+                "n": 14,
+                "meanPct": 0.95729,
+                "positiveRate": 0.5
+              },
+              "stabilizing": {
+                "n": 3,
+                "meanPct": -2.17136,
+                "positiveRate": 0.66667
+              },
+              "recovering": {
+                "n": 7,
+                "meanPct": 2.58669,
+                "positiveRate": 0.71429
+              }
+            },
+            "4": {
+              "all": {
+                "n": 41,
+                "meanPct": 0.05893,
+                "positiveRate": 0.58537
+              },
+              "deteriorating": {
+                "n": 7,
+                "meanPct": -0.25643,
+                "positiveRate": 0.57143
+              },
+              "stabilizing": {
+                "n": 4,
+                "meanPct": 0.05134,
+                "positiveRate": 0.75
+              },
+              "recovering": {
+                "n": 7,
+                "meanPct": -0.45341,
+                "positiveRate": 0.42857
+              }
+            },
+            "5": {
+              "all": {
+                "n": 40,
+                "meanPct": 0.9435,
+                "positiveRate": 0.625
+              },
+              "deteriorating": {
+                "n": 11,
+                "meanPct": 4.2033,
+                "positiveRate": 1.0
+              },
+              "stabilizing": {
+                "n": 1,
+                "meanPct": -5.81678,
+                "positiveRate": 0.0
+              },
+              "recovering": {
+                "n": 7,
+                "meanPct": 0.14858,
+                "positiveRate": 0.71429
+              }
             }
           },
-          "macroAssociations": {
-            "sox5d": {
-              "n": 41,
-              "pearsonR": -0.0043
+          "stability": {
+            "all": {
+              "eligibleOffsets": 6,
+              "minMeanPct": 0.05893,
+              "maxMeanPct": 1.42474,
+              "medianMeanPct": 0.89696
             },
-            "relative5d": {
-              "n": 41,
-              "pearsonR": -0.0178
+            "deteriorating": {
+              "eligibleOffsets": 6,
+              "minMeanPct": -0.25643,
+              "maxMeanPct": 4.2033,
+              "medianMeanPct": 0.7575
             },
-            "yield5d": {
-              "n": 41,
-              "pearsonR": 0.103
+            "stabilizing": {
+              "eligibleOffsets": 0,
+              "minMeanPct": null,
+              "maxMeanPct": null,
+              "medianMeanPct": null
             },
-            "vxn": {
-              "n": 41,
-              "pearsonR": 0.1452
-            },
-            "oil5d": {
-              "n": 41,
-              "pearsonR": 0.0955
+            "recovering": {
+              "eligibleOffsets": 6,
+              "minMeanPct": -1.53074,
+              "maxMeanPct": 2.58669,
+              "medianMeanPct": 0.8563
             }
           }
         },
         "10": {
-          "nonOverlapping": {
-            "all": {
-              "n": 22,
-              "meanPct": 1.2469,
-              "positiveRate": 0.6818
+          "offsets": {
+            "0": {
+              "all": {
+                "n": 22,
+                "meanPct": 1.24692,
+                "positiveRate": 0.68182
+              },
+              "deteriorating": {
+                "n": 6,
+                "meanPct": 2.24588,
+                "positiveRate": 0.66667
+              },
+              "stabilizing": {
+                "n": 2,
+                "meanPct": 7.04387,
+                "positiveRate": 1.0
+              },
+              "recovering": {
+                "n": 2,
+                "meanPct": 2.60695,
+                "positiveRate": 0.5
+              }
             },
-            "deteriorating": {
-              "n": 6,
-              "meanPct": 2.2459,
-              "positiveRate": 0.6667
+            "1": {
+              "all": {
+                "n": 22,
+                "meanPct": 2.12862,
+                "positiveRate": 0.63636
+              },
+              "deteriorating": {
+                "n": 5,
+                "meanPct": 3.65221,
+                "positiveRate": 0.6
+              },
+              "stabilizing": {
+                "n": 4,
+                "meanPct": 0.97395,
+                "positiveRate": 0.75
+              },
+              "recovering": {
+                "n": 5,
+                "meanPct": 4.92977,
+                "positiveRate": 0.8
+              }
             },
-            "stabilizing": {
-              "n": 2,
-              "meanPct": 7.0439,
-              "positiveRate": 1.0
+            "2": {
+              "all": {
+                "n": 22,
+                "meanPct": 1.49471,
+                "positiveRate": 0.59091
+              },
+              "deteriorating": {
+                "n": 7,
+                "meanPct": 3.52418,
+                "positiveRate": 0.57143
+              },
+              "stabilizing": {
+                "n": 2,
+                "meanPct": -11.17595,
+                "positiveRate": 0.0
+              },
+              "recovering": {
+                "n": 4,
+                "meanPct": 5.92899,
+                "positiveRate": 1.0
+              }
             },
-            "recovering": {
-              "n": 2,
-              "meanPct": 2.607,
-              "positiveRate": 0.5
+            "3": {
+              "all": {
+                "n": 22,
+                "meanPct": 1.93805,
+                "positiveRate": 0.59091
+              },
+              "deteriorating": {
+                "n": 8,
+                "meanPct": 1.02683,
+                "positiveRate": 0.625
+              },
+              "stabilizing": {
+                "n": 1,
+                "meanPct": -3.8127,
+                "positiveRate": 0.0
+              },
+              "recovering": {
+                "n": 3,
+                "meanPct": 4.63275,
+                "positiveRate": 0.66667
+              }
+            },
+            "4": {
+              "all": {
+                "n": 22,
+                "meanPct": 1.80747,
+                "positiveRate": 0.59091
+              },
+              "deteriorating": {
+                "n": 3,
+                "meanPct": 2.46266,
+                "positiveRate": 0.66667
+              },
+              "stabilizing": {
+                "n": 4,
+                "meanPct": 2.30298,
+                "positiveRate": 0.75
+              },
+              "recovering": {
+                "n": 5,
+                "meanPct": 0.02544,
+                "positiveRate": 0.6
+              }
+            },
+            "5": {
+              "all": {
+                "n": 22,
+                "meanPct": 1.17876,
+                "positiveRate": 0.5
+              },
+              "deteriorating": {
+                "n": 7,
+                "meanPct": 2.8431,
+                "positiveRate": 0.71429
+              },
+              "stabilizing": {
+                "n": 0,
+                "meanPct": null,
+                "positiveRate": null
+              },
+              "recovering": {
+                "n": 5,
+                "meanPct": -0.9286,
+                "positiveRate": 0.4
+              }
+            },
+            "6": {
+              "all": {
+                "n": 22,
+                "meanPct": 2.29891,
+                "positiveRate": 0.63636
+              },
+              "deteriorating": {
+                "n": 5,
+                "meanPct": 5.85341,
+                "positiveRate": 1.0
+              },
+              "stabilizing": {
+                "n": 1,
+                "meanPct": 14.73168,
+                "positiveRate": 1.0
+              },
+              "recovering": {
+                "n": 6,
+                "meanPct": -0.11803,
+                "positiveRate": 0.5
+              }
+            },
+            "7": {
+              "all": {
+                "n": 22,
+                "meanPct": 1.62554,
+                "positiveRate": 0.63636
+              },
+              "deteriorating": {
+                "n": 6,
+                "meanPct": 5.13985,
+                "positiveRate": 0.66667
+              },
+              "stabilizing": {
+                "n": 1,
+                "meanPct": 2.55627,
+                "positiveRate": 1.0
+              },
+              "recovering": {
+                "n": 8,
+                "meanPct": 0.08933,
+                "positiveRate": 0.5
+              }
+            },
+            "8": {
+              "all": {
+                "n": 22,
+                "meanPct": 1.61288,
+                "positiveRate": 0.59091
+              },
+              "deteriorating": {
+                "n": 6,
+                "meanPct": -0.70439,
+                "positiveRate": 0.66667
+              },
+              "stabilizing": {
+                "n": 0,
+                "meanPct": null,
+                "positiveRate": null
+              },
+              "recovering": {
+                "n": 2,
+                "meanPct": 5.05718,
+                "positiveRate": 0.5
+              }
+            },
+            "9": {
+              "all": {
+                "n": 21,
+                "meanPct": 1.30457,
+                "positiveRate": 0.71429
+              },
+              "deteriorating": {
+                "n": 4,
+                "meanPct": 2.97258,
+                "positiveRate": 0.75
+              },
+              "stabilizing": {
+                "n": 0,
+                "meanPct": null,
+                "positiveRate": null
+              },
+              "recovering": {
+                "n": 4,
+                "meanPct": 5.57426,
+                "positiveRate": 1.0
+              }
+            },
+            "10": {
+              "all": {
+                "n": 21,
+                "meanPct": 0.73421,
+                "positiveRate": 0.66667
+              },
+              "deteriorating": {
+                "n": 5,
+                "meanPct": 5.47371,
+                "positiveRate": 1.0
+              },
+              "stabilizing": {
+                "n": 0,
+                "meanPct": null,
+                "positiveRate": null
+              },
+              "recovering": {
+                "n": 2,
+                "meanPct": 1.0356,
+                "positiveRate": 0.5
+              }
             }
           },
-          "macroAssociations": {
-            "sox5d": {
-              "n": 22,
-              "pearsonR": -0.1681
+          "stability": {
+            "all": {
+              "eligibleOffsets": 11,
+              "minMeanPct": 0.73421,
+              "maxMeanPct": 2.29891,
+              "medianMeanPct": 1.61288
             },
-            "relative5d": {
-              "n": 22,
-              "pearsonR": 0.0583
+            "deteriorating": {
+              "eligibleOffsets": 9,
+              "minMeanPct": -0.70439,
+              "maxMeanPct": 5.85341,
+              "medianMeanPct": 3.52418
             },
-            "yield5d": {
-              "n": 22,
-              "pearsonR": -0.0809
+            "stabilizing": {
+              "eligibleOffsets": 0,
+              "minMeanPct": null,
+              "maxMeanPct": null,
+              "medianMeanPct": null
             },
-            "vxn": {
-              "n": 22,
-              "pearsonR": 0.2379
-            },
-            "oil5d": {
-              "n": 22,
-              "pearsonR": -0.0053
+            "recovering": {
+              "eligibleOffsets": 5,
+              "minMeanPct": -0.9286,
+              "maxMeanPct": 4.92977,
+              "medianMeanPct": 0.02544
             }
           }
         }
@@ -199,197 +672,4959 @@
       "sessions": 202,
       "horizons": {
         "1": {
-          "nonOverlapping": {
-            "all": {
-              "n": 101,
-              "meanPct": 0.5175,
-              "positiveRate": 0.6634
+          "offsets": {
+            "0": {
+              "all": {
+                "n": 101,
+                "meanPct": 0.51755,
+                "positiveRate": 0.66337
+              },
+              "deteriorating": {
+                "n": 27,
+                "meanPct": 0.63662,
+                "positiveRate": 0.74074
+              },
+              "stabilizing": {
+                "n": 13,
+                "meanPct": 0.56199,
+                "positiveRate": 0.61538
+              },
+              "recovering": {
+                "n": 10,
+                "meanPct": 0.27035,
+                "positiveRate": 0.6
+              }
             },
-            "deteriorating": {
-              "n": 27,
-              "meanPct": 0.6366,
-              "positiveRate": 0.7407
-            },
-            "stabilizing": {
-              "n": 13,
-              "meanPct": 0.562,
-              "positiveRate": 0.6154
-            },
-            "recovering": {
-              "n": 10,
-              "meanPct": 0.2704,
-              "positiveRate": 0.6
+            "1": {
+              "all": {
+                "n": 100,
+                "meanPct": 0.01208,
+                "positiveRate": 0.56
+              },
+              "deteriorating": {
+                "n": 22,
+                "meanPct": -0.17523,
+                "positiveRate": 0.54545
+              },
+              "stabilizing": {
+                "n": 8,
+                "meanPct": 0.61759,
+                "positiveRate": 0.75
+              },
+              "recovering": {
+                "n": 23,
+                "meanPct": 0.9729,
+                "positiveRate": 0.6087
+              }
             }
           },
-          "macroAssociations": {
-            "sox5d": {
-              "n": 101,
-              "pearsonR": -0.1474
+          "stability": {
+            "all": {
+              "eligibleOffsets": 2,
+              "minMeanPct": 0.01208,
+              "maxMeanPct": 0.51755,
+              "medianMeanPct": 0.26481
             },
-            "relative5d": {
-              "n": 101,
-              "pearsonR": -0.1796
+            "deteriorating": {
+              "eligibleOffsets": 2,
+              "minMeanPct": -0.17523,
+              "maxMeanPct": 0.63662,
+              "medianMeanPct": 0.23069
             },
-            "yield5d": {
-              "n": 100,
-              "pearsonR": -0.0161
+            "stabilizing": {
+              "eligibleOffsets": 2,
+              "minMeanPct": 0.56199,
+              "maxMeanPct": 0.61759,
+              "medianMeanPct": 0.58979
             },
-            "vxn": {
-              "n": 101,
-              "pearsonR": -0.0253
-            },
-            "oil5d": {
-              "n": 101,
-              "pearsonR": -0.1054
+            "recovering": {
+              "eligibleOffsets": 2,
+              "minMeanPct": 0.27035,
+              "maxMeanPct": 0.9729,
+              "medianMeanPct": 0.62162
             }
           }
         },
         "3": {
-          "nonOverlapping": {
-            "all": {
-              "n": 50,
-              "meanPct": 0.6688,
-              "positiveRate": 0.54
+          "offsets": {
+            "0": {
+              "all": {
+                "n": 50,
+                "meanPct": 0.66876,
+                "positiveRate": 0.54
+              },
+              "deteriorating": {
+                "n": 11,
+                "meanPct": -0.92669,
+                "positiveRate": 0.36364
+              },
+              "stabilizing": {
+                "n": 4,
+                "meanPct": 3.87196,
+                "positiveRate": 0.75
+              },
+              "recovering": {
+                "n": 5,
+                "meanPct": 1.50554,
+                "positiveRate": 0.8
+              }
             },
-            "deteriorating": {
-              "n": 11,
-              "meanPct": -0.9267,
-              "positiveRate": 0.3636
+            "1": {
+              "all": {
+                "n": 50,
+                "meanPct": 0.75919,
+                "positiveRate": 0.54
+              },
+              "deteriorating": {
+                "n": 10,
+                "meanPct": 2.16957,
+                "positiveRate": 0.7
+              },
+              "stabilizing": {
+                "n": 3,
+                "meanPct": -1.29804,
+                "positiveRate": 0.33333
+              },
+              "recovering": {
+                "n": 10,
+                "meanPct": 1.77918,
+                "positiveRate": 0.6
+              }
             },
-            "stabilizing": {
-              "n": 4,
-              "meanPct": 3.872,
-              "positiveRate": 0.75
+            "2": {
+              "all": {
+                "n": 50,
+                "meanPct": 1.32937,
+                "positiveRate": 0.62
+              },
+              "deteriorating": {
+                "n": 16,
+                "meanPct": 0.72648,
+                "positiveRate": 0.6875
+              },
+              "stabilizing": {
+                "n": 9,
+                "meanPct": 1.43552,
+                "positiveRate": 0.66667
+              },
+              "recovering": {
+                "n": 5,
+                "meanPct": 1.61939,
+                "positiveRate": 0.4
+              }
             },
-            "recovering": {
-              "n": 5,
-              "meanPct": 1.5055,
-              "positiveRate": 0.8
+            "3": {
+              "all": {
+                "n": 49,
+                "meanPct": 0.21871,
+                "positiveRate": 0.55102
+              },
+              "deteriorating": {
+                "n": 12,
+                "meanPct": -0.19479,
+                "positiveRate": 0.5
+              },
+              "stabilizing": {
+                "n": 5,
+                "meanPct": 4.1458,
+                "positiveRate": 0.8
+              },
+              "recovering": {
+                "n": 12,
+                "meanPct": 1.69407,
+                "positiveRate": 0.58333
+              }
             }
           },
-          "macroAssociations": {
-            "sox5d": {
-              "n": 50,
-              "pearsonR": 0.0314
+          "stability": {
+            "all": {
+              "eligibleOffsets": 4,
+              "minMeanPct": 0.21871,
+              "maxMeanPct": 1.32937,
+              "medianMeanPct": 0.71398
             },
-            "relative5d": {
-              "n": 50,
-              "pearsonR": -0.0076
+            "deteriorating": {
+              "eligibleOffsets": 4,
+              "minMeanPct": -0.92669,
+              "maxMeanPct": 2.16957,
+              "medianMeanPct": 0.26584
             },
-            "yield5d": {
-              "n": 50,
-              "pearsonR": 0.0362
+            "stabilizing": {
+              "eligibleOffsets": 2,
+              "minMeanPct": 1.43552,
+              "maxMeanPct": 4.1458,
+              "medianMeanPct": 2.79066
             },
-            "vxn": {
-              "n": 50,
-              "pearsonR": -0.0709
-            },
-            "oil5d": {
-              "n": 50,
-              "pearsonR": -0.161
+            "recovering": {
+              "eligibleOffsets": 4,
+              "minMeanPct": 1.50554,
+              "maxMeanPct": 1.77918,
+              "medianMeanPct": 1.65673
             }
           }
         },
         "5": {
-          "nonOverlapping": {
-            "all": {
-              "n": 33,
-              "meanPct": 1.5034,
-              "positiveRate": 0.6364
+          "offsets": {
+            "0": {
+              "all": {
+                "n": 33,
+                "meanPct": 1.50335,
+                "positiveRate": 0.63636
+              },
+              "deteriorating": {
+                "n": 10,
+                "meanPct": 0.17675,
+                "positiveRate": 0.6
+              },
+              "stabilizing": {
+                "n": 1,
+                "meanPct": 3.44139,
+                "positiveRate": 1.0
+              },
+              "recovering": {
+                "n": 5,
+                "meanPct": 1.67627,
+                "positiveRate": 0.6
+              }
             },
-            "deteriorating": {
-              "n": 10,
-              "meanPct": 0.1767,
-              "positiveRate": 0.6
+            "1": {
+              "all": {
+                "n": 33,
+                "meanPct": 0.93893,
+                "positiveRate": 0.51515
+              },
+              "deteriorating": {
+                "n": 6,
+                "meanPct": 0.16839,
+                "positiveRate": 0.5
+              },
+              "stabilizing": {
+                "n": 2,
+                "meanPct": -6.24838,
+                "positiveRate": 0.0
+              },
+              "recovering": {
+                "n": 10,
+                "meanPct": 0.87236,
+                "positiveRate": 0.5
+              }
             },
-            "stabilizing": {
-              "n": 1,
-              "meanPct": 3.4414,
-              "positiveRate": 1.0
+            "2": {
+              "all": {
+                "n": 33,
+                "meanPct": 0.55839,
+                "positiveRate": 0.60606
+              },
+              "deteriorating": {
+                "n": 5,
+                "meanPct": 3.34046,
+                "positiveRate": 1.0
+              },
+              "stabilizing": {
+                "n": 6,
+                "meanPct": 1.30023,
+                "positiveRate": 0.66667
+              },
+              "recovering": {
+                "n": 1,
+                "meanPct": 1.26866,
+                "positiveRate": 1.0
+              }
             },
-            "recovering": {
-              "n": 5,
-              "meanPct": 1.6763,
-              "positiveRate": 0.6
+            "3": {
+              "all": {
+                "n": 33,
+                "meanPct": 1.6145,
+                "positiveRate": 0.57576
+              },
+              "deteriorating": {
+                "n": 9,
+                "meanPct": 4.70561,
+                "positiveRate": 1.0
+              },
+              "stabilizing": {
+                "n": 4,
+                "meanPct": 6.68003,
+                "positiveRate": 0.75
+              },
+              "recovering": {
+                "n": 3,
+                "meanPct": -0.49549,
+                "positiveRate": 0.33333
+              }
+            },
+            "4": {
+              "all": {
+                "n": 33,
+                "meanPct": 2.40915,
+                "positiveRate": 0.57576
+              },
+              "deteriorating": {
+                "n": 11,
+                "meanPct": 1.79145,
+                "positiveRate": 0.54545
+              },
+              "stabilizing": {
+                "n": 6,
+                "meanPct": 2.11745,
+                "positiveRate": 0.5
+              },
+              "recovering": {
+                "n": 4,
+                "meanPct": -1.9359,
+                "positiveRate": 0.25
+              }
+            },
+            "5": {
+              "all": {
+                "n": 32,
+                "meanPct": 0.48831,
+                "positiveRate": 0.625
+              },
+              "deteriorating": {
+                "n": 7,
+                "meanPct": 1.82281,
+                "positiveRate": 0.57143
+              },
+              "stabilizing": {
+                "n": 2,
+                "meanPct": 7.102,
+                "positiveRate": 1.0
+              },
+              "recovering": {
+                "n": 8,
+                "meanPct": 3.12,
+                "positiveRate": 0.875
+              }
             }
           },
-          "macroAssociations": {
-            "sox5d": {
-              "n": 33,
-              "pearsonR": -0.031
+          "stability": {
+            "all": {
+              "eligibleOffsets": 6,
+              "minMeanPct": 0.48831,
+              "maxMeanPct": 2.40915,
+              "medianMeanPct": 1.22114
             },
-            "relative5d": {
-              "n": 33,
-              "pearsonR": -0.1254
+            "deteriorating": {
+              "eligibleOffsets": 6,
+              "minMeanPct": 0.16839,
+              "maxMeanPct": 4.70561,
+              "medianMeanPct": 1.80713
             },
-            "yield5d": {
-              "n": 33,
-              "pearsonR": 0.0444
+            "stabilizing": {
+              "eligibleOffsets": 2,
+              "minMeanPct": 1.30023,
+              "maxMeanPct": 2.11745,
+              "medianMeanPct": 1.70884
             },
-            "vxn": {
-              "n": 33,
-              "pearsonR": -0.0617
-            },
-            "oil5d": {
-              "n": 33,
-              "pearsonR": -0.1907
+            "recovering": {
+              "eligibleOffsets": 3,
+              "minMeanPct": 0.87236,
+              "maxMeanPct": 3.12,
+              "medianMeanPct": 1.67627
             }
           }
         },
         "10": {
-          "nonOverlapping": {
-            "all": {
-              "n": 18,
-              "meanPct": 1.4023,
-              "positiveRate": 0.5556
+          "offsets": {
+            "0": {
+              "all": {
+                "n": 18,
+                "meanPct": 1.40227,
+                "positiveRate": 0.55556
+              },
+              "deteriorating": {
+                "n": 3,
+                "meanPct": -9.09032,
+                "positiveRate": 0.0
+              },
+              "stabilizing": {
+                "n": 1,
+                "meanPct": 12.29329,
+                "positiveRate": 1.0
+              },
+              "recovering": {
+                "n": 5,
+                "meanPct": 1.54111,
+                "positiveRate": 0.6
+              }
             },
-            "deteriorating": {
-              "n": 3,
-              "meanPct": -9.0903,
-              "positiveRate": 0.0
+            "1": {
+              "all": {
+                "n": 18,
+                "meanPct": 2.14064,
+                "positiveRate": 0.61111
+              },
+              "deteriorating": {
+                "n": 3,
+                "meanPct": 3.59678,
+                "positiveRate": 0.33333
+              },
+              "stabilizing": {
+                "n": 2,
+                "meanPct": 5.57442,
+                "positiveRate": 1.0
+              },
+              "recovering": {
+                "n": 1,
+                "meanPct": 10.59967,
+                "positiveRate": 1.0
+              }
             },
-            "stabilizing": {
-              "n": 1,
-              "meanPct": 12.2933,
-              "positiveRate": 1.0
+            "2": {
+              "all": {
+                "n": 18,
+                "meanPct": 2.58712,
+                "positiveRate": 0.66667
+              },
+              "deteriorating": {
+                "n": 4,
+                "meanPct": 8.07568,
+                "positiveRate": 0.75
+              },
+              "stabilizing": {
+                "n": 1,
+                "meanPct": -3.10791,
+                "positiveRate": 0.0
+              },
+              "recovering": {
+                "n": 7,
+                "meanPct": 2.28307,
+                "positiveRate": 0.85714
+              }
             },
-            "recovering": {
-              "n": 5,
-              "meanPct": 1.5411,
-              "positiveRate": 0.6
+            "3": {
+              "all": {
+                "n": 18,
+                "meanPct": 2.5518,
+                "positiveRate": 0.61111
+              },
+              "deteriorating": {
+                "n": 6,
+                "meanPct": 2.25801,
+                "positiveRate": 0.66667
+              },
+              "stabilizing": {
+                "n": 3,
+                "meanPct": 1.06013,
+                "positiveRate": 0.33333
+              },
+              "recovering": {
+                "n": 2,
+                "meanPct": 3.03826,
+                "positiveRate": 0.5
+              }
+            },
+            "4": {
+              "all": {
+                "n": 18,
+                "meanPct": 2.47833,
+                "positiveRate": 0.5
+              },
+              "deteriorating": {
+                "n": 7,
+                "meanPct": 4.40309,
+                "positiveRate": 0.57143
+              },
+              "stabilizing": {
+                "n": 3,
+                "meanPct": -2.37922,
+                "positiveRate": 0.33333
+              },
+              "recovering": {
+                "n": 2,
+                "meanPct": 2.25771,
+                "positiveRate": 0.5
+              }
+            },
+            "5": {
+              "all": {
+                "n": 17,
+                "meanPct": 2.74067,
+                "positiveRate": 0.47059
+              },
+              "deteriorating": {
+                "n": 1,
+                "meanPct": 4.24337,
+                "positiveRate": 1.0
+              },
+              "stabilizing": {
+                "n": 3,
+                "meanPct": 9.48468,
+                "positiveRate": 0.66667
+              },
+              "recovering": {
+                "n": 1,
+                "meanPct": 21.75865,
+                "positiveRate": 1.0
+              }
+            },
+            "6": {
+              "all": {
+                "n": 17,
+                "meanPct": 2.94593,
+                "positiveRate": 0.58824
+              },
+              "deteriorating": {
+                "n": 3,
+                "meanPct": 1.68898,
+                "positiveRate": 0.66667
+              },
+              "stabilizing": {
+                "n": 3,
+                "meanPct": 6.65239,
+                "positiveRate": 0.66667
+              },
+              "recovering": {
+                "n": 1,
+                "meanPct": -1.30658,
+                "positiveRate": 0.0
+              }
+            },
+            "7": {
+              "all": {
+                "n": 17,
+                "meanPct": 4.30477,
+                "positiveRate": 0.64706
+              },
+              "deteriorating": {
+                "n": 6,
+                "meanPct": 3.41163,
+                "positiveRate": 0.66667
+              },
+              "stabilizing": {
+                "n": 0,
+                "meanPct": null,
+                "positiveRate": null
+              },
+              "recovering": {
+                "n": 3,
+                "meanPct": 7.49269,
+                "positiveRate": 0.66667
+              }
+            },
+            "8": {
+              "all": {
+                "n": 17,
+                "meanPct": 2.37341,
+                "positiveRate": 0.58824
+              },
+              "deteriorating": {
+                "n": 3,
+                "meanPct": 1.73901,
+                "positiveRate": 0.66667
+              },
+              "stabilizing": {
+                "n": 4,
+                "meanPct": 5.24467,
+                "positiveRate": 0.5
+              },
+              "recovering": {
+                "n": 1,
+                "meanPct": -1.50799,
+                "positiveRate": 0.0
+              }
+            },
+            "9": {
+              "all": {
+                "n": 17,
+                "meanPct": 3.28176,
+                "positiveRate": 0.64706
+              },
+              "deteriorating": {
+                "n": 6,
+                "meanPct": 4.35334,
+                "positiveRate": 0.83333
+              },
+              "stabilizing": {
+                "n": 0,
+                "meanPct": null,
+                "positiveRate": null
+              },
+              "recovering": {
+                "n": 4,
+                "meanPct": -0.42456,
+                "positiveRate": 0.25
+              }
+            },
+            "10": {
+              "all": {
+                "n": 17,
+                "meanPct": 2.77069,
+                "positiveRate": 0.58824
+              },
+              "deteriorating": {
+                "n": 4,
+                "meanPct": -2.90375,
+                "positiveRate": 0.25
+              },
+              "stabilizing": {
+                "n": 0,
+                "meanPct": null,
+                "positiveRate": null
+              },
+              "recovering": {
+                "n": 3,
+                "meanPct": 10.80184,
+                "positiveRate": 1.0
+              }
             }
           },
-          "macroAssociations": {
-            "sox5d": {
-              "n": 18,
-              "pearsonR": 0.1353
+          "stability": {
+            "all": {
+              "eligibleOffsets": 11,
+              "minMeanPct": 1.40227,
+              "maxMeanPct": 4.30477,
+              "medianMeanPct": 2.58712
             },
-            "relative5d": {
-              "n": 18,
-              "pearsonR": 0.2129
+            "deteriorating": {
+              "eligibleOffsets": 4,
+              "minMeanPct": 2.25801,
+              "maxMeanPct": 4.40309,
+              "medianMeanPct": 3.88248
             },
-            "yield5d": {
-              "n": 18,
-              "pearsonR": 0.3091
+            "stabilizing": {
+              "eligibleOffsets": 0,
+              "minMeanPct": null,
+              "maxMeanPct": null,
+              "medianMeanPct": null
             },
-            "vxn": {
-              "n": 18,
-              "pearsonR": -0.0109
-            },
-            "oil5d": {
-              "n": 18,
-              "pearsonR": -0.0791
+            "recovering": {
+              "eligibleOffsets": 2,
+              "minMeanPct": 1.54111,
+              "maxMeanPct": 2.28307,
+              "medianMeanPct": 1.91209
             }
           }
         }
       }
     }
   },
+  "walkForward": {
+    "cohort": "canonical_point_in_time",
+    "model": "expanding-window ridge regression, training-only standardization, fixed L2=1, horizon-purged labels",
+    "baseline": "expanding historical mean and macro-only ridge",
+    "horizons": {
+      "1": {
+        "models": {
+          "historicalMean": {
+            "n": 138,
+            "maePct": 2.45747,
+            "rmsePct": 3.23128,
+            "directionAccuracy": 0.63768
+          },
+          "macroOnly": {
+            "n": 138,
+            "maePct": 2.54726,
+            "rmsePct": 3.34386,
+            "directionAccuracy": 0.62319
+          },
+          "macroAndBreadth": {
+            "n": 138,
+            "maePct": 2.60502,
+            "rmsePct": 3.38658,
+            "directionAccuracy": 0.57971
+          }
+        },
+        "predictions": [
+          {
+            "date": "2026-04-01",
+            "actual": 0.39829,
+            "mean": 0.07651,
+            "macro": -0.32385,
+            "full": -0.44501,
+            "trainingRows": 60
+          },
+          {
+            "date": "2026-04-02",
+            "actual": 1.05597,
+            "mean": 0.12151,
+            "macro": -0.80642,
+            "full": -1.06225,
+            "trainingRows": 61
+          },
+          {
+            "date": "2026-04-06",
+            "actual": 1.10866,
+            "mean": 0.12598,
+            "macro": -2.227,
+            "full": -2.17976,
+            "trainingRows": 62
+          },
+          {
+            "date": "2026-04-07",
+            "actual": 6.33506,
+            "mean": 0.14074,
+            "macro": -3.03068,
+            "full": -3.0125,
+            "trainingRows": 63
+          },
+          {
+            "date": "2026-04-08",
+            "actual": 2.09866,
+            "mean": 0.15586,
+            "macro": -2.74176,
+            "full": -2.725,
+            "trainingRows": 64
+          },
+          {
+            "date": "2026-04-09",
+            "actual": 2.30502,
+            "mean": 0.25093,
+            "macro": 0.01338,
+            "full": 0.15645,
+            "trainingRows": 65
+          },
+          {
+            "date": "2026-04-10",
+            "actual": 1.68391,
+            "mean": 0.27892,
+            "macro": 0.14792,
+            "full": 0.17023,
+            "trainingRows": 66
+          },
+          {
+            "date": "2026-04-13",
+            "actual": 2.04211,
+            "mean": 0.30916,
+            "macro": 0.48581,
+            "full": 0.7847,
+            "trainingRows": 67
+          },
+          {
+            "date": "2026-04-14",
+            "actual": 0.1644,
+            "mean": 0.32938,
+            "macro": 0.74476,
+            "full": 0.99374,
+            "trainingRows": 68
+          },
+          {
+            "date": "2026-04-15",
+            "actual": 0.97475,
+            "mean": 0.3542,
+            "macro": 0.37943,
+            "full": 0.69187,
+            "trainingRows": 69
+          },
+          {
+            "date": "2026-04-16",
+            "actual": 2.42822,
+            "mean": 0.35149,
+            "macro": 0.12602,
+            "full": 0.45084,
+            "trainingRows": 70
+          },
+          {
+            "date": "2026-04-17",
+            "actual": 0.45344,
+            "mean": 0.36027,
+            "macro": 0.38476,
+            "full": 0.58978,
+            "trainingRows": 71
+          },
+          {
+            "date": "2026-04-20",
+            "actual": 0.50005,
+            "mean": 0.38899,
+            "macro": 0.63591,
+            "full": 0.75991,
+            "trainingRows": 72
+          },
+          {
+            "date": "2026-04-21",
+            "actual": 2.71635,
+            "mean": 0.38987,
+            "macro": 0.34645,
+            "full": 0.46645,
+            "trainingRows": 73
+          },
+          {
+            "date": "2026-04-22",
+            "actual": 1.70856,
+            "mean": 0.39136,
+            "macro": 0.58112,
+            "full": 0.71652,
+            "trainingRows": 74
+          },
+          {
+            "date": "2026-04-23",
+            "actual": 4.317,
+            "mean": 0.42236,
+            "macro": 0.55873,
+            "full": 0.74764,
+            "trainingRows": 75
+          },
+          {
+            "date": "2026-04-24",
+            "actual": -1.00465,
+            "mean": 0.43928,
+            "macro": 0.75321,
+            "full": 1.2957,
+            "trainingRows": 76
+          },
+          {
+            "date": "2026-04-27",
+            "actual": -3.57858,
+            "mean": 0.48964,
+            "macro": 0.77612,
+            "full": 1.0401,
+            "trainingRows": 77
+          },
+          {
+            "date": "2026-04-28",
+            "actual": 2.34885,
+            "mean": 0.47049,
+            "macro": 0.32932,
+            "full": 0.26005,
+            "trainingRows": 78
+          },
+          {
+            "date": "2026-04-29",
+            "actual": 2.26264,
+            "mean": 0.41923,
+            "macro": -0.16116,
+            "full": 0.3195,
+            "trainingRows": 79
+          },
+          {
+            "date": "2026-04-30",
+            "actual": 0.87246,
+            "mean": 0.44335,
+            "macro": 0.02397,
+            "full": -0.03309,
+            "trainingRows": 80
+          },
+          {
+            "date": "2026-05-01",
+            "actual": -0.57273,
+            "mean": 0.46581,
+            "macro": -0.14031,
+            "full": -0.33412,
+            "trainingRows": 81
+          },
+          {
+            "date": "2026-05-04",
+            "actual": 4.23289,
+            "mean": 0.47077,
+            "macro": -0.01186,
+            "full": -0.11626,
+            "trainingRows": 82
+          },
+          {
+            "date": "2026-05-05",
+            "actual": 4.48225,
+            "mean": 0.4582,
+            "macro": 0.39492,
+            "full": 0.17836,
+            "trainingRows": 83
+          },
+          {
+            "date": "2026-05-06",
+            "actual": -2.71741,
+            "mean": 0.50314,
+            "macro": 1.14932,
+            "full": 1.162,
+            "trainingRows": 84
+          },
+          {
+            "date": "2026-05-07",
+            "actual": 5.50584,
+            "mean": 0.54995,
+            "macro": 0.87097,
+            "full": 0.33551,
+            "trainingRows": 85
+          },
+          {
+            "date": "2026-05-08",
+            "actual": 2.59473,
+            "mean": 0.51196,
+            "macro": 0.97038,
+            "full": 1.22712,
+            "trainingRows": 86
+          },
+          {
+            "date": "2026-05-11",
+            "actual": -3.01119,
+            "mean": 0.56936,
+            "macro": 1.44226,
+            "full": 1.48075,
+            "trainingRows": 87
+          },
+          {
+            "date": "2026-05-12",
+            "actual": 2.56651,
+            "mean": 0.59237,
+            "macro": 1.03748,
+            "full": 0.57761,
+            "trainingRows": 88
+          },
+          {
+            "date": "2026-05-13",
+            "actual": 0.46428,
+            "mean": 0.55188,
+            "macro": 0.69601,
+            "full": 0.96195,
+            "trainingRows": 89
+          },
+          {
+            "date": "2026-05-14",
+            "actual": -4.01959,
+            "mean": 0.57427,
+            "macro": 0.73124,
+            "full": 0.75098,
+            "trainingRows": 90
+          },
+          {
+            "date": "2026-05-15",
+            "actual": -2.46751,
+            "mean": 0.57306,
+            "macro": 0.43053,
+            "full": 0.28193,
+            "trainingRows": 91
+          },
+          {
+            "date": "2026-05-18",
+            "actual": 0.02636,
+            "mean": 0.52314,
+            "macro": 0.39497,
+            "full": 0.65298,
+            "trainingRows": 92
+          },
+          {
+            "date": "2026-05-19",
+            "actual": 4.49154,
+            "mean": 0.49098,
+            "macro": 0.03101,
+            "full": 0.04079,
+            "trainingRows": 93
+          },
+          {
+            "date": "2026-05-20",
+            "actual": 1.27652,
+            "mean": 0.48604,
+            "macro": 0.28527,
+            "full": 0.14022,
+            "trainingRows": 94
+          },
+          {
+            "date": "2026-05-21",
+            "actual": 1.99312,
+            "mean": 0.5282,
+            "macro": 0.48004,
+            "full": 0.33411,
+            "trainingRows": 95
+          },
+          {
+            "date": "2026-05-22",
+            "actual": 5.52642,
+            "mean": 0.536,
+            "macro": 0.56821,
+            "full": 0.52637,
+            "trainingRows": 96
+          },
+          {
+            "date": "2026-05-26",
+            "actual": -1.35683,
+            "mean": 0.55102,
+            "macro": 0.62521,
+            "full": 0.77058,
+            "trainingRows": 97
+          },
+          {
+            "date": "2026-05-27",
+            "actual": 0.99947,
+            "mean": 0.60179,
+            "macro": 1.12749,
+            "full": 0.88791,
+            "trainingRows": 98
+          },
+          {
+            "date": "2026-05-28",
+            "actual": 0.00186,
+            "mean": 0.58201,
+            "macro": 0.91684,
+            "full": 0.79444,
+            "trainingRows": 99
+          },
+          {
+            "date": "2026-05-29",
+            "actual": 1.06215,
+            "mean": 0.58618,
+            "macro": 1.02235,
+            "full": 1.03107,
+            "trainingRows": 100
+          },
+          {
+            "date": "2026-06-01",
+            "actual": 5.86642,
+            "mean": 0.58039,
+            "macro": 1.05651,
+            "full": 0.68542,
+            "trainingRows": 101
+          },
+          {
+            "date": "2026-06-02",
+            "actual": 1.38922,
+            "mean": 0.58512,
+            "macro": 0.6528,
+            "full": 0.55578,
+            "trainingRows": 102
+          },
+          {
+            "date": "2026-06-03",
+            "actual": -2.15178,
+            "mean": 0.63639,
+            "macro": 0.1302,
+            "full": 0.16967,
+            "trainingRows": 103
+          },
+          {
+            "date": "2026-06-04",
+            "actual": -10.25692,
+            "mean": 0.64363,
+            "macro": 0.26351,
+            "full": 0.17909,
+            "trainingRows": 104
+          },
+          {
+            "date": "2026-06-05",
+            "actual": 5.61285,
+            "mean": 0.61701,
+            "macro": 0.8058,
+            "full": 0.87696,
+            "trainingRows": 105
+          },
+          {
+            "date": "2026-06-08",
+            "actual": -1.92833,
+            "mean": 0.51442,
+            "macro": 0.14108,
+            "full": 0.56171,
+            "trainingRows": 106
+          },
+          {
+            "date": "2026-06-09",
+            "actual": -3.56577,
+            "mean": 0.56207,
+            "macro": 1.71257,
+            "full": 1.57546,
+            "trainingRows": 107
+          },
+          {
+            "date": "2026-06-10",
+            "actual": 7.90546,
+            "mean": 0.53901,
+            "macro": 2.15186,
+            "full": 1.85144,
+            "trainingRows": 108
+          },
+          {
+            "date": "2026-06-11",
+            "actual": 1.51867,
+            "mean": 0.50135,
+            "macro": 1.10592,
+            "full": 1.7604,
+            "trainingRows": 109
+          },
+          {
+            "date": "2026-06-12",
+            "actual": 5.44557,
+            "mean": 0.56866,
+            "macro": 0.73952,
+            "full": 0.68649,
+            "trainingRows": 110
+          },
+          {
+            "date": "2026-06-15",
+            "actual": -5.7122,
+            "mean": 0.57722,
+            "macro": 1.41275,
+            "full": 0.99632,
+            "trainingRows": 111
+          },
+          {
+            "date": "2026-06-16",
+            "actual": 1.37539,
+            "mean": 0.62069,
+            "macro": 2.3233,
+            "full": 2.51194,
+            "trainingRows": 112
+          },
+          {
+            "date": "2026-06-17",
+            "actual": 6.41617,
+            "mean": 0.56465,
+            "macro": 1.51347,
+            "full": 1.9077,
+            "trainingRows": 113
+          },
+          {
+            "date": "2026-06-18",
+            "actual": 2.04256,
+            "mean": 0.57176,
+            "macro": 1.08266,
+            "full": 0.92679,
+            "trainingRows": 114
+          },
+          {
+            "date": "2026-06-22",
+            "actual": -7.87315,
+            "mean": 0.62258,
+            "macro": 1.15147,
+            "full": 0.39785,
+            "trainingRows": 115
+          },
+          {
+            "date": "2026-06-23",
+            "actual": -0.18034,
+            "mean": 0.63482,
+            "macro": 2.06867,
+            "full": 1.60776,
+            "trainingRows": 116
+          },
+          {
+            "date": "2026-06-24",
+            "actual": 3.58648,
+            "mean": 0.5621,
+            "macro": 0.93862,
+            "full": 1.90457,
+            "trainingRows": 117
+          },
+          {
+            "date": "2026-06-25",
+            "actual": -5.28877,
+            "mean": 0.55581,
+            "macro": 1.05748,
+            "full": 1.10019,
+            "trainingRows": 118
+          },
+          {
+            "date": "2026-06-26",
+            "actual": 3.83298,
+            "mean": 0.58128,
+            "macro": 2.35008,
+            "full": 1.37665,
+            "trainingRows": 119
+          },
+          {
+            "date": "2026-06-29",
+            "actual": 3.91914,
+            "mean": 0.53236,
+            "macro": 2.31646,
+            "full": 2.1644,
+            "trainingRows": 120
+          },
+          {
+            "date": "2026-06-30",
+            "actual": -6.27279,
+            "mean": 0.55964,
+            "macro": 1.30166,
+            "full": 2.08281,
+            "trainingRows": 121
+          },
+          {
+            "date": "2026-07-01",
+            "actual": -5.44479,
+            "mean": 0.58718,
+            "macro": 2.05777,
+            "full": 1.98696,
+            "trainingRows": 122
+          },
+          {
+            "date": "2026-07-02",
+            "actual": 2.16946,
+            "mean": 0.53141,
+            "macro": 2.93239,
+            "full": 3.82611,
+            "trainingRows": 123
+          },
+          {
+            "date": "2026-07-06",
+            "actual": -4.64821,
+            "mean": 0.48321,
+            "macro": 1.40917,
+            "full": 2.5961,
+            "trainingRows": 124
+          },
+          {
+            "date": "2026-07-07",
+            "actual": 2.23122,
+            "mean": 0.4967,
+            "macro": 1.74294,
+            "full": 1.41423,
+            "trainingRows": 125
+          },
+          {
+            "date": "2026-07-08",
+            "actual": 3.06192,
+            "mean": 0.45587,
+            "macro": 1.30283,
+            "full": 0.63704,
+            "trainingRows": 126
+          },
+          {
+            "date": "2026-07-09",
+            "actual": 0.05525,
+            "mean": 0.46985,
+            "macro": 0.7773,
+            "full": 0.98459,
+            "trainingRows": 127
+          },
+          {
+            "date": "2026-07-10",
+            "actual": -4.77652,
+            "mean": 0.4901,
+            "macro": 0.27306,
+            "full": -0.02762,
+            "trainingRows": 128
+          },
+          {
+            "date": "2026-07-13",
+            "actual": 2.54416,
+            "mean": 0.48673,
+            "macro": 0.36896,
+            "full": 0.88415,
+            "trainingRows": 129
+          },
+          {
+            "date": "2026-07-14",
+            "actual": -2.07739,
+            "mean": 0.44624,
+            "macro": -0.02165,
+            "full": 0.27555,
+            "trainingRows": 130
+          },
+          {
+            "date": "2026-07-15",
+            "actual": -4.28579,
+            "mean": 0.46225,
+            "macro": 0.78994,
+            "full": 0.73009,
+            "trainingRows": 131
+          },
+          {
+            "date": "2026-07-16",
+            "actual": -1.63147,
+            "mean": 0.44301,
+            "macro": 1.24046,
+            "full": 1.03424,
+            "trainingRows": 132
+          },
+          {
+            "date": "2026-07-17",
+            "actual": 0.59929,
+            "mean": 0.40746,
+            "macro": 1.07316,
+            "full": 1.56183,
+            "trainingRows": 133
+          },
+          {
+            "date": "2026-07-20",
+            "actual": 5.21392,
+            "mean": 0.39224,
+            "macro": 0.89017,
+            "full": 0.41395,
+            "trainingRows": 134
+          },
+          {
+            "date": "2026-07-21",
+            "actual": 0.44108,
+            "mean": 0.39378,
+            "macro": 0.48224,
+            "full": -0.18702,
+            "trainingRows": 135
+          },
+          {
+            "date": "2026-07-22",
+            "actual": -0.53847,
+            "mean": 0.42922,
+            "macro": -0.02739,
+            "full": -0.24896,
+            "trainingRows": 136
+          },
+          {
+            "date": "2026-07-23",
+            "actual": -4.25275,
+            "mean": 0.42931,
+            "macro": -0.82068,
+            "full": -0.8835,
+            "trainingRows": 137
+          },
+          {
+            "date": "2026-07-24",
+            "actual": -2.23376,
+            "mean": 0.42229,
+            "macro": -0.14539,
+            "full": 0.31558,
+            "trainingRows": 138
+          },
+          {
+            "date": "2026-07-27",
+            "actual": -4.49332,
+            "mean": 0.38866,
+            "macro": 0.74977,
+            "full": 0.76743,
+            "trainingRows": 139
+          },
+          {
+            "date": "2026-07-28",
+            "actual": -5.32993,
+            "mean": 0.36993,
+            "macro": 2.258,
+            "full": 2.29225,
+            "trainingRows": 140
+          },
+          {
+            "date": "2026-07-29",
+            "actual": 8.18856,
+            "mean": 0.33544,
+            "macro": 2.44665,
+            "full": 2.22591,
+            "trainingRows": 141
+          },
+          {
+            "date": "2026-07-30",
+            "actual": 0.07155,
+            "mean": 0.29554,
+            "macro": 1.82947,
+            "full": 2.09412,
+            "trainingRows": 142
+          },
+          {
+            "date": "2026-07-31",
+            "actual": 1.05451,
+            "mean": 0.35074,
+            "macro": 1.44841,
+            "full": 1.53063,
+            "trainingRows": 143
+          },
+          {
+            "date": "2026-08-03",
+            "actual": 6.55196,
+            "mean": 0.3488,
+            "macro": 1.06147,
+            "full": 0.90593,
+            "trainingRows": 144
+          },
+          {
+            "date": "2026-08-04",
+            "actual": -1.39893,
+            "mean": 0.35366,
+            "macro": 0.1172,
+            "full": 0.5622,
+            "trainingRows": 145
+          },
+          {
+            "date": "2026-08-05",
+            "actual": 0.3315,
+            "mean": 0.39612,
+            "macro": 0.26469,
+            "full": 0.28951,
+            "trainingRows": 146
+          },
+          {
+            "date": "2026-08-06",
+            "actual": 2.55708,
+            "mean": 0.38391,
+            "macro": 0.56865,
+            "full": 0.50032,
+            "trainingRows": 147
+          },
+          {
+            "date": "2026-08-07",
+            "actual": -2.93706,
+            "mean": 0.38355,
+            "macro": 0.56824,
+            "full": 0.79752,
+            "trainingRows": 148
+          },
+          {
+            "date": "2026-08-10",
+            "actual": 0.8722,
+            "mean": 0.39814,
+            "macro": 0.12784,
+            "full": -0.28462,
+            "trainingRows": 149
+          },
+          {
+            "date": "2026-08-11",
+            "actual": 2.48713,
+            "mean": 0.37591,
+            "macro": 0.03504,
+            "full": 0.00576,
+            "trainingRows": 150
+          },
+          {
+            "date": "2026-08-12",
+            "actual": 0.45666,
+            "mean": 0.37919,
+            "macro": -0.27841,
+            "full": 0.05421,
+            "trainingRows": 151
+          },
+          {
+            "date": "2026-08-13",
+            "actual": -0.31269,
+            "mean": 0.39306,
+            "macro": 0.46846,
+            "full": 0.1577,
+            "trainingRows": 152
+          },
+          {
+            "date": "2026-08-14",
+            "actual": 1.64254,
+            "mean": 0.39348,
+            "macro": 0.53233,
+            "full": 0.66183,
+            "trainingRows": 153
+          },
+          {
+            "date": "2026-08-17",
+            "actual": -4.98012,
+            "mean": 0.38889,
+            "macro": -0.00904,
+            "full": 0.33749,
+            "trainingRows": 154
+          },
+          {
+            "date": "2026-08-18",
+            "actual": -2.11998,
+            "mean": 0.39698,
+            "macro": 0.76431,
+            "full": 0.756,
+            "trainingRows": 155
+          },
+          {
+            "date": "2026-08-19",
+            "actual": 0.52643,
+            "mean": 0.36251,
+            "macro": 1.33429,
+            "full": 1.4083,
+            "trainingRows": 156
+          },
+          {
+            "date": "2026-08-20",
+            "actual": -0.50547,
+            "mean": 0.3467,
+            "macro": 0.63271,
+            "full": 0.82463,
+            "trainingRows": 157
+          },
+          {
+            "date": "2026-08-21",
+            "actual": -2.70183,
+            "mean": 0.34784,
+            "macro": 0.73594,
+            "full": 0.58435,
+            "trainingRows": 158
+          },
+          {
+            "date": "2026-08-24",
+            "actual": 1.44329,
+            "mean": 0.34247,
+            "macro": 1.57368,
+            "full": 1.41796,
+            "trainingRows": 159
+          },
+          {
+            "date": "2026-08-25",
+            "actual": 0.20021,
+            "mean": 0.32344,
+            "macro": 1.14137,
+            "full": 1.39595,
+            "trainingRows": 160
+          },
+          {
+            "date": "2026-08-26",
+            "actual": 2.33335,
+            "mean": 0.3304,
+            "macro": 0.7415,
+            "full": 0.89858,
+            "trainingRows": 161
+          },
+          {
+            "date": "2026-08-27",
+            "actual": -3.47165,
+            "mean": 0.32959,
+            "macro": 0.78339,
+            "full": 0.60813,
+            "trainingRows": 162
+          },
+          {
+            "date": "2026-08-28",
+            "actual": 0.57011,
+            "mean": 0.34189,
+            "macro": 1.13213,
+            "full": 1.38905,
+            "trainingRows": 163
+          },
+          {
+            "date": "2026-08-31",
+            "actual": -2.13644,
+            "mean": 0.31863,
+            "macro": 0.42058,
+            "full": 0.6337,
+            "trainingRows": 164
+          },
+          {
+            "date": "2026-09-01",
+            "actual": 0.44861,
+            "mean": 0.32016,
+            "macro": 0.17294,
+            "full": 0.35308,
+            "trainingRows": 165
+          },
+          {
+            "date": "2026-09-02",
+            "actual": 0.11355,
+            "mean": 0.30536,
+            "macro": 0.01784,
+            "full": -0.21867,
+            "trainingRows": 166
+          },
+          {
+            "date": "2026-09-03",
+            "actual": 3.37499,
+            "mean": 0.30622,
+            "macro": 0.37885,
+            "full": 0.55306,
+            "trainingRows": 167
+          },
+          {
+            "date": "2026-09-04",
+            "actual": 1.30041,
+            "mean": 0.30507,
+            "macro": -0.31278,
+            "full": -0.59156,
+            "trainingRows": 168
+          },
+          {
+            "date": "2026-09-08",
+            "actual": 0.36552,
+            "mean": 0.32324,
+            "macro": -0.3155,
+            "full": -0.24794,
+            "trainingRows": 169
+          },
+          {
+            "date": "2026-09-09",
+            "actual": -2.65817,
+            "mean": 0.32898,
+            "macro": -0.4263,
+            "full": -0.49964,
+            "trainingRows": 170
+          },
+          {
+            "date": "2026-09-10",
+            "actual": 1.80668,
+            "mean": 0.3292,
+            "macro": -0.5421,
+            "full": -0.35965,
+            "trainingRows": 171
+          },
+          {
+            "date": "2026-09-11",
+            "actual": -5.85857,
+            "mean": 0.31183,
+            "macro": -0.86437,
+            "full": -0.73571,
+            "trainingRows": 172
+          },
+          {
+            "date": "2026-09-14",
+            "actual": 0.39767,
+            "mean": 0.32047,
+            "macro": 0.34227,
+            "full": 0.41251,
+            "trainingRows": 173
+          },
+          {
+            "date": "2026-09-15",
+            "actual": 0.63138,
+            "mean": 0.28496,
+            "macro": 0.15673,
+            "full": 0.02621,
+            "trainingRows": 174
+          },
+          {
+            "date": "2026-09-16",
+            "actual": 3.14229,
+            "mean": 0.2856,
+            "macro": 0.46554,
+            "full": 0.89251,
+            "trainingRows": 175
+          },
+          {
+            "date": "2026-09-17",
+            "actual": 2.77765,
+            "mean": 0.28757,
+            "macro": 0.6847,
+            "full": 0.42292,
+            "trainingRows": 176
+          },
+          {
+            "date": "2026-09-18",
+            "actual": 4.29038,
+            "mean": 0.3037,
+            "macro": 0.3453,
+            "full": 0.53923,
+            "trainingRows": 177
+          },
+          {
+            "date": "2026-09-21",
+            "actual": 2.06423,
+            "mean": 0.31759,
+            "macro": -0.38998,
+            "full": -0.37439,
+            "trainingRows": 178
+          },
+          {
+            "date": "2026-09-22",
+            "actual": -1.22575,
+            "mean": 0.33979,
+            "macro": -0.18849,
+            "full": 0.0543,
+            "trainingRows": 179
+          },
+          {
+            "date": "2026-09-23",
+            "actual": -0.33299,
+            "mean": 0.34937,
+            "macro": -0.45215,
+            "full": -0.45309,
+            "trainingRows": 180
+          },
+          {
+            "date": "2026-09-24",
+            "actual": 1.41198,
+            "mean": 0.34067,
+            "macro": -0.60505,
+            "full": -0.44647,
+            "trainingRows": 181
+          },
+          {
+            "date": "2026-09-25",
+            "actual": -1.60777,
+            "mean": 0.33696,
+            "macro": -0.20879,
+            "full": 0.09716,
+            "trainingRows": 182
+          },
+          {
+            "date": "2026-09-28",
+            "actual": 1.31501,
+            "mean": 0.34284,
+            "macro": -0.12205,
+            "full": -0.47796,
+            "trainingRows": 183
+          },
+          {
+            "date": "2026-09-29",
+            "actual": -0.00426,
+            "mean": 0.33224,
+            "macro": -0.12876,
+            "full": -0.21695,
+            "trainingRows": 184
+          },
+          {
+            "date": "2026-09-30",
+            "actual": 1.58668,
+            "mean": 0.33755,
+            "macro": 0.22885,
+            "full": 0.49425,
+            "trainingRows": 185
+          },
+          {
+            "date": "2026-10-01",
+            "actual": 2.39827,
+            "mean": 0.33571,
+            "macro": 0.32888,
+            "full": 0.2207,
+            "trainingRows": 186
+          },
+          {
+            "date": "2026-10-02",
+            "actual": 0.27451,
+            "mean": 0.3424,
+            "macro": 0.12594,
+            "full": 0.35154,
+            "trainingRows": 187
+          },
+          {
+            "date": "2026-10-05",
+            "actual": 0.34227,
+            "mean": 0.35334,
+            "macro": 0.30745,
+            "full": 0.20432,
+            "trainingRows": 188
+          },
+          {
+            "date": "2026-10-06",
+            "actual": -1.14749,
+            "mean": 0.35292,
+            "macro": 0.42342,
+            "full": 0.63283,
+            "trainingRows": 189
+          },
+          {
+            "date": "2026-10-07",
+            "actual": -3.38612,
+            "mean": 0.35286,
+            "macro": 0.60863,
+            "full": 0.74188,
+            "trainingRows": 190
+          },
+          {
+            "date": "2026-10-08",
+            "actual": -0.40634,
+            "mean": 0.34501,
+            "macro": 0.88618,
+            "full": 0.82352,
+            "trainingRows": 191
+          },
+          {
+            "date": "2026-10-09",
+            "actual": -2.66958,
+            "mean": 0.32558,
+            "macro": 1.12269,
+            "full": 1.24876,
+            "trainingRows": 192
+          },
+          {
+            "date": "2026-10-13",
+            "actual": -4.29536,
+            "mean": 0.30636,
+            "macro": 1.0161,
+            "full": 0.98462,
+            "trainingRows": 194
+          },
+          {
+            "date": "2026-10-14",
+            "actual": -0.88295,
+            "mean": 0.30636,
+            "macro": 1.23016,
+            "full": 1.24021,
+            "trainingRows": 194
+          },
+          {
+            "date": "2026-10-15",
+            "actual": -3.83318,
+            "mean": 0.28277,
+            "macro": 1.01274,
+            "full": 0.92615,
+            "trainingRows": 195
+          },
+          {
+            "date": "2026-10-16",
+            "actual": 1.60772,
+            "mean": 0.27682,
+            "macro": 0.98338,
+            "full": 1.11651,
+            "trainingRows": 196
+          },
+          {
+            "date": "2026-10-20",
+            "actual": 1.96515,
+            "mean": 0.26278,
+            "macro": 0.65278,
+            "full": 0.68959,
+            "trainingRows": 198
+          }
+        ],
+        "trainMinimum": 60,
+        "purgeSessions": 1
+      },
+      "3": {
+        "models": {
+          "historicalMean": {
+            "n": 135,
+            "maePct": 4.35302,
+            "rmsePct": 5.33756,
+            "directionAccuracy": 0.56296
+          },
+          "macroOnly": {
+            "n": 135,
+            "maePct": 4.67501,
+            "rmsePct": 5.83656,
+            "directionAccuracy": 0.57778
+          },
+          "macroAndBreadth": {
+            "n": 135,
+            "maePct": 4.74715,
+            "rmsePct": 5.93167,
+            "directionAccuracy": 0.56296
+          }
+        },
+        "predictions": [
+          {
+            "date": "2026-04-06",
+            "actual": 9.77031,
+            "mean": 0.22657,
+            "macro": -5.09488,
+            "full": -5.02031,
+            "trainingRows": 60
+          },
+          {
+            "date": "2026-04-07",
+            "actual": 11.06916,
+            "mean": 0.29369,
+            "macro": -7.08227,
+            "full": -7.26863,
+            "trainingRows": 61
+          },
+          {
+            "date": "2026-04-08",
+            "actual": 6.21093,
+            "mean": 0.33062,
+            "macro": -6.9146,
+            "full": -7.67665,
+            "trainingRows": 62
+          },
+          {
+            "date": "2026-04-09",
+            "actual": 6.1521,
+            "mean": 0.46266,
+            "macro": -3.49981,
+            "full": -4.66466,
+            "trainingRows": 63
+          },
+          {
+            "date": "2026-04-10",
+            "actual": 3.93098,
+            "mean": 0.6081,
+            "macro": -1.52389,
+            "full": -1.77868,
+            "trainingRows": 64
+          },
+          {
+            "date": "2026-04-13",
+            "actual": 3.20615,
+            "mean": 0.76904,
+            "macro": 1.25192,
+            "full": 0.59677,
+            "trainingRows": 65
+          },
+          {
+            "date": "2026-04-14",
+            "actual": 3.59668,
+            "mean": 0.85149,
+            "macro": 2.54054,
+            "full": 2.74817,
+            "trainingRows": 66
+          },
+          {
+            "date": "2026-04-15",
+            "actual": 3.89562,
+            "mean": 0.9306,
+            "macro": 1.47848,
+            "full": 2.24044,
+            "trainingRows": 67
+          },
+          {
+            "date": "2026-04-16",
+            "actual": 3.4072,
+            "mean": 0.97472,
+            "macro": 1.02864,
+            "full": 1.36687,
+            "trainingRows": 68
+          },
+          {
+            "date": "2026-04-17",
+            "actual": 3.69807,
+            "mean": 1.00706,
+            "macro": 2.27609,
+            "full": 2.07265,
+            "trainingRows": 69
+          },
+          {
+            "date": "2026-04-20",
+            "actual": 4.99373,
+            "mean": 1.04406,
+            "macro": 2.32473,
+            "full": 2.2639,
+            "trainingRows": 70
+          },
+          {
+            "date": "2026-04-21",
+            "actual": 8.98134,
+            "mean": 1.08422,
+            "macro": 1.14653,
+            "full": 1.27241,
+            "trainingRows": 71
+          },
+          {
+            "date": "2026-04-22",
+            "actual": 5.03339,
+            "mean": 1.11649,
+            "macro": 1.18903,
+            "full": 1.01996,
+            "trainingRows": 72
+          },
+          {
+            "date": "2026-04-23",
+            "actual": -0.42659,
+            "mean": 1.15185,
+            "macro": 0.8768,
+            "full": 0.93022,
+            "trainingRows": 73
+          },
+          {
+            "date": "2026-04-24",
+            "actual": -2.30524,
+            "mean": 1.20377,
+            "macro": -0.08393,
+            "full": -0.17087,
+            "trainingRows": 74
+          },
+          {
+            "date": "2026-04-27",
+            "actual": 0.91913,
+            "mean": 1.30747,
+            "macro": 0.2598,
+            "full": 1.33308,
+            "trainingRows": 75
+          },
+          {
+            "date": "2026-04-28",
+            "actual": 5.57779,
+            "mean": 1.35649,
+            "macro": 0.54373,
+            "full": 1.73358,
+            "trainingRows": 76
+          },
+          {
+            "date": "2026-04-29",
+            "actual": 2.56403,
+            "mean": 1.33334,
+            "macro": -0.27488,
+            "full": -0.57644,
+            "trainingRows": 77
+          },
+          {
+            "date": "2026-04-30",
+            "actual": 4.54008,
+            "mean": 1.28669,
+            "macro": 0.34884,
+            "full": -0.03309,
+            "trainingRows": 78
+          },
+          {
+            "date": "2026-05-01",
+            "actual": 8.28113,
+            "mean": 1.28204,
+            "macro": 0.62868,
+            "full": 0.36202,
+            "trainingRows": 79
+          },
+          {
+            "date": "2026-05-04",
+            "actual": 5.94547,
+            "mean": 1.33573,
+            "macro": 0.66611,
+            "full": 1.20088,
+            "trainingRows": 80
+          },
+          {
+            "date": "2026-05-05",
+            "actual": 7.23935,
+            "mean": 1.3509,
+            "macro": 1.92756,
+            "full": 1.34176,
+            "trainingRows": 81
+          },
+          {
+            "date": "2026-05-06",
+            "actual": 5.30201,
+            "mean": 1.38979,
+            "macro": 4.40538,
+            "full": 4.31576,
+            "trainingRows": 82
+          },
+          {
+            "date": "2026-05-07",
+            "actual": 4.98401,
+            "mean": 1.47282,
+            "macro": 3.9934,
+            "full": 5.19694,
+            "trainingRows": 83
+          },
+          {
+            "date": "2026-05-08",
+            "actual": 2.05921,
+            "mean": 1.52606,
+            "macro": 4.12094,
+            "full": 3.88209,
+            "trainingRows": 84
+          },
+          {
+            "date": "2026-05-11",
+            "actual": -0.06011,
+            "mean": 1.59328,
+            "macro": 4.81461,
+            "full": 4.87688,
+            "trainingRows": 85
+          },
+          {
+            "date": "2026-05-12",
+            "actual": -1.09919,
+            "mean": 1.6364,
+            "macro": 3.51623,
+            "full": 4.43616,
+            "trainingRows": 86
+          },
+          {
+            "date": "2026-05-13",
+            "actual": -5.9533,
+            "mean": 1.67488,
+            "macro": 2.68067,
+            "full": 2.5215,
+            "trainingRows": 87
+          },
+          {
+            "date": "2026-05-14",
+            "actual": -6.36324,
+            "mean": 1.67925,
+            "macro": 2.45453,
+            "full": 2.62449,
+            "trainingRows": 88
+          },
+          {
+            "date": "2026-05-15",
+            "actual": 1.94006,
+            "mean": 1.6597,
+            "macro": 1.46434,
+            "full": 2.0546,
+            "trainingRows": 89
+          },
+          {
+            "date": "2026-05-18",
+            "actual": 5.85329,
+            "mean": 1.62905,
+            "macro": 1.3028,
+            "full": 1.87853,
+            "trainingRows": 90
+          },
+          {
+            "date": "2026-05-19",
+            "actual": 7.93462,
+            "mean": 1.54573,
+            "macro": 0.97889,
+            "full": 1.40925,
+            "trainingRows": 91
+          },
+          {
+            "date": "2026-05-20",
+            "actual": 9.00359,
+            "mean": 1.45976,
+            "macro": 1.54512,
+            "full": 0.67936,
+            "trainingRows": 92
+          },
+          {
+            "date": "2026-05-21",
+            "actual": 6.16933,
+            "mean": 1.46493,
+            "macro": 1.29303,
+            "full": 0.91055,
+            "trainingRows": 93
+          },
+          {
+            "date": "2026-05-22",
+            "actual": 5.135,
+            "mean": 1.51161,
+            "macro": 1.89519,
+            "full": 1.52274,
+            "trainingRows": 94
+          },
+          {
+            "date": "2026-05-26",
+            "actual": -0.36907,
+            "mean": 1.57922,
+            "macro": 2.04593,
+            "full": 2.15876,
+            "trainingRows": 95
+          },
+          {
+            "date": "2026-05-27",
+            "actual": 2.07414,
+            "mean": 1.65656,
+            "macro": 2.8932,
+            "full": 3.7795,
+            "trainingRows": 96
+          },
+          {
+            "date": "2026-05-28",
+            "actual": 6.99288,
+            "mean": 1.70308,
+            "macro": 2.86958,
+            "full": 2.91837,
+            "trainingRows": 97
+          },
+          {
+            "date": "2026-05-29",
+            "actual": 8.47722,
+            "mean": 1.7381,
+            "macro": 3.32505,
+            "full": 3.67215,
+            "trainingRows": 98
+          },
+          {
+            "date": "2026-06-01",
+            "actual": 5.02748,
+            "mean": 1.71682,
+            "macro": 3.5372,
+            "full": 3.67466,
+            "trainingRows": 99
+          },
+          {
+            "date": "2026-06-02",
+            "actual": -10.96809,
+            "mean": 1.72039,
+            "macro": 2.04982,
+            "full": 1.57431,
+            "trainingRows": 100
+          },
+          {
+            "date": "2026-06-03",
+            "actual": -7.25924,
+            "mean": 1.77259,
+            "macro": 0.26443,
+            "full": 0.34077,
+            "trainingRows": 101
+          },
+          {
+            "date": "2026-06-04",
+            "actual": -7.04745,
+            "mean": 1.83832,
+            "macro": 0.75341,
+            "full": 1.01653,
+            "trainingRows": 102
+          },
+          {
+            "date": "2026-06-05",
+            "actual": -0.117,
+            "mean": 1.86929,
+            "macro": 2.32625,
+            "full": 2.96753,
+            "trainingRows": 103
+          },
+          {
+            "date": "2026-06-08",
+            "actual": 2.05123,
+            "mean": 1.74585,
+            "macro": 1.15858,
+            "full": 0.54584,
+            "trainingRows": 104
+          },
+          {
+            "date": "2026-06-09",
+            "actual": 5.6381,
+            "mean": 1.66009,
+            "macro": 3.82218,
+            "full": 3.63313,
+            "trainingRows": 105
+          },
+          {
+            "date": "2026-06-10",
+            "actual": 15.5095,
+            "mean": 1.57794,
+            "macro": 4.938,
+            "full": 4.78707,
+            "trainingRows": 106
+          },
+          {
+            "date": "2026-06-11",
+            "actual": 0.93221,
+            "mean": 1.5621,
+            "macro": 3.25623,
+            "full": 3.16433,
+            "trainingRows": 107
+          },
+          {
+            "date": "2026-06-12",
+            "actual": 0.78976,
+            "mean": 1.56663,
+            "macro": 1.89907,
+            "full": 1.6555,
+            "trainingRows": 108
+          },
+          {
+            "date": "2026-06-15",
+            "actual": 1.7175,
+            "mean": 1.60398,
+            "macro": 3.905,
+            "full": 2.83615,
+            "trainingRows": 109
+          },
+          {
+            "date": "2026-06-16",
+            "actual": 10.08331,
+            "mean": 1.7304,
+            "macro": 6.13223,
+            "full": 7.13087,
+            "trainingRows": 110
+          },
+          {
+            "date": "2026-06-17",
+            "actual": 0.04034,
+            "mean": 1.72321,
+            "macro": 4.87191,
+            "full": 5.21771,
+            "trainingRows": 111
+          },
+          {
+            "date": "2026-06-18",
+            "actual": -6.16094,
+            "mean": 1.71487,
+            "macro": 4.00587,
+            "full": 3.49205,
+            "trainingRows": 112
+          },
+          {
+            "date": "2026-06-22",
+            "actual": -4.74114,
+            "mean": 1.71489,
+            "macro": 3.04597,
+            "full": 2.46622,
+            "trainingRows": 113
+          },
+          {
+            "date": "2026-06-23",
+            "actual": -2.06889,
+            "mean": 1.7883,
+            "macro": 5.10519,
+            "full": 5.46835,
+            "trainingRows": 114
+          },
+          {
+            "date": "2026-06-24",
+            "actual": 1.86849,
+            "mean": 1.7731,
+            "macro": 2.5813,
+            "full": 3.10411,
+            "trainingRows": 115
+          },
+          {
+            "date": "2026-06-25",
+            "actual": 2.19563,
+            "mean": 1.70471,
+            "macro": 2.32316,
+            "full": 1.87811,
+            "trainingRows": 116
+          },
+          {
+            "date": "2026-06-26",
+            "actual": 1.13386,
+            "mean": 1.64961,
+            "macro": 5.96778,
+            "full": 6.00998,
+            "trainingRows": 117
+          },
+          {
+            "date": "2026-06-29",
+            "actual": -7.90274,
+            "mean": 1.6181,
+            "macro": 5.99608,
+            "full": 4.98272,
+            "trainingRows": 118
+          },
+          {
+            "date": "2026-06-30",
+            "actual": -9.45338,
+            "mean": 1.6202,
+            "macro": 3.44839,
+            "full": 3.51996,
+            "trainingRows": 119
+          },
+          {
+            "date": "2026-07-01",
+            "actual": -7.88393,
+            "mean": 1.625,
+            "macro": 5.60539,
+            "full": 6.22101,
+            "trainingRows": 120
+          },
+          {
+            "date": "2026-07-02",
+            "actual": -0.40594,
+            "mean": 1.62094,
+            "macro": 8.07521,
+            "full": 9.07012,
+            "trainingRows": 121
+          },
+          {
+            "date": "2026-07-06",
+            "actual": 0.46404,
+            "mean": 1.54288,
+            "macro": 5.35931,
+            "full": 5.84996,
+            "trainingRows": 122
+          },
+          {
+            "date": "2026-07-07",
+            "actual": 5.41967,
+            "mean": 1.45348,
+            "macro": 5.57963,
+            "full": 6.01892,
+            "trainingRows": 123
+          },
+          {
+            "date": "2026-07-08",
+            "actual": -1.80663,
+            "mean": 1.37817,
+            "macro": 3.63225,
+            "full": 1.81988,
+            "trainingRows": 124
+          },
+          {
+            "date": "2026-07-09",
+            "actual": -2.29994,
+            "mean": 1.3639,
+            "macro": 1.95498,
+            "full": 1.27182,
+            "trainingRows": 125
+          },
+          {
+            "date": "2026-07-10",
+            "actual": -4.38238,
+            "mean": 1.35676,
+            "macro": 1.32432,
+            "full": 1.58477,
+            "trainingRows": 126
+          },
+          {
+            "date": "2026-07-13",
+            "actual": -3.88961,
+            "mean": 1.38875,
+            "macro": 1.01357,
+            "full": 1.99158,
+            "trainingRows": 127
+          },
+          {
+            "date": "2026-07-14",
+            "actual": -7.80325,
+            "mean": 1.36379,
+            "macro": 0.24541,
+            "full": -0.07555,
+            "trainingRows": 128
+          },
+          {
+            "date": "2026-07-15",
+            "actual": -5.28309,
+            "mean": 1.33539,
+            "macro": 1.40895,
+            "full": 2.22755,
+            "trainingRows": 129
+          },
+          {
+            "date": "2026-07-16",
+            "actual": 4.11763,
+            "mean": 1.2914,
+            "macro": 1.7234,
+            "full": 2.32507,
+            "trainingRows": 130
+          },
+          {
+            "date": "2026-07-17",
+            "actual": 6.31132,
+            "mean": 1.25185,
+            "macro": 0.8057,
+            "full": 1.0551,
+            "trainingRows": 131
+          },
+          {
+            "date": "2026-07-20",
+            "actual": 5.10896,
+            "mean": 1.18325,
+            "macro": 1.12043,
+            "full": 0.35293,
+            "trainingRows": 132
+          },
+          {
+            "date": "2026-07-21",
+            "actual": -4.34826,
+            "mean": 1.13464,
+            "macro": 0.80448,
+            "full": -0.62381,
+            "trainingRows": 133
+          },
+          {
+            "date": "2026-07-22",
+            "actual": -6.89556,
+            "mean": 1.1569,
+            "macro": -0.05071,
+            "full": -0.30887,
+            "trainingRows": 134
+          },
+          {
+            "date": "2026-07-23",
+            "actual": -10.59763,
+            "mean": 1.19508,
+            "macro": -1.9766,
+            "full": -1.63306,
+            "trainingRows": 135
+          },
+          {
+            "date": "2026-07-24",
+            "actual": -11.60343,
+            "mean": 1.22386,
+            "macro": -0.14396,
+            "full": 1.11683,
+            "trainingRows": 136
+          },
+          {
+            "date": "2026-07-27",
+            "actual": -2.17997,
+            "mean": 1.18318,
+            "macro": 1.57109,
+            "full": 2.1548,
+            "trainingRows": 137
+          },
+          {
+            "date": "2026-07-28",
+            "actual": 2.49547,
+            "mean": 1.12464,
+            "macro": 3.77096,
+            "full": 4.42828,
+            "trainingRows": 138
+          },
+          {
+            "date": "2026-07-29",
+            "actual": 9.40764,
+            "mean": 1.04031,
+            "macro": 4.38433,
+            "full": 4.57683,
+            "trainingRows": 139
+          },
+          {
+            "date": "2026-07-30",
+            "actual": 7.7526,
+            "mean": 0.95,
+            "macro": 5.63027,
+            "full": 4.46158,
+            "trainingRows": 140
+          },
+          {
+            "date": "2026-07-31",
+            "actual": 6.16925,
+            "mean": 0.9278,
+            "macro": 4.14379,
+            "full": 3.56366,
+            "trainingRows": 141
+          },
+          {
+            "date": "2026-08-03",
+            "actual": 5.40965,
+            "mean": 0.93884,
+            "macro": 3.76603,
+            "full": 3.06914,
+            "trainingRows": 142
+          },
+          {
+            "date": "2026-08-04",
+            "actual": 1.4576,
+            "mean": 0.99806,
+            "macro": 1.85091,
+            "full": 1.47719,
+            "trainingRows": 143
+          },
+          {
+            "date": "2026-08-05",
+            "actual": -0.12509,
+            "mean": 1.04497,
+            "macro": 2.12232,
+            "full": 2.96385,
+            "trainingRows": 144
+          },
+          {
+            "date": "2026-08-06",
+            "actual": 0.41315,
+            "mean": 1.08031,
+            "macro": 2.6614,
+            "full": 2.63947,
+            "trainingRows": 145
+          },
+          {
+            "date": "2026-08-07",
+            "actual": 0.34466,
+            "mean": 1.10996,
+            "macro": 2.37103,
+            "full": 2.24864,
+            "trainingRows": 146
+          },
+          {
+            "date": "2026-08-10",
+            "actual": 3.85311,
+            "mean": 1.11233,
+            "macro": 0.78961,
+            "full": 1.49585,
+            "trainingRows": 147
+          },
+          {
+            "date": "2026-08-11",
+            "actual": 2.63321,
+            "mean": 1.10396,
+            "macro": 0.0714,
+            "full": -0.28672,
+            "trainingRows": 148
+          },
+          {
+            "date": "2026-08-12",
+            "actual": 1.78742,
+            "mean": 1.09933,
+            "macro": -0.46767,
+            "full": -0.61074,
+            "trainingRows": 149
+          },
+          {
+            "date": "2026-08-13",
+            "actual": -3.72138,
+            "mean": 1.0943,
+            "macro": 1.35872,
+            "full": 1.28502,
+            "trainingRows": 150
+          },
+          {
+            "date": "2026-08-14",
+            "actual": -5.46687,
+            "mean": 1.11257,
+            "macro": 1.68569,
+            "full": 1.74771,
+            "trainingRows": 151
+          },
+          {
+            "date": "2026-08-17",
+            "actual": -6.50492,
+            "mean": 1.12257,
+            "macro": 0.39103,
+            "full": 0.50017,
+            "trainingRows": 152
+          },
+          {
+            "date": "2026-08-18",
+            "actual": -2.10207,
+            "mean": 1.12692,
+            "macro": 2.1376,
+            "full": 2.90953,
+            "trainingRows": 153
+          },
+          {
+            "date": "2026-08-19",
+            "actual": -2.68403,
+            "mean": 1.09543,
+            "macro": 3.34872,
+            "full": 4.02046,
+            "trainingRows": 154
+          },
+          {
+            "date": "2026-08-20",
+            "actual": -1.79645,
+            "mean": 1.0531,
+            "macro": 1.39015,
+            "full": 1.49122,
+            "trainingRows": 155
+          },
+          {
+            "date": "2026-08-21",
+            "actual": -1.09993,
+            "mean": 1.00465,
+            "macro": 1.8173,
+            "full": 1.76152,
+            "trainingRows": 156
+          },
+          {
+            "date": "2026-08-24",
+            "actual": 4.01816,
+            "mean": 0.98486,
+            "macro": 3.71604,
+            "full": 4.19276,
+            "trainingRows": 157
+          },
+          {
+            "date": "2026-08-25",
+            "actual": -1.02154,
+            "mean": 0.96164,
+            "macro": 3.03891,
+            "full": 2.78986,
+            "trainingRows": 158
+          },
+          {
+            "date": "2026-08-26",
+            "actual": -0.65615,
+            "mean": 0.94429,
+            "macro": 2.45712,
+            "full": 2.4588,
+            "trainingRows": 159
+          },
+          {
+            "date": "2026-08-27",
+            "actual": -4.99536,
+            "mean": 0.93152,
+            "macro": 2.7383,
+            "full": 2.4946,
+            "trainingRows": 160
+          },
+          {
+            "date": "2026-08-28",
+            "actual": -1.13698,
+            "mean": 0.95069,
+            "macro": 3.49111,
+            "full": 4.13229,
+            "trainingRows": 161
+          },
+          {
+            "date": "2026-08-31",
+            "actual": -1.5858,
+            "mean": 0.93851,
+            "macro": 2.1039,
+            "full": 2.10521,
+            "trainingRows": 162
+          },
+          {
+            "date": "2026-09-01",
+            "actual": 3.95665,
+            "mean": 0.92873,
+            "macro": 0.95624,
+            "full": 1.56268,
+            "trainingRows": 163
+          },
+          {
+            "date": "2026-09-02",
+            "actual": 4.8382,
+            "mean": 0.89261,
+            "macro": 0.49699,
+            "full": 0.21828,
+            "trainingRows": 164
+          },
+          {
+            "date": "2026-09-03",
+            "actual": 5.10206,
+            "mean": 0.88031,
+            "macro": 1.24522,
+            "full": 1.21533,
+            "trainingRows": 165
+          },
+          {
+            "date": "2026-09-04",
+            "actual": -1.03189,
+            "mean": 0.86545,
+            "macro": -0.54386,
+            "full": -1.26707,
+            "trainingRows": 166
+          },
+          {
+            "date": "2026-09-08",
+            "actual": -0.53728,
+            "mean": 0.88396,
+            "macro": -0.70946,
+            "full": -0.75145,
+            "trainingRows": 167
+          },
+          {
+            "date": "2026-09-09",
+            "actual": -6.70538,
+            "mean": 0.9075,
+            "macro": -0.81091,
+            "full": -0.92982,
+            "trainingRows": 168
+          },
+          {
+            "date": "2026-09-10",
+            "actual": -3.77659,
+            "mean": 0.93232,
+            "macro": -1.10451,
+            "full": -0.56247,
+            "trainingRows": 169
+          },
+          {
+            "date": "2026-09-11",
+            "actual": -4.88744,
+            "mean": 0.92076,
+            "macro": -1.38202,
+            "full": -1.73842,
+            "trainingRows": 170
+          },
+          {
+            "date": "2026-09-14",
+            "actual": 4.20626,
+            "mean": 0.91224,
+            "macro": 0.97375,
+            "full": 1.61924,
+            "trainingRows": 171
+          },
+          {
+            "date": "2026-09-15",
+            "actual": 6.67653,
+            "mean": 0.86795,
+            "macro": 0.77651,
+            "full": 0.53943,
+            "trainingRows": 172
+          },
+          {
+            "date": "2026-09-16",
+            "actual": 10.55533,
+            "mean": 0.8411,
+            "macro": 1.70477,
+            "full": 1.43163,
+            "trainingRows": 173
+          },
+          {
+            "date": "2026-09-17",
+            "actual": 9.39979,
+            "mean": 0.80818,
+            "macro": 2.14645,
+            "full": 1.39209,
+            "trainingRows": 174
+          },
+          {
+            "date": "2026-09-18",
+            "actual": 5.13844,
+            "mean": 0.8276,
+            "macro": 1.46575,
+            "full": 1.25181,
+            "trainingRows": 175
+          },
+          {
+            "date": "2026-09-21",
+            "actual": 0.47748,
+            "mean": 0.86083,
+            "macro": 0.21058,
+            "full": -0.35848,
+            "trainingRows": 176
+          },
+          {
+            "date": "2026-09-22",
+            "actual": -0.16463,
+            "mean": 0.9156,
+            "macro": 0.78768,
+            "full": 0.84606,
+            "trainingRows": 177
+          },
+          {
+            "date": "2026-09-23",
+            "actual": -0.55075,
+            "mean": 0.96327,
+            "macro": 0.41728,
+            "full": 0.94336,
+            "trainingRows": 178
+          },
+          {
+            "date": "2026-09-24",
+            "actual": 1.09365,
+            "mean": 0.98659,
+            "macro": 0.50144,
+            "full": 0.97402,
+            "trainingRows": 179
+          },
+          {
+            "date": "2026-09-25",
+            "actual": -0.31814,
+            "mean": 0.98376,
+            "macro": 1.04972,
+            "full": 1.09817,
+            "trainingRows": 180
+          },
+          {
+            "date": "2026-09-28",
+            "actual": 2.91818,
+            "mean": 0.97742,
+            "macro": 0.8878,
+            "full": 1.14855,
+            "trainingRows": 181
+          },
+          {
+            "date": "2026-09-29",
+            "actual": 4.01858,
+            "mean": 0.96902,
+            "macro": 1.12144,
+            "full": 1.0295,
+            "trainingRows": 182
+          },
+          {
+            "date": "2026-09-30",
+            "actual": 4.30857,
+            "mean": 0.9697,
+            "macro": 1.4883,
+            "full": 1.36471,
+            "trainingRows": 183
+          },
+          {
+            "date": "2026-10-01",
+            "actual": 3.03081,
+            "mean": 0.9627,
+            "macro": 1.44771,
+            "full": 1.13228,
+            "trainingRows": 184
+          },
+          {
+            "date": "2026-10-02",
+            "actual": -0.53685,
+            "mean": 0.97327,
+            "macro": 1.18016,
+            "full": 1.16568,
+            "trainingRows": 185
+          },
+          {
+            "date": "2026-10-05",
+            "actual": -4.16786,
+            "mean": 0.98965,
+            "macro": 1.75418,
+            "full": 1.68767,
+            "trainingRows": 186
+          },
+          {
+            "date": "2026-10-06",
+            "actual": -4.88283,
+            "mean": 1.00739,
+            "macro": 1.69854,
+            "full": 1.8497,
+            "trainingRows": 187
+          },
+          {
+            "date": "2026-10-07",
+            "actual": -6.34741,
+            "mean": 1.01816,
+            "macro": 2.07903,
+            "full": 2.37726,
+            "trainingRows": 188
+          },
+          {
+            "date": "2026-10-08",
+            "actual": -3.28683,
+            "mean": 1.00993,
+            "macro": 2.24868,
+            "full": 2.6544,
+            "trainingRows": 189
+          },
+          {
+            "date": "2026-10-09",
+            "actual": -7.06338,
+            "mean": 0.98268,
+            "macro": 2.89346,
+            "full": 3.08344,
+            "trainingRows": 190
+          },
+          {
+            "date": "2026-10-13",
+            "actual": -8.77653,
+            "mean": 0.91395,
+            "macro": 2.38134,
+            "full": 2.31753,
+            "trainingRows": 192
+          },
+          {
+            "date": "2026-10-14",
+            "actual": -3.14984,
+            "mean": 0.89218,
+            "macro": 2.36083,
+            "full": 2.19753,
+            "trainingRows": 193
+          },
+          {
+            "date": "2026-10-15",
+            "actual": -2.56798,
+            "mean": 0.85118,
+            "macro": 2.22929,
+            "full": 2.13742,
+            "trainingRows": 194
+          },
+          {
+            "date": "2026-10-16",
+            "actual": 3.30663,
+            "mean": 0.85118,
+            "macro": 1.64535,
+            "full": 1.52994,
+            "trainingRows": 194
+          }
+        ],
+        "trainMinimum": 60,
+        "purgeSessions": 3
+      },
+      "5": {
+        "models": {
+          "historicalMean": {
+            "n": 131,
+            "maePct": 5.71743,
+            "rmsePct": 6.84352,
+            "directionAccuracy": 0.56489
+          },
+          "macroOnly": {
+            "n": 131,
+            "maePct": 6.24297,
+            "rmsePct": 7.6259,
+            "directionAccuracy": 0.52672
+          },
+          "macroAndBreadth": {
+            "n": 131,
+            "maePct": 6.41592,
+            "rmsePct": 7.82718,
+            "directionAccuracy": 0.49618
+          }
+        },
+        "predictions": [
+          {
+            "date": "2026-04-08",
+            "actual": 8.55804,
+            "mean": 0.44161,
+            "macro": -9.58807,
+            "full": -11.84363,
+            "trainingRows": 60
+          },
+          {
+            "date": "2026-04-09",
+            "actual": 7.36303,
+            "mean": 0.63371,
+            "macro": -7.3785,
+            "full": -8.44825,
+            "trainingRows": 61
+          },
+          {
+            "date": "2026-04-10",
+            "actual": 7.49232,
+            "mean": 0.8069,
+            "macro": -7.37314,
+            "full": -7.60288,
+            "trainingRows": 62
+          },
+          {
+            "date": "2026-04-13",
+            "actual": 6.19157,
+            "mean": 1.00816,
+            "macro": -4.89367,
+            "full": -7.13863,
+            "trainingRows": 63
+          },
+          {
+            "date": "2026-04-14",
+            "actual": 4.58681,
+            "mean": 1.21415,
+            "macro": -1.20266,
+            "full": -3.05415,
+            "trainingRows": 64
+          },
+          {
+            "date": "2026-04-15",
+            "actual": 7.25144,
+            "mean": 1.43002,
+            "macro": 1.20988,
+            "full": -0.37901,
+            "trainingRows": 65
+          },
+          {
+            "date": "2026-04-16",
+            "actual": 8.03086,
+            "mean": 1.53802,
+            "macro": 0.94298,
+            "full": -0.2226,
+            "trainingRows": 66
+          },
+          {
+            "date": "2026-04-17",
+            "actual": 10.02295,
+            "mean": 1.62496,
+            "macro": 3.06655,
+            "full": 2.50106,
+            "trainingRows": 67
+          },
+          {
+            "date": "2026-04-20",
+            "actual": 8.42595,
+            "mean": 1.71125,
+            "macro": 3.44514,
+            "full": 3.20456,
+            "trainingRows": 68
+          },
+          {
+            "date": "2026-04-21",
+            "actual": 4.02566,
+            "mean": 1.77618,
+            "macro": 1.72463,
+            "full": 1.52699,
+            "trainingRows": 69
+          },
+          {
+            "date": "2026-04-22",
+            "actual": 3.65347,
+            "mean": 1.81633,
+            "macro": 1.44467,
+            "full": 1.09125,
+            "trainingRows": 70
+          },
+          {
+            "date": "2026-04-23",
+            "actual": 4.21814,
+            "mean": 1.89288,
+            "macro": 1.46251,
+            "full": 1.34857,
+            "trainingRows": 71
+          },
+          {
+            "date": "2026-04-24",
+            "actual": 0.77687,
+            "mean": 1.97813,
+            "macro": 0.06924,
+            "full": -7e-05,
+            "trainingRows": 72
+          },
+          {
+            "date": "2026-04-27",
+            "actual": 1.21656,
+            "mean": 2.08833,
+            "macro": 0.1631,
+            "full": 0.52851,
+            "trainingRows": 73
+          },
+          {
+            "date": "2026-04-28",
+            "actual": 9.4165,
+            "mean": 2.17398,
+            "macro": 0.38745,
+            "full": 0.92939,
+            "trainingRows": 74
+          },
+          {
+            "date": "2026-04-29",
+            "actual": 11.69722,
+            "mean": 2.19867,
+            "macro": -0.70127,
+            "full": -1.04034,
+            "trainingRows": 75
+          },
+          {
+            "date": "2026-04-30",
+            "actual": 6.25772,
+            "mean": 2.21781,
+            "macro": 0.81903,
+            "full": 0.86042,
+            "trainingRows": 76
+          },
+          {
+            "date": "2026-05-01",
+            "actual": 11.13847,
+            "mean": 2.24379,
+            "macro": 1.39171,
+            "full": 1.59321,
+            "trainingRows": 77
+          },
+          {
+            "date": "2026-05-04",
+            "actual": 14.67901,
+            "mean": 2.22498,
+            "macro": 1.17702,
+            "full": 1.0654,
+            "trainingRows": 78
+          },
+          {
+            "date": "2026-05-05",
+            "actual": 6.70894,
+            "mean": 2.21222,
+            "macro": 3.20746,
+            "full": 2.80323,
+            "trainingRows": 79
+          },
+          {
+            "date": "2026-05-06",
+            "actual": 4.75237,
+            "mean": 2.30227,
+            "macro": 7.13133,
+            "full": 7.25713,
+            "trainingRows": 80
+          },
+          {
+            "date": "2026-05-07",
+            "actual": 8.17836,
+            "mean": 2.41826,
+            "macro": 5.50223,
+            "full": 6.04591,
+            "trainingRows": 81
+          },
+          {
+            "date": "2026-05-08",
+            "actual": -1.58835,
+            "mean": 2.46508,
+            "macro": 6.25724,
+            "full": 6.11789,
+            "trainingRows": 82
+          },
+          {
+            "date": "2026-05-11",
+            "actual": -6.44419,
+            "mean": 2.56958,
+            "macro": 7.34019,
+            "full": 7.16308,
+            "trainingRows": 83
+          },
+          {
+            "date": "2026-05-12",
+            "actual": -3.51416,
+            "mean": 2.71374,
+            "macro": 5.451,
+            "full": 6.25695,
+            "trainingRows": 84
+          },
+          {
+            "date": "2026-05-13",
+            "actual": -1.70325,
+            "mean": 2.76074,
+            "macro": 4.47411,
+            "full": 4.45451,
+            "trainingRows": 85
+          },
+          {
+            "date": "2026-05-14",
+            "actual": -0.90853,
+            "mean": 2.7839,
+            "macro": 4.24681,
+            "full": 4.25755,
+            "trainingRows": 86
+          },
+          {
+            "date": "2026-05-15",
+            "actual": 5.29906,
+            "mean": 2.8459,
+            "macro": 2.9592,
+            "full": 3.39708,
+            "trainingRows": 87
+          },
+          {
+            "date": "2026-05-18",
+            "actual": 13.92956,
+            "mean": 2.79551,
+            "macro": 2.52727,
+            "full": 2.74248,
+            "trainingRows": 88
+          },
+          {
+            "date": "2026-05-19",
+            "actual": 12.35411,
+            "mean": 2.6917,
+            "macro": 3.24531,
+            "full": 2.95946,
+            "trainingRows": 89
+          },
+          {
+            "date": "2026-05-20",
+            "actual": 8.59928,
+            "mean": 2.62274,
+            "macro": 3.19584,
+            "full": 2.80932,
+            "trainingRows": 90
+          },
+          {
+            "date": "2026-05-21",
+            "actual": 7.23246,
+            "mean": 2.5752,
+            "macro": 2.61033,
+            "full": 2.45686,
+            "trainingRows": 91
+          },
+          {
+            "date": "2026-05-22",
+            "actual": 6.25367,
+            "mean": 2.53734,
+            "macro": 2.94256,
+            "full": 2.78775,
+            "trainingRows": 92
+          },
+          {
+            "date": "2026-05-26",
+            "actual": 6.59602,
+            "mean": 2.56703,
+            "macro": 3.54312,
+            "full": 3.44199,
+            "trainingRows": 93
+          },
+          {
+            "date": "2026-05-27",
+            "actual": 9.56346,
+            "mean": 2.68791,
+            "macro": 3.60055,
+            "full": 4.21796,
+            "trainingRows": 94
+          },
+          {
+            "date": "2026-05-28",
+            "actual": 6.14501,
+            "mean": 2.78966,
+            "macro": 3.53951,
+            "full": 3.72915,
+            "trainingRows": 95
+          },
+          {
+            "date": "2026-05-29",
+            "actual": -4.74397,
+            "mean": 2.85018,
+            "macro": 4.04315,
+            "full": 4.42763,
+            "trainingRows": 96
+          },
+          {
+            "date": "2026-06-01",
+            "actual": -0.45472,
+            "mean": 2.89536,
+            "macro": 4.60783,
+            "full": 4.40784,
+            "trainingRows": 97
+          },
+          {
+            "date": "2026-06-02",
+            "actual": -7.78405,
+            "mean": 2.92962,
+            "macro": 3.09115,
+            "full": 2.7509,
+            "trainingRows": 98
+          },
+          {
+            "date": "2026-06-03",
+            "actual": -12.29073,
+            "mean": 2.96666,
+            "macro": 1.24588,
+            "full": 1.26921,
+            "trainingRows": 99
+          },
+          {
+            "date": "2026-06-04",
+            "actual": -3.27561,
+            "mean": 3.03263,
+            "macro": 1.92295,
+            "full": 2.04788,
+            "trainingRows": 100
+          },
+          {
+            "date": "2026-06-05",
+            "actual": 9.41602,
+            "mean": 3.06344,
+            "macro": 3.77507,
+            "full": 4.42149,
+            "trainingRows": 101
+          },
+          {
+            "date": "2026-06-08",
+            "actual": 9.24273,
+            "mean": 2.9869,
+            "macro": 2.70177,
+            "full": 2.58936,
+            "trainingRows": 102
+          },
+          {
+            "date": "2026-06-09",
+            "actual": 5.02784,
+            "mean": 2.95349,
+            "macro": 4.93313,
+            "full": 4.65222,
+            "trainingRows": 103
+          },
+          {
+            "date": "2026-06-10",
+            "actual": 10.40933,
+            "mean": 2.85024,
+            "macro": 5.66086,
+            "full": 5.55728,
+            "trainingRows": 104
+          },
+          {
+            "date": "2026-06-11",
+            "actual": 8.88547,
+            "mean": 2.70604,
+            "macro": 4.37501,
+            "full": 4.88831,
+            "trainingRows": 105
+          },
+          {
+            "date": "2026-06-12",
+            "actual": 9.44737,
+            "mean": 2.64961,
+            "macro": 2.71645,
+            "full": 2.48828,
+            "trainingRows": 106
+          },
+          {
+            "date": "2026-06-15",
+            "actual": -4.37682,
+            "mean": 2.71285,
+            "macro": 4.79867,
+            "full": 3.36235,
+            "trainingRows": 107
+          },
+          {
+            "date": "2026-06-16",
+            "actual": 1.23339,
+            "mean": 2.77331,
+            "macro": 6.48312,
+            "full": 7.48126,
+            "trainingRows": 108
+          },
+          {
+            "date": "2026-06-17",
+            "actual": 3.44139,
+            "mean": 2.79399,
+            "macro": 6.02704,
+            "full": 6.4675,
+            "trainingRows": 109
+          },
+          {
+            "date": "2026-06-18",
+            "actual": -7.93635,
+            "mean": 2.86322,
+            "macro": 5.64763,
+            "full": 5.66805,
+            "trainingRows": 110
+          },
+          {
+            "date": "2026-06-22",
+            "actual": -6.32101,
+            "mean": 2.91748,
+            "macro": 5.19434,
+            "full": 3.63712,
+            "trainingRows": 111
+          },
+          {
+            "date": "2026-06-23",
+            "actual": 5.66996,
+            "mean": 2.97578,
+            "macro": 7.0511,
+            "full": 6.3939,
+            "trainingRows": 112
+          },
+          {
+            "date": "2026-06-24",
+            "actual": -0.77957,
+            "mean": 2.91071,
+            "macro": 4.33509,
+            "full": 5.80414,
+            "trainingRows": 113
+          },
+          {
+            "date": "2026-06-25",
+            "actual": -9.43018,
+            "mean": 2.896,
+            "macro": 3.69326,
+            "full": 3.70822,
+            "trainingRows": 114
+          },
+          {
+            "date": "2026-06-26",
+            "actual": -2.29807,
+            "mean": 2.90074,
+            "macro": 6.41738,
+            "full": 5.18132,
+            "trainingRows": 115
+          },
+          {
+            "date": "2026-06-29",
+            "actual": -10.27847,
+            "mean": 2.80732,
+            "macro": 5.76287,
+            "full": 5.44261,
+            "trainingRows": 116
+          },
+          {
+            "date": "2026-06-30",
+            "actual": -11.73579,
+            "mean": 2.7293,
+            "macro": 3.97409,
+            "full": 5.3167,
+            "trainingRows": 117
+          },
+          {
+            "date": "2026-07-01",
+            "actual": -2.94516,
+            "mean": 2.75422,
+            "macro": 6.59599,
+            "full": 6.58074,
+            "trainingRows": 118
+          },
+          {
+            "date": "2026-07-02",
+            "actual": 2.70027,
+            "mean": 2.72452,
+            "macro": 9.11935,
+            "full": 10.36322,
+            "trainingRows": 119
+          },
+          {
+            "date": "2026-07-06",
+            "actual": -4.2818,
+            "mean": 2.62324,
+            "macro": 7.22942,
+            "full": 9.2995,
+            "trainingRows": 120
+          },
+          {
+            "date": "2026-07-07",
+            "actual": 2.93821,
+            "mean": 2.58256,
+            "macro": 8.04438,
+            "full": 7.66574,
+            "trainingRows": 121
+          },
+          {
+            "date": "2026-07-08",
+            "actual": -1.40019,
+            "mean": 2.47714,
+            "macro": 5.61959,
+            "full": 4.08805,
+            "trainingRows": 122
+          },
+          {
+            "date": "2026-07-09",
+            "actual": -8.42978,
+            "mean": 2.36159,
+            "macro": 3.60945,
+            "full": 4.00086,
+            "trainingRows": 123
+          },
+          {
+            "date": "2026-07-10",
+            "actual": -9.97346,
+            "mean": 2.3188,
+            "macro": 2.99016,
+            "full": 3.16423,
+            "trainingRows": 124
+          },
+          {
+            "date": "2026-07-13",
+            "actual": -4.89104,
+            "mean": 2.32185,
+            "macro": 3.11557,
+            "full": 3.87686,
+            "trainingRows": 125
+          },
+          {
+            "date": "2026-07-14",
+            "actual": -2.41485,
+            "mean": 2.26944,
+            "macro": 1.3555,
+            "full": 1.5114,
+            "trainingRows": 126
+          },
+          {
+            "date": "2026-07-15",
+            "actual": 0.09494,
+            "mean": 2.2747,
+            "macro": 1.90463,
+            "full": 2.05123,
+            "trainingRows": 127
+          },
+          {
+            "date": "2026-07-16",
+            "actual": 4.01377,
+            "mean": 2.24599,
+            "macro": 2.25385,
+            "full": 2.3104,
+            "trainingRows": 128
+          },
+          {
+            "date": "2026-07-17",
+            "actual": 1.24206,
+            "mean": 2.16324,
+            "macro": 0.9814,
+            "full": 1.4497,
+            "trainingRows": 129
+          },
+          {
+            "date": "2026-07-20",
+            "actual": -1.60909,
+            "mean": 2.06988,
+            "macro": 1.36858,
+            "full": 0.29905,
+            "trainingRows": 130
+          },
+          {
+            "date": "2026-07-21",
+            "actual": -10.68682,
+            "mean": 2.01674,
+            "macro": 1.84243,
+            "full": 0.26769,
+            "trainingRows": 131
+          },
+          {
+            "date": "2026-07-22",
+            "actual": -15.81846,
+            "mean": 1.98317,
+            "macro": 1.89709,
+            "full": 1.50913,
+            "trainingRows": 132
+          },
+          {
+            "date": "2026-07-23",
+            "actual": -8.43214,
+            "mean": 1.96897,
+            "macro": 0.80017,
+            "full": 1.03718,
+            "trainingRows": 133
+          },
+          {
+            "date": "2026-07-24",
+            "actual": -4.2966,
+            "mean": 1.98423,
+            "macro": 1.96052,
+            "full": 3.31605,
+            "trainingRows": 134
+          },
+          {
+            "date": "2026-07-27",
+            "actual": -1.07772,
+            "mean": 1.97873,
+            "macro": 2.43663,
+            "full": 2.94068,
+            "trainingRows": 135
+          },
+          {
+            "date": "2026-07-28",
+            "actual": 10.36257,
+            "mean": 1.95235,
+            "macro": 2.99879,
+            "full": 3.63972,
+            "trainingRows": 136
+          },
+          {
+            "date": "2026-07-29",
+            "actual": 14.94516,
+            "mean": 1.86009,
+            "macro": 2.69407,
+            "full": 2.83648,
+            "trainingRows": 137
+          },
+          {
+            "date": "2026-07-30",
+            "actual": 6.59742,
+            "mean": 1.73199,
+            "macro": 3.75219,
+            "full": 1.76756,
+            "trainingRows": 138
+          },
+          {
+            "date": "2026-07-31",
+            "actual": 9.24503,
+            "mean": 1.65887,
+            "macro": 4.16764,
+            "full": 2.57917,
+            "trainingRows": 139
+          },
+          {
+            "date": "2026-08-03",
+            "actual": 4.92995,
+            "mean": 1.61633,
+            "macro": 3.96604,
+            "full": 2.35285,
+            "trainingRows": 140
+          },
+          {
+            "date": "2026-08-04",
+            "actual": -0.66335,
+            "mean": 1.59722,
+            "macro": 2.57051,
+            "full": 2.1176,
+            "trainingRows": 141
+          },
+          {
+            "date": "2026-08-05",
+            "actual": 3.2517,
+            "mean": 1.65895,
+            "macro": 2.66315,
+            "full": 3.16827,
+            "trainingRows": 142
+          },
+          {
+            "date": "2026-08-06",
+            "actual": 3.3805,
+            "mean": 1.75186,
+            "macro": 3.19325,
+            "full": 3.57223,
+            "trainingRows": 143
+          },
+          {
+            "date": "2026-08-07",
+            "actual": 0.48769,
+            "mean": 1.78551,
+            "macro": 2.22516,
+            "full": 2.42767,
+            "trainingRows": 144
+          },
+          {
+            "date": "2026-08-10",
+            "actual": 5.22887,
+            "mean": 1.83695,
+            "macro": 1.46218,
+            "full": 2.25185,
+            "trainingRows": 145
+          },
+          {
+            "date": "2026-08-11",
+            "actual": -0.87621,
+            "mean": 1.85814,
+            "macro": 1.17119,
+            "full": 0.88901,
+            "trainingRows": 146
+          },
+          {
+            "date": "2026-08-12",
+            "actual": -5.33213,
+            "mean": 1.84098,
+            "macro": 0.62441,
+            "full": 0.47167,
+            "trainingRows": 147
+          },
+          {
+            "date": "2026-08-13",
+            "actual": -5.26638,
+            "mean": 1.85052,
+            "macro": 1.477,
+            "full": 0.99555,
+            "trainingRows": 148
+          },
+          {
+            "date": "2026-08-14",
+            "actual": -5.44958,
+            "mean": 1.86079,
+            "macro": 2.4847,
+            "full": 3.03405,
+            "trainingRows": 149
+          },
+          {
+            "date": "2026-08-17",
+            "actual": -9.49081,
+            "mean": 1.85163,
+            "macro": 1.23859,
+            "full": 1.42369,
+            "trainingRows": 150
+          },
+          {
+            "date": "2026-08-18",
+            "actual": -3.37233,
+            "mean": 1.874,
+            "macro": 2.78577,
+            "full": 4.20767,
+            "trainingRows": 151
+          },
+          {
+            "date": "2026-08-19",
+            "actual": -1.08183,
+            "mean": 1.8559,
+            "macro": 3.57402,
+            "full": 4.82989,
+            "trainingRows": 152
+          },
+          {
+            "date": "2026-08-20",
+            "actual": 0.69619,
+            "mean": 1.80892,
+            "macro": 2.40685,
+            "full": 2.65741,
+            "trainingRows": 153
+          },
+          {
+            "date": "2026-08-21",
+            "actual": -2.30582,
+            "mean": 1.76298,
+            "macro": 2.86263,
+            "full": 2.43661,
+            "trainingRows": 154
+          },
+          {
+            "date": "2026-08-24",
+            "actual": 0.97944,
+            "mean": 1.71645,
+            "macro": 3.93657,
+            "full": 4.78347,
+            "trainingRows": 155
+          },
+          {
+            "date": "2026-08-25",
+            "actual": -2.58392,
+            "mean": 1.64461,
+            "macro": 3.24709,
+            "full": 2.22809,
+            "trainingRows": 156
+          },
+          {
+            "date": "2026-08-26",
+            "actual": -2.34242,
+            "mean": 1.61265,
+            "macro": 3.39106,
+            "full": 3.01955,
+            "trainingRows": 157
+          },
+          {
+            "date": "2026-08-27",
+            "actual": -4.46081,
+            "mean": 1.5956,
+            "macro": 3.24667,
+            "full": 2.39539,
+            "trainingRows": 158
+          },
+          {
+            "date": "2026-08-28",
+            "actual": 2.31568,
+            "mean": 1.58994,
+            "macro": 4.01052,
+            "full": 5.36683,
+            "trainingRows": 159
+          },
+          {
+            "date": "2026-08-31",
+            "actual": 3.05866,
+            "mean": 1.56559,
+            "macro": 3.05516,
+            "full": 2.95945,
+            "trainingRows": 160
+          },
+          {
+            "date": "2026-09-01",
+            "actual": 5.69343,
+            "mean": 1.56195,
+            "macro": 2.39133,
+            "full": 3.75396,
+            "trainingRows": 161
+          },
+          {
+            "date": "2026-09-02",
+            "actual": 2.42444,
+            "mean": 1.53636,
+            "macro": 1.78757,
+            "full": 1.14574,
+            "trainingRows": 162
+          },
+          {
+            "date": "2026-09-03",
+            "actual": 4.15666,
+            "mean": 1.51256,
+            "macro": 2.28111,
+            "full": 2.42977,
+            "trainingRows": 163
+          },
+          {
+            "date": "2026-09-04",
+            "actual": -5.14672,
+            "mean": 1.47614,
+            "macro": 0.26245,
+            "full": -1.61258,
+            "trainingRows": 164
+          },
+          {
+            "date": "2026-09-08",
+            "actual": -5.99201,
+            "mean": 1.48123,
+            "macro": 0.07387,
+            "full": 0.06863,
+            "trainingRows": 165
+          },
+          {
+            "date": "2026-09-09",
+            "actual": -5.74299,
+            "mean": 1.49073,
+            "macro": -0.0268,
+            "full": -0.33691,
+            "trainingRows": 166
+          },
+          {
+            "date": "2026-09-10",
+            "actual": -0.12635,
+            "mean": 1.5159,
+            "macro": 0.38349,
+            "full": 1.76217,
+            "trainingRows": 167
+          },
+          {
+            "date": "2026-09-11",
+            "actual": 0.82618,
+            "mean": 1.5213,
+            "macro": 0.6538,
+            "full": -0.04557,
+            "trainingRows": 168
+          },
+          {
+            "date": "2026-09-14",
+            "actual": 11.69577,
+            "mean": 1.5369,
+            "macro": 2.42057,
+            "full": 3.77383,
+            "trainingRows": 169
+          },
+          {
+            "date": "2026-09-15",
+            "actual": 13.54988,
+            "mean": 1.49758,
+            "macro": 2.19855,
+            "full": 1.52883,
+            "trainingRows": 170
+          },
+          {
+            "date": "2026-09-16",
+            "actual": 11.45434,
+            "mean": 1.45378,
+            "macro": 3.16148,
+            "full": 3.15861,
+            "trainingRows": 171
+          },
+          {
+            "date": "2026-09-17",
+            "actual": 7.69899,
+            "mean": 1.41194,
+            "macro": 2.29181,
+            "full": 0.37036,
+            "trainingRows": 172
+          },
+          {
+            "date": "2026-09-18",
+            "actual": 6.26793,
+            "mean": 1.40305,
+            "macro": 2.09092,
+            "full": 1.82293,
+            "trainingRows": 173
+          },
+          {
+            "date": "2026-09-21",
+            "actual": 0.25795,
+            "mean": 1.39974,
+            "macro": 1.04757,
+            "full": -0.07236,
+            "trainingRows": 174
+          },
+          {
+            "date": "2026-09-22",
+            "actual": -0.47801,
+            "mean": 1.45857,
+            "macro": 1.49322,
+            "full": 1.69295,
+            "trainingRows": 175
+          },
+          {
+            "date": "2026-09-23",
+            "actual": 0.75273,
+            "mean": 1.52727,
+            "macro": 2.11402,
+            "full": 3.8068,
+            "trainingRows": 176
+          },
+          {
+            "date": "2026-09-24",
+            "actual": 2.69332,
+            "mean": 1.58336,
+            "macro": 3.53845,
+            "full": 5.15407,
+            "trainingRows": 177
+          },
+          {
+            "date": "2026-09-25",
+            "actual": 3.69207,
+            "mean": 1.61771,
+            "macro": 3.20437,
+            "full": 3.39809,
+            "trainingRows": 178
+          },
+          {
+            "date": "2026-09-28",
+            "actual": 5.67574,
+            "mean": 1.64369,
+            "macro": 4.21216,
+            "full": 4.61595,
+            "trainingRows": 179
+          },
+          {
+            "date": "2026-09-29",
+            "actual": 4.66113,
+            "mean": 1.63599,
+            "macro": 4.76251,
+            "full": 4.37167,
+            "trainingRows": 180
+          },
+          {
+            "date": "2026-09-30",
+            "actual": 3.46456,
+            "mean": 1.62431,
+            "macro": 3.87533,
+            "full": 3.96276,
+            "trainingRows": 181
+          },
+          {
+            "date": "2026-10-01",
+            "actual": -1.60016,
+            "mean": 1.61952,
+            "macro": 2.82567,
+            "full": 1.82876,
+            "trainingRows": 182
+          },
+          {
+            "date": "2026-10-02",
+            "actual": -4.29526,
+            "mean": 1.62539,
+            "macro": 2.91925,
+            "full": 3.06841,
+            "trainingRows": 183
+          },
+          {
+            "date": "2026-10-05",
+            "actual": -7.10519,
+            "mean": 1.63662,
+            "macro": 3.0725,
+            "full": 2.86107,
+            "trainingRows": 184
+          },
+          {
+            "date": "2026-10-06",
+            "actual": -7.63385,
+            "mean": 1.65846,
+            "macro": 2.23777,
+            "full": 2.86425,
+            "trainingRows": 185
+          },
+          {
+            "date": "2026-10-07",
+            "actual": -10.57517,
+            "mean": 1.6746,
+            "macro": 2.42803,
+            "full": 3.53826,
+            "trainingRows": 186
+          },
+          {
+            "date": "2026-10-08",
+            "actual": -8.25826,
+            "mean": 1.68417,
+            "macro": 2.18278,
+            "full": 3.40033,
+            "trainingRows": 187
+          },
+          {
+            "date": "2026-10-09",
+            "actual": -11.41493,
+            "mean": 1.6667,
+            "macro": 2.48266,
+            "full": 3.21696,
+            "trainingRows": 188
+          },
+          {
+            "date": "2026-10-13",
+            "actual": -7.57636,
+            "mean": 1.58916,
+            "macro": 1.89322,
+            "full": 1.24083,
+            "trainingRows": 190
+          },
+          {
+            "date": "2026-10-14",
+            "actual": -1.53048,
+            "mean": 1.54087,
+            "macro": 1.64301,
+            "full": 1.8844,
+            "trainingRows": 191
+          }
+        ],
+        "trainMinimum": 60,
+        "purgeSessions": 5
+      },
+      "10": {
+        "models": {
+          "historicalMean": {
+            "n": 122,
+            "maePct": 7.69579,
+            "rmsePct": 9.22028,
+            "directionAccuracy": 0.54918
+          },
+          "macroOnly": {
+            "n": 122,
+            "maePct": 9.59365,
+            "rmsePct": 11.40761,
+            "directionAccuracy": 0.47541
+          },
+          "macroAndBreadth": {
+            "n": 122,
+            "maePct": 9.67492,
+            "rmsePct": 11.46747,
+            "directionAccuracy": 0.46721
+          }
+        },
+        "predictions": [
+          {
+            "date": "2026-04-15",
+            "actual": 11.16983,
+            "mean": 1.73145,
+            "macro": -6.69138,
+            "full": -5.58994,
+            "trainingRows": 60
+          },
+          {
+            "date": "2026-04-16",
+            "actual": 12.58776,
+            "mean": 2.05976,
+            "macro": -6.74439,
+            "full": -6.95242,
+            "trainingRows": 61
+          },
+          {
+            "date": "2026-04-17",
+            "actual": 10.87768,
+            "mean": 2.34221,
+            "macro": -6.22333,
+            "full": -6.70603,
+            "trainingRows": 62
+          },
+          {
+            "date": "2026-04-20",
+            "actual": 9.74501,
+            "mean": 2.65407,
+            "macro": -0.91368,
+            "full": -1.27426,
+            "trainingRows": 63
+          },
+          {
+            "date": "2026-04-21",
+            "actual": 13.82123,
+            "mean": 2.94482,
+            "macro": 1.72646,
+            "full": 1.09409,
+            "trainingRows": 64
+          },
+          {
+            "date": "2026-04-22",
+            "actual": 15.77804,
+            "mean": 3.21539,
+            "macro": 1.61077,
+            "full": 0.52325,
+            "trainingRows": 65
+          },
+          {
+            "date": "2026-04-23",
+            "actual": 10.73982,
+            "mean": 3.41561,
+            "macro": 1.48573,
+            "full": 1.07196,
+            "trainingRows": 66
+          },
+          {
+            "date": "2026-04-24",
+            "actual": 12.00187,
+            "mean": 3.60321,
+            "macro": -1.32311,
+            "full": -0.99449,
+            "trainingRows": 67
+          },
+          {
+            "date": "2026-04-27",
+            "actual": 16.07415,
+            "mean": 3.81885,
+            "macro": 0.38006,
+            "full": 0.66737,
+            "trainingRows": 68
+          },
+          {
+            "date": "2026-04-28",
+            "actual": 16.75718,
+            "mean": 3.98291,
+            "macro": 0.49011,
+            "full": 1.12887,
+            "trainingRows": 69
+          },
+          {
+            "date": "2026-04-29",
+            "actual": 17.00549,
+            "mean": 4.05168,
+            "macro": -0.49146,
+            "full": -1.16841,
+            "trainingRows": 70
+          },
+          {
+            "date": "2026-04-30",
+            "actual": 14.94786,
+            "mean": 4.15194,
+            "macro": 0.98215,
+            "full": 1.53446,
+            "trainingRows": 71
+          },
+          {
+            "date": "2026-05-01",
+            "actual": 9.3732,
+            "mean": 4.2691,
+            "macro": 3.01587,
+            "full": 3.91541,
+            "trainingRows": 72
+          },
+          {
+            "date": "2026-05-04",
+            "actual": 7.28888,
+            "mean": 4.35963,
+            "macro": 3.14372,
+            "full": 2.25984,
+            "trainingRows": 73
+          },
+          {
+            "date": "2026-05-05",
+            "actual": 2.95902,
+            "mean": 4.43241,
+            "macro": 6.74788,
+            "full": 5.63518,
+            "trainingRows": 74
+          },
+          {
+            "date": "2026-05-06",
+            "actual": 2.96818,
+            "mean": 4.55759,
+            "macro": 13.65375,
+            "full": 14.29068,
+            "trainingRows": 75
+          },
+          {
+            "date": "2026-05-07",
+            "actual": 7.19552,
+            "mean": 4.70523,
+            "macro": 11.83182,
+            "full": 12.61955,
+            "trainingRows": 76
+          },
+          {
+            "date": "2026-05-08",
+            "actual": 3.62654,
+            "mean": 4.7836,
+            "macro": 12.06864,
+            "full": 11.79424,
+            "trainingRows": 77
+          },
+          {
+            "date": "2026-05-11",
+            "actual": 6.58772,
+            "mean": 4.87614,
+            "macro": 15.18745,
+            "full": 14.84319,
+            "trainingRows": 78
+          },
+          {
+            "date": "2026-05-12",
+            "actual": 8.40581,
+            "mean": 5.01789,
+            "macro": 9.54013,
+            "full": 12.17019,
+            "trainingRows": 79
+          },
+          {
+            "date": "2026-05-13",
+            "actual": 6.74956,
+            "mean": 5.16463,
+            "macro": 8.20325,
+            "full": 8.36544,
+            "trainingRows": 80
+          },
+          {
+            "date": "2026-05-14",
+            "actual": 6.25822,
+            "mean": 5.31081,
+            "macro": 9.57825,
+            "full": 8.18187,
+            "trainingRows": 81
+          },
+          {
+            "date": "2026-05-15",
+            "actual": 11.88411,
+            "mean": 5.42834,
+            "macro": 5.58941,
+            "full": 7.82935,
+            "trainingRows": 82
+          },
+          {
+            "date": "2026-05-18",
+            "actual": 21.44437,
+            "mean": 5.47587,
+            "macro": 2.25333,
+            "full": 2.4501,
+            "trainingRows": 83
+          },
+          {
+            "date": "2026-05-19",
+            "actual": 23.09905,
+            "mean": 5.49745,
+            "macro": 4.42731,
+            "full": 2.01365,
+            "trainingRows": 84
+          },
+          {
+            "date": "2026-05-20",
+            "actual": 15.27271,
+            "mean": 5.46759,
+            "macro": 4.40419,
+            "full": 3.98648,
+            "trainingRows": 85
+          },
+          {
+            "date": "2026-05-21",
+            "actual": 2.14538,
+            "mean": 5.43852,
+            "macro": 3.36534,
+            "full": 2.96264,
+            "trainingRows": 86
+          },
+          {
+            "date": "2026-05-22",
+            "actual": 5.77051,
+            "mean": 5.45872,
+            "macro": 5.81106,
+            "full": 3.72138,
+            "trainingRows": 87
+          },
+          {
+            "date": "2026-05-26",
+            "actual": -1.70147,
+            "mean": 5.4379,
+            "macro": 10.96949,
+            "full": 9.46707,
+            "trainingRows": 88
+          },
+          {
+            "date": "2026-05-27",
+            "actual": -3.90269,
+            "mean": 5.45082,
+            "macro": 9.31088,
+            "full": 10.47011,
+            "trainingRows": 89
+          },
+          {
+            "date": "2026-05-28",
+            "actual": 2.66811,
+            "mean": 5.48365,
+            "macro": 7.41416,
+            "full": 8.95706,
+            "trainingRows": 90
+          },
+          {
+            "date": "2026-05-29",
+            "actual": 4.22536,
+            "mean": 5.49756,
+            "macro": 6.70978,
+            "full": 7.40832,
+            "trainingRows": 91
+          },
+          {
+            "date": "2026-06-01",
+            "actual": 8.74598,
+            "mean": 5.50583,
+            "macro": 7.13542,
+            "full": 8.81661,
+            "trainingRows": 92
+          },
+          {
+            "date": "2026-06-02",
+            "actual": -3.14758,
+            "mean": 5.57442,
+            "macro": 6.54551,
+            "full": 7.46392,
+            "trainingRows": 93
+          },
+          {
+            "date": "2026-06-03",
+            "actual": -3.16079,
+            "mean": 5.74324,
+            "macro": 6.80417,
+            "full": 5.62856,
+            "trainingRows": 94
+          },
+          {
+            "date": "2026-06-04",
+            "actual": 5.31881,
+            "mean": 5.92594,
+            "macro": 5.25296,
+            "full": 5.93687,
+            "trainingRows": 95
+          },
+          {
+            "date": "2026-06-05",
+            "actual": 19.75297,
+            "mean": 6.0233,
+            "macro": 8.61956,
+            "full": 8.74675,
+            "trainingRows": 96
+          },
+          {
+            "date": "2026-06-08",
+            "actual": 4.46137,
+            "mean": 5.98332,
+            "macro": 6.60181,
+            "full": 5.3846,
+            "trainingRows": 97
+          },
+          {
+            "date": "2026-06-09",
+            "actual": 6.32325,
+            "mean": 5.98115,
+            "macro": 7.85419,
+            "full": 8.59399,
+            "trainingRows": 98
+          },
+          {
+            "date": "2026-06-10",
+            "actual": 14.20894,
+            "mean": 5.90355,
+            "macro": 8.72391,
+            "full": 9.12904,
+            "trainingRows": 99
+          },
+          {
+            "date": "2026-06-11",
+            "actual": 0.24394,
+            "mean": 5.80548,
+            "macro": 7.51162,
+            "full": 6.50731,
+            "trainingRows": 100
+          },
+          {
+            "date": "2026-06-12",
+            "actual": 2.52919,
+            "mean": 5.77442,
+            "macro": 8.10213,
+            "full": 6.84006,
+            "trainingRows": 101
+          },
+          {
+            "date": "2026-06-15",
+            "actual": 1.04498,
+            "mean": 5.75923,
+            "macro": 9.13939,
+            "full": 10.04408,
+            "trainingRows": 102
+          },
+          {
+            "date": "2026-06-16",
+            "actual": 0.44421,
+            "mean": 5.78823,
+            "macro": 9.78555,
+            "full": 9.40738,
+            "trainingRows": 103
+          },
+          {
+            "date": "2026-06-17",
+            "actual": -6.31332,
+            "mean": 5.70231,
+            "macro": 12.53492,
+            "full": 11.69626,
+            "trainingRows": 104
+          },
+          {
+            "date": "2026-06-18",
+            "actual": -10.05204,
+            "mean": 5.6179,
+            "macro": 11.36421,
+            "full": 12.24746,
+            "trainingRows": 105
+          },
+          {
+            "date": "2026-06-22",
+            "actual": -15.94978,
+            "mean": 5.61508,
+            "macro": 11.61739,
+            "full": 11.95246,
+            "trainingRows": 106
+          },
+          {
+            "date": "2026-06-23",
+            "actual": -6.73125,
+            "mean": 5.74721,
+            "macro": 11.07755,
+            "full": 12.67508,
+            "trainingRows": 107
+          },
+          {
+            "date": "2026-06-24",
+            "actual": -3.70177,
+            "mean": 5.7353,
+            "macro": 8.05248,
+            "full": 7.37053,
+            "trainingRows": 108
+          },
+          {
+            "date": "2026-06-25",
+            "actual": -6.98455,
+            "mean": 5.7407,
+            "macro": 7.7935,
+            "full": 7.73711,
+            "trainingRows": 109
+          },
+          {
+            "date": "2026-06-26",
+            "actual": -6.48148,
+            "mean": 5.81768,
+            "macro": 7.46148,
+            "full": 8.48967,
+            "trainingRows": 110
+          },
+          {
+            "date": "2026-06-29",
+            "actual": -7.64227,
+            "mean": 5.76747,
+            "macro": 6.08825,
+            "full": 5.24131,
+            "trainingRows": 111
+          },
+          {
+            "date": "2026-06-30",
+            "actual": -12.97166,
+            "mean": 5.73855,
+            "macro": 9.19701,
+            "full": 6.99813,
+            "trainingRows": 112
+          },
+          {
+            "date": "2026-07-01",
+            "actual": -11.12667,
+            "mean": 5.69702,
+            "macro": 12.82485,
+            "full": 12.6745,
+            "trainingRows": 113
+          },
+          {
+            "date": "2026-07-02",
+            "actual": -7.5425,
+            "mean": 5.65094,
+            "macro": 12.41669,
+            "full": 12.92545,
+            "trainingRows": 114
+          },
+          {
+            "date": "2026-07-06",
+            "actual": -8.96341,
+            "mean": 5.5469,
+            "macro": 12.17791,
+            "full": 9.54614,
+            "trainingRows": 115
+          },
+          {
+            "date": "2026-07-07",
+            "actual": 0.4524,
+            "mean": 5.41243,
+            "macro": 11.86932,
+            "full": 12.73679,
+            "trainingRows": 116
+          },
+          {
+            "date": "2026-07-08",
+            "actual": -1.30658,
+            "mean": 5.22985,
+            "macro": 9.245,
+            "full": 7.67872,
+            "trainingRows": 117
+          },
+          {
+            "date": "2026-07-09",
+            "actual": -4.75436,
+            "mean": 5.12848,
+            "macro": 7.4622,
+            "full": 6.46041,
+            "trainingRows": 118
+          },
+          {
+            "date": "2026-07-10",
+            "actual": -8.85527,
+            "mean": 5.05428,
+            "macro": 7.48772,
+            "full": 6.64578,
+            "trainingRows": 119
+          },
+          {
+            "date": "2026-07-13",
+            "actual": -6.42142,
+            "mean": 4.95395,
+            "macro": 8.20712,
+            "full": 9.63108,
+            "trainingRows": 120
+          },
+          {
+            "date": "2026-07-14",
+            "actual": -12.8436,
+            "mean": 4.85945,
+            "macro": 6.07267,
+            "full": 5.69547,
+            "trainingRows": 121
+          },
+          {
+            "date": "2026-07-15",
+            "actual": -15.73854,
+            "mean": 4.75697,
+            "macro": 5.34712,
+            "full": 6.20449,
+            "trainingRows": 122
+          },
+          {
+            "date": "2026-07-16",
+            "actual": -4.75682,
+            "mean": 4.61284,
+            "macro": 4.99974,
+            "full": 6.06591,
+            "trainingRows": 123
+          },
+          {
+            "date": "2026-07-17",
+            "actual": -3.10791,
+            "mean": 4.48591,
+            "macro": 2.57737,
+            "full": 2.80228,
+            "trainingRows": 124
+          },
+          {
+            "date": "2026-07-20",
+            "actual": -2.66946,
+            "mean": 4.38968,
+            "macro": 2.64694,
+            "full": 0.66117,
+            "trainingRows": 125
+          },
+          {
+            "date": "2026-07-21",
+            "actual": -1.43168,
+            "mean": 4.2837,
+            "macro": 4.49406,
+            "full": 3.67279,
+            "trainingRows": 126
+          },
+          {
+            "date": "2026-07-22",
+            "actual": -3.23739,
+            "mean": 4.25353,
+            "macro": 6.78027,
+            "full": 5.44467,
+            "trainingRows": 127
+          },
+          {
+            "date": "2026-07-23",
+            "actual": -2.39103,
+            "mean": 4.2101,
+            "macro": 9.04877,
+            "full": 8.69726,
+            "trainingRows": 128
+          },
+          {
+            "date": "2026-07-24",
+            "actual": 4.55121,
+            "mean": 4.1406,
+            "macro": 7.56238,
+            "full": 8.85777,
+            "trainingRows": 129
+          },
+          {
+            "date": "2026-07-27",
+            "actual": 3.7991,
+            "mean": 4.04064,
+            "macro": 3.81599,
+            "full": 4.72096,
+            "trainingRows": 130
+          },
+          {
+            "date": "2026-07-28",
+            "actual": 9.63048,
+            "mean": 3.96077,
+            "macro": -0.81138,
+            "full": 0.64336,
+            "trainingRows": 131
+          },
+          {
+            "date": "2026-07-29",
+            "actual": 18.68283,
+            "mean": 3.83347,
+            "macro": -1.06242,
+            "full": -1.57647,
+            "trainingRows": 132
+          },
+          {
+            "date": "2026-07-30",
+            "actual": 10.20094,
+            "mean": 3.68631,
+            "macro": -0.5407,
+            "full": -3.29142,
+            "trainingRows": 133
+          },
+          {
+            "date": "2026-07-31",
+            "actual": 9.77781,
+            "mean": 3.6233,
+            "macro": 2.47223,
+            "full": -0.46608,
+            "trainingRows": 134
+          },
+          {
+            "date": "2026-08-03",
+            "actual": 10.4166,
+            "mean": 3.57344,
+            "macro": 3.04819,
+            "full": 0.67222,
+            "trainingRows": 135
+          },
+          {
+            "date": "2026-08-04",
+            "actual": -1.53375,
+            "mean": 3.52754,
+            "macro": 5.75636,
+            "full": 3.839,
+            "trainingRows": 136
+          },
+          {
+            "date": "2026-08-05",
+            "actual": -2.25381,
+            "mean": 3.49134,
+            "macro": 5.67712,
+            "full": 4.94637,
+            "trainingRows": 137
+          },
+          {
+            "date": "2026-08-06",
+            "actual": -2.06391,
+            "mean": 3.44258,
+            "macro": 4.49526,
+            "full": 5.78522,
+            "trainingRows": 138
+          },
+          {
+            "date": "2026-08-07",
+            "actual": -4.98846,
+            "mean": 3.40061,
+            "macro": 2.92695,
+            "full": 3.03491,
+            "trainingRows": 139
+          },
+          {
+            "date": "2026-08-10",
+            "actual": -4.75821,
+            "mean": 3.40883,
+            "macro": 4.17533,
+            "full": 5.50637,
+            "trainingRows": 140
+          },
+          {
+            "date": "2026-08-11",
+            "actual": -4.21899,
+            "mean": 3.4116,
+            "macro": 3.59759,
+            "full": 4.78017,
+            "trainingRows": 141
+          },
+          {
+            "date": "2026-08-12",
+            "actual": -6.35627,
+            "mean": 3.45539,
+            "macro": 4.04218,
+            "full": 2.91754,
+            "trainingRows": 142
+          },
+          {
+            "date": "2026-08-13",
+            "actual": -4.60685,
+            "mean": 3.56188,
+            "macro": 2.01959,
+            "full": 1.95043,
+            "trainingRows": 143
+          },
+          {
+            "date": "2026-08-14",
+            "actual": -7.62974,
+            "mean": 3.60798,
+            "macro": 3.58483,
+            "full": 4.43211,
+            "trainingRows": 144
+          },
+          {
+            "date": "2026-08-17",
+            "actual": -8.60434,
+            "mean": 3.65053,
+            "macro": 3.46535,
+            "full": 2.23488,
+            "trainingRows": 145
+          },
+          {
+            "date": "2026-08-18",
+            "actual": -5.86911,
+            "mean": 3.69688,
+            "macro": 3.35843,
+            "full": 4.4652,
+            "trainingRows": 146
+          },
+          {
+            "date": "2026-08-19",
+            "actual": -3.39891,
+            "mean": 3.66129,
+            "macro": 2.26695,
+            "full": 3.19623,
+            "trainingRows": 147
+          },
+          {
+            "date": "2026-08-20",
+            "actual": -3.79567,
+            "mean": 3.62133,
+            "macro": 3.58839,
+            "full": 3.36874,
+            "trainingRows": 148
+          },
+          {
+            "date": "2026-08-21",
+            "actual": -0.04353,
+            "mean": 3.58317,
+            "macro": 3.80806,
+            "full": 3.39819,
+            "trainingRows": 149
+          },
+          {
+            "date": "2026-08-24",
+            "actual": 4.06806,
+            "mean": 3.52603,
+            "macro": 2.34001,
+            "full": 2.6569,
+            "trainingRows": 150
+          },
+          {
+            "date": "2026-08-25",
+            "actual": 2.9624,
+            "mean": 3.47116,
+            "macro": 1.96671,
+            "full": -0.02692,
+            "trainingRows": 151
+          },
+          {
+            "date": "2026-08-26",
+            "actual": 0.02522,
+            "mean": 3.42057,
+            "macro": 3.79984,
+            "full": 2.38678,
+            "trainingRows": 152
+          },
+          {
+            "date": "2026-08-27",
+            "actual": -0.48957,
+            "mean": 3.35667,
+            "macro": 3.17102,
+            "full": 2.45462,
+            "trainingRows": 153
+          },
+          {
+            "date": "2026-08-28",
+            "actual": -2.95022,
+            "mean": 3.30496,
+            "macro": 3.1869,
+            "full": 3.1769,
+            "trainingRows": 154
+          },
+          {
+            "date": "2026-08-31",
+            "actual": -3.11662,
+            "mean": 3.23441,
+            "macro": 3.98874,
+            "full": 2.54251,
+            "trainingRows": 155
+          },
+          {
+            "date": "2026-09-01",
+            "actual": -0.37653,
+            "mean": 3.15852,
+            "macro": 4.91939,
+            "full": 5.84955,
+            "trainingRows": 156
+          },
+          {
+            "date": "2026-09-02",
+            "actual": 2.29502,
+            "mean": 3.10102,
+            "macro": 4.02968,
+            "full": 4.04914,
+            "trainingRows": 157
+          },
+          {
+            "date": "2026-09-03",
+            "actual": 5.01718,
+            "mean": 3.05988,
+            "macro": 3.20082,
+            "full": 3.10783,
+            "trainingRows": 158
+          },
+          {
+            "date": "2026-09-04",
+            "actual": 5.9471,
+            "mean": 3.01677,
+            "macro": 2.44399,
+            "full": 1.10841,
+            "trainingRows": 159
+          },
+          {
+            "date": "2026-09-08",
+            "actual": 6.74596,
+            "mean": 2.99764,
+            "macro": 2.66091,
+            "full": 2.60708,
+            "trainingRows": 160
+          },
+          {
+            "date": "2026-09-09",
+            "actual": 5.05353,
+            "mean": 3.00429,
+            "macro": 2.95501,
+            "full": 2.00504,
+            "trainingRows": 161
+          },
+          {
+            "date": "2026-09-10",
+            "actual": 7.56292,
+            "mean": 3.00403,
+            "macro": 4.763,
+            "full": 5.09787,
+            "trainingRows": 162
+          },
+          {
+            "date": "2026-09-11",
+            "actual": 7.1459,
+            "mean": 2.98575,
+            "macro": 5.62501,
+            "full": 5.32505,
+            "trainingRows": 163
+          },
+          {
+            "date": "2026-09-14",
+            "actual": 11.98389,
+            "mean": 2.96456,
+            "macro": 4.76469,
+            "full": 5.76964,
+            "trainingRows": 164
+          },
+          {
+            "date": "2026-09-15",
+            "actual": 13.0071,
+            "mean": 2.92872,
+            "macro": 4.65609,
+            "full": 4.66285,
+            "trainingRows": 165
+          },
+          {
+            "date": "2026-09-16",
+            "actual": 12.29329,
+            "mean": 2.8923,
+            "macro": 4.75758,
+            "full": 3.83327,
+            "trainingRows": 166
+          },
+          {
+            "date": "2026-09-17",
+            "actual": 10.59967,
+            "mean": 2.87272,
+            "macro": 1.49918,
+            "full": 0.45358,
+            "trainingRows": 167
+          },
+          {
+            "date": "2026-09-18",
+            "actual": 10.19142,
+            "mean": 2.86929,
+            "macro": 2.54636,
+            "full": 2.80768,
+            "trainingRows": 168
+          },
+          {
+            "date": "2026-09-21",
+            "actual": 5.94833,
+            "mean": 2.882,
+            "macro": 3.32936,
+            "full": 2.07371,
+            "trainingRows": 169
+          },
+          {
+            "date": "2026-09-22",
+            "actual": 4.16084,
+            "mean": 2.90003,
+            "macro": 3.26748,
+            "full": 3.14416,
+            "trainingRows": 170
+          },
+          {
+            "date": "2026-09-23",
+            "actual": 4.24337,
+            "mean": 2.92252,
+            "macro": 5.5152,
+            "full": 5.84057,
+            "trainingRows": 171
+          },
+          {
+            "date": "2026-09-24",
+            "actual": 1.05005,
+            "mean": 2.93491,
+            "macro": 7.73761,
+            "full": 8.43576,
+            "trainingRows": 172
+          },
+          {
+            "date": "2026-09-25",
+            "actual": -0.76178,
+            "mean": 2.96166,
+            "macro": 5.98718,
+            "full": 6.31478,
+            "trainingRows": 173
+          },
+          {
+            "date": "2026-09-28",
+            "actual": -1.83272,
+            "mean": 2.9857,
+            "macro": 7.77404,
+            "full": 9.11577,
+            "trainingRows": 174
+          },
+          {
+            "date": "2026-09-29",
+            "actual": -3.32854,
+            "mean": 3.03712,
+            "macro": 8.6583,
+            "full": 9.21435,
+            "trainingRows": 175
+          },
+          {
+            "date": "2026-09-30",
+            "actual": -7.47699,
+            "mean": 3.09377,
+            "macro": 6.64487,
+            "full": 5.20656,
+            "trainingRows": 176
+          },
+          {
+            "date": "2026-10-01",
+            "actual": -9.72628,
+            "mean": 3.14574,
+            "macro": 4.57003,
+            "full": 4.07842,
+            "trainingRows": 177
+          },
+          {
+            "date": "2026-10-02",
+            "actual": -15.21989,
+            "mean": 3.18762,
+            "macro": 5.66022,
+            "full": 6.05111,
+            "trainingRows": 178
+          },
+          {
+            "date": "2026-10-05",
+            "actual": -14.09269,
+            "mean": 3.22675,
+            "macro": 5.27133,
+            "full": 4.83628,
+            "trainingRows": 179
+          },
+          {
+            "date": "2026-10-06",
+            "actual": -14.63184,
+            "mean": 3.24187,
+            "macro": 3.3769,
+            "full": 3.56152,
+            "trainingRows": 180
+          },
+          {
+            "date": "2026-10-07",
+            "actual": -11.9438,
+            "mean": 3.24695,
+            "macro": 2.92353,
+            "full": 2.41062,
+            "trainingRows": 181
+          }
+        ],
+        "trainMinimum": 60,
+        "purgeSessions": 10
+      }
+    }
+  },
   "limitations": [
-    "Fixed current constituents introduce look-ahead selection bias.",
-    "Different cohort provenance; do not pool.",
-    "Small non-overlapping samples and overlapping source features.",
-    "Exploratory correlations do not establish incremental prediction.",
-    "No production scoring changes."
+    "Fixed-current-constituent breadth is retrospectively selected; point-in-time model claims are not supported.",
+    "2025 external retrospective cohort excluded from walk-forward due to provenance mismatch.",
+    "Feature availability at historical close depends on upstream data provenance; requires audit.",
+    "Only one fixed ridge penalty and limited history; no hyperparameter tuning or statistical significance claims.",
+    "Offset cohorts are not independent of each other.",
+    "No source data is invented or filled and production scores are unchanged."
   ]
 }
