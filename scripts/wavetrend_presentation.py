@@ -9,6 +9,50 @@ from scripts.research_nvda_wavetrend import wavetrend, crossover_records
 NY = ZoneInfo('America/New_York')
 
 
+def developing_preview(rows, candle, hours, now):
+    """Recalculate one uncommitted point from confirmed history on every refresh."""
+    if not candle or candle.get('isConfirmed') is not False:
+        return None
+    try:
+        start, end, as_of, checked, last_bar = (dt.datetime.fromisoformat(candle[k]) for k in
+            ('startET', 'endET', 'asOfET', 'checkedAtET', 'lastSourceBarET'))
+        if any(t.tzinfo is None for t in (start, end, as_of, checked, last_bar)):
+            return None
+        if (start.weekday() >= 5 or start.hour not in range(4, 20, hours)
+                or start.minute or start.second or end != start + dt.timedelta(hours=hours)
+                or not start <= last_bar < as_of <= checked <= now < end
+                or now - as_of > dt.timedelta(minutes=30)):
+            return None
+        previous = dt.datetime.fromisoformat(rows[-1]['endET'])
+        if start != previous:
+            day = previous.date() + dt.timedelta(days=1)
+            while day.weekday() >= 5:
+                day += dt.timedelta(days=1)
+            if previous.hour != 20 or start != dt.datetime.combine(day, dt.time(4), NY):
+                return None
+        if last_bar.minute % 5 or last_bar.second:
+            return None
+        count = int((last_bar - start).total_seconds()/300) + 1
+        if candle.get('underlying5mBars') != count:
+            return None
+        prices = [candle[k] for k in ('open', 'high', 'low', 'close')]
+        if not all(isinstance(v, (int, float)) and math.isfinite(v) and v > 0 for v in prices):
+            return None
+        o, h, l, c = prices
+        if not l <= min(o, c) <= max(o, c) <= h:
+            return None
+    except (KeyError, ValueError, TypeError):
+        return None
+    raw = {k: candle[k] for k in ('startET', 'endET', 'open', 'high', 'low', 'close')}
+    preview = wavetrend(rows + [raw])[-1]
+    if not preview['isWarm'] or preview['wt1'] is None or preview['wt2'] is None:
+        return None
+    preview.update(isConfirmed=False, provider='Yahoo developing',
+                   asOfET=as_of.isoformat(), lastSourceBarET=last_bar.isoformat(),
+                   underlying5mBars=count, potentialCross=preview['cross'], cross=None)
+    return preview
+
+
 def presentation(source, shadow_path=None, now=None):
     now = now or dt.datetime.now(NY)
     result = json.loads(json.dumps(source))
@@ -60,6 +104,8 @@ def presentation(source, shadow_path=None, now=None):
         series.update(candles=rows, latest=rows[-1], candleCount=len(rows),
                       lastEndET=rows[-1]['endET'], crosses=crossover_records(rows),
                       yahooCandles=len(appended))
+        raw_preview = shadow.get('timeframes', {}).get(tf, {}).get('developingCandle')
+        series['developing'] = developing_preview(rows, raw_preview, hours, now)
         counts[tf] = len(appended)
     result['displaySource'] = 'Massive + Yahoo provisional' if any(counts.values()) else 'Massive'
     result['displayThroughET'] = max(s['latest']['endET'] for s in result['timeframes'].values())

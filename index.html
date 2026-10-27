@@ -337,6 +337,8 @@ body{font-size:14px;font-weight:400;-webkit-font-smoothing:antialiased}
 .nd-wt-panel-head{font-size:13px;color:#d1d5db}
 .nd-wt-panel strong{font-size:23px;line-height:1.1;letter-spacing:-.03em}
 .nd-wt-up{color:#34d399}.nd-wt-down{color:#fb7185}
+.nd-wt-developing-label{font-size:11px;font-weight:600;letter-spacing:0;color:#fbbf24}
+.nd-wt-development{font-size:11px;line-height:1.5;color:#d9bd80;margin:3px 0;overflow-wrap:anywhere}
 .nd-wt-pair{font-size:12px}.nd-wt-pair span{color:#9299a1}.nd-wt-pair b{font-variant-numeric:tabular-nums}
 .nd-wt-cross{background:#1c2023;padding:10px;display:flex;flex-direction:column;gap:5px;border-radius:7px;font-size:12px}
 .nd-wt-cross small{color:#9299a1;font-size:10px;letter-spacing:.04em}.nd-wt-cross span{color:#b8bfc7}
@@ -620,9 +622,9 @@ function render(d){
   })():'';
   const categoryHeading=(title,desc)=>{const key=title==='Macro / Rates'?'macro-rates':title==='Market Indicators'?'market-internals':title==='Technical Analysis'?'technical-analysis':'market-assessment';const icons={'macro-rates':'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>','market-internals':'<path d="M4 20v-7M9 20V9M14 20V4M19 20v-10"/>','market-assessment':'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>','technical-analysis':'<path d="M3 17l5-6 4 3 5-8 4 3"/><path d="M3 21h18"/>'};const icon='<svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+icons[key]+'</svg>';return '<div id="'+key+'" class="scorecard-category"><span class="nd-section-icon" aria-hidden="true">'+icon+'</span><div><span>'+escHtml(title.toUpperCase())+'</span><small>'+escHtml(desc)+'</small></div></div>';};
   const waveTrendCard=(symbol,id,showHistory=false)=>'<section class="nd-wt-card" id="'+id+'" aria-label="'+symbol+' WaveTrend technical analysis">'+
-    '<div class="nd-wt-header"><div><h3>'+symbol+' WaveTrend</h3><small>WT Cross LB · Confirmed signals</small></div><span class="nd-wt-alignment">Loading research</span></div>'+
+    '<div class="nd-wt-header"><div><h3>'+symbol+' WaveTrend</h3><small>WT Cross LB · Confirmed + developing</small></div><span class="nd-wt-alignment">Loading research</span></div>'+
     '<div class="nd-wt-panels"><div class="nd-wt-wait">Loading '+symbol+' historical WaveTrend…</div></div>'+
-    '<div class="nd-wt-chart-head"><b>WaveTrend oscillator · Last 32 candles</b><div class="nd-wt-selector" role="group" aria-label="Oscillator timeframe"><button type="button" data-nd-wt-tf="4h" class="active" aria-pressed="true">4H</button><button type="button" data-nd-wt-tf="8h" aria-pressed="false">8H</button></div></div>'+
+    '<div class="nd-wt-chart-head"><b>WaveTrend oscillator · Last 32 points</b><div class="nd-wt-selector" role="group" aria-label="Oscillator timeframe"><button type="button" data-nd-wt-tf="4h" class="active" aria-pressed="true">4H</button><button type="button" data-nd-wt-tf="8h" aria-pressed="false">8H</button></div></div>'+
     '<div class="nd-wt-chart-wrap"><div class="nd-wt-chart" aria-live="polite"><p class="nd-wt-wait">Loading oscillator…</p></div><div class="nd-wt-chart-legend"><span><i style="background:#34d399"></i>WT1</span><span><i style="background:#fb7185"></i>WT2</span><span>● Confirmed cross</span></div></div>'+
     '<div class="nd-wt-summary"><b>NasDecode interpretation</b><span class="nd-wt-interpretation">Loading research…</span></div>'+
     (showHistory?'<div class="nd-wt-backtest"></div>':'')+
@@ -1129,4 +1131,4 @@ document.addEventListener('visibilitychange',async()=>{
   if(!document.hidden){const d=await load();await loadLiveOil();await loadLiveIndices();await loadAnalysis(d);scheduleAutoRefresh()}
 });
 loadChartHistory();setInterval(loadLiveIndices,30000);startLiveOilPolling();(async()=>{const d=await load();await loadLiveOil();await loadAnalysis(d);scheduleAutoRefresh()})();
-</script><script src="nvda-wavetrend.js?v=5"></script><script src="/section-router.js?v=3"></script></body></html>
+</script><script src="nvda-wavetrend.js?v=6"></script><script src="/section-router.js?v=3"></script></body></html>

@@ -58,7 +58,8 @@ def publish(src=SOURCE, backtest=BACKTEST, dst=TARGET):
         if len(candles) < 100 or not all(c.get("isWarm") for c in candles[-48:]):
             raise ValueError("Insufficient confirmed " + tf + " history")
         result["timeframes"][tf] = {"candleCount": len(candles), "latest": candles[-1],
-            "lastCross": series["crosses"][-1] if series.get("crosses") else None, "candles": candles[-48:]}
+            "lastCross": series["crosses"][-1] if series.get("crosses") else None, "candles": candles[-48:],
+            "developing": series.get("developing")}
     result["interpretation"] = interpretation(source)
     result["backtest"] = {"startDate": "2026-01-01", "assumptions": report["assumptions"],
         "limitations": report["limitations"], "timeframes": {}}

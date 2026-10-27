@@ -7,6 +7,7 @@ candles must pass strict timestamp coverage and end-of-bar validation.
 import datetime as dt
 import argparse
 import json
+import math
 from collections import defaultdict
 from pathlib import Path
 
@@ -18,6 +19,45 @@ OUTPUT = Path("data/research/nvda-wavetrend-yahoo-shadow.json")
 # Do not accept a just-closed candle until the final 5m bar is safely finalized.
 SETTLE_MINUTES = 5
 HOURS = (4, 8)
+
+
+def developing_yahoo_candle(rows, hours, now):
+    """Current bucket only; elapsed slots must be contiguous, never gap-filled."""
+    now = now.astimezone(NY)
+    if now.weekday() >= 5 or not 4 <= now.hour < 20:
+        return None
+    start = dt.datetime.combine(now.date(), dt.time(4 + (now.hour - 4)//hours*hours), NY)
+    end = start + dt.timedelta(hours=hours)
+    slots = {}
+    for bar in rows:
+        stamp = dt.datetime.fromisoformat(bar['timeET'])
+        if stamp.tzinfo is None or not start <= stamp <= now or stamp >= end:
+            continue
+        if stamp.minute % 5 or stamp.second or stamp.microsecond:
+            return None
+        values = [bar.get(k) for k in ('open', 'high', 'low', 'close')]
+        if not all(isinstance(v, (int, float)) and math.isfinite(v) and v > 0 for v in values):
+            return None
+        o, h, l, c = values
+        if not l <= min(o, c) <= max(o, c) <= h:
+            return None
+        slots[stamp] = bar
+    if not slots:
+        return None
+    latest = max(slots)
+    expected = [start + dt.timedelta(minutes=5*i) for i in range(int((latest-start).total_seconds()/300)+1)]
+    if any(t not in slots for t in expected):
+        return None
+    as_of = min(now, latest + dt.timedelta(minutes=5))
+    if now - as_of > dt.timedelta(minutes=15):
+        return None
+    bars = [slots[t] for t in expected]
+    return {'startET': start.isoformat(), 'endET': end.isoformat(),
+            'asOfET': as_of.isoformat(), 'lastSourceBarET': latest.isoformat(),
+            'checkedAtET': now.isoformat(), 'underlying5mBars': len(bars),
+            'open': bars[0]['open'], 'high': max(b['high'] for b in bars),
+            'low': min(b['low'] for b in bars), 'close': bars[-1]['close'],
+            'provider': 'Yahoo developing', 'isConfirmed': False}
 
 
 def confirmed_yahoo_candles(rows, hours, now):
@@ -104,6 +144,7 @@ def build_shadow(baseline, rows, now):
         latest = combined[-1]
         last_crosses = crossover_records(combined)
         report["timeframes"][tf] = {
+            "developingCandle": developing_yahoo_candle(rows, hours, now),
             "massiveLastEndET": historical[-1]["endET"],
             "shadowLastEndET": latest["endET"],
             "newYahooCandles": len(sequential),

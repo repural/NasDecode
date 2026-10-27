@@ -5,9 +5,13 @@ on:
     branches: [main]
     paths:
       - 'scripts/wavetrend_presentation.py'
+      - 'scripts/shadow_nvda_yahoo_wavetrend.py'
+      - 'scripts/publish_nvda_wavetrend.py'
+      - 'scripts/publish_soxl_wavetrend.py'
       - 'scripts/update_wavetrend_feeds.py'
       - '.github/workflows/update-wavetrend-feeds.yml'
       - 'tests/test_soxl_wavetrend.py'
+      - 'tests/test_developing_wavetrend.py'
   schedule:
     # Includes premarket and postmarket across DST. GitHub schedules can be delayed.
     - cron: '7,22,37,52 8-23 * * 1-5'

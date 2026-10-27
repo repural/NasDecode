@@ -31,7 +31,7 @@ def publish(src=SOURCE,dst=TARGET):
         result["timeframes"][tf]={"candleCount":item["candleCount"],
             "latest":item["latest"],
             "lastCross":item["crosses"][-1] if item.get("crosses") else None,
-            "candles":candles[-48:]}
+            "candles":candles[-48:], "developing":item.get("developing")}
     dst.parent.mkdir(parents=True,exist_ok=True)
     dst.write_text(json.dumps(result,separators=(",",":"))+"\n")
     return result

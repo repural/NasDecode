@@ -22,5 +22,31 @@ vm.runInNewContext(fs.readFileSync('public/nvda-wavetrend.js','utf8'),context);
   for(const fn of listeners.click)fn({target:{closest:()=>soxl.buttons[1]}});
   assert(soxl.nodes['.nd-wt-chart'].innerHTML.includes('SOXL WaveTrend 8H'));
   assert.equal(nvda.nodes['.nd-wt-chart'].innerHTML,previous,'SOXL selector changed NVDA chart');
+  const originalLatest=JSON.stringify(fixtures.NVDA.timeframes['4h'].latest);
+  const originalCross=JSON.stringify(fixtures.NVDA.timeframes['4h'].lastCross);
+  const oldBacktest=soxl.nodes['.nd-wt-backtest'].innerHTML;
+  const now=Date.now();
+  for(const symbol of ['NVDA','SOXL'])for(const tf of ['4h','8h']){
+    fixtures[symbol].timeframes[tf].developing={
+      startET:new Date(now-60*60*1000).toISOString(),endET:new Date(now+2*60*60*1000).toISOString(),
+      asOfET:new Date(now-60*1000).toISOString(),isConfirmed:false,
+      wt1:10,wt2:0,potentialCross:'bullish',cross:null,provider:'Yahoo developing'};
+  }
+  await context.window.NDWaveTrend.load();
+  assert(nvda.nodes['.nd-wt-chart'].innerHTML.includes('nd-wt-developing-path'));
+  assert(nvda.nodes['.nd-wt-chart'].innerHTML.includes('stroke-dasharray="5 4"'));
+  assert(nvda.nodes['.nd-wt-chart'].innerHTML.includes('Potential green crossover'));
+  assert(soxl.nodes['.nd-wt-chart'].innerHTML.includes('Developing'));
+  assert(nvda.nodes['.nd-wt-panels'].innerHTML.includes('Last confirmed:'));
+  assert(nvda.nodes['.nd-wt-alignment'].textContent.startsWith('Confirmed:'));
+  assert.equal(JSON.stringify(fixtures.NVDA.timeframes['4h'].latest),originalLatest);
+  assert.equal(JSON.stringify(fixtures.NVDA.timeframes['4h'].lastCross),originalCross);
+  assert.equal(soxl.nodes['.nd-wt-backtest'].innerHTML,oldBacktest);
+  fixtures.NVDA.timeframes['4h'].developing.potentialCross=null;
+  await context.window.NDWaveTrend.load();
+  assert(!nvda.nodes['.nd-wt-chart'].innerHTML.includes('Potential green crossover'),'withdrawn cross remained visible');
+  fixtures.NVDA.timeframes['4h'].developing.endET=new Date(now-1).toISOString();
+  await context.window.NDWaveTrend.load();
+  assert(!nvda.nodes['.nd-wt-chart'].innerHTML.includes('nd-wt-developing-path'),'expired candle remained visible');
   console.log('Independent NVDA/SOXL widgets, analysis and backtest passed');
 })().catch(e=>{console.error(e);process.exitCode=1});
