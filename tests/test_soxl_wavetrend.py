@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from zoneinfo import ZoneInfo
-from scripts.publish_soxl_wavetrend import publish
+from scripts.publish_soxl_wavetrend import publish, interpretation
 from scripts.refresh_nvda_wavetrend import refresh
 
 
@@ -14,8 +14,25 @@ class SOXLWaveTrendTests(unittest.TestCase):
             result = publish(dst=Path(folder) / "feed.json")
         self.assertEqual(result["symbol"], "SOXL")
         self.assertEqual(len(result["timeframes"]["4h"]["candles"]), 48)
-        self.assertIn("WT1", result["interpretation"])
+        # Publication must include commentary in every momentum state. Mixed
+        # states use different wording and need not contain the literal "WT1".
+        self.assertIsInstance(result["interpretation"], str)
+        self.assertGreater(len(result["interpretation"]), 20)
         self.assertNotIn("executions", result["backtest"]["timeframes"]["4h"]["zeroCosts"])
+
+    def test_interpretation_handles_all_four_momentum_states(self):
+        for up4, up8 in ((True, True), (False, False), (True, False), (False, True)):
+            with self.subTest(bullish4h=up4, bullish8h=up8):
+                source = {"timeframes": {
+                    "4h": {"latest": {"wt1": 1 if up4 else -1, "wt2": 0},
+                           "crosses": [], "candles": []},
+                    "8h": {"latest": {"wt1": 1 if up8 else -1, "wt2": 0}}}}
+                text = interpretation(source)
+                if up4 == up8:
+                    self.assertIn("Both timeframes are " + ("bullish" if up4 else "bearish"), text)
+                else:
+                    self.assertIn("4H is " + ("bullish" if up4 else "bearish"), text)
+                    self.assertIn("8H remains " + ("bullish" if up8 else "bearish"), text)
 
     def test_mismatched_backtest_is_refused(self):
         with tempfile.TemporaryDirectory() as folder:
