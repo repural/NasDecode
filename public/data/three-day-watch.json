@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-10-27T16:50:00Z",
+  "updated": "2026-10-27T18:08:11Z",
   "horizon": [
     "2026-10-27",
     "2026-10-28",
@@ -10,81 +10,166 @@
   "entries": [
     {
       "date": "2026-10-27",
-      "timeET": "09:10",
-      "bias": "Neutral — improving bullish momentum",
+      "timeET": "14:08",
+      "asOfET": "2026-10-27T14:08:11-04:00",
+      "runKey": "2026-10-27T14:08ET",
+      "bias": "Cautiously Bullish — conditional",
+      "previousBias": "Cautiously Bullish — conditional",
       "materialChange": false,
-      "summary": "Pre-open assessment: Monday SOX +2.82%, Nasdaq +0.83%, Nasdaq-100 breadth 66/101. Elevated yields, oil and Fed/earnings risk offset recovery.",
-      "bullish": "Semiconductor outperformance and improved breadth.",
-      "bearish": "High yields/oil and unconfirmed QQQ breakout.",
-      "observations": {
-        "QQQPreviousClose": 712.2,
-        "SOXPreviousSessionPercent": 2.82,
-        "US10YPercent": 4.991,
-        "US2YPercent": 4.71,
-        "VXN": 26.4,
-        "VIX": 18.46,
-        "BrentUSD": 116.26
-      },
-      "caveat": "Prior-session and premarket quotes mixed; not a synchronized snapshot.",
       "confidence": "moderate",
       "eventRisk": "high",
-      "upcomingEvents": [
-        "2026-10-28: Federal Reserve decision; Microsoft and Alphabet earnings",
-        "2026-10-29: GDP/PCE releases; Amazon earnings"
-      ],
-      "provenance": "Archived from this conversation's 3-Day Watch reports; quoted observations were not independently revalidated during archival."
-    },
-    {
-      "date": "2026-10-27",
-      "timeET": "10:40",
-      "bias": "Neutral — improving bullish momentum",
-      "materialChange": false,
-      "summary": "SOX +2.12%, QQQ +0.64%, Nasdaq +0.60%, with 28/29 semiconductor constituents advancing; Nasdaq-100 breadth 50/101. Score +6.",
-      "bullish": "Broad chip strength and falling volatility.",
-      "bearish": "Nasdaq-100 breadth only 50/101, restrictive yields.",
+      "summary": "The cautiously bullish three-session recovery setup is intact, not upgraded. At the latest 13:57 ET NasDecode dashboard checkpoint, QQQ was +1.16%, SOX +3.23% versus Nasdaq +1.09%, VXN 24.75 and Brent $113.74. Broad chip participation (28/29 advancing, 25/29 outperforming QQQ) contrasts with Nasdaq-100 breadth of 55/101. Treasury yields near 5% and the October 28–29 Fed/earnings/GDP/PCE cluster keep event risk high.",
+      "bullish": "SOX +3.23% versus Nasdaq +1.09% (+2.14 pp); 28/29 SOX constituents with quotes advancing and 25/29 outperforming QQQ; VXN 24.75 (−6.25% session), VIX 17.73 (−3.59%); Brent and WTI easing intraday.",
+      "bearish": "Only 55/101 Nasdaq-100 constituents advancing; mega-cap basket +1.00% trails QQQ +1.16%; 10Y 4.993% and 2Y 4.735% remain restrictive; Fed and major technology earnings are imminent. QQQ trailing three-session return remains −1.79% according to the dashboard.",
       "observations": {
-        "nasdaqScore": 6,
-        "QQQPercent": 0.64,
-        "SOXPercent": 2.12,
-        "NasdaqPercent": 0.6,
-        "nasdaq100Advancers": 50,
-        "VXN": 25.78,
-        "VIX": 17.8,
-        "US10YPercent": 4.997,
-        "US2YPercent": 4.735,
-        "BrentUSD": 115.03
+        "sourceCheckpointET": "2026-10-27T13:57:00-04:00",
+        "nasdaqScore": {
+          "value": 21,
+          "unit": "points_out_of_100",
+          "confidencePct": 70
+        },
+        "QQQSessionChange": {
+          "value": 1.16,
+          "unit": "percent"
+        },
+        "NasdaqComposite": {
+          "value": 26460.812,
+          "unit": "index_points",
+          "sessionChangePct": 1.114,
+          "quoteTimeET": "13:57",
+          "source": "CNBC quote service; not guaranteed realtime"
+        },
+        "SOXSessionChange": {
+          "value": 3.23,
+          "unit": "percent"
+        },
+        "NasdaqSessionChangeSoxSynchronized": {
+          "value": 1.09,
+          "unit": "percent",
+          "note": "Semiconductor leadership factor's synchronized comparator"
+        },
+        "SOXOutperformanceVsNasdaq": {
+          "value": 2.14,
+          "unit": "percentage_points"
+        },
+        "SOXMembersAdvancing": {
+          "value": 28,
+          "available": 29,
+          "unit": "constituents"
+        },
+        "SOXMembersOutperformingQQQ": {
+          "value": 25,
+          "available": 29,
+          "unit": "constituents"
+        },
+        "Nasdaq100Breadth": {
+          "advancing": 55,
+          "declining": 46,
+          "total": 101,
+          "unit": "constituents"
+        },
+        "VXN": {
+          "value": 24.75,
+          "sessionChangePct": -6.25,
+          "unit": "index_points"
+        },
+        "VIX": {
+          "value": 17.73,
+          "sessionChangePct": -3.59,
+          "unit": "index_points"
+        },
+        "US10Y": {
+          "value": 4.993,
+          "unit": "percent",
+          "changeBp": 0.7
+        },
+        "US2Y": {
+          "value": 4.735,
+          "unit": "percent",
+          "changeBp": 2.4
+        },
+        "US2Y10YCurve": {
+          "value": 25.8,
+          "unit": "basis_points",
+          "calculation": "(4.993%-4.735%)*100",
+          "description": "Modest bear flattening versus prior close"
+        },
+        "Brent": {
+          "value": 113.74,
+          "unit": "USD_per_barrel",
+          "sessionChangePct": -1.79
+        },
+        "WTI": {
+          "value": 99.8,
+          "unit": "USD_per_barrel",
+          "sessionChangePct": -1.93
+        },
+        "fedExpectations": {
+          "oct28HoldPct": 89,
+          "oct28HikePct": 11,
+          "dec9AboveCurrentPct": 82,
+          "unit": "percent_probability",
+          "freshness": "NasDecode dashboard; settlement-derived, not independently verified live"
+        },
+        "QQQTrailing3SessionReturnPct": -1.79,
+        "marketResponse": {
+          "status": "confirming",
+          "candidate": "constraint_absorption",
+          "persistenceMinutes": 0,
+          "requiredPersistenceMinutes": 15,
+          "applied": false
+        }
       },
-      "confidence": "moderate",
-      "eventRisk": "high",
-      "upcomingEvents": [
-        "2026-10-28: Federal Reserve decision; Microsoft and Alphabet earnings",
-        "2026-10-29: GDP/PCE releases; Amazon earnings"
+      "conditions": [
+        "Upgrade only if QQQ sustains $725–728 with SOX leadership, Nasdaq-100 breadth broadening meaningfully beyond 55/101, and volatility contained.",
+        "Loss of $715–716 would weaken the recovery; a break toward/below $701.16 with SOX weakness would warrant a bearish reassessment.",
+        "Sustained 10Y above 5.05% alongside deteriorating semiconductors is a negative invalidation trigger. The dashboard's reported 993%/735% yields are a parsing bug, not actual market yields."
       ],
-      "provenance": "Archived from this conversation's 3-Day Watch reports; quoted observations were not independently revalidated during archival."
-    },
-    {
-      "date": "2026-10-27",
-      "timeET": "11:53",
-      "bias": "Neutral — improving bullish momentum",
-      "materialChange": false,
-      "summary": "Latest Nasdaq index feed indicated further strength, but synchronized SOX/QQQ and breadth updates were unavailable. No material change.",
-      "bullish": "SOX outperformance and reduced volatility from earlier observations.",
-      "bearish": "Weak broad breadth, high rates and energy uncertainty.",
-      "observations": {
-        "nasdaqCompositeQuote": 26430.87,
-        "quoteTimeET": "11:33",
-        "nasdaqScore": 6,
-        "SOXPercentLastSynchronized": 2.12,
-        "QQQPercentLastSynchronized": 0.64
+      "upcomingEvents": [
+        "2026-10-27 after close: NXPI earnings; SWKS and TER appear in NasDecode earnings calendar but sessions require verification.",
+        "2026-10-28 14:00 ET: FOMC decision; 14:30 ET press conference (Federal Reserve official calendar).",
+        "2026-10-28 after close: MSFT, GOOGL and KLAC earnings (NasDecode/Nasdaq earnings calendar).",
+        "2026-10-29 08:30 ET: BEA Q3 GDP advance estimate and September personal income/outlays including PCE (official BEA release schedule).",
+        "2026-10-29: AMZN earnings and INTC/ENTG/MPWR semiconductor reports (NasDecode earnings calendar; individual times not all verified)."
+      ],
+      "curatedOpenWatch": {
+        "archive": "data/history/market-watch-events.json",
+        "archiveUpdatedUTC": "2026-10-27T16:13:17Z",
+        "eventCount": 49,
+        "newestEventTimeUTC": "2026-10-16T05:25:54Z",
+        "newSincePrevious": false,
+        "note": "Archive has no newly curated October 27 catalyst; pipeline appears stale and absence is not proof no new events occurred."
       },
-      "caveat": "Live-index feed percentage used inconsistent reference close; excluded.",
-      "confidence": "moderate",
-      "eventRisk": "high",
-      "upcomingEvents": [
-        "2026-10-28: Federal Reserve decision; Microsoft and Alphabet earnings",
-        "2026-10-29: GDP/PCE releases; Amazon earnings"
-      ],
-      "provenance": "Archived from this conversation's 3-Day Watch reports; quoted observations were not independently revalidated during archival."
+      "editorial": {
+        "marketOverview": "Nasdaq's recovery continues to be driven disproportionately by semiconductors. NasDecode's 13:57 ET snapshot shows QQQ up 1.16%, while SOX is up 3.23% against a roughly 1.09% synchronized Nasdaq gain. Twenty-eight of 29 chip constituents with usable quotes are advancing, and 25 are outperforming QQQ. That is strong sector confirmation, but the Nasdaq-100's 55 advancing names out of 101 and a mega-cap basket trailing QQQ indicate that the broader technology rally has not become uniformly convincing.",
+        "whatChanged": "Relative to the 12:50 ET assessment, the Nasdaq Score is effectively unchanged at +21 and the headline bias remains cautiously bullish. SOX's advance improved from approximately 3.0% to 3.23%, chip outperformance widened modestly, VXN eased from 24.80 to 24.75, and Brent moved from $113.78 to $113.74. QQQ's reported daily gain moderated slightly from 1.22% to 1.16%, and Nasdaq-100 advancers moved from 56 to 55. These are incremental fluctuations, not a new regime or a material outlook change.",
+        "marketInterpretation": "The strongest evidence is the breadth and relative strength within semiconductors, reinforced by falling implied volatility and modestly softer oil. Against that, Treasury yields remain restrictive: 10Y at 4.993%, 2Y at 4.735%, and a 2s10s spread of roughly +25.8 basis points. The market-response model has identified a possible absorption of rates pressure, but it has not met its 15-minute persistence requirement, so this is not confirmed. The dashboard's raw three-day watch mistakenly reads 4.993% as 993%; its resulting bearish rates trigger must be discarded.",
+        "threeDayPath": "For October 27–29, a cautious recovery remains the base case only while SOX leads and volatility remains contained. The path is unusually event-dependent: Wednesday's Fed statement and Microsoft/Alphabet earnings could either validate the recovery or reverse it, and Thursday's GDP/PCE releases and Amazon earnings add another immediate test. None of those outcomes has yet occurred; the scenarios are expectations, not observed reactions.",
+        "bullCase": "A sustained QQQ move through the established $725–728 confirmation zone, alongside breadth improving beyond 55/101 and SOX continuing to outperform, would support a stronger bullish reading. A decline in the 10Y yield toward or below 4.95% would remove a major valuation headwind. These are conditions to monitor, not current confirmed breakouts.",
+        "bearCase": "The rally would lose credibility if QQQ gives back $715–716 and semiconductors roll over. A move toward or below $701.16 with rising VXN would strengthen the bearish case, especially if the 10Y yield pushes sustainably above 5.05% or the Fed/earnings/GDP/PCE outcomes tighten financial conditions. No such combined reversal is confirmed in the current snapshot.",
+        "watchNext": "Watch the October 28 Fed decision at 14:00 ET and press conference at 14:30 ET, then MSFT/GOOGL/KLAC earnings after the close. On October 29, GDP and personal income/outlays including PCE are scheduled at 08:30 ET, with AMZN and multiple semiconductor earnings later. Track whether Nasdaq breadth catches up with SOX leadership and whether 10Y yields and VXN remain contained."
+      },
+      "provenance": {
+        "dashboard": "https://github.com/repural/NasDecode/blob/main/public/data/dashboard.json",
+        "premarket": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
+        "openWatch": "https://github.com/repural/NasDecode/blob/main/data/history/market-watch-events.json",
+        "fedOfficial": "https://www.federalreserve.gov/newsevents/2026-october.htm?view=calendar",
+        "beaOfficial": "https://www.bea.gov/news/schedule/full",
+        "externalContext": [
+          "https://apnews.com/article/088e6d5a0e6df20d3d8614c7f7f82baa",
+          "https://www.reuters.com/commentary/reuters-open-interest/ai-gloom-revives-the-specter-of-stagflation-mcgeever-2026-10-26/"
+        ],
+        "dataQualityNotes": [
+          "Market quotes from 13:57 ET dashboard, not a 14:08 ET synchronized feed.",
+          "Public live-indices.json is stale at 11:33 ET and contains an inconsistent Nasdaq reference close; dashboard CNBC quote preferred.",
+          "SOX and Nasdaq factor synchronized at ~13:57 ET; do not mix with older live-indices quote.",
+          "Yield parser error 993%/735% excluded; actual 4.993%/4.735%.",
+          "NasDecode Fed probabilities are settlement-derived and not live verified.",
+          "Open Watch archive's newest curated event is Oct 16; may reflect stalled pipeline.",
+          "NasDecode earnings calendar contains some duplicate ticker dates; sessions for all events not independently verified.",
+          "No Fed decision or upcoming earnings/GDP/PCE outcomes available yet."
+        ]
+      }
     },
     {
       "date": "2026-10-27",
@@ -128,6 +213,84 @@
         "bearCase": "QQQ reverses below $715–716 and weakens toward $701.16, particularly if SOX leadership fades or the 10-year yield remains above 5.05%.",
         "watchNext": "October 28 Federal Reserve decision and Microsoft/Alphabet earnings; October 29 GDP/PCE and Amazon earnings. Verify event timing against official calendars before treating scheduled releases as confirmed."
       }
+    },
+    {
+      "date": "2026-10-27",
+      "timeET": "11:53",
+      "bias": "Neutral — improving bullish momentum",
+      "materialChange": false,
+      "summary": "Latest Nasdaq index feed indicated further strength, but synchronized SOX/QQQ and breadth updates were unavailable. No material change.",
+      "bullish": "SOX outperformance and reduced volatility from earlier observations.",
+      "bearish": "Weak broad breadth, high rates and energy uncertainty.",
+      "observations": {
+        "nasdaqCompositeQuote": 26430.87,
+        "quoteTimeET": "11:33",
+        "nasdaqScore": 6,
+        "SOXPercentLastSynchronized": 2.12,
+        "QQQPercentLastSynchronized": 0.64
+      },
+      "caveat": "Live-index feed percentage used inconsistent reference close; excluded.",
+      "confidence": "moderate",
+      "eventRisk": "high",
+      "upcomingEvents": [
+        "2026-10-28: Federal Reserve decision; Microsoft and Alphabet earnings",
+        "2026-10-29: GDP/PCE releases; Amazon earnings"
+      ],
+      "provenance": "Archived from this conversation's 3-Day Watch reports; quoted observations were not independently revalidated during archival."
+    },
+    {
+      "date": "2026-10-27",
+      "timeET": "10:40",
+      "bias": "Neutral — improving bullish momentum",
+      "materialChange": false,
+      "summary": "SOX +2.12%, QQQ +0.64%, Nasdaq +0.60%, with 28/29 semiconductor constituents advancing; Nasdaq-100 breadth 50/101. Score +6.",
+      "bullish": "Broad chip strength and falling volatility.",
+      "bearish": "Nasdaq-100 breadth only 50/101, restrictive yields.",
+      "observations": {
+        "nasdaqScore": 6,
+        "QQQPercent": 0.64,
+        "SOXPercent": 2.12,
+        "NasdaqPercent": 0.6,
+        "nasdaq100Advancers": 50,
+        "VXN": 25.78,
+        "VIX": 17.8,
+        "US10YPercent": 4.997,
+        "US2YPercent": 4.735,
+        "BrentUSD": 115.03
+      },
+      "confidence": "moderate",
+      "eventRisk": "high",
+      "upcomingEvents": [
+        "2026-10-28: Federal Reserve decision; Microsoft and Alphabet earnings",
+        "2026-10-29: GDP/PCE releases; Amazon earnings"
+      ],
+      "provenance": "Archived from this conversation's 3-Day Watch reports; quoted observations were not independently revalidated during archival."
+    },
+    {
+      "date": "2026-10-27",
+      "timeET": "09:10",
+      "bias": "Neutral — improving bullish momentum",
+      "materialChange": false,
+      "summary": "Pre-open assessment: Monday SOX +2.82%, Nasdaq +0.83%, Nasdaq-100 breadth 66/101. Elevated yields, oil and Fed/earnings risk offset recovery.",
+      "bullish": "Semiconductor outperformance and improved breadth.",
+      "bearish": "High yields/oil and unconfirmed QQQ breakout.",
+      "observations": {
+        "QQQPreviousClose": 712.2,
+        "SOXPreviousSessionPercent": 2.82,
+        "US10YPercent": 4.991,
+        "US2YPercent": 4.71,
+        "VXN": 26.4,
+        "VIX": 18.46,
+        "BrentUSD": 116.26
+      },
+      "caveat": "Prior-session and premarket quotes mixed; not a synchronized snapshot.",
+      "confidence": "moderate",
+      "eventRisk": "high",
+      "upcomingEvents": [
+        "2026-10-28: Federal Reserve decision; Microsoft and Alphabet earnings",
+        "2026-10-29: GDP/PCE releases; Amazon earnings"
+      ],
+      "provenance": "Archived from this conversation's 3-Day Watch reports; quoted observations were not independently revalidated during archival."
     }
   ]
 }
