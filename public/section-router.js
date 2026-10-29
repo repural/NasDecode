@@ -27,8 +27,7 @@ const style=document.createElement('style');
 style.textContent=`
 html[data-nd-page="overview"] #factorCards > :not([data-nd-section="macro"]):not([data-nd-section="internals"]),
 html[data-nd-page="overview"] #premarket,
-html[data-nd-page="overview"] .signal-details,
-html[data-nd-page="overview"] #marketSetup{display:none!important}
+html[data-nd-page="overview"] .signal-details{display:none!important}
 html[data-nd-page="assessment"] #factorCards > :not([data-nd-section="assessment"]){display:none!important}
 html[data-nd-page="assessment"] #premarket,html[data-nd-page="assessment"] .lower-intel,html[data-nd-page="assessment"] #marketMovingDevelopments,
 html[data-nd-page="analysis"] #factorCards,html[data-nd-page="analysis"] .signal-details,html[data-nd-page="analysis"] #marketSetup,html[data-nd-page="analysis"] .lower-intel,html[data-nd-page="analysis"] #marketMovingDevelopments,
