@@ -1,0 +1,22 @@
+name: Audit Open Watch Publication
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'data/history/market-watch-events.json'
+      - 'public/history/market-watch-events.json'
+      - 'scripts/check_open_watch_publication.py'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate canonical Open Watch schema
+        run: python scripts/validate_open_watch.py
+      - name: Audit persisted events against published archive
+        run: python scripts/check_open_watch_publication.py
