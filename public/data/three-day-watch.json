@@ -1,13 +1,274 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-10-29T19:19:30.236Z",
+  "updated": "2026-10-29T20:36:05.340Z",
   "horizon": [
-    "2026-10-29",
     "2026-10-30",
-    "2026-11-02"
+    "2026-11-02",
+    "2026-11-03"
   ],
   "entries": [
+    {
+      "date": "2026-10-29",
+      "timeET": "16:36",
+      "asOfET": "2026-10-29T16:36:05-04:00",
+      "runKey": "2026-10-29T16:36:05-04:00",
+      "bias": "Bearish — post-close Amazon and Intel earnings shock increases next-session downside risk",
+      "previousBias": "Cautiously Bearish — AI/mega-cap pressure with weaker semiconductor leadership",
+      "materialChange": true,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "Material bearish downgrade from Cautiously Bearish: Thursday's Nasdaq closed -1.37% and SOX -1.4%, while fresh Amazon and Intel earnings after 16:00 ET added independent negative catalysts. Reuters reports AMZN down more than 7% after hours on below-consensus Q4 revenue guidance despite 39% AWS growth; INTC down around 18% after hours on a large Q4 revenue/EPS guidance miss. Friday Oct 30 is now the first forward trading session; the next three are Oct 30, Nov 2, Nov 3. These are actual company reports and reported extended-hours reactions, not confirmed Friday cash-market losses. Lower yields and mixed-positive breadth temper conviction.",
+      "bullish": "AWS revenue rose 39% to $46B, supporting AI/cloud demand. The Nasdaq-wide close was less severe than the worst intraday readings, Russell 2000 gained 1%, and the NasDecode 15:44 ET checkpoint had 53/101 Nasdaq-100 names advancing and 18/29 covered chips outperforming QQQ. The 10Y fell to 4.970%, 2Y to 4.639%, with Brent and WTI modestly lower, reducing incremental discount-rate and energy pressure. SOX closed only about 0.03 percentage points below Nasdaq on Reuters closing figures, limiting evidence of worsening sector relative weakness at the close.",
+      "bearish": "AMZN's $240B-$247B Q4 revenue guidance has a midpoint below $244.51B consensus, triggering a reported >7% after-hours decline despite strong AWS growth. Intel's $15B-$16B Q4 revenue and $0.25 adjusted EPS forecasts were below $17.07B and $0.43 consensus, with a reported ~18% after-hours fall. These new shocks compound Alphabet's 12.6% cash-burn-related decline and >20% falls in Fortinet and ServiceNow. QQQ was -1.67% at 15:44 ET; chip positive breadth was only 10/29, and VXN remained elevated at 24.49. Friday ECI and additional earnings create gap and repricing risk.",
+      "observations": {
+        "assessmentTimeET": "2026-10-29T16:36:05-04:00",
+        "marketDataExactlySynchronized": false,
+        "quoteCaveat": "Reuters regular-session closing observations are separate from NasDecode 15:44 ET dashboard, CNBC 15:29 ET VXN, CNBC 15:34 ET oil, Oct 28 CME settlement probabilities, and Reuters 16:02-16:06 ET after-hours earnings reports. No synchronized Friday session exists yet; avoid claiming the reported after-hours moves are Friday cash-market performance.",
+        "nasdaqComposite": {
+          "value": 26184.72,
+          "unit": "index_points",
+          "source": "Reuters Oct 29 Wall Street closing report",
+          "sourceTimestamp": "2026-10-29 16:00 ET",
+          "sessionChangePct": -1.37,
+          "sourceUrl": "https://www.reuters.com/business/nasdaq-futures-slide-mixed-big-tech-results-test-ai-trade-2026-10-29/"
+        },
+        "QQQ": {
+          "value": -1.67,
+          "unit": "percent_regular_session",
+          "source": "NasDecode dashboard mega-cap leadership row / CNBC constituent cache",
+          "sourceTimestamp": "2026-10-29 15:44 ET",
+          "notClosingPrice": true,
+          "sourceFreshnessWarning": "Row freshness says previous session while live constituent diagnostic is current; provisional."
+        },
+        "SOX": {
+          "value": -1.4,
+          "unit": "percent_regular_session_closing_change",
+          "source": "Reuters Oct 29 Wall Street closing report",
+          "sourceTimestamp": "2026-10-29 16:00 ET",
+          "directCNBC1544Pct": -1.92,
+          "model1544Pct": -1.79,
+          "sourceUrl": "https://www.reuters.com/business/nasdaq-futures-slide-mixed-big-tech-results-test-ai-trade-2026-10-29/",
+          "caution": "Reuters close and dashboard 15:44 values are not the same timestamp; direct SOX differs from model SOX."
+        },
+        "semiconductorRelativeStrength": {
+          "value": -0.24,
+          "unit": "percentage_points_SOX_minus_Nasdaq_intraday",
+          "source": "NasDecode confirmationLayer 15:44 model",
+          "sourceTimestamp": "2026-10-29 15:44 ET",
+          "soxxVsNasdaqPp": -0.35,
+          "smhVsNasdaqPp": 0.15,
+          "soxMinusNasdaqAtReutersClosePp": -0.03
+        },
+        "soxConstituentBreadth": {
+          "value": 10,
+          "unit": "positive_of_29_covered_constituents",
+          "source": "NasDecode confirmationLayer semiconductorLeadership.breadth",
+          "sourceTimestamp": "2026-10-29 15:44 ET",
+          "outperformingQqq": 18,
+          "available": 29,
+          "universeSize": 30
+        },
+        "nasdaq100Breadth": {
+          "value": 53,
+          "unit": "advancing_of_101_constituents",
+          "source": "NasDecode market breadth row",
+          "sourceTimestamp": "2026-10-29 15:44 ET",
+          "declining": 48,
+          "positivePct": 52.5
+        },
+        "nasdaqExchangeBreadth": {
+          "value": 2464,
+          "unit": "advancing_issues",
+          "source": "Reuters Nasdaq exchange close",
+          "sourceTimestamp": "2026-10-29 16:00 ET",
+          "declining": 2308,
+          "sourceUrl": "https://www.reuters.com/business/nasdaq-futures-slide-mixed-big-tech-results-test-ai-trade-2026-10-29/"
+        },
+        "nasdaqScore": {
+          "value": -18,
+          "unit": "model_points_out_of_100",
+          "source": "NasDecode dashboard nasdaqScore",
+          "sourceTimestamp": "2026-10-29 15:44 ET",
+          "previousSavedScore": -37,
+          "notMarketQuote": true
+        },
+        "US10Y": {
+          "value": 4.97,
+          "unit": "percent_nominal_yield",
+          "source": "NasDecode CNBC / Tradeweb 10Y row",
+          "sourceTimestamp": "2026-10-29T15:43:51-04:00",
+          "changeBpFromPriorClose": -7.5
+        },
+        "US2Y": {
+          "value": 4.639,
+          "unit": "percent_nominal_yield",
+          "source": "NasDecode CNBC / Tradeweb 2Y row",
+          "sourceTimestamp": "2026-10-29T15:44:08-04:00",
+          "changeBpFromPriorClose": -9.6
+        },
+        "yieldCurve2s10s": {
+          "value": 33.1,
+          "unit": "basis_points_10Y_minus_2Y",
+          "source": "Calculated from 4.970%-4.639%",
+          "sourceTimestamp": "2026-10-29 15:44 ET"
+        },
+        "VXN": {
+          "value": 24.49,
+          "unit": "volatility_index_points",
+          "source": "NasDecode CNBC / Cboe row",
+          "sourceTimestamp": "2026-10-29T15:29:02-04:00",
+          "sessionChangePct": 2.99,
+          "delayedRelativeToEquities": true
+        },
+        "VIX": {
+          "value": 16.62,
+          "unit": "volatility_index_points",
+          "source": "NasDecode CNBC / Cboe row",
+          "sourceTimestamp": "2026-10-29 15:29 ET (row freshness; precise VIX timestamp unverified)",
+          "sessionChangePct": -1.71
+        },
+        "Brent": {
+          "value": 114.92,
+          "unit": "USD_per_barrel_futures",
+          "source": "NasDecode CNBC futures row",
+          "sourceTimestamp": "2026-10-29T15:34:07-04:00",
+          "sessionChangePct": -0.35
+        },
+        "WTI": {
+          "value": 102.24,
+          "unit": "USD_per_barrel_futures",
+          "source": "NasDecode CNBC futures row",
+          "sourceTimestamp": "2026-10-29T15:34:06-04:00",
+          "sessionChangePct": -0.53
+        },
+        "fedExpectations": {
+          "value": 85.1,
+          "unit": "percent_probability_Dec_9_target_above_current",
+          "source": "NasDecode CME settlement-derived Fed Funds model",
+          "sourceTimestamp": "2026-10-28 settlement; checked 2026-10-29 15:44 ET",
+          "januaryAboveCurrentTargetPct": 90.9,
+          "targetRange": "3.75%-4.00%",
+          "notLiveFedWatch": true
+        },
+        "macroActuals": {
+          "value": 3.4,
+          "unit": "percent_Q3_GDP_annualized",
+          "source": "BEA Oct 29 release as verified in prior watch",
+          "sourceTimestamp": "2026-10-29 08:30 ET",
+          "headlinePCEYoYPct": 3.6,
+          "corePCEYoYPct": 3.1,
+          "isolatedMarketImpactNotVerified": true
+        },
+        "amazonEarnings": {
+          "value": 46,
+          "unit": "USD_billion_AWS_revenue_Q3",
+          "source": "Reuters Oct 29 Amazon earnings report",
+          "sourceTimestamp": "2026-10-29 16:06 ET article publication",
+          "awsGrowthYoYPct": 39,
+          "q4RevenueGuidanceUSDBillion": [
+            240,
+            247
+          ],
+          "q4RevenueConsensusUSDBillion": 244.51,
+          "reportedAfterHoursReaction": "down more than 7%",
+          "sourceUrl": "https://www.reuters.com/business/retail-consumer/amazon-projects-fourth-quarter-sales-below-estimates-2026-10-29/",
+          "notFridayCashMarket": true
+        },
+        "intelEarnings": {
+          "value": 16.51,
+          "unit": "USD_billion_Q3_revenue",
+          "source": "Reuters Oct 29 Intel earnings report",
+          "sourceTimestamp": "2026-10-29 16:02 ET article publication",
+          "adjustedEpsUSD": 0.52,
+          "q4RevenueGuidanceUSDBillion": [
+            15,
+            16
+          ],
+          "q4RevenueConsensusUSDBillion": 17.07,
+          "q4AdjustedEpsGuidanceUSD": 0.25,
+          "q4AdjustedEpsConsensusUSD": 0.43,
+          "reportedAfterHoursReaction": "down approximately 18%",
+          "sourceUrl": "https://www.reuters.com/business/intel-signals-slower-growth-pc-market-remains-under-pressure-2026-10-29/",
+          "notFridayCashMarket": true
+        },
+        "newCuratedEvents": {
+          "value": 73,
+          "unit": "curated_event_records",
+          "source": "NasDecode data/history/market-watch-events.json",
+          "sourceTimestamp": "2026-10-29T17:19:21+00:00",
+          "previousCount": 73,
+          "newlyArchivedIds": [],
+          "note": "Canonical archive unchanged at 73; earnings events verified in external reporting but not yet archived."
+        },
+        "dataIntegrity": {
+          "invalidTreasuryValues": "Exclude dashboard 970%/639% or other scaled trigger artifacts. Verified nominal 10Y 4.970%, 2Y 4.639%, 2s10s +33.1 bp.",
+          "stale": "15:44 ET dashboard equity/rates, 15:29 VXN, 15:34 oil; Oct 28 Fed settlements. Reuters close and 16:02-16:06 after-hours reports are distinct windows.",
+          "notVerified": "Exchange-synchronized QQQ/SOX/constituent closing snapshot; independent S5FI; fresh FedWatch probabilities; Friday ECI and Friday opening reaction; earnings call remarks; exact after-hours quote timestamp for all stocks."
+        }
+      },
+      "conditions": [
+        "Retain Bearish while AMZN and INTC post-earnings losses remain substantial and Friday QQQ/SOX breadth confirms follow-through; do not treat Thursday after-hours indications as Friday cash-session confirmation.",
+        "Reassess to Cautiously Bearish or Neutral if QQQ recovers with SOX/SOXX/SMH outperforming, chip positive breadth above 50%, Nasdaq-100 breadth above 60%, and VXN easing below roughly 24.",
+        "Escalate risk if Friday Nasdaq-100 breadth falls below 40%, chip breadth below one-third, SOX underperforms and VXN moves toward/above 26.",
+        "Watch 10Y holding below 5% as a cushion; a sustained move above 5.05% combined with earnings-led selling increases downside pressure.",
+        "Separate Amazon AWS growth from weak holiday-quarter guidance and Intel company-specific factory/PC disruptions from sector-wide AI chip demand.",
+        "At 08:30 ET Oct 30 verify ECI, immediate 2Y/10Y changes, and new Fed pricing before interpreting market response.",
+        "Do not use scaled yield trigger artifacts, stale S5FI, or unsynchronized snapshots as evidence."
+      ],
+      "upcomingEvents": [
+        "2026-10-30 08:30 ET — U.S. Q3 Employment Cost Index; verify release and rate/QQQ reaction.",
+        "2026-10-30 premarket/open — first U.S. cash-session response to AMZN and INTC Oct 29 post-close earnings; distinguish after-hours indications from confirmed market breadth.",
+        "2026-10-30 — Chicago PMI and Exxon/Chevron earnings; monitor inflation/energy implications.",
+        "2026-11-02 after close — Apple and ON Semiconductor earnings (NasDecode calendar; confirm IR timing).",
+        "2026-11-03 after close — AMD, ALAB and SWKS earnings per NasDecode calendar; verify company dates and guidance."
+      ],
+      "curatedOpenWatch": {
+        "count": 73,
+        "previousCount": 73,
+        "updated": "2026-10-29T17:19:21+00:00",
+        "newIds": [],
+        "interpretation": "No new curated archive entries since the previous saved assessment; the AMZN and INTC earnings releases are newly verified external catalysts and are not yet recorded in canonical Open Watch."
+      },
+      "editorial": {
+        "marketOverview": "Thursday ended as a technology-led drawdown, not a uniform U.S. equity liquidation. Reuters reported the Nasdaq Composite closed down 1.37% at 26,184.72 and the Philadelphia Semiconductor Index lost 1.4%, while the Russell 2000 gained 1.0% and Nasdaq-wide advancers narrowly outnumbered decliners. Alphabet's 12.6% drop and sharp software declines illustrate investors' increasingly selective treatment of AI spending and free cash flow. The latest NasDecode 15:44 ET checkpoint, before the close, recorded QQQ -1.67%, semiconductor weakness, and a -18/100 Nasdaq score. After the bell, newly released Amazon and Intel earnings introduced additional negative catalysts that the closing cash-market prices cannot yet reflect.",
+        "whatChanged": "The previous 15:19 ET saved outlook was already Cautiously Bearish, citing QQQ -1.70%, weak semiconductor breadth and elevated Nasdaq volatility. By 15:44 ET, the NasDecode model score had improved from -37 to -18 and SOX relative weakness narrowed, so the regular-session evolution alone would not justify a downgrade. The material new development occurred after 16:00 ET: Reuters reported Amazon's fourth-quarter revenue outlook of $240B-$247B, a $243.5B midpoint below the $244.51B consensus, with shares down more than 7% in extended trading despite AWS growing 39% to $46B. Separately, Intel guided Q4 revenue to $15B-$16B against roughly $17.07B expected and adjusted EPS of $0.25 against $0.43, prompting an approximately 18% after-hours decline. These are verified earnings disclosures and reported after-hours reactions, not yet a confirmed Friday Nasdaq/SOX cash-market response.",
+        "marketInterpretation": "Two fresh earnings disappointments materially raise the probability of a weak Friday opening and put pressure on the AI/cloud and semiconductor complex simultaneously. Amazon's robust AWS growth is real bullish fundamental evidence, but the stock's negative reaction shows the market currently prioritizes forward sales, capital intensity and cash generation. Intel's sharp guidance shortfall is partly company-specific, including a factory disruption and weak PC demand, and must not be mechanically extrapolated to all AI chips. At 15:44 ET, the 10Y/2Y yields were 4.970%/4.639%, the curve +33.1 bp, Brent $114.92, WTI $102.24, and 53/101 Nasdaq-100 names were advancing. Those conditions temper the downside and explain Moderate rather than High directional confidence. VXN 24.49 and VIX 16.62 were not timestamp-synchronized with the closing index prices; the 85.1% December hike probability is based on October 28 settlements, not an intraday FedWatch refresh.",
+        "threeDayPath": "Friday October 30 is now the first forward session and the highest immediate risk window. The base case is a negative technology/semiconductor opening reaction to Amazon and Intel, followed by a test of whether selling broadens beyond a handful of heavyweight stocks; no specific gap magnitude is forecast. At 08:30 ET Friday the Employment Cost Index can amplify or offset earnings-driven moves through Treasury yields and Fed expectations. Monday November 2 could extend the selling if breadth and chip leadership deteriorate, or stage a relief rebound if rates ease and the earnings damage stays concentrated; Apple and ON Semiconductor earnings after Monday's close add a second reset. Tuesday November 3 includes AMD and other semiconductor earnings risk and may respond to Monday's announcements. This is a conditional three-session path, not a claim about future prices.",
+        "bullCase": "The most credible constructive scenario is that Amazon's 39% AWS growth proves the AI infrastructure demand engine remains strong, Intel's weak outlook is treated as idiosyncratic, and lower Treasury yields limit duration pressure. Thursday's Nasdaq-wide participation was not a washout, and the NasDecode 15:44 ET model improved materially from the 14:56 reading. A Friday recovery in QQQ with SOX/SOXX/SMH outperforming Nasdaq, more than half of chip constituents advancing, Nasdaq-100 breadth sustainably above 60%, and VXN moving lower would challenge this bearish downgrade. A benign ECI and a 10Y yield remaining below 5% would strengthen the rebound case.",
+        "bearCase": "The adverse path is that Amazon's weaker holiday-quarter guidance and negative after-hours price reaction reinforce Alphabet's cash-burn concerns, while Intel's outlook pulls semiconductor sentiment lower. If Friday's ECI also pushes the 2Y and 10Y higher, a second valuation headwind could develop. Broadening weakness with Nasdaq-100 breadth below 40%, SOX consistently lagging Nasdaq, fewer than one-third of chip constituents positive, and VXN rising toward or above 26 would confirm a more durable downside regime. These thresholds are prospective tests, not observed Friday outcomes.",
+        "watchNext": "At Friday's premarket and open, obtain synchronized QQQ/Nasdaq/SOX/SOXX/SMH quotes, verified AMZN/INTC post-earnings reactions and refreshed chip/Nasdaq-100 breadth before inferring sector-wide contagion. Read official ECI at 08:30 ET and compare 2Y/10Y yields immediately before and after the release; verify Fed probabilities from fresh settlement or live CME data rather than reusing October 28 as a live estimate. Monitor VXN and VIX with timestamps, oil, and the curated Open Watch archive for new events. Watch Apple and ON Semiconductor on Monday and AMD on Tuesday. Confirm whether any new catalyst materially changes the path before the next alert."
+      },
+      "provenance": {
+        "repository": "repural/NasDecode",
+        "dashboardPath": "public/data/dashboard.json",
+        "dashboardSha": "9a02cea8cc3537db991819df49e244c2c2ea22fe",
+        "dashboardUpdatedET": "Oct 29, 2026 · 15:44 ET",
+        "openWatchPath": "data/history/market-watch-events.json",
+        "openWatchSha": "4f6f88fe9d2170dd3a63f1775d1d942d9c2bf23b",
+        "openWatchUpdated": "2026-10-29T17:19:21+00:00",
+        "priorHistorySha": "eae9fbe34836a6cc064b6a802a51b5f3c4045c82",
+        "previousRunKey": "2026-10-29T15:19:30.236-04:00",
+        "externalSources": [
+          {
+            "publisher": "Reuters",
+            "url": "https://www.reuters.com/business/nasdaq-futures-slide-mixed-big-tech-results-test-ai-trade-2026-10-29/",
+            "kind": "regular_session_close"
+          },
+          {
+            "publisher": "Reuters",
+            "url": "https://www.reuters.com/business/retail-consumer/amazon-projects-fourth-quarter-sales-below-estimates-2026-10-29/",
+            "kind": "amazon_earnings_and_after_hours"
+          },
+          {
+            "publisher": "Reuters",
+            "url": "https://www.reuters.com/business/intel-signals-slower-growth-pc-market-remains-under-pressure-2026-10-29/",
+            "kind": "intel_earnings_and_after_hours"
+          }
+        ],
+        "quality": "Different quote timestamps; official earnings facts and Reuters-reported after-hours reaction distinguished from unverified Friday session. No invented prices."
+      }
+    },
     {
       "date": "2026-10-29",
       "timeET": "15:19",
