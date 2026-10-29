@@ -1,13 +1,269 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-10-29T13:54:25.000Z",
+  "updated": "2026-10-29T14:49:05.869Z",
   "horizon": [
     "2026-10-29",
     "2026-10-30",
     "2026-11-02"
   ],
   "entries": [
+    {
+      "date": "2026-10-29",
+      "timeET": "10:49",
+      "asOfET": "2026-10-29T10:49:04-04:00",
+      "runKey": "2026-10-29T10:49:04-04:00",
+      "bias": "Cautiously Bearish — AI/semiconductor weakness, breadth divergence",
+      "previousBias": "Neutral — downside skew into catalysts",
+      "materialChange": true,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "Material bearish downgrade from Neutral/downside-skewed to Cautiously Bearish: the October 29 regular-session selloff has now been confirmed beyond the opening print, and Wednesday's positive semiconductor leadership has reversed. NasDecode's 09:55 ET quotes show Nasdaq -1.63%, QQQ -1.71%, directly quoted SOX -2.67%, and its Nasdaq Score -35/100. Only 5/29 available semiconductor constituents were positive and VXN rose 4.58% at a delayed 09:40 ET reading. Reuters independently reported Nasdaq -1.64% and SOX -1.8% at 09:56 ET, confirming negative direction while revealing an unreconciled SOX magnitude discrepancy. The counterweights are 52/101 Nasdaq-100 constituents advancing, easing 10Y/2Y yields to 4.974%/4.652% and lower oil. This is a concentrated AI/semiconductor leadership selloff, not proven broad-market capitulation. Amazon and Intel earnings tonight and Friday's ECI create high event risk.",
+      "bullish": "Rates and oil have eased: 10Y 4.974% (-7.1 bp), 2Y 4.652% (-8.3 bp), Brent $113.05 (-1.97%), WTI $99.98 (-2.72%) in separate morning observations. Nasdaq-100 breadth remains marginally positive at 52/101 advancing despite index losses, and Reuters reports a 1.33:1 Nasdaq exchange advance/decline ratio. Strong GDP growth and evidence of cloud/AI demand remain positive fundamentals. A chip-led rebound and falling VXN would invalidate the cautious bearish shift.",
+      "bearish": "Nasdaq and QQQ were down approximately 1.6%-1.7% after the open, with a direct SOX quote down 2.67%, lagging Nasdaq by about 1.04 percentage points; Reuters separately reports SOX -1.8%. Only 5 of 29 sampled chip constituents were positive. Alphabet's approximately 13% selloff and heavy negative free cash flow are pressuring index weights; Fortinet and ServiceNow declined more than 20% per Reuters. VXN rose 4.58% at a delayed quote and the Nasdaq model deteriorated to -35/100. Amazon/Intel earnings can extend the repricing into Friday and Monday.",
+      "observations": {
+        "assessmentTimeET": "2026-10-29T10:49:04-04:00",
+        "marketDataExactlySynchronized": false,
+        "quoteCaveat": "NasDecode equity quotes were collected at approximately 09:55 ET and Reuters index/SOX observations at 09:56 ET; VXN is delayed at 09:40 ET, oil at 09:45 ET, FedWatch is previous settlement. Repository SOX direct quote (-2.67%) differs from Reuters SOX (-1.8%) at a nearby timestamp; do not collapse the two into a falsely exact synchronized return. Current timestamp is assessment time, not last quote time.",
+        "nasdaqComposite": {
+          "value": 26116.983,
+          "sessionChangePct": -1.63,
+          "unit": "index_points_and_percent",
+          "source": "NasDecode public/data/dashboard.json CNBC quote",
+          "sourceTimestamp": "2026-10-29 09:55 ET",
+          "corroboration": {
+            "sessionChangePct": -1.64,
+            "source": "Reuters",
+            "sourceTimestamp": "2026-10-29 09:56 ET"
+          }
+        },
+        "QQQ": {
+          "sessionChangePct": -1.71,
+          "unit": "percent_regular_session",
+          "source": "NasDecode dashboard mega-cap leadership factor and early outlook",
+          "sourceTimestamp": "2026-10-29 approximately 09:55 ET"
+        },
+        "SOX": {
+          "sessionChangePct": -2.67,
+          "unit": "percent_regular_session",
+          "source": "NasDecode dashboard diagnostics CNBC direct .SOX quote",
+          "sourceTimestamp": "2026-10-29 09:55 ET",
+          "corroboration": {
+            "sessionChangePct": -1.8,
+            "source": "Reuters",
+            "sourceTimestamp": "2026-10-29 09:56 ET"
+          },
+          "caution": "Material quote discrepancy; both negative; precise difference unreconciled"
+        },
+        "semiconductorRelativeStrength": {
+          "soxMinusNasdaqPp": -1.04,
+          "soxxMinusNasdaqPp": -1.23,
+          "smhMinusNasdaqPp": -0.41,
+          "unit": "percentage_points_current_session",
+          "source": "NasDecode public/data/premarket.json and dashboard 09:55 direct-quote comparison",
+          "sourceTimestamp": "2026-10-29 09:55 ET",
+          "caution": "The dashboard confirmationLayer separately shows SOX -2.11% and Nasdaq -1.45% at a different processing checkpoint; do not mix those snapshots"
+        },
+        "soxConstituentBreadth": {
+          "positive": 5,
+          "available": 29,
+          "positivePct": 17.24,
+          "unit": "constituents_and_percent",
+          "source": "NasDecode confirmationLayer.semiconductorLeadership.breadth",
+          "sourceTimestamp": "2026-10-29 dashboard approximately 09:55–09:59 ET"
+        },
+        "nasdaq100Breadth": {
+          "advancing": 52,
+          "declining": 49,
+          "available": 101,
+          "positivePct": 51.49,
+          "unit": "constituents_and_percent",
+          "source": "NasDecode dashboard Market breadth",
+          "sourceTimestamp": "2026-10-29 approximately 09:55 ET",
+          "caution": "Positive breadth despite index fall: concentrated mega-cap pressure"
+        },
+        "nasdaqExchangeBreadth": {
+          "advanceDeclineRatio": 1.33,
+          "unit": "advancers_per_decliner",
+          "source": "Reuters U.S. equities report",
+          "sourceTimestamp": "2026-10-29 09:56 ET",
+          "caution": "Exchange-wide, not Nasdaq-100 constituent breadth"
+        },
+        "megaCapRelativeStrength": {
+          "basketChangePct": -2.26,
+          "positiveMembers": 2,
+          "basketMembers": 7,
+          "qqqChangePct": -1.71,
+          "versusQqqPp": -0.55,
+          "unit": "percent_and_percentage_points",
+          "source": "NasDecode dashboard mega-cap factor",
+          "sourceTimestamp": "2026-10-29 approximately 09:55 ET",
+          "caution": "Factor freshness text mistakenly labels previous session despite current-session values; interpret with caution"
+        },
+        "nasdaqScore": {
+          "value": -35,
+          "previousValue": -2,
+          "modelConfidencePct": 75,
+          "unit": "model_points_out_of_100_and_percent",
+          "source": "NasDecode public/data/dashboard.json",
+          "sourceTimestamp": "2026-10-29 09:55 ET",
+          "notMarketQuote": true
+        },
+        "US10Y": {
+          "value": 4.974,
+          "changeBpFromPriorClose": -7.1,
+          "unit": "percent_nominal_yield_and_basis_points",
+          "source": "NasDecode CNBC/Tradeweb",
+          "sourceTimestamp": "2026-10-29 09:55:32 ET"
+        },
+        "US2Y": {
+          "value": 4.652,
+          "changeBpFromPriorClose": -8.3,
+          "unit": "percent_nominal_yield_and_basis_points",
+          "source": "NasDecode CNBC/Tradeweb",
+          "sourceTimestamp": "2026-10-29 09:55:36 ET"
+        },
+        "yieldCurve2s10s": {
+          "value": 32.2,
+          "changeBp": 1.2,
+          "unit": "basis_points_10Y_minus_2Y",
+          "source": "Computed 4.974% minus 4.652%",
+          "sourceTimestamp": "2026-10-29 09:55 ET"
+        },
+        "VXN": {
+          "value": 24.87,
+          "sessionChangePct": 4.58,
+          "unit": "index_points_and_percent",
+          "source": "NasDecode CNBC/Cboe",
+          "sourceTimestamp": "2026-10-29 09:40 ET",
+          "caution": "Delayed/unspecified real-time status"
+        },
+        "VIX": {
+          "value": 17.01,
+          "sessionChangePct": 0.59,
+          "unit": "index_points_and_percent",
+          "source": "NasDecode CNBC/Cboe",
+          "sourceTimestamp": "2026-10-29 09:55 ET"
+        },
+        "Brent": {
+          "value": 113.05,
+          "sessionChangePct": -1.97,
+          "unit": "USD_per_barrel_futures_and_percent",
+          "source": "NasDecode CNBC futures",
+          "sourceTimestamp": "2026-10-29 09:45 ET",
+          "caution": "Reuters also reported $113.15 at a separate timestamp; AP quoted a different value/contract and was not reconciled"
+        },
+        "WTI": {
+          "value": 99.98,
+          "sessionChangePct": -2.72,
+          "unit": "USD_per_barrel_futures_and_percent",
+          "source": "NasDecode CNBC futures",
+          "sourceTimestamp": "2026-10-29 09:45 ET"
+        },
+        "fedExpectations": {
+          "decemberAboveCurrentTargetProbabilityPct": 85.1,
+          "unit": "percent_settlement_derived_model_probability",
+          "source": "NasDecode CME settlement-based FedWatch model",
+          "sourceTimestamp": "2026-10-28 settlement; checked 2026-10-29 09:55 ET",
+          "caution": "Not live October 29 repricing; Reuters separately reports roughly 80% chance of December hike"
+        },
+        "fedDecision": {
+          "targetRange": "3.75%-4.00%",
+          "unit": "percent_target_range",
+          "source": "Federal Reserve October 28 statement",
+          "sourceTimestamp": "2026-10-28 14:00 ET"
+        },
+        "macroActuals": {
+          "q3GDPAnnualizedPct": 3.4,
+          "septemberHeadlinePCEYoYPct": 3.6,
+          "septemberCorePCEYoYPct": 3.1,
+          "unit": "percent",
+          "source": "BEA October 29 releases",
+          "sourceTimestamp": "2026-10-29 08:30 ET",
+          "caution": "Outcomes confirmed; their isolated market effects not established"
+        },
+        "newCuratedEvents": {
+          "count": 73,
+          "previousCount": 73,
+          "newlyArchivedIds": [],
+          "unit": "curated_event_records",
+          "source": "NasDecode data/history/market-watch-events.json",
+          "sourceTimestamp": "2026-10-29T13:31:00+00:00",
+          "caution": "No new curated entries versus prior 73-record archive; earlier Microsoft bond marketing already recorded"
+        },
+        "dataIntegrity": {
+          "invalidTreasuryValues": "Reject erroneous trigger scaling such as 974% or 652%; correct 10Y 4.974%, 2Y 4.652%, curve +32.2 bp",
+          "stale": "FedWatch settlement Oct 28, VXN 09:40, oil 09:45, equity 09:55, Reuters 09:56; no later synchronized 10:47 ET snapshot",
+          "notVerified": "Precise same-time SOX relative return across independent feeds; full-session persistence; 10:47 ET quotes; event-isolated causal reactions"
+        }
+      },
+      "conditions": [
+        "Keep Cautiously Bearish while Nasdaq/QQQ weakness persists with SOX underperforming, weak SOX breadth and rising VXN; positive Nasdaq-100 breadth means conviction is moderate rather than high.",
+        "Invalidate downgrade and return toward Neutral if QQQ recovers materially, SOX/SOXX/SMH outperform Nasdaq/QQQ on synchronized current-session quotes, Nasdaq-100 breadth stays above 50%, and VXN declines from 24.87.",
+        "Escalate to Bearish if weakness persists into the close and Friday, Nasdaq-100 breadth falls below 40%, SOX breadth remains below one-third positive, VXN rises toward/above 26, or 10Y reverses above 5.05%.",
+        "Do not infer a broad capitulation from index-weighted declines alone: 52/101 Nasdaq-100 names were advancing, and Reuters exchange-wide breadth was positive.",
+        "Exclude erroneous Treasury-yield scaling and reconcile the SOX direct-quote/Reuters discrepancy before citing precise current relative performance."
+      ],
+      "upcomingEvents": [
+        "2026-10-29 10:30 ET and later — next synchronized NasDecode checkpoint for QQQ, SOX, SMH, SOXX, breadth and VXN; assess persistence rather than extrapolating the opening.",
+        "2026-10-29 13:00 ET — U.S. seven-year Treasury auction; check 2Y/10Y and Nasdaq rate sensitivity.",
+        "2026-10-29 after close — Amazon and Intel earnings; NasDecode calendar also lists Entegris and Monolithic Power, company release times not independently confirmed.",
+        "2026-10-30 08:30 ET — U.S. Employment Cost Index (Q3).",
+        "2026-11-02 — Apple and ON Semiconductor on NasDecode calendar; independently verify release timing."
+      ],
+      "curatedOpenWatch": {
+        "count": 73,
+        "previousCount": 73,
+        "updated": "2026-10-29T13:31:00+00:00",
+        "newIds": [],
+        "interpretation": "The curated Open Watch archive remains at 73 entries; no new event has been appended since the prior assessment. The Microsoft preliminary $25B bond marketing is already recorded, with only partial price confirmation. The material downgrade is driven by newly observed market confirmation, not a newly curated headline."
+      },
+      "editorial": {
+        "marketOverview": "Thursday's cash-market decline is no longer just a premarket indication or a single opening print. The Nasdaq Composite was down 1.63% in NasDecode's 09:55 ET quote, corroborated by Reuters at -1.64% at 09:56 ET; QQQ was -1.71% in the repository snapshot. Alphabet's approximately 13% decline after disappointing search-advertising performance and negative free cash flow has become a major index-weight drag. The more important development for the three-day path is that Wednesday's supportive semiconductor leadership reversed: NasDecode's directly quoted SOX reading was -2.67% at 09:55 ET, weaker than Nasdaq, while software shares also sold off. The cross-section is not uniformly bearish: about 52 of 101 Nasdaq-100 members were advancing, and Reuters found more advancing than declining issues on the broader Nasdaq exchange. This is a concentrated leadership shock, not verified market-wide capitulation.",
+        "whatChanged": "The preceding 09:54 ET assessment retained a Neutral downside skew because only the 09:30 opening decline was verified and current-session QQQ, SOX, breadth and VXN were unavailable. Those gaps have now partially closed. A 09:55 ET NasDecode snapshot places QQQ down 1.71%, Nasdaq down 1.63% and the directly quoted SOX down 2.67%; its model moved from a prior -2 to -35/100 with 75% model confidence. The live semiconductor breadth layer showed only 5 of 29 available SOX constituents positive, versus 22 of 30 positive at Wednesday's close. VXN was 24.87 (+4.58%) at a delayed 09:40 ET timestamp, with VIX 17.01 (+0.59%). Reuters independently reported a -1.8% SOX reading at 09:56 ET, a notable discrepancy from the repository's direct -2.67% SOX quote at 09:55; both support negative chip direction but not a single precise synchronized sector return. The new observation changes the near-term probability balance toward cautious bearishness.",
+        "marketInterpretation": "A cautious bearish downgrade is justified by the combination of verified Nasdaq/QQQ weakness, a negative SOX-versus-Nasdaq relationship, poor chip constituent participation and higher implied Nasdaq volatility. It is not a high-conviction broad-market bearish call because Nasdaq-100 breadth is still approximately 51% positive and Reuters' exchange-wide advance/decline ratio remains positive. Declining Treasury yields and oil also provide a countervailing rates tailwind. The current move looks more like a large-cap AI capital-efficiency repricing with contagion into semiconductors and software than a synchronized macro liquidation. The distinction matters: if chips regain relative strength while the majority of Nasdaq-100 members remain positive, an index-weight-driven selloff can stabilize quickly. No price response should be assigned to an individual macro release or curated event without a matched before-and-after observation.",
+        "threeDayPath": "Thursday October 29 is a test of whether the chip-leadership reversal persists through the regular session. A failure to regain relative strength would increase the chance of selling into the close; a rebound in SOX and QQQ with VXN easing would weaken the downgrade. Friday October 30 will be driven by Amazon and Intel's after-close earnings, the Employment Cost Index at 08:30 ET and the market's response to any Treasury repricing. Monday November 2 is likely to inherit Friday's earnings/rates regime and fresh Apple/ON Semiconductor event risk, but its direction is conditional on Thursday and Friday closes. The base case is choppy-to-lower technology performance with elevated two-way earnings gaps, not a forecast of exact daily returns.",
+        "bullCase": "The bullish counterargument is meaningful: the 10-year Treasury yield fell to 4.974% and the 2-year to 4.652% at 09:55 ET, producing a +32.2 basis-point curve; Brent and WTI were also lower in the earlier CNBC futures observations. These moves reduce inflation and discount-rate pressure, while U.S. GDP growth of 3.4% annualized and strong cloud demand indicate that AI infrastructure spending has real underlying demand. The fact that 52 of 101 Nasdaq-100 constituents were advancing suggests a rotation rather than universal risk aversion. If SOX/SMH/SOXX regain leadership, QQQ recovers and VXN falls, the bearish interpretation would be invalidated. Amazon earnings could provide an important positive cloud-cash-flow counterexample.",
+        "bearCase": "The downside scenario is that Alphabet's large negative cash flow and search monetization worries become the benchmark for valuing hyperscalers, while Microsoft's preliminary debt marketing highlights financing costs. Reuters recorded Fortinet and ServiceNow losses exceeding 20% and a semiconductor-index decline, showing stress beyond Alphabet. In NasDecode's semiconductor breadth sample, only 5 of 29 were positive; the directly quoted SOX return lagged Nasdaq by about 1.04 percentage points. Rising VXN adds an options-market warning, even though its quote is delayed. Weak Amazon or Intel results could convert the current concentrated AI selloff into broader Friday/Monday selling; an upward reversal in yields would compound that risk.",
+        "watchNext": "Prioritize a new synchronized 10:30 ET or later dashboard checkpoint: QQQ, Nasdaq, SOX, SOXX, SMH, all SOX constituents, Nasdaq-100 breadth and VXN/VIX with explicit provider timestamps. Reconcile the SOX direct quote (-2.67%) with Reuters (-1.8%) before treating the magnitude as exact. Watch whether the 10Y stays below 5.00% and whether declining oil continues to cushion technology valuations. Monitor the 13:00 ET seven-year Treasury auction, Amazon and Intel after the close, and Friday's 08:30 ET Employment Cost Index. Recheck the curated Open Watch archive for genuinely new events and distinguish their expected impact from observed index/sector responses."
+      },
+      "provenance": {
+        "repo": "repural/NasDecode",
+        "dashboardPath": "public/data/dashboard.json",
+        "dashboardTimestamp": "Oct 29, 2026 · 09:55 ET",
+        "eventPath": "data/history/market-watch-events.json",
+        "eventTimestamp": "2026-10-29T13:31:00+00:00",
+        "webSources": [
+          {
+            "title": "Reuters: Nasdaq slides over 1% as Alphabet results revive AI spending fears",
+            "url": "https://www.reuters.com/business/nasdaq-futures-slide-mixed-big-tech-results-test-ai-trade-2026-10-29/",
+            "observed": "2026-10-29 09:56 ET market snapshot"
+          },
+          {
+            "title": "Reuters: ECB keeps Europe steady as 13% Google plunge fans AI jitters",
+            "url": "https://www.reuters.com/world/china/global-markets-global-markets-2026-10-29/",
+            "observed": "2026-10-29 U.S. morning"
+          },
+          {
+            "title": "AP: Alphabet stock drags U.S. market lower",
+            "url": "https://apnews.com/article/stocks-markets-ai-oil-fed-1b5c71d31b4ce1e46b0db47b33141f6b",
+            "observed": "2026-10-29 10:15 ET market snapshot"
+          },
+          {
+            "title": "BEA: GDP advance estimate Q3 2026",
+            "url": "https://www.bea.gov/news/2026/gdp-advance-estimate-3rd-quarter-2026",
+            "observed": "2026-10-29 08:30 ET"
+          },
+          {
+            "title": "BEA: Personal Income and Outlays September 2026",
+            "url": "https://www.bea.gov/news/2026/personal-income-and-outlays-september-2026",
+            "observed": "2026-10-29 08:30 ET"
+          }
+        ],
+        "quality": "NasDecode direct CNBC 09:55 ET quotes corroborated by Reuters Nasdaq 09:56; SOX feed disagreement is disclosed. VXN and oil are delayed; Fed expectations are prior settlement. Current observations and conditional scenarios separated."
+      },
+      "dataQualityNotes": "New 09:55 ET QQQ/SOX/semiconductor breadth and delayed 09:40 ET VXN confirm deterioration versus prior 09:54 assessment, but the precise SOX return conflicts across sources and Nasdaq-100 breadth is positive. Treasury scaling corrected to 4.974% and 4.652%; no live FedWatch probabilities or 10:47 ET synchronized snapshot invented."
+    },
     {
       "date": "2026-10-29",
       "timeET": "09:54",
