@@ -660,7 +660,7 @@ function render(d){
   if(marketMovingBody){
     // Only curated, material and recently verified events; never present auto-detected
     // candidate headlines as editorial Open Watch updates.
-    const curated=watchEvents.filter(e=>!e.autoDetected && String(e.status||'').toLowerCase()!=='historical' && recentOpenWatchEvent(e,2))
+    const curated=watchEvents.filter(e=>!e.autoDetected && recentOpenWatchEvent(e,2))
       .sort((a,b)=>eventTimeMs(b)-eventTimeMs(a)).slice(0,3);
     marketMovingBody.innerHTML=curated.length?curated.map(e=>{
       const imp=e.initialImpact||e.expectedImpact||{}, confirmation=e.marketConfirmation||{};
