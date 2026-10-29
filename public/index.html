@@ -930,12 +930,26 @@ async function loadTodayWatch(){
   if(!node)return;
   const day=nyDateKey();
   const cleanMarkdown=s=>String(s||'').replace(/\[([^\]]+)\]\(https?:\/\/[^)]+\)/g,'$1').replace(/\*\*/g,'').replace(/\s+/g,' ').trim();
-  const itemsFromNarrative=s=>{
-    const match=String(s||'').match(/^## What to Watch Today\s*\n([\s\S]*?)(?=^## |$(?![\s\S]))/m);
-    if(!match)return [];
-    return match[1].split(/\n\s*(?=\d+\.\s)/).map(p=>cleanMarkdown(p.replace(/^\s*\d+\.\s*/,''))).filter(Boolean);
+  const itemsFromNarrative=markdown=>{
+    const source=String(markdown||'');
+    const section=source.match(/^##\\s+What to Watch Today\\s*\\n([\\s\\S]*?)(?=^##\\s+|$(?![\\s\\S]))/m);
+    if(!section)return [];
+    // Items are numbered inside bold Markdown headings, separated by blank lines.
+    // Avoid splitting ordinary numbered values or flattening all events into one paragraph.
+    const blocks=section[1].trim().split(/\\n\\s*\\n+/).map(x=>x.trim()).filter(Boolean);
+    return blocks.map(block=>{
+      const header=block.match(/^(?:\\*\\*)?(\\d+)\\.\\s+([\\s\\S]*?)(?:\\*\\*|(?=\\.\\s))(?:(?:\\.\\s)?)([\\s\\S]*)$/);
+      if(header){
+        const title=cleanMarkdown(header[2]).replace(/\\.$/,'');
+        const detail=cleanMarkdown(header[3]);
+        return {title,detail};
+      }
+      const cleaned=cleanMarkdown(block.replace(/^(?:\\*\\*)?\\d+\\.\\s*/,'')); 
+      const stop=cleaned.indexOf('. ');
+      return stop>0&&stop<140?{title:cleaned.slice(0,stop),detail:cleaned.slice(stop+2)}:{title:cleaned,detail:''};
+    }).filter(x=>x.title);
   };
-  const renderItems=items=>items.map((item,i)=>'<div class="catalyst"><b>'+analysisText((i+1)+'. '+item.title)+'</b>'+(item.detail?'<div style="margin-top:5px">'+analysisText(item.detail)+'</div>':'')+'</div>').join('');
+  const renderItems=items=>items.map((item,i)=>'<article class="catalyst"><b>'+analysisText((i+1)+'. '+item.title)+'</b>'+(item.detail?'<div style="margin-top:5px">'+analysisText(item.detail)+'</div>':'')+'</article>').join('');
   try{
     // Research owns the event selection; the quantitative premarket refresh does not.
     const res=await fetch('data/session-research.json?t='+Date.now(),{cache:'no-store'});
@@ -943,12 +957,9 @@ async function loadTodayWatch(){
       const archive=await res.json(), session=archive.sessions?.[day]||{};
       const research=session.premarket?.publicationStatus==='published'?session.premarket:null;
       if(research){
-        const paragraphs=itemsFromNarrative(research.narrativeMarkdown);
-        if(paragraphs.length){
-          node.innerHTML=renderItems(paragraphs.map(p=>{
-            const cut=p.indexOf('. ');
-            return cut>0&&cut<120?{title:p.slice(0,cut+1),detail:p.slice(cut+2)}:{title:p,detail:''};
-          }));
+        const items=itemsFromNarrative(research.narrativeMarkdown);
+        if(items.length){
+          node.innerHTML=renderItems(items);
           return;
         }
         const catalysts=Array.isArray(research.catalysts)?research.catalysts.filter(x=>x?.title):[];
