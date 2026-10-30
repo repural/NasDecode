@@ -114,6 +114,23 @@
       .session-tab-panel .nd-research-table th{color:#edf0f3;background:#1b1d20;font-weight:650}
       .session-tab-panel a{color:#82cbd0;text-decoration:underline;text-underline-offset:2px;overflow-wrap:anywhere}
       .session-tab-panel p{overflow-wrap:anywhere}
+
+      /* Dedicated pre-market reading page: full-width panel, restrained text column. */
+      html[data-nd-page="analysis"] #premarket.nd-premarket-only{max-width:1280px;width:100%;margin:0 auto;padding:28px clamp(20px,3vw,48px);border:1px solid #303236}
+      .nd-premarket-only .session-tab-panel{border:0;padding:0}
+      .nd-premarket-only .session-analysis-title{max-width:1100px;align-items:flex-end;margin:0 0 30px;gap:14px}
+      .nd-premarket-only .session-analysis-title h2{font-size:clamp(28px,2.5vw,36px);letter-spacing:-.035em;line-height:1.2;margin:7px 0 0;font-weight:700;color:#f1f3f5}
+      .nd-premarket-only .session-analysis-time{font-size:12px;line-height:1.55;color:#aeb5bd}
+      .nd-premarket-only .nd-premarket-reading{max-width:1000px}
+      .nd-premarket-only .nd-premarket-reading p,.nd-premarket-only .nd-premarket-reading li{font-size:16px;line-height:1.8;max-width:1000px;color:#dbe0e4}
+      .nd-premarket-only .nd-premarket-reading .nd-research-heading{font-size:21px;line-height:1.4;margin:28px 0 15px}
+      .nd-premarket-only .nd-analysis-summary{max-width:1000px;gap:12px;margin:0 0 26px}
+      .nd-premarket-only .nd-analysis-summary-card{padding:17px 19px}
+      .nd-premarket-only .nd-summary-label{font-size:13px}
+      .nd-premarket-only .nd-summary-value{font-size:22px}
+      .nd-premarket-only .nd-research-table-wrap{max-width:1000px}
+      .nd-premarket-only .nd-research-table{font-size:13px}
+      @media(max-width:700px){html[data-nd-page="analysis"] #premarket.nd-premarket-only{padding:20px 16px}.nd-premarket-only .session-analysis-title{align-items:flex-start}.nd-premarket-only .nd-premarket-reading p,.nd-premarket-only .nd-premarket-reading li{font-size:15px;line-height:1.72}.nd-premarket-only .nd-analysis-summary-card{padding:14px}.nd-premarket-only .nd-summary-value{font-size:20px}}
       .session-tab-panel .bias{font-size:17px;font-weight:590;line-height:1.45;margin:0 0 10px;color:#f3f4f5}
       .session-tab-panel h3{font-size:15px;font-weight:680;margin:22px 0 11px}
       .session-tab-panel ol{padding-left:24px;margin:0 0 18px;max-width:120ch}
@@ -226,18 +243,9 @@
   function paint(){
     installStyle();
     const host=document.getElementById('premarket');if(!host)return;
-    host.className='premarket session-tabs-shell';
-    const auto=automaticTab(), selected=manualTab||auto, view=viewFor(selected);
-    const dates=Object.keys(researchData?.sessions||{}).sort().reverse();
-    const dateSelector=dates.length?'<label class="session-analysis-time">Research date <select id="session-research-date" aria-label="Research date"><option value="">Today</option>'+dates.filter(x=>x!==etParts().date).map(x=>'<option value="'+esc(x)+'" '+(manualDate===x?'selected':'')+'>'+esc(x)+'</option>').join('')+'</select></label>':'';
-    const tabs=stages.map(s=>{
-      const v=viewFor(s.key), cls=['session-tab',s.key===selected?'active':'',v.available?'has-data':'awaiting'].filter(Boolean).join(' ');
-      const current=s.key===auto?'<span class="session-current-note">Current window</span>':'';
-      return `<button type="button" class="${cls}" data-session-tab="${s.key}" aria-selected="${s.key===selected?'true':'false'}"><b>${esc(s.label)}</b><span>${esc(s.time)}</span>${current}</button>`;
-    }).join('');
-    host.innerHTML=`<div class="session-tabs-head"><div><div class="section-kicker">Session analysis</div><h2>NasDecode Analysis</h2></div><div class="muted">Automatically follows New York market time · click any tab to review</div>${dateSelector}</div><div class="session-tabbar" role="tablist">${tabs}</div><div class="session-tab-panel" role="tabpanel"><div class="session-analysis-title"><h3>${esc(view.title)}</h3><div class="session-analysis-time">${view.meta}</div></div>${view.body}</div>`;
-    host.querySelectorAll('[data-session-tab]').forEach(btn=>btn.addEventListener('click',()=>{manualTab=btn.dataset.sessionTab;paint()}));
-    host.querySelector('#session-research-date')?.addEventListener('change',e=>{manualDate=e.target.value||null;paint()});
+    host.className='premarket session-tabs-shell nd-premarket-only';
+    const view=viewFor('premarket');
+    host.innerHTML='<div class="session-tab-panel"><div class="session-analysis-title"><div><div class="section-kicker">NasDecode research · New York time</div><h2>Pre-Market Analysis</h2></div><div class="session-analysis-time">'+view.meta+'</div></div><div class="nd-premarket-reading">'+view.body+'</div></div>';
     const old=document.getElementById('session-analysis');if(old)old.remove();
   }
   async function refreshData(d){
