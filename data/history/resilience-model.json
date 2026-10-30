@@ -46,67 +46,67 @@
     "name": "Macro baseline",
     "available": true,
     "outOfSampleMetrics": {
-      "observations": 189,
-      "maePct": 1.1649,
-      "rmsePct": 1.457,
-      "outOfSampleR2": 0.7749,
-      "directionAccuracyPct": 86.2,
-      "meanResidualPct": -0.0629
+      "observations": 190,
+      "maePct": 1.1679,
+      "rmsePct": 1.4587,
+      "outOfSampleR2": 0.7735,
+      "directionAccuracyPct": 86.3,
+      "meanResidualPct": -0.0534
     },
     "latest": {
-      "date": "2026-10-28",
+      "date": "2026-10-29",
       "status": "predicted",
       "model": "macroBaseline",
-      "trainStart": "2026-05-06",
-      "trainEnd": "2026-10-27",
+      "trainStart": "2026-05-07",
+      "trainEnd": "2026-10-28",
       "trainingSessions": 120,
-      "actualSoxReturnPct": 1.7548,
-      "expectedSoxReturnPct": 1.0146,
-      "residualPct": 0.7402,
-      "residualZ": 0.675,
+      "actualSoxReturnPct": -1.419,
+      "expectedSoxReturnPct": -3.1674,
+      "residualPct": 1.7484,
+      "residualZ": 1.418,
       "inputs": {
-        "qqqReturn1dPct": 0.6045,
-        "ratesParallelShockBp": 1.5,
-        "curveSteepeningShockBp": 9.0,
-        "vxnReturn1dPct": -4.5363,
-        "brentReturn1dPct": 1.2645
+        "qqqReturn1dPct": -1.4154,
+        "ratesParallelShockBp": -6.5,
+        "curveSteepeningShockBp": -1.0,
+        "vxnReturn1dPct": 5.8873,
+        "brentReturn1dPct": -0.3815
       },
       "regimeContext": {
-        "us10yLevelPct": 5.05,
-        "us2yLevelPct": 4.67,
-        "vxnLevel": 23.780000686645508,
-        "brentLevel": 115.31999969482422
+        "us10yLevelPct": 4.98,
+        "us2yLevelPct": 4.61,
+        "vxnLevel": 25.18000030517578,
+        "brentLevel": 114.87999725341797
       },
       "featureContributionsPct": {
-        "qqqReturn1dPct": 1.3529,
-        "ratesParallelShockBp": 0.0068,
-        "curveSteepeningShockBp": -0.3748,
-        "vxnReturn1dPct": -0.078,
-        "brentReturn1dPct": 0.1528
+        "qqqReturn1dPct": -3.1547,
+        "ratesParallelShockBp": -0.0367,
+        "curveSteepeningShockBp": 0.0361,
+        "vxnReturn1dPct": 0.0806,
+        "brentReturn1dPct": -0.048
       },
       "sensitivities": {
-        "qqqReturn1dPct": 2.238054,
-        "ratesParallelShockBp": 0.00454,
-        "curveSteepeningShockBp": -0.04165,
-        "vxnReturn1dPct": 0.017191,
-        "brentReturn1dPct": 0.120836
+        "qqqReturn1dPct": 2.228827,
+        "ratesParallelShockBp": 0.005644,
+        "curveSteepeningShockBp": -0.036124,
+        "vxnReturn1dPct": 0.013685,
+        "brentReturn1dPct": 0.125892
       },
-      "interceptPct": -0.045
+      "interceptPct": -0.0447
     },
     "latestSensitivityInterpretation": {
-      "qqqBeta": 2.238,
-      "soxPctPer10BpParallelRates": 0.045,
-      "soxPctPer10Bp10s2sSteepening": -0.416,
-      "soxPctPer10PctVxnMove": 0.172,
-      "soxPctPer5PctBrentMove": 0.604
+      "qqqBeta": 2.229,
+      "soxPctPer10BpParallelRates": 0.056,
+      "soxPctPer10Bp10s2sSteepening": -0.361,
+      "soxPctPer10PctVxnMove": 0.137,
+      "soxPctPer5PctBrentMove": 0.629
     }
   },
   "modelB": {
     "name": "Macro + Hype",
     "available": false,
     "status": "collecting_point_in_time_hype_history",
-    "candidateHypeDays": 21,
-    "prospectiveHypeDays": 0,
+    "candidateHypeDays": 22,
+    "prospectiveHypeDays": 1,
     "minimumProspectiveHypeDaysBeforeFit": 60,
     "note": "Not fitted yet. Historical Hype is sparse and is not fabricated from future knowledge or price response."
   },
@@ -7789,6 +7789,45 @@
         "brentReturn1dPct": 0.120836
       },
       "interceptPct": -0.045
+    },
+    "2026-10-29": {
+      "status": "predicted",
+      "model": "macroBaseline",
+      "trainStart": "2026-05-07",
+      "trainEnd": "2026-10-28",
+      "trainingSessions": 120,
+      "actualSoxReturnPct": -1.419,
+      "expectedSoxReturnPct": -3.1674,
+      "residualPct": 1.7484,
+      "residualZ": 1.418,
+      "inputs": {
+        "qqqReturn1dPct": -1.4154,
+        "ratesParallelShockBp": -6.5,
+        "curveSteepeningShockBp": -1.0,
+        "vxnReturn1dPct": 5.8873,
+        "brentReturn1dPct": -0.3815
+      },
+      "regimeContext": {
+        "us10yLevelPct": 4.98,
+        "us2yLevelPct": 4.61,
+        "vxnLevel": 25.18000030517578,
+        "brentLevel": 114.87999725341797
+      },
+      "featureContributionsPct": {
+        "qqqReturn1dPct": -3.1547,
+        "ratesParallelShockBp": -0.0367,
+        "curveSteepeningShockBp": 0.0361,
+        "vxnReturn1dPct": 0.0806,
+        "brentReturn1dPct": -0.048
+      },
+      "sensitivities": {
+        "qqqReturn1dPct": 2.228827,
+        "ratesParallelShockBp": 0.005644,
+        "curveSteepeningShockBp": -0.036124,
+        "vxnReturn1dPct": 0.013685,
+        "brentReturn1dPct": 0.125892
+      },
+      "interceptPct": -0.0447
     }
   }
 }
