@@ -220,6 +220,7 @@
     let suppress=false, skipValue=false;
     for(const p of paragraphs){
       const plain=String(p||'').trim();
+      if(/^NasDecode Pre-Market Analysis\s*(?:\n|$)/i.test(plain) || /^(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),?\s+\w+\s+\d{1,2},?\s+20\d{2}\s*[·—-]\s*(?:\d{1,2}:\d{2}\s*ET\s*)?(?:scheduled checkpoint|checkpoint)/i.test(plain))continue;
       if(/^#{0,4}\s*(publication status|research integrity)\s*$/i.test(plain)){suppress=true;continue}
       if(suppress){if(/^#{1,4}\s+(?!publication status|research integrity)/i.test(plain))suppress=false;else continue}
       if(/^#{0,4}\s*(nasdaq bias|confidence|event risk)\s*$/i.test(plain)){skipValue=true;continue}
