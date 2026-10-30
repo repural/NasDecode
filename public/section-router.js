@@ -1,5 +1,5 @@
 (()=>{'use strict';
-const pages={overview:'Overview',assessment:'Assessment',analysis:'Analysis',watch:'Open Watch',threeDay:'3-Day Watch'};
+const pages={overview:'Overview',assessment:'Assessment',analysis:'Analysis',threeDay:'3-Day Watch',watch:'Open Watch'};
 const rawView=new URLSearchParams(location.search).get('view')||'overview';
 const requested=['macro','internals'].includes(rawView)?'overview':rawView;
 const view=Object.prototype.hasOwnProperty.call(pages,requested)?requested:'overview';
@@ -34,7 +34,17 @@ html[data-nd-page="analysis"] #factorCards,html[data-nd-page="analysis"] .signal
 html[data-nd-page="watch"] #factorCards,html[data-nd-page="watch"] #premarket,html[data-nd-page="watch"] .signal-details,html[data-nd-page="watch"] #marketSetup{display:none!important}
 html[data-nd-page="threeDay"] #dashboard > :not(.nd-page-title):not(#nd-three-day-watch){display:none!important}
 html[data-nd-page="overview"] .lower-intel{margin-top:18px}\nhtml[data-nd-page="overview"] #marketMovingDevelopments .nd-earnings-section{display:none!important}
-.nd-three-day{max-width:1020px;margin:14px 0 60px}.nd-three-day .nd-watch-meta{color:#aab3be;margin-bottom:18px}.nd-three-day .nd-watch-card{border:1px solid #34383f;border-top:3px solid #27d17f;border-radius:12px;background:#171a20;padding:22px;margin:0 0 18px}.nd-three-day .nd-watch-card.unchanged{border-top-color:#7d8998}.nd-three-day h2{font-size:22px;margin:0 0 8px}.nd-three-day h3{font-size:15px;margin:22px 0 8px}.nd-three-day p,.nd-three-day li{color:#d2d8e0;line-height:1.65}.nd-three-day .nd-watch-bias{color:#6ee7ad;font-weight:700}.nd-three-day .nd-watch-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.nd-three-day .nd-watch-box{border:1px solid #30343b;border-radius:9px;padding:14px}.nd-three-day .nd-watch-box b{display:block;margin-bottom:6px}.nd-three-day .nd-watch-archive{margin-top:24px}.nd-three-day details{border-bottom:1px solid #34383f;padding:12px 0}.nd-three-day summary{cursor:pointer;color:#e6e9ee;font-weight:600}.nd-three-day .nd-watch-observations{display:flex;flex-wrap:wrap;gap:8px}.nd-three-day .nd-watch-observations span{padding:6px 9px;background:#242b33;border-radius:7px;font-size:12px;color:#d6dce4}@media(max-width:680px){.nd-three-day .nd-watch-grid{grid-template-columns:1fr}.nd-three-day .nd-watch-card{padding:16px}}
+.nd-three-day{max-width:1020px;margin:14px 0 60px}.nd-three-day .nd-watch-meta{color:#aab3be;margin-bottom:18px}.nd-three-day .nd-watch-card{border:1px solid #34383f;border-top:3px solid #27d17f;border-radius:12px;background:#171a20;padding:22px;margin:0 0 18px}.nd-three-day .nd-watch-card.unchanged{border-top-color:#7d8998}.nd-three-day h2{font-size:22px;margin:0 0 8px}.nd-three-day h3{font-size:15px;margin:22px 0 8px}.nd-three-day p,.nd-three-day li{color:#d2d8e0;line-height:1.65}.nd-three-day .nd-watch-bias{color:#6ee7ad;font-weight:700}.nd-three-day .nd-watch-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.nd-three-day .nd-watch-box{border:1px solid #30343b;border-radius:9px;padding:14px}.nd-three-day .nd-watch-box b{display:block;margin-bottom:6px}.nd-three-day .nd-watch-archive{margin-top:24px}.nd-three-day details{border-bottom:1px solid #34383f;padding:12px 0}.nd-three-day summary{cursor:pointer;color:#e6e9ee;font-weight:600}.nd-three-day .nd-watch-observations{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:10px}
+.nd-three-day .nd-observation-card{min-width:0;padding:14px 15px;border:1px solid #333840;border-radius:10px;background:#191c20}
+.nd-three-day .nd-observation-label{font-size:12px;font-weight:650;color:#dfe5ea;margin-bottom:8px}
+.nd-three-day .nd-observation-value{font-size:12px;color:#c9d1d8;line-height:1.55;overflow-wrap:anywhere}
+.nd-three-day .nd-observation-fields{display:grid;gap:7px;margin:0}
+.nd-three-day .nd-observation-fields>div{min-width:0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:3px 10px;border-top:1px solid #30343b;padding-top:6px}
+.nd-three-day .nd-observation-fields dt{color:#9faab5}
+.nd-three-day .nd-observation-fields dd{margin:0;color:#e5eaf0;font-weight:600;overflow-wrap:anywhere}
+.nd-three-day .nd-observation-list{margin:0;padding-left:16px}
+.nd-three-day .nd-observation-list li{margin-bottom:4px}
+.nd-three-day .nd-observation-empty{color:#939da7;font-weight:400}@media(max-width:680px){.nd-three-day .nd-watch-grid{grid-template-columns:1fr}.nd-three-day .nd-watch-card{padding:16px}}
 html[data-nd-page="analysis"] .nd-page-title{display:none!important}
 .nd-page-title{margin:22px 0 18px;font-size:26px;font-weight:690;letter-spacing:-.025em}
 .nd-page-intro{color:#aeb4bc;font-size:13px;line-height:1.55;margin:-8px 0 20px}
@@ -49,7 +59,17 @@ if(wrap&&view!=='overview'){
 if(wrap&&view==='threeDay'){
  const host=document.createElement('section');host.id='nd-three-day-watch';host.className='nd-three-day';host.innerHTML='<p class="nd-watch-meta">Loading latest 3-Day Watch…</p>';wrap.appendChild(host);
  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
- const obs=e=>Object.entries(e.observations||{}).map(([k,v])=>'<span>'+esc(k.replace(/([a-z])([A-Z])/g,'$1 $2'))+': <b>'+esc(v)+'</b></span>').join('');
+ const prettyKey=k=>String(k).replace(/([a-z0-9])([A-Z])/g,'$1 $2').replace(/([A-Z])([A-Z][a-z])/g,'$1 $2').replace(/_/g,' ');
+ const observationValue=(v,depth=0)=>{
+   if(v===null||v===undefined||v==='')return '<span class="nd-observation-empty">Not available</span>';
+   if(typeof v==='boolean')return esc(v?'Yes':'No');
+   if(typeof v!=='object')return esc(v);
+   if(depth>=3)return '<span class="nd-observation-empty">Additional details available in source data</span>';
+   if(Array.isArray(v))return v.length?'<ul class="nd-observation-list">'+v.slice(0,20).map(item=>'<li>'+observationValue(item,depth+1)+'</li>').join('')+'</ul>':'<span class="nd-observation-empty">No entries</span>';
+   const pairs=Object.entries(v).filter(([k])=>!['raw','debug','html'].includes(k));
+   return pairs.length?'<dl class="nd-observation-fields">'+pairs.map(([key,val])=>'<div><dt>'+esc(prettyKey(key))+'</dt><dd>'+observationValue(val,depth+1)+'</dd></div>').join('')+'</dl>':'<span class="nd-observation-empty">No details</span>';
+ };
+ const obs=e=>Object.entries(e.observations||{}).map(([k,v])=>'<div class="nd-observation-card"><div class="nd-observation-label">'+esc(prettyKey(k))+'</div><div class="nd-observation-value">'+observationValue(v)+'</div></div>').join('')||'<p class="nd-watch-meta">No market observations recorded.</p>';
  const editorial=e=>{const x=e.editorial;if(!x)return '<h3>Market interpretation</h3><p>'+esc(e.summary||'Editorial analysis pending next update.')+'</p>';if(typeof x==='string')return '<h3>Market interpretation</h3><p>'+esc(x)+'</p>';const sections=[['marketOverview','Market overview'],['whatChanged','What changed'],['marketInterpretation','Market interpretation'],['threeDayPath','Expected three-day path'],['bullCase','Bullish scenario'],['bearCase','Bearish scenario'],['watchNext','What to watch']];return sections.filter(([k])=>x[k]).map(([k,title])=>'<h3>'+title+'</h3><p>'+esc(x[k])+'</p>').join('')||'<h3>Market interpretation</h3><p>'+esc(e.summary||'')+'</p>';};
  const render=e=>'<div class="nd-watch-card '+(e.materialChange?'':'unchanged')+'"><div class="nd-watch-meta">'+esc(e.date)+' · '+esc(e.timeET)+' ET · '+(e.materialChange?'Material outlook change':'No material change')+'</div><h2 class="nd-watch-bias">'+esc(e.bias)+'</h2>'+editorial(e)+'<div class="nd-watch-grid"><div class="nd-watch-box"><b>Strongest bullish evidence</b>'+esc(e.bullish)+'</div><div class="nd-watch-box"><b>Strongest bearish evidence</b>'+esc(e.bearish)+'</div></div><h3>Market observations</h3><div class="nd-watch-observations">'+obs(e)+'</div>'+(e.conditions?.length?'<h3>Confirmation / invalidation</h3><ul>'+e.conditions.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':'')+'<h3>Upcoming catalysts</h3><ul>'+(e.upcomingEvents||[]).map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul><p class="nd-watch-meta">'+esc(e.provenance)+'</p></div>';
  async function loadWatch(){try{const r=await fetch('/data/three-day-watch.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const data=await r.json();const entries=(data.entries||[]).slice().sort((a,b)=>(b.date+'T'+b.timeET).localeCompare(a.date+'T'+a.timeET));if(!entries.length)throw Error('No saved assessments');host.innerHTML='<p class="nd-watch-meta">Current three-session horizon: '+esc((data.horizon||[]).join(' → '))+' · Latest published assessment</p>'+render(entries[0]);;}catch(e){host.textContent='3-Day Watch history is temporarily unavailable: '+e.message;}}
