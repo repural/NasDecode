@@ -1,13 +1,271 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-10-31T03:18:43.462Z",
+  "updated": "2026-10-31T03:50:42.965Z",
   "horizon": [
     "2026-11-02",
     "2026-11-03",
     "2026-11-04"
   ],
   "entries": [
+    {
+      "date": "2026-10-30",
+      "timeET": "23:50",
+      "asOfET": "2026-10-30T23:50:42-04:00",
+      "runKey": "nasdecode-3day-2026-10-30T23:50:42-04:00",
+      "bias": "Bearish — Friday chip rout confirmed; elevated but moderating volatility risk",
+      "previousBias": "Bearish — Friday chip rout confirmed; elevated but moderating volatility risk",
+      "materialChange": false,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "No independently verified new Nasdaq-wide catalyst or U.S. cash-market session since the previous 23:18 EDT saved assessment. Friday Nasdaq -2.86%, QQQ -3.47%, SOX -7.20% and SOX relative lag -4.34 percentage points remain the last verified cash observations. Nasdaq-100 breadth 37/101 and sampled chip breadth 1/20 advancing remain weak. VXN 28.50/VIX 19.42 at Friday 16:15 EDT; 10Y 4.933%/2Y 4.592%, curve +34.1 bp at Friday 17:05 EDT. NasDecode dashboard 23:19 EDT score -39 versus prior -37 is model recalculation, not a new market move. Treasury dashboard 933%/592% scaling error excluded. Brent stale, WTI asynchronous, Fed odds October 29 settlement. Curated Open Watch unchanged at 89 events. Reuters weekly fund-flow reporting adds mixed retrospective context, not a new catalyst. November 2–4 remains Bearish, moderate confidence, high event risk.",
+      "bullish": "Falling Friday Treasury yields, potential oversold rebound and strong AI demand provide conditional support but no Monday confirmation. Upgrade requires sustained QQQ recovery, SOX no longer lagging Nasdaq, stable chip breadth >50%, Nasdaq-100 cash breadth >60% and fresh VXN <24.",
+      "bearish": "Friday QQQ -3.47%, Nasdaq -2.86%, SOX -7.20%, SOX relative lag -4.34 pp, Nasdaq exchange decliners 3,622 versus advancers 1,196, and 1/20 sampled chips advancing support downside continuation risk. Intel guidance, AI financing worries and high oil remain unresolved; Monday price response unobserved.",
+      "observations": {
+        "assessmentTimeET": "2026-10-30T23:50:42-04:00",
+        "marketDataExactlySynchronized": false,
+        "quoteCaveat": "Weekend no new U.S. cash session. Nasdaq/QQQ/SOX Friday cash close 16:00-16:01 EDT; VXN/VIX 16:15 EDT; Treasury yields 17:05 EDT; Brent stale Friday 06:00 BST, WTI Friday 18:40:58 EDT asynchronous; Fed odds Oct 29 settlement. Cash Nasdaq-100 breadth 37/101 and chip breadth 1/20 are incomplete/different universes. S5FI unverified. Dashboard 23:19 EDT score -39 is a model refresh, not price discovery. Dashboard 933%/592% Treasury yield trigger is erroneous; corrected nominal yields 4.933%/4.592%.",
+        "nasdaqComposite": {
+          "value": 25437,
+          "sessionChangePct": -2.86,
+          "unit": "index_points_and_percent_cash_close",
+          "source": "Reuters close; NasDecode CNBC index quote",
+          "sourceTimestamp": "2026-10-30 16:00-16:01 EDT",
+          "sourceUrl": "https://www.reuters.com/business/nasdaq-futures-tumble-amazon-intel-results-deepen-ai-spending-woes-2026-10-30/"
+        },
+        "QQQ": {
+          "sessionChangePct": -3.47,
+          "unit": "percent_cash_session_vs_prior_close",
+          "source": "NasDecode CNBC session-aware basket",
+          "sourceTimestamp": "2026-10-30 16:01 EDT (cash close, retained at 17:12 refresh)",
+          "sourceUrl": "https://github.com/repural/NasDecode/blob/main/public/data/dashboard.json"
+        },
+        "SOX": {
+          "sessionChangePct": -7.2,
+          "unit": "percent_cash_close",
+          "source": "Reuters and NasDecode CNBC SOX",
+          "sourceTimestamp": "2026-10-30 16:00-16:01 EDT",
+          "sourceUrl": "https://www.reuters.com/business/nasdaq-futures-tumble-amazon-intel-results-deepen-ai-spending-woes-2026-10-30/"
+        },
+        "semiconductorRelativeStrength": {
+          "soxMinusNasdaqPp": -4.34,
+          "soxxMinusNasdaqPp": -5.38,
+          "smhMinusNasdaqPp": -4.12,
+          "unit": "percentage_points_Friday_cash_session",
+          "source": "NasDecode paired confirmation layer",
+          "sourceTimestamp": "2026-10-30 16:01 EDT",
+          "sourceUrl": "https://github.com/repural/NasDecode/blob/main/public/data/dashboard.json"
+        },
+        "soxConstituentBreadth": {
+          "positive": 1,
+          "available": 20,
+          "universeSize": 30,
+          "unit": "covered_constituents_Friday_cash_close",
+          "source": "NasDecode semiconductorLeadership",
+          "sourceTimestamp": "2026-10-30 16:01 EDT",
+          "caution": "Only 20 names covered; differs from 29-name intraday universe."
+        },
+        "nasdaq100Breadth": {
+          "advancing": 37,
+          "declining": 64,
+          "available": 101,
+          "unit": "covered_constituents_Friday_regular_session_close",
+          "source": "NasDecode dashboard Market breadth row",
+          "sourceTimestamp": "2026-10-30 cash close, dashboard checked 21:32 EDT",
+          "caution": "Prior 56/89 was after-hours and different composition, not a valid directional comparison."
+        },
+        "nasdaqExchangeBreadth": {
+          "advancing": 1196,
+          "declining": 3622,
+          "unit": "all_Nasdaq_exchange_issues_Friday_cash_close",
+          "source": "Reuters Friday closing report",
+          "sourceTimestamp": "2026-10-30 cash close",
+          "caution": "Exchange universe, not Nasdaq-100 constituent breadth."
+        },
+        "nasdaqScore": {
+          "value": -39,
+          "unit": "model_points_out_of_100",
+          "source": "NasDecode v3 dashboard",
+          "sourceTimestamp": "2026-10-30 23:19 EDT",
+          "notMarketQuote": true,
+          "caution": "Changed from prior saved -37 due to model refresh with no new cash session; not evidence of market recovery or fresh selling."
+        },
+        "US10Y": {
+          "value": 4.933,
+          "changeVsPriorCloseBp": -5.6,
+          "unit": "percent_nominal_yield",
+          "source": "NasDecode CNBC / Tradeweb quote feed",
+          "sourceTimestamp": "2026-10-30 17:05 EDT",
+          "dataQuality": "4.933%, not 933%; after-close yield quote, not Friday equity cash close."
+        },
+        "US2Y": {
+          "value": 4.592,
+          "changeVsPriorCloseBp": -6.4,
+          "unit": "percent_nominal_yield",
+          "source": "NasDecode CNBC / Tradeweb quote feed",
+          "sourceTimestamp": "2026-10-30 17:05 EDT",
+          "dataQuality": "4.592%, not 592%; after-close yield quote."
+        },
+        "yieldCurve2s10s": {
+          "value": 34.1,
+          "unit": "basis_points_10Y_minus_2Y",
+          "source": "Computed from matched-time corrected nominal yields",
+          "sourceTimestamp": "2026-10-30 17:05 EDT"
+        },
+        "VXN": {
+          "value": 28.5,
+          "sessionChangePct": 13.19,
+          "unit": "index_points_and_percent_change",
+          "source": "NasDecode CNBC / Cboe quotes",
+          "sourceTimestamp": "2026-10-30 16:15 EDT",
+          "caution": "Delayed or unspecified quote; not a verified official Cboe settlement."
+        },
+        "VIX": {
+          "value": 19.42,
+          "sessionChangePct": 12.91,
+          "unit": "index_points_and_percent_change",
+          "source": "NasDecode CNBC / Cboe quotes",
+          "sourceTimestamp": "2026-10-30 16:15 EDT",
+          "caution": "Late quote, not synchronized with Treasury or oil."
+        },
+        "Brent": {
+          "value": 117.64,
+          "sessionChangePct": 0,
+          "unit": "USD_per_barrel_futures",
+          "source": "NasDecode CNBC futures feed",
+          "sourceTimestamp": "2026-10-30 06:00 BST (01:00 EDT), stale quote shown at 19:43 EDT dashboard",
+          "caution": "Stale timestamp; not a new late-Friday market move. Reuters settlement $117.63 is a different observation."
+        },
+        "WTI": {
+          "value": 102.95,
+          "sessionChangePct": 0.93,
+          "unit": "USD_per_barrel_futures_and_percent_change",
+          "source": "NasDecode CNBC futures quote",
+          "sourceTimestamp": "2026-10-30 18:40:58 EDT",
+          "caution": "Asynchronous; Reuters reports $104.12 settlement, potentially distinct contract/basis. Do not blend."
+        },
+        "reutersOilSettlement": {
+          "brent": 117.63,
+          "wti": 104.12,
+          "unit": "USD_per_barrel_reported_settlement",
+          "source": "Reuters global markets Oct 30 report",
+          "sourceTimestamp": "2026-10-30 U.S. Friday settlement (report time distinct from CNBC quotes)",
+          "sourceUrl": "https://www.reuters.com/legal/transactional/global-markets-global-markets-2026-10-30/",
+          "caution": "Reuters settlement distinct from dashboard futures quote; possible contract/basis difference."
+        },
+        "fedExpectations": {
+          "decemberHikeProbabilityPct": 79.9,
+          "decemberHoldProbabilityPct": 20.1,
+          "decemberCutProbabilityPct": 0,
+          "currentFedTargetRange": "3.75%-4.00%",
+          "unit": "percent_settlement_derived_probability",
+          "source": "NasDecode CME 30-Day Fed Funds futures settlement-derived model",
+          "sourceTimestamp": "2026-10-29 settlement; checked 2026-10-30 17:12 EDT",
+          "notLiveFedWatch": true
+        },
+        "fedComments": {
+          "observation": "Reuters on Oct 30 reports Logan, Musalem and Barkin favor further rate increases; these statements were already public by the previous assessment. No new synchronized Fed-futures repricing verified.",
+          "unit": "qualitative_policy_communication",
+          "source": "Reuters",
+          "sourceTimestamp": "2026-10-30",
+          "sourceUrl": "https://www.reuters.com/business/feds-musalem-says-rate-hike-is-needed-soon-2026-10-30/"
+        },
+        "newCuratedEvents": {
+          "count": 0,
+          "archiveCount": 89,
+          "unit": "new_records_since_previous_assessment",
+          "source": "NasDecode curated Open Watch",
+          "sourceTimestamp": "2026-10-31T00:58:08+00:00",
+          "sourceUrl": "https://github.com/repural/NasDecode/blob/main/data/history/market-watch-events.json",
+          "marketImpactUnverified": true
+        },
+        "dataIntegrity": {
+          "treasuryScalingCorrected": true,
+          "quotesAsynchronous": true,
+          "FridayCashCloseVerified": true,
+          "volatilitySettlementUnverified": true,
+          "afterHoursBreadthNotCash": true,
+          "unverifiedS5FI": true,
+          "priorSettlementFedOddsNotLive": true,
+          "marketResponseVsCatalystExpectationSeparated": true,
+          "brentTimestampStale": true,
+          "modelScoreRecalculationNotMarketMove": true,
+          "downstreamYieldTriggerScalingError": true,
+          "fridayCashCloseVerified": true,
+          "weekendNoCashSession": true
+        },
+        "dashboardThreeDayWatchScalingBug": {
+          "erroneousTrigger": "US10Y 933.000% / US2Y 592.000%",
+          "corrected10YPct": 4.933,
+          "corrected2YPct": 4.592,
+          "unit": "percent_nominal_yield",
+          "source": "NasDecode dashboard.json 21:32 EDT",
+          "caution": "Invalid >5.05% 10Y bearish trigger from mis-scaled values; excluded from this assessment."
+        },
+        "researchAsOfUTC": "2026-10-31T03:50:42.965Z",
+        "weeklyFundFlowContext": {
+          "usEquityFundsNetFlow": -6.65,
+          "technologySectorFundsFlow": 4.54,
+          "unit": "USD_billions_week_ended_2026-10-28",
+          "source": "Reuters fund flow report",
+          "sourceTimestamp": "2026-10-30 (report of week ended 2026-10-28)",
+          "sourceUrl": "https://www.reuters.com/business/investors-pull-money-us-equity-funds-ahead-earnings-reports-ai-hyperscalers-2026-10-30/",
+          "caution": "Retrospective, mixed fund flows; not new post-assessment market reaction."
+        }
+      },
+      "conditions": [
+        "Bearish November 2–4 base case is a scenario, not a verified future market move.",
+        "Continuation confirmation: failed Monday QQQ rebound, SOX underperformance >3 pp, stable Nasdaq-100 cash breadth <40%, fresh VXN >30.",
+        "Invalidation: sustained QQQ recovery, SOX relative strength >=0 pp, stable chip breadth >50%, Nasdaq-100 cash breadth >60%, fresh VXN <24.",
+        "Correct nominal 10Y 4.933% and 2Y 4.592% at Friday 17:05 EDT, 2s10s +34.1 bp; ignore invalid 933%/592% dashboard trigger; new verified 10Y >5.05% would add rates risk.",
+        "VXN 28.50 and VIX 19.42 are Friday 16:15 EDT quotes, not Saturday live data.",
+        "Nasdaq-100 cash breadth 37/101 and chip breadth 1/20 are different incomplete universes; no comparison to after-hours samples; S5FI unverified.",
+        "Brent dashboard $117.64 Friday 06:00 BST is stale; WTI dashboard $102.95 Friday 18:40:58 EDT differs from Reuters settlement WTI $104.12; no synchronized oil move.",
+        "December Fed hike odds 79.9% derive from October 29 settlement, not live weekend FedWatch.",
+        "Open Watch remains 89 curated records; expected impacts are not confirmed Nasdaq reactions.",
+        "NasDecode model score -39 at Friday 23:19 EDT is not a new U.S. cash-market price."
+      ],
+      "upcomingEvents": [
+        "2026-11-02 09:30 EST — first U.S. cash open after Friday selloff; DST ends Nov 1.",
+        "2026-11-02 10:00 EST — October ISM Manufacturing PMI; outcome pending.",
+        "2026-11-02 — Apple earnings after close and ON Semiconductor earnings listed; confirm ON issuer time.",
+        "2026-11-03 10:00 EST — September JOLTS (official BLS calendar).",
+        "2026-11-03 — U.S. midterm elections; outcome and price response pending.",
+        "2026-11-03 — AMD, Astera Labs and Skyworks earnings listed; confirm exact issuer times.",
+        "2026-11-04 10:00 EST — ISM Services PMI; Arm, Qualcomm, Coherent, GlobalFoundries, KLA and Meta earnings on NasDecode calendar, issuer times variable."
+      ],
+      "editorial": {
+        "marketOverview": "The November 2–4 outlook begins with a completed Friday technology-led selloff, not with new Saturday price discovery. Reuters confirms Nasdaq Composite -2.86% near 25,437 and SOX -7.20%; NasDecode records QQQ -3.47% in the Friday cash session. Semiconductors lagged Nasdaq by 4.34 percentage points, while 3,622 Nasdaq exchange issues declined versus 1,196 advancing. The Nasdaq-100 cash sample had 37/101 advancers and the incomplete chip sample only 1/20. These are observed Friday facts, not evidence of Monday continuation.",
+        "whatChanged": "Relative to the latest 23:18 EDT saved assessment, no new U.S. regular trading session or independently confirmed major Nasdaq catalyst occurred. NasDecode's dashboard refreshed at 23:19 EDT, shifting the model score from -37 to -39; this is a model recalculation without new cash-session price discovery. The curated Open Watch archive still contains 89 events, with none added. Reuters' Friday fund-flow report documents $6.65 billion in U.S. equity fund outflows in the week ended October 28 alongside $4.54 billion in technology sector inflows; this is mixed retrospective evidence, not a fresh market shock.",
+        "marketInterpretation": "The dominant evidence remains bearish: severe Friday SOX relative weakness, broad exchange decliners and elevated Nasdaq implied volatility. VXN 28.50 and VIX 19.42 are Friday 16:15 EDT quotes, not synchronized weekend readings. Treasury 10Y 4.933% and 2Y 4.592% at 17:05 EDT imply a +34.1 bp curve; lower Friday yields could cushion technology valuations, but did not prevent the selloff. The dashboard's 933%/592% rates trigger is a known scaling error and is excluded. Brent is stale, WTI asynchronous, and December hike odds 79.9% are derived from October 29 settlement, not live Fed repricing.",
+        "threeDayPath": "The central November 2–4 scenario stays Bearish with moderate confidence and high event risk, though Friday's steep drop creates oversold-rebound potential. Monday's first 09:30 EST cash open and 10:00 EST ISM Manufacturing will test continuation versus stabilization; Apple and ON Semiconductor earnings add company risk. Tuesday brings September JOLTS, U.S. midterm elections and scheduled AMD/Astera Labs/Skyworks results. Wednesday brings ISM Services and several semiconductor/platform earnings. All outcomes and market reactions remain unobserved. U.S. clocks change from EDT to EST November 1.",
+        "bullCase": "Friday's decline in Treasury yields and positive underlying AI hardware demand could enable a relief rally if investors distinguish strong orders from debt-financing concerns. Curated MediaTek and Tokyo Electron developments support a demand narrative, but do not prove a new U.S. equity response. A bullish reassessment requires sustained Monday QQQ recovery, SOX relative performance at least in line with Nasdaq, a majority of a stable chip universe advancing, Nasdaq-100 cash breadth above 60% and fresh VXN below 24. No such Monday confirmation exists yet.",
+        "bearCase": "Friday QQQ -3.47%, SOX -7.20%, -4.34 pp SOX relative lag, nearly three-to-one Nasdaq exchange decliners and one advancing name among 20 sampled chips support the possibility of downside continuation. Intel's disappointing outlook, AI infrastructure financing doubts and elevated energy prices remain headwinds even as yields ease. A failed Monday rebound, persistent SOX lag >3 pp, stable Nasdaq-100 cash breadth below 40% and newly observed VXN above 30 would strengthen the bearish case. These are future tests, not observed Monday moves.",
+        "watchNext": "At Monday's 09:30 EST open, gather timestamp-aligned Nasdaq/QQQ, SOX/SOXX/SMH, stable-universe semiconductor and Nasdaq-100 cash breadth, and VXN/VIX. Normalize Treasury 10Y/2Y to nominal percentages, excluding the false 933%/592% dashboard trigger; compare matched-time 2s10s curve. Reconcile Brent/WTI contracts and timestamps and update Fed probabilities from a newer settlement before claiming repricing. Monitor ISM Manufacturing, Apple/ON, Tuesday JOLTS/elections/AMD/ALAB/SWKS and Wednesday ISM Services and chip earnings; separate catalyst expectations from verified price reactions."
+      },
+      "provenance": {
+        "researchAsOfUTC": "2026-10-31T03:50:42.965Z",
+        "repository": "repural/NasDecode",
+        "branch": "main",
+        "previousAssessmentTimeET": "2026-10-30T23:18:00-04:00",
+        "previousHistoryBlobSha": "cf71c620aa868efca12af7ca79e13b0320be8f2f",
+        "dashboardUpdatedET": "Oct 30, 2026 · 23:19 ET",
+        "dashboardSha": "91281ec8561e114467bd9f33a5e9f34b057b289f",
+        "curatedEventsSha": "4a569596d6573169303e768020fd7586889180c5",
+        "curatedEventsUpdated": "2026-10-31T00:58:08+00:00",
+        "curatedEventsCount": 89,
+        "webSources": [
+          "https://www.reuters.com/business/nasdaq-futures-tumble-amazon-intel-results-deepen-ai-spending-woes-2026-10-30/",
+          "https://www.reuters.com/legal/legalindustry/wall-st-week-ahead-midterm-elections-earnings-jobs-data-loom-ai-wary-market-2026-10-30/",
+          "https://www.reuters.com/legal/transactional/global-markets-global-markets-2026-10-30/",
+          "https://www.reuters.com/business/investors-pull-money-us-equity-funds-ahead-earnings-reports-ai-hyperscalers-2026-10-30/",
+          "https://www.bls.gov/schedule/2026/home.htm",
+          "https://github.com/repural/NasDecode/blob/main/public/data/dashboard.json",
+          "https://github.com/repural/NasDecode/blob/main/data/history/market-watch-events.json"
+        ],
+        "quality": "No weekend U.S. cash session; Friday cash 16:00-16:01 EDT, VXN/VIX 16:15 EDT, Treasury 17:05 EDT, Brent stale 06:00 BST and WTI 18:40:58 EDT; observations asynchronous. Correct nominal yields 4.933%/4.592%; exclude erroneous dashboard 933%/592%. Cash breadth 37/101 and chip 1/20 incomplete/different universes, S5FI unverified. Fed odds Oct 29 settlement. Fund flows retrospective; no new Open Watch records or material catalyst."
+      }
+    },
     {
       "date": "2026-10-30",
       "timeET": "23:18",
