@@ -80485,7 +80485,7 @@
     },
     "2026-11-01": {
       "schemaVersion": 4,
-      "timestampET": "2026-11-01T16:16:31.408425-05:00",
+      "timestampET": "2026-11-01T16:54:13.298515-05:00",
       "market": {
         ".IXIC": {
           "last": 25436.999,
@@ -81343,7 +81343,7 @@
           "marketResponseAttenuationPct": 0.0
         },
         "directionalScoreUnchanged": true,
-        "checkpoint": "close",
+        "checkpoint": "afterhours",
         "marketResponseApplied": false
       },
       "validation": {
@@ -81387,6 +81387,14 @@
               "regimeMultiplier": 1.25
             },
             {
+              "factor": "Semiconductor leadership",
+              "bucket": "Leadership",
+              "strength": -1.0,
+              "effectiveWeight": 3.22,
+              "freshnessWeight": 0.7,
+              "regimeMultiplier": 1.15
+            },
+            {
               "factor": "Fed expectations",
               "bucket": "Rates / Macro",
               "strength": -0.528,
@@ -81425,14 +81433,6 @@
               "effectiveWeight": 1.0,
               "freshnessWeight": 1.0,
               "regimeMultiplier": 1.0
-            },
-            {
-              "factor": "Semiconductor leadership",
-              "bucket": "Leadership",
-              "strength": -1.0,
-              "effectiveWeight": 3.22,
-              "freshnessWeight": 0.7,
-              "regimeMultiplier": 1.15
             },
             {
               "factor": "Oil (WTI / Brent)",
@@ -81491,6 +81491,13 @@
               "cap": 9.0
             },
             {
+              "bucket": "Leadership",
+              "strength": -0.884,
+              "weight": 7.67,
+              "uncappedWeight": 7.67,
+              "cap": 9.0
+            },
+            {
               "bucket": "Volatility / Positioning",
               "strength": -0.422,
               "weight": 3.72,
@@ -81503,13 +81510,6 @@
               "weight": 3.0,
               "uncappedWeight": 3.0,
               "cap": 6.0
-            },
-            {
-              "bucket": "Leadership",
-              "strength": -0.884,
-              "weight": 7.67,
-              "uncappedWeight": 7.67,
-              "cap": 9.0
             },
             {
               "bucket": "Other",
@@ -81664,7 +81664,7 @@
               "marketResponseAttenuationPct": 0.0
             },
             "directionalScoreUnchanged": true,
-            "checkpoint": "close",
+            "checkpoint": "afterhours",
             "marketResponseApplied": false
           },
           "marketResponse": {
@@ -81672,7 +81672,7 @@
             "status": "inactive",
             "mode": null,
             "summary": "No persistent divergence between the macro impulse and live market response.",
-            "observedAt": "2026-11-01T16:20:06.589683-05:00",
+            "observedAt": "2026-11-01T16:57:51.517881-05:00",
             "candidateMode": null,
             "candidateSince": null,
             "persistenceMinutes": 0.0,
@@ -82430,6 +82430,12 @@
           "trend": "Improving ↑",
           "latest": "4.592% (-6.4 bp vs prev close)"
         },
+        "Semiconductor leadership": {
+          "signal": "negative",
+          "currentImpact": "Very High",
+          "trend": "Deteriorating ↓",
+          "latest": "Previous regular-session close · SOX -7.20% | Nasdaq -2.86% | SOX vs Nasdaq -4.34 pp | SOXX vs Nasdaq -5.38 pp | SMH vs Nasdaq -4.12 pp"
+        },
         "Fed expectations": {
           "signal": "negative",
           "currentImpact": "High",
@@ -82459,12 +82465,6 @@
           "currentImpact": "Low",
           "trend": "Improving ↑",
           "latest": "After-hours · 7-stock basket +0.19% | 6/7 positive | QQQ +0.33% | relative -0.14 pp"
-        },
-        "Semiconductor leadership": {
-          "signal": "negative",
-          "currentImpact": "Very High",
-          "trend": "Deteriorating ↓",
-          "latest": "Previous regular-session close · SOX -7.20% | Nasdaq -2.86% | SOX vs Nasdaq -4.34 pp | SOXX vs Nasdaq -5.38 pp | SMH vs Nasdaq -4.12 pp"
         },
         "Oil (WTI / Brent)": {
           "signal": "mixed",
@@ -82707,7 +82707,7 @@
           "status": "inactive",
           "mode": null,
           "summary": "No persistent divergence between the macro impulse and live market response.",
-          "observedAt": "2026-11-01T16:20:06.589683-05:00",
+          "observedAt": "2026-11-01T16:57:51.517881-05:00",
           "candidateMode": null,
           "candidateSince": null,
           "persistenceMinutes": 0.0,
@@ -82889,7 +82889,7 @@
         "status": "inactive",
         "mode": null,
         "summary": "No persistent divergence between the macro impulse and live market response.",
-        "observedAt": "2026-11-01T16:20:06.589683-05:00",
+        "observedAt": "2026-11-01T16:57:51.517881-05:00",
         "candidateMode": null,
         "candidateSince": null,
         "persistenceMinutes": 0.0,
