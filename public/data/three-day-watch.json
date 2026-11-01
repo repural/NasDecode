@@ -1,13 +1,377 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-01T21:16:08.040Z",
+  "updated": "2026-11-01T21:53:50.101Z",
   "horizon": [
     "2026-11-02",
     "2026-11-03",
     "2026-11-04"
   ],
   "entries": [
+    {
+      "date": "2026-11-01",
+      "timeET": "16:53",
+      "asOfET": "2026-11-01T16:53:50-05:00",
+      "runKey": "nasdecode-3day-2026-11-01T16:53:50-05:00",
+      "bias": "Bearish — Friday chip rout confirmed; elevated but moderating volatility risk",
+      "previousBias": "Bearish — Friday chip rout confirmed; elevated but moderating volatility risk",
+      "materialChange": false,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "Sunday Nov 1 16:53 EST: November 2–4 Nasdaq/QQQ remains Bearish, Moderate confidence, High event risk. Friday cash close: Nasdaq -2.856%, QQQ -3.47%, SOX -7.20%, SOX relative lag -4.34 pp; chip breadth 1/20 and Nasdaq-100 breadth 37/101. Weekend model score -44 to -38 is not a new cash-market move; Open Watch 89 curated events, 0 additions. Matched Friday yields 10Y 4.933%, 2Y 4.592% (+34.1 bp); delayed VXN 28.50/VIX 19.42; January Brent $113.43 and WTI $104.12 Friday settlements; December hike probability 70.7% is model-derived. Reuters November 1 20:12 UTC relayed unverified IRGC claims of two tanker mine explosions, possibly overlapping Friday reports. No verified incremental oil loss, Monday cash response or signed Hormuz deal. Three-day path unchanged; monitor tanker verification and Monday cash confirmation.",
+      "bullish": "The clearest observed positive offset is Friday's decline in Treasury yields, alongside continuing evidence of AI-hardware demand and scope for an oversold rebound. A signed and implemented Hormuz reopening or supportive chip earnings could further reduce risk premia. Bearish invalidation requires a sustained QQQ rebound, SOX relative improvement, comparable semiconductor breadth above 50%, Nasdaq-100 cash breadth above 60%, and fresh VXN below 24; these remain conditional.",
+      "bearish": "Friday's SOX -7.20% versus Nasdaq -2.856%, just 1/20 covered chip names advancing, Nasdaq-100 cash breadth 37/101 and delayed VXN 28.50 remain the strongest confirmed downside evidence. High oil and hawkish settlement-derived Fed expectations raise sensitivity to energy shocks. Reuters' Sunday report of IRGC mine-strike claims increases monitoring priority but is not independently verified or established as a distinct new incident. A failed Monday QQQ rebound, SOX lag >3 pp, cash breadth <40% or fresh VXN >30 would strengthen continuation.",
+      "observations": {
+        "assessmentTimeET": "2026-11-01T16:53:50-05:00",
+        "researchAsOfUTC": "2026-11-01T21:53:50.101Z",
+        "marketDataExactlySynchronized": false,
+        "quoteCaveat": "Sunday Nov 1, 2026: no new U.S. cash session after Friday Oct 30. Friday Nasdaq/QQQ/SOX cash-close readings, delayed Friday VXN/VIX, matched Friday Treasury quotes and oil contract settlements are asynchronous historical observations, not live Sunday trades. 10Y 4.933% and 2Y 4.592% (curve +34.1 bp) are correctly scaled; reject dashboard 933%/592% erroneous 3-Day Watch triggers. January Brent $113.43 and expired December Brent $117.64 are different contracts. Sunday 16:16 EST dashboard -38 is model-only. Reuters Nov 1 20:12 UTC relays an uncorroborated IRGC claim of two tanker mine explosions, possibly overlapping Friday's claims; no independent verification of new Sunday attacks or subsequent U.S. cash reaction.",
+        "nasdaqComposite": {
+          "value": 25436.999,
+          "sessionChangePct": -2.856,
+          "unit": "index_points_and_percent_Friday_cash_close",
+          "source": "NasDecode CNBC quote; Reuters close",
+          "sourceTimestamp": "2026-10-30 U.S. regular-session close",
+          "sourceUrl": "https://www.reuters.com/business/nasdaq-futures-tumble-amazon-intel-results-deepen-ai-spending-woes-2026-10-30/"
+        },
+        "QQQ": {
+          "sessionChangePct": -3.47,
+          "unit": "percent_Friday_cash_session",
+          "source": "NasDecode prior paired Friday quote",
+          "sourceTimestamp": "2026-10-30 16:01 EDT",
+          "sourceUrl": "https://github.com/repural/NasDecode/blob/main/public/data/dashboard.json"
+        },
+        "SOX": {
+          "sessionChangePct": -7.2,
+          "unit": "percent_Friday_cash_session",
+          "source": "Reuters and NasDecode Friday close",
+          "sourceTimestamp": "2026-10-30 regular-session close",
+          "sourceUrl": "https://www.reuters.com/business/nasdaq-futures-tumble-amazon-intel-results-deepen-ai-spending-woes-2026-10-30/"
+        },
+        "semiconductorRelativeStrength": {
+          "soxMinusNasdaqPp": -4.34,
+          "soxxMinusNasdaqPp": -5.38,
+          "smhMinusNasdaqPp": -4.12,
+          "unit": "percentage_points_Friday_cash_session",
+          "source": "NasDecode paired confirmation layer",
+          "sourceTimestamp": "2026-10-30 16:01 EDT",
+          "sourceUrl": "https://github.com/repural/NasDecode/blob/main/public/data/dashboard.json"
+        },
+        "soxConstituentBreadth": {
+          "advancing": 1,
+          "available": 20,
+          "universeSize": 30,
+          "unit": "covered_constituents_Friday_close",
+          "source": "NasDecode Friday semiconductor leadership",
+          "sourceTimestamp": "2026-10-30 cash close",
+          "caution": "Keep Friday 1/20 covered sample; new Sunday dashboard 0/5 coverage is not comparable or a new market decline."
+        },
+        "nasdaq100Breadth": {
+          "advancing": 37,
+          "declining": 64,
+          "available": 101,
+          "unit": "covered_constituents_Friday_cash_close",
+          "source": "NasDecode dashboard",
+          "sourceTimestamp": "2026-10-30 cash close; refreshed Oct 31",
+          "sourceUrl": "https://github.com/repural/NasDecode/blob/main/public/data/dashboard.json",
+          "caution": "Weekend after-hours breadth is not a comparable U.S. cash sample."
+        },
+        "nasdaqScore": {
+          "value": -38,
+          "previousSavedValue": -44,
+          "changeVsPreviousSaved": 6,
+          "unit": "NasDecode_model_points_out_of_100",
+          "source": "NasDecode public/data/dashboard.json",
+          "sourceTimestamp": "Nov 01, 2026 · 16:16 ET (weekend refresh); checked 2026-11-01T21:53:50.101Z",
+          "sourceUrl": "https://github.com/repural/NasDecode/blob/main/public/data/dashboard.json",
+          "notMarketQuote": true,
+          "warning": "Weekend model update; dashboard 933%/592% yield trigger is a scaling error. This change is not evidence of a new U.S. cash session."
+        },
+        "US10Y": {
+          "value": 4.933,
+          "unit": "percent_nominal_yield",
+          "source": "NasDecode CNBC/Tradeweb matched quote",
+          "sourceTimestamp": "2026-10-30 17:05 EDT",
+          "dataQuality": "Corrected 4.933%; 933% trigger invalid."
+        },
+        "US2Y": {
+          "value": 4.592,
+          "unit": "percent_nominal_yield",
+          "source": "NasDecode CNBC/Tradeweb matched quote",
+          "sourceTimestamp": "2026-10-30 17:05 EDT",
+          "dataQuality": "Corrected 4.592%; 592% trigger invalid."
+        },
+        "yieldCurve2s10s": {
+          "value": 34.1,
+          "unit": "basis_points_10Y_minus_2Y",
+          "source": "4.933%-4.592% matched quotes",
+          "sourceTimestamp": "2026-10-30 17:05 EDT"
+        },
+        "VXN": {
+          "value": 28.5,
+          "sessionChangePct": 13.19,
+          "unit": "index_points_and_percent_change",
+          "source": "NasDecode CNBC/Cboe delayed quote",
+          "sourceTimestamp": "2026-10-30 16:15 EDT",
+          "caution": "Official settlement unverified; not live."
+        },
+        "VIX": {
+          "value": 19.42,
+          "sessionChangePct": 12.91,
+          "unit": "index_points_and_percent_change",
+          "source": "NasDecode CNBC/Cboe delayed quote",
+          "sourceTimestamp": "2026-10-30 16:15 EDT",
+          "caution": "Not synchronized with rates or oil."
+        },
+        "Brent": {
+          "value": 113.43,
+          "contract": "January 2027, more-active contract on Friday Oct 30",
+          "expiredDecemberSettlement": 117.64,
+          "unit": "USD_per_barrel_Friday_futures_settlement",
+          "source": "Reuters Oct 30 oil settlement report",
+          "sourceTimestamp": "2026-10-30 settlement",
+          "sourceUrl": "https://www.reuters.com/business/energy/oil-rises-supply-concerns-houthis-attack-saudi-arabia-2026-10-30/",
+          "caution": "December contract settled $117.64 and expired Friday; more-active January $113.43 is a different contract, NOT a weekend oil price decline. Do not splice these prices into a single continuous contract."
+        },
+        "WTI": {
+          "value": 104.12,
+          "unit": "USD_per_barrel_Friday_settlement",
+          "source": "Reuters energy Friday settlement",
+          "sourceTimestamp": "2026-10-30 settlement",
+          "sourceUrl": "https://www.reuters.com/business/energy/oil-rises-supply-concerns-houthis-attack-saudi-arabia-2026-10-30/",
+          "caution": "Reject future-dated weekend dashboard WTI quote."
+        },
+        "fedExpectations": {
+          "decemberHikeProbabilityPct": 70.7,
+          "decemberHoldProbabilityPct": 29.3,
+          "decemberCutProbabilityPct": 0,
+          "currentFedTargetRange": "3.75%-4.00%",
+          "unit": "percent_settlement_derived_probability",
+          "source": "NasDecode CME 30-Day Fed Funds futures settlement-derived model",
+          "sourceTimestamp": "2026-10-30 settlement",
+          "notLiveFedWatch": true,
+          "caution": "Model-derived, not independently verified live CME FedWatch."
+        },
+        "newCuratedEvents": {
+          "count": 0,
+          "archiveCount": 89,
+          "previousArchiveCount": 89,
+          "unit": "curated_records_since_previous_saved_assessment",
+          "source": "NasDecode canonical Open Watch",
+          "sourceTimestamp": "2026-10-31T00:58:08+00:00; checked 2026-11-01T21:53:50.101Z",
+          "sourceUrl": "https://github.com/repural/NasDecode/blob/main/data/history/market-watch-events.json",
+          "note": "Only persisted curated records count; separately discovered news does not become an Open Watch event automatically."
+        },
+        "southKoreaOctoberExports": {
+          "totalExportsYoYPct": 93.7,
+          "consensusYoYPct": 93.2,
+          "semiconductorExportsYoYPct": 259.4,
+          "computerExportsYoYPct": 496.6,
+          "unit": "year_over_year_percent_growth",
+          "source": "South Korea trade ministry via Reuters",
+          "sourceTimestamp": "2026-11-01T00:39:00Z Reuters report",
+          "sourceUrl": "https://www.reuters.com/world/asia-pacific/south-korea-exports-nearly-double-october-strongest-growth-since-1974-2026-11-01/",
+          "caution": "Already incorporated in prior saved run; working-day/Chuseok comparison inflates YoY growth; U.S. market reaction unobserved."
+        },
+        "earningsAVWAPLeadership": {
+          "aboveCount": 0,
+          "coveredCount": 6,
+          "medianDistancePct": -6.43,
+          "unit": "selected_stocks_and_percent_below_earnings_anchored_VWAP",
+          "source": "NasDecode daily aggregates",
+          "sourceTimestamp": "daily data through 2026-10-30",
+          "caution": "Six-stock sample, not full SOX."
+        },
+        "ISMManufacturingUpcoming": {
+          "consensus": 54.7,
+          "previous": 54.5,
+          "releaseTimeET": "2026-11-02T10:00:00-05:00",
+          "unit": "PMI_index_points",
+          "source": "TD Economics upcoming releases Oct 30",
+          "sourceTimestamp": "2026-10-30 calendar snapshot",
+          "sourceUrl": "https://economics.td.com/domains/economics.td.com/documents/reports/bottom-line/tables/2026-10-30/upcoming.htm",
+          "actual": null
+        },
+        "qatariLNGCarrierIncident": {
+          "vessel": "Al Mayeda",
+          "incidentDate": "2026-10-30 Friday evening",
+          "disclosed": "2026-11-01 Sunday (exact statement time unverified)",
+          "status": "Struck by unidentified objects in Gulf; safe and operational, no crew injuries or environmental impact, investigation ongoing",
+          "unit": "qualitative_verified_incident",
+          "source": "Nakilat statement reported by AP and Anadolu Agency",
+          "sourceTimestamp": "2026-11-01 publication; Friday incident",
+          "sourceUrl": "https://apnews.com/article/mideast-news-november-1-2026-b918f44d8f212d7daf7f2f9a98c91a0b",
+          "expectedImpact": "Potential continued Gulf maritime risk premium; no verified supply outage",
+          "marketResponse": "No fresh U.S. cash market or attributable oil futures response observed; unknown attackers."
+        },
+        "opecDecemberPolicy": {
+          "status": "Reuters confirms seven core OPEC+ producers kept December targets unchanged as expected; not a surprise increase or new supply restoration.",
+          "unit": "December_production_targets_unchanged",
+          "source": "Reuters",
+          "sourceTimestamp": "2026-11-01 Reuters report (initial 09:41 UTC; subsequent update time unverified)",
+          "sourceUrl": "https://www.reuters.com/business/energy/opec-set-keep-oil-output-targets-steady-sources-say-2026-11-01/",
+          "marketResponse": "No U.S. cash session since announcement; new oil-futures response unverified.",
+          "caution": "Already incorporated in preceding saved assessment; decision does not imply Gulf shipping normal."
+        },
+        "iranQatarTalks": {
+          "status": "Third day of Qatar-mediated talks; possible reopening within two days of a future agreement, but no concluded agreement verified.",
+          "unit": "qualitative_diplomatic_status",
+          "source": "Reuters; AP",
+          "sourceTimestamp": "2026-11-01 Reuters report (initial 12:24 UTC; update time unverified)",
+          "sourceUrl": "https://www.reuters.com/world/middle-east/iranian-negotiators-doha-continue-talks-end-us-iran-war-official-says-2026-11-01/",
+          "marketResponse": "No subsequent U.S. cash session; prospective shipping normalization is not an observed price response.",
+          "materiality": "Important two-sided gap scenario, but already included and not a new confirmed resolution."
+        },
+        "gulfMarketSunday": {
+          "qatarChangePct": 4.6,
+          "saudiChangePct": -0.8,
+          "unit": "percent_Sunday_local_cash_session",
+          "source": "Reuters",
+          "sourceTimestamp": "2026-11-01 Sunday local trading; exact quote time not verified",
+          "sourceUrl": "https://www.reuters.com/world/middle-east/qatar-surges-bucking-gulf-market-slide-iran-war-concerns-2026-11-01/",
+          "caution": "Regional stocks are not Nasdaq. Qatar's gains attributed to LNG sourcing/rating support, not an observed U.S. reaction to the tanker incident."
+        },
+        "newsVerification": {
+          "checkedAtUTC": "2026-11-01T21:53:50.101Z",
+          "unit": "qualitative_source_verification",
+          "sources": [
+            {
+              "topic": "Friday Nasdaq and semiconductor selloff",
+              "url": "https://www.reuters.com/business/nasdaq-futures-tumble-amazon-intel-results-deepen-ai-spending-woes-2026-10-30/",
+              "sourceTimestamp": "2026-10-30 U.S. cash close"
+            },
+            {
+              "topic": "OPEC+ December output targets held steady",
+              "url": "https://www.reuters.com/business/energy/opec-set-keep-oil-output-targets-steady-sources-say-2026-11-01/",
+              "sourceTimestamp": "2026-11-01 09:41 UTC Reuters initial report"
+            },
+            {
+              "topic": "Iran-Qatar talks have no final Hormuz deal",
+              "url": "https://www.reuters.com/world/middle-east/iranian-negotiators-doha-continue-talks-end-us-iran-war-official-says-2026-11-01/",
+              "sourceTimestamp": "2026-11-01 12:24 UTC Reuters initial report"
+            },
+            {
+              "topic": "IRGC claim of two tanker mine explosions, not independently verified",
+              "url": "https://www.reuters.com/world/middle-east/irans-irgc-navy-says-two-tankers-exploded-after-hitting-mines-hormuz-2026-11-01/",
+              "sourceTimestamp": "2026-11-01 20:12 UTC Reuters"
+            },
+            {
+              "topic": "Friday IRGC claim of four tankers, unverified",
+              "url": "https://www.reuters.com/world/middle-east/irans-irgc-navy-says-two-tankers-stopped-south-hormuz-after-incidents-2026-10-30/",
+              "sourceTimestamp": "2026-10-30 Reuters"
+            },
+            {
+              "topic": "Official U.S. BLS November release calendar",
+              "url": "https://www.bls.gov/schedule/2026/11_sched.htm",
+              "sourceTimestamp": "2026-11-01 verification"
+            },
+            {
+              "topic": "Reuters U.S. midterms and earnings week-ahead",
+              "url": "https://www.reuters.com/legal/legalindustry/wall-st-week-ahead-midterm-elections-earnings-jobs-data-loom-ai-wary-market-2026-10-30/",
+              "sourceTimestamp": "2026-10-30 Reuters"
+            }
+          ],
+          "finding": "Compared with 2026-11-01T16:16:08-05:00, no U.S. cash session; model score -44 to -38 is a weekend refresh; curated events 89 to 89. Nov 1 IRGC claim is newly reviewed but unverified and may duplicate Friday claims; cannot establish incremental damage or market response. No confirmed Hormuz agreement or other material 3-day-path change."
+        },
+        "dataQuality": {
+          "treasuryScalingCorrected": true,
+          "quotesAsynchronous": true,
+          "marketResponseVsExpectedImpactSeparated": true,
+          "weekendNoCashSession": true,
+          "modelScoreNotLive": true,
+          "openWatchNoNewRecords": true,
+          "oilWeekendQuoteRejected": true,
+          "officialVxnSettlementUnverified": true,
+          "S5FIUnverified": true,
+          "liveFedWatchUnverified": true,
+          "afterHoursBreadthNotComparable": true,
+          "earningsDatesIssuerUnverified": true,
+          "brentContractRollIdentified": true,
+          "usDSTRepeatedHour": true,
+          "dashboardThreeDayWatchYieldTriggerRejected": true,
+          "formalOpecDecisionConfirmedByReuters": true,
+          "officialOpecStatementDirectlyRetrieved": false,
+          "marketReactionToOpecDecisionUnverified": true,
+          "iranDealNotConcluded": true,
+          "iranMarketReactionUnverified": true,
+          "semiconductorBreadthSampleChanged": true,
+          "iranTankerClaimIndependentlyVerified": false,
+          "iranTankerClaimMayDuplicateFriday": true,
+          "iranTankerMarketReactionUnverified": true
+        },
+        "gulfShippingContext": {
+          "status": "Contemporary reporting describes Hormuz traffic still substantially below prewar levels and increased use of alternative routes; no fresh incident with verified incremental U.S. market response.",
+          "unit": "qualitative_supply_route_context",
+          "source": "Wall Street Journal Nov 1 report",
+          "sourceTimestamp": "2026-11-01 publication; exact time unverified",
+          "sourceUrl": "https://www.wsj.com/business/energy-oil/opec-allies-keep-output-steady-while-gulf-shipping-remains-under-threat-c1d14171",
+          "marketResponse": "Unverified; not a new cash-session confirmation.",
+          "caution": "Supporting context, not a new measured Friday-to-Sunday price change."
+        },
+        "iranIRGCTankerClaimsNov1": {
+          "status": "Iranian state-media/IRGC Navy claim of two tankers exploding after striking mines on allegedly unauthorized Hormuz routes; Reuters reports the claim, not independently verified damage.",
+          "source": "Reuters citing Iranian state media",
+          "sourceTimestamp": "2026-11-01T20:12:00Z",
+          "sourceUrl": "https://www.reuters.com/world/middle-east/irans-irgc-navy-says-two-tankers-exploded-after-hitting-mines-hormuz-2026-11-01/",
+          "unit": "unverified_claim_not_confirmed_vessel_count",
+          "duplicateRisk": "Unclear whether these are new Sunday incidents or repeat/overlap of Friday Oct 30 IRGC claims of four tankers. No named vessels, UKMTO corroboration, independently established loss, supply outage, or post-publication U.S. cash response verified.",
+          "expectedImpact": "If separately corroborated as fresh attacks, could increase Gulf oil/shipping risk premium and growth-stock inflation/rate headwind.",
+          "marketResponse": "Unobserved; U.S. equity cash market closed Sunday."
+        }
+      },
+      "conditions": [
+        "Base case November 2–4: Bearish, Moderate confidence, High event risk; Friday Oct 30 is last verified U.S. cash session.",
+        "Friday Nasdaq -2.856%, QQQ -3.47%, SOX -7.20%, relative SOX lag -4.34 percentage points; semiconductor cash breadth 1/20, Nasdaq-100 37/101.",
+        "Correctly scaled matched Friday 10Y 4.933%, 2Y 4.592%, curve +34.1 basis points; dashboard 933%/592% triggers rejected.",
+        "Friday delayed VXN 28.50 and VIX 19.42; January Brent $113.43, expired December Brent $117.64 and WTI $104.12 are different Friday futures references, not Sunday spot quotes.",
+        "Friday settlement-derived December Fed-hike probability 70.7%; not independently verified live CME FedWatch.",
+        "NasDecode weekend model score -38/100 at Nov 01, 2026 · 16:16 ET; previous -44; model change is not traded cash movement.",
+        "Open Watch canonical archive 89 events, 0 net additions.",
+        "Reuters Nov 1 20:12 UTC reported an IRGC claim of two tanker mine explosions; not independently corroborated, possibly duplicative of Friday claims, with no verified new oil supply loss or U.S. market reaction.",
+        "OPEC+ kept December production targets steady as expected; Iran-Qatar talks have not produced a confirmed signed reopening deal.",
+        "Downside continuation: failed QQQ recovery, SOX relative lag >3 pp, cash breadth <40%, or fresh VXN >30.",
+        "Bullish invalidation: sustained QQQ recovery, improving SOX relative strength, comparable chip breadth >50%, Nasdaq-100 cash breadth >60%, and freshly observed VXN <24.",
+        "Sunday is EST UTC-05:00; Friday Oct 30 was EDT UTC-04:00."
+      ],
+      "upcomingEvents": [
+        "Monday Nov 2 09:30 EST: first U.S. cash open after Friday selloff; obtain synchronized QQQ, Nasdaq, SOX, breadth, yields, volatility and oil contract references.",
+        "Monday Nov 2 10:00 EST: ISM Manufacturing PMI, prior 54.5 and Oct 30 TD consensus 54.7; AAPL, PLTR, ON earnings calendar-listed, issuer-specific timing requires verification.",
+        "Tuesday Nov 3 10:00 EST: September JOLTS per official BLS calendar; U.S. midterm elections; AMD, ALAB and SWKS earnings calendar-listed, issuer timing partially unverified.",
+        "Wednesday Nov 4 08:15 EST ADP; 10:00 EST ISM Services, TD consensus 54.8 vs prior 54.9; ARM, QCOM and other semiconductor earnings calendar-listed.",
+        "Friday Nov 6 08:30 EST October Employment Situation (outside three-day horizon).",
+        "Continuously verify claimed new Hormuz tanker mine attacks with maritime authorities, vessel identities, actual front-month Brent/WTI response and any signed US-Iran agreement."
+      ],
+      "editorial": {
+        "marketOverview": "The Nasdaq/QQQ base case for Monday November 2 through Wednesday November 4 remains bearish, with moderate confidence and high event risk. Friday's completed U.S. cash session remains the only valid equity confirmation: Nasdaq Composite fell 2.856%, QQQ lost 3.47%, and SOX declined 7.20%, lagging the Nasdaq by 4.34 percentage points. Semiconductor breadth was just 1 of 20 covered names advancing and Nasdaq-100 cash breadth 37 of 101. Those dated observations indicate weak leadership, not an ongoing Sunday selloff. Friday's delayed VXN of 28.50 and VIX of 19.42 reinforce the fragile setup but are not synchronized with other asset classes.",
+        "whatChanged": "Since the latest saved 2026-11-01T16:16:08-05:00 assessment, NasDecode's weekend dashboard refreshed from -44 to -38 points out of 100 at Nov 01, 2026 · 16:16 ET; this six-point improvement is a model reading, not a cash-market recovery. The curated Open Watch archive remains at 89 events (0 net additions). A Reuters November 1 20:12 UTC dispatch relays an Iranian Revolutionary Guards claim that two tankers exploded after striking mines in Hormuz. The assertion is not independently corroborated, lacks vessel identities, and may overlap Friday's already reported IRGC claims of four affected tankers; the report also predates the preceding saved checkpoint but was not explicitly covered there. It warrants heightened monitoring, not an assumed fresh supply shock or material change in the expected three-day path.",
+        "marketInterpretation": "The bearish thesis still rests on observed semiconductor underperformance, thin breadth, and elevated volatility. Friday's correctly scaled, matched Treasury readings were 4.933% for the 10-year and 4.592% for the 2-year, an upward 34.1-basis-point 2s10s spread; their declines are a genuine valuation offset, although yield levels remain restrictive. The dashboard's 933%/592% 3-Day Watch alerts are unit errors and must not influence this judgment. January Brent's $113.43 Friday settlement must not be conflated with expired December Brent's $117.64 settlement; WTI's $104.12 is also Friday data. A 70.7% December hike estimate is a Friday settlement-derived model, not live FedWatch. The OPEC+ December target hold was expected; no new U.S. cash response to Sunday diplomacy, oil decisions or tanker claims can yet be observed.",
+        "threeDayPath": "Monday's opening session and the 10:00 EST ISM Manufacturing release are the first proper tests of whether Friday's semiconductor liquidation extends or reverses. A technical rebound is plausible after such a sharp decline, but a failed QQQ recovery accompanied by renewed SOX underperformance would favor continuation lower. Tuesday combines the official 10:00 EST JOLTS release, U.S. midterm elections and chip-related earnings, raising two-sided headline and gap risk. Wednesday's ADP and ISM Services releases, plus ARM/QCOM-related earnings-calendar exposure, may determine whether leadership broadens. This is a conditional path, not a prediction of exact daily returns; reported Gulf shipping attacks would matter materially if corroborated and accompanied by an actual front-month oil repricing.",
+        "bullCase": "A durable bullish reversal would require a synchronized Monday QQQ recovery through the ISM release, a positive turn in SOX relative performance, more than half of comparably covered semiconductor stocks advancing, and Nasdaq-100 cash breadth above 60%. A newly traded VXN below 24 and further falling Treasury yields would reinforce that shift. Strong earnings guidance or a signed, operationally verifiable Hormuz reopening that reduces front-month oil risk could accelerate a recovery. None of these confirmation conditions is yet observed in a new U.S. cash session.",
+        "bearCase": "The main downside risk is that Friday's 7.20% SOX decline, 4.34-point lag against Nasdaq, narrow chip participation and elevated volatility signal unfinished liquidation. A failed Monday relief rally, cash breadth below 40%, renewed SOX relative lag above three percentage points, or fresh VXN above 30 would strengthen a multi-session downside scenario. Verified additional tanker mine strikes, persistent shipping disruptions or a rising same-contract Brent/WTI curve could add an inflation shock, especially if Fed expectations stay hawkish. The Sunday IRGC statement alone does not establish new physical losses or price transmission.",
+        "watchNext": "At Monday's 09:30 EST open and after the 10:00 EST ISM release, collect same-session timestamped QQQ/Nasdaq/SOX prices, verified semiconductor-constituent and Nasdaq-100 breadth, 10Y/2Y yields, VXN/VIX, and front-month Brent/WTI contracts. Validate the Iran tanker reports against UKMTO, ship identities and independent operators before treating them as new physical incidents, and check whether oil futures actually react. Distinguish CME FedWatch from NasDecode's settlement-derived probabilities, verify any additions to the canonical Open Watch archive, and monitor Apple, AMD, ALAB, ARM and QCOM earnings guidance together with JOLTS and election developments. Do not mistake model-refresh timestamps, rolled oil contracts or unverified claims for market confirmation."
+      },
+      "provenance": {
+        "assessedAtUTC": "2026-11-01T21:53:50.101Z",
+        "comparedToRunKey": "nasdecode-3day-2026-11-01T16:16:08-05:00",
+        "previousAssessmentET": "2026-11-01T16:16:08-05:00",
+        "repository": "repural/NasDecode",
+        "priorHistoryFile": "public/data/three-day-watch.json",
+        "priorHistoryBlobSha": "e8fe96454850fcbabfea22b364b7201acd92b05d",
+        "marketData": "Friday Oct 30 U.S. cash close and asynchronous Friday market quotes; weekend dashboard refresh Nov 01, 2026 · 16:16 ET",
+        "openWatchFile": "data/history/market-watch-events.json",
+        "openWatchUpdatedUTC": "2026-10-31T00:58:08+00:00",
+        "newsSources": [
+          "https://www.reuters.com/business/nasdaq-futures-tumble-amazon-intel-results-deepen-ai-spending-woes-2026-10-30/",
+          "https://www.reuters.com/business/energy/opec-set-keep-oil-output-targets-steady-sources-say-2026-11-01/",
+          "https://www.reuters.com/world/middle-east/iranian-negotiators-doha-continue-talks-end-us-iran-war-official-says-2026-11-01/",
+          "https://www.reuters.com/world/middle-east/irans-irgc-navy-says-two-tankers-exploded-after-hitting-mines-hormuz-2026-11-01/",
+          "https://www.reuters.com/world/middle-east/irans-irgc-navy-says-two-tankers-stopped-south-hormuz-after-incidents-2026-10-30/",
+          "https://www.bls.gov/schedule/2026/11_sched.htm",
+          "https://www.reuters.com/legal/legalindustry/wall-st-week-ahead-midterm-elections-earnings-jobs-data-loom-ai-wary-market-2026-10-30/"
+        ],
+        "notes": "Preserved all prior history. Fresh Reuters review includes Nov 1 unverified IRGC tanker allegation; no corroboration of new supply outage or cash response. Treasury yield scaling corrected. Brent contract roll distinguished. Model score and Fed probabilities not live market quotes. Official VXN settlement and some issuer earnings timing not independently verified."
+      }
+    },
     {
       "date": "2026-11-01",
       "timeET": "16:16",
