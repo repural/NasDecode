@@ -80485,7 +80485,7 @@
     },
     "2026-11-01": {
       "schemaVersion": 4,
-      "timestampET": "2026-11-01T10:20:06.516200-05:00",
+      "timestampET": "2026-11-01T10:54:08.976858-05:00",
       "market": {
         ".IXIC": {
           "last": 25436.999,
@@ -81314,7 +81314,7 @@
             "directionalScoreUnchanged": true
           },
           "broadLeadershipTrigger": false,
-          "accelerationFromOpenPoints": null,
+          "accelerationFromOpenPoints": 0,
           "relativeStrengthPp": {
             "soxVsNasdaqPp": -4.34,
             "soxxVsNasdaqPp": -5.38,
@@ -81343,7 +81343,7 @@
           "marketResponseAttenuationPct": 0.0
         },
         "directionalScoreUnchanged": true,
-        "checkpoint": "+30m",
+        "checkpoint": "+60m",
         "marketResponseApplied": false
       },
       "validation": {
@@ -81387,22 +81387,6 @@
               "regimeMultiplier": 1.25
             },
             {
-              "factor": "Mega-cap leadership",
-              "bucket": "Leadership",
-              "strength": 0.0,
-              "effectiveWeight": 0.2,
-              "freshnessWeight": 0.2,
-              "regimeMultiplier": 1.0
-            },
-            {
-              "factor": "Semiconductor leadership",
-              "bucket": "Leadership",
-              "strength": 0.0,
-              "effectiveWeight": 0.2,
-              "freshnessWeight": 0.2,
-              "regimeMultiplier": 1.0
-            },
-            {
               "factor": "Fed expectations",
               "bucket": "Rates / Macro",
               "strength": -0.528,
@@ -81432,6 +81416,22 @@
               "strength": -0.433,
               "effectiveWeight": 2.0,
               "freshnessWeight": 1.0,
+              "regimeMultiplier": 1.0
+            },
+            {
+              "factor": "Mega-cap leadership",
+              "bucket": "Leadership",
+              "strength": 0.0,
+              "effectiveWeight": 0.2,
+              "freshnessWeight": 0.2,
+              "regimeMultiplier": 1.0
+            },
+            {
+              "factor": "Semiconductor leadership",
+              "bucket": "Leadership",
+              "strength": 0.0,
+              "effectiveWeight": 0.2,
+              "freshnessWeight": 0.2,
               "regimeMultiplier": 1.0
             },
             {
@@ -81491,13 +81491,6 @@
               "cap": 9.0
             },
             {
-              "bucket": "Leadership",
-              "strength": -0.896,
-              "weight": 3.85,
-              "uncappedWeight": 3.85,
-              "cap": 9.0
-            },
-            {
               "bucket": "Volatility / Positioning",
               "strength": -0.422,
               "weight": 3.72,
@@ -81510,6 +81503,13 @@
               "weight": 2.0,
               "uncappedWeight": 2.0,
               "cap": 6.0
+            },
+            {
+              "bucket": "Leadership",
+              "strength": -0.896,
+              "weight": 3.85,
+              "uncappedWeight": 3.85,
+              "cap": 9.0
             },
             {
               "bucket": "Other",
@@ -81635,7 +81635,7 @@
                 "directionalScoreUnchanged": true
               },
               "broadLeadershipTrigger": false,
-              "accelerationFromOpenPoints": null,
+              "accelerationFromOpenPoints": 0,
               "relativeStrengthPp": {
                 "soxVsNasdaqPp": -4.34,
                 "soxxVsNasdaqPp": -5.38,
@@ -81664,7 +81664,7 @@
               "marketResponseAttenuationPct": 0.0
             },
             "directionalScoreUnchanged": true,
-            "checkpoint": "+30m",
+            "checkpoint": "+60m",
             "marketResponseApplied": false
           },
           "marketResponse": {
@@ -81672,7 +81672,7 @@
             "status": "inactive",
             "mode": null,
             "summary": "No persistent divergence between the macro impulse and live market response.",
-            "observedAt": "2026-11-01T10:23:59.658029-05:00",
+            "observedAt": "2026-11-01T10:57:43.817217-05:00",
             "candidateMode": null,
             "candidateSince": null,
             "persistenceMinutes": 0.0,
@@ -82432,18 +82432,6 @@
           "trend": "Improving ↑",
           "latest": "4.592% (-6.4 bp vs prev close)"
         },
-        "Mega-cap leadership": {
-          "signal": "mixed",
-          "currentImpact": "Low",
-          "trend": "Stable →",
-          "latest": "Awaiting live mega-cap quotes"
-        },
-        "Semiconductor leadership": {
-          "signal": "mixed",
-          "currentImpact": "Low",
-          "trend": "Stable →",
-          "latest": "Awaiting live SOX/Nasdaq quotes"
-        },
         "Fed expectations": {
           "signal": "negative",
           "currentImpact": "High",
@@ -82467,6 +82455,18 @@
           "currentImpact": "Medium",
           "trend": "Stable →",
           "latest": "Previous close · Nasdaq-100 breadth: 37/101 advancing (37%) · 64 declining · 0 flat"
+        },
+        "Mega-cap leadership": {
+          "signal": "mixed",
+          "currentImpact": "Low",
+          "trend": "Stable →",
+          "latest": "Awaiting live mega-cap quotes"
+        },
+        "Semiconductor leadership": {
+          "signal": "mixed",
+          "currentImpact": "Low",
+          "trend": "Stable →",
+          "latest": "Awaiting live SOX/Nasdaq quotes"
         },
         "Oil (WTI / Brent)": {
           "signal": "mixed",
@@ -82504,7 +82504,7 @@
         "status": "inactive",
         "mode": null,
         "summary": "No persistent divergence between the macro impulse and live market response.",
-        "observedAt": "2026-11-01T10:23:59.658029-05:00",
+        "observedAt": "2026-11-01T10:57:43.817217-05:00",
         "candidateMode": null,
         "candidateSince": null,
         "persistenceMinutes": 0.0,
