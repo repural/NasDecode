@@ -3,6 +3,50 @@
   "description": "Verified U.S. macro actual-vs-consensus observations used by NasDecode's decaying Macro Data Impulse.",
   "events": [
     {
+      "id": "2026-11-02-cpi-mom",
+      "name": "Inflation Rate MoM",
+      "family": "inflation",
+      "subtype": "headline_cpi",
+      "releasedAt": "2026-11-02T08:30:00-05:00",
+      "actual": 0.22,
+      "consensus": 0.25,
+      "unit": "%",
+      "direction": "higher_is_negative",
+      "scale": 0.15,
+      "importance": 0.6,
+      "halfLifeDays": 6,
+      "verified": false,
+      "sourceMode": "calendar_observed",
+      "firstObservedAt": "2026-11-02T11:23:48.039204Z",
+      "source": "Trading Economics public calendar via Tavily; awaiting U.S. Bureau of Labor Statistics verification",
+      "sourceUrl": "https://tradingeconomics.com/united-states/calendar",
+      "officialSource": "U.S. Bureau of Labor Statistics",
+      "consensusSource": "Trading Economics survey consensus",
+      "ingestionLagSeconds": 0
+    },
+    {
+      "id": "2026-11-02-retail-sales-mom",
+      "name": "Retail Sales MoM",
+      "family": "growth",
+      "subtype": "consumer_demand",
+      "releasedAt": "2026-11-02T08:30:00-05:00",
+      "actual": -2.0,
+      "consensus": 0.4,
+      "unit": "%",
+      "direction": "higher_is_negative",
+      "scale": 0.5,
+      "importance": 0.7,
+      "halfLifeDays": 4,
+      "verified": false,
+      "sourceMode": "calendar_observed",
+      "firstObservedAt": "2026-11-02T11:23:48.039204Z",
+      "source": "Trading Economics public calendar via Tavily; awaiting U.S. Census Bureau verification",
+      "sourceUrl": "https://tradingeconomics.com/united-states/calendar",
+      "officialSource": "U.S. Census Bureau",
+      "consensusSource": "Trading Economics survey consensus",
+      "ingestionLagSeconds": 0
+    },
+    {
       "id": "2026-10-16-unemployment",
       "name": "Unemployment Rate",
       "family": "labor",
@@ -1382,7 +1426,7 @@
       "latencyTracking": "pre_tracking_release"
     }
   ],
-  "lastOfficialVerificationAt": "2026-11-02T10:12:13.905045Z",
+  "lastOfficialVerificationAt": "2026-11-02T11:23:52.530353Z",
   "latencyDefinition": {
     "ingestionLagSeconds": "Seconds from scheduled release time to first NasDecode observation.",
     "officialVerificationLagSeconds": "Seconds from scheduled release time to first successful primary-source verification."
@@ -1394,6 +1438,6 @@
   },
   "signalLens": "Rate-sensitive Nasdaq: positive means the recent surprise mix is more supportive for discount rates; negative means more restrictive.",
   "calendarSource": "https://tradingeconomics.com/united-states/calendar",
-  "lastCalendarFetchAt": "2026-10-16T09:25:41.406219Z",
+  "lastCalendarFetchAt": "2026-11-02T11:23:48.039204Z",
   "scheduledEvents": []
 }
