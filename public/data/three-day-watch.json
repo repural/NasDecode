@@ -1,13 +1,305 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-02T03:53:20.335Z",
+  "updated": "2026-11-02T04:48:45.336Z",
   "horizon": [
     "2026-11-02",
     "2026-11-03",
     "2026-11-04"
   ],
   "entries": [
+    {
+      "date": "2026-11-01",
+      "timeET": "23:48",
+      "asOfET": "2026-11-01T23:48:45-05:00",
+      "runKey": "nasdecode-3day-2026-11-01T23:48:45-05:00",
+      "bias": "Bearish — Friday chip rout confirmed; elevated but moderating volatility risk",
+      "previousBias": "Bearish — Friday chip rout confirmed; elevated but moderating volatility risk",
+      "materialChange": false,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "2026-11-01 23:48 EST: Bearish November 2–4 unchanged. Friday cash Nasdaq -2.856%, QQQ -3.47%, SOX -7.20%, chip breadth 1/20, Nasdaq-100 breadth 37/101. Sunday dashboard -41 (previous assessment -30; model-snapshot discrepancy, not new cash decline). Correct rates 10Y 4.927%, 2Y 4.596%, curve +33.1 bp. Reuters 04:07 UTC Brent $109.75 (-3.2%), WTI $100.69 (-3.3%); China private PMI 52.0 vs 51.6 forecast; Nasdaq futures +0.8% earlier report. Friday VXN 28.50/VIX 19.42, Fed hike 70.7% Friday settlement, Open Watch 89 with 0 new. No material path change.",
+      "bullish": "Oil futures fell roughly 3% on ongoing Qatar-mediated talks, Reuters' early Nasdaq futures rose about 0.8%, and China's private manufacturing PMI 52.0 beat a 51.6 consensus. These are preliminary/foreign observations, not U.S. cash confirmation. Bullish invalidation of the bearish case requires sustained QQQ cash recovery, chip breadth >50%, Nasdaq-100 breadth >60%, SOX leadership and fresh VXN <24.",
+      "bearish": "Friday SOX -7.20% underperformed Nasdaq by 4.34 percentage points, with chip breadth 1/20, Nasdaq-100 breadth 37/101, delayed VXN 28.50, and weak AI/semiconductor earnings AVWAPs. High rates and December Fed hike pricing remain a headwind. A failed Monday relief bounce, SOX lag >3 pp, breadth <40% or VXN >30 would reinforce the bearish case.",
+      "observations": {
+        "assessmentTimeET": "2026-11-01T23:48:45-05:00",
+        "researchAsOfUTC": "2026-11-02T04:48:45.336Z",
+        "marketDataExactlySynchronized": false,
+        "quoteCaveat": "Friday October 30 remains the last completed U.S. cash session. Reuters November 2 Asia/futures, 04:07 UTC oil, and NasDecode Sunday 22:43–22:53 EST quotes are asynchronous. Do not infer Monday cash response. Previous dashboard score -30 and current canonical dashboard score -41 appear to reflect different model snapshots/fields; not evidence of an 11-point cash-market deterioration.",
+        "nasdaqComposite": {
+          "value": 25436.999,
+          "sessionChangePct": -2.856,
+          "unit": "index_points_and_percent_Friday_cash_close",
+          "source": "NasDecode CNBC quote service",
+          "sourceTimestamp": "2026-10-30 U.S. regular-session close",
+          "sourceUrl": "https://github.com/repural/NasDecode/blob/main/public/data/dashboard.json"
+        },
+        "QQQ": {
+          "sessionChangePct": -3.47,
+          "unit": "percent_Friday_cash_session",
+          "source": "NasDecode prior paired Friday quote",
+          "sourceTimestamp": "2026-10-30 16:01 EDT",
+          "sourceUrl": "https://github.com/repural/NasDecode/blob/main/public/data/dashboard.json"
+        },
+        "SOX": {
+          "sessionChangePct": -7.2,
+          "unit": "percent_Friday_cash_session",
+          "source": "NasDecode Friday close and Reuters",
+          "sourceTimestamp": "2026-10-30 U.S. regular-session close",
+          "sourceUrl": "https://www.reuters.com/business/nasdaq-futures-tumble-amazon-intel-results-deepen-ai-spending-woes-2026-10-30/"
+        },
+        "semiconductorRelativeStrength": {
+          "soxMinusNasdaqPp": -4.34,
+          "soxxMinusNasdaqPp": -5.38,
+          "smhMinusNasdaqPp": -4.12,
+          "unit": "percentage_points_Friday_cash_session",
+          "source": "NasDecode paired previous-close confirmation",
+          "sourceTimestamp": "2026-10-30 16:01 EDT"
+        },
+        "soxConstituentBreadth": {
+          "advancing": 1,
+          "available": 20,
+          "universeSize": 30,
+          "unit": "covered_constituents_Friday_close",
+          "source": "NasDecode prior Friday session sample",
+          "sourceTimestamp": "2026-10-30 cash close",
+          "caution": "Current after-hours dashboard has 0/5 semiconductor coverage; it cannot replace or be compared with Friday 1/20."
+        },
+        "nasdaq100Breadth": {
+          "advancing": 37,
+          "declining": 64,
+          "available": 101,
+          "unit": "covered_constituents_Friday_cash_close",
+          "source": "NasDecode previous completed cash sample",
+          "sourceTimestamp": "2026-10-30 cash close",
+          "caution": "Latest weekend dashboard says zero usable breadth quotes; retain last verified cash sample as historical, not live."
+        },
+        "nasdaqScore": {
+          "value": -41,
+          "priorAssessmentValue": -30,
+          "unit": "NasDecode_model_points_out_of_100",
+          "source": "NasDecode public/data/dashboard.json",
+          "sourceTimestamp": "Nov 01, 2026 · 22:53 ET",
+          "notMarketQuote": true,
+          "warning": "Dashboard -41 vs prior assessment -30 is a model snapshot/field discrepancy, not an observed price move; do not treat as independently verified deterioration."
+        },
+        "US10Y": {
+          "value": 4.927,
+          "unit": "percent_nominal_yield",
+          "source": "NasDecode CNBC/Tradeweb",
+          "sourceTimestamp": "CNBC intraday · 2026-11-01T22:52:36.000-0500",
+          "sourceUrl": "https://github.com/repural/NasDecode/blob/main/public/data/dashboard.json",
+          "dataQuality": "Correctly scaled percent; reject dashboard threeDayWatch trigger 927.000%."
+        },
+        "US2Y": {
+          "value": 4.596,
+          "unit": "percent_nominal_yield",
+          "source": "NasDecode CNBC/Tradeweb",
+          "sourceTimestamp": "CNBC intraday · 2026-11-01T22:49:53.000-0500",
+          "sourceUrl": "https://github.com/repural/NasDecode/blob/main/public/data/dashboard.json",
+          "dataQuality": "Correctly scaled percent; reject dashboard threeDayWatch trigger 596.000%."
+        },
+        "yieldCurve2s10s": {
+          "value": 33.1,
+          "unit": "basis_points_10Y_minus_2Y",
+          "source": "Calculated from two NasDecode rate quotes",
+          "sourceTimestamp": "2026-11-01 22:49–22:52 EST, not simultaneous"
+        },
+        "VXN": {
+          "value": 28.5,
+          "sessionChangePct": 13.19,
+          "unit": "index_points_and_percent_change",
+          "source": "NasDecode CNBC/Cboe delayed",
+          "sourceTimestamp": "2026-10-30 16:15 EDT",
+          "caution": "Not live; official settlement independently unverified."
+        },
+        "VIX": {
+          "value": 19.42,
+          "sessionChangePct": 12.91,
+          "unit": "index_points_and_percent_change",
+          "source": "NasDecode CNBC/Cboe delayed",
+          "sourceTimestamp": "2026-10-30 16:15 EDT",
+          "caution": "Not synchronized with Monday futures or Sunday rates."
+        },
+        "Brent": {
+          "value": 109.75,
+          "sessionChangePct": -3.2,
+          "unit": "USD_per_barrel_and_percent_change",
+          "source": "Reuters oil markets",
+          "sourceTimestamp": "2026-11-02 04:07 UTC",
+          "sourceUrl": "https://www.reuters.com/business/energy/oil-slips-more-than-1-talks-continue-ending-iran-war-2026-11-01/",
+          "caution": "Reuters futures quote, contract mapping not independently audited; not a U.S. cash response. NasDecode 22:43 EST snapshot was $110.06 (-2.97%)."
+        },
+        "WTI": {
+          "value": 100.69,
+          "sessionChangePct": -3.3,
+          "unit": "USD_per_barrel_and_percent_change",
+          "source": "Reuters oil markets",
+          "sourceTimestamp": "2026-11-02 04:07 UTC",
+          "sourceUrl": "https://www.reuters.com/business/energy/oil-slips-more-than-1-talks-continue-ending-iran-war-2026-11-01/",
+          "caution": "Reuters futures quote, not a U.S. cash response. NasDecode 22:43 EST snapshot was $100.98 (-3.02%)."
+        },
+        "fedExpectations": {
+          "decemberHikeProbabilityPct": 70.7,
+          "decemberHoldProbabilityPct": 29.3,
+          "decemberCutProbabilityPct": 0,
+          "currentFedTargetRange": "3.75%-4.00%",
+          "unit": "percent_implied_probability",
+          "source": "NasDecode CME Fed Funds futures settlement model",
+          "sourceTimestamp": "CME settlement 2026-10-30 · checked 2026-11-01 22:53 ET",
+          "sourceUrl": "https://github.com/repural/NasDecode/blob/main/public/data/dashboard.json",
+          "reutersApproximateHikePct": 72,
+          "caution": "70.7% from Friday settlement vs Reuters ~72% from evolving Nov 2 report; not a confirmed intraday repricing."
+        },
+        "usIndexFutures": {
+          "nasdaqFuturesChangePct": 0.8,
+          "sp500FuturesChangePct": 0.4,
+          "unit": "percent_early_Monday_futures",
+          "source": "Reuters global markets",
+          "sourceTimestamp": "2026-11-02 00:41 UTC initial report, later revision time unspecified",
+          "sourceUrl": "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-02/",
+          "caution": "Not synchronized with 04:07 UTC oil; not Monday cash."
+        },
+        "asiaCashMarkets": {
+          "nikkeiChangePct": -0.1,
+          "kospiChangePct": 0.8,
+          "msciAsiaExJapanChangePct": -0.2,
+          "unit": "percent_early_Asia_session",
+          "source": "Reuters global markets",
+          "sourceTimestamp": "2026-11-02 early Asian session, Reuters initial 00:41 UTC",
+          "sourceUrl": "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-02/",
+          "caution": "Early-session, not closing data."
+        },
+        "chinaPrivateManufacturingPMI": {
+          "value": 52,
+          "prior": 52.1,
+          "reutersConsensus": 51.6,
+          "unit": "PMI_index_points",
+          "source": "S&P Global RatingDog survey via Reuters",
+          "sourceTimestamp": "2026-11-02 Reuters report approximately 01:49 UTC",
+          "sourceUrl": "https://www.reuters.com/world/asia-pacific/china-factory-growth-slows-october-export-orders-ease-private-pmi-shows-2026-11-02/",
+          "caution": "Beat consensus by 0.4 points but slightly below September; contrasts with official PMI 49.3. No isolated Nasdaq response."
+        },
+        "chinaOfficialManufacturingPMI": {
+          "value": 49.3,
+          "unit": "PMI_index_points",
+          "source": "China NBS via Reuters/AP",
+          "sourceTimestamp": "2026-10-31",
+          "sourceUrl": "https://apnews.com/article/f1e0e24004da425a1b3c8935b16a245c",
+          "caution": "Previously known; not a newly observed surprise this run."
+        },
+        "newCuratedEvents": {
+          "count": 0,
+          "archiveCount": 89,
+          "previousArchiveCount": 89,
+          "unit": "curated_events_since_previous_assessment",
+          "source": "NasDecode Open Watch canonical JSON",
+          "sourceTimestamp": "2026-10-31T00:58:08+00:00; checked 2026-11-02T04:48:45.336Z",
+          "sourceUrl": "https://github.com/repural/NasDecode/blob/main/data/history/market-watch-events.json",
+          "note": "No newly published curated events; research-only news is not counted as published."
+        },
+        "earningsAVWAPLeadership": {
+          "aboveCount": 0,
+          "coveredCount": 6,
+          "medianDistancePct": -6.43,
+          "unit": "selected_stocks_and_percent_below_earnings_AVWAP",
+          "source": "NasDecode daily aggregates",
+          "sourceTimestamp": "2026-10-30 daily close",
+          "caution": "Six-stock sample, not entire SOX."
+        },
+        "upcomingISMManufacturing": {
+          "consensus": 54.7,
+          "previous": 54.5,
+          "actual": null,
+          "releaseTimeET": "2026-11-02T10:00:00-05:00",
+          "unit": "PMI_index_points",
+          "source": "NasDecode prior calendar / TD Economics",
+          "sourceTimestamp": "2026-10-30 calendar",
+          "sourceUrl": "https://economics.td.com/domains/economics.td.com/documents/reports/bottom-line/tables/2026-10-30/upcoming.htm"
+        },
+        "opecDecemberPolicy": {
+          "status": "OPEC+ December targets unchanged, already known in previous assessment",
+          "unit": "qualitative_policy",
+          "source": "Reuters",
+          "sourceTimestamp": "2026-11-01",
+          "sourceUrl": "https://www.reuters.com/business/energy/opec-set-keep-oil-output-targets-steady-sources-say-2026-11-01/",
+          "marketResponse": "Oil futures lower, but attribution across negotiations/OPEC cannot be isolated; U.S. cash response unobserved."
+        },
+        "dataQuality": {
+          "treasuryScalingCorrected": true,
+          "quotesAsynchronous": true,
+          "marketResponseVsExpectedImpactSeparated": true,
+          "usCashSessionNotYetOpened": true,
+          "modelScoreNotLive": true,
+          "modelScoreDiscrepancyFlagged": true,
+          "openWatchNoNewRecords": true,
+          "officialVxnSettlementUnverified": true,
+          "S5FIUnverified": true,
+          "liveFedWatchUnverified": true,
+          "afterHoursBreadthNotComparable": true,
+          "earningsDatesIssuerUnverified": true,
+          "brentContractMappingUnverified": true,
+          "usDSTEST": true
+        }
+      },
+      "conditions": [
+        "Base case bearish November 2–4; moderate confidence, high event risk; Friday last U.S. cash session.",
+        "Friday Nasdaq -2.856%, QQQ -3.47%, SOX -7.20%, SOX-Nasdaq -4.34 pp; chip breadth 1/20 and Nasdaq-100 breadth 37/101.",
+        "Friday delayed VXN 28.50/VIX 19.42; no Monday U.S. cash confirmation.",
+        "Correctly scaled 10Y 4.927%, 2Y 4.596%, curve +33.1 bp; reject dashboard 927%/596% trigger.",
+        "Reuters 04:07 UTC Brent $109.75 (-3.2%), WTI $100.69 (-3.3%); futures not cash response.",
+        "Reuters early Nasdaq futures +0.8%, S&P futures +0.4%, update timestamp uncertain.",
+        "China private PMI 52.0 vs 51.6 forecast, official PMI 49.3; mixed global growth.",
+        "Friday settlement December Fed hike 70.7%, Reuters approximately 72%; methods/timing differ.",
+        "Open Watch 89 records, 0 new; no verified Gulf shipping normalization.",
+        "Bearish reinforcement: failed QQQ bounce, SOX lag >3 pp, Nasdaq-100 breadth <40%, fresh VXN >30. Bullish invalidation: sustained QQQ recovery, SOX leadership, chip breadth >50%, Nasdaq-100 breadth >60%, VXN <24."
+      ],
+      "upcomingEvents": [
+        "Mon Nov 2 09:30 EST: U.S. cash open; synchronize QQQ/Nasdaq/SOX, breadth, volatility, rates and oil.",
+        "Mon Nov 2 09:45 EST: S&P Global Manufacturing PMI; 10:00 EST: ISM Manufacturing (consensus 54.7, previous 54.5); Fed Goolsbee remarks later. AAPL/ON earnings listed; issuer times unverified.",
+        "Tue Nov 3 10:00 EST: September JOLTS and factory orders; U.S. midterm elections; AMD/ALAB/SWKS earnings calendar-listed, issuer times unverified.",
+        "Wed Nov 4 08:15 EST: ADP; 10:00 EST: ISM Services; ARM/COHR/GFS/KLAC/META/QCOM earnings calendar-listed, issuer times unverified.",
+        "Fri Nov 6 08:30 EST: October U.S. payrolls outside the three-day horizon but important positioning risk."
+      ],
+      "editorial": {
+        "marketOverview": "The November 2–4 Nasdaq/QQQ outlook remains bearish with moderate confidence and high event risk. The last completed U.S. cash session, Friday October 30, saw Nasdaq Composite down 2.856%, QQQ down 3.47%, and SOX down 7.20%, with chips trailing Nasdaq by 4.34 percentage points. Only one of 20 covered semiconductor constituents and 37 of 101 Nasdaq-100 constituents advanced. Delayed Friday VXN of 28.50 and VIX of 19.42 indicate elevated protection demand. Monday's U.S. cash session has not begun, so the existing selloff remains the strongest confirmed directional evidence.",
+        "whatChanged": "Since the previous 22:53 EST assessment, the newest independently time-stamped Reuters oil update at 04:07 UTC shows Brent down 3.2% to $109.75 and WTI down 3.3% to $100.69, modestly extending the previously observed Sunday-night energy decline. China's private RatingDog manufacturing PMI printed 52.0 versus 51.6 Reuters consensus and 52.1 prior, offering a mixed but somewhat better-than-feared activity signal alongside Saturday's weaker official PMI of 49.3. Reuters continues to report Nasdaq futures up about 0.8%, but the underlying quote update time is not verified. The curated Open Watch archive remains 89 entries, with no new publication. The current dashboard Nasdaq Score is -41 while the prior assessment used -30; without comparable score snapshots, this discrepancy is not a verified fresh market deterioration.",
+        "marketInterpretation": "Easing oil futures and positive Nasdaq futures make a relief rally plausible, but neither confirms U.S. cash buying or repaired semiconductor leadership. China's PMI divergence argues against treating the global manufacturing picture as unambiguously contracting: private exporters remain expansionary while the official measure contracted. NasDecode's latest rate cards show 10Y 4.927% and 2Y 4.596%, or a +33.1-basis-point curve; the dashboard's 927%/596% bearish triggers are invalid scaling artifacts. December Fed hike odds of 70.7% derive from Friday settlements, and Reuters' approximate 72% is a different timestamp/method, not proof of a new hawkish repricing. The main confirmed risk is still Friday's breadth collapse and chip underperformance.",
+        "threeDayPath": "Monday November 2 may start with an overnight-futures-led bounce as crude retreats, but the bearish base case assumes that follow-through remains fragile unless the cash session shows synchronized QQQ recovery, stronger SOX/SOXX/SMH relative performance and improving breadth. The 10:00 EST ISM manufacturing release, Apple earnings and semiconductor guidance can shift the rates-versus-growth balance. Tuesday November 3 adds JOLTS, factory orders, U.S. midterm election risk and AMD-related earnings. Wednesday November 4 brings ADP, ISM Services and additional semiconductor results. These are possible paths conditioned on releases and market response, not predictions of observed future prices.",
+        "bullCase": "A durable upside alternative would require QQQ to sustain gains after the cash open, SOX and the semiconductor ETFs to stop lagging, more than half of covered chip names to advance, Nasdaq-100 breadth to exceed 60%, and fresh VXN to decline below 24. Continued oil relief and correctly scaled stable-to-falling yields could help long-duration technology valuations. Better-than-expected Apple and chip-company guidance, or an implemented agreement that restores Gulf shipping, would be constructive, but neither corporate results nor shipping normalization has been verified at this checkpoint.",
+        "bearCase": "The bearish scenario is supported by Friday's 7.20% SOX loss, its 4.34-point lag behind Nasdaq, weak chip and Nasdaq-100 participation, elevated VXN and six selected AI/chip stocks below their earnings-anchored VWAPs. A failed Monday gap-up, persistent SOX lag greater than three percentage points, Nasdaq-100 breadth under 40%, or a new VXN rise above 30 would increase the odds of downside continuation. Despite the oil pullback, Brent near $110 and WTI above $100 still create inflation risk; Fed tightening expectations and elevated nominal yields leave growth stocks sensitive to disappointing earnings and renewed Gulf disruptions.",
+        "watchNext": "The key test is the Monday 09:30 EST U.S. cash open: collect timestamp-aligned QQQ/Nasdaq, SOX/SOXX/SMH, chip and Nasdaq-100 breadth, VXN/VIX, correctly scaled 10Y/2Y and identified oil contracts. At 10:00 EST compare ISM Manufacturing with consensus 54.7 and prior 54.5, including prices paid and employment. Track Apple/ON results only after actual publication; on Tuesday check JOLTS and the election process, and on Wednesday ADP, ISM Services and semiconductor earnings. Recheck the curated Open Watch archive for new, published, materially relevant events."
+      },
+      "provenance": {
+        "assessedAtUTC": "2026-11-02T04:48:45.336Z",
+        "comparedToRunKey": "nasdecode-3day-2026-11-01T22:53:20-05:00",
+        "previousAssessmentET": "2026-11-01T22:53:20-05:00",
+        "repository": "repural/NasDecode",
+        "priorHistoryFile": "public/data/three-day-watch.json",
+        "priorHistoryBlobSha": "945a5c0396a61b628cad0f56a41b719e0f9215d5",
+        "dashboardBlobSha": "5241c14a7e610a3726a01b416392fc18a62e51c6",
+        "openWatchBlobSha": "4a569596d6573169303e768020fd7586889180c5",
+        "openWatchUpdatedUTC": "2026-10-31T00:58:08+00:00",
+        "marketData": "Oct 30 U.S. cash; Reuters Nov 2 00:41 UTC early Asia and 04:07 UTC oil; NasDecode Nov 1 22:43–22:53 EST; asynchronous.",
+        "newsSources": [
+          "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-02/",
+          "https://www.reuters.com/business/energy/oil-slips-more-than-1-talks-continue-ending-iran-war-2026-11-01/",
+          "https://www.reuters.com/world/asia-pacific/china-factory-growth-slows-october-export-orders-ease-private-pmi-shows-2026-11-02/",
+          "https://www.reuters.com/business/nasdaq-futures-tumble-amazon-intel-results-deepen-ai-spending-woes-2026-10-30/",
+          "https://www.cmcmarkets.com/en-ie/news-and-analysis/the-week-ahead-ism-pmi-reports-us-jobs-report-apple-earnings",
+          "https://github.com/repural/NasDecode/blob/main/public/data/dashboard.json",
+          "https://github.com/repural/NasDecode/blob/main/data/history/market-watch-events.json"
+        ],
+        "verification": "Read previous history first; re-read current SHA immediately before write; compare to prior; no new cash session or new curated event; corrected Treasury scaling and separated observed prices from future scenarios. Fresh oil update and China private PMI do not materially change path.",
+        "dataQualityNotes": [
+          "Treasury yield scaling errors in dashboard threeDayWatch triggers explicitly rejected.",
+          "Current dashboard score -41 differs from previous assessment -30; cannot establish comparable live score deterioration.",
+          "Friday delayed volatility, cash breadth, Sunday dashboard, Reuters Asia and oil snapshots are asynchronous.",
+          "Reuters approximate 72% Fed hike odds not directly comparable to 70.7% Friday settlement model.",
+          "S5FI independently verified feed unavailable; after-hours breadth unusable; earnings issuer timing unverified."
+        ]
+      }
+    },
     {
       "date": "2026-11-01",
       "timeET": "22:53",
