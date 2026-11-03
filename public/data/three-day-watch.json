@@ -1,13 +1,139 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-03T13:47:01.000Z",
+  "updated": "2026-11-03T15:14:06.000Z",
   "horizon": [
     "2026-11-03",
     "2026-11-04",
     "2026-11-05"
   ],
   "entries": [
+    {
+      "date": "2026-11-03",
+      "timeET": "10:14",
+      "asOfET": "2026-11-03T10:14:06-05:00",
+      "bias": "Bearish",
+      "previousBias": "Bearish",
+      "materialChange": false,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "Bearish three-session risk bias retained, although Tuesday's early cash-session Nasdaq recovery and selective semiconductor strength challenge the downside scenario. Confirmation requires sustained SOX participation, breadth and lower volatility; the election and AMD earnings remain binary catalysts.",
+      "bullish": [
+        "Associated Press November 3 early-session report: Nasdaq approximately +0.5%, S&P 500 +0.2%, with Nvidia and AI-linked shares supporting the advance; snapshot timing not synchronized to repository indicators.",
+        "IBD November 3 early-session report: Nasdaq approximately +0.6%, S&P +0.2%; Sandisk, Monolithic Power and Nvidia advanced. This is a separate early-session observation, not an independently verified simultaneous quote."
+      ],
+      "bearish": [
+        "Monday's QQQ -1.36%, SOX -3.37%, VXN 30.89 are carried-forward prior-close observations, not Tuesday intraday quotes.",
+        "Apple approximately -3.4% in AP's Tuesday snapshot on memory-chip cost/margin pressure; Palantir approximately -4.2%.",
+        "Nasdaq-100's Monday close was reportedly 10.4% below its October 6 record, illustrating correction risk; this is historical context, not Tuesday's drawdown.",
+        "Oil/geopolitical and election uncertainty persists; the direction of the subsequent market response is not established by event headlines alone."
+      ],
+      "observations": {
+        "earlyCashSession": {
+          "nasdaqComposite": {
+            "value": 0.5,
+            "unit": "percent change",
+            "sourceTimestamp": "2026-11-03 early U.S. cash session, AP report; precise quote minute not provided",
+            "status": "reported, asynchronous"
+          },
+          "sp500": {
+            "value": 0.2,
+            "unit": "percent change",
+            "sourceTimestamp": "2026-11-03 early U.S. cash session, AP report; precise quote minute not provided",
+            "status": "reported, asynchronous"
+          },
+          "apple": {
+            "value": -3.4,
+            "unit": "percent change",
+            "sourceTimestamp": "2026-11-03 early U.S. cash session, AP report",
+            "status": "reported, asynchronous"
+          }
+        },
+        "priorClose": {
+          "QQQ": {
+            "value": -1.36,
+            "unit": "percent change",
+            "sourceTimestamp": "2026-11-02 U.S. close",
+            "status": "carried forward from saved assessment"
+          },
+          "SOX": {
+            "value": -3.37,
+            "unit": "percent change",
+            "sourceTimestamp": "2026-11-02 U.S. close",
+            "status": "carried forward"
+          },
+          "VXN": {
+            "value": 30.89,
+            "unit": "index points",
+            "sourceTimestamp": "2026-11-02 U.S. close",
+            "status": "carried forward"
+          }
+        },
+        "tenYearYield": {
+          "value": 4.94,
+          "unit": "percent annual yield",
+          "sourceTimestamp": "2026-11-03 early cash-session IBD report; not synchronized to 2Y",
+          "status": "approximate reported"
+        },
+        "twoYearYield": "No new synchronized reading verified; previous 4.59% area is historical and not used for a fresh curve",
+        "yieldCurve": "Not recalculated without synchronized 10Y and 2Y; no 100x scaling",
+        "VIX": "No fresh verified reading",
+        "SOXIntraday": "No fresh verified synchronized SOX index reading",
+        "semiconductorRelativeStrength": "Qualitative Nvidia, Sandisk, Monolithic Power strength reported; no quantified SOX-versus-QQQ spread",
+        "breadth": "AP reports more S&P constituents falling than rising in its early snapshot; no precise count verified",
+        "WTI": {
+          "value": 96.15,
+          "unit": "USD per barrel",
+          "sourceTimestamp": "2026-11-03 early cash-session IBD report",
+          "status": "approximate; asynchronous"
+        },
+        "brent": "No synchronized Brent price verified; prior reports of recovery not used as a fresh quote",
+        "fedExpectations": "No independently validated contemporaneous FedWatch probability; rate path treated as scenario",
+        "openWatch": {
+          "value": 120,
+          "unit": "curated events",
+          "sourceTimestamp": "2026-11-03T14:35:24+00:00",
+          "latestNewEvents": []
+        }
+      },
+      "conditions": {
+        "upgrade": "Sustained QQQ gains with SOX outperforming, broader chip and index breadth, falling VXN, and a constructive AMD earnings response would support neutralizing the bearish bias.",
+        "downgrade": "Fresh SOX underperformance, a failed Nasdaq recovery, expanding VXN, an adverse AMD guidance surprise, or higher synchronized yields/oil would strengthen the bearish path."
+      },
+      "upcomingEvents": [
+        {
+          "date": "2026-11-03",
+          "event": "U.S. midterm election results; AMD earnings after the close; JOLTS release/interpretation"
+        },
+        {
+          "date": "2026-11-04",
+          "event": "ADP employment, ISM Services, election results and AMD earnings reaction"
+        },
+        {
+          "date": "2026-11-05",
+          "event": "Confirmation or rejection of the post-election, post-AMD market move; additional company results"
+        }
+      ],
+      "provenance": {
+        "sources": [
+          "https://apnews.com/article/0d235af127a92c68da0cc2c45c028cef",
+          "https://www.investors.com/market-trend/stock-market-today/dow-jones-sp500-nasdaq-election-day-apple-stock-palantir-stock/",
+          "https://www.marketwatch.com/story/nasdaq-100-tumbles-into-its-third-correction-this-year-as-ai-worries-mount-abee4c0d",
+          "repural/NasDecode:public/data/three-day-watch.json",
+          "repural/NasDecode:data/history/market-watch-events.json"
+        ],
+        "dataQuality": "AP and IBD are independently timed early-session news snapshots, not synchronized exchange observations. Previous QQQ, SOX and VXN readings are historical. Treasury yield is expressed as percent; no 2Y curve recomputation without a synchronized pair. No live SOX, VXN/VIX, breadth count, Brent or FedWatch rate probability fabricated. Open Watch expected impacts are hypotheses, not confirmed market reactions."
+      },
+      "editorial": {
+        "marketOverview": "The November 3 U.S. cash session opened with tentative Nasdaq stabilization after Monday's semiconductor-led losses. AP reported the Nasdaq about 0.5% higher and the S&P 500 about 0.2% higher, supported by Nvidia and other AI-related shares, while Apple remained weak after warning about memory costs. The early bounce is relevant evidence against an uninterrupted selloff, but the prior session's QQQ and SOX weakness and elevated VXN still define the unconfirmed recovery setup.",
+        "whatChanged": "Since the prior 08:47 ET premarket assessment, early regular-session reporting has replaced futures-only indications with a modest positive Nasdaq cash-market move. AP and IBD separately described roughly half-percent Nasdaq gains and selective AI-chip strength, alongside Apple and Palantir weakness. This is a partial improvement in observed price action, not a synchronized semiconductor breadth reversal. The Open Watch archive has been rechecked; newly published headlines are treated as catalysts with unconfirmed market impacts unless supported by observed price action.",
+        "marketInterpretation": "The bearish assessment remains a conditional three-day risk preference rather than a prediction of three consecutive negative closes. An early Nasdaq rise can coexist with a fragile underlying tape if gains concentrate in a few large-cap AI stocks while broader participation remains negative. AP's observation that more S&P constituents fell than rose supports this caution. The 10-year Treasury yield was reported near 4.94%, but without a synchronized two-year reading it would be misleading to calculate a fresh curve. Oil and Federal Reserve expectations remain relevant risk channels without a verified contemporaneous cross-asset snapshot.",
+        "threeDayPath": "Tuesday November 3 is a test of whether early Nasdaq strength survives the closing bell, with election positioning and AMD earnings still ahead. Wednesday November 4 is the principal event-repricing session: AMD guidance, election results, ADP employment and ISM Services could either validate a semiconductor-led rebound or trigger another downside leg. Thursday November 5 should reveal whether any bounce has durable sector breadth and volatility confirmation. These are scenarios with observable conditions, not claims about future prices.",
+        "bullCase": "The strongest bullish interpretation is that the market is beginning to absorb Monday's AI-capex concerns and that early Nvidia and semiconductor gains are the start of a broader recovery. This would require QQQ holding its advance, SOX outperforming on a comparable timestamp, improved breadth, lower VXN, and AMD delivering reassuring guidance. The first part is visible in early reports; the necessary confirmations are not yet verified.",
+        "bearCase": "The bearish case remains that investors sell technology rallies while AI spending economics, memory-cost pressure, rising yields and oil/geopolitical risk constrain risk appetite. Apple's decline despite a headline earnings beat is a warning about margin sensitivity, and the previous SOX selloff leaves the sector vulnerable to another failure. Weak AMD guidance, a contested election outcome or rising volatility could accelerate this path, but none is yet an observed future outcome.",
+        "watchNext": "Check a synchronized QQQ/Nasdaq and SOX/SMH snapshot later in the U.S. session, breadth and VXN/VIX at the same timestamp, and both 10Y and 2Y yields in percent units. Track Brent and WTI together, confirm whether Fed pricing genuinely shifts, and monitor AMD results after the close plus election outcomes and Wednesday ADP/ISM. Treat curated Open Watch items as hypotheses until actual market confirmation is available."
+      }
+    },
     {
       "date": "2026-11-03",
       "timeET": "08:47",
