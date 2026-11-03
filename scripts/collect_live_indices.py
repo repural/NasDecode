@@ -44,7 +44,19 @@ def main():
             if age < -120 or age > 1200:entry["status"]="stale"
         entry["instrument"]="Nasdaq Composite" if name=="nasdaq" and regular else "Nasdaq-100 Futures" if name=="nasdaq" else "S&P 500 Index" if regular else "S&P 500 Futures"
         quotes[name]=entry
-    report={"schemaVersion":1,"mode":mode,"collectedAt":now.isoformat(),"quotes":quotes}
+    # Keep cash indices separately even when the primary display mode is futures.
+    # This allows the Nasdaq Composite and S&P 500 cards to show the last
+    # timestamped cash observation with a previous-close comparison overnight.
+    cash_quotes={}
+    for name,pair in SYMS.items():
+        symbol=pair["cash"]
+        entry=quotes[name].copy() if mode=="cash" else fetch(symbol)
+        if entry["status"]=="ok":
+            age=(now-dt.datetime.fromisoformat(entry["quoteTime"])).total_seconds()
+            if age < -120 or age > 1200: entry["status"]="stale"
+        entry["instrument"]="Nasdaq Composite" if name=="nasdaq" else "S&P 500 Index"
+        cash_quotes[name]=entry
+    report={"schemaVersion":2,"mode":mode,"collectedAt":now.isoformat(),"quotes":quotes,"cashQuotes":cash_quotes}
     OUT.parent.mkdir(parents=True,exist_ok=True)
     tmp=OUT.with_suffix(".json.tmp");tmp.write_text(json.dumps(report,indent=2)+"\n");os.replace(tmp,OUT)
     print(json.dumps(report))
