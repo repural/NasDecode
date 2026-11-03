@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "symbol": "SOXL",
-  "checkedAtET": "2026-11-03T11:09:00.807309-05:00",
+  "checkedAtET": "2026-11-03T16:51:22.501255-05:00",
   "researchOnly": true,
   "publicationAllowed": false,
   "canonicalArchiveModified": false,
@@ -11,7 +11,20 @@
   "validationStatus": "shadow_unverified",
   "timeframes": {
     "4h": {
-      "developingCandle": null,
+      "developingCandle": {
+        "startET": "2026-11-03T16:00:00-05:00",
+        "endET": "2026-11-03T20:00:00-05:00",
+        "asOfET": "2026-11-03T16:51:22.501255-05:00",
+        "lastSourceBarET": "2026-11-03T16:50:00-05:00",
+        "checkedAtET": "2026-11-03T16:51:22.501255-05:00",
+        "underlying5mBars": 11,
+        "open": 73.12,
+        "high": 78.36,
+        "low": 72.26,
+        "close": 77.15,
+        "provider": "Yahoo developing",
+        "isConfirmed": false
+      },
       "massiveLastEndET": "2026-11-02T20:00:00-05:00",
       "shadowLastEndET": "2026-11-03T08:00:00-05:00",
       "newYahooCandles": 1,
@@ -53,15 +66,28 @@
         },
         {
           "startET": "2026-11-03T08:00:00-05:00",
+          "reason": "missing_5m_intervals",
+          "available5m": 45,
+          "missingCount": 3,
+          "firstMissingET": "2026-11-03T09:15:00-05:00"
+        },
+        {
+          "startET": "2026-11-03T16:00:00-05:00",
           "reason": "not_yet_confirmed",
-          "available5m": 35
+          "available5m": 11
+        },
+        {
+          "startET": "2026-11-03T12:00:00-05:00",
+          "reason": "gap_since_baseline",
+          "expectedStartET": "2026-11-03T08:00:00-05:00",
+          "nextTradingSessionET": "2026-11-04T04:00:00-05:00"
         }
       ],
       "overlappingMassiveCandles": 11,
       "overlapSamples": [
         {
           "startET": "2026-10-29T04:00:00-04:00",
-          "closeDiffPct": 0.0,
+          "closeDiffPct": 0.00996,
           "highDiffPct": 0.0,
           "lowDiffPct": 0.0
         },
@@ -91,7 +117,7 @@
         },
         {
           "startET": "2026-10-30T16:00:00-04:00",
-          "closeDiffPct": 0.0,
+          "closeDiffPct": -0.02551,
           "highDiffPct": 0.0,
           "lowDiffPct": 0.0
         },
@@ -149,7 +175,20 @@
       ]
     },
     "8h": {
-      "developingCandle": null,
+      "developingCandle": {
+        "startET": "2026-11-03T12:00:00-05:00",
+        "endET": "2026-11-03T20:00:00-05:00",
+        "asOfET": "2026-11-03T16:51:22.501255-05:00",
+        "lastSourceBarET": "2026-11-03T16:50:00-05:00",
+        "checkedAtET": "2026-11-03T16:51:22.501255-05:00",
+        "underlying5mBars": 59,
+        "open": 74.71289825439453,
+        "high": 78.36,
+        "low": 71.79000091552734,
+        "close": 77.15,
+        "provider": "Yahoo developing",
+        "isConfirmed": false
+      },
       "massiveLastEndET": "2026-11-02T20:00:00-05:00",
       "shadowLastEndET": "2026-11-02T20:00:00-05:00",
       "newYahooCandles": 0,
@@ -191,15 +230,22 @@
         },
         {
           "startET": "2026-11-03T04:00:00-05:00",
+          "reason": "missing_5m_intervals",
+          "available5m": 93,
+          "missingCount": 3,
+          "firstMissingET": "2026-11-03T09:15:00-05:00"
+        },
+        {
+          "startET": "2026-11-03T12:00:00-05:00",
           "reason": "not_yet_confirmed",
-          "available5m": 83
+          "available5m": 59
         }
       ],
       "overlappingMassiveCandles": 3,
       "overlapSamples": [
         {
           "startET": "2026-10-28T12:00:00-04:00",
-          "closeDiffPct": 0.0,
+          "closeDiffPct": 0.07933,
           "highDiffPct": 0.0,
           "lowDiffPct": 0.0
         },
@@ -211,7 +257,7 @@
         },
         {
           "startET": "2026-10-30T12:00:00-04:00",
-          "closeDiffPct": 0.0,
+          "closeDiffPct": -0.02551,
           "highDiffPct": 0.0,
           "lowDiffPct": 0.0
         }
@@ -246,7 +292,7 @@
     }
   },
   "status": "ok",
-  "retrievedYahoo5m": 818,
+  "retrievedYahoo5m": 887,
   "malformedYahoo5m": 1,
   "fetchErrors": [],
   "observations": {
@@ -523,6 +569,6 @@
       "unmatchedYahooCandles": 0
     }
   },
-  "reconciliationCheckedAtET": "2026-11-03T11:09:24.524421-05:00",
+  "reconciliationCheckedAtET": "2026-11-03T16:51:22.796930-05:00",
   "reconciliationMassiveGeneratedET": "2026-11-03T01:18:06.498670-05:00"
 }
