@@ -11,6 +11,8 @@ from pathlib import Path
 R=Path(__file__).resolve().parents[1]
 ENGINE=R/"data/history/directional-engine-v3.json"
 HISTORY=R/"data/history/resilience-daily.json"
+HOLDOUT=R/"data/history/directional-engine-v3-holdout.json"
+EVENT_BACKTEST=R/"data/history/directional-v3-nonoverlap-backtest.json"
 OUT=R/"data/history/directional-engine-v3-prospective.json"
 DASH=R/"data/dashboard.json"
 PROSPECTIVE_START="2026-10-07"
@@ -95,6 +97,13 @@ def main():
           "continuation":"Frozen v3 detects established semiconductor momentum. Holdout testing did not validate this state as a forward entry signal; treat it as regime context only.",
           "neutral_other":"Frozen v3 finds no qualifying pullback, washout or continuation setup."
         }
+        holdout=json.loads(HOLDOUT.read_text()) if HOLDOUT.exists() else {}
+        performance=((holdout.get("setupResults") or {}).get(setup) or {}).get("soxl",{}).get("5")
+        # Evidence must match the frozen specification; never publish stale hardcoded figures.
+        if holdout.get("specSha256") != (eng.get("frozenProtocol") or {}).get("specSha256"):
+            performance=None
+        event_report=json.loads(EVENT_BACKTEST.read_text()) if EVENT_BACKTEST.exists() else {}
+        event_performance=((event_report.get("setupResults") or {}).get(setup)) if event_report.get("specSha256") == (eng.get("frozenProtocol") or {}).get("specSha256") else None
         row={
           "factor":"Directional Setup · v3 shadow",
           "latest":labels.get(setup,setup),
@@ -107,7 +116,10 @@ def main():
           "trend":"Validation only",
           "signalLabel":"🧪 Shadow",
           "scorecard":{"value":labels.get(setup,setup),"arrow":"","change":"does not affect scores"},
-          "directionalSetup":{"engineVersion":eng.get("engineVersion"),"specSha256":(eng.get("frozenProtocol") or {}).get("specSha256"),"setup":setup,"date":latest["date"],"inputs":latest.get("inputs") or {},"prospectiveStart":PROSPECTIVE_START}
+          "directionalSetup":{"engineVersion":eng.get("engineVersion"),"specSha256":(eng.get("frozenProtocol") or {}).get("specSha256"),"setup":setup,"date":latest["date"],"inputs":latest.get("inputs") or {},"prospectiveStart":PROSPECTIVE_START,
+                               "holdoutT5SOXL":performance,
+                               "holdoutThrough":(holdout.get("holdout") or {}).get("end"),
+                               "nonOverlappingT5SOXL":event_performance}
         }
         rows=dash.setdefault("rows",[])
         rows[:]=[x for x in rows if x.get("factor")!="Directional Setup · v3 shadow"]
