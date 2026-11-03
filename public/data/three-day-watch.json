@@ -1,13 +1,204 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-03T21:09:00.000Z",
+  "updated": "2026-11-03T22:14:00.000Z",
   "horizon": [
-    "2026-11-03",
     "2026-11-04",
-    "2026-11-05"
+    "2026-11-05",
+    "2026-11-06"
   ],
   "entries": [
+    {
+      "date": "2026-11-03",
+      "timeET": "17:14",
+      "asOfET": "2026-11-03T17:14:00-05:00",
+      "bias": "Cautious / Neutral",
+      "previousBias": "Cautious / Neutral",
+      "materialChange": true,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "Tuesday's confirmed Nasdaq close was +0.83% and SOX outperformed by approximately 1.80 percentage points. AMD's after-hours earnings beat and stronger revenue guidance are a major new positive catalyst for Wednesday, but the market reaction is preliminary, breadth was weak at the cash close, and election and macro uncertainty remain high. Retain Cautious / Neutral while increasing the conditional upside scenario.",
+      "bullish": [
+        "Reuters November 3 cash close: Nasdaq Composite +0.83%, Nvidia +2.3%, Micron +2.6%; NasDecode 16:10 ET reports SOX +2.63%, outperforming Nasdaq by +1.80 percentage points.",
+        "AMD reported adjusted EPS $2.09 versus $1.95 consensus and revenue approximately $13.38 billion versus $13.01 billion; fourth-quarter revenue guidance $17 billion versus roughly $16.29 billion consensus (IBD, Nov 3).",
+        "IBD reports AMD shares more than 7% higher in early after-hours trading; this is preliminary post-market price response, not a Wednesday cash-session confirmation.",
+        "AP reports Brent settlement $103.60/barrel, down 1.1%, a partial relief to inflation pressure."
+      ],
+      "bearish": [
+        "Reuters and AP describe weak S&P breadth despite Nasdaq gains; Apple fell 1.9% on memory-cost margin concerns.",
+        "WSJ reports 10Y Treasury yield 4.951% at November 3 close, up 5.8 basis points; elevated yields pressure growth multiples.",
+        "NasDecode 16:10 ET model score -25 remains negative, and its 4.958% 10Y dashboard quote is not synchronized with the WSJ close.",
+        "Election outcomes, November 4 ADP/ISM Services and Qualcomm earnings could overwhelm an initial AMD-led rally."
+      ],
+      "observations": [
+        {
+          "indicator": "Nasdaq Composite",
+          "value": 0.83,
+          "unit": "percent daily change",
+          "source": "Reuters/AP November 3 closing reports",
+          "sourceTimeET": "2026-11-03 16:00 ET cash close",
+          "quality": "verified regular-session close"
+        },
+        {
+          "indicator": "SOX",
+          "value": 2.63,
+          "unit": "percent daily change",
+          "source": "NasDecode public/data/premarket.json",
+          "sourceTimeET": "2026-11-03 16:10 ET dashboard; previous regular-session close",
+          "quality": "dashboard reported closing performance; underlying feed time not independently confirmed"
+        },
+        {
+          "indicator": "SOX minus Nasdaq",
+          "value": 1.8,
+          "unit": "percentage points",
+          "source": "NasDecode public/data/premarket.json",
+          "sourceTimeET": "2026-11-03 16:10 ET",
+          "quality": "dashboard relative strength at reported closing reference"
+        },
+        {
+          "indicator": "QQQ",
+          "value": 0.62,
+          "unit": "percent change",
+          "source": "NasDecode public/data/premarket.json",
+          "sourceTimeET": "2026-11-03 16:10 ET",
+          "quality": "dashboard value may be stale versus cash close; do not treat as synchronized closing quote"
+        },
+        {
+          "indicator": "Nasdaq score",
+          "value": -25,
+          "unit": "model points (-100 to +100)",
+          "source": "NasDecode public/data/premarket.json",
+          "sourceTimeET": "2026-11-03 16:10 ET",
+          "quality": "model output, not a price"
+        },
+        {
+          "indicator": "10Y Treasury",
+          "value": 4.951,
+          "unit": "percent yield",
+          "source": "Wall Street Journal November 3 closing market report",
+          "sourceTimeET": "2026-11-03 US close; precise quote minute not stated",
+          "quality": "published closing-market yield; +5.8bp daily"
+        },
+        {
+          "indicator": "10Y Treasury dashboard",
+          "value": 4.958,
+          "unit": "percent yield",
+          "source": "NasDecode public/data/premarket.json",
+          "sourceTimeET": "2026-11-03 16:10 ET",
+          "quality": "dashboard checkpoint, asynchronous with published closing yield"
+        },
+        {
+          "indicator": "2Y Treasury",
+          "value": 4.612,
+          "unit": "percent yield",
+          "source": "NasDecode previous 15:33 ET checkpoint",
+          "sourceTimeET": "2026-11-03 15:33 ET",
+          "quality": "stale; no contemporaneous 2Y available; no fresh curve calculated"
+        },
+        {
+          "indicator": "Brent",
+          "value": 103.6,
+          "unit": "USD per barrel",
+          "source": "Associated Press November 3 close report",
+          "sourceTimeET": "2026-11-03 settlement; exact minute unverified",
+          "quality": "reported settlement -1.1%; WTI not synchronized"
+        },
+        {
+          "indicator": "AMD earnings",
+          "value": "EPS $2.09; revenue $13.38B; Q4 guidance $17B",
+          "unit": "USD adjusted EPS; USD billions",
+          "source": "Investor's Business Daily November 3 earnings report",
+          "sourceTimeET": "2026-11-03 after US market close",
+          "quality": "reported actual results; market-wide Wednesday response unverified"
+        },
+        {
+          "indicator": "AMD after-hours",
+          "value": ">7%",
+          "unit": "percent change approximate",
+          "source": "Investor's Business Daily November 3 earnings report",
+          "sourceTimeET": "2026-11-03 after-hours; exact minute unspecified",
+          "quality": "early extended-hours response, not regular-session confirmation"
+        },
+        {
+          "indicator": "Breadth",
+          "value": "decliners outnumbered advancers in S&P 500",
+          "unit": "qualitative",
+          "source": "Reuters/AP November 3 closing reports",
+          "sourceTimeET": "2026-11-03 US cash close",
+          "quality": "no synchronized numeric breadth"
+        },
+        {
+          "indicator": "VXN/VIX/FedWatch",
+          "value": null,
+          "unit": "not verified",
+          "source": "current research",
+          "sourceTimeET": "2026-11-03T17:14:00-05:00",
+          "quality": "no contemporaneous numerical observations or probabilities; not invented"
+        },
+        {
+          "indicator": "WTI",
+          "value": null,
+          "unit": "USD per barrel",
+          "source": "current research",
+          "sourceTimeET": "2026-11-03T17:14:00-05:00",
+          "quality": "no synchronized settlement verified"
+        },
+        {
+          "indicator": "Open Watch",
+          "value": 121,
+          "unit": "curated events",
+          "source": "data/history/market-watch-events.json",
+          "sourceTimeET": "2026-11-03T18:16:13Z",
+          "quality": "unchanged since preceding assessment; AMD earnings independently reported, not yet confirmed as curated event"
+        }
+      ],
+      "conditions": {
+        "upgrade": "Wednesday QQQ and SOX follow through after AMD results with broader advancing breadth, moderating yields and VXN/VIX, and no adverse election or ISM surprise.",
+        "downgrade": "AMD after-hours gains reverse in cash trading, SOX loses leadership, breadth stays negative, volatility jumps or 10Y yields/oil rise materially."
+      },
+      "upcomingEvents": [
+        {
+          "date": "2026-11-03",
+          "event": "Midterm election results overnight; AMD post-earnings commentary and after-hours reaction"
+        },
+        {
+          "date": "2026-11-04",
+          "event": "ADP employment and ISM Services; first regular-session reaction to AMD and election results; Qualcomm earnings after close"
+        },
+        {
+          "date": "2026-11-05",
+          "event": "Second-day follow-through test and reaction to Qualcomm guidance"
+        },
+        {
+          "date": "2026-11-06",
+          "event": "October US employment report; third trading day of horizon"
+        }
+      ],
+      "provenance": {
+        "repository": "repural/NasDecode main",
+        "priorAssessment": "2026-11-03T16:09:00-05:00",
+        "dashboard": "public/data/premarket.json updatedET 2026-11-03 16:10 ET",
+        "openWatch": "data/history/market-watch-events.json updated 2026-11-03T18:16:13Z",
+        "eventCount": 121,
+        "newEventsSincePrevious": 0,
+        "externalSources": [
+          "https://www.reuters.com/business/retail-consumer/us-stock-futures-mixed-apple-slides-midterms-loom-2026-11-03/",
+          "https://apnews.com/article/0d235af127a92c68da0cc2c45c028cef",
+          "https://www.investors.com/news/technology/amd-stock-q3-2026-earnings/",
+          "https://www.wsj.com/finance/stocks/u-s-stocks-mixed-amid-midterm-iran-war-nerves-e1e285d4"
+        ],
+        "dataQuality": "Cash closes, 16:10 dashboard, and early AMD after-hours prices are distinct observation windows. AMD earnings are confirmed but Wednesday market response remains a scenario. 10Y yield values are percent yields (4.951% means 495.1bp), not 0.04951%; the 2Y reading is stale so no new curve is asserted. No contemporaneous VXN/VIX, FedWatch, WTI or synchronized QQQ close was verified."
+      },
+      "editorial": {
+        "marketOverview": "Tuesday ended with a confirmed Nasdaq Composite gain of 0.83%, while NasDecode's closing reference showed SOX up 2.63%, an approximate 1.80-percentage-point semiconductor lead. Nvidia and other AI leaders supported the rebound, but Apple fell and declining S&P 500 stocks outnumbered advancing ones. The move therefore looks like a concentrated technology recovery rather than a broad market risk-on turn.",
+        "whatChanged": "Since the 16:09 ET assessment, the U.S. cash close confirmed that Nasdaq finished positive, and AMD reported a meaningful earnings and revenue beat with stronger fourth-quarter guidance. Its initial after-hours gain above 7% is a real stock-specific reaction, not proof that QQQ will rise Wednesday. The refreshed NasDecode 16:10 ET score improved from the previous -43 checkpoint to -25, but remains below neutral. The Open Watch archive remains at 121 events. AMD is a major new catalyst that improves the upside path without yet warranting a bullish classification.",
+        "marketInterpretation": "AMD's numbers reduce immediate fears of a near-term collapse in AI infrastructure demand, giving semiconductor leadership a plausible fundamental catalyst rather than only a technical bounce. The offset is that Tuesday's market breadth remained negative and the 10-year yield rose to about 4.951%, making the rally vulnerable to rates and macro surprises. The data do not support an independently synchronized yield curve or volatility reading, so the conviction level remains Moderate.",
+        "threeDayPath": "Wednesday November 4 is the primary confirmation day: AMD's strong report may support SOX and QQQ at the open, but election outcomes and ADP/ISM data could redirect the market. Thursday November 5 tests whether the semiconductor response spreads to broader growth leadership and whether Qualcomm guidance reinforces the AI demand narrative. Friday November 6 brings the employment report and could reprice Fed expectations and yields. This is a conditional event-driven path, not a forecast of guaranteed positive daily returns.",
+        "bullCase": "A durable bull scenario requires AMD's after-hours reaction to survive Wednesday's regular session and spread to Nvidia, Broadcom, memory stocks and broader Nasdaq constituents. Improved advance-decline participation, easing Treasury yields and calmer volatility would convert Tuesday's concentrated bounce into a more credible recovery. A benign election outcome and softer macro data could support this route, but their effects must be observed rather than presumed.",
+        "bearCase": "The bear scenario is a sell-the-news response to AMD, with SOX failing to sustain leadership as weak breadth and high yields reassert pressure. Apple margin concerns and the Nasdaq-100's recent correction demonstrate that concentrated AI exposure remains fragile. Stronger-than-expected services inflation or employment data, unfavorable election developments, or renewed energy price pressure could trigger another de-risking phase.",
+        "watchNext": "First verify AMD's full guidance and Wednesday's actual regular-session price response. Then compare matched-time QQQ, SOX and Nasdaq moves, market breadth, VXN/VIX and both Treasury yields with properly scaled units. Watch the election count and Wednesday ADP/ISM Services releases, Qualcomm earnings, Thursday follow-through and Friday payrolls. Refresh the curated Open Watch archive and distinguish newly published events from independently reported but not yet curated catalysts."
+      }
+    },
     {
       "date": "2026-11-03",
       "timeET": "16:09",
