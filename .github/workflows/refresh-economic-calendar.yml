@@ -1,0 +1,31 @@
+name: Refresh NasDecode Economic Calendar
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '25 5,11,17,23 * * *'
+permissions:
+  contents: write
+concurrency:
+  group: nasdecode-economic-calendar
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Refresh 14-day official-source event feed
+        run: python scripts/refresh_economic_calendar.py
+      - name: Commit and publish when changed
+        run: |
+          git config user.name 'nasdecode-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add data/economic-calendar.json public/data/economic-calendar.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "Refresh two-week economic calendar"
+          git pull --rebase origin main
+          git push origin HEAD:main
