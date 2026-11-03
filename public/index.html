@@ -613,7 +613,7 @@ function render(d){
 
   const directionalShadowCard=directionalShadow?(()=>{
     const ds=directionalShadow.directionalSetup||{}, setup=ds.setup||'neutral_other';
-    const states=[['washout_rebound','Washout / Rebound'],['uptrend_pullback','Uptrend Pullback'],['continuation','Continuation'],['neutral_other','Neutral / Other']];
+    const states=[['washout_rebound','Washout'],['uptrend_pullback','Uptrend Pullback'],['continuation','Continuation'],['neutral_other','Neutral / Other']];
     const inputs=ds.inputs||{};
     const evidence=ds.holdoutT5SOXL||null;
     const eventEvidence=ds.nonOverlappingT5SOXL||null;
