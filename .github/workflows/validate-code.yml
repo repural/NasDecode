@@ -43,6 +43,8 @@ jobs:
         run: |
           python -m unittest discover -s tests -p 'test_daily_bars_sma.py' -v
           python -m unittest discover -s tests -p 'test_avwap_sma_reader.py' -v
+      - name: Validate directional v3 execution rules
+        run: python -m unittest discover -s tests -p 'test_directional_v3_nonoverlap.py' -v
       - name: Verify sole ownership of historical bars
         run: python -m unittest discover -s tests -p 'test_daily_bars_ownership.py' -v
       - name: Validate dashboard embedded JavaScript
