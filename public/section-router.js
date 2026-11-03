@@ -14,7 +14,7 @@ function markGroups(){
  [...cards.children].forEach(el=>{
    if(el.classList.contains('scorecard-category')){
      const t=el.textContent.toLowerCase();
-     group=t.includes('macro')?'macro':t.includes('internals')?'internals':(t.includes('assessment')||t.includes('technical analysis'))?'assessment':'';
+     group=t.includes('macro')?'macro':(t.includes('internals')||t.includes('indicators'))?'internals':(t.includes('assessment')||t.includes('technical analysis'))?'assessment':'';
    }
    if(group&&el.dataset.ndSection!==group)el.dataset.ndSection=group;
  });
