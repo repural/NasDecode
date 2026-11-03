@@ -178,6 +178,7 @@ jobs:
           python scripts/build_regime_context_dataset.py
           python scripts/analyze_regime_context.py
           python scripts/build_context_engine_v1.py
+          python scripts/backtest_directional_v3_nonoverlap.py
           python scripts/track_directional_v3_prospective.py
       - name: Commit refreshed snapshot
         if: steps.gate.outputs.run == 'yes'
@@ -239,6 +240,7 @@ jobs:
             python scripts/build_regime_context_dataset.py
             python scripts/analyze_regime_context.py
             python scripts/build_context_engine_v1.py
+            python scripts/backtest_directional_v3_nonoverlap.py
             python scripts/track_directional_v3_prospective.py
             mkdir -p public/data public/history
             cp index.html public/index.html
