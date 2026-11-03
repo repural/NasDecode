@@ -1,0 +1,504 @@
+{
+  "schemaVersion": 2,
+  "method": "next_session_open_to_T_plus_5_close_non_overlapping",
+  "engineVersion": "directional-engine-v3.0",
+  "specSha256": "cf7ede6ff6312720f2b31d0c9a557c484039bb533fa7e04c3a078cc5583157c3",
+  "holdoutStart": "2026-07-01",
+  "through": "2026-11-02",
+  "assumptions": [
+    "Completed T-close signal; enter T+1 SOXL open; exit T+5 SOXL close.",
+    "SetupResults: five-session lock per category (independent setup studies).",
+    "Overall/trades: one global five-session lock across all setup types (single-book study).",
+    "Different category-specific event streams may overlap each other; never add their trade counts as a portfolio.",
+    "No stop loss, take profit, transaction costs, slippage or financing.",
+    "Intratrade drawdown uses recorded daily lows, only when all five lows are present.",
+    "Chronological holdout with retrospectively measured exits, not prospective execution evidence.",
+    "Missing entry or exit price excludes that signal without assuming a price."
+  ],
+  "skippedSignals": {
+    "not_mature": 3,
+    "missing_entry_or_exit": 0,
+    "overlap": 70
+  },
+  "setupSkippedSignals": {
+    "washout_rebound": {
+      "overlap": 28,
+      "not_mature": 1,
+      "missing_entry_or_exit": 0
+    },
+    "uptrend_pullback": {
+      "overlap": 3,
+      "not_mature": 0,
+      "missing_entry_or_exit": 0
+    },
+    "continuation": {
+      "overlap": 7,
+      "not_mature": 0,
+      "missing_entry_or_exit": 0
+    },
+    "neutral_other": {
+      "overlap": 20,
+      "not_mature": 2,
+      "missing_entry_or_exit": 0
+    }
+  },
+  "overall": {
+    "n": 14,
+    "meanPct": -0.652,
+    "medianPct": -6.941,
+    "positivePct": 42.9,
+    "drawdownObserved": 13,
+    "meanMaxDrawdownPct": -15.47,
+    "worstDrawdownPct": -33.2971
+  },
+  "setupResults": {
+    "washout_rebound": {
+      "n": 8,
+      "meanPct": 0.383,
+      "medianPct": -2.668,
+      "positivePct": 37.5,
+      "drawdownObserved": 8,
+      "meanMaxDrawdownPct": -18.725,
+      "worstDrawdownPct": -37.9455
+    },
+    "uptrend_pullback": {
+      "n": 3,
+      "meanPct": -13.228,
+      "medianPct": -19.923,
+      "positivePct": 33.3,
+      "drawdownObserved": 3,
+      "meanMaxDrawdownPct": -17.475,
+      "worstDrawdownPct": -27.5651
+    },
+    "continuation": {
+      "n": 4,
+      "meanPct": -6.143,
+      "medianPct": -6.161,
+      "positivePct": 50.0,
+      "drawdownObserved": 3,
+      "meanMaxDrawdownPct": -9.458,
+      "worstDrawdownPct": -17.6262
+    },
+    "neutral_other": {
+      "n": 11,
+      "meanPct": -7.241,
+      "medianPct": -12.356,
+      "positivePct": 27.3,
+      "drawdownObserved": 11,
+      "meanMaxDrawdownPct": -18.991,
+      "worstDrawdownPct": -35.7336
+    }
+  },
+  "trades": [
+    {
+      "signalDate": "2026-07-01",
+      "setup": "neutral_other",
+      "entryDate": "2026-07-02",
+      "exitDate": "2026-07-09",
+      "entryOpen": 219.23,
+      "exitClose": 192.45,
+      "returnPct": -12.2155,
+      "maxIntratradeDrawdownPct": -31.5422
+    },
+    {
+      "signalDate": "2026-07-10",
+      "setup": "neutral_other",
+      "entryDate": "2026-07-13",
+      "exitDate": "2026-07-17",
+      "entryOpen": 174.61,
+      "exitClose": 135.47,
+      "returnPct": -22.4157,
+      "maxIntratradeDrawdownPct": -33.2971
+    },
+    {
+      "signalDate": "2026-07-20",
+      "setup": "washout_rebound",
+      "entryDate": "2026-07-21",
+      "exitDate": "2026-07-27",
+      "entryOpen": 155.84,
+      "exitClose": 128.15,
+      "returnPct": -17.7682,
+      "maxIntratradeDrawdownPct": -25.9176
+    },
+    {
+      "signalDate": "2026-07-28",
+      "setup": "washout_rebound",
+      "entryDate": "2026-07-29",
+      "exitDate": "2026-08-04",
+      "entryOpen": 107.62,
+      "exitClose": 139.9,
+      "returnPct": 29.9944,
+      "maxIntratradeDrawdownPct": -14.9786
+    },
+    {
+      "signalDate": "2026-08-05",
+      "setup": "neutral_other",
+      "entryDate": "2026-08-06",
+      "exitDate": "2026-08-12",
+      "entryOpen": 125.23,
+      "exitClose": 142.16,
+      "returnPct": 13.5191,
+      "maxIntratradeDrawdownPct": -3.5801
+    },
+    {
+      "signalDate": "2026-08-13",
+      "setup": "continuation",
+      "entryDate": "2026-08-14",
+      "exitDate": "2026-08-20",
+      "entryOpen": 143.79,
+      "exitClose": 122.21,
+      "returnPct": -15.008,
+      "maxIntratradeDrawdownPct": -18.7426
+    },
+    {
+      "signalDate": "2026-08-21",
+      "setup": "washout_rebound",
+      "entryDate": "2026-08-24",
+      "exitDate": "2026-08-28",
+      "entryOpen": 115.07,
+      "exitClose": 111.34,
+      "returnPct": -3.2415,
+      "maxIntratradeDrawdownPct": -7.8822
+    },
+    {
+      "signalDate": "2026-08-31",
+      "setup": "neutral_other",
+      "entryDate": "2026-09-01",
+      "exitDate": "2026-09-08",
+      "entryOpen": 106.355,
+      "exitClose": 123.27,
+      "returnPct": 15.9043,
+      "maxIntratradeDrawdownPct": -7.2728
+    },
+    {
+      "signalDate": "2026-09-09",
+      "setup": "neutral_other",
+      "entryDate": "2026-09-10",
+      "exitDate": "2026-09-16",
+      "entryOpen": 116.35,
+      "exitClose": 103.97,
+      "returnPct": -10.6403,
+      "maxIntratradeDrawdownPct": -14.1642
+    },
+    {
+      "signalDate": "2026-09-17",
+      "setup": "neutral_other",
+      "entryDate": "2026-09-18",
+      "exitDate": "2026-09-24",
+      "entryOpen": 117.03,
+      "exitClose": 146.33,
+      "returnPct": 25.0363,
+      "maxIntratradeDrawdownPct": -0.2991
+    },
+    {
+      "signalDate": "2026-09-25",
+      "setup": "continuation",
+      "entryDate": "2026-09-28",
+      "exitDate": "2026-10-02",
+      "entryOpen": 148.14,
+      "exitClose": 163.71,
+      "returnPct": 10.5103,
+      "maxIntratradeDrawdownPct": -8.7269
+    },
+    {
+      "signalDate": "2026-10-05",
+      "setup": "continuation",
+      "entryDate": "2026-10-06",
+      "exitDate": "2026-10-12",
+      "entryOpen": 167.34,
+      "exitClose": 128.4,
+      "returnPct": -23.27,
+      "maxIntratradeDrawdownPct": null
+    },
+    {
+      "signalDate": "2026-10-13",
+      "setup": "washout_rebound",
+      "entryDate": "2026-10-14",
+      "exitDate": "2026-10-20",
+      "entryOpen": 119.02,
+      "exitClose": 97.55,
+      "returnPct": -18.039,
+      "maxIntratradeDrawdownPct": -23.2482
+    },
+    {
+      "signalDate": "2026-10-21",
+      "setup": "neutral_other",
+      "entryDate": "2026-10-22",
+      "exitDate": "2026-10-28",
+      "entryOpen": 90.59,
+      "exitClose": 107.35,
+      "returnPct": 18.5009,
+      "maxIntratradeDrawdownPct": -11.4527
+    }
+  ],
+  "setupTrades": {
+    "washout_rebound": [
+      {
+        "signalDate": "2026-07-02",
+        "setup": "washout_rebound",
+        "entryDate": "2026-07-06",
+        "exitDate": "2026-07-10",
+        "entryOpen": 197.21,
+        "exitClose": 192.26,
+        "returnPct": -2.51,
+        "maxIntratradeDrawdownPct": -23.8984
+      },
+      {
+        "signalDate": "2026-07-13",
+        "setup": "washout_rebound",
+        "entryDate": "2026-07-14",
+        "exitDate": "2026-07-20",
+        "entryOpen": 187.69,
+        "exitClose": 136.81,
+        "returnPct": -27.1085,
+        "maxIntratradeDrawdownPct": -37.9455
+      },
+      {
+        "signalDate": "2026-07-28",
+        "setup": "washout_rebound",
+        "entryDate": "2026-07-29",
+        "exitDate": "2026-08-04",
+        "entryOpen": 107.62,
+        "exitClose": 139.9,
+        "returnPct": 29.9944,
+        "maxIntratradeDrawdownPct": -14.9786
+      },
+      {
+        "signalDate": "2026-08-19",
+        "setup": "washout_rebound",
+        "entryDate": "2026-08-20",
+        "exitDate": "2026-08-26",
+        "entryOpen": 119.99,
+        "exitClose": 116.6,
+        "returnPct": -2.8252,
+        "maxIntratradeDrawdownPct": -11.6593
+      },
+      {
+        "signalDate": "2026-08-28",
+        "setup": "washout_rebound",
+        "entryDate": "2026-08-31",
+        "exitDate": "2026-09-04",
+        "entryOpen": 112.41,
+        "exitClose": 117.28,
+        "returnPct": 4.3324,
+        "maxIntratradeDrawdownPct": -12.2676
+      },
+      {
+        "signalDate": "2026-09-14",
+        "setup": "washout_rebound",
+        "entryDate": "2026-09-15",
+        "exitDate": "2026-09-21",
+        "entryOpen": 104.55,
+        "exitClose": 141.93,
+        "returnPct": 35.7532,
+        "maxIntratradeDrawdownPct": -3.4338
+      },
+      {
+        "signalDate": "2026-10-09",
+        "setup": "washout_rebound",
+        "entryDate": "2026-10-12",
+        "exitDate": "2026-10-16",
+        "entryOpen": 134.43,
+        "exitClose": 93.67,
+        "returnPct": -30.3206,
+        "maxIntratradeDrawdownPct": -30.488
+      },
+      {
+        "signalDate": "2026-10-19",
+        "setup": "washout_rebound",
+        "entryDate": "2026-10-20",
+        "exitDate": "2026-10-26",
+        "entryOpen": 94.515,
+        "exitClose": 90.5,
+        "returnPct": -4.248,
+        "maxIntratradeDrawdownPct": -15.1299
+      }
+    ],
+    "uptrend_pullback": [
+      {
+        "signalDate": "2026-08-14",
+        "setup": "uptrend_pullback",
+        "entryDate": "2026-08-17",
+        "exitDate": "2026-08-21",
+        "entryOpen": 150.605,
+        "exitClose": 120.6,
+        "returnPct": -19.923,
+        "maxIntratradeDrawdownPct": -22.5059
+      },
+      {
+        "signalDate": "2026-09-23",
+        "setup": "uptrend_pullback",
+        "entryDate": "2026-09-24",
+        "exitDate": "2026-09-30",
+        "entryOpen": 138.47,
+        "exitClose": 147.86,
+        "returnPct": 6.7813,
+        "maxIntratradeDrawdownPct": -2.3529
+      },
+      {
+        "signalDate": "2026-10-07",
+        "setup": "uptrend_pullback",
+        "entryDate": "2026-10-08",
+        "exitDate": "2026-10-14",
+        "entryOpen": 150.48,
+        "exitClose": 110.54,
+        "returnPct": -26.5417,
+        "maxIntratradeDrawdownPct": -27.5651
+      }
+    ],
+    "continuation": [
+      {
+        "signalDate": "2026-08-07",
+        "setup": "continuation",
+        "entryDate": "2026-08-10",
+        "exitDate": "2026-08-14",
+        "entryOpen": 142.8,
+        "exitClose": 144.95,
+        "returnPct": 1.5056,
+        "maxIntratradeDrawdownPct": -8.9636
+      },
+      {
+        "signalDate": "2026-09-08",
+        "setup": "continuation",
+        "entryDate": "2026-09-09",
+        "exitDate": "2026-09-15",
+        "entryOpen": 121.24,
+        "exitClose": 102.32,
+        "returnPct": -15.6054,
+        "maxIntratradeDrawdownPct": -17.6262
+      },
+      {
+        "signalDate": "2026-09-21",
+        "setup": "continuation",
+        "entryDate": "2026-09-22",
+        "exitDate": "2026-09-28",
+        "entryOpen": 137.67,
+        "exitClose": 142.29,
+        "returnPct": 3.3559,
+        "maxIntratradeDrawdownPct": -1.7854
+      },
+      {
+        "signalDate": "2026-10-01",
+        "setup": "continuation",
+        "entryDate": "2026-10-02",
+        "exitDate": "2026-10-08",
+        "entryOpen": 165.39,
+        "exitClose": 142.52,
+        "returnPct": -13.8279,
+        "maxIntratradeDrawdownPct": null
+      }
+    ],
+    "neutral_other": [
+      {
+        "signalDate": "2026-07-01",
+        "setup": "neutral_other",
+        "entryDate": "2026-07-02",
+        "exitDate": "2026-07-09",
+        "entryOpen": 219.23,
+        "exitClose": 192.45,
+        "returnPct": -12.2155,
+        "maxIntratradeDrawdownPct": -31.5422
+      },
+      {
+        "signalDate": "2026-07-10",
+        "setup": "neutral_other",
+        "entryDate": "2026-07-13",
+        "exitDate": "2026-07-17",
+        "entryOpen": 174.61,
+        "exitClose": 135.47,
+        "returnPct": -22.4157,
+        "maxIntratradeDrawdownPct": -33.2971
+      },
+      {
+        "signalDate": "2026-07-21",
+        "setup": "neutral_other",
+        "entryDate": "2026-07-22",
+        "exitDate": "2026-07-28",
+        "entryOpen": 147.095,
+        "exitClose": 109.54,
+        "returnPct": -25.5311,
+        "maxIntratradeDrawdownPct": -30.9766
+      },
+      {
+        "signalDate": "2026-08-03",
+        "setup": "neutral_other",
+        "entryDate": "2026-08-04",
+        "exitDate": "2026-08-10",
+        "entryOpen": 131.505,
+        "exitClose": 130.0,
+        "returnPct": -1.1444,
+        "maxIntratradeDrawdownPct": -8.181
+      },
+      {
+        "signalDate": "2026-08-11",
+        "setup": "neutral_other",
+        "entryDate": "2026-08-12",
+        "exitDate": "2026-08-18",
+        "entryOpen": 147.3,
+        "exitClose": 129.1,
+        "returnPct": -12.3557,
+        "maxIntratradeDrawdownPct": -16.9043
+      },
+      {
+        "signalDate": "2026-08-26",
+        "setup": "neutral_other",
+        "entryDate": "2026-08-27",
+        "exitDate": "2026-09-02",
+        "entryOpen": 123.4,
+        "exitClose": 106.35,
+        "returnPct": -13.8169,
+        "maxIntratradeDrawdownPct": -17.8768
+      },
+      {
+        "signalDate": "2026-09-04",
+        "setup": "neutral_other",
+        "entryDate": "2026-09-08",
+        "exitDate": "2026-09-14",
+        "entryOpen": 125.12,
+        "exitClose": 101.13,
+        "returnPct": -19.1736,
+        "maxIntratradeDrawdownPct": -20.1806
+      },
+      {
+        "signalDate": "2026-09-17",
+        "setup": "neutral_other",
+        "entryDate": "2026-09-18",
+        "exitDate": "2026-09-24",
+        "entryOpen": 117.03,
+        "exitClose": 146.33,
+        "returnPct": 25.0363,
+        "maxIntratradeDrawdownPct": -0.2991
+      },
+      {
+        "signalDate": "2026-09-29",
+        "setup": "neutral_other",
+        "entryDate": "2026-09-30",
+        "exitDate": "2026-10-06",
+        "entryOpen": 147.95,
+        "exitClose": 164.26,
+        "returnPct": 11.024,
+        "maxIntratradeDrawdownPct": -2.4603
+      },
+      {
+        "signalDate": "2026-10-08",
+        "setup": "neutral_other",
+        "entryDate": "2026-10-09",
+        "exitDate": "2026-10-15",
+        "entryOpen": 148.18,
+        "exitClose": 107.35,
+        "returnPct": -27.5543,
+        "maxIntratradeDrawdownPct": -35.7336
+      },
+      {
+        "signalDate": "2026-10-21",
+        "setup": "neutral_other",
+        "entryDate": "2026-10-22",
+        "exitDate": "2026-10-28",
+        "entryOpen": 90.59,
+        "exitClose": 107.35,
+        "returnPct": 18.5009,
+        "maxIntratradeDrawdownPct": -11.4527
+      }
+    ]
+  }
+}
