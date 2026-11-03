@@ -1,12 +1,12 @@
 {
-  "updatedET": "Nov 02, 2026 · 19:38 ET",
+  "updatedET": "Nov 02, 2026 · 21:26 ET",
   "nextUpdateET": "09:30 / 10:30 ET on trading weekdays",
   "groups": [
     {
       "name": "NASDAQ SETUP",
       "signal": "negative",
-      "label": "Cautiously Negative",
-      "explanation": "⚠️ Material bearish change. Treasury yields remain the main pressure point, with the 2Y at 4.598% and the 10Y at 4.915%. Semiconductor momentum remains an important equity confirmation: SOXX has fallen for 2 consecutive sessions. QQQ is -1.97% over five sessions and -5.56% versus its 20-day average. Brent is +0.00% at about $104.77, adding some inflation pressure.\n\nThe Nasdaq Setup is cautiously negative (-30/100, 66% confidence, deteriorating ↓). The current balance is healthy market breadth on the supportive side versus elevated/rising Treasury yields, semiconductor/AI leaders trading below their earnings AVWAPs, rising volatility as the main headwind.\n\nNear-term risk is concentrated in volatility is rising. Improvement in these conditions would strengthen the setup; further deterioration would reduce conviction."
+      "label": "Strong Negative",
+      "explanation": "⚠️ Material bearish change. Treasury yields remain the main pressure point, with the 2Y at 4.598% and the 10Y at 4.915%. Semiconductor momentum remains an important equity confirmation: SOXX has fallen for 2 consecutive sessions. QQQ is -1.97% over five sessions and -5.56% versus its 20-day average. Brent is -0.07% at about $104.70, providing some inflation relief.\n\nThe Nasdaq Setup is strong negative (-52/100, 74% confidence, deteriorating ↓). The current balance is falling oil on the supportive side versus elevated/rising Treasury yields, weaker intraday semiconductor leadership, semiconductor/AI leaders trading below their earnings AVWAPs as the main headwind.\n\nNear-term risk is concentrated in semiconductor leadership is lagging QQQ, volatility is rising. Improvement in these conditions would strengthen the setup; further deterioration would reduce conviction."
     },
     {
       "name": "Rates / Macro",
@@ -16,14 +16,14 @@
     },
     {
       "name": "Semiconductors",
-      "signal": "mixed",
-      "label": "🟡 Mixed",
+      "signal": "negative",
+      "label": "🔴 Negative",
       "explanation": "Tracks semiconductor leadership relative to QQQ. Strong chip participation often confirms Nasdaq technology momentum."
     },
     {
       "name": "Breadth",
-      "signal": "positive",
-      "label": "🟢 Positive",
+      "signal": "mixed",
+      "label": "🟡 Mixed",
       "explanation": "Measures how broadly Nasdaq-100 constituents participate. Broad participation generally makes index moves more robust."
     },
     {
@@ -49,30 +49,31 @@
       "source": "Nasdaq earnings calendar / confirmed company IR dates",
       "explanation": "Current reading: AAPL: Nov 02, 2026 · ON: Nov 02, 2026 · ALAB: Nov 03, 2026 · AMD: Nov 03, 2026 · SWKS: Nov 03, 2026 · ARM: Nov 04, 2026 · COHR: Nov 04, 2026 · GFS: Nov 04, 2026 · KLAC: Nov 04, 2026 · META: Nov 04, 2026 · QCOM: Nov 04, 2026 · MCHP: Nov 05, 2026 · MTSI: Nov 05, 2026 · NVMI: Nov 05, 2026 · AMAT: Nov 12, 2026 · NVDA: Nov 17, 2026 · NVDA: Nov 18, 2026 · ADI: Nov 24, 2026. Direction: Event risk. NasDecode currently classifies this factor as neutral/mixed. This row will become more specific as its underlying live/research source is automated.",
       "currentImpact": "Very High",
-      "impactReason": "Calendar: -0.8 days to event; market-reaction score 0/4; directional score +0",
+      "impactReason": "Calendar: -0.9 days to event; market-reaction score 0/4; directional score +0",
       "trend": "Stable →",
       "displayRank": 1,
       "signalLabel": "🟡 Mixed",
       "scorecard": null
     },
     {
-      "factor": "Market breadth",
-      "latest": "After-hours · After-hours breadth: 88/95 advancing (93%) · 7 declining · 0 flat",
-      "direction": "Broadening",
-      "signal": "positive",
-      "freshness": "After-hours CNBC constituent quotes",
-      "source": "CNBC quotes; session-aware Nasdaq-100 constituent breadth",
-      "explanation": "After-hours · After-hours breadth: 88/95 advancing (93%) · 7 declining · 0 flat. Breadth is broadening. A larger share of advancing Nasdaq-100 constituents means wider participation; weak participation makes index strength less robust. Current implication: supportive. At the same time, mega-caps are in line with qqq.",
+      "factor": "Semiconductor leadership",
+      "latest": "Previous regular-session close · SOX -3.37% | Nasdaq -1.07% | SOX vs Nasdaq -2.30 pp | SOXX vs Nasdaq -2.72 pp | SMH vs Nasdaq -1.64 pp",
+      "direction": "Confirmed weakness",
+      "signal": "negative",
+      "freshness": "Previous regular session · 2026-11-02",
+      "source": "CNBC previous-close quotes; SOX relative strength vs Nasdaq is primary, confirmed by SOXX/SMH",
+      "explanation": "Previous regular-session close · SOX -3.37% | Nasdaq -1.07% | SOX vs Nasdaq -2.30 pp | SOXX vs Nasdaq -2.72 pp | SMH vs Nasdaq -1.64 pp. Semiconductors are confirmed weakness. Chips are a major Nasdaq/AI leadership group, so relative strength versus QQQ is an important risk-appetite confirmation. Current implication: a headwind. Market breadth is mixed participation (Previous close · Nasdaq-100 breadth: 53/101 advancing (52%) · 48 declining · 0 flat). Mega-cap leadership is in line with qqq. Catalyst context: Here are 3 big things we're watching in the stock market in the week ahead - CNBC — No decisive sector read-through yet.",
       "currentImpact": "Very High",
-      "trend": "Improving ↑",
+      "trend": "Deteriorating ↓",
       "displayRank": 2,
-      "signalLabel": "🟢 Positive",
-      "scorecard": {
-        "value": "93% advancing",
-        "arrow": "↑",
-        "change": "+56.4 pp",
-        "context": "Broad participation",
-        "comparisonDate": "2026-10-30"
+      "signalLabel": "🔴 Negative",
+      "scorecard": null,
+      "catalystMomentum": {
+        "title": "Here are 3 big things we're watching in the stock market in the week ahead - CNBC",
+        "type": "global-semiconductor",
+        "status": "Observed",
+        "readThrough": "No decisive sector read-through yet",
+        "persistence": "Persisting 1 session later"
       }
     },
     {
@@ -80,7 +81,7 @@
       "latest": "Dec 9: Hike 71% / Hold 29% / Cut 0% · Jan 27: Above current 78% / Same 22% / Below 0% · Mar 17: Above current 90% / Same 10% / Below 0%",
       "direction": "Hawkish / hikes priced",
       "signal": "negative",
-      "freshness": "CME settlement 2026-10-30 · checked 2026-11-02 19:38 ET",
+      "freshness": "CME settlement 2026-10-30 · checked 2026-11-02 21:26 ET",
       "source": "CME Group 30-Day Fed Funds futures settlements; New York Fed EFFR; CME FedWatch methodology",
       "explanation": "Dec 9: Hike 70.7% · Hold 29.3% · Cut 0.0%. By Jan 27: target above current 78.2% · same 21.9% · below 0.0%. By Mar 17: target above current 89.5% · same 10.4% · below 0.0%. The nearest meeting is shown as hike/hold/cut; later meetings are aggregated versus today’s target range.",
       "currentImpact": "High",
@@ -203,9 +204,9 @@
             "surprise": 0.09999999999999998,
             "normalizedSurprise": 1.0,
             "nasdaqImpact": -1.0,
-            "decay": 0.1455,
-            "effectiveWeight": 0.1455,
-            "weightedContribution": -0.1455,
+            "decay": 0.1445,
+            "effectiveWeight": 0.1445,
+            "weightedContribution": -0.1445,
             "source": "U.S. Bureau of Labor Statistics actual / Trading Economics survey consensus",
             "sourceMode": "official_verified",
             "verified": true,
@@ -225,9 +226,9 @@
             "surprise": 0.3,
             "normalizedSurprise": 1.0,
             "nasdaqImpact": -1.0,
-            "decay": 0.1055,
-            "effectiveWeight": 0.0633,
-            "weightedContribution": -0.0633,
+            "decay": 0.1046,
+            "effectiveWeight": 0.0628,
+            "weightedContribution": -0.0628,
             "source": "U.S. Bureau of Labor Statistics actual / Trading Economics survey consensus",
             "sourceMode": "official_verified",
             "verified": true,
@@ -247,9 +248,9 @@
             "surprise": 0.5,
             "normalizedSurprise": 1.0,
             "nasdaqImpact": -1.0,
-            "decay": 0.0408,
-            "effectiveWeight": 0.0285,
-            "weightedContribution": -0.0285,
+            "decay": 0.0403,
+            "effectiveWeight": 0.0282,
+            "weightedContribution": -0.0282,
             "source": "U.S. Census Bureau actual / Trading Economics survey consensus",
             "sourceMode": "official_verified",
             "verified": true,
@@ -365,69 +366,68 @@
       "curveContext": "2s10s +31.7 bp (upward-sloping), bear steepener, +0.6 bp vs prev close"
     },
     {
-      "factor": "Oil (WTI / Brent)",
-      "latest": "Brent $104.77 (+0.00%) | WTI $96.26 (-0.21%)",
-      "direction": "Falling",
-      "signal": "mixed",
-      "freshness": "Brent: CNBC intraday · 2026-11-03T00:55:03.000+0100 | WTI: CNBC intraday · 2026-11-02T19:28:32.000-0500",
-      "source": "CNBC futures quotes",
-      "explanation": "Brent $104.77 (+0.00%) | WTI $96.26 (-0.21%). Oil is falling. Large energy moves can alter inflation expectations and therefore Treasury yields/Fed expectations. Current implication: neutral/mixed. The 10Y yield is 4.915% (+2.1 bp vs prev close); oil matters for Nasdaq mainly through inflation expectations and the rate path.",
-      "currentImpact": "Low",
-      "trend": "Stable →",
-      "displayRank": 9,
-      "signalLabel": "🟡 Mixed",
-      "scorecard": {
-        "value": "Brent $104.77",
-        "arrow": "",
-        "change": "+0.00%",
-        "secondaryValue": "WTI $96.26",
-        "secondaryArrow": "↓",
-        "secondaryChange": "-0.21%"
-      }
-    },
-    {
-      "factor": "Semiconductor leadership",
-      "latest": "Awaiting after-hours SOX/Nasdaq quotes",
-      "direction": "Awaiting session",
-      "signal": "mixed",
-      "freshness": "Previous regular session · 2026-11-02",
-      "source": "CNBC quotes",
-      "explanation": "Awaiting after-hours SOX/Nasdaq quotes. Semiconductors are awaiting session. Chips are a major Nasdaq/AI leadership group, so relative strength versus QQQ is an important risk-appetite confirmation. Current implication: neutral/mixed. Market breadth is broadening (After-hours · After-hours breadth: 88/95 advancing (93%) · 7 declining · 0 flat). Mega-cap leadership is in line with qqq. Catalyst context: 23 Big Funds Bought Advanced Micro Devices Last Quarter. Is It a Buy Before Earnings? | TIKR.com — Positive catalyst; weak/isolated sector read-through.",
-      "currentImpact": "Low",
-      "trend": "Stable →",
-      "displayRank": 10,
-      "signalLabel": "🟡 Mixed",
-      "scorecard": null,
-      "catalystMomentum": {
-        "title": "23 Big Funds Bought Advanced Micro Devices Last Quarter. Is It a Buy Before Earnings? | TIKR.com",
-        "type": "earnings",
-        "status": "Observed",
-        "readThrough": "Positive catalyst; weak/isolated sector read-through",
-        "persistence": "Event-day observation"
-      }
-    },
-    {
       "factor": "Mega-cap leadership",
-      "latest": "After-hours · 7-stock basket +0.08% | 6/7 positive | QQQ +0.32% | relative -0.24 pp",
+      "latest": "Previous regular-session close · 7-stock basket -0.62% | 2/7 positive | QQQ -1.36% | relative +0.74 pp",
       "direction": "In line with QQQ",
       "signal": "mixed",
       "freshness": "Previous regular session · 2026-11-02",
-      "source": "CNBC quotes; session-aware mega-cap basket vs QQQ",
-      "explanation": "After-hours · 7-stock basket +0.08% | 6/7 positive | QQQ +0.32% | relative -0.24 pp. The mega-cap basket is in line with qqq. Nasdaq is more durable when its largest weights participate rather than the index being carried by a narrow subset. Current implication: neutral/mixed. Breadth is broadening; broad participation confirms the move.",
-      "currentImpact": "Low",
+      "source": "CNBC previous-close quotes; mega-cap basket vs QQQ",
+      "explanation": "Previous regular-session close · 7-stock basket -0.62% | 2/7 positive | QQQ -1.36% | relative +0.74 pp. The mega-cap basket is in line with qqq. Nasdaq is more durable when its largest weights participate rather than the index being carried by a narrow subset. Current implication: neutral/mixed. Breadth is mixed participation; the wider market is giving only partial confirmation. Semiconductor leadership is confirmed weakness.",
+      "currentImpact": "Medium",
       "trend": "Stable →",
-      "displayRank": 11,
+      "displayRank": 9,
       "signalLabel": "🟡 Mixed",
       "scorecard": null
     },
     {
+      "factor": "Market breadth",
+      "latest": "Previous close · Nasdaq-100 breadth: 53/101 advancing (52%) · 48 declining · 0 flat",
+      "direction": "Mixed participation",
+      "signal": "mixed",
+      "freshness": "Previous regular session · most recent regular session",
+      "source": "CNBC quotes; previous regular-session Nasdaq-100 constituent breadth",
+      "explanation": "Previous close · Nasdaq-100 breadth: 53/101 advancing (52%) · 48 declining · 0 flat. Breadth is mixed participation. A larger share of advancing Nasdaq-100 constituents means wider participation; weak participation makes index strength less robust. Current implication: neutral/mixed. At the same time, semiconductors are confirmed weakness and mega-caps are in line with qqq.",
+      "currentImpact": "Low",
+      "trend": "Stable →",
+      "displayRank": 10,
+      "signalLabel": "🟡 Mixed",
+      "scorecard": {
+        "value": "52% advancing",
+        "arrow": "↑",
+        "change": "+15.4 pp",
+        "context": "Mixed participation",
+        "comparisonDate": "2026-10-30"
+      }
+    },
+    {
+      "factor": "Oil (WTI / Brent)",
+      "latest": "Brent $104.70 (-0.07%) | WTI $96.55 (+0.09%)",
+      "direction": "Rising",
+      "signal": "mixed",
+      "freshness": "Brent: CNBC intraday · 2026-11-03T03:16:32.000+0100 | WTI: CNBC intraday · 2026-11-02T21:16:31.000-0500",
+      "source": "CNBC futures quotes",
+      "explanation": "Brent $104.70 (-0.07%) | WTI $96.55 (+0.09%). Oil is rising. Large energy moves can alter inflation expectations and therefore Treasury yields/Fed expectations. Current implication: neutral/mixed. The 10Y yield is 4.915% (+2.1 bp vs prev close); oil matters for Nasdaq mainly through inflation expectations and the rate path.",
+      "currentImpact": "Low",
+      "trend": "Stable →",
+      "displayRank": 11,
+      "signalLabel": "🟡 Mixed",
+      "scorecard": {
+        "value": "Brent $104.70",
+        "arrow": "↓",
+        "change": "-0.07%",
+        "secondaryValue": "WTI $96.55",
+        "secondaryArrow": "↑",
+        "secondaryChange": "+0.09%"
+      }
+    },
+    {
       "factor": "Options positioning / sentiment",
-      "latest": "Equity P/C 0.66 | 5D avg 0.59 | → stable | Index 1.03 | Total 0.90",
+      "latest": "Equity P/C 0.67 | 5D avg 0.61 | → stable | Index 0.96 | Total 0.87",
       "direction": "Balanced",
       "signal": "mixed",
-      "freshness": "Cboe daily · latest session 2026-10-30 · checked 2026-11-02 19:38 ET",
+      "freshness": "Cboe daily · latest session 2026-11-02 · checked 2026-11-02 21:26 ET",
       "source": "Cboe Daily Market Statistics — 5-session equity put/call trend; index/total context; not dealer gamma exposure",
-      "explanation": "Equity P/C 0.66 | 5D avg 0.59 | → stable | Index 1.03 | Total 0.90. Equity put/call is compared with its 5-session baseline; Index and Total P/C add context because index puts often reflect institutional hedging. Positioning is balanced and neutral/mixed; this is not dealer gamma.  VXN/VIX are rising together (VXN 30.89 (+8.39%) | VIX 21.15 (+8.91%)), so options positioning and implied volatility together do not currently give the same strong directional signal.",
+      "explanation": "Equity P/C 0.67 | 5D avg 0.61 | → stable | Index 0.96 | Total 0.87. Equity put/call is compared with its 5-session baseline; Index and Total P/C add context because index puts often reflect institutional hedging. Positioning is balanced and neutral/mixed; this is not dealer gamma.  VXN/VIX are rising together (VXN 30.89 (+8.39%) | VIX 21.15 (+8.91%)), so options positioning and implied volatility together do not currently give the same strong directional signal.",
       "currentImpact": "Low",
       "trend": "Stable →",
       "displayRank": 12,
@@ -490,8 +490,20 @@
         ".SOX",
         "SOX"
       ],
-      "returned": [],
-      "status": "not_returned"
+      "returned": [
+        {
+          "symbol": ".SOX",
+          "name": "Philadelphia SE Semiconductor Index",
+          "last": "10,328.329",
+          "previous_day_closing": "10,688.80",
+          "change_pct": "-3.37%",
+          "last_time": "2026-11-02T17:15:59.000-0500",
+          "last_timedate": "5:15 PM EST",
+          "code": 0,
+          "oneDayPct": -3.37
+        }
+      ],
+      "status": "supported"
     },
     "cmeFedWatchPublic": {
       "error": "<HTTPError 403: 'Forbidden'>"
@@ -578,8 +590,17 @@
         "dataState": "live",
         "realTime": true,
         "marketStatus": "POST_MKT",
-        "quoteSource": "Last NASDAQ LS, VOL From CTA",
+        "quoteSource": "Last NYSE Arca, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
+      },
+      ".SOX": {
+        "timestamp": "5:15 PM EST",
+        "observationDate": "2026-11-02",
+        "dataState": "live",
+        "realTime": true,
+        "marketStatus": "REG_MKT",
+        "quoteSource": "Exchange",
+        "provider": "CNBC Quote Cache"
       },
       "SMH": {
         "timestamp": "4:15 PM EST",
@@ -596,7 +617,7 @@
         "dataState": "live",
         "realTime": true,
         "marketStatus": "POST_MKT",
-        "quoteSource": "Last NYSE Arca, VOL From CTA",
+        "quoteSource": "Last NASDAQ LS, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "SOXL": {
@@ -605,7 +626,7 @@
         "dataState": "live",
         "realTime": true,
         "marketStatus": "POST_MKT",
-        "quoteSource": "Last NYSE Arca, VOL From CTA",
+        "quoteSource": "Last NASDAQ LS, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "NVDA": {
@@ -614,7 +635,7 @@
         "dataState": "live",
         "realTime": true,
         "marketStatus": "POST_MKT",
-        "quoteSource": "Last NYSE Arca, VOL From CTA",
+        "quoteSource": "Last NASDAQ LS, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "AMD": {
@@ -632,7 +653,7 @@
         "dataState": "live",
         "realTime": true,
         "marketStatus": "POST_MKT",
-        "quoteSource": "Last NASDAQ LS, VOL From CTA",
+        "quoteSource": "Last NYSE Arca, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "TSM": {
@@ -668,7 +689,7 @@
         "dataState": "live",
         "realTime": true,
         "marketStatus": "POST_MKT",
-        "quoteSource": "Last NASDAQ LS, VOL From CTA",
+        "quoteSource": "Last NYSE Arca, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "AMZN": {
@@ -686,7 +707,7 @@
         "dataState": "live",
         "realTime": true,
         "marketStatus": "POST_MKT",
-        "quoteSource": "Last NASDAQ LS, VOL From CTA",
+        "quoteSource": "Last NYSE Arca, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "META": {
@@ -744,7 +765,7 @@
         "provider": "CNBC Quote Cache"
       },
       "@CL.1": {
-        "timestamp": "7:28 PM EST",
+        "timestamp": "9:16 PM EST",
         "observationDate": "2026-11-02",
         "dataState": "delayed_or_unspecified",
         "realTime": false,
@@ -753,7 +774,7 @@
         "provider": "CNBC Quote Cache"
       },
       "@LCO.1": {
-        "timestamp": "12:55 AM BST",
+        "timestamp": "3:16 AM BST",
         "observationDate": "2026-11-03",
         "dataState": "stale",
         "realTime": false,
@@ -767,7 +788,7 @@
         "dataState": "live",
         "realTime": true,
         "marketStatus": "POST_MKT",
-        "quoteSource": "Last NASDAQ LS, VOL From CTA",
+        "quoteSource": "Last NYSE Arca, VOL From CTA",
         "provider": "CNBC QUOTE CACHE"
       },
       "LQD": {
@@ -783,8 +804,8 @@
   },
   "consolidationRisk": {
     "version": 4,
-    "score": 51,
-    "level": "Moderate",
+    "score": 55,
+    "level": "Elevated",
     "horizon": "1–3 sessions",
     "coverageWeight": 100,
     "historyDays": 124,
@@ -792,10 +813,10 @@
     "components": {
       "Structural extension": 0,
       "Structural floor": 0,
-      "Confirmation risk": 51,
+      "Confirmation risk": 55,
       "Intraday rejection": 100,
       "Breadth divergence": 0,
-      "Leadership divergence": 58,
+      "Leadership divergence": 75,
       "Volatility / rates stress": 48,
       "Event risk": 0
     },
@@ -819,10 +840,10 @@
     "intradayGivebackPp": 2.48,
     "dominantDrivers": [
       "Intraday rejection 100",
-      "Leadership divergence 58",
-      "Confirmation risk 51"
+      "Leadership divergence 75",
+      "Confirmation risk 55"
     ],
-    "explanation": "1–3 session fade/consolidation risk is moderate (51/100). Structural extension creates a 0/100 baseline; live confirmation risk is 51/100. Main drivers: Intraday rejection 100, Leadership divergence 58, Confirmation risk 51. A high near the 20DMA is not penalized by itself; high proximity matters when QQQ/SOXX are also stretched or overbought.",
+    "explanation": "1–3 session fade/consolidation risk is elevated (55/100). Structural extension creates a 0/100 baseline; live confirmation risk is 55/100. Main drivers: Intraday rejection 100, Leadership divergence 75, Confirmation risk 55. A high near the 20DMA is not penalized by itself; high proximity matters when QQQ/SOXX are also stretched or overbought.",
     "note": "Higher means the current move is more vulnerable to a fade or sideways reset; it is not a bearish-direction forecast."
   },
   "historicalContext": {
@@ -924,8 +945,8 @@
   "consolidationPenalty": 0,
   "threeDayWatch": {
     "status": "bearish",
-    "bearishTriggers": 4,
-    "bullishTriggers": 1,
+    "bearishTriggers": 5,
+    "bullishTriggers": 0,
     "triggers": [
       {
         "severity": "bearish",
@@ -938,9 +959,9 @@
         "detail": "Dec 9: Hike 71% / Hold 29% / Cut 0% · Jan 27: Above current 78% / Same 22% / Below 0% · Mar 17: Above current 90% / Same 10% / Below 0%"
       },
       {
-        "severity": "bullish",
-        "title": "Market breadth broadened",
-        "detail": "After-hours · After-hours breadth: 88/95 advancing (93%) · 7 declining · 0 flat"
+        "severity": "bearish",
+        "title": "Semiconductor leadership weakened",
+        "detail": "Previous regular-session close · SOX -3.37% | Nasdaq -1.07% | SOX vs Nasdaq -2.30 pp | SOXX vs Nasdaq -2.72 pp | SMH vs Nasdaq -1.64 pp"
       },
       {
         "severity": "bearish",
@@ -973,17 +994,17 @@
   },
   "opportunityScore": {
     "version": 5,
-    "score": 53,
-    "rawScore": 53,
-    "label": "Selective",
+    "score": 43,
+    "rawScore": 43,
+    "label": "Wait for Confirmation",
     "signal": "mixed",
-    "type": "Selective / mixed",
+    "type": "Wait for confirmation",
     "components": {
-      "Directional edge": 12,
+      "Directional edge": 0,
       "Entry quality": 76,
-      "Recovery confirmation": 50,
+      "Recovery confirmation": 25,
       "Macro timing": 45,
-      "Catalyst asymmetry": 74
+      "Catalyst asymmetry": 50
     },
     "entryQualityComponents": {
       "QQQ vs 20DMA": 100,
@@ -1000,29 +1021,31 @@
       "atr14Vs50": 1.24,
       "regimeScore": 39
     },
-    "consolidationRiskContext": 51,
-    "gates": [],
+    "consolidationRiskContext": 55,
+    "gates": [
+      "Weak direction + weak recovery caps opportunity at 44"
+    ],
     "strongestDrivers": [
       "Entry quality 76",
-      "Catalyst asymmetry 74"
+      "Catalyst asymmetry 50"
     ],
     "weakestDrivers": [
-      "Directional edge 12",
-      "Macro timing 45"
+      "Directional edge 0",
+      "Recovery confirmation 25"
     ],
-    "explanation": "Long-entry quality is selective (53/100; Selective / mixed). Raw weighted score 53/100. Strongest inputs: Entry quality 76, Catalyst asymmetry 74. Weakest: Directional edge 12, Macro timing 45.",
+    "explanation": "Long-entry quality is wait for confirmation (43/100; Wait for confirmation). Raw weighted score 43/100. Strongest inputs: Entry quality 76, Catalyst asymmetry 50. Weakest: Directional edge 0, Recovery confirmation 25. Active gate: Weak direction + weak recovery caps opportunity at 44.",
     "note": "This is an entry-quality score, not a forecast of the next session return. Strong internals can support the trend without making an extended price a good new entry."
   },
   "schemaVersion": 2,
   "nasdaqScore": {
-    "score": -30,
-    "rawScore": -30,
+    "score": -52,
+    "rawScore": -52,
     "previousScore": -2,
     "trend": "Deteriorating ↓",
     "signal": "negative",
-    "label": "Cautiously Negative",
-    "confidence": 66,
-    "coverage": 94,
+    "label": "Strong Negative",
+    "confidence": 74,
+    "coverage": 91,
     "model": {
       "version": 3,
       "factors": [
@@ -1035,26 +1058,10 @@
           "regimeMultiplier": 1.0
         },
         {
-          "factor": "Oil (WTI / Brent)",
-          "bucket": "Rates / Macro",
-          "strength": 0.035,
-          "effectiveWeight": 1.25,
-          "freshnessWeight": 1.0,
-          "regimeMultiplier": 1.25
-        },
-        {
-          "factor": "Semiconductor leadership",
-          "bucket": "Leadership",
-          "strength": 0.0,
-          "effectiveWeight": 0.2,
-          "freshnessWeight": 0.2,
-          "regimeMultiplier": 1.0
-        },
-        {
           "factor": "Market breadth",
           "bucket": "Breadth",
-          "strength": 1.0,
-          "effectiveWeight": 4.0,
+          "strength": 0.067,
+          "effectiveWeight": 1.0,
           "freshnessWeight": 1.0,
           "regimeMultiplier": 1.0
         },
@@ -1099,17 +1106,33 @@
           "regimeMultiplier": 1.25
         },
         {
+          "factor": "Oil (WTI / Brent)",
+          "bucket": "Rates / Macro",
+          "strength": -0.003,
+          "effectiveWeight": 1.25,
+          "freshnessWeight": 1.0,
+          "regimeMultiplier": 1.25
+        },
+        {
+          "factor": "Semiconductor leadership",
+          "bucket": "Leadership",
+          "strength": -1.0,
+          "effectiveWeight": 3.22,
+          "freshnessWeight": 0.7,
+          "regimeMultiplier": 1.15
+        },
+        {
           "factor": "Mega-cap leadership",
           "bucket": "Leadership",
-          "strength": -0.192,
-          "effectiveWeight": 1.0,
-          "freshnessWeight": 1.0,
+          "strength": 0.592,
+          "effectiveWeight": 1.4,
+          "freshnessWeight": 0.7,
           "regimeMultiplier": 1.0
         },
         {
           "factor": "Options positioning / sentiment",
           "bucket": "Volatility / Positioning",
-          "strength": -0.028,
+          "strength": -0.036,
           "effectiveWeight": 1.2,
           "freshnessWeight": 1.0,
           "regimeMultiplier": 1.2
@@ -1148,35 +1171,35 @@
           "cap": 4.0
         },
         {
-          "bucket": "Rates / Macro",
-          "strength": -0.66,
-          "weight": 9.0,
-          "uncappedWeight": 15.0,
-          "cap": 9.0,
-          "rawStrength": -0.66,
-          "effectiveStrength": -0.66,
-          "marketResponseAttenuationPct": 0.0
-        },
-        {
-          "bucket": "Leadership",
-          "strength": -0.783,
-          "weight": 4.65,
-          "uncappedWeight": 4.65,
-          "cap": 9.0
-        },
-        {
           "bucket": "Breadth",
-          "strength": 1.0,
-          "weight": 4.0,
-          "uncappedWeight": 4.0,
+          "strength": 0.067,
+          "weight": 1.0,
+          "uncappedWeight": 1.0,
           "cap": 6.0
         },
         {
+          "bucket": "Rates / Macro",
+          "strength": -0.663,
+          "weight": 9.0,
+          "uncappedWeight": 15.0,
+          "cap": 9.0,
+          "rawStrength": -0.663,
+          "effectiveStrength": -0.663,
+          "marketResponseAttenuationPct": 0.0
+        },
+        {
           "bucket": "Volatility / Positioning",
-          "strength": -0.554,
+          "strength": -0.557,
           "weight": 4.8,
           "uncappedWeight": 4.8,
           "cap": 7.0
+        },
+        {
+          "bucket": "Leadership",
+          "strength": -0.724,
+          "weight": 8.07,
+          "uncappedWeight": 8.07,
+          "cap": 9.0
         },
         {
           "bucket": "Other",
@@ -1186,24 +1209,24 @@
           "cap": 4.0
         }
       ],
-      "coveragePct": 94,
-      "agreementPct": 25
+      "coveragePct": 91,
+      "agreementPct": 47
     },
-    "effectiveScore": -30.0
+    "effectiveScore": -52.0
   },
   "marketAnalysis": {
     "version": 2,
-    "asOfET": "2026-11-02 19:38 ET",
-    "score": -30.0,
+    "asOfET": "2026-11-02 21:26 ET",
+    "score": -52.0,
     "preMarketScore": -15.0,
     "openScore": -5.0,
     "qqqChangePct": -1.36,
     "paragraphs": [
-      "QQQ is -1.36% versus the prior close. The Nasdaq Score is -30/100 (Cautiously Negative). Score path: pre-market -15 → now -30; open -5 → now -30 (deteriorated 25 points).",
-      "The main live drivers are Rates are a headwind: the 10Y is 4.915%, +1.9 bp since the opening snapshot. Volatility are a headwind: VXN 30.89 (+8.39%) | VIX 21.15 (+8.91%). It changed from mixed to negative after the baseline snapshot. Breadth are supportive: After-hours · After-hours breadth: 88/95 advancing (93%) · 7 declining · 0 flat.",
-      "QQQ and its internal leadership are diverging, so the index move has weaker confirmation (semiconductors mixed, mega-caps mixed, breadth positive).",
-      "What would change the view: improvement would require semiconductors regaining leadership versus QQQ, VXN/VIX cooling. Deterioration would be reinforced by a reversal in the 10Y back above roughly 5.00–5.05%, breadth narrowing materially.",
-      "Semiconductor catalyst context: 23 Big Funds Bought Advanced Micro Devices Last Quarter. Is It a Buy Before Earnings? | TIKR.com. Positive catalyst; weak/isolated sector read-through; Event-day observation."
+      "QQQ is -1.36% versus the prior close. The Nasdaq Score is -52/100 (Strong Negative). Score path: pre-market -15 → now -52; open -5 → now -52 (deteriorated 47 points).",
+      "The main live drivers are Semiconductors are a headwind: Previous regular-session close · SOX -3.37% | Nasdaq -1.07% | SOX vs Nasdaq -2.30 pp | SOXX vs Nasdaq -2.72 pp | SMH vs Nasdaq -1.64 pp. It changed from mixed to negative after the baseline snapshot. Rates are a headwind: the 10Y is 4.915%, +1.9 bp since the opening snapshot. Volatility are a headwind: VXN 30.89 (+8.39%) | VIX 21.15 (+8.91%). It changed from mixed to negative after the baseline snapshot.",
+      "QQQ and its internal leadership are diverging, so the index move has weaker confirmation (semiconductors negative, mega-caps mixed, breadth mixed).",
+      "What would change the view: improvement would require semiconductors regaining leadership versus QQQ, broader participation, VXN/VIX cooling. Deterioration would be reinforced by a reversal in the 10Y back above roughly 5.00–5.05%.",
+      "Semiconductor catalyst context: Here are 3 big things we're watching in the stock market in the week ahead - CNBC. No decisive sector read-through yet; Persisting 1 session later."
     ],
     "confirmation": "QQQ and its internal leadership are diverging, so the index move has weaker confirmation",
     "catalysts": [
@@ -1221,122 +1244,230 @@
       "status": "Observed",
       "active": {
         "event": {
-          "id": "auto-2026-11-02-AMD-40180124",
-          "date": "2026-11-02",
+          "date": "2026-11-01",
           "release": "during_session",
-          "ticker": "AMD",
-          "type": "earnings",
+          "ticker": "MARKET",
+          "type": "global-semiconductor",
           "scope": "sector",
-          "title": "23 Big Funds Bought Advanced Micro Devices Last Quarter. Is It a Buy Before Earnings? | TIKR.com",
-          "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
-          "source": "https://www.tikr.com/blog/23-big-funds-bought-amd-stock-before-earnings",
+          "title": "Here are 3 big things we're watching in the stock market in the week ahead - CNBC",
+          "expectedReadThrough": "Global semiconductor event; evaluate SOX/Nasdaq transmission and U.S. confirmation.",
+          "source": "https://www.cnbc.com/investingclub/2026/11/01/3-big-things-were-watching-in-the-stock-market-this-week.html",
           "autoDetected": true,
           "materialityScore": 8,
           "materialityReasons": [
-            "earnings"
+            "global-semiconductor",
+            "global-semiconductor-catalyst",
+            "asia-originated"
           ],
-          "discoveredAtUTC": "2026-11-02T20:38:18+00:00"
+          "discoveredAtUTC": "2026-11-02T05:26:18+00:00",
+          "published_date": "2026-11-01T18:09:47+00:00",
+          "eventType": "global-semiconductor-catalyst",
+          "region": "South Korea",
+          "affectedMarkets": [
+            "South Korea"
+          ],
+          "affectedEntities": [],
+          "affectedTickers": [],
+          "transmissionType": "asia-originated",
+          "severity": "High",
+          "observedMovesPct": [],
+          "volatilityNormalized": null,
+          "observationTimeUTC": "2026-11-01T18:09:47+00:00",
+          "confidence": "High",
+          "informationNovelty": "New candidate; publisher deduplication required",
+          "provenance": [
+            {
+              "sourceUrl": "https://www.cnbc.com/investingclub/2026/11/01/3-big-things-were-watching-in-the-stock-market-this-week.html",
+              "headline": "Here are 3 big things we're watching in the stock market in the week ahead - CNBC",
+              "publishedDate": "2026-11-01T18:09:47+00:00",
+              "retrievedAtUTC": "2026-11-02T05:26:18+00:00"
+            }
+          ]
         },
         "status": "Observed",
-        "daysSince": 0,
-        "basis": "current_session",
-        "readThrough": "Positive catalyst; weak/isolated sector read-through",
-        "persistence": "Event-day observation",
-        "targetReturnPct": 1.41,
-        "targetVsQqqPp": 1.09,
+        "daysSince": 1,
+        "basis": "event_day_close",
+        "readThrough": "No decisive sector read-through yet",
+        "persistence": "Persisting 1 session later",
+        "targetReturnPct": null,
+        "targetVsQqqPp": null,
         "soxVsNasdaqPp": null,
-        "semiBasketPositive": 5,
-        "semiBasketAvailable": 5,
-        "etfConfirmationsVsQqq": 2
+        "semiBasketPositive": null,
+        "semiBasketAvailable": 0,
+        "etfConfirmationsVsQqq": 0
       },
       "recent": [
         {
           "event": {
-            "id": "auto-2026-11-02-AMD-40180124",
-            "date": "2026-11-02",
+            "date": "2026-11-01",
             "release": "during_session",
-            "ticker": "AMD",
-            "type": "earnings",
+            "ticker": "MARKET",
+            "type": "global-semiconductor",
             "scope": "sector",
-            "title": "23 Big Funds Bought Advanced Micro Devices Last Quarter. Is It a Buy Before Earnings? | TIKR.com",
-            "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
-            "source": "https://www.tikr.com/blog/23-big-funds-bought-amd-stock-before-earnings",
+            "title": "Here are 3 big things we're watching in the stock market in the week ahead - CNBC",
+            "expectedReadThrough": "Global semiconductor event; evaluate SOX/Nasdaq transmission and U.S. confirmation.",
+            "source": "https://www.cnbc.com/investingclub/2026/11/01/3-big-things-were-watching-in-the-stock-market-this-week.html",
             "autoDetected": true,
             "materialityScore": 8,
             "materialityReasons": [
-              "earnings"
+              "global-semiconductor",
+              "global-semiconductor-catalyst",
+              "asia-originated"
             ],
-            "discoveredAtUTC": "2026-11-02T20:38:18+00:00"
-          },
-          "status": "Observed",
-          "daysSince": 0,
-          "basis": "current_session",
-          "readThrough": "Positive catalyst; weak/isolated sector read-through",
-          "persistence": "Event-day observation",
-          "targetReturnPct": 1.41,
-          "targetVsQqqPp": 1.09,
-          "soxVsNasdaqPp": null,
-          "semiBasketPositive": 5,
-          "semiBasketAvailable": 5,
-          "etfConfirmationsVsQqq": 2
-        },
-        {
-          "event": {
-            "id": "auto-2026-11-02-AMD-01843686",
-            "date": "2026-11-02",
-            "release": "during_session",
-            "ticker": "AMD",
-            "type": "earnings",
-            "scope": "sector",
-            "title": "Advanced Micro Devices Future Growth",
-            "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
-            "source": "https://simplywall.st/stocks/us/semiconductors/nasdaq-amd/advanced-micro-devices/future",
-            "autoDetected": true,
-            "materialityScore": 6,
-            "materialityReasons": [],
-            "discoveredAtUTC": "2026-11-02T13:47:57+00:00"
-          },
-          "status": "Observed",
-          "daysSince": 0,
-          "basis": "current_session",
-          "readThrough": "Positive catalyst; weak/isolated sector read-through",
-          "persistence": "Event-day observation",
-          "targetReturnPct": 1.41,
-          "targetVsQqqPp": 1.09,
-          "soxVsNasdaqPp": null,
-          "semiBasketPositive": 5,
-          "semiBasketAvailable": 5,
-          "etfConfirmationsVsQqq": 2
-        },
-        {
-          "event": {
-            "id": "auto-2026-11-02-NVDA-43841010",
-            "date": "2026-11-02",
-            "release": "during_session",
-            "ticker": "NVDA",
-            "type": "earnings",
-            "scope": "sector",
-            "title": "Nvidia Earnings or the Midterms—What Could Spark a November ... - moomoo Community",
-            "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
-            "source": "https://www.moomoo.com/community/feed/nvidia-earnings-or-the-midterms-what-could-spark-a-november-117527483842566",
-            "autoDetected": true,
-            "materialityScore": 17,
-            "materialityReasons": [
-              "earnings"
+            "discoveredAtUTC": "2026-11-02T05:26:18+00:00",
+            "published_date": "2026-11-01T18:09:47+00:00",
+            "eventType": "global-semiconductor-catalyst",
+            "region": "South Korea",
+            "affectedMarkets": [
+              "South Korea"
             ],
-            "discoveredAtUTC": "2026-11-02T05:26:12+00:00"
+            "affectedEntities": [],
+            "affectedTickers": [],
+            "transmissionType": "asia-originated",
+            "severity": "High",
+            "observedMovesPct": [],
+            "volatilityNormalized": null,
+            "observationTimeUTC": "2026-11-01T18:09:47+00:00",
+            "confidence": "High",
+            "informationNovelty": "New candidate; publisher deduplication required",
+            "provenance": [
+              {
+                "sourceUrl": "https://www.cnbc.com/investingclub/2026/11/01/3-big-things-were-watching-in-the-stock-market-this-week.html",
+                "headline": "Here are 3 big things we're watching in the stock market in the week ahead - CNBC",
+                "publishedDate": "2026-11-01T18:09:47+00:00",
+                "retrievedAtUTC": "2026-11-02T05:26:18+00:00"
+              }
+            ]
           },
           "status": "Observed",
-          "daysSince": 0,
-          "basis": "current_session",
+          "daysSince": 1,
+          "basis": "event_day_close",
           "readThrough": "No decisive sector read-through yet",
-          "persistence": "Event-day observation",
-          "targetReturnPct": 1.06,
-          "targetVsQqqPp": 0.74,
+          "persistence": "Persisting 1 session later",
+          "targetReturnPct": null,
+          "targetVsQqqPp": null,
           "soxVsNasdaqPp": null,
-          "semiBasketPositive": 5,
-          "semiBasketAvailable": 5,
-          "etfConfirmationsVsQqq": 2
+          "semiBasketPositive": null,
+          "semiBasketAvailable": 0,
+          "etfConfirmationsVsQqq": 0
+        },
+        {
+          "event": {
+            "date": "2026-11-01",
+            "release": "during_session",
+            "ticker": "MARKET",
+            "type": "global-semiconductor",
+            "scope": "sector",
+            "title": "Stocks and Investing - The Latest Stocks and Market Data. Get Updates on U.S. Markets, World Markets, Stock Prices, Crypto and Currencies",
+            "expectedReadThrough": "Global semiconductor event; evaluate SOX/Nasdaq transmission and U.S. confirmation.",
+            "source": "https://www.wsj.com/finance/stocks?page=1",
+            "autoDetected": true,
+            "materialityScore": 8,
+            "materialityReasons": [
+              "global-semiconductor",
+              "global-semiconductor-catalyst",
+              "us-led-spillover"
+            ],
+            "discoveredAtUTC": "2026-11-02T05:26:18+00:00",
+            "published_date": "2026-11-01T21:00:00+00:00",
+            "eventType": "global-semiconductor-catalyst",
+            "region": "Global",
+            "affectedMarkets": [],
+            "affectedEntities": [],
+            "affectedTickers": [],
+            "transmissionType": "us-led-spillover",
+            "severity": "High",
+            "observedMovesPct": [],
+            "volatilityNormalized": null,
+            "observationTimeUTC": "2026-11-01T21:00:00+00:00",
+            "confidence": "High",
+            "informationNovelty": "New candidate; publisher deduplication required",
+            "provenance": [
+              {
+                "sourceUrl": "https://www.wsj.com/finance/stocks?page=1",
+                "headline": "Stocks and Investing - The Latest Stocks and Market Data. Get Updates on U.S. Markets, World Markets, Stock Prices, Crypto and Currencies",
+                "publishedDate": "2026-11-01T21:00:00+00:00",
+                "retrievedAtUTC": "2026-11-02T05:26:18+00:00"
+              }
+            ]
+          },
+          "status": "Observed",
+          "daysSince": 1,
+          "basis": "event_day_close",
+          "readThrough": "No decisive sector read-through yet",
+          "persistence": "Persisting 1 session later",
+          "targetReturnPct": null,
+          "targetVsQqqPp": null,
+          "soxVsNasdaqPp": null,
+          "semiBasketPositive": null,
+          "semiBasketAvailable": 0,
+          "etfConfirmationsVsQqq": 0
+        },
+        {
+          "event": {
+            "date": "2026-11-01",
+            "release": "during_session",
+            "ticker": "MARKET",
+            "type": "global-semiconductor",
+            "scope": "sector",
+            "title": "South Korea exports nearly double in October on AI investment boom | Reuters",
+            "expectedReadThrough": "Global semiconductor event; evaluate SOX/Nasdaq transmission and U.S. confirmation.",
+            "source": "https://www.reuters.com/world/asia-pacific/south-korea-exports-nearly-double-october-strongest-growth-since-1974-2026-11-01",
+            "autoDetected": true,
+            "materialityScore": 8,
+            "materialityReasons": [
+              "global-semiconductor",
+              "global-semiconductor-catalyst",
+              "asia-originated"
+            ],
+            "discoveredAtUTC": "2026-11-02T20:38:32+00:00",
+            "published_date": "2026-11-01T01:30:05+00:00",
+            "eventType": "global-semiconductor-catalyst",
+            "region": "South Korea",
+            "affectedMarkets": [
+              "South Korea"
+            ],
+            "affectedEntities": [
+              "Samsung Electronics",
+              "SK Hynix"
+            ],
+            "affectedTickers": [
+              "MU",
+              "NVDA"
+            ],
+            "transmissionType": "asia-originated",
+            "severity": "High",
+            "observedMovesPct": [
+              259.4,
+              133.6,
+              36.0,
+              26.0,
+              93.7
+            ],
+            "volatilityNormalized": null,
+            "observationTimeUTC": "2026-11-01T01:30:05+00:00",
+            "confidence": "High",
+            "informationNovelty": "New candidate; publisher deduplication required",
+            "provenance": [
+              {
+                "sourceUrl": "https://www.reuters.com/world/asia-pacific/south-korea-exports-nearly-double-october-strongest-growth-since-1974-2026-11-01",
+                "headline": "South Korea exports nearly double in October on AI investment boom | Reuters",
+                "publishedDate": "2026-11-01T01:30:05+00:00",
+                "retrievedAtUTC": "2026-11-02T20:38:32+00:00"
+              }
+            ]
+          },
+          "status": "Observed",
+          "daysSince": 1,
+          "basis": "event_day_close",
+          "readThrough": "No decisive sector read-through yet",
+          "persistence": "Persisting 1 session later",
+          "targetReturnPct": null,
+          "targetVsQqqPp": null,
+          "soxVsNasdaqPp": null,
+          "semiBasketPositive": null,
+          "semiBasketAvailable": 0,
+          "etfConfirmationsVsQqq": 0
         }
       ],
       "scoreImpact": 0,
@@ -1346,11 +1477,11 @@
   },
   "confirmationLayer": {
     "internalConfirmation": {
-      "score": 51,
-      "label": "Mixed",
+      "score": 24,
+      "label": "Negative",
       "components": {
-        "breadth": 100,
-        "semiconductorLeadership": 32,
+        "breadth": 50,
+        "semiconductorLeadership": 5,
         "volatility": 0,
         "megaCapLeadership": 50
       },
@@ -1362,128 +1493,236 @@
       }
     },
     "semiconductorLeadership": {
-      "score": 32,
-      "label": "Weak",
+      "score": 5,
+      "label": "Negative",
       "catalystMomentum": {
         "status": "Observed",
         "active": {
           "event": {
-            "id": "auto-2026-11-02-AMD-40180124",
-            "date": "2026-11-02",
+            "date": "2026-11-01",
             "release": "during_session",
-            "ticker": "AMD",
-            "type": "earnings",
+            "ticker": "MARKET",
+            "type": "global-semiconductor",
             "scope": "sector",
-            "title": "23 Big Funds Bought Advanced Micro Devices Last Quarter. Is It a Buy Before Earnings? | TIKR.com",
-            "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
-            "source": "https://www.tikr.com/blog/23-big-funds-bought-amd-stock-before-earnings",
+            "title": "Here are 3 big things we're watching in the stock market in the week ahead - CNBC",
+            "expectedReadThrough": "Global semiconductor event; evaluate SOX/Nasdaq transmission and U.S. confirmation.",
+            "source": "https://www.cnbc.com/investingclub/2026/11/01/3-big-things-were-watching-in-the-stock-market-this-week.html",
             "autoDetected": true,
             "materialityScore": 8,
             "materialityReasons": [
-              "earnings"
+              "global-semiconductor",
+              "global-semiconductor-catalyst",
+              "asia-originated"
             ],
-            "discoveredAtUTC": "2026-11-02T20:38:18+00:00"
+            "discoveredAtUTC": "2026-11-02T05:26:18+00:00",
+            "published_date": "2026-11-01T18:09:47+00:00",
+            "eventType": "global-semiconductor-catalyst",
+            "region": "South Korea",
+            "affectedMarkets": [
+              "South Korea"
+            ],
+            "affectedEntities": [],
+            "affectedTickers": [],
+            "transmissionType": "asia-originated",
+            "severity": "High",
+            "observedMovesPct": [],
+            "volatilityNormalized": null,
+            "observationTimeUTC": "2026-11-01T18:09:47+00:00",
+            "confidence": "High",
+            "informationNovelty": "New candidate; publisher deduplication required",
+            "provenance": [
+              {
+                "sourceUrl": "https://www.cnbc.com/investingclub/2026/11/01/3-big-things-were-watching-in-the-stock-market-this-week.html",
+                "headline": "Here are 3 big things we're watching in the stock market in the week ahead - CNBC",
+                "publishedDate": "2026-11-01T18:09:47+00:00",
+                "retrievedAtUTC": "2026-11-02T05:26:18+00:00"
+              }
+            ]
           },
           "status": "Observed",
-          "daysSince": 0,
-          "basis": "current_session",
-          "readThrough": "Positive catalyst; weak/isolated sector read-through",
-          "persistence": "Event-day observation",
-          "targetReturnPct": 1.41,
-          "targetVsQqqPp": 1.09,
+          "daysSince": 1,
+          "basis": "event_day_close",
+          "readThrough": "No decisive sector read-through yet",
+          "persistence": "Persisting 1 session later",
+          "targetReturnPct": null,
+          "targetVsQqqPp": null,
           "soxVsNasdaqPp": null,
-          "semiBasketPositive": 5,
-          "semiBasketAvailable": 5,
-          "etfConfirmationsVsQqq": 2
+          "semiBasketPositive": null,
+          "semiBasketAvailable": 0,
+          "etfConfirmationsVsQqq": 0
         },
         "recent": [
           {
             "event": {
-              "id": "auto-2026-11-02-AMD-40180124",
-              "date": "2026-11-02",
+              "date": "2026-11-01",
               "release": "during_session",
-              "ticker": "AMD",
-              "type": "earnings",
+              "ticker": "MARKET",
+              "type": "global-semiconductor",
               "scope": "sector",
-              "title": "23 Big Funds Bought Advanced Micro Devices Last Quarter. Is It a Buy Before Earnings? | TIKR.com",
-              "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
-              "source": "https://www.tikr.com/blog/23-big-funds-bought-amd-stock-before-earnings",
+              "title": "Here are 3 big things we're watching in the stock market in the week ahead - CNBC",
+              "expectedReadThrough": "Global semiconductor event; evaluate SOX/Nasdaq transmission and U.S. confirmation.",
+              "source": "https://www.cnbc.com/investingclub/2026/11/01/3-big-things-were-watching-in-the-stock-market-this-week.html",
               "autoDetected": true,
               "materialityScore": 8,
               "materialityReasons": [
-                "earnings"
+                "global-semiconductor",
+                "global-semiconductor-catalyst",
+                "asia-originated"
               ],
-              "discoveredAtUTC": "2026-11-02T20:38:18+00:00"
-            },
-            "status": "Observed",
-            "daysSince": 0,
-            "basis": "current_session",
-            "readThrough": "Positive catalyst; weak/isolated sector read-through",
-            "persistence": "Event-day observation",
-            "targetReturnPct": 1.41,
-            "targetVsQqqPp": 1.09,
-            "soxVsNasdaqPp": null,
-            "semiBasketPositive": 5,
-            "semiBasketAvailable": 5,
-            "etfConfirmationsVsQqq": 2
-          },
-          {
-            "event": {
-              "id": "auto-2026-11-02-AMD-01843686",
-              "date": "2026-11-02",
-              "release": "during_session",
-              "ticker": "AMD",
-              "type": "earnings",
-              "scope": "sector",
-              "title": "Advanced Micro Devices Future Growth",
-              "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
-              "source": "https://simplywall.st/stocks/us/semiconductors/nasdaq-amd/advanced-micro-devices/future",
-              "autoDetected": true,
-              "materialityScore": 6,
-              "materialityReasons": [],
-              "discoveredAtUTC": "2026-11-02T13:47:57+00:00"
-            },
-            "status": "Observed",
-            "daysSince": 0,
-            "basis": "current_session",
-            "readThrough": "Positive catalyst; weak/isolated sector read-through",
-            "persistence": "Event-day observation",
-            "targetReturnPct": 1.41,
-            "targetVsQqqPp": 1.09,
-            "soxVsNasdaqPp": null,
-            "semiBasketPositive": 5,
-            "semiBasketAvailable": 5,
-            "etfConfirmationsVsQqq": 2
-          },
-          {
-            "event": {
-              "id": "auto-2026-11-02-NVDA-43841010",
-              "date": "2026-11-02",
-              "release": "during_session",
-              "ticker": "NVDA",
-              "type": "earnings",
-              "scope": "sector",
-              "title": "Nvidia Earnings or the Midterms—What Could Spark a November ... - moomoo Community",
-              "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
-              "source": "https://www.moomoo.com/community/feed/nvidia-earnings-or-the-midterms-what-could-spark-a-november-117527483842566",
-              "autoDetected": true,
-              "materialityScore": 17,
-              "materialityReasons": [
-                "earnings"
+              "discoveredAtUTC": "2026-11-02T05:26:18+00:00",
+              "published_date": "2026-11-01T18:09:47+00:00",
+              "eventType": "global-semiconductor-catalyst",
+              "region": "South Korea",
+              "affectedMarkets": [
+                "South Korea"
               ],
-              "discoveredAtUTC": "2026-11-02T05:26:12+00:00"
+              "affectedEntities": [],
+              "affectedTickers": [],
+              "transmissionType": "asia-originated",
+              "severity": "High",
+              "observedMovesPct": [],
+              "volatilityNormalized": null,
+              "observationTimeUTC": "2026-11-01T18:09:47+00:00",
+              "confidence": "High",
+              "informationNovelty": "New candidate; publisher deduplication required",
+              "provenance": [
+                {
+                  "sourceUrl": "https://www.cnbc.com/investingclub/2026/11/01/3-big-things-were-watching-in-the-stock-market-this-week.html",
+                  "headline": "Here are 3 big things we're watching in the stock market in the week ahead - CNBC",
+                  "publishedDate": "2026-11-01T18:09:47+00:00",
+                  "retrievedAtUTC": "2026-11-02T05:26:18+00:00"
+                }
+              ]
             },
             "status": "Observed",
-            "daysSince": 0,
-            "basis": "current_session",
+            "daysSince": 1,
+            "basis": "event_day_close",
             "readThrough": "No decisive sector read-through yet",
-            "persistence": "Event-day observation",
-            "targetReturnPct": 1.06,
-            "targetVsQqqPp": 0.74,
+            "persistence": "Persisting 1 session later",
+            "targetReturnPct": null,
+            "targetVsQqqPp": null,
             "soxVsNasdaqPp": null,
-            "semiBasketPositive": 5,
-            "semiBasketAvailable": 5,
-            "etfConfirmationsVsQqq": 2
+            "semiBasketPositive": null,
+            "semiBasketAvailable": 0,
+            "etfConfirmationsVsQqq": 0
+          },
+          {
+            "event": {
+              "date": "2026-11-01",
+              "release": "during_session",
+              "ticker": "MARKET",
+              "type": "global-semiconductor",
+              "scope": "sector",
+              "title": "Stocks and Investing - The Latest Stocks and Market Data. Get Updates on U.S. Markets, World Markets, Stock Prices, Crypto and Currencies",
+              "expectedReadThrough": "Global semiconductor event; evaluate SOX/Nasdaq transmission and U.S. confirmation.",
+              "source": "https://www.wsj.com/finance/stocks?page=1",
+              "autoDetected": true,
+              "materialityScore": 8,
+              "materialityReasons": [
+                "global-semiconductor",
+                "global-semiconductor-catalyst",
+                "us-led-spillover"
+              ],
+              "discoveredAtUTC": "2026-11-02T05:26:18+00:00",
+              "published_date": "2026-11-01T21:00:00+00:00",
+              "eventType": "global-semiconductor-catalyst",
+              "region": "Global",
+              "affectedMarkets": [],
+              "affectedEntities": [],
+              "affectedTickers": [],
+              "transmissionType": "us-led-spillover",
+              "severity": "High",
+              "observedMovesPct": [],
+              "volatilityNormalized": null,
+              "observationTimeUTC": "2026-11-01T21:00:00+00:00",
+              "confidence": "High",
+              "informationNovelty": "New candidate; publisher deduplication required",
+              "provenance": [
+                {
+                  "sourceUrl": "https://www.wsj.com/finance/stocks?page=1",
+                  "headline": "Stocks and Investing - The Latest Stocks and Market Data. Get Updates on U.S. Markets, World Markets, Stock Prices, Crypto and Currencies",
+                  "publishedDate": "2026-11-01T21:00:00+00:00",
+                  "retrievedAtUTC": "2026-11-02T05:26:18+00:00"
+                }
+              ]
+            },
+            "status": "Observed",
+            "daysSince": 1,
+            "basis": "event_day_close",
+            "readThrough": "No decisive sector read-through yet",
+            "persistence": "Persisting 1 session later",
+            "targetReturnPct": null,
+            "targetVsQqqPp": null,
+            "soxVsNasdaqPp": null,
+            "semiBasketPositive": null,
+            "semiBasketAvailable": 0,
+            "etfConfirmationsVsQqq": 0
+          },
+          {
+            "event": {
+              "date": "2026-11-01",
+              "release": "during_session",
+              "ticker": "MARKET",
+              "type": "global-semiconductor",
+              "scope": "sector",
+              "title": "South Korea exports nearly double in October on AI investment boom | Reuters",
+              "expectedReadThrough": "Global semiconductor event; evaluate SOX/Nasdaq transmission and U.S. confirmation.",
+              "source": "https://www.reuters.com/world/asia-pacific/south-korea-exports-nearly-double-october-strongest-growth-since-1974-2026-11-01",
+              "autoDetected": true,
+              "materialityScore": 8,
+              "materialityReasons": [
+                "global-semiconductor",
+                "global-semiconductor-catalyst",
+                "asia-originated"
+              ],
+              "discoveredAtUTC": "2026-11-02T20:38:32+00:00",
+              "published_date": "2026-11-01T01:30:05+00:00",
+              "eventType": "global-semiconductor-catalyst",
+              "region": "South Korea",
+              "affectedMarkets": [
+                "South Korea"
+              ],
+              "affectedEntities": [
+                "Samsung Electronics",
+                "SK Hynix"
+              ],
+              "affectedTickers": [
+                "MU",
+                "NVDA"
+              ],
+              "transmissionType": "asia-originated",
+              "severity": "High",
+              "observedMovesPct": [
+                259.4,
+                133.6,
+                36.0,
+                26.0,
+                93.7
+              ],
+              "volatilityNormalized": null,
+              "observationTimeUTC": "2026-11-01T01:30:05+00:00",
+              "confidence": "High",
+              "informationNovelty": "New candidate; publisher deduplication required",
+              "provenance": [
+                {
+                  "sourceUrl": "https://www.reuters.com/world/asia-pacific/south-korea-exports-nearly-double-october-strongest-growth-since-1974-2026-11-01",
+                  "headline": "South Korea exports nearly double in October on AI investment boom | Reuters",
+                  "publishedDate": "2026-11-01T01:30:05+00:00",
+                  "retrievedAtUTC": "2026-11-02T20:38:32+00:00"
+                }
+              ]
+            },
+            "status": "Observed",
+            "daysSince": 1,
+            "basis": "event_day_close",
+            "readThrough": "No decisive sector read-through yet",
+            "persistence": "Persisting 1 session later",
+            "targetReturnPct": null,
+            "targetVsQqqPp": null,
+            "soxVsNasdaqPp": null,
+            "semiBasketPositive": null,
+            "semiBasketAvailable": 0,
+            "etfConfirmationsVsQqq": 0
           }
         ],
         "scoreImpact": 0,
@@ -1491,9 +1730,9 @@
         "interpretation": "Catalyst context modifies confidence/read-through only; price-based Semiconductor Leadership remains unchanged."
       },
       "broadLeadershipTrigger": false,
-      "accelerationFromOpenPoints": -26,
+      "accelerationFromOpenPoints": -53,
       "relativeStrengthPp": {
-        "soxVsNasdaqPp": null,
+        "soxVsNasdaqPp": -2.3,
         "soxxVsNasdaqPp": -2.72,
         "smhVsNasdaqPp": -1.64
       },
@@ -1515,8 +1754,8 @@
       "observationDate": "2026-11-02"
     },
     "macroConstraint": {
-      "ratesMacroBucketStrength": -0.66,
-      "effectiveRatesMacroBucketStrength": -0.66,
+      "ratesMacroBucketStrength": -0.663,
+      "effectiveRatesMacroBucketStrength": -0.663,
       "marketResponseAttenuationPct": 0.0
     },
     "directionalScoreUnchanged": true,
@@ -1527,122 +1766,230 @@
     "status": "Observed",
     "active": {
       "event": {
-        "id": "auto-2026-11-02-AMD-40180124",
-        "date": "2026-11-02",
+        "date": "2026-11-01",
         "release": "during_session",
-        "ticker": "AMD",
-        "type": "earnings",
+        "ticker": "MARKET",
+        "type": "global-semiconductor",
         "scope": "sector",
-        "title": "23 Big Funds Bought Advanced Micro Devices Last Quarter. Is It a Buy Before Earnings? | TIKR.com",
-        "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
-        "source": "https://www.tikr.com/blog/23-big-funds-bought-amd-stock-before-earnings",
+        "title": "Here are 3 big things we're watching in the stock market in the week ahead - CNBC",
+        "expectedReadThrough": "Global semiconductor event; evaluate SOX/Nasdaq transmission and U.S. confirmation.",
+        "source": "https://www.cnbc.com/investingclub/2026/11/01/3-big-things-were-watching-in-the-stock-market-this-week.html",
         "autoDetected": true,
         "materialityScore": 8,
         "materialityReasons": [
-          "earnings"
+          "global-semiconductor",
+          "global-semiconductor-catalyst",
+          "asia-originated"
         ],
-        "discoveredAtUTC": "2026-11-02T20:38:18+00:00"
+        "discoveredAtUTC": "2026-11-02T05:26:18+00:00",
+        "published_date": "2026-11-01T18:09:47+00:00",
+        "eventType": "global-semiconductor-catalyst",
+        "region": "South Korea",
+        "affectedMarkets": [
+          "South Korea"
+        ],
+        "affectedEntities": [],
+        "affectedTickers": [],
+        "transmissionType": "asia-originated",
+        "severity": "High",
+        "observedMovesPct": [],
+        "volatilityNormalized": null,
+        "observationTimeUTC": "2026-11-01T18:09:47+00:00",
+        "confidence": "High",
+        "informationNovelty": "New candidate; publisher deduplication required",
+        "provenance": [
+          {
+            "sourceUrl": "https://www.cnbc.com/investingclub/2026/11/01/3-big-things-were-watching-in-the-stock-market-this-week.html",
+            "headline": "Here are 3 big things we're watching in the stock market in the week ahead - CNBC",
+            "publishedDate": "2026-11-01T18:09:47+00:00",
+            "retrievedAtUTC": "2026-11-02T05:26:18+00:00"
+          }
+        ]
       },
       "status": "Observed",
-      "daysSince": 0,
-      "basis": "current_session",
-      "readThrough": "Positive catalyst; weak/isolated sector read-through",
-      "persistence": "Event-day observation",
-      "targetReturnPct": 1.41,
-      "targetVsQqqPp": 1.09,
+      "daysSince": 1,
+      "basis": "event_day_close",
+      "readThrough": "No decisive sector read-through yet",
+      "persistence": "Persisting 1 session later",
+      "targetReturnPct": null,
+      "targetVsQqqPp": null,
       "soxVsNasdaqPp": null,
-      "semiBasketPositive": 5,
-      "semiBasketAvailable": 5,
-      "etfConfirmationsVsQqq": 2
+      "semiBasketPositive": null,
+      "semiBasketAvailable": 0,
+      "etfConfirmationsVsQqq": 0
     },
     "recent": [
       {
         "event": {
-          "id": "auto-2026-11-02-AMD-40180124",
-          "date": "2026-11-02",
+          "date": "2026-11-01",
           "release": "during_session",
-          "ticker": "AMD",
-          "type": "earnings",
+          "ticker": "MARKET",
+          "type": "global-semiconductor",
           "scope": "sector",
-          "title": "23 Big Funds Bought Advanced Micro Devices Last Quarter. Is It a Buy Before Earnings? | TIKR.com",
-          "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
-          "source": "https://www.tikr.com/blog/23-big-funds-bought-amd-stock-before-earnings",
+          "title": "Here are 3 big things we're watching in the stock market in the week ahead - CNBC",
+          "expectedReadThrough": "Global semiconductor event; evaluate SOX/Nasdaq transmission and U.S. confirmation.",
+          "source": "https://www.cnbc.com/investingclub/2026/11/01/3-big-things-were-watching-in-the-stock-market-this-week.html",
           "autoDetected": true,
           "materialityScore": 8,
           "materialityReasons": [
-            "earnings"
+            "global-semiconductor",
+            "global-semiconductor-catalyst",
+            "asia-originated"
           ],
-          "discoveredAtUTC": "2026-11-02T20:38:18+00:00"
-        },
-        "status": "Observed",
-        "daysSince": 0,
-        "basis": "current_session",
-        "readThrough": "Positive catalyst; weak/isolated sector read-through",
-        "persistence": "Event-day observation",
-        "targetReturnPct": 1.41,
-        "targetVsQqqPp": 1.09,
-        "soxVsNasdaqPp": null,
-        "semiBasketPositive": 5,
-        "semiBasketAvailable": 5,
-        "etfConfirmationsVsQqq": 2
-      },
-      {
-        "event": {
-          "id": "auto-2026-11-02-AMD-01843686",
-          "date": "2026-11-02",
-          "release": "during_session",
-          "ticker": "AMD",
-          "type": "earnings",
-          "scope": "sector",
-          "title": "Advanced Micro Devices Future Growth",
-          "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
-          "source": "https://simplywall.st/stocks/us/semiconductors/nasdaq-amd/advanced-micro-devices/future",
-          "autoDetected": true,
-          "materialityScore": 6,
-          "materialityReasons": [],
-          "discoveredAtUTC": "2026-11-02T13:47:57+00:00"
-        },
-        "status": "Observed",
-        "daysSince": 0,
-        "basis": "current_session",
-        "readThrough": "Positive catalyst; weak/isolated sector read-through",
-        "persistence": "Event-day observation",
-        "targetReturnPct": 1.41,
-        "targetVsQqqPp": 1.09,
-        "soxVsNasdaqPp": null,
-        "semiBasketPositive": 5,
-        "semiBasketAvailable": 5,
-        "etfConfirmationsVsQqq": 2
-      },
-      {
-        "event": {
-          "id": "auto-2026-11-02-NVDA-43841010",
-          "date": "2026-11-02",
-          "release": "during_session",
-          "ticker": "NVDA",
-          "type": "earnings",
-          "scope": "sector",
-          "title": "Nvidia Earnings or the Midterms—What Could Spark a November ... - moomoo Community",
-          "expectedReadThrough": "Auto-detected major catalyst; verify breadth and relative-price confirmation",
-          "source": "https://www.moomoo.com/community/feed/nvidia-earnings-or-the-midterms-what-could-spark-a-november-117527483842566",
-          "autoDetected": true,
-          "materialityScore": 17,
-          "materialityReasons": [
-            "earnings"
+          "discoveredAtUTC": "2026-11-02T05:26:18+00:00",
+          "published_date": "2026-11-01T18:09:47+00:00",
+          "eventType": "global-semiconductor-catalyst",
+          "region": "South Korea",
+          "affectedMarkets": [
+            "South Korea"
           ],
-          "discoveredAtUTC": "2026-11-02T05:26:12+00:00"
+          "affectedEntities": [],
+          "affectedTickers": [],
+          "transmissionType": "asia-originated",
+          "severity": "High",
+          "observedMovesPct": [],
+          "volatilityNormalized": null,
+          "observationTimeUTC": "2026-11-01T18:09:47+00:00",
+          "confidence": "High",
+          "informationNovelty": "New candidate; publisher deduplication required",
+          "provenance": [
+            {
+              "sourceUrl": "https://www.cnbc.com/investingclub/2026/11/01/3-big-things-were-watching-in-the-stock-market-this-week.html",
+              "headline": "Here are 3 big things we're watching in the stock market in the week ahead - CNBC",
+              "publishedDate": "2026-11-01T18:09:47+00:00",
+              "retrievedAtUTC": "2026-11-02T05:26:18+00:00"
+            }
+          ]
         },
         "status": "Observed",
-        "daysSince": 0,
-        "basis": "current_session",
+        "daysSince": 1,
+        "basis": "event_day_close",
         "readThrough": "No decisive sector read-through yet",
-        "persistence": "Event-day observation",
-        "targetReturnPct": 1.06,
-        "targetVsQqqPp": 0.74,
+        "persistence": "Persisting 1 session later",
+        "targetReturnPct": null,
+        "targetVsQqqPp": null,
         "soxVsNasdaqPp": null,
-        "semiBasketPositive": 5,
-        "semiBasketAvailable": 5,
-        "etfConfirmationsVsQqq": 2
+        "semiBasketPositive": null,
+        "semiBasketAvailable": 0,
+        "etfConfirmationsVsQqq": 0
+      },
+      {
+        "event": {
+          "date": "2026-11-01",
+          "release": "during_session",
+          "ticker": "MARKET",
+          "type": "global-semiconductor",
+          "scope": "sector",
+          "title": "Stocks and Investing - The Latest Stocks and Market Data. Get Updates on U.S. Markets, World Markets, Stock Prices, Crypto and Currencies",
+          "expectedReadThrough": "Global semiconductor event; evaluate SOX/Nasdaq transmission and U.S. confirmation.",
+          "source": "https://www.wsj.com/finance/stocks?page=1",
+          "autoDetected": true,
+          "materialityScore": 8,
+          "materialityReasons": [
+            "global-semiconductor",
+            "global-semiconductor-catalyst",
+            "us-led-spillover"
+          ],
+          "discoveredAtUTC": "2026-11-02T05:26:18+00:00",
+          "published_date": "2026-11-01T21:00:00+00:00",
+          "eventType": "global-semiconductor-catalyst",
+          "region": "Global",
+          "affectedMarkets": [],
+          "affectedEntities": [],
+          "affectedTickers": [],
+          "transmissionType": "us-led-spillover",
+          "severity": "High",
+          "observedMovesPct": [],
+          "volatilityNormalized": null,
+          "observationTimeUTC": "2026-11-01T21:00:00+00:00",
+          "confidence": "High",
+          "informationNovelty": "New candidate; publisher deduplication required",
+          "provenance": [
+            {
+              "sourceUrl": "https://www.wsj.com/finance/stocks?page=1",
+              "headline": "Stocks and Investing - The Latest Stocks and Market Data. Get Updates on U.S. Markets, World Markets, Stock Prices, Crypto and Currencies",
+              "publishedDate": "2026-11-01T21:00:00+00:00",
+              "retrievedAtUTC": "2026-11-02T05:26:18+00:00"
+            }
+          ]
+        },
+        "status": "Observed",
+        "daysSince": 1,
+        "basis": "event_day_close",
+        "readThrough": "No decisive sector read-through yet",
+        "persistence": "Persisting 1 session later",
+        "targetReturnPct": null,
+        "targetVsQqqPp": null,
+        "soxVsNasdaqPp": null,
+        "semiBasketPositive": null,
+        "semiBasketAvailable": 0,
+        "etfConfirmationsVsQqq": 0
+      },
+      {
+        "event": {
+          "date": "2026-11-01",
+          "release": "during_session",
+          "ticker": "MARKET",
+          "type": "global-semiconductor",
+          "scope": "sector",
+          "title": "South Korea exports nearly double in October on AI investment boom | Reuters",
+          "expectedReadThrough": "Global semiconductor event; evaluate SOX/Nasdaq transmission and U.S. confirmation.",
+          "source": "https://www.reuters.com/world/asia-pacific/south-korea-exports-nearly-double-october-strongest-growth-since-1974-2026-11-01",
+          "autoDetected": true,
+          "materialityScore": 8,
+          "materialityReasons": [
+            "global-semiconductor",
+            "global-semiconductor-catalyst",
+            "asia-originated"
+          ],
+          "discoveredAtUTC": "2026-11-02T20:38:32+00:00",
+          "published_date": "2026-11-01T01:30:05+00:00",
+          "eventType": "global-semiconductor-catalyst",
+          "region": "South Korea",
+          "affectedMarkets": [
+            "South Korea"
+          ],
+          "affectedEntities": [
+            "Samsung Electronics",
+            "SK Hynix"
+          ],
+          "affectedTickers": [
+            "MU",
+            "NVDA"
+          ],
+          "transmissionType": "asia-originated",
+          "severity": "High",
+          "observedMovesPct": [
+            259.4,
+            133.6,
+            36.0,
+            26.0,
+            93.7
+          ],
+          "volatilityNormalized": null,
+          "observationTimeUTC": "2026-11-01T01:30:05+00:00",
+          "confidence": "High",
+          "informationNovelty": "New candidate; publisher deduplication required",
+          "provenance": [
+            {
+              "sourceUrl": "https://www.reuters.com/world/asia-pacific/south-korea-exports-nearly-double-october-strongest-growth-since-1974-2026-11-01",
+              "headline": "South Korea exports nearly double in October on AI investment boom | Reuters",
+              "publishedDate": "2026-11-01T01:30:05+00:00",
+              "retrievedAtUTC": "2026-11-02T20:38:32+00:00"
+            }
+          ]
+        },
+        "status": "Observed",
+        "daysSince": 1,
+        "basis": "event_day_close",
+        "readThrough": "No decisive sector read-through yet",
+        "persistence": "Persisting 1 session later",
+        "targetReturnPct": null,
+        "targetVsQqqPp": null,
+        "soxVsNasdaqPp": null,
+        "semiBasketPositive": null,
+        "semiBasketAvailable": 0,
+        "etfConfirmationsVsQqq": 0
       }
     ],
     "scoreImpact": 0,
@@ -3324,47 +3671,47 @@
     "status": "inactive",
     "mode": null,
     "summary": "No persistent divergence between the macro impulse and live market response.",
-    "observedAt": "2026-11-02T19:42:24.800980-05:00",
+    "observedAt": "2026-11-02T21:30:10.411679-05:00",
     "candidateMode": null,
     "candidateSince": null,
     "persistenceMinutes": 0.0,
     "requiredPersistenceMinutes": 15,
     "evidenceScore": null,
-    "positiveResponseScore": 19,
-    "negativeResponseScore": 59,
+    "positiveResponseScore": 11,
+    "negativeResponseScore": 64,
     "attenuationPct": 0.0,
-    "rawRatesMacroStrength": -0.66,
-    "effectiveRatesMacroStrength": -0.66,
-    "rawNasdaqScore": -30,
-    "effectiveNasdaqScore": -30,
+    "rawRatesMacroStrength": -0.663,
+    "effectiveRatesMacroStrength": -0.663,
+    "rawNasdaqScore": -52,
+    "effectiveNasdaqScore": -52,
     "components": {},
     "note": "Market Response only attenuates an existing Rates / Macro contribution; it never reverses its sign."
   },
   "soxlBuyScore": {
     "version": 3.3,
-    "score": 28,
-    "rawScore": 28,
-    "preGateScore": 28,
-    "label": "Poor Entry",
+    "score": 22,
+    "rawScore": 22,
+    "preGateScore": 22,
+    "label": "Avoid Long",
     "signal": "negative",
     "horizon": "1–5 sessions",
     "instrument": "SOXL",
     "last": 68.17,
     "changePct": -11.52,
     "components": {
-      "Semiconductor trend": 12,
+      "Semiconductor trend": 9,
       "SOXL entry quality": 19,
-      "Market confirmation": 53,
-      "Volatility / leverage risk": 25,
+      "Market confirmation": 31,
+      "Volatility / leverage risk": 24,
       "Rates / macro": 36,
-      "Catalyst asymmetry": 74
+      "Catalyst asymmetry": 50
     },
     "semiconductorTrend": {
       "version": 2.1,
-      "score": 12,
+      "score": 9,
       "components": {
         "SOXX technical trend": 14,
-        "SOX relative strength": null,
+        "SOX relative strength": 0,
         "SOXX relative strength": 0,
         "SMH relative strength": 0,
         "Semiconductor breadth": 25
@@ -3376,7 +3723,7 @@
         "SMH relative strength": 10,
         "Semiconductor breadth": 20
       },
-      "availableWeightPct": 75,
+      "availableWeightPct": 100,
       "soxxTechnicalTrend": {
         "score": 14,
         "components": {
@@ -3434,9 +3781,9 @@
       }
     },
     "volatilityLeverageRisk": {
-      "score": 25,
+      "score": 24,
       "components": {
-        "Consolidation safety": 49,
+        "Consolidation safety": 45,
         "VXN condition": 0,
         "VXN daily change": 0,
         "SOXL ATR regime": 33
@@ -3490,14 +3837,14 @@
       "distanceFrom20dHighPct": -53.1
     },
     "strongestDrivers": [
-      "Catalyst asymmetry 74",
-      "Market confirmation 53"
+      "Catalyst asymmetry 50",
+      "Rates / macro 36"
     ],
     "weakestDrivers": [
-      "Semiconductor trend 12",
+      "Semiconductor trend 9",
       "SOXL entry quality 19"
     ],
-    "explanation": "SOXL tactical entry quality is poor entry (28/100) for a 1–5 session horizon. Raw score 28; extension/overheating penalty 0.0. Active gates: Weak semiconductor trend caps score at 45; Broad semiconductor underperformance caps score at 50. Strongest inputs: Catalyst asymmetry 74, Market confirmation 53. Weakest: Semiconductor trend 12, SOXL entry quality 19.",
+    "explanation": "SOXL tactical entry quality is avoid long (22/100) for a 1–5 session horizon. Raw score 22; extension/overheating penalty 0.0. Active gates: Weak semiconductor trend caps score at 45; Broad semiconductor underperformance caps score at 50. Strongest inputs: Catalyst asymmetry 50, Rates / macro 36. Weakest: Semiconductor trend 9, SOXL entry quality 19.",
     "note": "Experimental tactical score for a daily 3x leveraged ETF. It measures entry quality, not expected return or position size."
   },
   "avwapStrategyCards": {
@@ -3787,7 +4134,7 @@
       "changePct": -1.072,
       "source": "CNBC quote service",
       "quoteTime": "6:18 PM EST",
-      "collectedAtET": "2026-11-02T19:38:36.442222-05:00",
+      "collectedAtET": "2026-11-02T21:26:36.590268-05:00",
       "status": "available",
       "realtimeGuaranteed": false
     },
@@ -3797,7 +4144,7 @@
       "changePct": -0.51,
       "source": "CNBC quote service",
       "quoteTime": "4:50 PM EST",
-      "collectedAtET": "2026-11-02T19:38:36.442257-05:00",
+      "collectedAtET": "2026-11-02T21:26:36.590298-05:00",
       "status": "available",
       "realtimeGuaranteed": false
     }
