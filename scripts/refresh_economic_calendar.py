@@ -127,6 +127,17 @@ def main():
     out = build(feed, start, snapshot, earnings)
     if not out["events"]:
         raise ValueError("Calendar empty; preserve last good publication")
+    # Keep the prior publication timestamp if the substantive dataset is identical.
+    # Otherwise every 15-minute check would generate a meaningless commit/deploy.
+    if SOURCE.exists():
+        try:
+            prior = json.loads(SOURCE.read_text(encoding="utf-8"))
+            before = {k: v for k, v in prior.items() if k != "updatedAt"}
+            after = {k: v for k, v in out.items() if k != "updatedAt"}
+            if before == after:
+                out["updatedAt"] = prior.get("updatedAt", out["updatedAt"])
+        except (OSError, ValueError, TypeError):
+            pass
     serialized = json.dumps(out, ensure_ascii=False, indent=2) + "\n"
     for path in (SOURCE, PUBLIC):
         path.parent.mkdir(parents=True, exist_ok=True)
