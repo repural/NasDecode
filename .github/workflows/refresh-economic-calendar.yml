@@ -2,7 +2,11 @@ name: Refresh NasDecode Economic Calendar
 on:
   workflow_dispatch:
   schedule:
-    - cron: '25 5,11,17,23 * * *'
+    # Every two hours: event coverage, schedule changes, and new source data.
+    - cron: '25 */2 * * *'
+    # Higher-frequency checks during US economic-release hours on weekdays.
+    # GitHub schedules use UTC; script applies America/New_York time windows.
+    - cron: '*/15 12-22 * * 1-5'
 permissions:
   contents: write
 concurrency:
@@ -18,14 +22,21 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Refresh 14-day official-source event feed
+      - name: Refresh earnings feed every six hours (daily Nasdaq fetch caching applies)
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = "workflow_dispatch" ] || [ $((10#$(date -u +%H) % 6)) -eq 0 ]; then
+            python scripts/refresh_upcoming_earnings.py
+          else
+            echo "Earnings collector skipped for this checkpoint"
+          fi
+      - name: Rebuild rolling 14-day economic and earnings calendar
         run: python scripts/refresh_economic_calendar.py
-      - name: Commit and publish when changed
+      - name: Commit and publish if data changed
         run: |
           git config user.name 'nasdecode-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add data/economic-calendar.json public/data/economic-calendar.json
+          git add data/upcoming-earnings.json data/economic-calendar.json public/data/economic-calendar.json
           if git diff --cached --quiet; then exit 0; fi
-          git commit -m "Refresh two-week economic calendar"
+          git commit -m "Refresh two-week economic and earnings calendar"
           git pull --rebase origin main
           git push origin HEAD:main
