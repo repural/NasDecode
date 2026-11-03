@@ -86,7 +86,7 @@ def main():
         dash=json.loads(DASH.read_text())
         latest=eng["latest"]; setup=latest["setup"]
         labels={
-          "washout_rebound":"Washout / Rebound",
+          "washout_rebound":"Washout",
           "uptrend_pullback":"Uptrend Pullback",
           "continuation":"Continuation",
           "neutral_other":"Neutral / Other"
