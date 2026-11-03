@@ -442,10 +442,17 @@ function recentOpenWatchEvent(e,maxDays=2){
 // Render the quantitative dashboard snapshot without recalculating model logic.
 function renderIndexQuotes(d){
  const wrap=document.getElementById('ndIndexStrip');if(!wrap)return;
- wrap.innerHTML=[['nasdaq','NASDAQ COMPOSITE'],['sp500','S&P 500']].map(([key,name])=>{
-  const q=d.marketIndexQuotes?.[key],p=Number(q?.price);
-  const valid=q?.status==='available'&&Number.isFinite(p)&&p>0;
-  return '<div class="factor-card nd-index-tile"><div class="factor-name">'+name+'</div><div class="metric">'+(valid?p.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'Unavailable')+'</div><div class="metric-change">Waiting for validated daily change</div><span class="card-latest">Five-minute feed pending · cash close may be delayed</span></div>';
+ const rows=[['nasdaq','NASDAQ COMPOSITE'],['sp500','S&P 500']];
+ wrap.innerHTML=rows.map(([key,name])=>{
+  const q=d.marketIndexQuotes?.[key]||{},p=Number(q.price);
+  const valid=q.status==='available'&&Number.isFinite(p)&&p>0;
+  const ch=q.changePct===null||q.changePct===undefined?null:Number(q.changePct);
+  // A CNBC-derived zero is not proof of unchanged market if the reference close is unverified.
+  const hasChange=valid&&Number.isFinite(ch)&&ch!==0;
+  const change=hasChange?(ch>0?'+':'')+ch.toFixed(2)+'%':'Daily change unavailable';
+  const tone=hasChange?(ch>0?'signal-positive':'signal-negative'):'signal-mixed';
+  const stamp=q.quoteTime?' · quoted '+escHtml(String(q.quoteTime)):'';
+  return '<div class="factor-card nd-index-tile '+tone+'"><div class="factor-name">'+name+'</div><div class="metric">'+(valid?p.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'Unavailable')+'</div><div class="metric-change">'+change+'</div><span class="card-latest">CNBC snapshot'+stamp+' · may be delayed</span></div>';
  }).join('');
 }
 function render(d){
@@ -912,20 +919,27 @@ async function loadLiveIndices(){
   const response=await fetch('data/live-indices.json?t='+Date.now(),{cache:'no-store'});
   if(!response.ok)return;
   const d=await response.json(),collected=Date.parse(d.collectedAt||'');
-  if(!Number.isFinite(collected)||Math.abs(Date.now()-collected)>15*60*1000)return;
-  const parts=[['nasdaq','NASDAQ'],['sp500','S&P 500']];
+  if(!Number.isFinite(collected)||collected>Date.now()+120000||Date.now()-collected>7*86400000)return;
+  // Cash indices are never silently substituted with Nasdaq-100/S&P futures.
+  const source=d.cashQuotes||(d.mode==='cash'?d.quotes:null);
+  if(!source)return;
+  const parts=[['nasdaq','NASDAQ COMPOSITE'],['sp500','S&P 500']];
   const fmt=n=>Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-  strip.innerHTML=parts.map(([key,base])=>{
-   const q=d.quotes?.[key],stamp=Date.parse(q?.quoteTime||''),price=Number(q?.price);
-   const label=q?.instrument||base;
-   const good=q?.status==='ok'&&Number.isFinite(stamp)&&Date.now()-stamp<20*60*1000&&stamp<Date.now()+120000&&Number.isFinite(price)&&price>0;
-   if(!good)return '<div class="factor-card nd-index-tile"><div class="factor-name">'+escHtml(label)+'</div><div class="metric">Unavailable</div><span class="card-latest">Fresh market quote unavailable</span></div>';
-   const ch=q.changePct===null||q.changePct===undefined?null:Number(q.changePct),valid=ch!==null&&Number.isFinite(ch);
-   const color=valid?(ch>0?'nd-index-up':ch<0?'nd-index-down':''):'';
-   const change=valid?(ch>0?'↑ ':ch<0?'↓ ':'→ ')+(ch>0?'+':'')+ch.toFixed(2)+'%':'Change unavailable';
-   return '<div class="factor-card nd-index-tile '+(ch>0?'signal-positive':ch<0?'signal-negative':'signal-mixed')+'"><div class="factor-name">'+escHtml(label)+'</div><div class="metric">'+fmt(price)+'</div><div class="metric-change '+color+'">'+change+'</div><span class="card-latest">Yahoo · '+escHtml(q.symbol||'')+' · '+escHtml(new Date(stamp).toLocaleString('en-US',{timeZone:'America/New_York',timeZoneName:'short'}))+' · delayed</span></div>';
+  strip.innerHTML=parts.map(([key,name])=>{
+   const q=source[key]||{},stamp=Date.parse(q.quoteTime||''),price=Number(q.price);
+   const age=Date.now()-stamp;
+   const good=['ok','stale'].includes(q.status)&&Number.isFinite(stamp)&&age>=-120000&&age<5*86400000&&Number.isFinite(price)&&price>0;
+   if(!good)return '<div class="factor-card nd-index-tile"><div class="factor-name">'+name+'</div><div class="metric">Unavailable</div><div class="metric-change">Daily change unavailable</div><span class="card-latest">No validated cash-index observation</span></div>';
+   const ch=q.changePct===null||q.changePct===undefined?null:Number(q.changePct);
+   const validated=ch!==null&&Number.isFinite(ch)&&Number(q.referenceClose)>0;
+   const color=validated?(ch>0?'nd-index-up':ch<0?'nd-index-down':''):'';
+   const change=validated?(ch>0?'↑ ':ch<0?'↓ ':'→ ')+(ch>0?'+':'')+ch.toFixed(2)+'%':'Daily change unavailable';
+   const live=age<=20*60*1000&&Date.now()-collected<=15*60*1000&&q.status==='ok';
+   const asOf=new Date(stamp).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZoneName:'short'});
+   const label=live?'Yahoo · delayed':'Last available cash quote · not live';
+   return '<div class="factor-card nd-index-tile '+(validated?(ch>0?'signal-positive':ch<0?'signal-negative':'signal-mixed'):'signal-mixed')+'"><div class="factor-name">'+name+'</div><div class="metric">'+fmt(price)+'</div><div class="metric-change '+color+'">'+change+'</div><span class="card-latest">'+label+' · '+escHtml(asOf)+'</span></div>';
   }).join('');
- }catch(e){console.warn('Live indices fetch failed',e)}
+ }catch(e){console.warn('Index quote fetch failed',e)}
 }
 function startLiveOilPolling(){
   if(liveOilTimer)clearInterval(liveOilTimer);
