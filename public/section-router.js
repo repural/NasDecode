@@ -107,7 +107,7 @@ if(wrap&&view==='threeDay'){
 if(wrap&&view==='calendar'){
  const host=document.createElement('section');host.id='nd-economic-calendar';host.className='nd-calendar';
  host.innerHTML='<div class="nd-cal-loading">Loading the next two weeks of U.S. economic releases…</div>';wrap.appendChild(host);
- const safe=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\\'':'&#39;'}[c]));
+ const safe=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const dateText=x=>new Date(x+'T12:00:00Z').toLocaleDateString('en-US',{timeZone:'UTC',weekday:'long',month:'short',day:'numeric'});
  const timeText=e=>{if(!e.timeET)return safe(e.timeLabel||'TBA');const [h,m]=e.timeET.split(':').map(Number);return (h%12||12)+':'+String(m).padStart(2,'0')+(h>=12?' PM':' AM')};
  const txt=x=>x===null||x===undefined||x===''?'—':safe(x);
