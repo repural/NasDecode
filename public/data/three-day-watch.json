@@ -1,13 +1,172 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-03T20:02:07.659Z",
+  "updated": "2026-11-03T21:09:00.000Z",
   "horizon": [
     "2026-11-03",
     "2026-11-04",
     "2026-11-05"
   ],
   "entries": [
+    {
+      "date": "2026-11-03",
+      "timeET": "16:09",
+      "asOfET": "2026-11-03T16:09:00-05:00",
+      "bias": "Cautious / Neutral",
+      "previousBias": "Cautious / Neutral",
+      "materialChange": false,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "Chip-led intraday recovery remains intact in independent afternoon reports, but the 15:33 ET NasDecode checkpoint shows score deterioration to -43, QQQ gains narrowing to +0.62%, and mixed semiconductor/breadth confirmation. Await AMD results and election outcomes before changing the three-day directional classification.",
+      "bullish": [
+        "Reuters November 3 afternoon: Nasdaq +1.06%, SOX nearly +3%, Nvidia +3%, AMD +5.5% at its reported checkpoint, not a closing quote.",
+        "NasDecode 15:33 ET: QQQ remains +0.62%, 5 of 7 mega-cap basket positive and basket +0.89%.",
+        "Reuters reports oil down around 2% in its afternoon account; this is not a current synchronized Brent/WTI quote."
+      ],
+      "bearish": [
+        "NasDecode score fell from -4 at 14:28 ET to -43 at 15:33 ET; model checkpoints differ and the score is not a price.",
+        "NasDecode 15:33 ET says semiconductor participation mixed and breadth mixed; QQQ +0.62% is below the earlier +0.73% checkpoint.",
+        "NasDecode 15:33 ET 10Y 4.941% and 2Y 4.612%; high yields and AMD/election event risk constrain conviction.",
+        "Reuters says declining S&P 500 stocks outnumber advancing constituents, despite Nasdaq gains."
+      ],
+      "observations": [
+        {
+          "indicator": "QQQ",
+          "value": 0.62,
+          "unit": "percent change",
+          "source": "NasDecode public/data/premarket.json",
+          "sourceTimeET": "2026-11-03 15:33 ET",
+          "quality": "dashboard checkpoint, not closing price"
+        },
+        {
+          "indicator": "Nasdaq score",
+          "value": -43,
+          "unit": "points on -100 to +100 scale",
+          "source": "NasDecode public/data/premarket.json",
+          "sourceTimeET": "2026-11-03 15:33 ET",
+          "quality": "model score, not market quote"
+        },
+        {
+          "indicator": "Mega-cap basket",
+          "value": 0.89,
+          "unit": "percent change; 5/7 positive",
+          "source": "NasDecode public/data/premarket.json",
+          "sourceTimeET": "2026-11-03 15:33 ET",
+          "quality": "dashboard basket observation"
+        },
+        {
+          "indicator": "10Y Treasury",
+          "value": 4.941,
+          "unit": "percent yield",
+          "source": "NasDecode public/data/premarket.json",
+          "sourceTimeET": "2026-11-03 15:33 ET",
+          "quality": "dashboard yield correctly scaled"
+        },
+        {
+          "indicator": "2Y Treasury",
+          "value": 4.612,
+          "unit": "percent yield",
+          "source": "NasDecode public/data/premarket.json",
+          "sourceTimeET": "2026-11-03 15:33 ET",
+          "quality": "dashboard yield correctly scaled; individual feed quote times unknown"
+        },
+        {
+          "indicator": "2s10s indicative",
+          "value": 32.9,
+          "unit": "basis points",
+          "source": "calculated from NasDecode 15:33 ET dashboard checkpoint",
+          "sourceTimeET": "2026-11-03 15:33 ET",
+          "quality": "(4.941-4.612)*100; same dashboard checkpoint but underlying source synchronization unverified"
+        },
+        {
+          "indicator": "Nasdaq Composite",
+          "value": 1.06,
+          "unit": "percent change",
+          "source": "Reuters November 3 afternoon",
+          "sourceTimeET": "2026-11-03 afternoon ET, precise minute unverified",
+          "quality": "asynchronous intraday report, not close"
+        },
+        {
+          "indicator": "SOX",
+          "value": 3,
+          "unit": "percent change approximate",
+          "source": "Reuters November 3 afternoon",
+          "sourceTimeET": "2026-11-03 afternoon ET, precise minute unverified",
+          "quality": "asynchronous, not synchronized with QQQ dashboard"
+        },
+        {
+          "indicator": "Breadth",
+          "value": "mixed; declining S&P constituents outnumber advancers",
+          "unit": "qualitative",
+          "source": "Reuters November 3 afternoon and NasDecode 15:33 ET",
+          "sourceTimeET": "2026-11-03 afternoon ET",
+          "quality": "no verified synchronized numerical A/D"
+        },
+        {
+          "indicator": "Brent/WTI",
+          "value": null,
+          "unit": "USD/barrel",
+          "source": "Reuters Nov 3 afternoon oil down ~2%; AP earlier Brent ~103.65",
+          "sourceTimeET": "2026-11-03 afternoon ET",
+          "quality": "no synchronized current Brent and WTI quotes; prior AP Brent is stale"
+        },
+        {
+          "indicator": "VXN/VIX/FedWatch",
+          "value": null,
+          "unit": "not verified contemporaneously",
+          "source": "current research",
+          "sourceTimeET": "2026-11-03T16:09:00-05:00",
+          "quality": "no current numeric values; not invented"
+        },
+        {
+          "indicator": "Open Watch",
+          "value": 121,
+          "unit": "events",
+          "source": "data/history/market-watch-events.json",
+          "sourceTimeET": "2026-11-03T18:16:13+00:00",
+          "quality": "unchanged count; archive event impacts are not market confirmation"
+        }
+      ],
+      "conditions": {
+        "upgrade": "SOX regains synchronized relative leadership through next session, breadth broadens, volatility falls, yields ease and AMD guidance validates AI demand.",
+        "downgrade": "QQQ and SOX fail their rebound with weakening breadth, VXN/VIX increase, rates/oil surge or AMD outlook disappoints."
+      },
+      "upcomingEvents": [
+        {
+          "date": "2026-11-03",
+          "event": "AMD earnings after close and U.S. midterm election outcomes overnight"
+        },
+        {
+          "date": "2026-11-04",
+          "event": "ADP employment and ISM Services; reaction to AMD and elections"
+        },
+        {
+          "date": "2026-11-05",
+          "event": "Follow-through test for semiconductors, breadth, rates and volatility"
+        }
+      ],
+      "provenance": {
+        "repository": "repural/NasDecode main",
+        "dashboard": "public/data/premarket.json updatedET 2026-11-03 15:33 ET",
+        "openWatch": "data/history/market-watch-events.json updated 2026-11-03T18:16:13+00:00",
+        "eventCount": 121,
+        "newEventsSincePrevious": 0,
+        "externalSources": [
+          "https://www.reuters.com/business/retail-consumer/us-stock-futures-mixed-apple-slides-midterms-loom-2026-11-03/",
+          "https://apnews.com/article/0d235af127a92c68da0cc2c45c028cef"
+        ],
+        "dataQuality": "Reuters afternoon values and NasDecode 15:33 ET dashboard are asynchronous. The dashboard 10Y/2Y readings share a checkpoint but not verified individual feed timestamps, so the 32.9bp curve is indicative only. No closing prices, current VXN/VIX, FedWatch probabilities, or synchronized Brent/WTI were verified. Score -43 is model output, not index return."
+      },
+      "editorial": {
+        "marketOverview": "Tuesday's technology rebound continued in independent afternoon reporting, led by Nvidia and AMD, but participation remained narrow. Reuters reported Nasdaq up 1.06% and SOX nearly 3% at an afternoon checkpoint, while the newer NasDecode 15:33 ET snapshot showed QQQ up only 0.62%. These observations are from different times and cannot be treated as synchronized relative-strength readings or closing prices.",
+        "whatChanged": "Compared with the preceding 15:02 ET Cautious / Neutral assessment, the dashboard's model score deteriorated from -4 to -43 and QQQ's reported gain narrowed from 0.73% at 14:28 ET to 0.62% at 15:33 ET. The newer dashboard also described semiconductor and breadth confirmation as mixed, although five of seven mega-cap stocks were positive. Open Watch remains at 121 curated events with no new additions. This is a meaningful deterioration in internal confirmation but not yet independently sufficient to reverse the directional bias.",
+        "marketInterpretation": "The market still shows the capacity to rebound through concentrated AI leadership, but the deterioration in NasDecode's model score and weak breadth caution against interpreting the move as a durable risk-on reversal. Treasury yields around 4.94% for the 10-year remain a growth-valuation headwind; the indicative 2s10s spread is +32.9 basis points, not a percentage-point quote. Because volatility and FedWatch probabilities are not verified contemporaneously, confidence stays Moderate rather than High.",
+        "threeDayPath": "The remainder of Tuesday hinges on whether the chip-led rebound survives into the actual closing print. Wednesday's direction will depend on the realized market response to AMD's guidance, election results and ADP/ISM data, not the presumed impact of headlines. Thursday will test whether QQQ participation broadens and semiconductor strength persists or whether Tuesday was only a countertrend rebound. These are conditional scenarios, not promised daily returns.",
+        "bullCase": "AMD's reported results and forward guidance could validate sustained data-center demand and support broader AI leadership. If election outcomes reduce uncertainty, energy prices remain contained and Treasury yields and volatility stabilize, QQQ may sustain its rebound into Thursday. The necessary confirmation is persistent SOX leadership paired with improving breadth rather than a few mega-cap gains alone.",
+        "bearCase": "If AMD guidance fails to justify elevated AI expectations or macro and election developments push yields or oil higher, the narrowing QQQ advance and weak participation could become a failed rebound. A renewed SOX decline alongside rising volatility would strengthen the bearish case. Apple's margin warning and Reuters' negative S&P breadth provide concrete evidence of internal fragility despite positive Nasdaq headlines.",
+        "watchNext": "Verify official Tuesday closing prices for QQQ, Nasdaq and SOX at matched times, then check whether breadth and VXN/VIX confirm or contradict the recovery. Read AMD's actual results and guidance and observe price reaction rather than inferring it. Track election results, Wednesday ADP and ISM Services, and refresh both Treasury yields and Brent/WTI with timestamped sources. Reassess the model-score deterioration against real price and breadth confirmation before changing bias."
+      }
+    },
     {
       "date": "2026-11-03",
       "timeET": "15:02",
