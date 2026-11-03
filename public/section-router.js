@@ -118,6 +118,7 @@ if(wrap&&view==='calendar'){
   const start=feed.windowStart,end=feed.windowEnd;
   let body='';
   for(let day=new Date(start+'T12:00:00Z');day<=new Date(end+'T12:00:00Z');day.setUTCDate(day.getUTCDate()+1)){
+    if(day.getUTCDay()===0||day.getUTCDay()===6)continue; // Business-day calendar: omit Saturday and Sunday.
     const key=day.toISOString().slice(0,10),items=list.filter(e=>e.date===key);
     body+='<tr class="nd-cal-day"><td colspan="6">'+safe(dateText(key))+' <span style="color:#9da5af;font-weight:400"> · '+items.length+' event'+(items.length===1?'':'s')+'</span></td></tr>';
     if(!items.length){body+='<tr><td colspan="6" style="color:#9ca5ae">No tracked releases scheduled</td></tr>';continue}
