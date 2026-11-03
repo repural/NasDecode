@@ -3,7 +3,7 @@
 
 Signal: completed close T. Entry: next session (T+1) SOXL open.
 Exit: fifth subsequent session (T+5) SOXL close, with no early exits.
-After any trade, ignore all signals through T+5 (one open position globally).
+Study each setup with its own T+5 cooldown, and a separate global single-book test.
 This is not a tradable signal: no slippage, fees, stop, borrow, or financing.
 Do not alter the frozen classifier or use this holdout to retune it.
 """
@@ -58,12 +58,28 @@ def analyze(engine,history):
     dates=sorted(rec)
     positions={d:i for i,d in enumerate(dates)}
     signals={r["date"]:r["setup"] for r in engine["records"] if r["date"]>=START}
+    # Run separate independent event studies for each setup, plus a single-book
+    # portfolio test. Otherwise a neutral-day trade can suppress a Washout signal.
     taken=[]
+    per_setup={k:[] for k in SETUPS}
     skipped={"not_mature":0,"missing_entry_or_exit":0,"overlap":0}
+    setup_skipped={k:{"overlap":0,"not_mature":0,"missing_entry_or_exit":0} for k in SETUPS}
     blocked_until=-1
+    blocked_by_setup={k:-1 for k in SETUPS}
     for day,setup in sorted(signals.items()):
         i=positions.get(day)
         if i is None: continue
+        # The category-specific event stream ignores only earlier signals
+        # from the SAME setup; it is not a portfolio with simultaneous trades.
+        if i<=blocked_by_setup[setup]:
+            setup_skipped[setup]["overlap"]+=1
+        else:
+            item,reason=trade(dates,rec,i,setup)
+            if reason:
+                setup_skipped[setup][reason]+=1
+            else:
+                per_setup[setup].append(item)
+                blocked_by_setup[setup]=i+HOLD
         if i<=blocked_until:
             skipped["overlap"]+=1
             continue
@@ -73,22 +89,25 @@ def analyze(engine,history):
             continue
         taken.append(item)
         blocked_until=i+HOLD
-    grouped={k:[] for k in SETUPS}
-    for row in taken: grouped[row["setup"]].append(row)
-    return {"schemaVersion":1,"method":"next_session_open_to_T_plus_5_close_non_overlapping",
+    return {"schemaVersion":2,"method":"next_session_open_to_T_plus_5_close_non_overlapping",
             "engineVersion":engine.get("engineVersion"),
             "specSha256":(engine.get("frozenProtocol") or {}).get("specSha256"),
             "holdoutStart":START,
             "through":dates[-1] if dates else None,
             "assumptions":["Completed T-close signal; enter T+1 SOXL open; exit T+5 SOXL close.",
-                "After entry all signals through T+5 are ignored, across all setup types.",
+                "SetupResults: five-session lock per category (independent setup studies).",
+                "Overall/trades: one global five-session lock across all setup types (single-book study).",
+                "Different category-specific event streams may overlap each other; never add their trade counts as a portfolio.",
                 "No stop loss, take profit, transaction costs, slippage or financing.",
                 "Intratrade drawdown uses recorded daily lows, only when all five lows are present.",
-                "Overlapping holdout and research-only; not prospective execution evidence.",
+                "Chronological holdout with retrospectively measured exits, not prospective execution evidence.",
                 "Missing entry or exit price excludes that signal without assuming a price."],
-            "skippedSignals":skipped,"overall":summarize(taken),
-            "setupResults":{k:summarize(grouped[k]) for k in SETUPS},
-            "trades":taken}
+            "skippedSignals":skipped,
+            "setupSkippedSignals":setup_skipped,
+            "overall":summarize(taken),
+            "setupResults":{k:summarize(per_setup[k]) for k in SETUPS},
+            "trades":taken,
+            "setupTrades":per_setup}
 
 def main():
     result=analyze(json.loads(ENGINE.read_text()),json.loads(HISTORY.read_text()))
