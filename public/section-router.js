@@ -1,5 +1,5 @@
 (()=>{'use strict';
-const pages={overview:'Overview',assessment:'Assessment',analysis:'Pre-Market',threeDay:'3-Day Watch',watch:'Open Watch'};
+const pages={overview:'Overview',assessment:'Assessment',analysis:'Pre-Market',threeDay:'3-Day Watch',watch:'Open Watch',calendar:'Calendar'};
 const rawView=new URLSearchParams(location.search).get('view')||'overview';
 const requested=['macro','internals'].includes(rawView)?'overview':rawView;
 const view=Object.prototype.hasOwnProperty.call(pages,requested)?requested:'overview';
@@ -46,6 +46,35 @@ html[data-nd-page="overview"] .lower-intel{margin-top:18px}\nhtml[data-nd-page="
 .nd-three-day .nd-observation-list li{margin-bottom:4px}
 .nd-three-day .nd-observation-empty{color:#939da7;font-weight:400}@media(max-width:680px){.nd-three-day .nd-watch-grid{grid-template-columns:1fr}.nd-three-day .nd-watch-card{padding:16px}}
 html[data-nd-page="analysis"] .nd-page-title{display:none!important}
+
+html[data-nd-page="calendar"] #dashboard > :not(.nd-page-title):not(#nd-economic-calendar){display:none!important}
+.nd-calendar{max-width:1390px;margin:0 0 70px;color:#e9edf1}
+.nd-calendar .nd-cal-toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin:0 0 18px}
+.nd-calendar .nd-cal-intro{font-size:13px;color:#aeb4be;line-height:1.6;max-width:790px}
+.nd-calendar .nd-cal-filter{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.nd-calendar .nd-cal-filter button{background:#191b1f;border:1px solid #35383e;border-radius:7px;padding:8px 13px;color:#ccd2d9;font:inherit;font-size:12px;cursor:pointer}
+.nd-calendar .nd-cal-filter button[aria-pressed="true"]{background:#30343a;border-color:#6e777f;color:#fff}
+.nd-calendar .nd-cal-filter button:focus-visible,.nd-calendar a:focus-visible{outline:2px solid #82cbd0;outline-offset:2px}
+.nd-calendar .nd-cal-table-wrap{border:1px solid #32353a;border-radius:11px;overflow-x:auto;background:#101113}
+.nd-calendar table{width:100%;border-collapse:collapse;min-width:820px;font-size:13px}
+.nd-calendar thead{background:#1b1d20;position:sticky;top:0;z-index:1}
+.nd-calendar th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:#aeb5bd;font-weight:600;padding:13px 15px}
+.nd-calendar td{padding:12px 15px;border-top:1px solid #2e3136;vertical-align:top;color:#d9dde2;font-variant-numeric:tabular-nums}
+.nd-calendar .nd-cal-day td{font-size:13px;font-weight:700;background:#202226;color:#f0f2f4;padding:12px 15px;border-top:1px solid #3c4046}
+.nd-calendar .nd-cal-day:first-child td{border-top:0}
+.nd-calendar .nd-cal-time{white-space:nowrap;color:#cad1d7}
+.nd-calendar .nd-cal-report{font-weight:580;color:#f2f3f5}
+.nd-calendar .nd-cal-report small{display:block;color:#9ca5ae;font-size:11px;font-weight:400;margin-top:5px}
+.nd-calendar .nd-cal-report a{color:#82cbd0;text-decoration:none}
+.nd-calendar .nd-cal-report a:hover{text-decoration:underline}
+.nd-calendar .nd-cal-number{white-space:nowrap}
+.nd-calendar .nd-cal-importance{display:inline-block;width:6px;height:6px;border-radius:50%;background:#707980;margin-right:7px;vertical-align:middle}
+.nd-calendar .nd-cal-importance.high{background:#f5bd4b}
+.nd-calendar .nd-cal-importance.critical{background:#ff6078}
+.nd-calendar .nd-cal-note{font-size:12px;line-height:1.6;color:#a8b0ba;margin:12px 0 0}
+.nd-calendar .nd-cal-loading{padding:25px 18px;color:#aeb5bd;border:1px solid #30343a;border-radius:9px}
+@media(max-width:700px){.nd-calendar .nd-cal-toolbar{align-items:flex-start}.nd-calendar .nd-cal-table-wrap{margin:0 -5px}.nd-calendar td{padding:11px 12px}.nd-calendar th{padding:11px 12px}}
+
 .nd-page-title{margin:22px 0 18px;font-size:26px;font-weight:690;letter-spacing:-.025em}
 .nd-page-intro{color:#aeb4bc;font-size:13px;line-height:1.55;margin:-8px 0 20px}
 @media(max-width:780px){.nd-nav{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:thin}.nd-nav a{white-space:nowrap;flex:none}}
@@ -75,4 +104,33 @@ if(wrap&&view==='threeDay'){
  async function loadWatch(){try{const r=await fetch('/data/three-day-watch.json?ts='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const data=await r.json();const entries=(data.entries||[]).slice().sort((a,b)=>(b.date+'T'+b.timeET).localeCompare(a.date+'T'+a.timeET));if(!entries.length)throw Error('No saved assessments');host.innerHTML='<p class="nd-watch-meta">Current three-session horizon: '+esc((data.horizon||[]).join(' → '))+' · Latest published assessment</p>'+render(entries[0]);;}catch(e){host.textContent='3-Day Watch history is temporarily unavailable: '+e.message;}}
  loadWatch();setInterval(()=>{if(!document.hidden)loadWatch()},120000);
 }
+if(wrap&&view==='calendar'){
+ const host=document.createElement('section');host.id='nd-economic-calendar';host.className='nd-calendar';
+ host.innerHTML='<div class="nd-cal-loading">Loading the next two weeks of U.S. economic releases…</div>';wrap.appendChild(host);
+ const safe=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\\'':'&#39;'}[c]));
+ const dateText=x=>new Date(x+'T12:00:00Z').toLocaleDateString('en-US',{timeZone:'UTC',weekday:'long',month:'short',day:'numeric'});
+ const timeText=e=>{if(!e.timeET)return safe(e.timeLabel||'TBA');const [h,m]=e.timeET.split(':').map(Number);return (h%12||12)+':'+String(m).padStart(2,'0')+(h>=12?' PM':' AM')};
+ const txt=x=>x===null||x===undefined||x===''?'—':safe(x);
+ let feed=null,filter='all';
+ const render=()=>{
+  if(!feed)return;
+  const list=(feed.events||[]).filter(e=>filter==='all'||(filter==='high'?['Critical','High'].includes(e.importance):e.category===filter));
+  const start=feed.windowStart,end=feed.windowEnd;
+  let body='';
+  for(let day=new Date(start+'T12:00:00Z');day<=new Date(end+'T12:00:00Z');day.setUTCDate(day.getUTCDate()+1)){
+    const key=day.toISOString().slice(0,10),items=list.filter(e=>e.date===key);
+    body+='<tr class="nd-cal-day"><td colspan="6">'+safe(dateText(key))+' <span style="color:#9da5af;font-weight:400"> · '+items.length+' event'+(items.length===1?'':'s')+'</span></td></tr>';
+    if(!items.length){body+='<tr><td colspan="6" style="color:#9ca5ae">No tracked releases scheduled</td></tr>';continue}
+    for(const e of items){
+      const src=e.sourceUrl&&/^https:\/\//.test(e.sourceUrl)?'<a href="'+safe(e.sourceUrl)+'" target="_blank" rel="noopener noreferrer">Source ↗</a>':'';
+      body+='<tr><td class="nd-cal-time">'+timeText(e)+'</td><td class="nd-cal-report"><span class="nd-cal-importance '+safe(String(e.importance||'').toLowerCase())+'"></span>'+safe(e.report)+'<small>'+safe(e.category||'Macro')+' · '+safe(e.importance||'High')+' · '+src+'</small></td><td>'+txt(e.period)+'</td><td class="nd-cal-number">'+txt(e.actual)+'</td><td class="nd-cal-number">'+txt(e.forecast)+'</td><td class="nd-cal-number">'+txt(e.previous)+'</td></tr>';
+    }
+  }
+  host.innerHTML='<div class="nd-cal-toolbar"><div class="nd-cal-intro">U.S. economic releases and policy events · '+safe(dateText(start))+' – '+safe(dateText(end))+' · All times Eastern (ET)</div><div class="nd-cal-filter">'+[['all','All events'],['high','High impact'],['Macro','Economic'],['Inflation','Inflation'],['Rates','Rates'],['Fed','Fed']].map(([v,label])=>'<button type="button" data-cal-filter="'+v+'" aria-pressed="'+(filter===v)+'">'+label+'</button>').join('')+'</div></div><div class="nd-cal-table-wrap"><table><thead><tr><th>Time (ET)</th><th>Report</th><th>Period</th><th>Actual</th><th>Forecast</th><th>Previous</th></tr></thead><tbody>'+body+'</tbody></table></div><p class="nd-cal-note">Source: official-source research events from NasCal (read-only). Coverage tracks major releases; it is not an exhaustive commercial calendar. Forecast, previous and actual readings appear only if independently sourced; “—” means unavailable. Updated '+safe(feed.updatedAt||'unknown')+'.</p>';
+  host.querySelectorAll('[data-cal-filter]').forEach(btn=>btn.addEventListener('click',()=>{filter=btn.dataset.calFilter;render()}));
+ };
+ const load=async()=>{try{const r=await fetch('/data/economic-calendar.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json();if(!Array.isArray(d.events)||!d.windowStart||!d.windowEnd)throw Error('Invalid calendar data');feed=d;render()}catch(e){host.innerHTML='<div class="nd-cal-loading">Economic calendar is temporarily unavailable: '+safe(e.message)+'</div>'}};
+ load();
+}
+
 })();
