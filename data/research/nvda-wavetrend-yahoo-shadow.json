@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "symbol": "NVDA",
-  "checkedAtET": "2026-11-02T20:04:46.220160-05:00",
+  "checkedAtET": "2026-11-03T01:18:05.736138-05:00",
   "researchOnly": true,
   "publicationAllowed": false,
   "canonicalArchiveModified": false,
@@ -25,8 +25,10 @@
         },
         {
           "startET": "2026-11-02T16:00:00-05:00",
-          "reason": "not_yet_confirmed",
-          "available5m": 44
+          "reason": "missing_5m_intervals",
+          "available5m": 44,
+          "missingCount": 4,
+          "firstMissingET": "2026-11-02T19:00:00-05:00"
         },
         {
           "startET": "2026-11-02T12:00:00-05:00",
@@ -141,8 +143,10 @@
         },
         {
           "startET": "2026-11-02T12:00:00-05:00",
-          "reason": "not_yet_confirmed",
-          "available5m": 92
+          "reason": "missing_5m_intervals",
+          "available5m": 92,
+          "missingCount": 4,
+          "firstMissingET": "2026-11-02T19:00:00-05:00"
         }
       ],
       "overlappingMassiveCandles": 8,
@@ -974,25 +978,9 @@
   },
   "reconciliation": {
     "4h": {
-      "matchedCandles": 44,
+      "matchedCandles": 45,
       "crossDisagreements": 0,
       "samples": [
-        {
-          "startET": "2026-10-21T12:00:00-04:00",
-          "openDelta": 4e-06,
-          "openDiffPct": 0.0,
-          "highDelta": 2e-06,
-          "highDiffPct": 0.0,
-          "lowDelta": 3e-06,
-          "lowDiffPct": 0.0,
-          "closeDelta": -5e-06,
-          "closeDiffPct": -0.0,
-          "wt1Delta": -0.125255,
-          "wt2Delta": -0.12399,
-          "yahooCross": null,
-          "massiveCross": null,
-          "crossMatches": true
-        },
         {
           "startET": "2026-10-21T16:00:00-04:00",
           "openDelta": -0.11,
@@ -1443,8 +1431,8 @@
         },
         {
           "startET": "2026-10-30T16:00:00-04:00",
-          "openDelta": 0.004281,
-          "openDiffPct": 0.00209,
+          "openDelta": 0.0043,
+          "openDiffPct": 0.0021,
           "highDelta": 0.0,
           "highDiffPct": 0.0,
           "lowDelta": 0.0,
@@ -1456,9 +1444,25 @@
           "yahooCross": null,
           "massiveCross": null,
           "crossMatches": true
+        },
+        {
+          "startET": "2026-11-02T04:00:00-05:00",
+          "openDelta": 0.1625,
+          "openDiffPct": 0.07831,
+          "highDelta": 0.0,
+          "highDiffPct": 0.0,
+          "lowDelta": 0.0,
+          "lowDiffPct": 0.0,
+          "closeDelta": 0.0,
+          "closeDiffPct": 0.0,
+          "wt1Delta": 0.0,
+          "wt2Delta": 0.0,
+          "yahooCross": null,
+          "massiveCross": null,
+          "crossMatches": true
         }
       ],
-      "unmatchedYahooCandles": 1
+      "unmatchedYahooCandles": 0
     },
     "8h": {
       "matchedCandles": 22,
@@ -1820,6 +1824,6 @@
       "unmatchedYahooCandles": 0
     }
   },
-  "reconciliationCheckedAtET": "2026-11-02T20:05:03.357203-05:00",
-  "reconciliationMassiveGeneratedET": "2026-10-31T01:10:02.518432-04:00"
+  "reconciliationCheckedAtET": "2026-11-03T01:18:06.200177-05:00",
+  "reconciliationMassiveGeneratedET": "2026-11-03T01:18:05.922059-05:00"
 }
