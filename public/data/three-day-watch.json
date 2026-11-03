@@ -1,13 +1,160 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-03T17:35:21.000Z",
+  "updated": "2026-11-03T18:30:33.000Z",
   "horizon": [
     "2026-11-03",
     "2026-11-04",
     "2026-11-05"
   ],
   "entries": [
+    {
+      "date": "2026-11-03",
+      "timeET": "13:30",
+      "asOfET": "2026-11-03T13:30:33-05:00",
+      "bias": "Cautious / Neutral",
+      "previousBias": "Cautious / Neutral",
+      "materialChange": false,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "Semiconductor-led Nasdaq recovery remains visible in independent midday reporting, supporting the prior Cautious / Neutral stance, but weak breadth, Apple pressure, elevated yields and imminent AMD/election catalysts prevent a bullish upgrade.",
+      "bullish": [
+        "Reuters 11:50 ET: Nasdaq +0.79%, SOX approximately +3%, Nvidia +3%, AMD +5.1%; these are a single reported checkpoint.",
+        "AP November 3 midday: Nasdaq approximately +1%, S&P 500 +0.5%, Nvidia/Broadcom/AMD/Micron higher, consistent with a technology-led rebound.",
+        "AP: Brent approximately $103.27/bbl, down 1.4%; lower energy pressure is supportive if sustained."
+      ],
+      "bearish": [
+        "Reuters: six S&P 500 sectors lower, Nasdaq new lows substantially exceeding new highs; rebound breadth is unconvincing.",
+        "Apple down approximately 2% following margin warning; Nasdaq-100 correction and prior SOX weakness remain relevant context.",
+        "AP reports 10Y yield 4.96% following stronger job openings; no synchronized 2Y yield to calculate curve.",
+        "AMD and Arista after-close results, U.S. election results, and Wednesday ADP/ISM Services remain major binary catalysts."
+      ],
+      "observations": {
+        "reutersMidday": {
+          "sourceTimestamp": "2026-11-03 11:50 ET",
+          "nasdaq": {
+            "value": 0.79,
+            "unit": "percent change"
+          },
+          "SOX": {
+            "value": 3,
+            "unit": "percent change approximate"
+          },
+          "NVDA": {
+            "value": 3,
+            "unit": "percent change approximate"
+          },
+          "AMD": {
+            "value": 5.1,
+            "unit": "percent change"
+          }
+        },
+        "apMidday": {
+          "sourceTimestamp": "2026-11-03 midday ET (exact minute unavailable)",
+          "nasdaq": {
+            "value": 1,
+            "unit": "percent change approximate"
+          },
+          "SP500": {
+            "value": 0.5,
+            "unit": "percent change approximate"
+          },
+          "tenYearYield": {
+            "value": 4.96,
+            "unit": "percent annual yield"
+          },
+          "brent": {
+            "value": 103.27,
+            "unit": "USD/barrel",
+            "changePercent": -1.4
+          }
+        },
+        "repositoryPremarket": {
+          "sourceTimestamp": "2026-11-03 12:36 ET",
+          "nasdaqScore": {
+            "value": -5,
+            "unit": "points on -100 to +100 scale"
+          },
+          "QQQ": {
+            "value": 0.8,
+            "unit": "percent change versus previous close"
+          }
+        },
+        "priorClose": {
+          "VXN": {
+            "value": 30.89,
+            "unit": "index points",
+            "sourceTimestamp": "2026-11-02 close"
+          }
+        },
+        "twoYearYield": "No synchronized verified quote; 2s10s curve not recalculated.",
+        "VIX": "No independently verified contemporaneous reading.",
+        "VXN": "Only November 2 close; stale for current-session comparison.",
+        "breadth": "Reuters 11:50 ET: six S&P sectors negative and Nasdaq new lows substantially outnumber new highs; no exact count.",
+        "fedExpectations": "No verified current FedWatch probability; not quantified.",
+        "WTI": "No verified current quote at a matching time.",
+        "openWatch": {
+          "value": 121,
+          "unit": "curated events",
+          "sourceTimestamp": "2026-11-03T18:16:13+00:00",
+          "newSincePrior": 1,
+          "latestHeadlines": [
+            {
+              "headline": "Apple margin outlook pressures tech as reported U.S. strike lifts oil - CNBC",
+              "eventTime": "2026-11-03T11:30:03+00:00",
+              "marketConfirmation": "Unconfirmed"
+            },
+            {
+              "headline": "Maeil Business reports Samsung's second Taylor, Texas fab planned for AMD and Nvidia HBM base dies; Samsung declines comment",
+              "eventTime": "2026-11-03T10:19:00+00:00",
+              "marketConfirmation": "Unconfirmed"
+            },
+            {
+              "headline": "Treasury Yields Rise as U.S. Voters Head to Midterm Polls - WSJ",
+              "eventTime": "2026-11-03T07:44:00+00:00",
+              "marketConfirmation": "Unconfirmed"
+            }
+          ]
+        }
+      },
+      "conditions": {
+        "upgrade": "Sustained QQQ and SOX leadership into the close and next session, improved advance/decline and new-high/new-low breadth, falling VXN/VIX and supportive AMD guidance with stable yields.",
+        "downgrade": "SOX/QQQ reversal, widening negative breadth, volatility expansion, sustained yield/oil spike or disappointing AMD outlook."
+      },
+      "upcomingEvents": [
+        {
+          "date": "2026-11-03",
+          "event": "U.S. midterm election results; AMD and Arista Networks earnings after market close."
+        },
+        {
+          "date": "2026-11-04",
+          "event": "ADP employment, ISM Services, and market reaction to elections and earnings."
+        },
+        {
+          "date": "2026-11-05",
+          "event": "Post-event semiconductor leadership, breadth, volatility and yields follow-through."
+        }
+      ],
+      "provenance": {
+        "sources": [
+          "https://www.reuters.com/business/retail-consumer/us-stock-futures-mixed-apple-slides-midterms-loom-2026-11-03/",
+          "https://apnews.com/article/0d235af127a92c68da0cc2c45c028cef",
+          "https://finance.yahoo.com/calendar/earnings?day=2026-11-03",
+          "repural/NasDecode:public/data/premarket.json",
+          "repural/NasDecode:data/history/market-watch-events.json"
+        ],
+        "dataQuality": "Reuters 11:50 ET and AP midday observations are asynchronous, not a synthetic live snapshot. Repository score and QQQ at 12:36 ET are a separate checkpoint. 10Y 4.96 means percent yield, not 496%; 2Y unavailable, so no new curve. VXN is November 2 close, not today's reading. Open Watch expected impacts do not demonstrate price confirmation. No verified live VIX, 2Y, WTI or FedWatch probability."
+      },
+      "editorial": {
+        "marketOverview": "Nasdaq and semiconductor shares have recovered from Monday's selloff, but the advance remains selective. Reuters' 11:50 ET market report places Nasdaq up 0.79% and SOX up approximately 3%, while AP's separate midday account describes Nasdaq near a 1% gain with Nvidia, Broadcom, AMD and Micron participating. The price recovery is observed, not merely inferred from a headline. However, the breadth of the broader market has not confirmed an unambiguous risk-on regime.",
+        "whatChanged": "Compared with the 12:35 ET Cautious / Neutral assessment, independent reports continue to corroborate semiconductor leadership rather than contradict it. NasDecode's separately refreshed 12:36 ET premarket/early-outlook file gives QQQ +0.80% and a Nasdaq score of -5, close to the previous -4 score but at a different checkpoint. The curated Open Watch archive now holds 121 rather than 120 events; its latest item concerns Apple margin pressure and oil, with market confirmation explicitly unconfirmed. None of this constitutes a second material directional shift.",
+        "marketInterpretation": "A strong SOX rebound is constructive because chips led the previous session's decline, yet leadership alone is insufficient when Apple remains weak and Nasdaq new lows greatly outnumber new highs. AP reports the 10-year Treasury yield near 4.96%, a valuation headwind for long-duration technology exposure. The proper reading remains Cautious / Neutral with Moderate confidence and High event risk, not an assumption that the correction has ended.",
+        "threeDayPath": "Tuesday November 3 is a test of whether the semiconductor-led bounce can hold into the close. Wednesday November 4 should reflect AMD and Arista results, the initial midterm election outcome and the ADP/ISM Services releases; direction could be volatile and should be judged by actual price, yield and breadth response rather than headline sentiment. Thursday November 5 tests follow-through: sustained QQQ and SOX strength with broader participation favors stabilization, whereas a failed rally would reintroduce downside risk. No precise returns are forecast.",
+        "bullCase": "In the constructive scenario, renewed buying in Nvidia, AMD, Broadcom and Micron signals that the prior liquidation exhausted itself, while lower Brent eases the inflation and discount-rate concern. If AMD's guidance validates AI accelerator demand and the market absorbs election and macro surprises without rising volatility, semiconductor leadership could broaden into a more durable Nasdaq recovery. These remain conditions, not verified future outcomes.",
+        "bearCase": "In the adverse scenario, Tuesday's rally is a narrow oversold bounce vulnerable to after-close earnings and election headlines. Apple's margin warning, negative sector participation, poor Nasdaq new-high/new-low breadth and elevated 10-year yields all argue against declaring a full risk-on turn. A disappointing AI-chip demand outlook, volatility jump or oil rebound would be particularly damaging if SOX again underperforms QQQ.",
+        "watchNext": "At the U.S. close, compare QQQ, Nasdaq and SOX from the same market timestamp, then inspect advance/decline, new highs versus new lows, VXN and VIX. Obtain synchronized 10Y and 2Y yields in percent before computing the curve, and compare Brent/WTI at a common checkpoint. Monitor AMD and Arista guidance, midterm results, Wednesday ADP and ISM Services, and only newly verified Open Watch developments."
+      }
+    },
     {
       "date": "2026-11-03",
       "timeET": "12:35",
