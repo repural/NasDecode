@@ -1,13 +1,188 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-04T10:10:28.000Z",
+  "updated": "2026-11-04T10:40:07.000Z",
   "horizon": [
     "2026-11-04",
     "2026-11-05",
     "2026-11-06"
   ],
   "entries": [
+    {
+      "date": "2026-11-04",
+      "timeET": "05:40",
+      "asOfET": "2026-11-04T05:40:07-05:00",
+      "bias": "Bearish",
+      "previousBias": "Bearish",
+      "materialChange": false,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "Bearish outlook retained. Reuters' 04:22 ET Nasdaq-100 futures +0.16% snapshot after a -2.4% overnight low confirms a sharp reversal of the initial election shock, not Wednesday cash-market confirmation. Treasury yields eased and the Open Watch archive is unchanged at 127 events. ADP, ISM, semiconductor earnings and Friday labor risk remain critical.",
+      "bullish": [
+        "Nasdaq-100 futures recovered from -2.4% overnight to +0.16% by Reuters' 04:22 ET snapshot.",
+        "10Y/2Y Treasury yields eased, potentially reducing growth-stock discount-rate pressure.",
+        "Prior-session Nasdaq +0.83% and SOX +2.63%, plus strong AMD guidance, support an earnings-led relief scenario."
+      ],
+      "bearish": [
+        "Wednesday QQQ/SOX cash strength and breadth are unconfirmed before the open.",
+        "Election-related AI infrastructure oversight and data-center policy uncertainty remain unresolved.",
+        "Volatility and high energy prices may constrain risk appetite; stale dashboard quotes cannot establish current conditions."
+      ],
+      "observations": [
+        {
+          "indicator": "Nasdaq-100 futures",
+          "value": 0.16,
+          "unit": "percent change",
+          "source": "Reuters November 4 report",
+          "sourceTimeET": "2026-11-04 04:22 ET",
+          "quality": "Reported timestamped premarket snapshot, not live 05:40 quote"
+        },
+        {
+          "indicator": "Nasdaq-100 futures overnight low",
+          "value": -2.4,
+          "unit": "percent change",
+          "source": "Reuters November 4 report",
+          "sourceTimeET": "2026-11-04 overnight, exact tick unknown",
+          "quality": "Historical intranight low, not current price"
+        },
+        {
+          "indicator": "10Y Treasury",
+          "value": 4.927,
+          "unit": "percent yield",
+          "source": "Wall Street Journal November 4",
+          "sourceTimeET": "2026-11-04 article, tick unspecified",
+          "quality": "Reported snapshot, correct percentage scaling"
+        },
+        {
+          "indicator": "2Y Treasury",
+          "value": 4.608,
+          "unit": "percent yield",
+          "source": "Wall Street Journal November 4",
+          "sourceTimeET": "2026-11-04 article, tick unspecified",
+          "quality": "Reported snapshot; synchronization with 10Y unverified"
+        },
+        {
+          "indicator": "2s10s indicative spread",
+          "value": 31.9,
+          "unit": "basis points",
+          "source": "Derived from WSJ quoted 10Y and 2Y",
+          "sourceTimeET": "2026-11-04 article, exact ticks unspecified",
+          "quality": "Indicative only, not synchronized"
+        },
+        {
+          "indicator": "Brent",
+          "value": 103.88,
+          "unit": "USD/barrel",
+          "source": "AP November 4",
+          "sourceTimeET": "2026-11-04 report, tick unspecified",
+          "quality": "Reported snapshot; not synchronized with WTI"
+        },
+        {
+          "indicator": "Nasdaq Composite prior cash close",
+          "value": 0.83,
+          "unit": "percent change",
+          "source": "NasDecode prior assessment",
+          "sourceTimeET": "2026-11-03 16:00 ET",
+          "quality": "Prior-session close, not live"
+        },
+        {
+          "indicator": "SOX prior cash close",
+          "value": 2.63,
+          "unit": "percent change",
+          "source": "NasDecode prior assessment",
+          "sourceTimeET": "2026-11-03 cash session",
+          "quality": "Prior-session close, not live"
+        },
+        {
+          "indicator": "VXN",
+          "value": 30.53,
+          "unit": "index points",
+          "source": "NasDecode prior premarket dashboard",
+          "sourceTimeET": "2026-11-04 03:31 ET",
+          "quality": "Stale dashboard value; underlying exchange tick unverified"
+        },
+        {
+          "indicator": "VIX",
+          "value": 19.07,
+          "unit": "index points",
+          "source": "NasDecode prior premarket dashboard",
+          "sourceTimeET": "2026-11-04 03:46 ET",
+          "quality": "Stale dashboard value; underlying exchange tick unverified"
+        },
+        {
+          "indicator": "Fed December hike probability",
+          "value": 72,
+          "unit": "percent probability",
+          "source": "Barron's November 4 futures commentary",
+          "sourceTimeET": "2026-11-04 article, tick unspecified",
+          "quality": "Reported estimate; not verified live FedWatch"
+        },
+        {
+          "indicator": "WTI",
+          "value": null,
+          "unit": "USD/barrel",
+          "source": "Assessment",
+          "sourceTimeET": "2026-11-04 05:40 ET",
+          "quality": "No newly verified timestamped quote"
+        },
+        {
+          "indicator": "QQQ/SOX cash breadth",
+          "value": null,
+          "unit": "advancers/decliners",
+          "source": "Assessment",
+          "sourceTimeET": "2026-11-04 05:40 ET",
+          "quality": "U.S. regular session not yet open"
+        },
+        {
+          "indicator": "Open Watch archive",
+          "value": 127,
+          "unit": "events",
+          "source": "repural/NasDecode data/history/market-watch-events.json",
+          "sourceTimeET": "2026-11-04T08:26:04Z",
+          "quality": "Repository verified; unchanged from prior"
+        }
+      ],
+      "conditions": {
+        "upgrade": "Require sustained Wednesday cash-session QQQ and SOX leadership, improving breadth, lower volatility and stable contemporaneous yields.",
+        "downgrade": "Strengthen bearish conviction if futures relief fails at the cash open, SOX underperforms, breadth deteriorates or volatility and yields rise."
+      },
+      "upcomingEvents": [
+        {
+          "date": "2026-11-04",
+          "event": "ADP 08:15 ET, ISM Services 10:00 ET, election-policy reaction, Qualcomm and Arm earnings (timing verify)"
+        },
+        {
+          "date": "2026-11-05",
+          "event": "Jobless claims and semiconductor earnings follow-through"
+        },
+        {
+          "date": "2026-11-06",
+          "event": "Potential October employment report; release schedule to verify"
+        }
+      ],
+      "provenance": {
+        "repository": "repural/NasDecode main",
+        "priorAssessment": "2026-11-04T05:10:28-05:00",
+        "openWatchUpdated": "2026-11-04T08:26:04+00:00",
+        "openWatchCount": 127,
+        "newEventsSincePrevious": 0,
+        "externalSources": [
+          "https://www.reuters.com/business/us-stock-index-futures-steady-democrats-seize-congress-2026-11-04/",
+          "https://www.wsj.com/finance/investing/two-year-treasury-yield-falls-to-two-month-low-as-democrats-sweep-midterm-elections-79fb1f8e",
+          "https://apnews.com/article/4d12764c0b3ce38ffde3077712811182"
+        ],
+        "dataQuality": "Reuters 04:22 ET futures snapshot is historical. WSJ 10Y 4.927% and 2Y 4.608% imply +31.9bp but underlying ticks are not synchronized. Dashboard VXN/VIX stale. No synchronized WTI, live FedWatch, Wednesday QQQ/SOX cash or breadth available. No market response inferred from expected catalysts."
+      },
+      "editorial": {
+        "marketOverview": "Nasdaq's three-day outlook remains Bearish, but the immediate election-night liquidation has been partly reversed. Reuters reports Nasdaq-100 futures up 0.16% at 04:22 ET after an overnight trough of -2.4%, and bond yields have eased. This is an important moderation of the shock, not yet evidence of a sustained cash-market recovery. Tuesday's Nasdaq and semiconductor gains preceded the election outcome; Wednesday QQQ and SOX cash confirmation remains unavailable.",
+        "whatChanged": "Compared with the 05:10 ET assessment, Reuters supplies a more precise overnight trajectory: the Nasdaq-100 futures trough reached -2.4%, but the 04:22 ET reading was +0.16%. This reinforces the previous report of futures stabilization rather than a fresh bearish acceleration. The Open Watch archive remains at 127 events with no newly curated entry. Wall Street Journal Treasury reporting indicates both 2-year and 10-year yields lower; the indicative curve remains positive, although exact quote timestamps are not aligned.",
+        "marketInterpretation": "A relief rally in futures is consistent with markets reassessing how quickly congressional election results can alter policy, while presidential veto powers and legislative constraints limit immediate changes. Strong AMD guidance supports chip demand, but policy uncertainty about AI data centers and still-elevated volatility temper conviction. Bond yield relief could support growth valuations, although an election-driven flight to safety can also indicate risk aversion. No claim of synchronized QQQ, SOX, volatility or breadth confirmation is justified before the opening bell.",
+        "threeDayPath": "Wednesday November 4 is the decisive test: ADP, ISM Services and the cash opening will reveal whether futures stabilization can translate into durable breadth and semiconductor leadership. Thursday November 5 should show whether earnings commentary from chip and infrastructure names broadens the recovery or merely produces stock-specific bounces. Friday November 6 carries potential labor-data and Fed-repricing risk. These are scenarios, not observed outcomes or forecasts of exact returns.",
+        "bullCase": "A credible recovery would require QQQ and SOX to hold positive regular-session performance, breadth to broaden and volatility to compress, with Treasury yields remaining orderly. The strongest supports are Tuesday's chip leadership, AMD's earnings momentum, the rebound in futures and lower yields. A sustained confirmation would justify reconsidering the Bearish label.",
+        "bearCase": "The bearish case is that the futures rebound fails once cash liquidity arrives, leaving technology exposed to policy uncertainty, expensive AI valuations and potentially tighter Fed pricing. SOX underperformance, negative breadth and rising VXN would indicate that strong individual earnings are not offsetting sector-wide selling. High oil prices could add to inflation pressure and undermine the bond-market relief.",
+        "watchNext": "Monitor ADP at 08:15 ET, the 09:30 ET QQQ/SOX open and 10:00 ET ISM Services; verify earnings timing for Qualcomm and Arm. Compare contemporaneous 2Y and 10Y yields in percent units, and obtain exchange-timestamped VXN/VIX and Brent/WTI rather than carrying dashboard snapshots forward as live. Check any newly curated Open Watch items and verify the Friday payroll schedule before assigning event certainty."
+      }
+    },
     {
       "date": "2026-11-04",
       "timeET": "05:10",
