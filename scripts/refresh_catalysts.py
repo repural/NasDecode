@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+if __package__:
+    from .tavily_control import tavily_paused
+else:
+    from tavily_control import tavily_paused
+
 import datetime as dt
 import json, os, re, urllib.request, urllib.error
 from pathlib import Path
@@ -42,7 +47,7 @@ def load_json(path, default):
     except (OSError,json.JSONDecodeError): return default
 
 def tavily_search(query, days=2, max_results=12, include_domains=None):
-    key=os.environ.get("TAVILY_API_KEY") or os.environ.get("TAVILY_KEY")
+    key = None if tavily_paused() else (os.environ.get("TAVILY_API_KEY") or os.environ.get("TAVILY_KEY"))
     if not key: raise RuntimeError("TAVILY_API_KEY/TAVILY_KEY missing")
     body={
       "api_key":key,"query":query,"topic":"news","search_depth":"advanced",
@@ -101,6 +106,9 @@ def fingerprint(e):
     return re.sub(r"\s+"," ",base)
 
 def main():
+    if tavily_paused():
+        print("Tavily paused; preserving existing outputs.")
+        return
     universe=load_json(UNIVERSE_PATH,{})
     sox=universe.get("components",[])
     mega=universe.get("megaCaps",[])

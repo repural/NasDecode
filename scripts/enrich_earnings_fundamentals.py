@@ -5,12 +5,19 @@ Research aid, not a blind scraper: uses separate pre-event consensus, reported-r
 and guidance searches; preserves provenance; only auto-accepts values explicitly parsed
 from high-confidence snippets. Ambiguous values remain null for later review.
 """
+if __package__:
+    from .tavily_control import tavily_paused
+else:
+    from tavily_control import tavily_paused
+
 import datetime,json,os,re,time,urllib.request,urllib.error
 ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 FILES=[os.path.join(ROOT,'data','history','earnings_leadup_analysis.json'),os.path.join(ROOT,'data','history','megacap_earnings_analysis.json')]
 API='https://api.tavily.com/search'
 DOMAINS=['reuters.com','finance.yahoo.com','cnbc.com','investor.nvidia.com','investors.micron.com','microsoft.com','apple.com','amazon.com','abc.xyz','investor.fb.com','ir.amd.com','broadcom.com','investor.tsmc.com','ir.tesla.com']
 def search(q,start=None,end=None):
+ if tavily_paused():
+  raise RuntimeError("Tavily is paused")
  key=os.environ.get('TAVILY_KEY','').strip()
  if not key: raise RuntimeError('TAVILY_KEY missing')
  p={'query':q,'topic':'finance','search_depth':'advanced','max_results':8,'include_answer':False,'include_raw_content':False,'include_domains':DOMAINS}
@@ -65,6 +72,9 @@ def enrich(ev,ticker):
  f['researchPolicy']='Auto-accepted numeric fields require agreement across at least two returned sources; otherwise null/needs_review. Guidance is preserved as sourced research for structured review.'
  print(ticker,d,f['status'],eps_e,eps_a,rev_e,rev_a)
 def main():
+ if tavily_paused():
+  print("Tavily paused; preserving existing outputs.")
+  return
  for path in FILES:
   with open(path,encoding='utf-8') as fh:data=json.load(fh)
   for ticker,events in data.get('events',{}).items():

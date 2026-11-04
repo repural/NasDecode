@@ -11,10 +11,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Test Tavily earnings research
         env:
           TAVILY_KEY: ${{ secrets.TAVILY_KEY }}
         run: |
+          if [ -f .tavily-paused ]; then
+            echo 'Tavily paused; skipping live API test.'
+            exit 0
+          fi
           python - <<'PY'
           import json, os, urllib.request, urllib.error
           key=os.environ.get("TAVILY_KEY","")
@@ -46,3 +51,4 @@ jobs:
         with:
           name: tavily-earnings-test
           path: tavily_earnings_test.json
+          if-no-files-found: ignore

@@ -5,6 +5,11 @@ Raw discovery remains in data/semiconductor-catalysts.json. This script admits o
 fresh, event-like, high-materiality candidates from credible sources into the
 canonical curated archive at data/history/market-watch-events.json.
 """
+if __package__:
+    from .tavily_control import tavily_paused
+else:
+    from tavily_control import tavily_paused
+
 import datetime as dt
 import hashlib
 import json
@@ -180,7 +185,7 @@ def stable_id(date, ticker, title):
 
 
 def tavily_search(query, max_results=8):
-    key = os.environ.get("TAVILY_API_KEY") or os.environ.get("TAVILY_KEY")
+    key = None if tavily_paused() else (os.environ.get("TAVILY_API_KEY") or os.environ.get("TAVILY_KEY"))
     if not key:
         return []
     payload = {
@@ -520,6 +525,7 @@ def main():
         "updated": history["updated"],
         "stage": "published" if added else "no-new-publication",
         "sourceRetrieval": global_diagnostics,
+        "tavilyStatus": "paused" if tavily_paused() else "enabled",
         "candidateAcceptance": acceptance,
         "acceptedForPublication": len(accepted),
         "newEventsPublished": added,

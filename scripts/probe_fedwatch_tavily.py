@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 """Hourly FedWatch Tavily source probe. Never treat undated search results as live market data."""
 # A probe failure must never update published Fed expectations.
+if __package__:
+    from .tavily_control import tavily_paused
+else:
+    from tavily_control import tavily_paused
+
 import datetime as dt
 import json
 import os
@@ -17,6 +22,8 @@ HEADERS = {"Authorization": "Bearer " + os.environ.get("TAVILY_API_KEY", ""),
 
 
 def request(endpoint, payload):
+    if tavily_paused():
+        raise RuntimeError("Tavily is paused")
     req = urllib.request.Request(
         "https://api.tavily.com/" + endpoint,
         data=json.dumps(payload).encode(),
@@ -62,6 +69,9 @@ def parse_table(raw, today=None):
 
 
 def main():
+    if tavily_paused():
+        print("Tavily paused; preserving existing outputs.")
+        return
     now = dt.datetime.now(dt.timezone.utc)
     report = {"schemaVersion": 1, "collectedAtUTC": now.isoformat(),
               "provider": "Tavily extract/search", "primarySource": CME_URL,

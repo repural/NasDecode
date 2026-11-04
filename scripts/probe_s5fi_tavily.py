@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 """Conservative Tavily S5FI collector: never publish unverified scraped values."""
+if __package__:
+    from .tavily_control import tavily_paused
+else:
+    from tavily_control import tavily_paused
+
 import datetime as dt
 import json
 import os
@@ -17,6 +22,8 @@ URLS = [
 ]
 
 def extract(urls):
+    if tavily_paused():
+        raise RuntimeError("Tavily is paused")
     payload=json.dumps({"urls":urls,"extract_depth":"advanced","include_images":False}).encode()
     req=urllib.request.Request("https://api.tavily.com/extract",data=payload,headers={
         "Authorization":"Bearer "+os.environ["TAVILY_API_KEY"],
@@ -74,6 +81,9 @@ def diagnostic(raw):
     return {"lineCount": len(lines), "datedSamples": matches, "tableLineCount": sum(1 for line in lines if "|" in line), "tableSamples": [re.sub(r"https?://\\S+", "[url]", line.strip())[:180] for line in lines if "|" in line][:12]}
 
 def main():
+    if tavily_paused():
+        print("Tavily paused; preserving existing outputs.")
+        return
     response=extract(URLS)
     result={"schemaVersion":1,"source":"Tavily extract","collectedAtUTC":dt.datetime.now(dt.timezone.utc).isoformat(),
             "status":"unverified","observations":[],"sameProviderMatches":[],"sources":[]}

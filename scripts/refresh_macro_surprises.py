@@ -15,6 +15,11 @@ supportive for Nasdaq discount rates. Therefore hotter inflation/wages/activity 
 stronger payrolls are restrictive; higher unemployment is supportive.
 """
 
+if __package__:
+    from .tavily_control import tavily_paused
+else:
+    from tavily_control import tavily_paused
+
 import datetime as dt
 import html
 import json
@@ -214,7 +219,7 @@ def main():
         # Free fallback: use the already-configured Tavily search connector to retrieve
         # the public Trading Economics calendar around the release window. This avoids
         # requiring a separate paid TE API key while preserving survey consensus.
-        key=os.environ.get("TAVILY_API_KEY") or os.environ.get("TAVILY_KEY")
+        key = None if tavily_paused() else (os.environ.get("TAVILY_API_KEY") or os.environ.get("TAVILY_KEY"))
         if key:
             try:
                 local=dt.datetime.now(NY)
