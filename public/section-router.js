@@ -1,5 +1,5 @@
 (()=>{'use strict';
-const pages={overview:'Overview',assessment:'Assessment',analysis:'Pre-Market',threeDay:'3-Day Watch',watch:'Open Watch',calendar:'Calendar'};
+const pages={overview:'Overview',analysis:'Pre-Market',assessment:'Assessment',threeDay:'3-Day Watch',watch:'Open Watch',calendar:'Calendar'};
 const rawView=new URLSearchParams(location.search).get('view')||'overview';
 const requested=['macro','internals'].includes(rawView)?'overview':rawView;
 const view=Object.prototype.hasOwnProperty.call(pages,requested)?requested:'overview';
