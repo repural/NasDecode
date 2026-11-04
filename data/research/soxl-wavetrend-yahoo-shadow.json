@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "symbol": "SOXL",
-  "checkedAtET": "2026-11-04T11:12:55.696805-05:00",
+  "checkedAtET": "2026-11-04T16:59:29.585544-05:00",
   "researchOnly": true,
   "publicationAllowed": false,
   "canonicalArchiveModified": false,
@@ -11,7 +11,20 @@
   "validationStatus": "shadow_unverified",
   "timeframes": {
     "4h": {
-      "developingCandle": null,
+      "developingCandle": {
+        "startET": "2026-11-04T16:00:00-05:00",
+        "endET": "2026-11-04T20:00:00-05:00",
+        "asOfET": "2026-11-04T16:59:29.585544-05:00",
+        "lastSourceBarET": "2026-11-04T16:55:00-05:00",
+        "checkedAtET": "2026-11-04T16:59:29.585544-05:00",
+        "underlying5mBars": 12,
+        "open": 66.93,
+        "high": 67.5,
+        "low": 65.87,
+        "close": 67.11,
+        "provider": "Yahoo developing",
+        "isConfirmed": false
+      },
       "massiveLastEndET": "2026-11-03T20:00:00-05:00",
       "shadowLastEndET": "2026-11-04T08:00:00-05:00",
       "newYahooCandles": 1,
@@ -60,8 +73,21 @@
         },
         {
           "startET": "2026-11-04T08:00:00-05:00",
+          "reason": "missing_5m_intervals",
+          "available5m": 45,
+          "missingCount": 3,
+          "firstMissingET": "2026-11-04T09:15:00-05:00"
+        },
+        {
+          "startET": "2026-11-04T16:00:00-05:00",
           "reason": "not_yet_confirmed",
-          "available5m": 36
+          "available5m": 12
+        },
+        {
+          "startET": "2026-11-04T12:00:00-05:00",
+          "reason": "gap_since_baseline",
+          "expectedStartET": "2026-11-04T08:00:00-05:00",
+          "nextTradingSessionET": "2026-11-05T04:00:00-05:00"
         }
       ],
       "overlappingMassiveCandles": 10,
@@ -156,7 +182,20 @@
       ]
     },
     "8h": {
-      "developingCandle": null,
+      "developingCandle": {
+        "startET": "2026-11-04T12:00:00-05:00",
+        "endET": "2026-11-04T20:00:00-05:00",
+        "asOfET": "2026-11-04T16:59:29.585544-05:00",
+        "lastSourceBarET": "2026-11-04T16:55:00-05:00",
+        "checkedAtET": "2026-11-04T16:59:29.585544-05:00",
+        "underlying5mBars": 60,
+        "open": 67.86000061035156,
+        "high": 68.5,
+        "low": 64.11000061035156,
+        "close": 67.11,
+        "provider": "Yahoo developing",
+        "isConfirmed": false
+      },
       "massiveLastEndET": "2026-11-03T20:00:00-05:00",
       "shadowLastEndET": "2026-11-03T20:00:00-05:00",
       "newYahooCandles": 0,
@@ -205,8 +244,15 @@
         },
         {
           "startET": "2026-11-04T04:00:00-05:00",
+          "reason": "missing_5m_intervals",
+          "available5m": 93,
+          "missingCount": 3,
+          "firstMissingET": "2026-11-04T09:15:00-05:00"
+        },
+        {
+          "startET": "2026-11-04T12:00:00-05:00",
           "reason": "not_yet_confirmed",
-          "available5m": 84
+          "available5m": 60
         }
       ],
       "overlappingMassiveCandles": 2,
@@ -254,7 +300,7 @@
     }
   },
   "status": "ok",
-  "retrievedYahoo5m": 807,
+  "retrievedYahoo5m": 876,
   "malformedYahoo5m": 1,
   "fetchErrors": [],
   "observations": {
@@ -558,6 +604,6 @@
       "unmatchedYahooCandles": 0
     }
   },
-  "reconciliationCheckedAtET": "2026-11-04T11:25:49.074612-05:00",
+  "reconciliationCheckedAtET": "2026-11-04T16:59:29.960927-05:00",
   "reconciliationMassiveGeneratedET": "2026-11-04T00:53:37.446510-05:00"
 }
