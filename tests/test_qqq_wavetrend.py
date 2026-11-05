@@ -2,8 +2,9 @@ import datetime as dt
 import json
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
-from scripts.update_qqq_wavetrend import daily_averages, publish
+from scripts.update_qqq_wavetrend import daily_averages, publish, refresh_daily_if_needed, expected_daily_session
 from scripts.research_nvda_wavetrend import NY, wavetrend, crossover_records
 
 
@@ -55,6 +56,39 @@ class QQQTests(unittest.TestCase):
             self.assertEqual(src.read_bytes(),before)
             source['symbol']='NVDA';src.write_text(json.dumps(source))
             with self.assertRaises(ValueError):publish(self.now,src,dst,daily,shadow)
+
+    def test_retry_and_stale_publication(self):
+        source={'symbol':'QQQ','schemaVersion':2,'historicalDataEndET':'2026-11-04T19:55:00-05:00',
+                'fetchErrors':[],'timeframes':{}}
+        for hours in (4,8):
+            raw=[]
+            for i in range(160):
+                start=dt.datetime(2026,1,1,4,tzinfo=NY)+dt.timedelta(hours=i*hours)
+                raw.append({'startET':start.isoformat(),'endET':(start+dt.timedelta(hours=hours)).isoformat(),
+                            'open':100+i,'high':101+i,'low':99+i,'close':100+i})
+            start=dt.datetime(2026,11,4,12,tzinfo=NY)
+            raw.append({'startET':start.isoformat(),'endET':(start+dt.timedelta(hours=hours)).isoformat(),
+                        'open':250,'high':260,'low':245,'close':255})
+            rows=wavetrend(raw)
+            source['timeframes'][str(hours)+'h']={'candles':rows,'latest':rows[-1],
+                'candleCount':len(rows),'crosses':crossover_records(rows)}
+        self.assertEqual(expected_daily_session(source,self.now),'2026-11-04')
+        with tempfile.TemporaryDirectory() as tmp:
+            src,dst,daily,shadow=[Path(tmp)/n for n in ('source.json','public.json','daily.json','shadow.json')]
+            src.write_text(json.dumps(source));daily.write_text(json.dumps(self.daily))
+            with patch('scripts.collect_daily_bars.collect') as collect:
+                refresh_daily_if_needed(source,self.now,daily)
+                self.assertEqual(collect.call_args.args,('QQQ',))
+            result=publish(self.now,src,dst,daily,shadow)
+            self.assertEqual(result['movingAveragesStatus']['status'],'stale')
+            self.daily['bars'].append({'date':'2026-11-04','close':255})
+            daily.write_text(json.dumps(self.daily))
+            with patch('scripts.collect_daily_bars.collect') as collect:
+                refresh_daily_if_needed(source,self.now,daily)
+                collect.assert_not_called()
+            result=publish(self.now,src,dst,daily,shadow)
+            self.assertEqual(result['movingAveragesStatus']['status'],'current')
+            self.assertEqual(result['movingAverages']['throughDate'],'2026-11-04')
 
 
 if __name__=='__main__':unittest.main()

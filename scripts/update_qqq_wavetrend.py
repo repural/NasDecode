@@ -36,6 +36,28 @@ def daily_averages(document, now):
     return result
 
 
+def expected_daily_session(document, now):
+    """Use observed completed regular-close buckets, including holiday/weekend gaps."""
+    dates = []
+    for c in document['timeframes']['4h']['candles']:
+        end = dt.datetime.fromisoformat(c['endET']).astimezone(research.NY)
+        if end.hour == 16 and end <= now:
+            dates.append(end.date().isoformat())
+    return max(dates, default=None)
+
+
+def refresh_daily_if_needed(document, now, daily=DAILY):
+    expected = expected_daily_session(document, now)
+    stored = json.loads(daily.read_text()) if daily.exists() else {'bars': []}
+    last = max((b['date'] for b in stored.get('bars', []) if b.get('close') is not None), default='')
+    if expected and last < expected:
+        # The existing daily collector remains the sole writer of daily bar history.
+        from scripts.collect_daily_bars import collect
+        print('Retrying QQQ daily archive through', expected, flush=True)
+        return collect('QQQ', days=max(7, (now.date()-dt.date.fromisoformat(last)).days+2) if last else 730, now=now)
+    return None
+
+
 def publish(now=None, src=SOURCE, dst=TARGET, daily=DAILY, shadow_path=None):
     now = now or dt.datetime.now(research.NY)
     original = json.loads(src.read_text())
@@ -59,6 +81,13 @@ def publish(now=None, src=SOURCE, dst=TARGET, daily=DAILY, shadow_path=None):
         result['movingAverages'] = daily_averages(json.loads(daily.read_text()), now)
     except (OSError, ValueError, KeyError, TypeError):
         result['movingAverages'] = None
+    expected = expected_daily_session(shown, now)
+    averages = result.get('movingAverages')
+    through = averages.get('throughDate') if averages else None
+    result['movingAveragesStatus'] = {
+        'status': 'missing' if not averages else 'stale' if expected and through < expected else 'current',
+        'expectedThroughDate': expected, 'throughDate': through,
+        'checkedAtET': now.isoformat()}
     dst.parent.mkdir(parents=True, exist_ok=True)
     dst.write_text(json.dumps(result, separators=(',', ':'))+'\n')
     return result
@@ -98,7 +127,12 @@ def main():
                 print('Retaining QQQ history; historical fetch incomplete:',errors)
     for module in ('shadow_nvda_yahoo_wavetrend','reconcile_nvda_yahoo_wavetrend'):
         subprocess.run([sys.executable,'-m','scripts.'+module,'--symbol','QQQ'],check=True)
-    result = publish(now=now)
+    try:
+        refresh_daily_if_needed(presentation(json.loads(SOURCE.read_text()), now=now), now)
+    except Exception as exc:
+        # Continue publishing WT, but the SMA freshness gate hides outdated values.
+        print('QQQ daily retry failed:', type(exc).__name__, str(exc)[:160], flush=True)
+    result = publish(now=dt.datetime.now(research.NY))
     print('QQQ published:', {tf:s['latest']['endET'] for tf,s in result['timeframes'].items()},
           'daily SMA as of', (result.get('movingAverages') or {}).get('throughDate'))
 
