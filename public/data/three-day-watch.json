@@ -1,13 +1,172 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-05T12:41:13.000Z",
+  "updated": "2026-11-05T14:43:37.000Z",
   "horizon": [
     "2026-11-05",
     "2026-11-06",
     "2026-11-09"
   ],
   "entries": [
+    {
+      "date": "2026-11-05",
+      "timeET": "09:43",
+      "asOfET": "2026-11-05T09:43:37-05:00",
+      "bias": "Cautious / Neutral",
+      "previousBias": "Cautious / Neutral",
+      "materialChange": false,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "Semiconductor-led Nasdaq futures underperformance persisted in verified early-Thursday Reuters updates, but the newer 07:04 ET futures snapshot improved slightly relative to the prior 05:04 ET report. No new independently verified cash-session QQQ/SOX response or claims actual supports a further directional revision. Cautious/neutral remains appropriate following the already flagged Nvidia China bottleneck.",
+      "bullish": [
+        "Reuters 07:04 ET futures snapshot showed S&P 500 +0.20% and Dow +0.62%, compared with Nasdaq-100 -0.51%, suggesting rotation rather than synchronized index-wide liquidation.",
+        "Wednesday's broad-market rally, lower oil versus prior week, and Treasury yields near two-month lows provide potential valuation relief, although current oil has rebounded.",
+        "Barron's reported VIX 16.79 early Thursday, after Wednesday's 16.61 close, still below Monday's 21.15; times do not align with futures."
+      ],
+      "bearish": [
+        "Nasdaq-100 futures -0.51% at 07:04 ET versus S&P +0.20% and Dow +0.62% in Reuters: semiconductor/AI infrastructure weakness persists.",
+        "Reuters reports Qualcomm -9.6% in the later premarket report, but its individual quote time is not proven synchronized with index futures.",
+        "Nvidia H200 China import-approval bottleneck and potential data-center construction delays remain unresolved; no new formal restrictions verified.",
+        "Oil rebounded roughly 2.5% toward $97/bbl after Wednesday's collapse, showing that energy relief is volatile rather than assured."
+      ],
+      "observations": [
+        {
+          "instrument": "Nasdaq-100 futures",
+          "value": -0.51,
+          "unit": "percent change",
+          "timestamp": "2026-11-05T07:04:00-05:00",
+          "source": "Reuters Nov 5 updated premarket report",
+          "sourceUrl": "https://www.reuters.com/business/sp-500-futures-steady-after-midterm-rally-nasdaq-lags-chip-weakness-2026-11-05/",
+          "quality": "Matched futures snapshot; NOT a cash-session QQQ return"
+        },
+        {
+          "instrument": "S&P 500 futures",
+          "value": 0.2,
+          "unit": "percent change",
+          "timestamp": "2026-11-05T07:04:00-05:00",
+          "source": "Reuters",
+          "quality": "Matched futures snapshot"
+        },
+        {
+          "instrument": "Dow futures",
+          "value": 0.62,
+          "unit": "percent change",
+          "timestamp": "2026-11-05T07:04:00-05:00",
+          "source": "Reuters",
+          "quality": "Matched futures snapshot"
+        },
+        {
+          "instrument": "Qualcomm premarket",
+          "value": -9.6,
+          "unit": "percent change",
+          "timestamp": "2026-11-05 Reuters premarket report; exact quote time unspecified",
+          "source": "Reuters",
+          "quality": "Asynchronous individual stock quote"
+        },
+        {
+          "instrument": "US 10Y Treasury yield",
+          "value": 4.88,
+          "unit": "percent annual yield",
+          "timestamp": "2026-11-05 early Thursday, precise quote time unspecified",
+          "source": "MarketWatch Nov 5 Treasury update",
+          "sourceUrl": "https://www.marketwatch.com/livecoverage/stock-market-today-dow-s-p-500-nasdaq-democrat-sweep-midterm-elections-rally/card/benchmark-treasury-yields-hover-near-2-month-lows-ahead-of-jobs-data-prqtbFHsPVg8m8pXYRgv",
+          "quality": "4.880%, NOT 488%; not synchronized with 2Y"
+        },
+        {
+          "instrument": "VIX",
+          "value": 16.79,
+          "unit": "index points",
+          "timestamp": "2026-11-05 early Thursday, exact quote time unspecified",
+          "source": "Barron's Nov 5 live coverage",
+          "quality": "Early reported level, not synchronized with futures or VXN"
+        },
+        {
+          "instrument": "Brent",
+          "value": 97,
+          "unit": "USD/barrel approximate",
+          "timestamp": "2026-11-05 Reuters global markets dispatch, precise quote time unspecified",
+          "source": "Reuters Nov 5 global markets",
+          "sourceUrl": "https://www.reuters.com/business/energy/global-markets-global-markets-2026-11-05/",
+          "quality": "Approximate, rebound after Wednesday's drop, not live"
+        },
+        {
+          "instrument": "Fed December 25bp hike market probability",
+          "value": 79.2,
+          "unit": "percent probability",
+          "timestamp": "2026-11-05 MarketWatch article; underlying pricing timestamp unspecified",
+          "source": "MarketWatch Nov 5 Treasury update",
+          "quality": "Reported market probability, not independently synchronized CME FedWatch reading"
+        },
+        {
+          "instrument": "Open Watch archive",
+          "value": 134,
+          "unit": "events",
+          "timestamp": "2026-11-05T14:43:37.000Z",
+          "source": "repural/NasDecode/data/history/market-watch-events.json",
+          "quality": "Repository count"
+        },
+        {
+          "instrument": "QQQ/SOX cash relative return, 2Y yield and 10Y-2Y curve, VXN, Nasdaq breadth, WTI, November 5 jobless claims actual",
+          "value": null,
+          "unit": "unverified",
+          "timestamp": "2026-11-05T14:43:37.000Z",
+          "source": "Current research",
+          "quality": "No reliable synchronized values; actual claims not established despite scheduled 08:30 ET release"
+        }
+      ],
+      "conditions": {
+        "upgrade": "Require confirmed matched-timestamp SOX/QQQ stabilization and improving breadth with contained volatility and Treasury yields.",
+        "downgrade": "SOX/QQQ breakdown in cash trading accompanied by weak breadth and rising VXN/VIX, or evidence of broader AI capex cuts or sustained China import restrictions.",
+        "invalidation": "A fresh verified broad Nasdaq and semiconductor rebound would weaken the downside thesis; early futures and unsynchronized oil/yield quotes alone do not establish it."
+      },
+      "upcomingEvents": [
+        {
+          "date": "2026-11-05",
+          "event": "US initial jobless claims and productivity, 08:30 ET",
+          "status": "Release scheduled; actual result not verified in available sources"
+        },
+        {
+          "date": "2026-11-05",
+          "event": "US cash-session semiconductor relative strength, breadth and volatility",
+          "status": "Await verified synchronized observations"
+        },
+        {
+          "date": "2026-11-06",
+          "event": "October US employment report, 08:30 ET",
+          "status": "Upcoming major macro catalyst"
+        },
+        {
+          "date": "2026-11-06",
+          "event": "Preliminary University of Michigan sentiment",
+          "status": "Upcoming; exact time unverified"
+        },
+        {
+          "date": "2026-11-09",
+          "event": "Post-payrolls follow-through",
+          "status": "Scenario rather than scheduled economic release"
+        }
+      ],
+      "provenance": {
+        "repository": "repural/NasDecode",
+        "previousAssessmentET": "2026-11-05T07:41:13-05:00",
+        "openWatchCount": 134,
+        "sources": [
+          "https://www.reuters.com/business/sp-500-futures-steady-after-midterm-rally-nasdaq-lags-chip-weakness-2026-11-05/",
+          "https://www.reuters.com/business/energy/global-markets-global-markets-2026-11-05/",
+          "https://www.marketwatch.com/livecoverage/stock-market-today-dow-s-p-500-nasdaq-democrat-sweep-midterm-elections-rally/card/benchmark-treasury-yields-hover-near-2-month-lows-ahead-of-jobs-data-prqtbFHsPVg8m8pXYRgv"
+        ],
+        "dataQuality": "Reuters 07:04 ET futures are synchronized to one another. Stock quotes, VIX, oil, and yield observations are asynchronous. 10Y reported as 4.880 percent, not 488 percent; 2Y absent so curve not computed. Cash-session QQQ/SOX, VXN, breadth, WTI, claims actual and independent CME FedWatch verification absent. The 79.2% December hike estimate is attributed to MarketWatch rather than labeled as direct FedWatch."
+      },
+      "editorial": {
+        "marketOverview": "Thursday's premarket shows continuing differentiation between Nasdaq's semiconductor-intensive risk exposures and broader US equities. Reuters' updated 07:04 ET snapshot has Nasdaq-100 futures down 0.51% while S&P 500 futures gain 0.20% and Dow futures rise 0.62%. That is an observed futures divergence, not proof that the regular-session QQQ or SOX has followed through. Wednesday's broad rally and lower long-term yields remain important counterweights to the chip-specific weakness.",
+        "whatChanged": "The previous 07:41 ET assessment already incorporated the Nvidia H200 import-approval story and semiconductor selloff. The later Reuters futures snapshot shows a modest narrowing of Nasdaq futures losses from -0.63% at 05:04 ET to -0.51% at 07:04 ET, while broader futures firmed. Reuters also describes oil rebounding toward $97 after Wednesday's sharp decline. These developments add nuance but do not establish a new material catalyst or justify reversing the existing cautious/neutral bias.",
+        "marketInterpretation": "The principal distinction is between a market pricing a possible slowdown in AI infrastructure investment and one abandoning risk assets across the board. The futures divergence points more toward sector rotation. Reduced data-center spending could benefit some platform-company cash flows while impairing semiconductor suppliers, but that is a conditional business mechanism rather than an observed earnings revision. An early VIX reading near 16.79 and a 10-year yield near 4.88% offer context, but their timestamps cannot be matched to the Reuters futures snapshot.",
+        "threeDayPath": "For Thursday November 5, the decisive test is the regular-session relative performance of SOX versus QQQ, breadth, and volatility after the claims release. Friday November 6 brings the October jobs report, which can reprice the Fed path and yields, with both softer-growth and higher-inflation risks. Monday November 9 is the follow-through test: either semiconductor participation recovers alongside broad equities or persistent chip weakness undermines the Nasdaq rebound. None of those future outcomes is treated as observed.",
+        "bullCase": "The bullish path would see Thursday's futures weakness fail to translate into sustained cash-market selling, with SOX stabilizing versus QQQ and a broader set of Nasdaq constituents participating. Lower yields and a sustained moderation in oil could support growth valuations, provided the labor data do not imply a severe demand shock. Clarification that Nvidia's China inventory can move through approvals would remove a specific semiconductor overhang.",
+        "bearCase": "The bearish path would see the chip selloff persist into regular trading and spread from Qualcomm and infrastructure suppliers into the broader Nasdaq, accompanied by weak breadth and rising VXN or VIX. If the Nvidia import-approval backlog worsens or data-center construction concerns become concrete order reductions, downside earnings risk would increase. A strong payrolls release that revives hike expectations or renewed oil inflation could add valuation pressure.",
+        "watchNext": "Verify the actual November 5 jobless-claims release against the Department of Labor rather than treating calendar estimates as results. Then compare synchronized SOX, QQQ, VXN/VIX and Nasdaq breadth readings at a documented timestamp. Track the 2-year and 10-year Treasury yields in percentage units, using a matched timestamp before calculating the curve. Watch Friday's payrolls and any official clarification on H200 imports; keep Reuters premarket figures distinct from subsequent market response."
+      }
+    },
     {
       "date": "2026-11-05",
       "timeET": "07:41",
