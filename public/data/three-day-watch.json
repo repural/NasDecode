@@ -1,13 +1,133 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-05T09:08:17.947Z",
+  "updated": "2026-11-05T12:35:00.000Z",
   "horizon": [
     "2026-11-05",
     "2026-11-06",
     "2026-11-09"
   ],
   "entries": [
+    {
+      "date": "2026-11-05",
+      "timeET": "07:35",
+      "asOfET": "2026-11-05T07:35:00-05:00",
+      "bias": "Cautious / Neutral",
+      "previousBias": "Cautious / Neutral",
+      "materialChange": false,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "Before Thursday's 08:30 ET claims release and US cash open, no verified synchronized market response supersedes the prior cautious/neutral outlook. The Open Watch archive rises from 132 to 133 entries with a Micron Taiwan fab labor-dispute report; current operations reportedly continue. Reuters' November 4 broad Nasdaq rally, divergent chip performance, and November 5 overnight oil/yield relief remain historical asynchronous evidence, not fresh matched quotes.",
+      "bullish": [
+        "Reuters November 4 reported a broad Wall Street advance after US midterms, supported by declining crude and lower Treasury yields.",
+        "Reuters November 5 overnight coverage reported Brent around $94.21/bbl and 10Y yield near 4.85%, potentially reducing inflation and duration headwinds; these are earlier, non-synchronized observations."
+      ],
+      "bearish": [
+        "Previously reported November 4 SOX decline near 3.1% despite Nasdaq gain near 1.4% signals weak semiconductor participation; values carried forward, not independently synchronized QQQ/SOX quotes.",
+        "New curated Micron event flags potential future Taiwan fab construction disruption, but explicitly says current operations continue; no verified stock-price reaction.",
+        "AI data-center policy uncertainty and Qualcomm handset demand weakness continue to complicate chip leadership."
+      ],
+      "observations": [
+        {
+          "instrument": "Nasdaq Composite",
+          "value": 1.4,
+          "unit": "percent approximate prior-session return",
+          "timestamp": "2026-11-04 US cash close",
+          "source": "Reuters November 4 market wrap",
+          "sourceUrl": "https://www.reuters.com/business/us-stock-index-futures-steady-democrats-seize-congress-2026-11-04/",
+          "quality": "Historical approximate return, not current quote"
+        },
+        {
+          "instrument": "SOX",
+          "value": -3.1,
+          "unit": "percent approximate prior-session return",
+          "timestamp": "2026-11-04 US cash close",
+          "source": "Prior saved NasDecode assessment citing Reuters",
+          "quality": "Carried-forward; no matched QQQ price"
+        },
+        {
+          "instrument": "Brent",
+          "value": 94.21,
+          "unit": "USD/barrel",
+          "timestamp": "2026-11-05 overnight Reuters dispatch; exact quote time unknown",
+          "source": "Reuters as documented in prior saved assessment",
+          "quality": "Stale/asynchronous; not live"
+        },
+        {
+          "instrument": "US Treasury 10Y yield",
+          "value": 4.85,
+          "unit": "percent annual yield",
+          "timestamp": "2026-11-05 overnight Reuters dispatch; exact quote time unknown",
+          "source": "Reuters as documented in prior saved assessment",
+          "quality": "4.85% not 485%; historical unsynchronized"
+        },
+        {
+          "instrument": "Open Watch archive",
+          "value": 133,
+          "unit": "events",
+          "timestamp": "2026-11-05T11:32:00+00:00",
+          "source": "repural/NasDecode/data/history/market-watch-events.json",
+          "quality": "Repository snapshot; one new event versus preceding assessment"
+        },
+        {
+          "instrument": "QQQ, synchronized SOX, 2Y Treasury, 10Y-2Y spread, VXN, VIX, breadth, WTI, current Brent, CME FedWatch",
+          "value": null,
+          "unit": "not verified",
+          "timestamp": "2026-11-05T12:35:00Z",
+          "source": "Research checkpoint",
+          "quality": "No trustworthy synchronized figures obtained; no fabricated values or yield spread"
+        }
+      ],
+      "conditions": {
+        "upgrade": "Confirm sustained SOX/QQQ stabilization at matched US cash-session timestamps, improving breadth and contained volatility, with benign labor-data yield response.",
+        "downgrade": "SOX underperformance broadens into QQQ alongside worsening breadth and higher volatility, or payrolls trigger sustained adverse yield repricing.",
+        "invalidation": "Do not equate oil/yield relief with confirmed equity response; reassess if Micron disruption materially affects supply or US chip trading."
+      },
+      "upcomingEvents": [
+        {
+          "date": "2026-11-05",
+          "event": "US initial jobless claims, 08:30 ET",
+          "status": "Scheduled, not yet released at 07:35 ET"
+        },
+        {
+          "date": "2026-11-05",
+          "event": "US regular-session QQQ/SOX and Micron price response",
+          "status": "Pending, no observed response"
+        },
+        {
+          "date": "2026-11-06",
+          "event": "October US employment report, 08:30 ET",
+          "status": "Scheduled; actual outcome unknown"
+        },
+        {
+          "date": "2026-11-09",
+          "event": "Post-payroll follow-through",
+          "status": "Conditional scenario"
+        }
+      ],
+      "provenance": {
+        "repository": "repural/NasDecode",
+        "previousAssessment": "2026-11-05T04:08:00-05:00",
+        "openWatchUpdated": "2026-11-05T11:32:00+00:00",
+        "openWatchCount": 133,
+        "newCuratedEvent": "2026-11-05-micron-taiwan-fab11e-4point5b-pause-labor-bloomberg",
+        "webSources": [
+          "https://www.reuters.com/business/us-stock-index-futures-steady-democrats-seize-congress-2026-11-04/",
+          "https://www.reuters.com/world/china/global-markets-wrapup-1-2026-11-04/",
+          "https://www.stonex.com/en-gb/news-and-analysis/swiss-franc-short-term-outlook-usd-chf-selloff-nears-critical-support-ahead-of-nfp/"
+        ],
+        "dataQuality": "Current Reuters searches and latest repository event read; cash market not yet open. Earlier Reuters prices are carried forward explicitly and not synchronized. Treasury yield percentage units validated; no live curve, volatility, breadth, Fed probabilities or oil pair verified."
+      },
+      "editorial": {
+        "marketOverview": "Nasdaq faces Thursday with a split setup: Wednesday's broad US equity recovery and lower energy prices support risk appetite, but chip leadership has not confirmed the rebound. The overnight Brent and 10-year yield repricing described in the prior assessment may ease inflation and valuation pressure; neither observation is a contemporaneous Thursday US equity quote. Labor data and cash-session trading are still ahead.",
+        "whatChanged": "The repository's curated Open Watch archive now has 133 entries, versus 132 in the preceding saved assessment. Its new Micron item describes a reported pause in a Taiwan fab project amid a labor dispute while current operations continue normally. This raises a supply-chain watch item, not evidence of an immediate chip-sector selloff. No newly verified synchronized prices or fresh labor release justify changing the bias.",
+        "marketInterpretation": "Macro relief is potentially constructive for duration-sensitive technology equities, but an oil-price decline can reflect different underlying drivers. Semiconductor relative weakness, possible AI infrastructure restrictions and company-specific demand concerns remain competing headwinds. The Micron construction story concerns prospective capacity rather than a confirmed present production outage, and should not be extrapolated into an index move without market evidence.",
+        "threeDayPath": "Thursday November 5 should test whether jobless claims and US cash-session chip participation confirm the prior Nasdaq rebound. Friday November 6 payrolls could change Fed expectations and the 2-year/10-year yield backdrop in either direction. Monday November 9 is a follow-through test after the labor release. These are conditional pathways, not observed future market moves or precise return forecasts.",
+        "bullCase": "A constructive three-day sequence would feature benign labor readings, contained yields and volatility, and SOX stabilizing relative to QQQ while breadth broadens. Continued energy relief would be supportive if it does not signal an abrupt growth scare. This path remains unconfirmed before Thursday's US opening bell.",
+        "bearCase": "The negative path would see chip weakness spread from company-specific headlines into the wider semiconductor complex and then QQQ, particularly if Friday's jobs data revives inflation or rate concerns. Deteriorating breadth and rising implied volatility would be needed to confirm a broader risk-off regime. A Micron construction delay alone is insufficient proof of such a transition.",
+        "watchNext": "Check the 08:30 ET claims release, matched-timestamp QQQ and SOX relative returns during Thursday's cash session, Micron's actual price response, Nasdaq breadth and VXN/VIX. Verify both 2Y and 10Y Treasury yield units and timestamps before computing their spread, and compare Brent/WTI on consistent observation times. Friday payrolls and Fed repricing remain the major next catalysts."
+      }
+    },
     {
       "date": "2026-11-05",
       "timeET": "04:08",
