@@ -80,8 +80,9 @@ def earnings_event(e):
 
 
 def build(feed, start, snapshot, earnings):
+    week_start = start - dt.timedelta(days=start.weekday())
     end = start + dt.timedelta(days=13)
-    lo, hi = start.isoformat(), end.isoformat()
+    lo, hi = week_start.isoformat(), end.isoformat()
     events = []
     for e in snapshot.get("events", []):
         if lo <= str(e.get("date", "")) <= hi:
@@ -107,7 +108,7 @@ def build(feed, start, snapshot, earnings):
     events.sort(key=lambda x: (x["date"], x["timeET"] or "99:99", x["report"]))
     return {
         "schemaVersion": 2, "updatedAt": dt.datetime.now(dt.timezone.utc).isoformat(),
-        "asOf": lo, "windowDays": 14, "windowStart": lo, "windowEnd": hi,
+        "asOf": start.isoformat(), "windowDays": 14, "windowStart": lo, "windowEnd": hi,
         "source": "NasCal official-source events; MarketWatch dated factual snapshot; NasDecode Nasdaq earnings feed",
         "coverage": "Economic, monetary-policy and related technology-company earnings events; MarketWatch fields are only as current as snapshot date",
         "marketwatchObservedAt": snapshot.get("observedAt"),
