@@ -138,7 +138,7 @@ if(wrap&&view==='calendar'){
  const timeText=e=>{if(!e.timeET)return safe(e.timeLabel||'TBA');const [h,m]=e.timeET.split(':').map(Number);return (h%12||12)+':'+String(m).padStart(2,'0')+(h>=12?' PM':' AM')};
  const txt=x=>x===null||x===undefined||x===''?'—':safe(x);
  let feed=null,filter='all';
- const expandedDays=new Set();
+ const dayOverrides=new Map();
  const nyToday=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
  const render=()=>{
   if(!feed)return;
@@ -148,7 +148,7 @@ if(wrap&&view==='calendar'){
   for(let day=new Date(start+'T12:00:00Z');day<=new Date(end+'T12:00:00Z');day.setUTCDate(day.getUTCDate()+1)){
     if(day.getUTCDay()===0||day.getUTCDay()===6)continue; // Business-day calendar: omit Saturday and Sunday.
     const key=day.toISOString().slice(0,10),items=list.filter(e=>e.date===key);
-    const past=key<today,opened=!past||expandedDays.has(key);
+    const past=key<today,opened=dayOverrides.has(key)?dayOverrides.get(key):!past;
     body+='<tr class="nd-cal-day"><td colspan="6"><button type="button" class="nd-cal-day-toggle" data-cal-day="'+key+'" aria-expanded="'+opened+'"><span class="nd-cal-chevron">'+(opened?'▾':'▸')+'</span>'+safe(dateText(key))+' <span class="nd-cal-day-count"> · '+items.length+' event'+(items.length===1?'':'s')+(past?' · Passed':'')+'</span></button></td></tr>';
     if(!items.length){body+='<tr class="nd-cal-entry" data-cal-entry-day="'+key+'"'+(opened?'':' hidden')+'><td colspan="6" style="color:#9ca5ae">No tracked releases scheduled</td></tr>';continue}
     for(const e of items){
@@ -158,7 +158,7 @@ if(wrap&&view==='calendar'){
   }
   host.innerHTML='<div class="nd-cal-toolbar"><div class="nd-cal-intro">U.S. economic releases, Fed events and technology earnings · '+safe(dateText(start))+' – '+safe(dateText(end))+' · All times Eastern (ET)</div><div class="nd-cal-filter">'+[['all','All events'],['high','High impact'],['Macro','Economic'],['Inflation','Inflation'],['Rates','Rates'],['Fed','Fed'],['Earnings','Earnings']].map(([v,label])=>'<button type="button" data-cal-filter="'+v+'" aria-pressed="'+(filter===v)+'">'+label+'</button>').join('')+'</div></div><div class="nd-cal-table-wrap"><table><thead><tr><th>Time (ET)</th><th>Report</th><th>Period</th><th>Actual</th><th>Forecast</th><th>Previous</th></tr></thead><tbody>'+body+'</tbody></table></div><p class="nd-cal-note">Sources: NasCal official-source research (read-only), a dated MarketWatch factual snapshot, and NasDecode’s Nasdaq earnings feed. MarketWatch observations are from '+safe(feed.marketwatchObservedAt||'an undated capture')+' and are not a live licensed feed. Earnings forecasts are EPS estimates. Missing readings show “—”. Updated '+safe(feed.updatedAt||'unknown')+'.</p>';
   host.querySelectorAll('[data-cal-filter]').forEach(btn=>btn.addEventListener('click',()=>{filter=btn.dataset.calFilter;render()}));
-  host.querySelectorAll('[data-cal-day]').forEach(btn=>btn.addEventListener('click',()=>{const day=btn.dataset.calDay;if(expandedDays.has(day))expandedDays.delete(day);else expandedDays.add(day);render()}));
+  host.querySelectorAll('[data-cal-day]').forEach(btn=>btn.addEventListener('click',()=>{const day=btn.dataset.calDay;dayOverrides.set(day,btn.getAttribute('aria-expanded')!=='true');render()}));
  };
  const load=async()=>{try{const r=await fetch('/data/economic-calendar.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json();if(!Array.isArray(d.events)||!d.windowStart||!d.windowEnd)throw Error('Invalid calendar data');const changed=!feed||JSON.stringify(d.events)!==JSON.stringify(feed.events)||d.windowStart!==feed.windowStart||d.windowEnd!==feed.windowEnd;if(changed){feed=d;render()}}catch(e){if(!feed)host.innerHTML='<div class="nd-cal-loading">Economic calendar is temporarily unavailable: '+safe(e.message)+'</div>';else console.warn('Calendar refresh temporarily unavailable',e)}};
  load();
