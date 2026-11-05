@@ -1,13 +1,170 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-05T16:13:19.000Z",
+  "updated": "2026-11-05T18:19:18.000Z",
   "horizon": [
     "2026-11-05",
     "2026-11-06",
     "2026-11-09"
   ],
   "entries": [
+    {
+      "date": "2026-11-05",
+      "timeET": "13:19",
+      "asOfET": "2026-11-05T13:19:18-05:00",
+      "bias": "Bearish",
+      "previousBias": "Bearish",
+      "materialChange": true,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "The existing bearish call is reinforced by a materially deeper semiconductor-led selloff: a Reuters global-markets report published 16:36 UTC cites Nasdaq -5.2%, SOX -11%, S&P 500 -3.4% and Dow -2.2%. These figures are from one dispatch but lack individually synchronized exchange timestamps. The deterioration versus the earlier saved Nasdaq -3.09% and SOX -7.1% warrants a material path update, not a second bias downgrade.",
+      "bullish": [
+        "A falling 10-year Treasury yield (Reuters approximately 4.88% at an unspecified quote time) may soften discount-rate pressure, but has not stopped the observed selling.",
+        "Initial jobless claims at 189,000 and Q3 productivity +3.6% annualized suggest labor-market and supply-side resilience, not confirmed bullish price response.",
+        "A sharp oversold rebound is possible if SOX leadership, breadth and volatility reverse; this is a conditional scenario."
+      ],
+      "bearish": [
+        "Reuters reports Nasdaq Composite -5.2% and SOX -11% during Thursday trading, markedly weaker than the previous saved observations.",
+        "The selloff has broadened: S&P 500 -3.4% and Dow -2.2% in the Reuters report, versus smaller declines in the prior checkpoint.",
+        "Qualcomm -11% and data-center investment scrutiny continue to weigh on semiconductor demand expectations; actual broad project cancellations are not established."
+      ],
+      "observations": [
+        {
+          "instrument": "Nasdaq Composite",
+          "value": -5.2,
+          "unit": "percent change",
+          "timestamp": "2026-11-05 16:36 UTC Reuters dispatch; underlying quote time unspecified",
+          "source": "Reuters",
+          "sourceUrl": "https://www.reuters.com/business/energy/global-markets-global-markets-2026-11-05/",
+          "quality": "Intraday; same dispatch as other indexes but not exchange-timestamp synchronized"
+        },
+        {
+          "instrument": "Philadelphia Semiconductor Index (SOX)",
+          "value": -11,
+          "unit": "percent change",
+          "timestamp": "2026-11-05 16:36 UTC Reuters dispatch; underlying quote time unspecified",
+          "source": "Reuters",
+          "sourceUrl": "https://www.reuters.com/business/energy/global-markets-global-markets-2026-11-05/",
+          "quality": "Intraday reported value; not paired with verified QQQ cash return"
+        },
+        {
+          "instrument": "S&P 500",
+          "value": -3.4,
+          "unit": "percent change",
+          "timestamp": "2026-11-05 16:36 UTC Reuters dispatch; underlying quote time unspecified",
+          "source": "Reuters",
+          "sourceUrl": "https://www.reuters.com/business/energy/global-markets-global-markets-2026-11-05/",
+          "quality": "Intraday delayed reporting"
+        },
+        {
+          "instrument": "Dow Jones Industrial Average",
+          "value": -2.2,
+          "unit": "percent change",
+          "timestamp": "2026-11-05 16:36 UTC Reuters dispatch; underlying quote time unspecified",
+          "source": "Reuters",
+          "sourceUrl": "https://www.reuters.com/business/energy/global-markets-global-markets-2026-11-05/",
+          "quality": "Intraday delayed reporting"
+        },
+        {
+          "instrument": "Brent crude",
+          "value": 97,
+          "unit": "USD/barrel approximate",
+          "timestamp": "2026-11-05 Reuters global-markets dispatch; precise quote time unspecified",
+          "source": "Reuters",
+          "sourceUrl": "https://www.reuters.com/business/energy/global-markets-global-markets-2026-11-05/",
+          "quality": "Approximate, rebound of 2.58%; asynchronous"
+        },
+        {
+          "instrument": "US 10Y Treasury yield",
+          "value": 4.88,
+          "unit": "percent annual yield",
+          "timestamp": "2026-11-05 Reuters global-markets dispatch; precise quote time unspecified",
+          "source": "Reuters",
+          "sourceUrl": "https://www.reuters.com/business/energy/global-markets-global-markets-2026-11-05/",
+          "quality": "4.88 percent, not 488 percent; asynchronous; not matched to 2Y"
+        },
+        {
+          "instrument": "US 2Y Treasury yield",
+          "value": 4.579,
+          "unit": "percent annual yield",
+          "timestamp": "2026-11-04 prior-session Reuters-derived report; precise time unavailable",
+          "source": "Economic Times citing Reuters",
+          "sourceUrl": "https://m.economictimes.com/news/international/us/us-bond-yields-fall-after-midterm-election-2026-results-why-are-10-year-30-year-2-year-treasury-notes-down/articleshow/135554500.cms",
+          "quality": "STALE, not comparable to current 10Y; no current curve computed"
+        },
+        {
+          "instrument": "Nasdaq breadth",
+          "value": 2.17,
+          "unit": "decliners per advancer",
+          "timestamp": "2026-11-05 earlier Reuters session report; precise time unspecified",
+          "source": "Previous saved assessment",
+          "quality": "STALE versus new index snapshot; do not treat as current breadth"
+        },
+        {
+          "instrument": "Open Watch curated archive",
+          "value": 134,
+          "unit": "events",
+          "timestamp": "2026-11-05 18:19 UTC repository read",
+          "source": "repural/NasDecode/data/history/market-watch-events.json",
+          "quality": "Repository count unchanged versus prior assessment; no newly curated catalyst"
+        },
+        {
+          "instrument": "QQQ cash return, VXN, current VIX, matched 2Y/10Y curve, WTI, direct CME FedWatch probabilities",
+          "value": null,
+          "unit": "unverified",
+          "timestamp": "2026-11-05T18:19:18Z",
+          "source": "Current research",
+          "quality": "No defensible synchronized quote set; do not impute values"
+        }
+      ],
+      "conditions": {
+        "upgrade": "Require sustained SOX improvement relative to QQQ, breadth recovering toward or above parity and declining volatility with stable Treasury yields.",
+        "downgrade": "Persistent double-digit SOX losses, further broadening to megacaps and new confirmed AI capex reductions or adverse payroll-driven yield shock would deepen downside conviction.",
+        "invalidation": "A broad cash-market reversal led by SOX, improving Nasdaq breadth and a constructive reaction to Friday payrolls would invalidate the bearish base case."
+      },
+      "upcomingEvents": [
+        {
+          "date": "2026-11-05",
+          "event": "Cash-session closing SOX/QQQ, Nasdaq breadth and volatility confirmation",
+          "status": "Not yet observed"
+        },
+        {
+          "date": "2026-11-06",
+          "event": "US October employment report",
+          "timeET": "08:30",
+          "status": "Scheduled; outcome unknown"
+        },
+        {
+          "date": "2026-11-06",
+          "event": "University of Michigan preliminary consumer sentiment",
+          "status": "Scheduled; time not independently checked"
+        },
+        {
+          "date": "2026-11-09",
+          "event": "Post-payrolls semiconductor and Nasdaq follow-through",
+          "status": "Scenario checkpoint"
+        }
+      ],
+      "provenance": {
+        "repository": "repural/NasDecode",
+        "previousAssessmentET": "2026-11-05T11:13:19-05:00",
+        "openWatchCount": 134,
+        "sources": [
+          "https://www.reuters.com/business/energy/global-markets-global-markets-2026-11-05/",
+          "https://ca.investing.com/news/stock-market-news/techstock-rout-accelerates-retreat-from-the-ai-trade-4935818"
+        ],
+        "dataQuality": "Reuters Nov 5 global dispatch published 16:36 UTC supplies an intraday multi-index snapshot but does not provide identical exchange quote timestamps. The 2Y value is from a prior session and must not be combined with today's 10Y to calculate a curve. VXN/VIX, QQQ, WTI, and direct FedWatch are not verified. Previous breadth is historical, not current. No fresh curated Open Watch event. Source publication and price observation times are distinct."
+      },
+      "editorial": {
+        "marketOverview": "Thursday's technology drawdown has accelerated substantially since the preceding saved assessment. Reuters' later global-markets dispatch places the Nasdaq Composite down about 5.2% and the Philadelphia Semiconductor Index down about 11%, alongside a 3.4% decline in the S&P 500 and a 2.2% decline in the Dow. These intraday numbers are reported together, but their underlying quote timestamps are not guaranteed to match. The move now appears broader than a semiconductor-only rotation, even though chips remain the epicenter.",
+        "whatChanged": "The preceding saved assessment already downgraded the bias to bearish when Nasdaq was down 3.09% and SOX 7.1%. The later Reuters report shows materially larger losses and more damage in the broad indexes. This is a change in the intensity and likely persistence of the selloff rather than a change in the direction of the existing bearish stance. The curated Open Watch event archive remains at 134, so the new evidence is actual market deterioration, not an additional newly curated headline.",
+        "marketInterpretation": "The unusually large semiconductor drawdown suggests investors are reassessing both the pace and financing of AI infrastructure investment. Political opposition to new data-center construction and weaker smartphone-chip demand add uncertainty, but there is not yet verified evidence that the whole sector's committed spending has been canceled. Falling Treasury yields offer little immediate protection when earnings and positioning fears dominate. The move from concentrated chip weakness toward a wider equity decline raises near-term contagion risk.",
+        "threeDayPath": "For the remainder of Thursday November 5, the priority is whether forced selling and weak breadth persist into the close or whether a broad recovery reduces the drawdown. Friday November 6 is a separate event-risk window: the employment report may move the 2-year yield and Fed expectations, potentially intensifying or offsetting the valuation shock. Monday November 9 will test whether any post-payrolls rebound attracts durable semiconductor participation. These are scenario branches rather than predictions of exact closing prices.",
+        "bullCase": "A rebound could develop if Thursday's rapid liquidation exhausts itself, especially if yields stay contained and the payrolls release avoids both a sharp inflationary rates repricing and a severe growth scare. Claims and productivity releases show economic resilience, though they have not translated into positive prices today. A credible recovery needs improving SOX relative strength, broader Nasdaq participation and a declining volatility premium; an isolated bounce in a few megacaps would be insufficient.",
+        "bearCase": "A prolonged selloff becomes more likely if the semiconductor losses remain near double digits, weakness spreads across cloud, hardware and megacap platforms, and Friday's labor report revives pressure on the Fed outlook. Confirmation of real AI capex reductions, material China import restrictions or worsening financing conditions would amplify the downside case. At present these potential catalysts should be separated from the verified price drawdown.",
+        "watchNext": "At the close, obtain matched QQQ and SOX returns, Nasdaq advances versus declines, VXN/VIX and actual closing index values. Verify 2-year and 10-year yields from the same timestamp and keep both in percent units; do not combine Wednesday's 2-year yield with Thursday's 10-year quote. Refresh Brent, WTI and direct FedWatch pricing after payrolls. Track official Nvidia import-approval developments and whether data-center opposition results in confirmed project cancellations."
+      }
+    },
     {
       "date": "2026-11-05",
       "timeET": "11:13",
