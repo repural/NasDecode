@@ -1,13 +1,126 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-05T05:33:07.000Z",
+  "updated": "2026-11-05T06:15:42.000Z",
   "horizon": [
     "2026-11-05",
     "2026-11-06",
     "2026-11-09"
   ],
   "entries": [
+    {
+      "date": "2026-11-05",
+      "timeET": "01:15",
+      "asOfET": "2026-11-05T01:15:42-05:00",
+      "bias": "Cautious / Neutral",
+      "previousBias": "Cautious / Neutral",
+      "materialChange": false,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "Pre-market: Wednesday's Nasdaq +1.44% rebound and sharp SOX -3.1% divergence remain the key confirmed cash-session signals. The Open Watch archive now contains 130 entries, including two Qualcomm and Arm earnings records already incorporated in the prior outlook. Thursday claims and Friday payrolls are the next macro tests. No fresh synchronized cash-market confirmation supports a directional change.",
+      "bullish": [
+        "November 4 Nasdaq Composite +1.44% and S&P 500 +1.58% closing gains confirm broad-index demand (CNBC figures reported by StockTitan).",
+        "November 4 crude settlement near $88.12/bbl WTI, down more than 8%, offers potential inflation relief; this is a historical settlement, not a current quote.",
+        "Arm's $1.44 billion revenue and above-consensus guidance support some AI-server demand, notwithstanding weak after-hours share response."
+      ],
+      "bearish": [
+        "November 4 SOX -3.1% versus Nasdaq approximately +1.4% indicates pronounced semiconductor divergence (reported same-session returns, not synchronized ticks).",
+        "Qualcomm's initial after-hours decline of more than 6% after weaker handset revenue is a risk for Thursday semiconductor breadth, not proof of Thursday selling.",
+        "Thursday's claims and Friday's labor report could reprice yields and growth expectations; direction and market reaction remain unknown."
+      ],
+      "observations": [
+        {
+          "instrument": "Nasdaq Composite",
+          "value": 1.44,
+          "unit": "percent daily cash close return",
+          "timestamp": "2026-11-04 16:00 ET",
+          "source": "CNBC closing recap via StockTitan",
+          "sourceUrl": "https://www.stocktitan.net/articles/stock-market-today-live-november-4-2026",
+          "quality": "reported previous cash close; not a November 5 quote"
+        },
+        {
+          "instrument": "S&P 500",
+          "value": 1.58,
+          "unit": "percent daily cash close return",
+          "timestamp": "2026-11-04 16:00 ET",
+          "source": "CNBC closing recap via StockTitan",
+          "sourceUrl": "https://www.stocktitan.net/articles/stock-market-today-live-november-4-2026",
+          "quality": "reported previous cash close"
+        },
+        {
+          "instrument": "SOX",
+          "value": -3.1,
+          "unit": "percent daily cash close return",
+          "timestamp": "2026-11-04 US cash close",
+          "source": "Reuters, as recorded in prior assessment",
+          "sourceUrl": "https://www.reuters.com/business/us-stock-index-futures-steady-democrats-seize-congress-2026-11-04/",
+          "quality": "carried-forward reported previous close, not tick synchronized with Nasdaq"
+        },
+        {
+          "instrument": "WTI crude",
+          "value": 88.12,
+          "unit": "USD per barrel",
+          "timestamp": "2026-11-04 settlement (reported 19:26 ET)",
+          "source": "CNBC via StockTitan",
+          "sourceUrl": "https://www.stocktitan.net/articles/stock-market-today-live-november-4-2026",
+          "quality": "previous-session settlement; not current quote"
+        },
+        {
+          "instrument": "Qualcomm handset chip revenue",
+          "value": 5.14,
+          "unit": "USD billions",
+          "timestamp": "2026-11-04 earnings",
+          "source": "Reuters / curated Open Watch",
+          "quality": "reported quarterly result, 26% annual decline"
+        },
+        {
+          "instrument": "Curated Open Watch event count",
+          "value": 130,
+          "unit": "events",
+          "timestamp": "2026-11-05T06:00:12Z",
+          "source": "repural/NasDecode/data/history/market-watch-events.json",
+          "quality": "verified repository archive; latest two Qualcomm and Arm events already reflected in previous assessment, not new directional evidence"
+        },
+        {
+          "instrument": "QQQ/SOX synchronized returns, Treasury 10Y and 2Y, yield curve, VXN/VIX, Nasdaq breadth, Brent, current WTI, FedWatch probabilities",
+          "value": null,
+          "unit": "unavailable synchronized readings",
+          "timestamp": "2026-11-05T01:15:42-05:00",
+          "source": "research checkpoint",
+          "quality": "not independently verified; no estimates substituted; Treasury yields should be percent, spread percentage points or basis points"
+        }
+      ],
+      "conditions": {
+        "upgrade": "Confirm SOX stabilization or outperformance versus QQQ at matching Thursday timestamps, broad Nasdaq participation and contained VXN, alongside stable yields.",
+        "downgrade": "Confirm further SOX/QQQ underperformance with weak breadth and rising VXN; worsening post-claims or payrolls yield pressure would add conviction.",
+        "dataRequirements": "Collect matching timestamps and correct Treasury yield scaling: yields in percent; 10Y minus 2Y in percentage points; multiply by 100 only to express basis points."
+      },
+      "upcomingEvents": [
+        "2026-11-05 08:30 ET: US initial jobless claims; consensus around 197K in published calendar, not actual result",
+        "2026-11-05 US cash session: Qualcomm/Arm earnings follow-through and semiconductor breadth",
+        "2026-11-06 08:30 ET: scheduled October US employment report; verify release status",
+        "2026-11-09: post-employment follow-through"
+      ],
+      "provenance": {
+        "asOfET": "2026-11-05T01:15:42-05:00",
+        "sourceUrls": [
+          "https://www.stocktitan.net/articles/stock-market-today-live-november-4-2026",
+          "https://ng.investing.com/news/stock-market-news/initial-jobless-claims-highlight-economic-data-due-thursday-93CH-2783739",
+          "https://www.reuters.com/business/media-telecom/qualcomm-forecasts-upbeat-sales-strength-non-smartphone-segments-2026-11-04/",
+          "https://www.reuters.com/business/arm-beats-second-quarter-revenue-estimates-ai-data-center-demand-2026-11-04/"
+        ],
+        "dataQuality": "Previous cash-session and after-hours figures are explicitly historical. No synchronized current premarket quotes for QQQ/SOX, 10Y/2Y, VXN/VIX, breadth, Brent/WTI or FedWatch were independently established. Archive increased from previously reported 128 to 130, with earnings entries reflecting known catalysts, not fresh market confirmation. Expected catalyst impacts are scenarios."
+      },
+      "editorial": {
+        "marketOverview": "Thursday begins with a divided picture. The November 4 Nasdaq rebound demonstrates real index demand, and the sharp retreat in crude could ease inflation-sensitive valuation pressure. Yet the reported 3.1% decline in SOX against a roughly 1.4% Nasdaq gain leaves semiconductor leadership conspicuously weak. Until Thursday's cash session opens, the available evidence remains yesterday's closing returns and earnings reactions, not a new synchronized premarket signal.",
+        "whatChanged": "The curated Open Watch archive now holds 130 events rather than the 128 counted in the previous assessment. Its two newest entries document Qualcomm's handset weakness and Arm's AI-server growth, both of which the preceding editorial had already considered. The additional structured event records improve provenance but do not constitute new price confirmation or independently justify a bias change. Wednesday's WTI settlement near $88.12 and the reported broad-index closing gains further contextualize the previous session, not Thursday's direction.",
+        "marketInterpretation": "The market is balancing broad-index relief against weak chip participation. Lower oil can plausibly help inflation expectations, but that is an expected transmission channel rather than a measured Nasdaq response to crude alone. Similarly, Qualcomm and Arm's extended-hours reactions highlight stock-specific sensitivity without proving sector-wide selling in the next cash session. Cautious / Neutral remains appropriate until participation, volatility and rates are observed together.",
+        "threeDayPath": "Thursday November 5 should test whether chip weakness spreads beyond the earnings names, with weekly claims potentially shifting the rates narrative before the open. Friday November 6's scheduled employment release is the main macro inflection point and could move both Treasury yields and technology valuations in either direction. Monday November 9 will reveal whether the market can consolidate Wednesday's bounce or whether weak semiconductor leadership undermines it. These are conditional paths, not observed future returns.",
+        "bullCase": "The bullish path requires SOX to stop lagging QQQ during matched cash-market windows, with stronger breadth and no volatility breakout. Continued relief in oil and stable or declining Treasury yields could then support a wider technology recovery. Positive Arm server demand may help sentiment if buyers confirm it in traded prices rather than merely reacting to management guidance.",
+        "bearCase": "The bearish path begins if Qualcomm's earnings-related decline spreads into other chips and the SOX gap persists while QQQ reverses its prior rebound. Rising VXN, deteriorating Nasdaq breadth or higher yields after labor releases would strengthen the case for a downside regime shift. Without those corroborating observations, the semiconductor divergence is a serious warning rather than a verified three-day breakdown.",
+        "watchNext": "Capture Thursday's opening and closing QQQ and SOX returns at matching timestamps, Nasdaq advance-decline breadth, VXN/VIX, correctly scaled 10-year and 2-year Treasury yields, Brent and WTI, and FedWatch probabilities. Compare the actual claims release with expectations at 08:30 ET, then prepare for Friday's payrolls and Monday's follow-through. Distinguish the two newly archived earnings records from any genuinely new market-confirmed Open Watch catalyst."
+      }
+    },
     {
       "date": "2026-11-05",
       "timeET": "00:33",
