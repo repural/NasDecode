@@ -1,13 +1,139 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-05T08:17:25.000Z",
+  "updated": "2026-11-05T09:08:17.947Z",
   "horizon": [
     "2026-11-05",
     "2026-11-06",
     "2026-11-09"
   ],
   "entries": [
+    {
+      "date": "2026-11-05",
+      "timeET": "04:08",
+      "asOfET": "2026-11-05T04:08:00-05:00",
+      "bias": "Cautious / Neutral",
+      "previousBias": "Cautious / Neutral",
+      "materialChange": false,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "No new verified US cash-session price discovery since the 03:17 ET assessment. Reuters' November 5 overnight report continues to describe Brent near $94.21/bbl after a nearly 9% decline and 10-year Treasury yields near 4.85%, while Asian chip weakness and possible AI data-center restrictions offset macro relief. The curated Open Watch archive remains at 132 entries. Thursday US claims and the cash-session SOX/QQQ response, then Friday payrolls, remain the critical tests; outlook unchanged.",
+      "bullish": [
+        "Reuters-reported crude retreat potentially reduces inflation pressure; Brent around $94.21/bbl in overnight coverage, not a live quote.",
+        "Reuters-reported US 10-year yield near 4.85% supports a possible duration-sensitive technology valuation relief scenario.",
+        "November 4 broad Nasdaq cash-session rebound, though not matched by chip leadership."
+      ],
+      "bearish": [
+        "November 4 SOX reportedly fell about 3.1% despite Nasdaq rising around 1.4%; these are historical reported closing returns, not synchronized intraday observations.",
+        "Reuters reports Asian semiconductor weakness and concerns over AI data-center policy following US midterm results.",
+        "Qualcomm earnings-related handset weakness and mixed Arm reaction leave chip leadership unconfirmed."
+      ],
+      "observations": [
+        {
+          "instrument": "Brent crude",
+          "value": 94.21,
+          "unit": "USD/barrel",
+          "timestamp": "2026-11-05 overnight Reuters dispatch; exact quote timestamp unverified",
+          "source": "Reuters",
+          "sourceUrl": "https://www.reuters.com/business/energy/global-markets-global-markets-2026-11-05/",
+          "quality": "Reported earlier overnight quote, carried forward; not a current synchronized price"
+        },
+        {
+          "instrument": "Brent overnight change",
+          "value": -9,
+          "unit": "percent approximate",
+          "timestamp": "2026-11-05 Reuters overnight dispatch",
+          "source": "Reuters",
+          "sourceUrl": "https://www.reuters.com/business/energy/global-markets-global-markets-2026-11-05/",
+          "quality": "Nearly 9% decline reported; approximate, not independently tick-verified"
+        },
+        {
+          "instrument": "US 10-year Treasury yield",
+          "value": 4.85,
+          "unit": "percent per annum",
+          "timestamp": "2026-11-05 Reuters overnight dispatch; exact quote timestamp unavailable",
+          "source": "Reuters",
+          "sourceUrl": "https://www.reuters.com/business/energy/global-markets-global-markets-2026-11-05/",
+          "quality": "Already percent; no multiplication by 100; historical unsynchronized quote"
+        },
+        {
+          "instrument": "Nasdaq Composite",
+          "value": 1.4,
+          "unit": "percent approximate previous cash-session return",
+          "timestamp": "2026-11-04 US cash close",
+          "source": "Reuters",
+          "sourceUrl": "https://www.reuters.com/business/us-stock-index-futures-steady-democrats-seize-congress-2026-11-04/",
+          "quality": "Previous-session return, not current quote"
+        },
+        {
+          "instrument": "SOX",
+          "value": -3.1,
+          "unit": "percent approximate previous cash-session return",
+          "timestamp": "2026-11-04 US cash close",
+          "source": "Prior verified NasDecode assessment based on Reuters",
+          "quality": "Carried-forward historical reported return; not a matched QQQ/SOX intraday pair"
+        },
+        {
+          "instrument": "Curated Open Watch event count",
+          "value": 132,
+          "unit": "events",
+          "timestamp": "2026-11-05T07:20:00+00:00",
+          "source": "repural/NasDecode/data/history/market-watch-events.json",
+          "quality": "Repository archive count; unchanged from preceding 132-event assessment"
+        },
+        {
+          "instrument": "QQQ/SOX matched quotes, 2-year Treasury yield, 2Y-10Y spread, VXN/VIX, breadth, WTI, current Brent, FedWatch probabilities",
+          "value": null,
+          "unit": "unavailable",
+          "timestamp": "2026-11-05T09:08:17.947Z",
+          "source": "Current research checkpoint",
+          "quality": "No verified synchronized figures; not estimated; 2Y-10Y spread cannot be computed without valid 2Y yield"
+        }
+      ],
+      "conditions": {
+        "upgrade": "SOX stabilizes or outperforms QQQ during matched cash-market intervals, breadth improves, volatility remains contained, and oil/yield relief persists without growth scare.",
+        "downgrade": "SOX underperformance broadens into QQQ with worsening breadth and rising VXN/VIX, or Friday payrolls drive a sustained adverse rates repricing.",
+        "invalidation": "Treat oil/yield declines as insufficient evidence of an equity rally until US cash-session sector and breadth confirmation; a material new policy announcement or labor surprise requires reassessment."
+      },
+      "upcomingEvents": [
+        {
+          "date": "2026-11-05",
+          "event": "US initial jobless claims and Thursday US cash-session semiconductor/QQQ reaction",
+          "status": "Scheduled/awaiting release and price confirmation"
+        },
+        {
+          "date": "2026-11-06",
+          "event": "US October employment situation / nonfarm payrolls at 08:30 ET",
+          "status": "Scheduled; outcome unknown"
+        },
+        {
+          "date": "2026-11-09",
+          "event": "First subsequent US trading session to assess payrolls follow-through",
+          "status": "Scenario, not known outcome"
+        }
+      ],
+      "provenance": {
+        "repository": "repural/NasDecode",
+        "previousAssessment": "2026-11-05T03:17:25-05:00",
+        "openWatchUpdated": "2026-11-05T07:20:00+00:00",
+        "openWatchCount": 132,
+        "webSources": [
+          "https://www.reuters.com/business/energy/global-markets-global-markets-2026-11-05/",
+          "https://www.reuters.com/business/us-stock-index-futures-steady-democrats-seize-congress-2026-11-04/",
+          "https://apnews.com/article/929f6739871efc054ae72afca2b68c3a"
+        ],
+        "dataQuality": "Reuters overnight oil and yields are asynchronous historical observations. November 4 equity returns are previous cash-session data. No synchronized live ETF, volatility, breadth, curve, WTI or FedWatch measurements available. 4.85 is 4.85% annual yield, not 485%; no false precision or synthetic spreads."
+      },
+      "editorial": {
+        "marketOverview": "Nasdaq's three-day setup remains a contest between macro relief and weak semiconductor participation. Reuters' overnight November 5 coverage reported Brent near $94.21 per barrel after a steep decline and the 10-year yield around 4.85%, potentially improving the discount-rate backdrop for growth stocks. But Wednesday's reported Nasdaq advance contrasted with a steep SOX decline, and subsequent Asian technology weakness argues against treating lower oil as a confirmed semiconductor recovery.",
+        "whatChanged": "Compared with the 03:17 ET saved assessment, there is no newly verified synchronized US market reaction and the curated Open Watch archive remains at 132 events. The overnight oil and Treasury repricing was already incorporated into that earlier material-catalyst assessment. Fresh searches reinforce the importance of Friday's labor release but do not provide an independent directional surprise or justify repeating a material-change alert.",
+        "marketInterpretation": "A decline in energy costs may ease inflation expectations and support long-duration equities, but the impact depends on its cause and on the actual response in yields and earnings expectations. Meanwhile potential restrictions on AI data-center expansion and company-specific chip demand concerns are distinct headwinds. The observed Asian market response cannot be mechanically extrapolated to US SOX or QQQ, and historical closing returns should not be confused with current prices.",
+        "threeDayPath": "On Thursday November 5, the initial claims release and subsequent US cash trading should test whether lower energy and yields translate into broader participation and a stabilization of semiconductor relative strength. Friday November 6 payrolls can materially reprice Fed expectations and the yield curve in either direction. Monday November 9 offers the first post-payroll follow-through test. These are conditional scenarios, not predictions of exact returns.",
+        "bullCase": "If crude remains lower, Treasury yields remain contained and the US cash session shows improving Nasdaq breadth with SOX no longer materially lagging QQQ, the recent broad-index rebound could develop into a more durable advance. A balanced labor report that avoids renewed inflation anxiety would reinforce this path. Such confirmations have not yet been observed at matched timestamps.",
+        "bearCase": "If Asian chip weakness transmits into the US session, Qualcomm-related selling spreads and AI infrastructure policy uncertainty persists, semiconductor underperformance could undermine the index rebound. An adverse payroll surprise that lifts yields, or a reversal in oil, could further pressure valuation-sensitive shares. Rising volatility and worsening breadth would convert this risk into stronger evidence for a downgrade.",
+        "watchNext": "Monitor Thursday 08:30 ET claims, the opening and closing QQQ/SOX relative returns at matched timestamps, Nasdaq breadth, VXN/VIX, and 2-year/10-year Treasury yields with units checked. Compare Brent and WTI only at documented quote times. Watch Friday 08:30 ET payrolls and any concrete data-center legislation or geopolitical developments; distinguish announcements from market reaction."
+      }
+    },
     {
       "date": "2026-11-05",
       "timeET": "03:17",
