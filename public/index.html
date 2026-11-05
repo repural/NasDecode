@@ -326,6 +326,7 @@ body{font-size:14px;font-weight:400;-webkit-font-smoothing:antialiased}
 #factorCards .nd-oil-pair .nd-oil-secondary{margin-top:7px}
 #factorCards .nd-oil-pair .metric-change{display:block}
 
+.nd-wt-moving-averages{display:flex;flex-wrap:wrap;gap:12px 28px;padding:12px 0;border-top:1px solid #292d32;border-bottom:1px solid #292d32}.nd-wt-moving-averages b{display:block;font-size:18px;margin:4px 0}.nd-wt-moving-averages small{color:#aab3bd;font-size:12px}.nd-wt-moving-averages .nd-wt-sma-meta{flex-basis:100%;font-size:12px;color:#aab3bd}
 /* Technical Analysis / NVDA and SOXL WaveTrend: compact black-first design. */
 #factorCards .nd-wt-card{grid-column:1/-1;display:flex;flex-direction:column;gap:14px;min-width:0;background:#0d0f11;border:1px solid #292d32;border-radius:14px;padding:19px 20px;color:#f5f5f5}
 .nd-wt-header,.nd-wt-panel-head,.nd-wt-pair,.nd-wt-chart-head,.nd-wt-bottom,.nd-wt-chart-legend{display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -640,6 +641,7 @@ function render(d){
     '<div class="nd-wt-summary"><b>NasDecode interpretation</b><span class="nd-wt-interpretation">Loading research…</span></div>'+
     (showHistory?'<div class="nd-wt-backtest"></div>':'')+
     '<div class="nd-wt-bottom"><span class="nd-wt-freshness">Research feed pending</span><span>Not scored</span></div></section>'; 
+  const qqqWaveTrendCard=waveTrendCard('QQQ','nd-qqq-wave-trend').replace('<div class="nd-wt-panels">','<div class="nd-wt-moving-averages" aria-live="polite"></div><div class="nd-wt-panels">');
   const ndWaveTrendCard=waveTrendCard('NVDA','nd-wave-trend');
   const soxlWaveTrendCard=waveTrendCard('SOXL','nd-soxl-wave-trend',true);
   factorCards.innerHTML=
@@ -647,7 +649,7 @@ function render(d){
     rowCards.slice(0,5).join('')+
     categoryHeading('Market Indicators','Market prices, volatility, positioning, participation and leadership')+
     '<div class="nd-index-strip" id="ndIndexStrip" aria-label="Market index quotes"></div>'+ 
-    rowCards.slice(5).join('')+
+    rowCards.slice(5).join('')+qqqWaveTrendCard+
     categoryHeading('Market Assessment','NasDecode decision layer')+
     summaryCards+directionalShadowCard+opportunityCard+soxlCard+categoryHeading('Technical Analysis','NVDA and SOXL WaveTrend · AVWAP research')+ndWaveTrendCard+soxlWaveTrendCard+avwapResearchCards;
   renderIndexQuotes(d);
@@ -1155,4 +1157,4 @@ document.addEventListener('visibilitychange',async()=>{
   if(!document.hidden){const d=await load();await loadLiveOil();await loadLiveIndices();await loadAnalysis(d);scheduleAutoRefresh()}
 });
 loadChartHistory();setInterval(loadLiveIndices,30000);startLiveOilPolling();(async()=>{const d=await load();await loadLiveOil();await loadAnalysis(d);scheduleAutoRefresh()})();
-</script><script src="nvda-wavetrend.js?v=6"></script><script src="/section-router.js?v=16"></script><script src="session-analysis.js?v=2"></script></body></html>
+</script><script src="nvda-wavetrend.js?v=7"></script><script src="/section-router.js?v=16"></script><script src="session-analysis.js?v=2"></script></body></html>

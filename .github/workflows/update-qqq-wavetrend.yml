@@ -1,0 +1,44 @@
+name: Update QQQ WaveTrend
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/update_qqq_wavetrend.py'
+      - '.github/workflows/update-qqq-wavetrend.yml'
+      - 'data/history/qqq-daily.json'
+  schedule:
+    - cron: '9,24,39,54 8-23 * * 1-5'
+    - cron: '9,24,39,54 0-1 * * 2-6'
+permissions:
+  contents: write
+concurrency:
+  group: nasdecode-qqq-wavetrend
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate QQQ calculations and display
+        run: |
+          python -m unittest discover -s tests -p 'test_qqq_wavetrend.py' -v
+          node tests/test_qqq_wavetrend.cjs
+      - name: Collect QQQ 4H and 8H and publish daily moving averages
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: python -m scripts.update_qqq_wavetrend
+      - name: Save QQQ data
+        run: |
+          set -euo pipefail
+          git config user.name nasdecode-bot
+          git config user.email actions@users.noreply.github.com
+          git add data/research/qqq-wavetrend*.json public/data/qqq-wavetrend.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Collect and publish QQQ WaveTrend and daily SMA50/SMA200'
+          for attempt in 1 2 3 4; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1

@@ -18,7 +18,7 @@ METRICS = ("open", "high", "low", "close", "wt1", "wt2")
 
 def reconcile(shadow, massive, now=None):
     now = now or dt.datetime.now(NY)
-    if massive.get("symbol") not in ("NVDA", "SOXL") or massive.get("fetchErrors"):
+    if massive.get("symbol") not in ("NVDA", "SOXL", "QQQ") or massive.get("fetchErrors"):
         raise ValueError("Invalid Massive historical archive")
     if shadow.get("symbol") != massive["symbol"] or not shadow.get("researchOnly") or shadow.get("publicationAllowed") is not False:
         raise ValueError("Invalid or non-research Yahoo shadow archive")
@@ -59,7 +59,7 @@ def reconcile(shadow, massive, now=None):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--symbol', choices=('NVDA', 'SOXL'), default='NVDA')
+    parser.add_argument('--symbol', choices=('NVDA', 'SOXL', 'QQQ'), default='NVDA')
     symbol = parser.parse_args().symbol.lower()
     shadow_path = Path('data/research/' + symbol + '-wavetrend-yahoo-shadow.json')
     massive_path = Path('data/research/' + symbol + '-wavetrend.json')

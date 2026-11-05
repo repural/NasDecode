@@ -97,6 +97,12 @@
     if(!root)return;
     const existing=root.querySelector('.nd-wt-panels');
     if(existing)existing.innerHTML=panel('4h')+panel('8h');
+    const averages=root.querySelector('.nd-wt-moving-averages');
+    if(averages&&symbol==='QQQ'){
+      const m=state.data?.movingAverages;
+      const valid=m&&m.timeframe==='1D'&&[m.price,m.sma50,m.sma200].every(v=>typeof v==='number'&&Number.isFinite(v)&&v>0);
+      averages.innerHTML=valid?[50,200].map(n=>'<div><small>DAILY SMA'+n+'</small><b>$'+fixed(m['sma'+n],2)+'</b><span class="'+(m['distanceSMA'+n+'Pct']>=0?'nd-wt-up':'nd-wt-down')+'">'+(m['distanceSMA'+n+'Pct']>0?'+':'')+fixed(m['distanceSMA'+n+'Pct'],2)+'% daily close vs SMA</span></div>').join('')+'<div class="nd-wt-sma-meta">Completed daily close: $'+fixed(m.price,2)+' · '+safe(m.throughDate)+' · Adjusted daily closes</div>':'<span class="nd-wt-sma-meta">Daily SMA50 / SMA200 unavailable</span>';
+    }
     const graphNode=root.querySelector('.nd-wt-chart');
     if(graphNode)graphNode.innerHTML=graph();
     const status=root.querySelector('.nd-wt-alignment'),a=state.data?.timeframes?.['4h']?.latest,b=state.data?.timeframes?.['8h']?.latest;
@@ -152,6 +158,6 @@
   document.addEventListener('visibilitychange',()=>{if(!document.hidden && document.getElementById(rootId))load()});
   return {load,update};
   }
-  const widgets=[createWidget('NVDA','nd-wave-trend'),createWidget('SOXL','nd-soxl-wave-trend')];
+  const widgets=[createWidget('NVDA','nd-wave-trend'),createWidget('SOXL','nd-soxl-wave-trend'),createWidget('QQQ','nd-qqq-wave-trend')];
   window.NDWaveTrend={load:()=>Promise.all(widgets.map(w=>w.load())),update:()=>widgets.forEach(w=>w.update())};
 })();

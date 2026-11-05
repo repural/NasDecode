@@ -97,7 +97,7 @@ def confirmed_yahoo_candles(rows, hours, now):
 
 def build_shadow(baseline, rows, now):
     symbol = baseline.get("symbol")
-    if symbol not in ("NVDA", "SOXL") or baseline.get("fetchErrors"):
+    if symbol not in ("NVDA", "SOXL", "QQQ") or baseline.get("fetchErrors"):
         raise ValueError("Massive archive missing or invalid")
     report = {"schemaVersion": 1, "symbol": symbol, "checkedAtET": now.isoformat(),
               "researchOnly": True, "publicationAllowed": False,
@@ -163,7 +163,7 @@ def build_shadow(baseline, rows, now):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--symbol', choices=('NVDA', 'SOXL'), default='NVDA')
+    parser.add_argument('--symbol', choices=('NVDA', 'SOXL', 'QQQ'), default='NVDA')
     symbol = parser.parse_args().symbol
     baseline_path = Path('data/research/' + symbol.lower() + '-wavetrend.json')
     output_path = Path('data/research/' + symbol.lower() + '-wavetrend-yahoo-shadow.json')
