@@ -1,13 +1,137 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-05T01:38:36.000Z",
+  "updated": "2026-11-05T05:33:07.000Z",
   "horizon": [
     "2026-11-05",
     "2026-11-06",
     "2026-11-09"
   ],
   "entries": [
+    {
+      "date": "2026-11-05",
+      "timeET": "00:33",
+      "asOfET": "2026-11-05T00:33:07-05:00",
+      "bias": "Cautious / Neutral",
+      "previousBias": "Cautious / Neutral",
+      "materialChange": false,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "Overnight pre-market checkpoint: the November 4 Nasdaq recovery remains undermined by the reported 3.1% SOX decline and weak Qualcomm/Arm after-hours reactions. No synchronized November 5 QQQ/SOX cash-market confirmation exists yet. Friday payrolls are the principal scheduled macro catalyst; the cautious/neutral baseline is unchanged.",
+      "bullish": [
+        "November 4 Reuters-reported Nasdaq cash close was +1.4% and S&P 500 +1.6%, demonstrating broad-index buying despite sector divergence.",
+        "Declining Treasury yields and oil in November 4 reporting may ease valuation pressure, but no synchronized overnight numeric series is established.",
+        "Arm revenue and next-quarter guidance were above expectations, although the market's initial response was mixed."
+      ],
+      "bearish": [
+        "November 4 Reuters-reported SOX cash return was -3.1%, around 4.5 percentage points behind Nasdaq's reported +1.4% return; observations are same-session, not tick-synchronized.",
+        "Qualcomm initially fell more than 6% after hours following disappointing handset sales and margin outlook; Thursday cash-session confirmation is pending.",
+        "Weak AI-infrastructure participation and Friday employment-driven yield repricing risk could interrupt the index rebound."
+      ],
+      "observations": [
+        {
+          "instrument": "Nasdaq Composite",
+          "value": 1.4,
+          "unit": "percent daily return",
+          "timestamp": "2026-11-04 US cash close",
+          "source": "Reuters",
+          "sourceUrl": "https://www.reuters.com/business/us-stock-index-futures-steady-democrats-seize-congress-2026-11-04/",
+          "quality": "reported closing return; not tick synchronized with SOX"
+        },
+        {
+          "instrument": "SOX",
+          "value": -3.1,
+          "unit": "percent daily return",
+          "timestamp": "2026-11-04 US cash close",
+          "source": "Reuters",
+          "sourceUrl": "https://www.reuters.com/business/us-stock-index-futures-steady-democrats-seize-congress-2026-11-04/",
+          "quality": "reported closing return; not tick synchronized with Nasdaq"
+        },
+        {
+          "instrument": "S&P 500",
+          "value": 1.6,
+          "unit": "percent daily return",
+          "timestamp": "2026-11-04 US cash close",
+          "source": "Reuters",
+          "sourceUrl": "https://www.reuters.com/business/us-stock-index-futures-steady-democrats-seize-congress-2026-11-04/",
+          "quality": "reported cash close"
+        },
+        {
+          "instrument": "Qualcomm handset revenue",
+          "value": 5.14,
+          "unit": "USD billions",
+          "timestamp": "2026-11-04 earnings release",
+          "source": "Reuters",
+          "sourceUrl": "https://www.reuters.com/business/media-telecom/qualcomm-forecasts-upbeat-sales-strength-non-smartphone-segments-2026-11-04/",
+          "quality": "reported corporate result, -26% year over year"
+        },
+        {
+          "instrument": "Qualcomm after-hours price response",
+          "value": -6,
+          "unit": "percent decline, greater than",
+          "timestamp": "2026-11-04 after-hours; precise minute unavailable",
+          "source": "Reuters",
+          "sourceUrl": "https://www.reuters.com/business/media-telecom/qualcomm-forecasts-upbeat-sales-strength-non-smartphone-segments-2026-11-04/",
+          "quality": "initial extended-hours snapshot; not regular-session return"
+        },
+        {
+          "instrument": "Arm quarterly revenue",
+          "value": 1.44,
+          "unit": "USD billions",
+          "timestamp": "2026-11-04 earnings release",
+          "source": "Reuters",
+          "sourceUrl": "https://www.reuters.com/business/arm-beats-second-quarter-revenue-estimates-ai-data-center-demand-2026-11-04/",
+          "quality": "reported corporate result"
+        },
+        {
+          "instrument": "Curated Open Watch event count",
+          "value": 128,
+          "unit": "events",
+          "timestamp": "2026-11-04T23:53:24+00:00",
+          "source": "repural/NasDecode data/history/market-watch-events.json",
+          "quality": "Repository event count; compared with prior assessment; latest curated event remains November 4 election item."
+        },
+        {
+          "instrument": "QQQ, VXN/VIX, Treasury 10Y/2Y curve, Brent/WTI, FedWatch and Nasdaq breadth",
+          "value": null,
+          "unit": "various; no synchronized numeric observations",
+          "timestamp": "2026-11-05 00:33 ET assessment",
+          "source": "Research checkpoint",
+          "quality": "Not verified as a synchronized current set; no figures inferred. Yield values, if subsequently sourced, must be expressed as percent, and 10Y minus 2Y in percentage points."
+        }
+      ],
+      "conditions": {
+        "upgrade": "Thursday matched-window SOX outperformance or stabilization versus QQQ, improving Nasdaq breadth and contained VXN, with yields stable or declining.",
+        "downgrade": "SOX continues to lag QQQ, Qualcomm/Arm weakness spreads to semiconductor peers, breadth deteriorates and VXN rises, especially if Friday jobs data drives yields higher.",
+        "dataRequirements": "Retrieve timestamp-matched QQQ/SOX, 10Y and 2Y yields in percent, VXN/VIX, breadth, Brent/WTI and Fed probabilities. Compute yield spread in percentage points; multiply by 100 only for basis points."
+      },
+      "upcomingEvents": [
+        "2026-11-05 08:30 ET: weekly U.S. initial jobless claims (verify official release at publication)",
+        "2026-11-05 cash session: Qualcomm and Arm earnings follow-through, SOX/QQQ relative strength",
+        "2026-11-06 08:30 ET: U.S. October employment situation report, scheduled",
+        "2026-11-09: post-payroll follow-through"
+      ],
+      "provenance": {
+        "asOfET": "2026-11-05T00:33:07-05:00",
+        "sourceUrls": [
+          "https://www.reuters.com/business/us-stock-index-futures-steady-democrats-seize-congress-2026-11-04/",
+          "https://www.reuters.com/business/media-telecom/qualcomm-forecasts-upbeat-sales-strength-non-smartphone-segments-2026-11-04/",
+          "https://www.reuters.com/business/arm-beats-second-quarter-revenue-estimates-ai-data-center-demand-2026-11-04/",
+          "https://www.stonex.com/en-gb/trading-platforms/economic-calendar/",
+          "https://apnews.com/article/929f6739871efc054ae72afca2b68c3a"
+        ],
+        "dataQuality": "November 4 close and earnings figures are carried forward with their original source timestamps; they are not November 5 live quotes. No synchronized new overnight QQQ/SOX, 2Y/10Y, VXN/VIX, breadth, Brent/WTI or FedWatch levels verified. Reuters election and earnings coverage, StoneX November 6 calendar, and repository Open Watch checked. Market responses distinguished from forecast effects. No new curated event versus prior assessment."
+      },
+      "editorial": {
+        "marketOverview": "The latest verified U.S. cash session delivered an encouraging Nasdaq rebound but a conspicuous semiconductor divergence. Reuters-reported Nasdaq strength on November 4 contrasted with a 3.1% SOX decline, leaving technology leadership less robust than the headline index suggests. Before Thursday's opening bell, the critical question is whether the index rally can survive a second session of chip-specific selling.",
+        "whatChanged": "Since the previous 20:38 ET assessment, the curated Open Watch event archive has not added a fresh catalyst and no new U.S. regular-session semiconductor trading has occurred. Overnight research confirms the importance of Thursday's earnings digestion and Friday's scheduled employment report, but does not supply a synchronized new set of market prices sufficient to change directional conviction. Reported Qualcomm and Arm extended-hours reactions remain historical snapshots.",
+        "marketInterpretation": "The balance of evidence still favors caution without a categorical bearish call. Broad-index demand and potentially easier yields and oil are supportive, yet semiconductors typically contribute meaningfully to Nasdaq risk appetite, and their weakness raises the odds of a failed rally. Market breadth and volatility need fresh, time-aligned confirmation before interpreting the divergence as a persistent regime shift.",
+        "threeDayPath": "Thursday November 5 should reveal whether Qualcomm and Arm's results create isolated stock weakness or broader SOX selling. Friday November 6 brings the scheduled U.S. employment report, which could alter expectations for rates and growth and amplify Nasdaq volatility in either direction. Monday November 9 will test whether the market consolidates the election-week bounce or reverses it. These are scenarios, not forecasts of specific verified returns.",
+        "bullCase": "A constructive outcome would begin with SOX stabilizing relative to QQQ during Thursday's cash session, supported by better participation and stable volatility. If bond yields remain contained through Friday's labor data, investors may look past mixed chip earnings and return to mega-cap and semiconductor leadership. This requires observed price confirmation, not simply better company guidance.",
+        "bearCase": "A negative path would feature Qualcomm's initial after-hours selling spreading across chip peers, with SOX continuing to lag while QQQ gives back Wednesday's gains. A stronger-than-expected jobs report could add valuation pressure if yields rise, although the actual reaction must be observed. Deteriorating breadth and rising VXN would strengthen a downgrade case.",
+        "watchNext": "At Thursday's open and close, capture matched-time QQQ and SOX returns, Nasdaq breadth and VXN/VIX. Verify the official weekly claims release, timestamped two- and ten-year yields and correctly scaled spread, Fed rate expectations and Brent/WTI. Recheck curated Open Watch for new market-confirmed catalysts, then evaluate Friday payrolls and Monday follow-through."
+      }
+    },
     {
       "date": "2026-11-04",
       "timeET": "20:38",
