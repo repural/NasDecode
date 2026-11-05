@@ -246,7 +246,7 @@
     const host=document.getElementById('premarket');if(!host)return;
     host.className='premarket session-tabs-shell nd-premarket-only';
     const view=viewFor('premarket');
-    host.innerHTML='<div class="session-tab-panel"><div class="session-analysis-title"><div><div class="section-kicker">NasDecode research · New York time</div><h2>Pre-Market Analysis</h2></div><div class="session-analysis-time">'+view.meta+'</div></div><div class="nd-premarket-reading">'+view.body+'</div></div>';
+    host.innerHTML='<div class="session-tab-panel"><div class="session-analysis-title"><div><div class="section-kicker">NasDecode research</div><h2>Pre-Market Analysis</h2></div><div class="session-analysis-time">'+view.meta+'</div></div><div class="nd-premarket-reading">'+view.body+'</div></div>';
     const old=document.getElementById('session-analysis');if(old)old.remove();
   }
   async function refreshData(d){
