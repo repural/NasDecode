@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "symbol": "SOXL",
-  "checkedAtET": "2026-11-05T11:25:04.209788-05:00",
+  "checkedAtET": "2026-11-05T17:15:23.886697-05:00",
   "researchOnly": true,
   "publicationAllowed": false,
   "canonicalArchiveModified": false,
@@ -67,8 +67,21 @@
         },
         {
           "startET": "2026-11-05T08:00:00-05:00",
+          "reason": "missing_5m_intervals",
+          "available5m": 45,
+          "missingCount": 3,
+          "firstMissingET": "2026-11-05T09:15:00-05:00"
+        },
+        {
+          "startET": "2026-11-05T16:00:00-05:00",
           "reason": "not_yet_confirmed",
-          "available5m": 38
+          "available5m": 15
+        },
+        {
+          "startET": "2026-11-05T12:00:00-05:00",
+          "reason": "gap_since_baseline",
+          "expectedStartET": "2026-11-05T08:00:00-05:00",
+          "nextTradingSessionET": "2026-11-06T04:00:00-05:00"
         }
       ],
       "overlappingMassiveCandles": 9,
@@ -219,8 +232,15 @@
         },
         {
           "startET": "2026-11-05T04:00:00-05:00",
+          "reason": "missing_5m_intervals",
+          "available5m": 93,
+          "missingCount": 3,
+          "firstMissingET": "2026-11-05T09:15:00-05:00"
+        },
+        {
+          "startET": "2026-11-05T12:00:00-05:00",
           "reason": "not_yet_confirmed",
-          "available5m": 86
+          "available5m": 63
         }
       ],
       "overlappingMassiveCandles": 1,
@@ -262,8 +282,8 @@
     }
   },
   "status": "ok",
-  "retrievedYahoo5m": 798,
-  "malformedYahoo5m": 1,
+  "retrievedYahoo5m": 868,
+  "malformedYahoo5m": 0,
   "fetchErrors": [],
   "observations": {
     "4h": {
@@ -593,6 +613,6 @@
       "unmatchedYahooCandles": 0
     }
   },
-  "reconciliationCheckedAtET": "2026-11-05T11:25:24.896169-05:00",
+  "reconciliationCheckedAtET": "2026-11-05T17:15:24.121167-05:00",
   "reconciliationMassiveGeneratedET": "2026-11-05T01:13:45.622280-05:00"
 }
