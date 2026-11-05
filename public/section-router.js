@@ -83,6 +83,11 @@ html[data-nd-page="calendar"] #dashboard > :not(.nd-page-title):not(#nd-economic
 .nd-calendar td{padding:12px 15px;border-top:1px solid #2e3136;vertical-align:top;color:#d9dde2;font-variant-numeric:tabular-nums}
 .nd-calendar .nd-cal-day td{font-size:13px;font-weight:700;background:#202226;color:#f0f2f4;padding:12px 15px;border-top:1px solid #3c4046}
 .nd-calendar .nd-cal-day:first-child td{border-top:0}
+.nd-calendar .nd-cal-day-toggle{width:100%;display:flex;align-items:center;gap:6px;text-align:left;border:0;background:transparent;color:inherit;font:inherit;font-weight:inherit;padding:0;cursor:pointer}
+.nd-calendar .nd-cal-day-toggle:focus-visible{outline:2px solid #82cbd0;outline-offset:3px}
+.nd-calendar .nd-cal-chevron{min-width:13px;color:#9eabb8}
+.nd-calendar .nd-cal-day-count{color:#9da5af;font-weight:400}
+.nd-calendar .nd-cal-entry[hidden]{display:none!important}
 .nd-calendar .nd-cal-time{white-space:nowrap;color:#cad1d7}
 .nd-calendar .nd-cal-report{font-weight:580;color:#f2f3f5}
 .nd-calendar .nd-cal-report small{display:block;color:#9ca5ae;font-size:11px;font-weight:400;margin-top:5px}
@@ -133,23 +138,27 @@ if(wrap&&view==='calendar'){
  const timeText=e=>{if(!e.timeET)return safe(e.timeLabel||'TBA');const [h,m]=e.timeET.split(':').map(Number);return (h%12||12)+':'+String(m).padStart(2,'0')+(h>=12?' PM':' AM')};
  const txt=x=>x===null||x===undefined||x===''?'—':safe(x);
  let feed=null,filter='all';
+ const expandedDays=new Set();
+ const nyToday=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
  const render=()=>{
   if(!feed)return;
   const list=(feed.events||[]).filter(e=>filter==='all'||(filter==='high'?['Critical','High'].includes(e.importance):e.category===filter));
-  const start=feed.windowStart,end=feed.windowEnd;
+  const start=feed.windowStart,end=feed.windowEnd,today=nyToday();
   let body='';
   for(let day=new Date(start+'T12:00:00Z');day<=new Date(end+'T12:00:00Z');day.setUTCDate(day.getUTCDate()+1)){
     if(day.getUTCDay()===0||day.getUTCDay()===6)continue; // Business-day calendar: omit Saturday and Sunday.
     const key=day.toISOString().slice(0,10),items=list.filter(e=>e.date===key);
-    body+='<tr class="nd-cal-day"><td colspan="6">'+safe(dateText(key))+' <span style="color:#9da5af;font-weight:400"> · '+items.length+' event'+(items.length===1?'':'s')+'</span></td></tr>';
-    if(!items.length){body+='<tr><td colspan="6" style="color:#9ca5ae">No tracked releases scheduled</td></tr>';continue}
+    const past=key<today,opened=!past||expandedDays.has(key);
+    body+='<tr class="nd-cal-day"><td colspan="6"><button type="button" class="nd-cal-day-toggle" data-cal-day="'+key+'" aria-expanded="'+opened+'"><span class="nd-cal-chevron">'+(opened?'▾':'▸')+'</span>'+safe(dateText(key))+' <span class="nd-cal-day-count"> · '+items.length+' event'+(items.length===1?'':'s')+(past?' · Passed':'')+'</span></button></td></tr>';
+    if(!items.length){body+='<tr class="nd-cal-entry" data-cal-entry-day="'+key+'"'+(opened?'':' hidden')+'><td colspan="6" style="color:#9ca5ae">No tracked releases scheduled</td></tr>';continue}
     for(const e of items){
       const src=e.sourceUrl&&/^https:\/\//.test(e.sourceUrl)?'<a href="'+safe(e.sourceUrl)+'" target="_blank" rel="noopener noreferrer">Source ↗</a>':'';
-      body+='<tr><td class="nd-cal-time">'+timeText(e)+'</td><td class="nd-cal-report"><span class="nd-cal-importance '+safe(String(e.importance||'').toLowerCase())+'"></span>'+safe(e.report)+'<small>'+safe(e.category||'Macro')+' · '+safe(e.importance||'High')+(e.forecastType?' · Forecast: '+safe(e.forecastType):'')+' · '+src+'</small></td><td>'+txt(e.period)+'</td><td class="nd-cal-number">'+txt(e.actual)+'</td><td class="nd-cal-number">'+txt(e.forecast)+'</td><td class="nd-cal-number">'+txt(e.previous)+'</td></tr>';
+      body+='<tr class="nd-cal-entry" data-cal-entry-day="'+key+'"'+(opened?'':' hidden')+'><td class="nd-cal-time">'+timeText(e)+'</td><td class="nd-cal-report"><span class="nd-cal-importance '+safe(String(e.importance||'').toLowerCase())+'"></span>'+safe(e.report)+'<small>'+safe(e.category||'Macro')+' · '+safe(e.importance||'High')+(e.forecastType?' · Forecast: '+safe(e.forecastType):'')+' · '+src+'</small></td><td>'+txt(e.period)+'</td><td class="nd-cal-number">'+txt(e.actual)+'</td><td class="nd-cal-number">'+txt(e.forecast)+'</td><td class="nd-cal-number">'+txt(e.previous)+'</td></tr>';
     }
   }
   host.innerHTML='<div class="nd-cal-toolbar"><div class="nd-cal-intro">U.S. economic releases, Fed events and technology earnings · '+safe(dateText(start))+' – '+safe(dateText(end))+' · All times Eastern (ET)</div><div class="nd-cal-filter">'+[['all','All events'],['high','High impact'],['Macro','Economic'],['Inflation','Inflation'],['Rates','Rates'],['Fed','Fed'],['Earnings','Earnings']].map(([v,label])=>'<button type="button" data-cal-filter="'+v+'" aria-pressed="'+(filter===v)+'">'+label+'</button>').join('')+'</div></div><div class="nd-cal-table-wrap"><table><thead><tr><th>Time (ET)</th><th>Report</th><th>Period</th><th>Actual</th><th>Forecast</th><th>Previous</th></tr></thead><tbody>'+body+'</tbody></table></div><p class="nd-cal-note">Sources: NasCal official-source research (read-only), a dated MarketWatch factual snapshot, and NasDecode’s Nasdaq earnings feed. MarketWatch observations are from '+safe(feed.marketwatchObservedAt||'an undated capture')+' and are not a live licensed feed. Earnings forecasts are EPS estimates. Missing readings show “—”. Updated '+safe(feed.updatedAt||'unknown')+'.</p>';
   host.querySelectorAll('[data-cal-filter]').forEach(btn=>btn.addEventListener('click',()=>{filter=btn.dataset.calFilter;render()}));
+  host.querySelectorAll('[data-cal-day]').forEach(btn=>btn.addEventListener('click',()=>{const day=btn.dataset.calDay;if(expandedDays.has(day))expandedDays.delete(day);else expandedDays.add(day);render()}));
  };
  const load=async()=>{try{const r=await fetch('/data/economic-calendar.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw Error('HTTP '+r.status);const d=await r.json();if(!Array.isArray(d.events)||!d.windowStart||!d.windowEnd)throw Error('Invalid calendar data');const changed=!feed||JSON.stringify(d.events)!==JSON.stringify(feed.events)||d.windowStart!==feed.windowStart||d.windowEnd!==feed.windowEnd;if(changed){feed=d;render()}}catch(e){if(!feed)host.innerHTML='<div class="nd-cal-loading">Economic calendar is temporarily unavailable: '+safe(e.message)+'</div>';else console.warn('Calendar refresh temporarily unavailable',e)}};
  load();
