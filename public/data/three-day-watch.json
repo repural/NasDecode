@@ -1,13 +1,139 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-06T08:42:29.000Z",
+  "updated": "2026-11-06T09:53:11.000Z",
   "horizon": [
     "2026-11-06",
     "2026-11-09",
     "2026-11-10"
   ],
   "entries": [
+    {
+      "date": "2026-11-06",
+      "timeET": "04:53",
+      "asOfET": "2026-11-06T04:53:11-05:00",
+      "bias": "Bearish",
+      "previousBias": "Bearish",
+      "materialChange": false,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "Bearish baseline retained. A newly curated and verified SoftBank credit-stress indicator adds independent AI financing-risk evidence, but no synchronized US Nasdaq/SOX market reaction has been established; payroll and CPI remain decisive.",
+      "bullish": "After steep November 5 losses, a relief rally remains possible if payroll and subsequent market action show semiconductor leadership, improving breadth and falling volatility.",
+      "bearish": "The verified Nasdaq correction and SOX collapse now coincide with a distinct SoftBank credit repricing, increasing concern about financing for the AI infrastructure cycle. Contagion to US technology remains unverified.",
+      "observations": [
+        {
+          "indicator": "Nasdaq Composite",
+          "value": 24315,
+          "unit": "index points",
+          "changePercent": -5.52,
+          "sourceTimestamp": "2026-11-05 US cash close",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/business/sp-500-futures-steady-after-midterm-rally-nasdaq-lags-chip-weakness-2026-11-05/",
+          "quality": "Verified prior-session close; not Friday intraday"
+        },
+        {
+          "indicator": "S&P 500",
+          "value": 7353.73,
+          "unit": "index points",
+          "changePercent": -4.36,
+          "sourceTimestamp": "2026-11-05 US cash close",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/business/sp-500-futures-steady-after-midterm-rally-nasdaq-lags-chip-weakness-2026-11-05/",
+          "quality": "Verified prior-session close"
+        },
+        {
+          "indicator": "SOX",
+          "value": null,
+          "unit": "index points",
+          "changePercent": null,
+          "sourceTimestamp": "2026-11-05 US cash close",
+          "source": "Reuters",
+          "url": "https://www.reuters.com/business/sp-500-futures-steady-after-midterm-rally-nasdaq-lags-chip-weakness-2026-11-05/",
+          "quality": "Declined more than 12%; exact synchronized QQQ comparison unavailable"
+        },
+        {
+          "indicator": "SoftBank five-year CDS spread",
+          "value": 466,
+          "unit": "basis points",
+          "sourceTimestamp": "2026-11-06 peak; Reuters reports 457.5 bps at 06:53 UTC",
+          "source": "Reuters/Markit via curated Open Watch",
+          "url": "https://www.reuters.com/business/media-telecom/softbank-cds-softbank-cds-2026-11-06/",
+          "quality": "Verified SoftBank credit stress, not verified Nasdaq or SOX reaction"
+        },
+        {
+          "indicator": "SoftBank equity",
+          "value": null,
+          "unit": "JPY",
+          "changePercent": -10.8,
+          "sourceTimestamp": "2026-11-06 Japan cash close",
+          "source": "Reuters via curated Open Watch",
+          "url": "https://www.reuters.com/business/media-telecom/softbank-cds-softbank-cds-2026-11-06/",
+          "quality": "Reported Japan completed session; asynchronous to US close"
+        },
+        {
+          "indicator": "Curated Open Watch events",
+          "value": 136,
+          "unit": "events",
+          "sourceTimestamp": "2026-11-06T08:42:00Z",
+          "source": "repural/NasDecode:data/history/market-watch-events.json",
+          "quality": "One additional high-materiality credit-risk event since prior assessment"
+        },
+        {
+          "indicator": "QQQ/SOX relative strength, 2Y/10Y, VXN/VIX, breadth, Brent/WTI, FedWatch",
+          "value": null,
+          "unit": "unverified",
+          "sourceTimestamp": null,
+          "quality": "No fresh synchronized validated values; Treasury yields expressed in percent, 10Y-minus-2Y curve in basis points, no scaling extrapolation"
+        }
+      ],
+      "conditions": {
+        "bullish": "Sustained SOX outperformance over QQQ, improving breadth and lower VXN/VIX after payroll, without further AI financing contagion.",
+        "bearish": "Renewed semiconductor underperformance, weak breadth, elevated volatility or broader credit stress spreading beyond SoftBank.",
+        "invalidation": "Sustained post-payroll semiconductor leadership, broader participation, falling volatility and stabilizing AI infrastructure credit risks would weaken the bearish baseline."
+      },
+      "upcomingEvents": [
+        {
+          "date": "2026-11-06",
+          "timeET": "08:30",
+          "event": "October Employment Situation, BLS",
+          "status": "Scheduled, not yet released at assessment time"
+        },
+        {
+          "date": "2026-11-09",
+          "event": "Post-payroll Nasdaq/SOX and credit follow-through",
+          "status": "Monitoring scenario"
+        },
+        {
+          "date": "2026-11-10",
+          "timeET": "08:30",
+          "event": "October CPI and Real Earnings, BLS",
+          "status": "Scheduled future release"
+        }
+      ],
+      "provenance": {
+        "assessmentTimeUTC": "2026-11-06T09:53:11.000Z",
+        "comparedTo": "2026-11-06T03:42:29-05:00",
+        "openWatchEventCount": 136,
+        "openWatchLatestArchiveUpdated": "2026-11-06T08:42:00+00:00",
+        "sources": [
+          "https://www.reuters.com/business/sp-500-futures-steady-after-midterm-rally-nasdaq-lags-chip-weakness-2026-11-05/",
+          "https://www.reuters.com/business/media-telecom/softbank-cds-softbank-cds-2026-11-06/",
+          "https://www.bls.gov/schedule/2026/11_sched_list.htm",
+          "repural/NasDecode:data/history/market-watch-events.json"
+        ],
+        "dataQuality": "Reuters Nov 5 US closes, Nov 6 Japan SoftBank close and CDS snapshot are asynchronous. The new credit event confirms stress in SoftBank, not a causal US QQQ/SOX move. No verified synchronized yields, volatility, breadth, oil or Fed probabilities; do not infer values. Treasury yields percent, curve basis points.",
+        "archiveBlobSHA": "06d7b7d34b714f03fa071037a98bbf128d1bd288"
+      },
+      "editorial": {
+        "marketOverview": "The November 5 US session closed in a sharp technology correction: Reuters reported Nasdaq -5.52%, S&P 500 -4.36%, and SOX down more than 12%. Those are completed-session results rather than November 6 trading. The latest curated Open Watch update adds a separate credit-market warning from SoftBank, whose five-year CDS spread reportedly touched 466 basis points as its shares declined 10.8% in Japan.",
+        "whatChanged": "Relative to the previous 03:42 ET assessment, the curated archive rose from 135 to 136 events. The new SoftBank item is distinct from the already recognized US chip selloff: it provides direct credit-market evidence of concern about financing the AI infrastructure buildout. The observed Japanese equity and credit moves do not establish a fresh Nasdaq or SOX reaction, so the existing bearish three-day classification remains unchanged.",
+        "marketInterpretation": "Credit repricing at an AI-linked financing participant strengthens the mechanism behind the existing valuation and capex worries. Nevertheless, a single issuer's CDS spread is not proof of systemic credit contagion, an OpenAI funding failure or a US semiconductor price response. The market could still stage an oversold rebound after Thursday's large decline, and Friday's official employment data could shift rate expectations in either direction.",
+        "threeDayPath": "Friday November 6 remains dominated by the scheduled 08:30 ET employment report and the subsequent synchronized US market response. Monday November 9 will test whether any relief rally is supported by SOX leadership and breadth, or whether credit concerns spread. Tuesday November 10 brings the scheduled CPI release at 08:30 ET and another potential rates-sensitive repricing. Bearish remains the baseline, with high event-driven two-sided volatility.",
+        "bullCase": "A benign payroll interpretation and evidence that AI credit stress is contained could support a sharp rebound from oversold conditions. This would require confirmed SOX outperformance against QQQ, improving participation and declining volatility; none of those Friday confirmations is yet available.",
+        "bearCase": "A disappointing payroll interpretation, renewed chip underperformance or evidence that SoftBank's financing stress is spreading to other AI infrastructure participants would reinforce the downside path. An adverse Tuesday CPI surprise could add duration pressure. These are scenarios, not observed US Friday market outcomes.",
+        "watchNext": "Verify the 08:30 ET BLS payroll release and compare synchronized QQQ, SOX, Nasdaq breadth, VXN/VIX, 2Y/10Y yields, Brent/WTI and FedWatch probabilities with explicit units and timestamps. Track any additional AI credit spread or financing developments, and assess the reaction rather than assuming impact from headlines."
+      }
+    },
     {
       "date": "2026-11-06",
       "timeET": "03:42",
