@@ -377,7 +377,39 @@ html[data-nd-page="analysis"] #premarket{max-width:1020px;margin:0 auto}
 .nd-watch-event-body{padding:4px 0 13px;line-height:1.7;font-size:13px;color:#d9dee2}
 .nd-watch-event a,.nd-watch-more a,#marketMovingBody a{color:#82cbd0}
 .nd-watch-more{margin:15px 0 0;font-size:13px}
-</style><style>.nd-watch-source-row{display:block;margin-top:4px;font-size:12px}.nd-watch-source{color:#82cbd0;text-decoration:underline;text-underline-offset:3px}.nd-watch-source-missing{color:#929aa3;font-size:11px}</style></head><body><header class="nd-topbar"><a class="nd-brand" href="#dashboard" aria-label="NasDecode Dashboard"><span class="nd-brand-mark" aria-hidden="true">N</span><span class="nd-brand-word">NASDECODE</span></a><nav class="nd-nav" aria-label="Dashboard sections"><a href="#dashboard" class="nd-current">Dashboard</a><a href="#macro-rates">Macro</a><a href="#market-internals">Indicators</a><a href="#market-assessment">Assessment</a><a href="#premarket">Analysis</a></nav><div class="nd-top-actions"><span class="nd-live" aria-label="Data refresh status"><span class="nd-live-dot" aria-hidden="true"></span><span id="updated" role="status">Loading…</span></span><button id="update" type="button">↻ Refresh</button></div></header><div class="wrap" id="dashboard"><div class="factor-cards compact-cards" id="factorCards"></div><section class="premarket" id="premarket"><h2 id="analysisTitle">Pre-Market Analysis</h2><div class="muted" id="premarketMeta">Loading analysis…</div><div id="premarketBody"></div></section><details class="signal-details" open><summary>Signal Explorer</summary><div class="signal-explorer" id="signalExplorer"></div></details><section class="intel-panel setup-wide" id="marketSetup"></section><div class="lower-intel"><section class="intel-panel"><div class="section-kicker">Decision frame</div><h3>What to Watch Today</h3><div id="watchConditions"></div></section></div><section class="intel-panel" id="marketMovingDevelopments"><div class="section-kicker">NasDecode Open Watch · curated</div><h3>Market-Moving Developments</h3><div id="marketMovingBody" class="catalyst-list">Loading developments…</div><div class="nd-earnings-section"><div class="nd-earnings-header"><h4>Upcoming Major Earnings</h4><span id="ndEarningsMonth" class="muted"></span></div><div id="ndUpcomingEarnings" class="nd-earnings-list"></div></div></section><div class="legacy-table" hidden><table><tbody id="rows"></tbody></table></div><section hidden></section><p class="src">Current Impact = estimated magnitude of the factor's present effect on Nasdaq based on the latest reading, move, event proximity and data freshness; it can change on every refresh and is separate from whether the signal is positive or negative. Green = supportive for Nasdaq; red = headwind; amber = mixed/event risk. Free sources can be delayed. NasDecode displays source freshness rather than representing delayed observations as exchange-real-time data.</p></div><script>
+</style><style>.nd-watch-source-row{display:block;margin-top:4px;font-size:12px}.nd-watch-source{color:#82cbd0;text-decoration:underline;text-underline-offset:3px}.nd-watch-source-missing{color:#929aa3;font-size:11px}</style><style id="nd-overview-redesign">
+/* Overview v2: compact terminal layout; report and research pages unchanged. */
+html[data-nd-page="overview"] .nd-market-pulse{display:grid;grid-template-columns:minmax(160px,1.25fr) repeat(6,minmax(0,1fr));gap:0;align-items:center;margin:2px 0 15px;padding:14px 17px;background:#111519;border:1px solid #35443f;border-radius:12px}
+.nd-market-pulse .nd-pulse-heading{display:flex;align-items:center;gap:10px;min-width:0}
+.nd-market-pulse .nd-pulse-icon{width:36px;height:36px;display:grid;place-items:center;border:1px solid #2b3838;border-radius:9px;color:#adced0}
+.nd-market-pulse .nd-pulse-heading strong{display:block;font-size:17px;line-height:1.3}
+.nd-market-pulse .nd-pulse-heading small{display:block;color:#98a5ab;font-size:11px;margin-top:3px}
+.nd-market-pulse .nd-pulse-stat{padding:0 15px;min-width:0;border-left:1px solid #343a3e}
+.nd-market-pulse .nd-pulse-stat small{display:block;font-size:10px;color:#adb5bd;line-height:1.5}
+.nd-market-pulse .nd-pulse-stat strong{display:block;font-size:18px;font-weight:710;letter-spacing:-.025em;white-space:nowrap;font-variant-numeric:tabular-nums}
+.nd-market-pulse .nd-pulse-stat em{display:block;font-size:11px;font-style:normal;font-weight:660;margin-top:2px}
+.nd-market-pulse .nd-pulse-stat .positive{color:#45d69b}.nd-market-pulse .nd-pulse-stat .negative{color:#ff5d76}.nd-market-pulse .nd-pulse-stat .mixed{color:#edb94b}
+html:not([data-nd-page="overview"]) .nd-market-pulse{display:none!important}
+html[data-nd-page="overview"] .scorecard-category{min-height:0!important;padding:12px 17px!important;margin:15px 0 9px!important}
+html[data-nd-page="overview"] .scorecard-category h2{font-size:17px!important}
+html[data-nd-page="overview"] #factorCards .factor-card{min-height:190px;padding:15px 16px;position:relative}
+html[data-nd-page="overview"] #factorCards .factor-card .factor-name{font-size:11px;letter-spacing:.055em;margin-bottom:12px;max-width:100%;padding-right:55px}
+html[data-nd-page="overview"] #factorCards .factor-card .metric{font-size:28px;letter-spacing:-.025em}
+html[data-nd-page="overview"] #factorCards .factor-card .metric-change{font-size:14px}
+html[data-nd-page="overview"] #factorCards .factor-card .card-latest{font-size:11px;color:#a7b1b9}
+html[data-nd-page="overview"] #factorCards .sparkline{margin-top:auto}
+html[data-nd-page="overview"] #factorCards .sparkline-meta{margin-top:3px}
+html[data-nd-page="overview"] #factorCards .nd-impact-label{position:absolute;top:12px;right:12px;font-size:10px;font-weight:650;line-height:1.3;padding:3px 8px;border:1px solid currentColor;border-radius:999px;opacity:.96}
+html[data-nd-page="overview"] #factorCards .nd-impact-label.positive{color:#45d69b}html[data-nd-page="overview"] #factorCards .nd-impact-label.negative{color:#ff647d}html[data-nd-page="overview"] #factorCards .nd-impact-label.mixed{color:#eabd55}
+html[data-nd-page="overview"] #factorCards .nd-card-freshness{display:block;font-size:10px;line-height:1.4;color:#9aa5af;margin-top:8px}
+html[data-nd-page="overview"] #factorCards .nd-card-freshness.stale{color:#edb94b}
+html[data-nd-page="overview"] #factorCards .nd-oil-pair .nd-oil-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:5px}
+html[data-nd-page="overview"] #factorCards .nd-oil-pair .nd-oil-grid .metric{font-size:23px}
+html[data-nd-page="overview"] #factorCards .nd-oil-pair .nd-oil-grid small{font-size:11px;color:#aeb5bd}
+html[data-nd-page="overview"] #factorCards .nd-oil-pair .nd-oil-grid .metric-change{font-size:13px}
+@media(max-width:1250px){html[data-nd-page="overview"] .nd-market-pulse{grid-template-columns:repeat(3,minmax(0,1fr));row-gap:13px}.nd-market-pulse .nd-pulse-heading{grid-column:1/-1}.nd-market-pulse .nd-pulse-stat:nth-child(2),.nd-market-pulse .nd-pulse-stat:nth-child(5){border-left:0;padding-left:0}}
+@media(max-width:650px){html[data-nd-page="overview"] .nd-market-pulse{grid-template-columns:repeat(2,minmax(0,1fr));padding:13px;gap:10px}.nd-market-pulse .nd-pulse-heading{grid-column:1/-1}.nd-market-pulse .nd-pulse-stat{border-left:0;padding:6px 0}.nd-market-pulse .nd-pulse-stat strong{font-size:16px}html[data-nd-page="overview"] #factorCards .factor-card{min-height:160px}}
+</style></head><body><header class="nd-topbar"><a class="nd-brand" href="#dashboard" aria-label="NasDecode Dashboard"><span class="nd-brand-mark" aria-hidden="true">N</span><span class="nd-brand-word">NASDECODE</span></a><nav class="nd-nav" aria-label="Dashboard sections"><a href="#dashboard" class="nd-current">Dashboard</a><a href="#macro-rates">Macro</a><a href="#market-internals">Indicators</a><a href="#market-assessment">Assessment</a><a href="#premarket">Analysis</a></nav><div class="nd-top-actions"><span class="nd-live" aria-label="Data refresh status"><span class="nd-live-dot" aria-hidden="true"></span><span id="updated" role="status">Loading…</span></span><button id="update" type="button">↻ Refresh</button></div></header><div class="wrap" id="dashboard"><section id="ndMarketPulse" class="nd-market-pulse" aria-label="Market Pulse" aria-live="polite"></section><div class="factor-cards compact-cards" id="factorCards"></div><section class="premarket" id="premarket"><h2 id="analysisTitle">Pre-Market Analysis</h2><div class="muted" id="premarketMeta">Loading analysis…</div><div id="premarketBody"></div></section><details class="signal-details" open><summary>Signal Explorer</summary><div class="signal-explorer" id="signalExplorer"></div></details><section class="intel-panel setup-wide" id="marketSetup"></section><div class="lower-intel"><section class="intel-panel"><div class="section-kicker">Decision frame</div><h3>What to Watch Today</h3><div id="watchConditions"></div></section></div><section class="intel-panel" id="marketMovingDevelopments"><div class="section-kicker">NasDecode Open Watch · curated</div><h3>Market-Moving Developments</h3><div id="marketMovingBody" class="catalyst-list">Loading developments…</div><div class="nd-earnings-section"><div class="nd-earnings-header"><h4>Upcoming Major Earnings</h4><span id="ndEarningsMonth" class="muted"></span></div><div id="ndUpcomingEarnings" class="nd-earnings-list"></div></div></section><div class="legacy-table" hidden><table><tbody id="rows"></tbody></table></div><section hidden></section><p class="src">Current Impact = estimated magnitude of the factor's present effect on Nasdaq based on the latest reading, move, event proximity and data freshness; it can change on every refresh and is separate from whether the signal is positive or negative. Green = supportive for Nasdaq; red = headwind; amber = mixed/event risk. Free sources can be delayed. NasDecode displays source freshness rather than representing delayed observations as exchange-real-time data.</p></div><script>
 /*
  * Presentation layer only.
  * Quantitative decisions belong in scripts/refresh.py; this browser code reads the
@@ -456,12 +488,49 @@ function renderIndexQuotes(d){
   return '<div class="factor-card nd-index-tile '+tone+'"><div class="factor-name">'+name+'</div><div class="metric">'+(valid?p.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):'Unavailable')+'</div><div class="metric-change">'+change+'</div><span class="card-latest">CNBC snapshot'+stamp+' · may be delayed</span></div>';
  }).join('');
 }
+function renderMarketPulse(d){
+ const host=document.getElementById('ndMarketPulse');if(!host)return;
+ const rows=d.rows||[],row=n=>rows.find(r=>r.factor===n)||{};
+ const idx=d.marketIndexQuotes||{},ns=d.nasdaqScore||{};
+ const q=(key)=>{const v=idx[key]||{};const p=Number(v.price);return Number.isFinite(p)&&p>0?p.toLocaleString('en-US',{maximumFractionDigits:2,minimumFractionDigits:2}):'—'};
+ const change=(key)=>{const v=idx[key]||{},n=v.changePct===null||v.changePct===undefined?NaN:Number(v.changePct);return Number.isFinite(n)&&n!==0?(n>0?'+':'')+n.toFixed(2)+'%':'Snapshot · change unverified'};
+ const tone=n=>n==='negative'?'negative':n==='positive'?'positive':'mixed';
+ const stat=(label,value,sub,kind)=>'<div class="nd-pulse-stat"><small>'+escHtml(label)+'</small><strong>'+escHtml(value)+'</strong><em class="'+tone(kind)+'">'+escHtml(sub||'')+'</em></div>';
+ const breadth=row('Market breadth'),semi=row('Semiconductor leadership');
+ const percent=(text)=>{const m=String(text).match(/SOX\s*(-?\d+(?:\.\d+)?)%/i);return m?m[1]+'%':'—'};
+ const breadthPct=String(breadth.scorecard?.value||breadth.latest||'').match(/\b\d+% advancing/);
+ const score=Number(ns.score);
+ host.innerHTML='<div class="nd-pulse-heading"><span class="nd-pulse-icon">▥</span><span><strong>Market Pulse</strong><small>Nasdaq conditions at a glance</small></span></div>'+
+ stat('Nasdaq Composite',q('nasdaq'),change('nasdaq'),(idx.nasdaq?.changePct||0)<0?'negative':'positive')+
+ stat('S&P 500',q('sp500'),change('sp500'),(idx.sp500?.changePct||0)<0?'negative':'positive')+
+ stat('SOX · previous close',percent(semi.latest), 'Semiconductor leadership',semi.signal)+
+ stat('Nasdaq-100 breadth',breadthPct?.[0]||'—',String(breadth.signalLabel||'Participation'),breadth.signal)+
+ stat('NasDecode Score',Number.isFinite(score)?String(score)+'/100':'—',String(ns.label||'Assessment'),ns.signal)+
+ stat('Confidence',Number.isFinite(Number(ns.confidence))?String(ns.confidence)+'%':'—','Model confidence','mixed');
+}
+function updateMarketPulseCash(quotes){
+ const host=document.getElementById('ndMarketPulse');if(!host)return;
+ for(const [key,slot] of [['nasdaq',1],['sp500',2]]){
+  const v=quotes?.[key];if(!v||!['ok','stale'].includes(v.status))continue;
+  const p=Number(v.price),prior=Number(v.referenceClose),c=v.changePct===null||v.changePct===undefined?NaN:Number(v.changePct);
+  if(!Number.isFinite(p)||p<=0)continue;
+  const cell=host.querySelectorAll('.nd-pulse-stat')[slot-1];if(!cell)continue;
+  cell.querySelector('strong').textContent=p.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const em=cell.querySelector('em');
+  const stamp=Date.parse(v.quoteTime||'');
+  const dated=Number.isFinite(stamp)&&Date.now()-stamp>20*60*1000;
+  em.textContent=Number.isFinite(c)&&prior>0?(c>0?'+':'')+c.toFixed(2)+'%'+(dated?' · prior close':''):'Change unavailable';
+  em.className=Number.isFinite(c)&&prior>0?(c<0?'negative':c>0?'positive':'mixed'):'mixed';
+ }
+}
+
 function render(d){
   {
     const today=nyDateKey(), snap=snapshotDateKey(d.updatedET);
     const basis=snap&&snap!==today?'Latest available snapshot ('+displayDate(snap)+')':'Last updated';
     updated.textContent=basis+': '+d.updatedET+' · Next auto: '+d.nextUpdateET;
   }
+  renderMarketPulse(d);
   const ns=d.nasdaqScore||{};
   const legacyEnv=d.groups?.find(g=>g.name==='NASDAQ SCORE'||g.name==='NASDAQ SETUP')||d.groups?.[0]||{};
   const env={...legacyEnv,signal:ns.signal||legacyEnv.signal,label:ns.label||legacyEnv.label};
@@ -924,6 +993,7 @@ async function loadLiveIndices(){
   if(!Number.isFinite(collected)||collected>Date.now()+120000||Date.now()-collected>7*86400000)return;
   // Cash indices are never silently substituted with Nasdaq-100/S&P futures.
   const source=d.cashQuotes||(d.mode==='cash'?d.quotes:null);
+  if(source)updateMarketPulseCash(source);
   if(!source)return;
   const parts=[['nasdaq','NASDAQ COMPOSITE'],['sp500','S&P 500']];
   const fmt=n=>Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
