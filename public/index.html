@@ -706,7 +706,7 @@ function render(d){
   function vixCashGuidance(row){
     if(row.factor!=='Nasdaq volatility (VXN / VIX)')return '';
     const raw=String(row.scorecard?.secondaryValue||row.latest||'');
-    const match=raw.match(/\\bVIX\\s+([0-9]+(?:\\.[0-9]+)?)/i);
+    const match=raw.match(/\bVIX\s+([0-9]+(?:\.[0-9]+)?)/i);
     if(!match)return 'Cash reserve guide: unavailable (VIX reading not validated).';
     const vix=Number(match[1]);
     if(!Number.isFinite(vix))return 'Cash reserve guide: unavailable (VIX reading not validated).';
