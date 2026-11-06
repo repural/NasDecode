@@ -1,13 +1,144 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-06T15:09:58.000Z",
+  "updated": "2026-11-06T16:07:26.000Z",
   "horizon": [
     "2026-11-06",
     "2026-11-09",
     "2026-11-10"
   ],
   "entries": [
+    {
+      "date": "2026-11-06",
+      "timeET": "11:07",
+      "asOfET": "2026-11-06T11:07:26-05:00",
+      "bias": "Bearish",
+      "previousBias": "Bearish",
+      "materialChange": false,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "Bearish baseline retained after the material payroll surprise already captured in the prior assessment. New cash-session reporting shows Nasdaq Composite +1.9% at 09:52 EST and a selected eight-chip basket recovering about 45% of Thursday's loss by 10:01 EST. This strengthens the rebound evidence versus earlier premarket observations but does not confirm a durable broad recovery or a synchronized QQQ/SOX relative-strength reversal.",
+      "bullish": "Friday's observed cash-session Nasdaq rise and partial recovery across eight large chip stocks support a tactical rebound; payroll growth of 165,000 and 4.1% unemployment indicate resilience. These figures do not yet establish two-day follow-through.",
+      "bearish": "Thursday's large Nasdaq/SOX losses remain relevant, and the stronger-than-expected employment report raises the risk of persistent higher yields and hawkish Fed pricing. Chip recoveries still represent less than half of Thursday's decline on average in the reported sample; a broad SOX and breadth recovery is unverified.",
+      "observations": [
+        {
+          "indicator": "Nasdaq Composite cash-session change",
+          "value": 1.9,
+          "unit": "percent",
+          "sourceTimestamp": "2026-11-06 09:52 EST",
+          "source": "CNBC reported by StockTitan",
+          "url": "https://www.stocktitan.net/articles/stock-market-today-live-november-6-2026",
+          "quality": "Observed intraday cash-session report; stale at assessment time"
+        },
+        {
+          "indicator": "Eight large semiconductor stocks recovery of previous day's loss",
+          "value": 45,
+          "unit": "percent of prior loss recovered on average",
+          "sourceTimestamp": "2026-11-06 10:01 EST",
+          "source": "StockTitan selected eight-stock basket",
+          "url": "https://www.stocktitan.net/articles/stock-market-today-live-november-6-2026",
+          "quality": "Observed sample, not SOX index or synchronized QQQ/SOX comparison"
+        },
+        {
+          "indicator": "October nonfarm payrolls",
+          "value": 165000,
+          "unit": "jobs",
+          "sourceTimestamp": "2026-11-06 08:30 EST",
+          "source": "US BLS via StockTitan",
+          "url": "https://www.stocktitan.net/articles/october-2026-jobs-report",
+          "quality": "Released macro data, not market price"
+        },
+        {
+          "indicator": "October unemployment rate",
+          "value": 4.1,
+          "unit": "percent",
+          "sourceTimestamp": "2026-11-06 08:30 EST",
+          "source": "US BLS via StockTitan",
+          "url": "https://www.stocktitan.net/articles/october-2026-jobs-report",
+          "quality": "Released macro data"
+        },
+        {
+          "indicator": "December Fed hike probability",
+          "value": 78,
+          "unit": "percent estimated probability",
+          "sourceTimestamp": "2026-11-06 post-payroll Reuters report, exact timestamp unavailable",
+          "source": "Previous assessment Reuters-reported",
+          "quality": "Not directly verified live CME probability"
+        },
+        {
+          "indicator": "2Y and 10Y Treasury yields and curve",
+          "value": null,
+          "unit": "yield percent; curve basis points",
+          "sourceTimestamp": null,
+          "quality": "No verified contemporaneous yield pair. Do not reuse prior 4.471%/4.834% or 36.3bp as current."
+        },
+        {
+          "indicator": "QQQ/SOX relative strength, VIX/VXN, breadth, Brent/WTI",
+          "value": null,
+          "unit": "unverified",
+          "sourceTimestamp": null,
+          "quality": "No synchronized readings established; no invented values"
+        },
+        {
+          "indicator": "Open Watch event archive",
+          "value": 140,
+          "unit": "events",
+          "sourceTimestamp": "2026-11-06T14:07:28+00:00",
+          "source": "repural/NasDecode data/history/market-watch-events.json",
+          "quality": "Repository event count; event publication not evidence of market reaction"
+        }
+      ],
+      "conditions": {
+        "bullish": "Sustained QQQ gains with SOX outperforming and breadth expanding, volatility easing and yields stabilizing.",
+        "bearish": "Cash-session rebound fades, semiconductors lag, yields advance or CPI supports further tightening.",
+        "invalidation": "Two consecutive cash sessions of broad QQQ recovery with confirmed semiconductor leadership and declining volatility would invalidate bearish baseline."
+      },
+      "upcomingEvents": [
+        {
+          "date": "2026-11-09",
+          "event": "Confirm post-payroll follow-through and chip leadership",
+          "status": "Conditional monitoring"
+        },
+        {
+          "date": "2026-11-09",
+          "event": "Take-Two earnings after close",
+          "status": "Calendar reported; verify issuer"
+        },
+        {
+          "date": "2026-11-10",
+          "timeET": "08:30",
+          "event": "October CPI",
+          "status": "Scheduled; not yet released"
+        },
+        {
+          "date": "2026-11-10",
+          "event": "CoreWeave earnings after close",
+          "status": "Calendar reported; verify issuer"
+        }
+      ],
+      "provenance": {
+        "assessmentTimeUTC": "2026-11-06T16:07:26.000Z",
+        "comparedTo": "2026-11-06T10:09:58-05:00",
+        "openWatchEventCount": 140,
+        "openWatchLatestArchiveUpdated": "2026-11-06T14:07:28+00:00",
+        "archiveBlobSHA": "177c809bc83f2ad92d50db44b5e1a1325e3d3adb",
+        "sources": [
+          "https://www.stocktitan.net/articles/stock-market-today-live-november-6-2026",
+          "https://www.stocktitan.net/articles/october-2026-jobs-report",
+          "https://www.stocktitan.net/articles/october-2026-cpi-preview-no-yearly-rate"
+        ],
+        "dataQuality": "Cash-session index and selected-chip observations are timestamped separately, not synchronized with QQQ/SOX, rates, volatility or oil. Prior payroll surprise already classified material; new intraday recovery does not yet change three-day path. Treasury yield values are percentage units and curve must be basis points; no current pair validated."
+      },
+      "editorial": {
+        "marketOverview": "Nasdaq shares are rebounding during Friday's cash session after Thursday's sharp selloff. Reporting at 09:52 EST put the Nasdaq Composite up 1.9%, and a selected group of eight chip stocks had recovered around 45% of the prior day's loss by 10:01 EST. These are meaningful intraday observations, but the two snapshots are not a complete synchronized market picture. The stronger October payroll report remains a competing source of valuation pressure through interest rates.",
+        "whatChanged": "The prior assessment already recognized the 165,000 payroll surprise and the associated hawkish repricing as a material catalyst. Since then, the key incremental evidence is that the semiconductor bounce continued into regular trading rather than remaining solely premarket: the selected chip basket recovered about 45% of Thursday's decline. No separately verified new catalyst changes the baseline, and Open Watch archive additions are not assumed to have caused price moves.",
+        "marketInterpretation": "A cash-session rebound is stronger evidence than futures indications, but recovering less than half of the previous day's chip losses leaves the correction unresolved. The jobs report strengthens the growth case while potentially sustaining higher rates; whether either force dominates depends on how Treasury yields and technology leadership behave after the initial reaction. Without matched QQQ, SOX, breadth and volatility readings, a confirmed regime reversal would be premature.",
+        "threeDayPath": "Friday November 6 remains an oversold-rebound versus rates-pressure contest. Monday November 9 should test whether the rebound holds beyond the initial post-payroll session and whether semiconductor participation broadens. Tuesday November 10 CPI is the principal next scheduled macro shock; softer inflation could support relief, whereas a hot reading could renew yield-led pressure. Bearish remains the base case with high event risk, not a prediction of uninterrupted declines.",
+        "bullCase": "If Friday's Nasdaq and chip rebound holds into the close, Monday brings further SOX leadership and improving breadth, and Treasury yields stabilize, a durable recovery becomes plausible. A cooler Tuesday CPI would further reduce the rates headwind. Those are conditional developments, not established facts at this assessment time.",
+        "bearCase": "A partial recovery can fade quickly when Thursday's large technical losses and hawkish payroll repricing remain unresolved. Renewed SOX underperformance, narrow participation or rising yields could pressure QQQ into Monday. Hotter-than-expected CPI on Tuesday would intensify this scenario, although the release has not yet occurred.",
+        "watchNext": "Verify timestamp-aligned QQQ, Nasdaq, SOX and broad-market breadth readings through Friday's close, alongside VXN/VIX, 2Y/10Y yields in percent and curve in basis points, Brent/WTI, and directly sourced FedWatch probabilities. Monitor Open Watch for genuinely new catalysts rather than duplicate descriptions of the selloff. Check Monday's semiconductor follow-through and Tuesday's 08:30 EST CPI release."
+      }
+    },
     {
       "date": "2026-11-06",
       "timeET": "10:09",
