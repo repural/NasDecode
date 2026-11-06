@@ -1,13 +1,137 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-06T06:39:27.000Z",
+  "updated": "2026-11-06T08:00:24.000Z",
   "horizon": [
     "2026-11-06",
     "2026-11-09",
     "2026-11-10"
   ],
   "entries": [
+    {
+      "date": "2026-11-06",
+      "timeET": "03:00",
+      "asOfET": "2026-11-06T03:00:24-05:00",
+      "bias": "Bearish",
+      "previousBias": "Bearish",
+      "materialChange": false,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "Bearish three-day baseline unchanged. Friday's completed Asian trading confirms international semiconductor stress following Thursday's US correction, but it is spillover from the known catalyst rather than a newly established independent driver. US employment and Tuesday CPI remain the key prospective tests.",
+      "bullish": "Deeply oversold US and Asian technology markets could rebound sharply if the US jobs release is absorbed constructively. Confirmation would require post-release SOX relative strength, broader participation and moderating volatility, none yet verified.",
+      "bearish": "Thursday's verified Nasdaq -5.52% and SOX greater than 12% decline have been followed by a reported 6.02% Korean KOSPI loss and 10.4% SK Hynix decline Friday. This cross-border confirmation raises concern about continuing technology de-risking without proving the US Friday outcome.",
+      "observations": [
+        {
+          "indicator": "Nasdaq Composite",
+          "value": 24315,
+          "unit": "index points",
+          "changePercent": -5.52,
+          "sourceTimestamp": "2026-11-05 US cash close",
+          "source": "Reuters November 5 closing report",
+          "url": "https://www.reuters.com/business/sp-500-futures-steady-after-midterm-rally-nasdaq-lags-chip-weakness-2026-11-05/",
+          "quality": "Verified completed-session figure, not a November 6 quote"
+        },
+        {
+          "indicator": "S&P 500",
+          "value": 7353.73,
+          "unit": "index points",
+          "changePercent": -4.36,
+          "sourceTimestamp": "2026-11-05 US cash close",
+          "source": "Reuters November 5 closing report",
+          "quality": "Historical completed-session return"
+        },
+        {
+          "indicator": "SOX",
+          "value": null,
+          "unit": "index points",
+          "changePercent": null,
+          "sourceTimestamp": "2026-11-05 US cash close",
+          "source": "Reuters November 5 closing report",
+          "quality": "Reported loss greater than 12%; exact closing value and synchronized SOX/QQQ relative return not verified"
+        },
+        {
+          "indicator": "QQQ, SOX/QQQ, 2Y/10Y yields and curve, VXN/VIX, breadth, Brent/WTI, direct FedWatch",
+          "value": null,
+          "unit": "unverified",
+          "sourceTimestamp": null,
+          "quality": "No fresh synchronized independently verified readings. Treasury yields must be in percent, curve in basis points; no numerical values inferred."
+        },
+        {
+          "indicator": "South Korea KOSPI",
+          "value": 5059.69,
+          "unit": "index points",
+          "changePercent": -6.02,
+          "sourceTimestamp": "2026-11-06 South Korea cash close",
+          "source": "Reuters November 6",
+          "url": "https://www.reuters.com/world/asia-pacific/south-korea-stocks-plunge-8-circuit-breaker-triggered-chip-shares-tumble-2026-11-06/",
+          "quality": "Reported completed Korean session; not synchronized with US Thursday close or Friday US premarket"
+        },
+        {
+          "indicator": "SK Hynix",
+          "value": null,
+          "unit": "KRW",
+          "changePercent": -10.4,
+          "sourceTimestamp": "2026-11-06 South Korea cash close",
+          "source": "Reuters November 6",
+          "url": "https://www.reuters.com/world/asia-pacific/south-korea-stocks-plunge-8-circuit-breaker-triggered-chip-shares-tumble-2026-11-06/",
+          "quality": "Reported completed Korean session; cross-market context, not SOX/QQQ return"
+        },
+        {
+          "indicator": "Curated Open Watch events",
+          "value": 135,
+          "unit": "events",
+          "sourceTimestamp": "2026-11-06T06:07:00Z",
+          "source": "repural/NasDecode:data/history/market-watch-events.json",
+          "quality": "Unchanged count versus previous assessment; newest event already incorporated"
+        }
+      ],
+      "conditions": {
+        "bullish": "Post-payroll SOX sustained outperformance relative to QQQ, broader Nasdaq participation and falling VXN/VIX.",
+        "bearish": "Persistent SOX underperformance, negative breadth and elevated volatility after employment release.",
+        "invalidation": "Sustained semiconductor leadership with improving breadth and falling volatility invalidates bearish continuation."
+      },
+      "upcomingEvents": [
+        {
+          "date": "2026-11-06",
+          "timeET": "08:30",
+          "event": "October Employment Situation, BLS",
+          "status": "Scheduled; future at assessment time"
+        },
+        {
+          "date": "2026-11-09",
+          "event": "Post-payroll market follow-through and SOX/QQQ leadership",
+          "status": "Monitoring condition"
+        },
+        {
+          "date": "2026-11-10",
+          "timeET": "08:30",
+          "event": "October CPI and Real Earnings, BLS",
+          "status": "Scheduled; future at assessment time"
+        }
+      ],
+      "provenance": {
+        "assessmentTimeUTC": "2026-11-06T08:00:24.000Z",
+        "comparedTo": "2026-11-06T01:39:27-05:00",
+        "openWatchEventCount": 135,
+        "openWatchLatestArchiveUpdated": "2026-11-06T06:07:00+00:00",
+        "sources": [
+          "https://www.reuters.com/business/sp-500-futures-steady-after-midterm-rally-nasdaq-lags-chip-weakness-2026-11-05/",
+          "https://www.reuters.com/world/asia-pacific/south-korea-stocks-plunge-8-circuit-breaker-triggered-chip-shares-tumble-2026-11-06/",
+          "https://www.bls.gov/schedule/2026/11_sched_list.htm",
+          "repural/NasDecode:data/history/market-watch-events.json"
+        ],
+        "dataQuality": "US figures are Nov 5 completed cash session; Korean figures are Nov 6 completed local session and are not synchronous. No verified current QQQ/SOX ratio, 2Y/10Y Treasury yield, curve, VXN/VIX, breadth, Brent/WTI or FedWatch probability. Treasury yield percentages and curve basis points must not be confused with raw scaled feeds. Reuters Korea reported close is separate from US market response; future macro impacts are scenarios. No estimates inserted."
+      },
+      "editorial": {
+        "marketOverview": "The most recent verified US cash session was a broad November 5 selloff, with Reuters reporting Nasdaq Composite down 5.52% and the Philadelphia semiconductor index down more than 12%. On Friday, Reuters reported the Korean KOSPI closed 6.02% lower, with SK Hynix down 10.4%. These readings establish a trans-Pacific continuation of technology-sector stress across different trading sessions, not a synchronized price comparison or a confirmed Friday US market decline.",
+        "whatChanged": "Compared with the 01:39 ET assessment, the notable additional evidence is the completed Friday Korean session: heavy losses in a major chip producer and its home market. The curated Open Watch repository still contains 135 events and no new curated item. The Asian move confirms spillover from the existing AI/data-center policy and valuation shock; it is not yet a separate catalyst sufficient to change the established bearish three-day classification.",
+        "marketInterpretation": "The breadth of selling across semiconductor supply chains supports continued caution, particularly ahead of macro releases capable of repricing yields and growth expectations. Nonetheless, an Asian close cannot predict how US investors will trade after payrolls, and the depth of recent declines creates a meaningful short-covering risk. A change in regime requires contemporaneous US chip leadership, breadth and volatility evidence.",
+        "threeDayPath": "Friday November 6 centers on the October US employment report at 08:30 ET and the market's reaction afterward. Monday November 9 is a test of whether a possible bounce attracts durable breadth and semiconductor leadership or fades. Tuesday November 10 introduces October CPI and real earnings at 08:30 ET. The baseline remains bearish with elevated two-sided event risk, not a point forecast for each day's return.",
+        "bullCase": "A balanced payrolls outcome, improving rate expectations and relief from crowded technology selling could produce a sharp recovery. Sustained SOX outperformance against QQQ, broader participation and easing VXN/VIX after the release would support a more constructive interpretation. This is a conditional path, not an observed Friday US recovery.",
+        "bearCase": "Continued selling in chip leaders after the payroll report, accompanied by poor breadth and persistent volatility, would suggest that Thursday's US rout and Friday's Asian spillover are part of a deeper repricing. An adverse CPI surprise on Tuesday could extend that pressure through discount rates and growth expectations. These remain scenarios pending actual releases and price reactions.",
+        "watchNext": "At 08:30 ET, verify the official BLS employment release and compare the subsequent US cash-session response using synchronized QQQ, SOX, breadth and volatility readings. Check 2Y and 10Y yields in percent, compute the curve in basis points, and verify oil and FedWatch with explicit timestamps. Continue checking curated Open Watch additions, and reassess ahead of the official Tuesday CPI release."
+      }
+    },
     {
       "date": "2026-11-06",
       "timeET": "01:39",
