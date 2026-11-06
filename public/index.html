@@ -701,6 +701,40 @@ function render(d){
     const details='<div class="state-inputs">'+metric('SOX 5D',inputs.sox5,'%')+metric('vs QQQ 5D',inputs.rs5,' pp')+metric('Breadth',inputs.breadth,'%')+metric('SOX 1D',inputs.sox1,'%')+'</div>';
     return '<div class="card factor-card directional-state-card signal-mixed" tabindex="0" data-tip="'+escAttr(directionalShadow.explanation||'Frozen Directional Engine v3.0 shadow classifier. The highlighted segment is the current semiconductor setup state; it does not alter production scores.')+'"><span class="factor-name">SOXL DIRECTIONAL SETUP · V3 SHADOW</span><div class="state-gauge">'+segments+'</div><span class="card-status amber">'+escHtml(directionalShadow.scorecard?.value||directionalShadow.latest||'—')+'</span>'+details+ev+eventEv+'<span class="card-latest">Frozen v3.0 · prospective validation · does not affect scores</span></div>';
   })():'';
+  // Decoration only: keep scorecard calculations and classification untouched.
+  const decoratedRowCards=rowCards.map((markup,i)=>{
+    const row=visibleRows[i]||{};
+    const signal=['positive','negative','mixed'].includes(row.signal)?row.signal:'mixed';
+    const signalName=signal==='positive'?'Supportive':signal==='negative'?'Negative':'Mixed';
+    const chip='<span class="nd-impact-label '+signal+'">'+signalName+'</span>';
+    let html=markup.replace(/(<span class="factor-name">[^<]*<\/span>)/, '$1'+chip);
+    const freshness=String(row.freshness||'');
+    if(freshness){
+      const dated=freshness.match(/20\d{2}-\d{2}-\d{2}/);
+      const latest=dated?.[0]||'';
+      const current=nyDateKey();
+      const age=latest?(Date.parse(current+'T12:00:00Z')-Date.parse(latest+'T12:00:00Z'))/86400000:0;
+      const old=age>2||/not independently verified|single.provider|stale/i.test(freshness);
+      const note='<span class="nd-card-freshness'+(old?' stale':'')+'" title="'+escAttr(freshness)+'">'+(old?'Delayed · ':'As of · ')+escHtml(freshness)+'</span>';
+      html=html.replace(/<\/div>$/,note+'</div>');
+    }
+    // Movement is not the same as model impact: lower rates/oil/volatility
+    // are supportive moves even if the overall level remains unfavorable.
+    const loweringIsSupportive=/^(10Y Treasury Yield|2Y Treasury yield|Oil \(WTI \/ Brent\)|Nasdaq volatility \(VXN \/ VIX\))$/.test(row.factor||'');
+    if(loweringIsSupportive&&row.scorecard){
+      const downward=String(row.scorecard.arrow||'').includes('↓');
+      const upward=String(row.scorecard.arrow||'').includes('↑');
+      const first=downward?'green':upward?'red':C[signal];
+      html=html.replace(/(<span class="metric-change )[^"]+(")/,'$1'+first+'$2');
+      if(row.scorecard.secondaryValue){
+        const down2=String(row.scorecard.secondaryArrow||'').includes('↓'),up2=String(row.scorecard.secondaryArrow||'').includes('↑');
+        const second=down2?'green':up2?'red':C[signal];
+        let seen=0;
+        html=html.replace(/(<span class="metric-change )[^"]+(")/g,(all,a,b)=>{seen++;return seen===2?a+second+b:all});
+      }
+    }
+    return html;
+  });
   const categoryHeading=(title,desc)=>{const key=title==='Macro / Rates'?'macro-rates':title==='Market Indicators'?'market-internals':title==='Technical Analysis'?'technical-analysis':'market-assessment';const icons={'macro-rates':'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>','market-internals':'<path d="M4 20v-7M9 20V9M14 20V4M19 20v-10"/>','market-assessment':'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>','technical-analysis':'<path d="M3 17l5-6 4 3 5-8 4 3"/><path d="M3 21h18"/>'};const icon='<svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+icons[key]+'</svg>';return '<div id="'+key+'" class="scorecard-category"><span class="nd-section-icon" aria-hidden="true">'+icon+'</span><div><span>'+escHtml(title.toUpperCase())+'</span><small>'+escHtml(desc)+'</small></div></div>';};
   const waveTrendCard=(symbol,id,showHistory=false)=>'<section class="nd-wt-card" id="'+id+'" aria-label="'+symbol+' WaveTrend technical analysis">'+
     '<div class="nd-wt-header"><div><h3>'+symbol+' WaveTrend</h3><small>WT Cross LB · Confirmed + developing</small></div><span class="nd-wt-alignment">Loading research</span></div>'+
@@ -715,10 +749,10 @@ function render(d){
   const soxlWaveTrendCard=waveTrendCard('SOXL','nd-soxl-wave-trend',true);
   factorCards.innerHTML=
     categoryHeading('Macro / Rates','External environment · inflation, policy, yields and oil')+
-    rowCards.slice(0,5).join('')+
+    decoratedRowCards.slice(0,5).join('')+
     categoryHeading('Market Indicators','Market prices, volatility, positioning, participation and leadership')+
     '<div class="nd-index-strip" id="ndIndexStrip" aria-label="Market index quotes"></div>'+ 
-    rowCards.slice(5).join('')+qqqWaveTrendCard+
+    decoratedRowCards.slice(5).join('')+qqqWaveTrendCard+
     categoryHeading('Market Assessment','NasDecode decision layer')+
     summaryCards+directionalShadowCard+opportunityCard+soxlCard+categoryHeading('Technical Analysis','NVDA and SOXL WaveTrend · AVWAP research')+ndWaveTrendCard+soxlWaveTrendCard+avwapResearchCards;
   renderIndexQuotes(d);
