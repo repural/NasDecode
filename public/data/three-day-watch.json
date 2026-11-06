@@ -1,13 +1,117 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-06T05:42:04.000Z",
+  "updated": "2026-11-06T06:39:27.000Z",
   "horizon": [
     "2026-11-06",
     "2026-11-09",
     "2026-11-10"
   ],
   "entries": [
+    {
+      "date": "2026-11-06",
+      "timeET": "01:39",
+      "asOfET": "2026-11-06T01:39:27-05:00",
+      "bias": "Bearish",
+      "previousBias": "Bearish",
+      "materialChange": false,
+      "confidence": "Moderate",
+      "eventRisk": "High",
+      "summary": "Bearish outlook unchanged for November 6, 9 and 10. The additional curated Open Watch event confirms the already incorporated November 5 Nasdaq/SOX correction, rather than a fresh market move. Payrolls and CPI remain the dominant forward catalysts.",
+      "bullish": "A sharp oversold recovery remains possible if the employment release eases policy fears and is followed by improving semiconductor leadership, breadth and falling volatility; none of these conditions is yet verified.",
+      "bearish": "Reuters confirmed November 5 Nasdaq Composite -5.52%, S&P 500 -4.36% and SOX down over 12%. These are the last verified US cash-session figures, not new overnight quotes; broad liquidation and semiconductor underperformance support a bearish base case.",
+      "observations": [
+        {
+          "indicator": "Nasdaq Composite",
+          "value": 24315,
+          "unit": "index points",
+          "changePercent": -5.52,
+          "sourceTimestamp": "2026-11-05 US cash close",
+          "source": "Reuters November 5 closing report",
+          "url": "https://www.reuters.com/business/sp-500-futures-steady-after-midterm-rally-nasdaq-lags-chip-weakness-2026-11-05/",
+          "quality": "Verified completed-session figure, not a November 6 quote"
+        },
+        {
+          "indicator": "S&P 500",
+          "value": 7353.73,
+          "unit": "index points",
+          "changePercent": -4.36,
+          "sourceTimestamp": "2026-11-05 US cash close",
+          "source": "Reuters November 5 closing report",
+          "quality": "Historical completed-session return"
+        },
+        {
+          "indicator": "SOX",
+          "value": null,
+          "unit": "index points",
+          "changePercent": null,
+          "sourceTimestamp": "2026-11-05 US cash close",
+          "source": "Reuters November 5 closing report",
+          "quality": "Reported loss greater than 12%; exact closing value and synchronized SOX/QQQ relative return not verified"
+        },
+        {
+          "indicator": "QQQ, SOX/QQQ, 2Y/10Y yields and curve, VXN/VIX, breadth, Brent/WTI, direct FedWatch",
+          "value": null,
+          "unit": "unverified",
+          "sourceTimestamp": null,
+          "quality": "No fresh synchronized independently verified readings. Treasury yields must be in percent, curve in basis points; no numerical values inferred."
+        },
+        {
+          "indicator": "Curated Open Watch events",
+          "value": 135,
+          "unit": "events",
+          "sourceTimestamp": "2026-11-06T06:07:00+00:00",
+          "source": "repural/NasDecode:data/history/market-watch-events.json",
+          "quality": "135 versus 134 previously; added event covers November 5 correction already included in prior assessment."
+        }
+      ],
+      "conditions": {
+        "bullish": "Post-payroll SOX sustained outperformance relative to QQQ, broader Nasdaq participation and falling VXN/VIX.",
+        "bearish": "Persistent SOX underperformance, negative breadth and elevated volatility after employment release.",
+        "invalidation": "Sustained semiconductor leadership with improving breadth and falling volatility invalidates bearish continuation."
+      },
+      "upcomingEvents": [
+        {
+          "date": "2026-11-06",
+          "timeET": "08:30",
+          "event": "October Employment Situation (BLS)",
+          "status": "Scheduled, not yet released at 00:42 ET"
+        },
+        {
+          "date": "2026-11-09",
+          "event": "Post-payroll semiconductor relative-strength and breadth follow-through",
+          "status": "Monitoring checkpoint, not scheduled release"
+        },
+        {
+          "date": "2026-11-10",
+          "timeET": "08:30",
+          "event": "October CPI",
+          "status": "Scheduled, prospective catalyst"
+        }
+      ],
+      "provenance": {
+        "assessmentTimeUTC": "2026-11-06T06:39:27.000Z",
+        "comparedTo": "2026-11-06 00:42 ET",
+        "openWatchEventCount": 135,
+        "openWatchLatestArchiveUpdated": "2026-11-06T06:07:00+00:00",
+        "sources": [
+          "https://www.reuters.com/business/sp-500-futures-steady-after-midterm-rally-nasdaq-lags-chip-weakness-2026-11-05/",
+          "https://www.reuters.com/business/wall-street-fear-gauge-jumps-most-since-liberation-day-ai-trade-stumbles-2026-11-05/",
+          "https://www.bls.gov/schedule/2026/",
+          "repural/NasDecode:data/history/market-watch-events.json"
+        ],
+        "dataQuality": "Verified synchronized US equity observations are November 5 cash closes. Reuters VIX 28.36 was an intraday peak, not a current or closing VIX value. Current synchronized QQQ/SOX, 2Y/10Y yields, curve, VXN/VIX, breadth, Brent/WTI and FedWatch remain unverified. Yields should be in percent, spread in basis points; no numerical values inferred. Future event impact is scenario, not observed reaction."
+      },
+      "editorial": {
+        "marketOverview": "Thursday November 5 saw a broad US equity correction led by semiconductors. Reuters reported Nasdaq Composite down 5.52%, S&P 500 down 4.36% and SOX down more than 12%. These completed-session observations support a bearish near-term baseline, but they cannot be relabeled as fresh Friday premarket prices.",
+        "whatChanged": "The curated Open Watch archive now has 135 events, one more than in the previous assessment. The added item describes Thursday's Nasdaq correction and SOX selloff, which were already incorporated into the prior outlook. Reuters also described a November 5 intraday VIX high of 28.36, which cannot be compared as a synchronized close or current quote. No new independent catalyst changes the expected three-day path.",
+        "marketInterpretation": "The exceptionally weak semiconductor performance suggests that concerns about AI infrastructure investment and policy have spread into a broader de-risking episode. The size of the selloff also raises the possibility of a violent technical rebound. A durable change in interpretation requires post-event evidence from semiconductor relative strength, breadth and volatility, not simply a large previous-session loss.",
+        "threeDayPath": "Friday November 6 will be shaped by the 08:30 ET October employment report and, crucially, the actual market reaction to it. Monday November 9 tests whether any recovery gains breadth and chip leadership. Tuesday November 10 brings October CPI at 08:30 ET, creating another two-sided rate and valuation catalyst. Bearish continuation remains the base case, with an oversold bounce a credible alternative.",
+        "bullCase": "A labor report that reduces rate anxiety without signaling a deep growth shock could allow a sharp relief rally. SOX outperforming QQQ, stronger Nasdaq participation and lower VXN/VIX after the release would be meaningful bullish confirmation. No such synchronized post-release evidence is available yet.",
+        "bearCase": "An unfavorable employment or inflation surprise could amplify concerns about rates, AI infrastructure economics and high-duration technology valuations. Persistent chip underperformance and weak breadth into Monday would indicate that Thursday's liquidation was not fully absorbed. These are prospective risks, not already observed Friday reactions.",
+        "watchNext": "Verify the official BLS employment data at 08:30 ET and then collect synchronized QQQ/SOX, market breadth, VXN/VIX, 2Y and 10Y Treasury yields, Brent/WTI and Fed expectations. Normalize Treasury yields to percent and calculate 10Y-minus-2Y in basis points. Review newly curated Open Watch items and the November 10 CPI schedule before interpreting any change."
+      }
+    },
     {
       "date": "2026-11-06",
       "timeET": "00:42",
