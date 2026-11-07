@@ -1,12 +1,12 @@
 {
-  "updatedET": "Nov 07, 2026 · 00:03 ET",
+  "updatedET": "Nov 07, 2026 · 01:18 ET",
   "nextUpdateET": "09:30 / 10:30 ET on trading weekdays",
   "groups": [
     {
       "name": "NASDAQ SETUP",
       "signal": "negative",
       "label": "Cautiously Negative",
-      "explanation": "⚠️ Material bearish change. Treasury yields remain the main pressure point, with the 2Y at 4.512% and the 10Y at 4.859%. Semiconductor momentum remains an important equity confirmation: SOXX has risen for 1 consecutive session. QQQ is -4.98% over five sessions and -7.90% versus its 20-day average. Brent is +0.00% at about $98.32, adding some inflation pressure.\n\nThe Nasdaq Setup is cautiously negative (-27/100, 62% confidence, deteriorating ↓). The current balance is persistent semiconductor momentum on the supportive side versus elevated/rising Treasury yields, semiconductor/AI leaders trading below their earnings AVWAPs, rising volatility as the main headwind.\n\nNear-term risk is concentrated in volatility is rising. Improvement in these conditions would strengthen the setup; further deterioration would reduce conviction."
+      "explanation": "⚠️ Material bearish change. Treasury yields remain the main pressure point, with the 2Y at 4.512% and the 10Y at 4.859%. Semiconductor momentum remains an important equity confirmation: SOXX has risen for 1 consecutive session. QQQ is -4.98% over five sessions and -7.90% versus its 20-day average. Brent is +0.00% at about $98.32, adding some inflation pressure.\n\nThe Nasdaq Setup is cautiously negative (-28/100, 63% confidence, deteriorating ↓). The current balance is persistent semiconductor momentum on the supportive side versus elevated/rising Treasury yields, semiconductor/AI leaders trading below their earnings AVWAPs, rising volatility as the main headwind.\n\nNear-term risk is concentrated in volatility is rising. Improvement in these conditions would strengthen the setup; further deterioration would reduce conviction."
     },
     {
       "name": "Rates / Macro",
@@ -70,7 +70,7 @@
       "source": "Nasdaq earnings calendar / confirmed company IR dates",
       "explanation": "Current reading: AMAT: Nov 12, 2026 · NVDA: Nov 17, 2026 · NVDA: Nov 18, 2026 · ADI: Nov 24, 2026 · MRVL: Dec 01, 2026. Direction: Event risk. NasDecode currently classifies this factor as neutral/mixed. This row will become more specific as its underlying live/research source is automated.",
       "currentImpact": "Very High",
-      "impactReason": "Calendar: 5.0 days to event; market-reaction score 0/4; directional score +0",
+      "impactReason": "Calendar: 4.9 days to event; market-reaction score 0/4; directional score +0",
       "trend": "Stable →",
       "displayRank": 2,
       "signalLabel": "🟡 Mixed",
@@ -159,9 +159,9 @@
             "surprise": 0.09999999999999998,
             "normalizedSurprise": 1.0,
             "nasdaqImpact": -1.0,
-            "decay": 0.0962,
-            "effectiveWeight": 0.0962,
-            "weightedContribution": -0.0962,
+            "decay": 0.0957,
+            "effectiveWeight": 0.0957,
+            "weightedContribution": -0.0957,
             "source": "U.S. Bureau of Labor Statistics actual / Trading Economics survey consensus",
             "sourceMode": "official_verified",
             "verified": true,
@@ -181,9 +181,9 @@
             "surprise": 0.3,
             "normalizedSurprise": 1.0,
             "nasdaqImpact": -1.0,
-            "decay": 0.0651,
-            "effectiveWeight": 0.0391,
-            "weightedContribution": -0.0391,
+            "decay": 0.0647,
+            "effectiveWeight": 0.0388,
+            "weightedContribution": -0.0388,
             "source": "U.S. Bureau of Labor Statistics actual / Trading Economics survey consensus",
             "sourceMode": "official_verified",
             "verified": true,
@@ -251,6 +251,76 @@
       "curveContext": "2s10s +34.7 bp (upward-sloping), bear flattener, -1.3 bp vs prev close"
     },
     {
+      "factor": "Fed expectations",
+      "latest": "Dec 9: Hike 76% / Hold 24% / Cut 0% · Jan 27: Above current 81% / Same 19% / Below 0% · Mar 17: Above current 88% / Same 12% / Below 0%",
+      "direction": "Hawkish / hikes priced",
+      "signal": "negative",
+      "freshness": "CME settlement 2026-11-06 · checked 2026-11-07 01:18 ET",
+      "source": "CME Group 30-Day Fed Funds futures settlements; New York Fed EFFR; CME FedWatch methodology",
+      "explanation": "Dec 9: Hike 76.3% · Hold 23.7% · Cut 0.0%. By Jan 27: target above current 81.2% · same 18.8% · below 0.0%. By Mar 17: target above current 88.5% · same 11.5% · below 0.0%. The nearest meeting is shown as hike/hold/cut; later meetings are aggregated versus today’s target range.",
+      "currentImpact": "High",
+      "trend": "Stable →",
+      "displayRank": 7,
+      "signalLabel": "🔴 Negative",
+      "scorecard": {
+        "value": "Dec 9",
+        "arrow": "",
+        "change": "Hike 76.3% · Hold 23.7% · Cut 0.0%"
+      },
+      "fedMeetings": [
+        {
+          "date": "2026-12-09",
+          "label": "Dec 9",
+          "contract": "ZQZ6",
+          "probabilities": {
+            "hike": 76.3,
+            "hold": 23.7,
+            "cut": 0.0
+          },
+          "targetProbabilities": {
+            "3.75%-4.00%": 23.7,
+            "4.00%-4.25%": 76.3
+          }
+        },
+        {
+          "date": "2027-01-27",
+          "label": "Jan 27",
+          "contract": "ZQF7",
+          "probabilities": {
+            "hike": 81.2,
+            "hold": 18.8,
+            "cut": 0.0
+          },
+          "targetProbabilities": {
+            "3.75%-4.00%": 18.8,
+            "4.00%-4.25%": 65.4,
+            "4.25%-4.50%": 15.8
+          }
+        },
+        {
+          "date": "2027-03-17",
+          "label": "Mar 17",
+          "contract": "ZQH7",
+          "probabilities": {
+            "hike": 88.5,
+            "hold": 11.5,
+            "cut": 0.0
+          },
+          "targetProbabilities": {
+            "3.75%-4.00%": 11.5,
+            "4.00%-4.25%": 47.2,
+            "4.25%-4.50%": 35.1,
+            "4.50%-4.75%": 6.2
+          }
+        }
+      ],
+      "debug": "Trade date: 2026-11-06 · Current target: 3.75%-4.00% · EFFR: 3.88 · Engine: cme-fedwatch 0.2.1 · Policy score: -66.0 · Repricing score: -34.8",
+      "fedLevelScore": -79.4,
+      "fedRepricingScore": -34.8,
+      "fedPolicyScore": -66.0,
+      "fedPreviousLevelScore": -70.7
+    },
+    {
       "factor": "Earnings AVWAP leadership",
       "latest": "0/6 above Earnings AVWAP · median -14.6%",
       "direction": "Weakness below earnings anchors",
@@ -268,78 +338,8 @@
         "arrow": "↓",
         "change": "median -14.6%"
       },
-      "displayRank": 7,
-      "signalLabel": "🔴 Negative"
-    },
-    {
-      "factor": "Fed expectations",
-      "latest": "Dec 9: Hike 67% / Hold 33% / Cut 0% · Jan 27: Above current 72% / Same 28% / Below 0% · Mar 17: Above current 83% / Same 17% / Below 0%",
-      "direction": "Hawkish / hikes priced",
-      "signal": "negative",
-      "freshness": "CME settlement 2026-11-05 · checked 2026-11-07 00:03 ET",
-      "source": "CME Group 30-Day Fed Funds futures settlements; New York Fed EFFR; CME FedWatch methodology",
-      "explanation": "Dec 9: Hike 66.9% · Hold 33.1% · Cut 0.0%. By Jan 27: target above current 72.3% · same 27.8% · below 0.0%. By Mar 17: target above current 83.0% · same 16.9% · below 0.0%. The nearest meeting is shown as hike/hold/cut; later meetings are aggregated versus today’s target range.",
-      "currentImpact": "Medium",
-      "trend": "Stable →",
       "displayRank": 8,
-      "signalLabel": "🔴 Negative",
-      "scorecard": {
-        "value": "Dec 9",
-        "arrow": "",
-        "change": "Hike 66.9% · Hold 33.1% · Cut 0.0%"
-      },
-      "fedMeetings": [
-        {
-          "date": "2026-12-09",
-          "label": "Dec 9",
-          "contract": "ZQZ6",
-          "probabilities": {
-            "hike": 66.9,
-            "hold": 33.1,
-            "cut": 0.0
-          },
-          "targetProbabilities": {
-            "3.75%-4.00%": 33.1,
-            "4.00%-4.25%": 66.9
-          }
-        },
-        {
-          "date": "2027-01-27",
-          "label": "Jan 27",
-          "contract": "ZQF7",
-          "probabilities": {
-            "hike": 72.3,
-            "hold": 27.8,
-            "cut": 0.0
-          },
-          "targetProbabilities": {
-            "3.75%-4.00%": 27.8,
-            "4.00%-4.25%": 61.5,
-            "4.25%-4.50%": 10.8
-          }
-        },
-        {
-          "date": "2027-03-17",
-          "label": "Mar 17",
-          "contract": "ZQH7",
-          "probabilities": {
-            "hike": 83.0,
-            "hold": 16.9,
-            "cut": 0.0
-          },
-          "targetProbabilities": {
-            "3.75%-4.00%": 16.9,
-            "4.00%-4.25%": 48.3,
-            "4.25%-4.50%": 30.5,
-            "4.50%-4.75%": 4.2
-          }
-        }
-      ],
-      "debug": "Trade date: 2026-11-05 · Current target: 3.75%-4.00% · EFFR: 3.88 · Engine: cme-fedwatch 0.2.1 · Policy score: -49.5 · Repricing score: +0.0",
-      "fedLevelScore": -70.7,
-      "fedRepricingScore": 0.0,
-      "fedPolicyScore": -49.5,
-      "fedPreviousLevelScore": -70.7
+      "signalLabel": "🔴 Negative"
     },
     {
       "factor": "Mega-cap leadership",
@@ -360,7 +360,7 @@
       "latest": "Equity P/C 0.59 | 5D avg 0.64 | → stable | Index 1.26 | Total 0.95",
       "direction": "Balanced",
       "signal": "mixed",
-      "freshness": "Cboe daily · latest session 2026-11-06 · checked 2026-11-07 00:03 ET",
+      "freshness": "Cboe daily · latest session 2026-11-06 · checked 2026-11-07 01:18 ET",
       "source": "Cboe Daily Market Statistics — 5-session equity put/call trend; index/total context; not dealer gamma exposure",
       "explanation": "Equity P/C 0.59 | 5D avg 0.64 | → stable | Index 1.26 | Total 0.95. Equity put/call is compared with its 5-session baseline; Index and Total P/C add context because index puts often reflect institutional hedging. Positioning is balanced and neutral/mixed; this is not dealer gamma.  VXN/VIX are falling together (VXN 34.02 (-11.08%) | VIX 25.64 (-9.01%)), so options positioning and implied volatility together do not currently give the same strong directional signal.",
       "currentImpact": "Low",
@@ -429,7 +429,7 @@
       "latest": "Washout",
       "direction": "Shadow / prospective validation",
       "signal": "mixed",
-      "freshness": "Completed-session classifier · 2026-11-05",
+      "freshness": "Completed-session classifier · 2026-11-06",
       "source": "Frozen Directional Engine v3.0",
       "explanation": "Frozen v3 detects a washed-out semiconductor state. Historical/pseudo-OOS validation was strongest at T+1 to T+5; prospective validation is now running.",
       "currentImpact": "Shadow",
@@ -444,17 +444,17 @@
         "engineVersion": "directional-engine-v3.0",
         "specSha256": "cf7ede6ff6312720f2b31d0c9a557c484039bb533fa7e04c3a078cc5583157c3",
         "setup": "washout_rebound",
-        "date": "2026-11-05",
+        "date": "2026-11-06",
         "inputs": {
-          "sox1": -12.246169949118201,
-          "qqq1": -6.488908158103923,
-          "sox5": -21.76608950962109,
-          "qqq5": -9.546509352196164,
-          "sox10": -16.03469763100065,
-          "qqq10": -8.150808409158671,
-          "rs5": -12.219580157424925,
-          "rs10": -7.883889221841979,
-          "breadth": 0.0
+          "sox1": 4.2071551177288,
+          "qqq1": 1.3986554362104942,
+          "sox5": -12.148694316114216,
+          "qqq5": -4.980521079233591,
+          "sox10": -12.887600036070568,
+          "qqq10": -6.856899488926738,
+          "rs5": -7.168173236880626,
+          "rs10": -6.03070054714383,
+          "breadth": 100.0
         },
         "prospectiveStart": "2026-10-07",
         "holdoutT5SOXL": {
@@ -463,7 +463,7 @@
           "medianPct": 0.838,
           "positivePct": 52.8
         },
-        "holdoutThrough": "2026-11-05",
+        "holdoutThrough": "2026-11-06",
         "nonOverlappingT5SOXL": {
           "n": 8,
           "meanPct": 0.383,
@@ -503,7 +503,7 @@
     "fedFundsFutures": {},
     "fedExpectationsModel": {
       "method": "CME official settlement feed + CME FedWatch methodology",
-      "tradeDate": "2026-11-05",
+      "tradeDate": "2026-11-06",
       "effr": 3.88,
       "currentTarget": "3.75%-4.00%",
       "effrSource": "https://markets.newyorkfed.org/api/rates/all/latest.json",
@@ -521,13 +521,13 @@
           "label": "Dec 9",
           "contract": "ZQZ6",
           "probabilities": {
-            "hike": 66.9,
-            "hold": 33.1,
+            "hike": 76.3,
+            "hold": 23.7,
             "cut": 0.0
           },
           "targetProbabilities": {
-            "3.75%-4.00%": 33.1,
-            "4.00%-4.25%": 66.9
+            "3.75%-4.00%": 23.7,
+            "4.00%-4.25%": 76.3
           }
         },
         {
@@ -535,14 +535,14 @@
           "label": "Jan 27",
           "contract": "ZQF7",
           "probabilities": {
-            "hike": 72.3,
-            "hold": 27.8,
+            "hike": 81.2,
+            "hold": 18.8,
             "cut": 0.0
           },
           "targetProbabilities": {
-            "3.75%-4.00%": 27.8,
-            "4.00%-4.25%": 61.5,
-            "4.25%-4.50%": 10.8
+            "3.75%-4.00%": 18.8,
+            "4.00%-4.25%": 65.4,
+            "4.25%-4.50%": 15.8
           }
         },
         {
@@ -550,21 +550,21 @@
           "label": "Mar 17",
           "contract": "ZQH7",
           "probabilities": {
-            "hike": 83.0,
-            "hold": 16.9,
+            "hike": 88.5,
+            "hold": 11.5,
             "cut": 0.0
           },
           "targetProbabilities": {
-            "3.75%-4.00%": 16.9,
-            "4.00%-4.25%": 48.3,
-            "4.25%-4.50%": 30.5,
-            "4.50%-4.75%": 4.2
+            "3.75%-4.00%": 11.5,
+            "4.00%-4.25%": 47.2,
+            "4.25%-4.50%": 35.1,
+            "4.50%-4.75%": 6.2
           }
         }
       ],
-      "policyScore": -49.5,
-      "levelScore": -70.7,
-      "repricingScore": 0.0
+      "policyScore": -66.0,
+      "levelScore": -79.4,
+      "repricingScore": -34.8
     },
     "cnbcFreshness": {
       ".IXIC": {
@@ -948,7 +948,7 @@
       {
         "severity": "bearish",
         "title": "Fed expectations repriced hawkishly",
-        "detail": "Dec 9: Hike 67% / Hold 33% / Cut 0% · Jan 27: Above current 72% / Same 28% / Below 0% · Mar 17: Above current 83% / Same 17% / Below 0%"
+        "detail": "Dec 9: Hike 76% / Hold 24% / Cut 0% · Jan 27: Above current 81% / Same 19% / Below 0% · Mar 17: Above current 88% / Same 12% / Below 0%"
       },
       {
         "severity": "bullish",
@@ -986,16 +986,16 @@
   },
   "opportunityScore": {
     "version": 5,
-    "score": 44,
-    "rawScore": 44,
+    "score": 43,
+    "rawScore": 43,
     "label": "Wait for Confirmation",
     "signal": "mixed",
     "type": "Selective / mixed",
     "components": {
-      "Directional edge": 16,
+      "Directional edge": 15,
       "Entry quality": 70,
       "Recovery confirmation": 52,
-      "Macro timing": 41,
+      "Macro timing": 37,
       "Catalyst asymmetry": 0
     },
     "entryQualityComponents": {
@@ -1021,21 +1021,21 @@
     ],
     "weakestDrivers": [
       "Catalyst asymmetry 0",
-      "Directional edge 16"
+      "Directional edge 15"
     ],
-    "explanation": "Long-entry quality is wait for confirmation (44/100; Selective / mixed). Raw weighted score 44/100. Strongest inputs: Entry quality 70, Recovery confirmation 52. Weakest: Catalyst asymmetry 0, Directional edge 16.",
+    "explanation": "Long-entry quality is wait for confirmation (43/100; Selective / mixed). Raw weighted score 43/100. Strongest inputs: Entry quality 70, Recovery confirmation 52. Weakest: Catalyst asymmetry 0, Directional edge 15.",
     "note": "This is an entry-quality score, not a forecast of the next session return. Strong internals can support the trend without making an extended price a good new entry."
   },
   "schemaVersion": 2,
   "nasdaqScore": {
-    "score": -27,
-    "rawScore": -27,
+    "score": -28,
+    "rawScore": -28,
     "previousScore": -2,
     "trend": "Deteriorating ↓",
     "signal": "negative",
     "label": "Cautiously Negative",
-    "confidence": 62,
-    "coverage": 88,
+    "confidence": 63,
+    "coverage": 89,
     "model": {
       "version": 3,
       "factors": [
@@ -1072,14 +1072,6 @@
           "regimeMultiplier": 1.25
         },
         {
-          "factor": "Options positioning / sentiment",
-          "bucket": "Volatility / Positioning",
-          "strength": 0.408,
-          "effectiveWeight": 1.2,
-          "freshnessWeight": 1.0,
-          "regimeMultiplier": 1.2
-        },
-        {
           "factor": "Nasdaq volatility (VXN / VIX)",
           "bucket": "Volatility / Positioning",
           "strength": -0.34,
@@ -1098,8 +1090,8 @@
         {
           "factor": "Fed expectations",
           "bucket": "Rates / Macro",
-          "strength": -0.495,
-          "effectiveWeight": 2.5,
+          "strength": -0.66,
+          "effectiveWeight": 3.75,
           "freshnessWeight": 1.0,
           "regimeMultiplier": 1.25
         },
@@ -1110,6 +1102,14 @@
           "effectiveWeight": 1.4,
           "freshnessWeight": 0.7,
           "regimeMultiplier": 1.0
+        },
+        {
+          "factor": "Options positioning / sentiment",
+          "bucket": "Volatility / Positioning",
+          "strength": 0.408,
+          "effectiveWeight": 1.2,
+          "freshnessWeight": 1.0,
+          "regimeMultiplier": 1.2
         },
         {
           "factor": "Oil (WTI / Brent)",
@@ -1169,12 +1169,12 @@
         },
         {
           "bucket": "Rates / Macro",
-          "strength": -0.687,
+          "strength": -0.71,
           "weight": 9.0,
-          "uncappedWeight": 15.0,
+          "uncappedWeight": 16.25,
           "cap": 9.0,
-          "rawStrength": -0.687,
-          "effectiveStrength": -0.687,
+          "rawStrength": -0.71,
+          "effectiveStrength": -0.71,
           "marketResponseAttenuationPct": 0.0
         },
         {
@@ -1199,10 +1199,10 @@
           "cap": 4.0
         }
       ],
-      "coveragePct": 88,
+      "coveragePct": 89,
       "agreementPct": 24
     },
-    "effectiveScore": -27.0
+    "effectiveScore": -28.0
   },
   "marketAnalysis": null,
   "confirmationLayer": {
@@ -1377,8 +1377,8 @@
       "observationDate": "2026-11-06"
     },
     "macroConstraint": {
-      "ratesMacroBucketStrength": -0.687,
-      "effectiveRatesMacroBucketStrength": -0.687,
+      "ratesMacroBucketStrength": -0.71,
+      "effectiveRatesMacroBucketStrength": -0.71,
       "marketResponseAttenuationPct": 0.0
     },
     "directionalScoreUnchanged": true,
@@ -3141,7 +3141,7 @@
     "status": "inactive",
     "mode": null,
     "summary": "No persistent divergence between the macro impulse and live market response.",
-    "observedAt": "2026-11-07T00:06:25.175519-05:00",
+    "observedAt": "2026-11-07T01:21:23.901919-05:00",
     "candidateMode": null,
     "candidateSince": null,
     "persistenceMinutes": 0.0,
@@ -3150,10 +3150,10 @@
     "positiveResponseScore": 67,
     "negativeResponseScore": 7,
     "attenuationPct": 0.0,
-    "rawRatesMacroStrength": -0.687,
-    "effectiveRatesMacroStrength": -0.687,
-    "rawNasdaqScore": -27,
-    "effectiveNasdaqScore": -27,
+    "rawRatesMacroStrength": -0.71,
+    "effectiveRatesMacroStrength": -0.71,
+    "rawNasdaqScore": -28,
+    "effectiveNasdaqScore": -28,
     "components": {},
     "note": "Market Response only attenuates an existing Rates / Macro contribution; it never reverses its sign."
   },
@@ -3171,9 +3171,9 @@
     "components": {
       "Semiconductor trend": 70,
       "SOXL entry quality": 10,
-      "Market confirmation": 44,
+      "Market confirmation": 43,
       "Volatility / leverage risk": 53,
-      "Rates / macro": 33,
+      "Rates / macro": 30,
       "Catalyst asymmetry": 0
     },
     "semiconductorTrend": {
@@ -3634,7 +3634,7 @@
       "changePct": 1.088,
       "source": "CNBC quote service",
       "quoteTime": "11/06/26 EST",
-      "collectedAtET": "2026-11-07T00:03:15.581241-05:00",
+      "collectedAtET": "2026-11-07T01:18:15.960858-05:00",
       "status": "available",
       "realtimeGuaranteed": false
     },
@@ -3644,7 +3644,7 @@
       "changePct": 0.315,
       "source": "CNBC quote service",
       "quoteTime": "11/06/26 EST",
-      "collectedAtET": "2026-11-07T00:03:15.581267-05:00",
+      "collectedAtET": "2026-11-07T01:18:15.960887-05:00",
       "status": "available",
       "realtimeGuaranteed": false
     }
