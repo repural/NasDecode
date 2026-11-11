@@ -1,218 +1,183 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-11T20:47:24Z",
+  "updated": "2026-11-11T22:15:53Z",
   "horizon": [
-    "2026-11-11",
     "2026-11-12",
-    "2026-11-13"
+    "2026-11-13",
+    "2026-11-16"
   ],
   "entries": [
     {
       "date": "2026-11-11",
-      "timeET": "15:47",
+      "timeET": "17:15",
       "bias": "Cautiously Bullish",
-      "previousBias": "Neutral",
-      "materialChange": true,
+      "previousBias": "Cautiously Bullish",
+      "materialChange": false,
       "confidence": "Moderate-Low",
       "eventRisk": "High",
-      "summary": "A broad, semiconductor-led rebound has changed the near-term balance from neutral to cautiously bullish, but hotter CPI, expected Fed tightening and an unusually strong chip bounce argue against treating one session as durable trend confirmation.",
+      "summary": "Wednesday's confirmed Nasdaq +1.60% close and SOX +5.7% advance validate a broad AI/semiconductor rebound, but the earlier intraday +7% SOX indication faded and the Veterans Day Treasury closure leaves rate confirmation outstanding. Maintain cautiously bullish, conditional stance for November 12, 13 and 16.",
       "bullish": [
-        "Reuters' November 11 intraday report has Nasdaq Composite +1.80% and SOX +7% with every semiconductor-index component advancing; this is a broad chip-led rebound, not merely one megacap.",
-        "CoreWeave's stronger results and higher demand confidence drove a >20% share rally, supported AI infrastructure peers and helped Nvidia rebound 3.8%.",
-        "Reuters reports Nasdaq advancing issues outnumbering decliners 1.67:1 and VIX at 17.63, below last week's 28.36 peak."
+        "Reuters November 11 closing report: Nasdaq Composite +1.60%, SOX +5.7%, with AI-related shares leading; positive cash-close confirmation rather than solely an intraday rally.",
+        "CoreWeave finished up 24.7% after earnings; reported AI infrastructure demand supported semiconductors and data-center peers.",
+        "S&P 500 +1.31% and Dow +0.49% indicate the advance extended beyond the Nasdaq, though leadership was concentrated in technology."
       ],
       "bearish": [
-        "October CPI exceeded consensus and Reuters reports traders fully price at least a 25 bp December Fed rate increase, with a 13.2% probability of 50 bp; financing and valuation headwinds remain.",
-        "Nasdaq new 52-week lows (125) exceeded highs (65), despite positive same-session advancing breadth: participation is not uniformly healthy.",
-        "Wednesday's bond-market closure prevents confirming whether the Treasury market accepts the equity rebound; renewed 2Y/10Y selling Thursday could reverse the rally.",
-        "Brent and WTI rebounded on Iran/Hormuz risk, keeping a geopolitical inflation channel active."
+        "SOX closed +5.7%, below approximately +7% earlier in the session; a powerful rebound is not yet proof of sustained leadership.",
+        "Hotter October CPI and Reuters-reported December Fed tightening expectations remain a valuation headwind; no new independently checked FedWatch snapshot.",
+        "Bond market was closed on November 11, preventing a same-day 2Y/10Y yield and curve confirmation; a Thursday rates repricing could pressure technology.",
+        "Earlier intraday Nasdaq 52-week lows exceeded highs despite positive advancing breadth; no verified closing breadth reset.",
+        "Oil/geopolitical inflation risk persists; no synchronized fresh oil quote verified for this checkpoint."
       ],
       "observations": [
         {
           "metric": "Nasdaq Composite",
-          "value": 1.8,
-          "unit": "percent intraday session change",
-          "sourceTime": "2026-11-11 Reuters Wednesday US session, article updated during session; quotes delayed at least 15 minutes",
-          "source": "Reuters equities November 11",
-          "quality": "reported intraday snapshot; not synchronized to all other observations"
+          "value": 1.6,
+          "unit": "percent close-to-close change",
+          "sourceTime": "2026-11-11 US equity close 16:00 EST",
+          "source": "Reuters November 11 closing report; Associated Press November 11",
+          "quality": "confirmed regular-session close"
         },
         {
-          "metric": "Nasdaq Composite index level",
-          "value": 25513.91,
-          "unit": "index points",
-          "sourceTime": "2026-11-11 Reuters intraday snapshot",
-          "source": "Reuters equities November 11",
-          "quality": "intraday; not official close"
+          "metric": "Nasdaq Composite",
+          "value": 25466.19,
+          "unit": "index points at close",
+          "sourceTime": "2026-11-11 16:00 EST",
+          "source": "Associated Press November 11",
+          "quality": "confirmed close"
         },
         {
-          "metric": "Philadelphia SE Semiconductor index (SOX)",
-          "value": 7,
-          "unit": "approximately percent intraday session change",
-          "sourceTime": "2026-11-11 Reuters intraday report",
-          "source": "Reuters equities November 11",
-          "quality": "approximate, every component reportedly positive"
+          "metric": "Philadelphia Semiconductor Index SOX",
+          "value": 5.7,
+          "unit": "percent session change",
+          "sourceTime": "2026-11-11 US equity close",
+          "source": "Reuters November 11 closing report",
+          "quality": "reported cash-close; corrected from prior +7% intraday"
         },
         {
-          "metric": "Nvidia",
-          "value": 3.8,
-          "unit": "percent intraday session change",
-          "sourceTime": "2026-11-11 Reuters intraday report",
-          "source": "Reuters equities November 11",
-          "quality": "intraday snapshot"
+          "metric": "S&P 500",
+          "value": 1.31,
+          "unit": "percent session change",
+          "sourceTime": "2026-11-11 US equity close",
+          "source": "Reuters November 11 closing report",
+          "quality": "confirmed close"
         },
         {
-          "metric": "Nasdaq advancing/declining issues",
-          "value": 1.67,
-          "unit": "advancers per decliner",
-          "sourceTime": "2026-11-11 Reuters intraday report",
-          "source": "Reuters equities November 11",
-          "quality": "same article, not exchange close"
-        },
-        {
-          "metric": "Nasdaq 52-week highs",
-          "value": 65,
-          "unit": "stocks",
-          "sourceTime": "2026-11-11 Reuters intraday report",
-          "source": "Reuters equities November 11",
-          "quality": "intraday"
-        },
-        {
-          "metric": "Nasdaq 52-week lows",
-          "value": 125,
-          "unit": "stocks",
-          "sourceTime": "2026-11-11 Reuters intraday report",
-          "source": "Reuters equities November 11",
-          "quality": "intraday"
-        },
-        {
-          "metric": "VIX",
-          "value": 17.63,
-          "unit": "volatility index points",
-          "sourceTime": "2026-11-11 Reuters intraday report",
-          "source": "Reuters equities November 11",
-          "quality": "last quoted, delayed"
-        },
-        {
-          "metric": "Fed December hike >=25bp",
-          "value": 100,
-          "unit": "percent probability, Reuters description fully priced",
-          "sourceTime": "2026-11-11 Reuters intraday report",
-          "source": "Reuters citing CME FedWatch",
-          "quality": "reported market-implied probability; not direct independent CME snapshot"
-        },
-        {
-          "metric": "Fed December 50bp hike",
-          "value": 13.2,
-          "unit": "percent probability",
-          "sourceTime": "2026-11-11 Reuters intraday report",
-          "source": "Reuters citing CME FedWatch",
-          "quality": "reported estimate, time-varying"
-        },
-        {
-          "metric": "Brent crude",
-          "value": 92.76,
-          "unit": "USD per barrel, settlement",
-          "sourceTime": "2026-11-11 oil settlement",
-          "source": "Reuters oil November 11",
-          "quality": "confirmed settlement, asynchronous with equity intraday snapshot"
-        },
-        {
-          "metric": "WTI crude",
-          "value": 86.53,
-          "unit": "USD per barrel, settlement",
-          "sourceTime": "2026-11-11 oil settlement",
-          "source": "Reuters oil November 11",
-          "quality": "confirmed settlement, asynchronous with equity intraday snapshot"
-        },
-        {
-          "metric": "Brent session change",
-          "value": 1.39,
-          "unit": "percent",
-          "sourceTime": "2026-11-11 oil settlement",
-          "source": "Reuters oil November 11",
-          "quality": "confirmed settlement"
-        },
-        {
-          "metric": "WTI session change",
-          "value": 0.57,
-          "unit": "percent",
-          "sourceTime": "2026-11-11 oil settlement",
-          "source": "Reuters oil November 11",
-          "quality": "confirmed settlement"
+          "metric": "CoreWeave CRWV",
+          "value": 24.7,
+          "unit": "percent session change",
+          "sourceTime": "2026-11-11 US equity close",
+          "source": "Reuters November 11 closing report",
+          "quality": "reported close"
         },
         {
           "metric": "2Y and 10Y US Treasury yields",
           "value": null,
-          "unit": "percent annual yield; spread basis points",
-          "sourceTime": "2026-11-11 US Veterans Day",
-          "source": "Reuters global markets November 11",
-          "quality": "US cash bond market closed; no fresh synchronized 2Y/10Y pair; no spread calculated, no yield scaling assumed"
+          "unit": "percent annual yields; spread in basis points",
+          "sourceTime": "2026-11-11 Veterans Day US bond-market closure",
+          "source": "SIFMA holiday schedule and AP November 11 report",
+          "quality": "no synchronized verified Treasury yields; no calculation or scaling guess; when verified, spread bp=(10Y percent - 2Y percent)*100"
         },
         {
           "metric": "QQQ and VXN",
           "value": null,
           "unit": "QQQ USD/percent; VXN index points",
-          "sourceTime": "2026-11-11 research window",
-          "source": "not independently verified",
-          "quality": "not fabricated; Nasdaq Composite and VIX used only as proxies, not interchangeable"
+          "sourceTime": "2026-11-11 17:15 EST",
+          "source": "research verification",
+          "quality": "not independently confirmed; Nasdaq and VIX are not exact substitutes"
         },
         {
-          "metric": "Open Watch events",
+          "metric": "VIX",
+          "value": 17.63,
+          "unit": "index points",
+          "sourceTime": "2026-11-11 Reuters intraday snapshot; not final close",
+          "source": "Reuters November 11 intraday equities report cited in prior persisted assessment",
+          "quality": "historical intraday, not synchronized with closing figures"
+        },
+        {
+          "metric": "Nasdaq advancers/decliners",
+          "value": 1.67,
+          "unit": "ratio",
+          "sourceTime": "2026-11-11 Reuters intraday snapshot",
+          "source": "previous persisted assessment based on Reuters",
+          "quality": "intraday, not independently reconfirmed at close"
+        },
+        {
+          "metric": "Brent and WTI",
+          "value": null,
+          "unit": "USD per barrel",
+          "sourceTime": "2026-11-11 17:15 EST research window",
+          "source": "no newly synchronized verified settlement in current research",
+          "quality": "prior assessment listed Brent $92.76 and WTI $86.53 settlements; not treated as fresh synchronized quote"
+        },
+        {
+          "metric": "Fed expectations",
+          "value": null,
+          "unit": "December 2026 policy move probability percent",
+          "sourceTime": "2026-11-11 Reuters reported pricing in prior persisted assessment",
+          "source": "Reuters attributed to CME FedWatch",
+          "quality": "previously reported >=25bp hike fully priced; no independently verified current CME snapshot"
+        },
+        {
+          "metric": "Open Watch",
           "value": 154,
           "unit": "curated events",
           "sourceTime": "2026-11-11T18:24:21+00:00",
-          "source": "NasDecode GitHub main data/history/market-watch-events.json",
-          "quality": "verified repository snapshot, up from 147 in prior assessment"
+          "source": "repural/NasDecode data/history/market-watch-events.json",
+          "quality": "repository snapshot; no newly added events since prior assessment"
         }
       ],
       "conditions": {
-        "bullish": "Sustain QQQ/Nasdaq gains after Wednesday's close; SOX continues outperforming with broader positive breadth, VIX stays subdued, and correctly scaled 2Y/10Y yields do not resume sharp increases on Thursday.",
-        "bearish": "SOX leadership reverses or QQQ gives back the rebound while yields rise, VIX/VXN expand, Nasdaq new lows stay dominant and/or Thursday earnings or Friday PPI disappoint.",
-        "invalidation": "Cautiously bullish view invalidated by a sustained break of the Wednesday rebound with declining breadth and volatility/rate confirmation; no single intraday print is sufficient to validate trend persistence."
+        "bullish": "QQQ and Nasdaq hold Wednesday's rebound through Thursday, SOX continues to lead, closing breadth broadens and VIX/VXN remain contained while correctly scaled Treasury yields stabilize when bonds reopen.",
+        "bearish": "SOX gives back a significant share of Wednesday's +5.7% gain, QQQ breaks below rebound support, yields rise sharply on Thursday, volatility increases, or earnings/PPI reaccelerate inflation fears.",
+        "invalidation": "A sustained semiconductor and Nasdaq reversal confirmed by weaker breadth and rising volatility or correctly scaled Treasury yields invalidates the cautiously bullish posture; avoid treating one price print as decisive."
       },
       "upcomingEvents": [
         {
           "date": "2026-11-12",
           "timeET": "08:30",
-          "event": "US weekly initial jobless claims (scheduled; verify actual release)",
-          "source": "US labor calendar / market weekly calendar"
+          "event": "US weekly jobless claims scheduled; verify release and market reaction",
+          "source": "US economic calendar"
         },
         {
           "date": "2026-11-12",
-          "timeET": "After close",
-          "event": "Cisco (CSCO) and Applied Materials (AMAT) quarterly earnings; AI networking and chip equipment guidance",
-          "source": "Company announcements via November 11 earnings calendar"
+          "timeET": "after US close",
+          "event": "Cisco and Applied Materials quarterly earnings and guidance; verify release timing",
+          "source": "earnings calendar and company announcements"
         },
         {
           "date": "2026-11-13",
-          "timeET": "08:30",
-          "event": "US October Producer Price Index (PPI) expected; verify BLS release timing",
-          "source": "BLS November schedule / weekly calendar"
+          "timeET": "08:30 expected",
+          "event": "October US Producer Price Index; confirm BLS schedule and actual figures",
+          "source": "US BLS calendar"
+        },
+        {
+          "date": "2026-11-16",
+          "event": "Next US equity trading session; monitor follow-through and policy/rates interpretation",
+          "source": "NYSE trading calendar"
         }
       ],
       "provenance": {
-        "assessmentTimeUTC": "2026-11-11T20:47:24Z",
-        "previousAssessmentET": "2026-11-10 06:30",
+        "assessmentTimeUTC": "2026-11-11T22:15:53Z",
+        "previousAssessmentET": "2026-11-11 15:47",
         "openWatchUpdated": "2026-11-11T18:24:21+00:00",
         "openWatchCount": 154,
         "sources": [
           "https://www.reuters.com/business/sp-500-nasdaq-futures-rise-after-coreweave-soothes-ai-spending-fears-2026-11-11/",
-          "https://www.reuters.com/business/media-telecom/global-markets-global-markets-2026-11-11/",
-          "https://www.reuters.com/business/energy/oil-rises-two-month-low-hormuz-shipping-attacks-offset-iran-truce-hopes-2026-11-11/",
-          "https://www.stocktitan.net/articles/earnings-calendar-week-of-november-9-2026",
+          "https://apnews.com/article/027cd5f4583d1a11c1795150bf065afb",
+          "https://www.stocktitan.net/articles/stock-market-open-veterans-day-2026",
           "repural/NasDecode:data/history/market-watch-events.json"
         ],
-        "dataQuality": "Reuters market levels are intraday and delayed at least 15 minutes, not the final November 11 close. Brent/WTI settlements are separately timed. Bond cash market closed for Veterans Day, so no synchronized 2Y/10Y yields or curve calculation. QQQ and VXN not independently verified; FedWatch probabilities are Reuters-attributed, not direct snapshot. Positive Nasdaq advancing breadth coexists with more 52-week lows than highs. All projections below are conditional."
+        "dataQuality": "Cash-close data from Reuters and AP are more recent than the prior assessment's intraday snapshot. VIX and breadth are prior intraday observations, not closing readings. Treasury cash market closed on Veterans Day; no valid synchronized 2Y/10Y yields or spread. QQQ/VXN and fresh Brent/WTI quotes not independently verified; do not fabricate. No new Open Watch entries. Future macro and earnings are catalysts, not observed market reactions."
       },
       "editorial": {
-        "marketOverview": "Wednesday's US equity rebound has broadened meaningfully into semiconductors and AI infrastructure. Reuters' intraday account shows the Nasdaq Composite up 1.80% and the Philadelphia Semiconductor index about 7% higher, with every SOX component positive. CoreWeave's earnings and guidance eased immediate fears that AI infrastructure demand or financing was collapsing, while Nvidia recovered. Yet the backdrop remains volatile: Tuesday's hotter CPI reinforced tightening expectations, the Treasury cash market is closed for Veterans Day, and the Nasdaq has more 52-week lows than highs despite positive advancing breadth. The rebound is real within the reported session, but its durability is not yet proven.",
-        "whatChanged": "Relative to the November 10 pre-CPI Neutral assessment, the key developments are now known rather than hypothetical: October CPI was hotter than expected, Fed-hike expectations strengthened, and equities initially weakened. Wednesday then delivered a substantial counter-rally, led by SOX and AI infrastructure after CoreWeave's results. The curated Open Watch archive rose from 147 to 154 events, adding CoreWeave demand, TSMC's AI-related investment approvals, Siemens Energy's data-center power backlog, and Nvidia export-control concerns. These offsetting forces change the next-three-session path from neutral consolidation toward a conditional rebound, but do not erase macro risk.",
-        "marketInterpretation": "The strongest signal is the combination of semiconductor outperformance and broad positive chip participation, which is more convincing than a rally confined to Nvidia. The 1.67:1 Nasdaq advancing/declining ratio and a VIX reading around 17.63 support short-term risk appetite. Counter-signals matter: 125 Nasdaq 52-week lows versus 65 highs suggest residual damage beneath the headline index, while inflation and a fully priced December rate hike could constrain multiples. Because Wednesday's bond market is closed, the equity rally has not yet faced a synchronized Treasury-yield confirmation test. Avoid extrapolating the oil settlement, Reuters' intraday stock quotes and FedWatch probabilities as if they were one timestamped panel.",
-        "threeDayPath": "Wednesday November 11 is a strong, chip-led recovery session as of the Reuters intraday snapshot; the key question is whether gains hold into the close. Thursday November 12 is the first meaningful bond-market confirmation test after Veterans Day, alongside weekly jobless claims and Cisco/Applied Materials earnings after the bell. Friday November 13 adds expected October PPI and potential earnings-driven sector rotation. The central scenario is a cautious continuation attempt with large swings, rather than an unqualified trend reversal; a failed Thursday follow-through would quickly return the outlook to neutral or bearish.",
-        "bullCase": "CoreWeave's evidence of sustained AI computing demand supports further semiconductor and cloud-infrastructure buying. If SOX retains relative leadership, QQQ participates broadly, Nasdaq new lows diminish, VIX/VXN remain contained and 2Y/10Y yields stabilize on reopening, investors may look through the CPI surprise and extend the rebound into Friday. Strong AI networking and semiconductor equipment guidance would provide fundamental confirmation, but must be evaluated after release rather than assumed.",
-        "bearCase": "The rebound could be a short-covering response after heavy AI selling rather than a durable turn. A fresh rise in correctly scaled Treasury yields after the bond holiday, a stronger-than-expected PPI, disappointing AI equipment/networking guidance, or renewed Nvidia-related regulatory concerns could cause semiconductor leadership to reverse. Brent's geopolitical rebound keeps an inflation channel open. More Nasdaq new lows than highs and incomplete cross-asset confirmation warrant tight invalidation conditions.",
-        "watchNext": "At Wednesday's close, verify final QQQ, Nasdaq, SOX and breadth results rather than relying on intraday Reuters quotes. On Thursday, obtain contemporaneous 2Y and 10Y yields in percent and compute the 10Y–2Y spread in basis points only after checking scale; compare VXN and VIX at matching times. Monitor jobless claims, Cisco and Applied Materials guidance, Brent/WTI and direct CME FedWatch changes if accessible. Friday's PPI is the next scheduled inflation stress test. Watch the Open Watch archive for material new catalysts, not merely duplicate headlines."
+        "marketOverview": "Wednesday's confirmed closing tape strengthened the case for a short-term rebound in Nasdaq and semiconductors. The Nasdaq Composite closed 1.60% higher at 25,466.19, while Reuters put the Philadelphia Semiconductor Index's gain at 5.7%. The S&P 500 added 1.31%, showing some participation outside technology, and CoreWeave's 24.7% jump helped reassure investors that AI infrastructure spending remains substantial. This is real price confirmation of the rebound, but it is not yet confirmation of a lasting new uptrend after the sharp correction.",
+        "whatChanged": "The important change since the prior 15:47 ET assessment is the transition from delayed intraday indications to the final US cash close. Nasdaq's final gain was 1.60%, versus 1.80% intraday, and SOX finished up 5.7%, versus roughly 7% earlier. This trims the magnitude of the bullish impulse without reversing its direction. The curated Open Watch archive remains at 154 events with no new entry or fresh major catalyst. Accordingly the bias remains cautiously bullish rather than being upgraded further.",
+        "marketInterpretation": "The positive close demonstrates that buyers remained willing to own AI and semiconductor exposure despite hotter inflation and tightening-rate concerns. Nevertheless, the rebound has an important missing cross-asset test: US cash Treasury trading was closed for Veterans Day. Without fresh synchronized two-year and ten-year yields, any claim that bond markets endorsed the equity rally would be speculative. The previously reported VIX and breadth snapshots were intraday; neither should be silently promoted to closing data.",
+        "threeDayPath": "Thursday November 12 is the immediate confirmation session: watch whether semiconductor leadership survives the reopening of Treasury cash trading, and whether jobless claims or corporate results alter the rates or AI-spending narrative. Friday November 13 brings expected producer inflation data, which could either ease or renew rate pressure. Monday November 16 then tests whether the week's recovery can extend beyond event-driven volatility. The central conditional path is choppy stabilization with a modest upward bias, not an uninterrupted advance.",
+        "bullCase": "A constructive scenario requires SOX to retain Wednesday's leadership, QQQ and Nasdaq to hold most of the rebound, and participation to broaden beyond the largest AI names. A calmer rates reopening and less alarming producer inflation would reduce the valuation headwind. Supportive Cisco and Applied Materials commentary on networking and wafer-fab equipment demand could add independent evidence of durable AI investment, though such outcomes are not yet known.",
+        "bearCase": "The bear case is that Wednesday was a powerful oversold rally rather than the beginning of durable accumulation. A renewed rise in correctly scaled Treasury yields, higher volatility, weakening market breadth or disappointing AI-capex guidance could rapidly reverse the move. The prior session's imbalance between new lows and new highs shows that underlying market damage has not necessarily healed, and oil-related inflation uncertainty adds another potential source of pressure.",
+        "watchNext": "Prioritize Thursday's 2Y/10Y yield reopening, the SOX-to-QQQ relative performance, and closing breadth and VXN/VIX rather than relying on Wednesday's intraday readings. Monitor weekly claims, Cisco and Applied Materials earnings and Friday's PPI, verifying each release time and actual result before assigning market impact. Watch for new curated Open Watch events, especially AI infrastructure financing, export controls and data-center power constraints."
       }
     }
   ],
