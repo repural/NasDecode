@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-12T17:30:47.000Z",
+  "updated": "2026-11-12T17:44:50.000Z",
   "horizon": [
     "2026-11-12",
     "2026-11-13",
@@ -16,24 +16,23 @@
   "entries": [
     {
       "date": "2026-11-12",
-      "timeET": "12:30",
+      "timeET": "12:44",
       "bias": "Bearish — Elevated Downside Risk",
       "previousBias": "Bearish — Elevated Downside Risk",
       "materialChange": false,
       "confidence": "Moderate-Low",
       "eventRisk": "Very High",
-      "summary": "Bearish elevated downside-risk bias remains, with no material change. At 11:38 EST Reuters reported Nasdaq +0.14%, S&P 500 +0.17%, Dow +0.24%, NVDA -4.2% and eight of eleven S&P sectors positive. This newer index snapshot follows an earlier Nasdaq +0.31% report; the asynchronous observations do not establish a new breakdown. Older Reuters observations showed SOX +0.2%, AMD +7%, AVGO +5.4%, 10Y yield 5.066% (+7.73bp), Brent $93.82 and WTI $86.81. The curated Open Watch feed still has 159 events, with no new event. Current synchronized QQQ/SOX, VXN/VIX, breadth, 2Y curve and live FedWatch remain unavailable.",
+      "summary": "Bearish elevated downside risk remains, with no independently verified material directional reversal. Reuters' latest timestamped 11:38 EST index snapshot showed Nasdaq +0.14%, S&P 500 +0.17%, NVDA -4.2%, and eight of eleven sectors positive. A separate NasDecode dashboard refresh at 12:32 ET reported QQQ -0.01%, 10Y 5.105%, 2Y 4.860%, Brent $94.76, a Nasdaq Score of -48/100 and weaker semiconductor relative leadership. Dashboard observations are internally derived and not independently synchronized with Reuters. The matched dashboard 10Y–2Y yield spread calculates to +24.5 basis points. New Reuters reporting on Nebius capacity delays and a 16% stock decline increases attention to AI financing/execution risk, without establishing a new broad-market breakdown. Curated Open Watch remains 159 events. Fresh verified VXN/VIX and advance-decline breadth unavailable.",
       "bullish": [
-        "Nasdaq +0.14%, S&P 500 +0.17% and Dow +0.24% at Reuters 11:38 EST, showing broad-index resilience.",
-        "Eight of eleven S&P sectors positive; sector count is not advance-decline breadth.",
-        "Earlier AMD +7%, AVGO +5.4% and SOX +0.2% support a rotation interpretation but are not synchronized with current QQQ.",
-        "Foxconn and Siemens orders support AI infrastructure demand; no separately attributable Nasdaq response confirmed."
+        "Reuters 11:38 ET: Nasdaq +0.14% and eight of eleven S&P sectors positive, despite NVDA weakness.",
+        "Earlier AMD +7% and AVGO +5.4% suggest competitive rotation, but quotes are asynchronous.",
+        "AI server demand evidence from Foxconn and Siemens remains supportive, not confirmed as a market-wide reaction."
       ],
       "bearish": [
-        "Nvidia -4.2% in Reuters' 11:38 EST coverage amid confirmed leadership transition and governance uncertainty.",
-        "Earlier Reuters 10Y yield 5.066%, +7.73bp, signals discount-rate pressure; not a synchronized current quote.",
-        "Oil strength on Iran rhetoric may intensify inflation concerns; Brent/WTI observations are stale.",
-        "Friday October PPI and unresolved succession risks may revive technology selling."
+        "NasDecode dashboard at 12:32 ET: Nasdaq Score -48/100 (Strong Negative), down from -29 at 11:47 ET; this is a model signal, not an observed index loss.",
+        "Dashboard 10Y 5.105% and 2Y 4.860% (spread +24.5bp), with rising Brent $94.76, compound rate/inflation headwinds.",
+        "Dashboard QQQ -0.01% and weaker semiconductor relative leadership, while Reuters still reported NVDA -4.2% at 11:38 ET.",
+        "Reuters reported Nebius lowered its 2026 revenue forecast due to data-center capacity delays and shares fell 16%; the exact quote time was not established."
       ],
       "observations": [
         {
@@ -149,26 +148,74 @@
           "quality": "historical not live; historical/asynchronous relative to 12:30 EST"
         },
         {
-          "metric": "QQQ, synchronized SOX relative strength, VXN/VIX, advance-decline breadth, 2Y yield and current curve",
-          "value": null,
-          "unit": "mixed",
-          "sourceTime": "2026-11-12 12:30 EST",
-          "source": "research",
-          "quality": "unavailable; not estimated"
-        },
-        {
           "metric": "Curated Open Watch",
           "value": 159,
           "unit": "events",
           "sourceTime": "2026-11-12T17:22:37Z",
           "source": "data/history/market-watch-events.json",
           "quality": "repository verified; unchanged count"
+        },
+        {
+          "metric": "QQQ",
+          "value": -0.01,
+          "unit": "percent change",
+          "sourceTime": "2026-11-12 12:32 EST dashboard refresh",
+          "source": "https://github.com/repural/NasDecode/commit/5dc358ecad5f0d803f764be6f21cd3444863f77b",
+          "quality": "NasDecode dashboard-derived; quote synchronization and provider provenance not independently verified"
+        },
+        {
+          "metric": "10Y US Treasury yield",
+          "value": 5.105,
+          "unit": "percent yield",
+          "sourceTime": "2026-11-12 12:32 EST dashboard refresh",
+          "source": "https://github.com/repural/NasDecode/commit/5dc358ecad5f0d803f764be6f21cd3444863f77b",
+          "quality": "NasDecode dashboard-derived; quote synchronization and provider provenance not independently verified"
+        },
+        {
+          "metric": "2Y US Treasury yield",
+          "value": 4.86,
+          "unit": "percent yield",
+          "sourceTime": "2026-11-12 12:32 EST dashboard refresh",
+          "source": "https://github.com/repural/NasDecode/commit/5dc358ecad5f0d803f764be6f21cd3444863f77b",
+          "quality": "NasDecode dashboard-derived; quote synchronization and provider provenance not independently verified"
+        },
+        {
+          "metric": "10Y–2Y spread",
+          "value": 24.5,
+          "unit": "basis points",
+          "sourceTime": "2026-11-12 12:32 EST dashboard refresh",
+          "source": "https://github.com/repural/NasDecode/commit/5dc358ecad5f0d803f764be6f21cd3444863f77b",
+          "quality": "NasDecode dashboard-derived; quote synchronization and provider provenance not independently verified"
+        },
+        {
+          "metric": "Brent",
+          "value": 94.76,
+          "unit": "USD per barrel",
+          "sourceTime": "2026-11-12 12:32 EST dashboard refresh",
+          "source": "https://github.com/repural/NasDecode/commit/5dc358ecad5f0d803f764be6f21cd3444863f77b",
+          "quality": "NasDecode dashboard-derived; quote synchronization and provider provenance not independently verified"
+        },
+        {
+          "metric": "Nasdaq Score",
+          "value": -48,
+          "unit": "score / 100",
+          "sourceTime": "2026-11-12 12:32 EST dashboard refresh",
+          "source": "https://github.com/repural/NasDecode/commit/5dc358ecad5f0d803f764be6f21cd3444863f77b",
+          "quality": "NasDecode dashboard-derived; quote synchronization and provider provenance not independently verified"
+        },
+        {
+          "metric": "VXN/VIX and advance-decline breadth",
+          "value": null,
+          "unit": "mixed",
+          "sourceTime": "2026-11-12 12:44 EST",
+          "source": "research",
+          "quality": "unavailable; not estimated"
         }
       ],
       "conditions": {
-        "bullish": "Sustained Nasdaq/QQQ and SOX recovery with confirmed breadth and easing yields/volatility, followed by benign Friday PPI.",
-        "bearish": "Failed Thursday rebound, spreading NVDA-related AI selling, rising rates/volatility, or hotter Friday PPI.",
-        "invalidation": "Broad-based positive Nasdaq/SOX close and constructive Friday follow-through would weaken bearish bias; renewed broad breakdown would strengthen it."
+        "bullish": "QQQ and SOX sustain positive close with improving relative strength, falling 10Y below 5.05%, contained VXN/VIX and benign Friday PPI.",
+        "bearish": "10Y stays above 5.05%, semiconductor lag widens, breadth weakens, or Friday PPI is hot.",
+        "invalidation": "A sustained broad Nasdaq/SOX advance and easing rates would weaken the bearish outlook; broad closing breakdown with rising volatility would strengthen it."
       },
       "upcomingEvents": [
         {
@@ -197,22 +244,23 @@
         }
       ],
       "provenance": {
-        "asOf": "2026-11-12 12:30 EST",
+        "asOf": "2026-11-12 12:44 EST",
         "sources": [
+          "https://github.com/repural/NasDecode/commit/5dc358ecad5f0d803f764be6f21cd3444863f77b",
           "https://www.reuters.com/business/nasdaq-futures-fall-nvidia-turmoil-rattles-ai-stocks-2026-11-12/",
-          "https://www.reuters.com/world/china/global-markets-wrapup-1-2026-11-12/",
+          "https://www.reuters.com/technology/nebius-beats-quarterly-revenue-estimates-strong-ai-demand-2026-11-12/",
           "data/history/market-watch-events.json"
         ],
-        "dataQuality": "Reuters 11:38 EST index quotes are the latest timestamped index set; NVDA and sector readings not guaranteed synchronized. SOX, AMD, AVGO, 10Y and oil are older asynchronous reports. 2Y, QQQ, VXN/VIX, breadth and live FedWatch unverified. Historical 10Y–2Y +25.7bp correctly scaled. No new curated Open Watch event."
+        "dataQuality": "Reuters 11:38 ET market snapshot is older than the dashboard's 12:32 ET refresh. Dashboard quotes and model outputs have separate provenance and cannot be treated as a fully synchronized independent market feed. Historical 10Y–2Y +25.7bp is November 10 only; current dashboard-derived 5.105%-4.860%=24.5bp. Curated feed 159 events unchanged at 17:22:37Z. No independently verified fresh VXN/VIX or advance-decline breadth."
       },
       "editorial": {
-        "marketOverview": "Nasdaq and broader US equities recovered Thursday's opening losses despite Nvidia's abrupt founder-CEO transition. Reuters reported Nasdaq +0.14%, S&P 500 +0.17% and Dow +0.24% at 11:38 EST, with Nvidia still down 4.2%. Eight of eleven S&P sectors traded positively. This suggests partial resilience rather than confirmed market-wide capitulation, while succession uncertainty and high rates keep downside risk elevated.",
-        "whatChanged": "The prior 11:27 EST assessment reported Nasdaq +0.31%; Reuters' later 11:38 EST observation showed +0.14%, with NVDA -4.2%. These separate snapshots do not prove a new directional break. The curated Open Watch feed was updated at 17:22:37 UTC but remains 159 events with no newly added catalyst. The three-session bearish bias remains unchanged.",
-        "marketInterpretation": "The observed rebound contrasts with the expected broad market impact of Nvidia's leadership shock. Earlier AMD and Broadcom strength suggested competitive rotation, not universal chip liquidation, but matched SOX/QQQ relative strength is unverified. The earlier 10Y yield of 5.066% is a percent yield and its +7.73bp move is in basis points. Without a matched 2Y reading, a current curve cannot be calculated; November 10's historical spread is +25.7bp. Higher oil prices may raise inflation sensitivity but are not a synchronized current quote.",
-        "threeDayPath": "Thursday November 12 closing breadth and semiconductor leadership are the first decisive tests. Friday November 13 October PPI at 08:30 EST can intensify rate pressure or enable a relief move. Monday November 16 will show whether Nvidia disruption spreads across AI infrastructure or remains mostly stock-specific. This is a conditional scenario, not a point return prediction.",
-        "bullCase": "If Nasdaq/QQQ and SOX hold gains into the close, breadth improves, yields and volatility stabilize, and Friday PPI does not surprise hot, the Nvidia shock may remain contained. AMD and Broadcom rotation plus Foxconn and Siemens demand evidence offer a fundamental counterweight, not proof of index recovery.",
-        "bearCase": "Nvidia governance uncertainty, pressure on AI financing, higher Treasury yields and rising oil could trigger another broad technology selloff. A failed late-day recovery or hotter-than-expected PPI would strengthen the downside scenario, especially if semiconductor leadership and breadth deteriorate.",
-        "watchNext": "Verify synchronized QQQ/Nasdaq/SOX and NVDA/AMD/AVGO quotes, market breadth, VXN/VIX, matched 10Y/2Y yields, fresh Brent/WTI and FedWatch. Review closing tape, Cisco/Applied Materials earnings, Friday PPI and Monday follow-through; do not infer realized market response from expected catalyst impact."
+        "marketOverview": "Thursday's Nasdaq rebound after the Nvidia CEO departure remains fragile. Reuters' 11:38 ET snapshot showed the Nasdaq slightly positive and Nvidia still negative, with eight of eleven sectors higher. NasDecode's later 12:32 ET dashboard instead reported QQQ nearly flat at -0.01% and a strongly negative Nasdaq Score (-48/100), reflecting rates, semiconductor leadership and volatility concerns. These observations are from different sources and times, not a single synchronized market tape.",
+        "whatChanged": "Since the 12:30 ET assessment, the dashboard's 12:32 ET refresh shows the 10Y at 5.105%, the 2Y at 4.860%, Brent at $94.76 and Nasdaq Score deteriorating from -29 at 11:47 ET to -48. Reuters separately reported Nebius cutting its 2026 revenue outlook due to delayed third-party data-center capacity. This adds downside evidence but does not establish a new three-day directional regime. The curated Open Watch feed remains at 159 events.",
+        "marketInterpretation": "The 10Y–2Y dashboard-derived spread is +24.5 basis points, correctly calculated from percent yields, not +2450 basis points. Higher yields and oil may pressure growth valuations even if index prices stabilize. Nvidia-specific selling and AMD/Broadcom gains imply rotation rather than confirmed universal chip capitulation. The dashboard's weaker semiconductor relative leadership warrants close confirmation with a matched SOX/QQQ quote. The Nebius capacity-delay report is an execution and financing warning, not proof of broad AI demand destruction.",
+        "threeDayPath": "Thursday's close must distinguish a durable recovery from a failed rebound. Friday's October PPI at 08:30 ET may determine whether rate pressure eases or intensifies, and earnings from Cisco and Applied Materials after Thursday's close could reshape the chip/infrastructure narrative. Monday will test whether leadership disruption and financing concerns spread beyond individual names. The three-day downside bias remains conditional, not a return forecast.",
+        "bullCase": "A positive close with SOX outperforming QQQ, better breadth, lower yields and benign PPI would show resilience despite Nvidia's transition. Competitive rotation into AMD and Broadcom and strong AI rack demand would support a containment scenario.",
+        "bearCase": "Persistently elevated 10Y yields above 5.05%, rising oil, weak semiconductor relative leadership and AI financing concerns could reverse Thursday's partial recovery. A hot PPI or disappointing infrastructure earnings would intensify the bearish path.",
+        "watchNext": "Confirm closing QQQ, Nasdaq, SOX, breadth and VXN/VIX from time-matched feeds; verify Treasury yields and oil quote timestamps; check live FedWatch. Track Cisco and Applied Materials earnings, Friday PPI and Monday follow-through. Distinguish observed market reactions from expected catalyst effects."
       }
     }
   ]
