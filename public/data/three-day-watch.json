@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-12T15:28:10.000Z",
+  "updated": "2026-11-12T15:30:15.000Z",
   "horizon": [
     "2026-11-12",
     "2026-11-13",
@@ -16,24 +16,48 @@
   "entries": [
     {
       "date": "2026-11-12",
-      "timeET": "10:28",
+      "timeET": "10:30",
       "bias": "Bearish — Elevated Downside Risk",
-      "previousBias": "Neutral — Downside Risk",
-      "materialChange": true,
+      "previousBias": "Bearish — Elevated Downside Risk",
+      "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Material downgrade: Nvidia confirms Jensen Huang's immediate CEO departure and appoints CFO Colette Kress interim CEO. Reuters reports Nasdaq-100 futures -1.24% at 08:58 ET versus -0.64% in the prior assessment; AP reports NVDA approximately -10% premarket. Leadership risk has become a realized major catalyst. No synchronized Thursday cash-session QQQ/SOX, breadth or volatility readings verified.",
+      "summary": "Bearish elevated downside-risk bias retained after confirmed Nvidia CEO transition. Reuters recorded Nasdaq Composite -1.47% at Thursday's opening print, validating an initial cash-market decline, while Reuters separately reported Nvidia down more than 12% intraday. These are not synchronized 10:30 ET readings; live SOX/QQQ, breadth, VXN/VIX and matching Treasury quotes remain unavailable. No additional material three-session bias change beyond the prior 10:28 ET assessment.",
       "bullish": [
-        "Experienced CFO Colette Kress named interim CEO, offering a continuity bridge while permanent succession is sought.",
-        "Foxconn and Siemens data-center demand signals support underlying AI infrastructure investment, though not immediate stock recovery.",
-        "A broad confirmed SOX/QQQ reversal with stable yields and volatility could invalidate the downside downgrade."
+        "Nvidia's official statement confirms interim CEO Colette Kress and new board chair Harvey Jones, providing a transition framework.",
+        "Prior curated Siemens and Foxconn AI infrastructure demand evidence remains constructive for longer-term sector fundamentals.",
+        "A verified SOX relative-strength recovery, improving breadth and contained volatility could reverse the downside path."
       ],
       "bearish": [
-        "Confirmed departure of Nvidia's founder CEO materially worsens near-term governance and execution uncertainty.",
-        "Reuters Nasdaq-100 futures -1.24% at 08:58 ET and AP NVDA approximately -10% premarket show negative initial reaction, not cash-session confirmation.",
-        "Friday October PPI and elevated Fed tightening expectations can amplify long-duration tech valuation pressure."
+        "Nasdaq Composite opened -1.47% on November 12 per Reuters, an actual cash-market response to the Nvidia transition.",
+        "Reuters reports Nvidia down more than 12% intraday; leadership and policy uncertainty can propagate to AI suppliers and financing.",
+        "Hotter-than-expected Friday PPI, higher yields or renewed Fed-hike repricing could exacerbate technology selling."
       ],
       "observations": [
+        {
+          "metric": "Nasdaq Composite opening move",
+          "value": -1.47,
+          "unit": "percent from prior close",
+          "sourceTime": "2026-11-12 09:30 EST opening print (Reuters report published 09:41 EST)",
+          "source": "https://www.reuters.com/business/nasdaq-futures-fall-nvidia-turmoil-rattles-ai-stocks-2026-11-12/",
+          "quality": "verified opening print; not current 10:30 quote"
+        },
+        {
+          "metric": "Nvidia intraday move",
+          "value": -12,
+          "unit": "percent, more than decline",
+          "sourceTime": "2026-11-12 Reuters intraday report, precise quote time not independently verified",
+          "source": "https://www.reuters.com/business/retail-consumer/nvidia-ceo-jensen-huang-step-down-big-blow-ai-boom-2026-11-12/",
+          "quality": "reported intraday threshold, asynchronous to Nasdaq opening print"
+        },
+        {
+          "metric": "QQQ/SOX/VXN/VIX/breadth/current 10Y/2Y/FedWatch",
+          "value": null,
+          "unit": "mixed",
+          "sourceTime": "2026-11-12 10:30 EST",
+          "source": "research",
+          "quality": "no synchronized verified observations; unavailable rather than estimated"
+        },
         {
           "metric": "Nvidia CEO transition",
           "value": "Jensen Huang resigned; CFO Colette Kress appointed interim CEO",
@@ -137,14 +161,6 @@
           "sourceTime": "2026-11-12T11:25:00+00:00",
           "source": "data/history/market-watch-events.json",
           "quality": "verified repo, no new events vs previous assessment"
-        },
-        {
-          "metric": "Synchronized QQQ/SOX/VXN/VIX/breadth/10Y/2Y/FedWatch",
-          "value": null,
-          "unit": "mixed",
-          "sourceTime": "2026-11-12 10:28 EST assessment",
-          "source": "research",
-          "quality": "unavailable; no invented intraday quotes"
         }
       ],
       "conditions": {
@@ -179,24 +195,24 @@
         }
       ],
       "provenance": {
-        "asOf": "2026-11-12 10:28 EST",
+        "asOf": "2026-11-12 10:30 EST",
         "sources": [
-          "https://apnews.com/article/5403f152a601cf82ce939f1d24fffa0f",
+          "https://nvidianews.nvidia.com/news/nvidia-announces-ceo-transition",
           "https://www.reuters.com/business/nasdaq-futures-fall-nvidia-turmoil-rattles-ai-stocks-2026-11-12/",
-          "https://www.reuters.com/technology/who-is-nvidia-interim-ceo-colette-kress-2026-11-12/",
+          "https://www.reuters.com/business/retail-consumer/nvidia-ceo-jensen-huang-step-down-big-blow-ai-boom-2026-11-12/",
           "https://www.reuters.com/business/energy/oil-prices-drop-more-than-1-hopes-iran-ukraine-peace-talks-pressure-markets-2026-11-12/",
           "data/history/market-watch-events.json"
         ],
-        "dataQuality": "Confirmed company event and timestamped premarket futures separated from unavailable synchronized regular-session market data. Prior quotes explicitly marked stale. Treasury yields expressed in percent and curve spread in basis points. No current VXN/VIX, breadth or live FedWatch fabricated."
+        "dataQuality": "Company leadership announcement verified directly. Reuters Nasdaq opening cash print and Nvidia intraday decline are distinct timestamps, not a synchronized cross-asset snapshot. Prior Reuters premarket observations retained as stale. Historical 10Y 4.988% minus 2Y 4.731% equals +25.7 basis points; indicative rounded secondary +23 bp is not current. Current QQQ/SOX, breadth, volatility, matched Treasury, Brent/WTI and FedWatch unverified. Curated Open Watch 159 events as of 11:25 UTC."
       },
       "editorial": {
-        "marketOverview": "The Nasdaq's three-session outlook has deteriorated materially following the confirmed departure of Nvidia co-founder Jensen Huang as CEO on November 12, replacing the previous assessment's unresolved board-deliberation scenario with an actual leadership transition. AP and Reuters report CFO Colette Kress as interim CEO. This is a confirmed company event, not merely a forecast catalyst. Reuters reported Nasdaq-100 futures down 1.24% and S&P futures down 0.62% at 08:58 ET, before the regular-session open. The report does not establish synchronized 10:28 ET cash prices, breadth or SOX leadership.",
-        "whatChanged": "The prior 07:36 ET saved assessment explicitly said Nvidia leadership was unresolved, with Nasdaq-100 futures down 0.64% and Nvidia approximately 6% lower premarket. New reporting confirms Huang's immediate exit and interim succession to Kress; Reuters' 08:58 ET futures quote was more negative at -1.24%. AP described Nvidia approximately 10% lower premarket. These are timestamped premarket market responses, not evidence of an intraday close or a three-day outcome. The curated Open Watch file remains at 159 events, last updated 11:25 UTC, and therefore does not yet reflect the confirmed CEO change.",
-        "marketInterpretation": "The confirmed loss of Nvidia's long-serving founder increases execution, customer-financing and policy uncertainty for the AI ecosystem. Semiconductor peers and QQQ may respond differently: a rotation toward alternative chip suppliers would not automatically constitute a broad SOX recovery. Foxconn and Siemens demand evidence still supports AI infrastructure fundamentals, but cannot neutralize the immediate governance shock without verified price and breadth confirmation. Historical November 10 10Y 4.988% and 2Y 4.731% imply +25.7 bp, while secondary November 12 rounded indications 4.99% and 4.76% imply +23 bp; these are not synchronized live yields. Live VXN/VIX, breadth, oil and FedWatch readings remain unverified.",
-        "threeDayPath": "Thursday November 12 is the leadership-transition price-discovery session, with elevated risk of a gap-down and volatile attempts to stabilize. Friday November 13 brings October PPI at 08:30 ET, a potential rate-and-valuation amplifier; semiconductor and QQQ follow-through matters more than the isolated opening gap. Monday November 16 tests whether downside participation broadens or an orderly leadership handover and strong AI-demand fundamentals arrest the decline. This is a conditional path, not a predicted return or a verified intraday trajectory.",
-        "bullCase": "Colette Kress's familiarity with Nvidia operations and finance may reduce continuity concerns. Company commitments and product execution could remain intact, while Foxconn and Siemens data-center demand signals continue to support AI investment. A durable bull reversal requires confirmed NVDA stabilization, SOX outperforming QQQ, improving participation, and volatility/yields that do not rise alongside equities.",
-        "bearCase": "A founder-CEO departure during a governance and export-control controversy can trigger valuation de-risking across Nvidia, its financing ecosystem and chip suppliers. Reuters' 08:58 ET -1.24% Nasdaq-100 futures and AP's approximately -10% Nvidia premarket are initial downside responses. A sustained cash-session SOX/QQQ breakdown, widening negative breadth, rising VXN and renewed Fed-hike repricing after PPI would reinforce the bearish path.",
-        "watchNext": "Verify Nvidia's official succession and investigation statements; obtain timestamp-aligned regular-session QQQ, Nasdaq, SOX, NVDA, breadth and VXN/VIX quotes; track 2Y/10Y yields in percent with spread in basis points; compare Brent and WTI on matched timestamps; confirm FedWatch probabilities from CME; review Thursday's jobless claims, Cisco and Applied Materials earnings and Friday's 08:30 ET PPI; check for new curated Open Watch items and Monday follow-through."
+        "marketOverview": "The three-session outlook remains bearish with elevated downside risk after Nvidia's official announcement that Jensen Huang resigned and Colette Kress became interim CEO. The company also named Harvey Jones board chair. Reuters reported the Nasdaq Composite opening 1.47% lower on November 12, establishing an actual cash-session reaction beyond the earlier futures indications. Reuters separately described Nvidia shares falling more than 12% intraday. These observations are asynchronous and do not establish current QQQ/SOX breadth or volatility confirmation.",
+        "whatChanged": "Compared with the 10:28 EST snapshot, the important incremental evidence is the Reuters-confirmed -1.47% Nasdaq Composite opening print and an intraday Nvidia decline greater than 12%. The CEO transition was already incorporated into the preceding material bearish downgrade, so the new observations strengthen rather than change the directional scenario. The curated Open Watch file still shows 159 events, updated 11:25 UTC; it has not independently supplied a new post-transition catalyst.",
+        "marketInterpretation": "The cash-market opening decline supports the thesis that leadership uncertainty is being repriced across technology, but the absence of synchronized SOX, QQQ, VXN/VIX and breadth prevents claims of a confirmed broad semiconductor breakdown. Nvidia's leadership and chip-export uncertainty is the immediate risk, while Siemens and Foxconn demand reports are longer-horizon fundamental counterweights. Historical November 10 Treasury yields of 4.988% for 10Y and 4.731% for 2Y imply +25.7 basis points, not a scaled yield of hundreds of percent. Secondary rounded November 12 indications imply +23 bp but are not matched live quotes. Earlier Brent $91.29 and WTI $85.29 at 04:26 UTC are stale; FedWatch probabilities are also historical.",
+        "threeDayPath": "Thursday November 12 is the initial leadership-transition cash-market price-discovery session; a lower Nasdaq opening is now verified, but the closing breadth and SOX response remain decisive. Friday November 13's 08:30 EST October PPI could reinforce or ease rate-sensitive selling. Monday November 16 tests whether the weakness persists across semiconductor leadership and market breadth or begins to reverse. This is a conditional scenario, not a forecast of exact returns.",
+        "bullCase": "A credible succession process under interim CEO Colette Kress and board chair Harvey Jones could stabilize customer and employee confidence. AI data-center orders reported by Siemens and Foxconn suggest underlying demand has not vanished. A verified improvement in SOX relative to QQQ, positive breadth, stable yields and falling VXN/VIX would weaken the bearish thesis.",
+        "bearCase": "Founder-CEO departure, uncertain policy relationships and potential AI ecosystem financing spillovers could extend de-risking beyond Nvidia. Nasdaq's 1.47% lower opening and Nvidia's reported intraday decline greater than 12% are initial supporting evidence. Weak SOX participation, worsening breadth, rising volatility and a hotter Friday PPI would compound the risk.",
+        "watchNext": "Obtain timestamp-aligned cash-session QQQ, Nasdaq, SOX, NVDA and breadth readings; check VXN/VIX, 10Y/2Y percent yields and basis-point curve, oil and CME FedWatch on comparable timestamps. Monitor Nvidia's official succession updates, the after-close earnings calendar, Friday October PPI at 08:30 EST, any new curated Open Watch events and Monday follow-through."
       }
     }
   ]
