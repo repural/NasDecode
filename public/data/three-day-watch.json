@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-12T10:31:00.000Z",
+  "updated": "2026-11-12T10:43:17.000Z",
   "horizon": [
     "2026-11-12",
     "2026-11-13",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-12",
-      "timeET": "05:31",
+      "timeET": "05:43",
       "bias": "Neutral — Downside Risk",
       "previousBias": "Neutral — Downside Risk",
       "materialChange": false,
       "confidence": "Moderate-Low",
       "eventRisk": "Very High",
-      "summary": "Neutral — Downside Risk unchanged. Reuters' November 12 premarket report shows Nasdaq-100 futures -0.79%, NVDA approximately -7% and other chipmakers -2.6% to -3.4%; this confirms premarket semiconductor contagion, not Thursday cash-session breadth or a CEO removal. Open Watch adds Fractile AI-chip financing, without verified Nasdaq/SOX response.",
+      "summary": "Neutral — Downside Risk maintained. Thursday premarket Nasdaq-100 futures weakness and NVDA/chipmaker declines remain the principal risk, but no confirmed cash-session SOX/QQQ breakdown or Nvidia CEO removal. New secondary reporting suggests 10Y near 4.99%, 2Y near 4.76%, QQQ -0.78% premarket, and December hike probability 92.8%; these are unsynchronized indicative readings and not verified official Treasury/FedWatch observations. Await claims, opening breadth and Friday PPI.",
       "bullish": [
         "November 11 Nasdaq +1.60% and SOX +5.7% regular-session closes, both before the Nvidia governance reports.",
         "Foxconn's AI rack demand outlook and Fractile financing show AI infrastructure investment continues; no attributable market confirmation.",
@@ -244,6 +244,46 @@
           "sourceTime": "2026-11-12T10:31:00.000Z",
           "source": "current verification",
           "quality": "not available; historical November 10 yield spread +25.7 basis points, not current"
+        },
+        {
+          "metric": "QQQ",
+          "value": -0.78,
+          "unit": "percent premarket change",
+          "sourceTime": "2026-11-12 Benzinga report; precise quote timestamp unavailable",
+          "source": "https://www.benzinga.com/markets/equities/26/11/63174263/stock-market-today-nvda-rout-drags-nasdaq-sp-500-futures-lower-as-nvidia-board-weighs-jensen-huangs-future-crwv-ttek-fnv-in-focus",
+          "quality": "secondary reported premarket, not synchronized with cash SOX"
+        },
+        {
+          "metric": "US Treasury 10Y",
+          "value": 4.99,
+          "unit": "percent yield",
+          "sourceTime": "2026-11-12 Benzinga last check, timestamp unspecified",
+          "source": "Benzinga Nov 12",
+          "quality": "indicative secondary source, not verified Treasury observation"
+        },
+        {
+          "metric": "US Treasury 2Y",
+          "value": 4.76,
+          "unit": "percent yield",
+          "sourceTime": "2026-11-12 Benzinga last check, timestamp unspecified",
+          "source": "Benzinga Nov 12",
+          "quality": "indicative secondary source, not verified Treasury observation"
+        },
+        {
+          "metric": "10Y minus 2Y indicative",
+          "value": 23,
+          "unit": "basis points",
+          "sourceTime": "2026-11-12 Benzinga last check, timestamp unspecified",
+          "source": "(4.99%-4.76%)*100",
+          "quality": "indicative, rounded asynchronous quotes; do not conflate with historical +25.7 bp"
+        },
+        {
+          "metric": "December Fed hike implied probability",
+          "value": 92.8,
+          "unit": "percent",
+          "sourceTime": "2026-11-12 Benzinga report; exact snapshot time unspecified",
+          "source": "Benzinga citing CME FedWatch",
+          "quality": "secondary snapshot; not independently verified"
         }
       ],
       "conditions": {
@@ -283,8 +323,8 @@
         }
       ],
       "provenance": {
-        "assessmentTimeUTC": "2026-11-12T10:31:00.000Z",
-        "previousAssessmentET": "2026-11-12 03:55",
+        "assessmentTimeUTC": "2026-11-12T10:43:17.000Z",
+        "previousAssessmentET": "2026-11-12 05:31",
         "openWatchUpdated": "2026-11-12T10:19:18+00:00",
         "openWatchCount": 158,
         "newCuratedEvents": [
@@ -315,16 +355,21 @@
           "https://www.reuters.com/business/nasdaq-futures-fall-nvidia-turmoil-rattles-ai-stocks-2026-11-12/",
           "https://www.reuters.com/legal/transactional/uk-backed-ai-chip-startup-fractile-hits-7-billion-valuation-funding-round-2026-11-11/"
         ],
-        "dataQuality": "Premarket futures/NVDA/peer moves are not synchronized with November 11 cash closes. No confirmed Thursday cash SOX/QQQ/breadth/VXN/VIX or live yields. November 10 2Y 4.731% and 10Y 4.988% imply +25.7bp, stale. Brent $91.29 and WTI $85.29 are Nov 12 04:26 UTC Reuters quotes, not live. FedWatch 87.3% December 25bp hike is an earlier Reuters-cited snapshot, not live."
+        "dataQuality": "Cash-session SOX, VXN/VIX, breadth and synchronized 2Y/10Y remain unavailable. Secondary premarket quotes are indicative; governance decision unconfirmed.",
+        "newResearchSources": [
+          "https://www.reuters.com/business/nasdaq-futures-fall-nvidia-turmoil-rattles-ai-stocks-2026-11-12/",
+          "https://www.benzinga.com/markets/equities/26/11/63174263/stock-market-today-nvda-rout-drags-nasdaq-sp-500-futures-lower-as-nvidia-board-weighs-jensen-huangs-future-crwv-ttek-fnv-in-focus",
+          "https://www.wsj.com/finance/stocks/nvidia-leadership-scandal-drags-on-u-s-stock-futures-pressures-ai-trade-e7f6e5b8"
+        ]
       },
       "editorial": {
-        "marketOverview": "The three-day outlook remains Neutral — Downside Risk for November 12, 13 and 16. The Nvidia governance crisis continues to dominate Nasdaq futures, with reported premarket losses now spreading to other chipmakers. No Thursday regular-session price discovery has yet confirmed a broad index breakdown.",
-        "whatChanged": "Reuters reported Nasdaq-100 futures -0.79%, NVDA approximately -7% premarket and Intel, Marvell and Micron -2.6% to -3.4%. This offers stronger evidence of semiconductor premarket contagion than the earlier overnight futures reading but is consistent with the existing downside-risk scenario. Curated Open Watch rose to 158 events, adding Fractile's $720 million AI-chip funding at a reported $7 billion valuation; no attributable US market reaction was verified.",
-        "marketInterpretation": "Positive November 11 Nasdaq and SOX cash closes predate the Nvidia governance headlines and cannot be combined as simultaneous confirmation with Thursday premarket weakness. The broader chip premarket selling is concerning but does not by itself establish a cash-session sector breakdown. November 10 2Y 4.731% and 10Y 4.988% give +25.7 basis points, correctly scaled but stale; synchronized yields, volatility, breadth and FedWatch remain unverified. Lower oil prices may temper inflation risk, but are asynchronous.",
-        "threeDayPath": "Thursday November 12 tests whether the Nvidia-driven premarket selloff persists into regular trading, whether SOX underperforms QQQ, and whether jobless claims shift yields. Friday November 13's scheduled PPI can reinforce or reverse the rates narrative. Monday November 16 will test whether the sector stabilizes or broad Nasdaq weakness persists.",
-        "bullCase": "Orderly official Nvidia leadership clarification, resilient AI infrastructure demand, semiconductor recovery versus QQQ, improving breadth and contained volatility/yields could restore a cautiously bullish bias. Foxconn's demand outlook and Fractile financing are fundamental support, not verified price confirmation.",
-        "bearCase": "A confirmed disruptive Nvidia leadership change or continued NVDA/peer losses spilling into SOX and QQQ, with widening negative breadth, higher VXN and yields or hotter PPI, would support a bearish downgrade. Proposed export controls should not be treated as enacted.",
-        "watchNext": "Monitor official Nvidia board announcements, the US cash open, time-aligned NVDA/SOX/QQQ, SMH/SOXX, VXN/VIX, Nasdaq breadth and Treasury 2Y/10Y. Verify jobless claims, Cisco and Applied Materials earnings timing and reactions, Friday PPI, and Monday follow-through. Distinguish new curated events from their unverified expected impact."
+        "marketOverview": "Nasdaq and semiconductors enter Thursday under leadership uncertainty at Nvidia. Reuters reports Nasdaq-100 futures down 0.79%, Nvidia down about 7% premarket, and Intel, Marvell and Micron down 2.6–3.4%. These are premarket observations, not Thursday closing outcomes. Wednesday's Nasdaq +1.60% and SOX +5.7% gains predate the new risk.",
+        "whatChanged": "Compared with the 05:31 ET assessment, secondary reporting adds QQQ down 0.78% premarket, 10Y near 4.99%, 2Y near 4.76%, and a 92.8% December hike probability. Quote times are not synchronized and FedWatch was not independently verified. No confirmed Nvidia board decision or new attributable cash-market breakdown changes the bias.",
+        "marketInterpretation": "The AI capex demand narrative remains constructive, as shown by Foxconn and CoreWeave, but NVDA leadership uncertainty threatens sector confidence and financing links. Secondary yields suggest an indicative +23 bp 10Y–2Y spread, correctly scaled, versus the historical November 10 +25.7 bp. Rates and Fed probabilities are not a clean synchronized snapshot.",
+        "threeDayPath": "Thursday Nov 12: volatile gap and price discovery; watch whether semiconductor selling persists after the open and whether QQQ breadth broadens. Friday Nov 13: October PPI could amplify or offset duration pressure. Monday Nov 16: assess persistence or reversal after the macro reaction and any Nvidia governance clarification.",
+        "bullCase": "Official leadership continuity, resilience in Nvidia's customers, and SOX regaining leadership over QQQ could convert the premarket shock into a recovery. Lower yields and contained VXN/VIX would strengthen this, but neither is yet verified synchronously.",
+        "bearCase": "An abrupt confirmed leadership change, persistent NVDA/SOX underperformance, widening negative breadth and higher yields or volatility could turn the current neutral/downside-risk stance into a bearish outlook. Hot PPI would intensify that setup.",
+        "watchNext": "Verify Thursday jobless claims and Treasury reaction; Nvidia board communications; cash-market QQQ, SOX, breadth, VXN/VIX; Applied Materials and Cisco earnings timing/results; Friday PPI; Monday follow-through. Do not attribute price changes to catalysts without evidence."
       }
     }
   ]
