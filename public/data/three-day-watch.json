@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-12T08:30:46Z",
+  "updated": "2026-11-12T08:55:37.932Z",
   "horizon": [
     "2026-11-12",
     "2026-11-13",
@@ -16,23 +16,23 @@
   "entries": [
     {
       "date": "2026-11-12",
-      "timeET": "03:30",
+      "timeET": "03:55",
       "bias": "Neutral — Downside Risk",
       "previousBias": "Neutral — Downside Risk",
       "materialChange": false,
       "confidence": "Moderate-Low",
       "eventRisk": "Very High",
-      "summary": "Neutral — Downside Risk unchanged. Overnight Nvidia governance concerns and futures weakness remain unconfirmed by Thursday cash trading. Newly reviewed curated Foxconn AI-rack demand and senators' Nvidia export-record request are opposing fundamental signals, neither with verified attributable Nasdaq/SOX price response.",
+      "summary": "Neutral — Downside Risk unchanged. Reuters' November 12 early-morning reporting documents Nvidia governance uncertainty, approximately 8% after-hours NVDA weakness and roughly 1% Nasdaq-100 futures weakness, without a confirmed CEO removal or Thursday US cash-market reaction. Curated Open Watch adds overseas Nvidia compute reservation discussions amid proposed remote-access controls; no enacted restriction or attributable price reaction.",
       "bullish": [
-        "Wednesday Nasdaq +1.60% and SOX +5.7% cash closes predate leadership headlines.",
-        "Foxconn Q3 net profit rose 34% and its high-double-digit 2027 AI-rack shipment growth forecast supports underlying AI infrastructure demand, not a confirmed NVDA market response.",
-        "Orderly Nvidia leadership clarification and broad semiconductor stabilization could support an upgrade."
+        "November 11 Nasdaq +1.60% and SOX +5.7% cash closes, before Nvidia governance headlines.",
+        "Foxconn AI rack demand outlook and reported overseas Nvidia compute demand support AI infrastructure fundamentals, without synchronized price confirmation.",
+        "Orderly Nvidia leadership clarification, broad SOX strength and contained yields/volatility could restore upside."
       ],
       "bearish": [
-        "Nvidia board reportedly deliberating Huang's future; no removal confirmed.",
-        "NVDA approximately -8% after hours and Nasdaq-100 futures approximately -0.8% overnight; not Thursday cash-session outcomes.",
-        "US senators' Nvidia export-record preservation request adds oversight risk but is not a finding of wrongdoing.",
-        "Friday PPI and yield sensitivity compound downside risks."
+        "Reuters reports Nvidia board discussions regarding Jensen Huang's future, but no confirmed removal.",
+        "NVDA approximately -8% after hours; Reuters November 12 06:26 UTC reported Nasdaq-100 futures down approximately 1%, not Thursday cash-session outcomes.",
+        "Proposed remote-access export restrictions and Senate scrutiny add regulatory uncertainty; neither constitutes an enacted new ban.",
+        "Friday PPI and elevated rates sensitivity create event risk."
       ],
       "observations": [
         {
@@ -191,20 +191,36 @@
           "quality": "request not finding or enacted restriction"
         },
         {
+          "metric": "Nasdaq-100 futures",
+          "value": -1,
+          "unit": "approximately percent overnight change",
+          "sourceTime": "2026-11-12 06:26 UTC Reuters publication; exact quote timestamp unspecified",
+          "source": "https://www.reuters.com/business/finance/investors-worry-ai-trade-needs-nvidias-huang-its-largesse-2026-11-12/",
+          "quality": "reported overnight futures, asynchronous with prior cash closes; not a Thursday cash quote"
+        },
+        {
           "metric": "Open Watch",
-          "value": 156,
+          "value": 157,
           "unit": "curated events",
-          "sourceTime": "2026-11-12T06:42:52+00:00",
-          "source": "NasDecode repository",
-          "quality": "reviewed newly curated events"
+          "sourceTime": "2026-11-12T08:41:35+00:00",
+          "source": "NasDecode repository data/history/market-watch-events.json",
+          "quality": "157 total; one newly curated event versus previous snapshot"
+        },
+        {
+          "metric": "Remote Nvidia compute demand",
+          "value": "Chinese AI companies discussing overseas Nvidia GPU capacity reservations amid proposed remote-access restrictions",
+          "unit": "reported demand and proposed policy",
+          "sourceTime": "2026-11-12 05:31 UTC event time",
+          "source": "https://www.reuters.com/world/china/chinese-ai-firms-rush-secure-nvidia-chip-capacity-spy-scandal-stirs-fear-us-2026-11-12/",
+          "quality": "reported discussions; no confirmed contracts, enacted controls or attributable market reaction"
         },
         {
           "metric": "Fresh synchronized QQQ/SOX/VXN/VIX/breadth/2Y/10Y",
           "value": null,
           "unit": "mixed",
-          "sourceTime": "2026-11-12T08:30:46Z",
+          "sourceTime": "2026-11-12T08:55:37.932Z",
           "source": "verification",
-          "quality": "unavailable; historical 10Y–2Y spread +25.7bp from Nov 10"
+          "quality": "not independently verified; Nov 10 yield curve remains historical at +25.7bp"
         }
       ],
       "conditions": {
@@ -244,19 +260,14 @@
         }
       ],
       "provenance": {
-        "assessmentTimeUTC": "2026-11-12T08:30:46Z",
-        "previousAssessmentET": "2026-11-12 01:56",
-        "openWatchUpdated": "2026-11-12T06:42:52+00:00",
-        "openWatchCount": 156,
+        "assessmentTimeUTC": "2026-11-12T08:55:37.932Z",
+        "previousAssessmentET": "2026-11-12 03:30",
+        "openWatchUpdated": "2026-11-12T08:41:35+00:00",
+        "openWatchCount": 157,
         "newCuratedEvents": [
           {
-            "headline": "Foxconn Q3 net profit rises 34% above consensus; projects high-double-digit AI rack shipment growth in 2027",
-            "url": "https://www.reuters.com/business/retail-consumer/taiwans-foxconn-reports-34-rise-q3-profit-beats-forecasts-2026-11-12/",
-            "marketConfirmation": "Unconfirmed"
-          },
-          {
-            "headline": "US senators Warren and Coons demand preservation of Nvidia China export records and briefing on alleged intelligence risks",
-            "url": "https://www.reuters.com/world/china/senior-us-democratic-senators-urge-administration-preserve-nvidia-export-records-2026-11-12/",
+            "headline": "Chinese AI firms seek overseas Nvidia compute reservations amid proposed US remote-access export restrictions",
+            "url": "https://www.reuters.com/world/china/chinese-ai-firms-rush-secure-nvidia-chip-capacity-spy-scandal-stirs-fear-us-2026-11-12/",
             "marketConfirmation": "Unconfirmed"
           }
         ],
@@ -265,18 +276,20 @@
           "https://www.reuters.com/world/china/global-markets-wrapup-1-2026-11-12/",
           "https://www.reuters.com/business/retail-consumer/taiwans-foxconn-reports-34-rise-q3-profit-beats-forecasts-2026-11-12/",
           "https://www.reuters.com/world/china/senior-us-democratic-senators-urge-administration-preserve-nvidia-export-records-2026-11-12/",
-          "https://www.bls.gov/schedule/2026/11_sched.htm"
+          "https://www.bls.gov/schedule/2026/11_sched.htm",
+          "https://www.reuters.com/business/finance/investors-worry-ai-trade-needs-nvidias-huang-its-largesse-2026-11-12/",
+          "https://www.reuters.com/world/china/chinese-ai-firms-rush-secure-nvidia-chip-capacity-spy-scandal-stirs-fear-us-2026-11-12/"
         ],
-        "dataQuality": "Wednesday cash Nasdaq +1.60% SOX +5.7% predates NVDA headline; overnight futures and after-hours NVDA are asynchronous. Nov 10 2Y 4.731%, 10Y 4.988% yield +25.7bp correctly scaled but stale. Brent $91.29 WTI $85.29 at 04:26 GMT, asynchronous. Fresh QQQ/SOX/VXN/VIX/breadth/yields and FedWatch not independently verified."
+        "dataQuality": "Wednesday Nasdaq/SOX cash closes precede NVDA after-hours drop and overnight Nasdaq-100 futures; not synchronized. Nov 10 Treasury 2Y 4.731%, 10Y 4.988%, correctly scaled +25.7bp but stale. Reuters 04:26 GMT oil Brent $91.29 WTI $85.29 also stale relative to this assessment. No independently verified current QQQ/SOX/VXN/VIX/breadth/yields or fresh FedWatch."
       },
       "editorial": {
-        "marketOverview": "Neutral — Downside Risk persists across November 12, 13 and 16. Wednesday's semiconductor-led rebound preceded the Nvidia leadership crisis. Overnight futures weakness is an early warning, not proof of a Thursday cash-session breakdown.",
-        "whatChanged": "The curated feed adds Foxconn's stronger profit and optimistic AI-rack outlook as positive demand evidence, while senators' export-record preservation request increases Nvidia regulatory scrutiny. Neither has a verified attributable US equity reaction. No confirmed Nvidia board resolution or CEO removal.",
-        "marketInterpretation": "Positive AI hardware demand and severe Nvidia governance risk coexist. Wednesday's Nasdaq +1.60% and SOX +5.7% cannot be synchronized with the subsequent NVDA after-hours fall and overnight Nasdaq-100 futures decline. The November 10 Treasury 10Y–2Y spread is +25.7bp, not a current yield curve quote; fresh volatility, breadth, yields and FedWatch remain unverified. Oil prices were lower in an earlier separate observation.",
-        "threeDayPath": "Thursday November 12 tests Nvidia communications and the first regular-session QQQ/SOX response alongside claims and Treasury reopening. Friday November 13 brings PPI inflation risk. Monday November 16 tests follow-through and whether semiconductor leadership returns or deteriorates.",
-        "bullCase": "Official orderly leadership clarification, resilient NVDA, broad SOX outperformance versus QQQ, supportive Cisco and Applied Materials results, improving breadth and contained yields/VXN would justify a bullish upgrade. Foxconn offers fundamental support but not price confirmation.",
-        "bearCase": "Confirmed abrupt CEO removal or prolonged uncertainty plus sustained NVDA-led semiconductor selling, QQQ weakness, higher volatility/yields or hot PPI would validate bearish downgrade. Regulatory oversight could amplify but is not yet enforcement.",
-        "watchNext": "Verify Nvidia board announcements, time-aligned Thursday NVDA/QQQ/SOX cash trading, breadth, 2Y/10Y yields, VXN/VIX and FedWatch; track jobless claims, Cisco/Applied Materials earnings, Friday PPI and actual market responses to Foxconn and export-control headlines."
+        "marketOverview": "Neutral — Downside Risk remains the three-session assessment for November 12, 13 and 16. Nvidia governance risk dominates overnight Nasdaq sentiment. Wednesday's semiconductor rebound occurred before the leadership reports and does not yet establish Thursday's direction.",
+        "whatChanged": "The curated Open Watch feed grew from 156 to 157 with Reuters reporting Chinese AI developers seeking overseas Nvidia compute access in anticipation of possible remote-access controls. The bill is not enacted, discussions are not verified reservations, and no separately attributable US market response exists. Reuters' early-morning report cites approximately 1% lower Nasdaq-100 futures; no confirmed CEO removal.",
+        "marketInterpretation": "The positive demand signals from Foxconn and overseas AI compute inquiries coexist with severe Nvidia governance and policy risk. Prior cash closes, after-hours Nvidia trading, overnight futures, oil and historical Treasury observations are not synchronized. The November 10 10Y–2Y spread is correctly scaled to +25.7bp, not a current quote. Fresh VXN/VIX, breadth and FedWatch cannot be confirmed.",
+        "threeDayPath": "Thursday November 12 is the first US cash-market test of Nvidia's leadership crisis, with jobless claims, bond trading and semiconductor relative strength in focus. Friday November 13 brings October PPI and potential inflation/rates repricing. Monday November 16 tests whether chip weakness broadens or the sector regains leadership.",
+        "bullCase": "An official orderly leadership update, resilient NVDA, SOX outperforming QQQ, broad participation and contained VXN/yields would support an upgrade. Foxconn AI infrastructure orders and overseas compute interest support demand but are not price confirmation.",
+        "bearCase": "A confirmed abrupt Nvidia CEO departure, prolonged governance uncertainty, sustained NVDA/SOX-led selling, broadening QQQ weakness, rising volatility/yields or hot PPI could justify a bearish downgrade. Export-control legislation would matter if enacted, not merely proposed.",
+        "watchNext": "Verify official Nvidia board communications and time-aligned US cash-session NVDA, QQQ, SOX, VXN/VIX, breadth, Treasury 2Y/10Y, FedWatch and Brent/WTI. Check jobless claims actual release, Cisco/Applied Materials earnings timing and reaction, Friday PPI, and Monday follow-through."
       }
     }
   ]
