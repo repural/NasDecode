@@ -1,0 +1,914 @@
+{
+  "schemaVersion": 1,
+  "status": "descriptive_not_predictive",
+  "sourceRecords": 443,
+  "classified": 441,
+  "unclassifiedDates": [
+    "2025-10-13",
+    "2025-11-11"
+  ],
+  "oilMissingDates": [
+    "2025-04-21",
+    "2025-05-05",
+    "2025-08-25",
+    "2025-12-26"
+  ],
+  "definition": {
+    "strong": "SOX 5D > 0 and SOX relative QQQ 5D > 0",
+    "adverse": "10Y 5D change > 0 and VXN 5D change > 0",
+    "not_jointly_adverse": "includes mixed macro pressure"
+  },
+  "limitations": [
+    "Overlapping forward windows",
+    "Point-in-time availability not independently audited",
+    "No out-of-sample test",
+    "Brent $90 cutoff is exploratory, not calibrated",
+    "Spot oil close timing may differ from equity market close"
+  ],
+  "regimes": {
+    "strong_adverse": {
+      "sessions": 65,
+      "1": {
+        "n": 65,
+        "meanPct": -0.305,
+        "positivePct": 52.3
+      },
+      "3": {
+        "n": 65,
+        "meanPct": -0.736,
+        "positivePct": 44.6
+      },
+      "5": {
+        "n": 64,
+        "meanPct": 0.05,
+        "positivePct": 56.2
+      },
+      "10": {
+        "n": 60,
+        "meanPct": 3.746,
+        "positivePct": 81.7
+      }
+    },
+    "strong_not_jointly_adverse": {
+      "sessions": 180,
+      "1": {
+        "n": 180,
+        "meanPct": 0.249,
+        "positivePct": 61.7
+      },
+      "3": {
+        "n": 176,
+        "meanPct": 0.646,
+        "positivePct": 60.8
+      },
+      "5": {
+        "n": 173,
+        "meanPct": 0.81,
+        "positivePct": 57.2
+      },
+      "10": {
+        "n": 171,
+        "meanPct": 1.719,
+        "positivePct": 56.7
+      }
+    },
+    "weak_adverse": {
+      "sessions": 59,
+      "1": {
+        "n": 59,
+        "meanPct": 0.228,
+        "positivePct": 47.5
+      },
+      "3": {
+        "n": 59,
+        "meanPct": 1.63,
+        "positivePct": 61.0
+      },
+      "5": {
+        "n": 59,
+        "meanPct": 2.323,
+        "positivePct": 67.8
+      },
+      "10": {
+        "n": 57,
+        "meanPct": 3.688,
+        "positivePct": 63.2
+      }
+    },
+    "weak_not_jointly_adverse": {
+      "sessions": 137,
+      "1": {
+        "n": 135,
+        "meanPct": 0.499,
+        "positivePct": 65.2
+      },
+      "3": {
+        "n": 135,
+        "meanPct": 1.073,
+        "positivePct": 61.5
+      },
+      "5": {
+        "n": 135,
+        "meanPct": 1.72,
+        "positivePct": 63.0
+      },
+      "10": {
+        "n": 133,
+        "meanPct": 1.815,
+        "positivePct": 59.4
+      }
+    }
+  },
+  "macroPressure": {
+    "combined": {
+      "sessions": 124,
+      "1": {
+        "n": 124,
+        "meanPct": -0.052,
+        "positivePct": 50.0
+      },
+      "3": {
+        "n": 124,
+        "meanPct": 0.39,
+        "positivePct": 52.4
+      },
+      "5": {
+        "n": 123,
+        "meanPct": 1.14,
+        "positivePct": 61.8
+      },
+      "10": {
+        "n": 117,
+        "meanPct": 3.717,
+        "positivePct": 72.6
+      }
+    },
+    "neither": {
+      "sessions": 116,
+      "1": {
+        "n": 115,
+        "meanPct": 0.286,
+        "positivePct": 65.2
+      },
+      "3": {
+        "n": 113,
+        "meanPct": 1.387,
+        "positivePct": 67.3
+      },
+      "5": {
+        "n": 112,
+        "meanPct": 1.979,
+        "positivePct": 66.1
+      },
+      "10": {
+        "n": 110,
+        "meanPct": 3.087,
+        "positivePct": 64.5
+      }
+    },
+    "volatility_only": {
+      "sessions": 95,
+      "1": {
+        "n": 94,
+        "meanPct": 0.471,
+        "positivePct": 62.8
+      },
+      "3": {
+        "n": 93,
+        "meanPct": 0.484,
+        "positivePct": 62.4
+      },
+      "5": {
+        "n": 93,
+        "meanPct": 0.504,
+        "positivePct": 57.0
+      },
+      "10": {
+        "n": 92,
+        "meanPct": 1.751,
+        "positivePct": 65.2
+      }
+    },
+    "yields_only": {
+      "sessions": 106,
+      "1": {
+        "n": 106,
+        "meanPct": 0.331,
+        "positivePct": 61.3
+      },
+      "3": {
+        "n": 105,
+        "meanPct": 0.541,
+        "positivePct": 53.3
+      },
+      "5": {
+        "n": 103,
+        "meanPct": 1.009,
+        "positivePct": 55.3
+      },
+      "10": {
+        "n": 102,
+        "meanPct": 0.34,
+        "positivePct": 44.1
+      }
+    }
+  },
+  "oilPressure": {
+    "both_oils_rising": {
+      "sessions": 197,
+      "1": {
+        "n": 197,
+        "meanPct": 0.086,
+        "positivePct": 57.9
+      },
+      "3": {
+        "n": 196,
+        "meanPct": 0.211,
+        "positivePct": 52.0
+      },
+      "5": {
+        "n": 195,
+        "meanPct": 0.7,
+        "positivePct": 57.9
+      },
+      "10": {
+        "n": 193,
+        "meanPct": 1.983,
+        "positivePct": 58.5
+      }
+    },
+    "brent_above_90": {
+      "sessions": 107,
+      "1": {
+        "n": 106,
+        "meanPct": 0.608,
+        "positivePct": 67.9
+      },
+      "3": {
+        "n": 104,
+        "meanPct": 1.885,
+        "positivePct": 63.5
+      },
+      "5": {
+        "n": 102,
+        "meanPct": 3.369,
+        "positivePct": 68.6
+      },
+      "10": {
+        "n": 97,
+        "meanPct": 7.551,
+        "positivePct": 79.4
+      }
+    },
+    "brent_at_or_below_90": {
+      "sessions": 330,
+      "1": {
+        "n": 329,
+        "meanPct": 0.121,
+        "positivePct": 56.8
+      },
+      "3": {
+        "n": 327,
+        "meanPct": 0.297,
+        "positivePct": 56.9
+      },
+      "5": {
+        "n": 326,
+        "meanPct": 0.457,
+        "positivePct": 57.7
+      },
+      "10": {
+        "n": 321,
+        "meanPct": 0.649,
+        "positivePct": 56.4
+      }
+    },
+    "brent_flat_or_falling": {
+      "sessions": 214,
+      "1": {
+        "n": 213,
+        "meanPct": 0.339,
+        "positivePct": 59.6
+      },
+      "3": {
+        "n": 211,
+        "meanPct": 1.013,
+        "positivePct": 62.6
+      },
+      "5": {
+        "n": 209,
+        "meanPct": 1.457,
+        "positivePct": 61.7
+      },
+      "10": {
+        "n": 205,
+        "meanPct": 2.545,
+        "positivePct": 63.9
+      }
+    },
+    "brent_rising": {
+      "sessions": 223,
+      "1": {
+        "n": 222,
+        "meanPct": 0.144,
+        "positivePct": 59.5
+      },
+      "3": {
+        "n": 220,
+        "meanPct": 0.36,
+        "positivePct": 54.5
+      },
+      "5": {
+        "n": 219,
+        "meanPct": 0.859,
+        "positivePct": 58.9
+      },
+      "10": {
+        "n": 213,
+        "meanPct": 1.967,
+        "positivePct": 59.6
+      }
+    },
+    "combined__brent_flat_or_falling": {
+      "sessions": 39,
+      "1": {
+        "n": 39,
+        "meanPct": -0.052,
+        "positivePct": 43.6
+      },
+      "3": {
+        "n": 39,
+        "meanPct": 0.686,
+        "positivePct": 51.3
+      },
+      "5": {
+        "n": 38,
+        "meanPct": 0.712,
+        "positivePct": 52.6
+      },
+      "10": {
+        "n": 36,
+        "meanPct": 2.773,
+        "positivePct": 72.2
+      }
+    },
+    "combined__brent_rising": {
+      "sessions": 85,
+      "1": {
+        "n": 85,
+        "meanPct": -0.051,
+        "positivePct": 52.9
+      },
+      "3": {
+        "n": 85,
+        "meanPct": 0.253,
+        "positivePct": 52.9
+      },
+      "5": {
+        "n": 85,
+        "meanPct": 1.332,
+        "positivePct": 65.9
+      },
+      "10": {
+        "n": 81,
+        "meanPct": 4.137,
+        "positivePct": 72.8
+      }
+    },
+    "neither__brent_flat_or_falling": {
+      "sessions": 75,
+      "1": {
+        "n": 75,
+        "meanPct": 0.4,
+        "positivePct": 66.7
+      },
+      "3": {
+        "n": 74,
+        "meanPct": 1.58,
+        "positivePct": 71.6
+      },
+      "5": {
+        "n": 74,
+        "meanPct": 2.539,
+        "positivePct": 74.3
+      },
+      "10": {
+        "n": 73,
+        "meanPct": 4.233,
+        "positivePct": 71.2
+      }
+    },
+    "neither__brent_rising": {
+      "sessions": 40,
+      "1": {
+        "n": 39,
+        "meanPct": 0.02,
+        "positivePct": 61.5
+      },
+      "3": {
+        "n": 38,
+        "meanPct": 0.727,
+        "positivePct": 57.9
+      },
+      "5": {
+        "n": 37,
+        "meanPct": 0.564,
+        "positivePct": 48.6
+      },
+      "10": {
+        "n": 36,
+        "meanPct": 0.4,
+        "positivePct": 50.0
+      }
+    },
+    "not_both_oils_rising": {
+      "sessions": 240,
+      "1": {
+        "n": 238,
+        "meanPct": 0.367,
+        "positivePct": 60.9
+      },
+      "3": {
+        "n": 235,
+        "meanPct": 1.071,
+        "positivePct": 63.8
+      },
+      "5": {
+        "n": 233,
+        "meanPct": 1.528,
+        "positivePct": 62.2
+      },
+      "10": {
+        "n": 225,
+        "meanPct": 2.48,
+        "positivePct": 64.4
+      }
+    },
+    "strong_adverse__brent_flat_or_falling": {
+      "sessions": 18,
+      "1": {
+        "n": 18,
+        "meanPct": 0.149,
+        "positivePct": 61.1
+      },
+      "3": {
+        "n": 18,
+        "meanPct": 0.024,
+        "positivePct": 44.4
+      },
+      "5": {
+        "n": 17,
+        "meanPct": -0.666,
+        "positivePct": 41.2
+      },
+      "10": {
+        "n": 16,
+        "meanPct": 1.436,
+        "positivePct": 75.0
+      }
+    },
+    "strong_adverse__brent_rising": {
+      "sessions": 47,
+      "1": {
+        "n": 47,
+        "meanPct": -0.479,
+        "positivePct": 48.9
+      },
+      "3": {
+        "n": 47,
+        "meanPct": -1.027,
+        "positivePct": 44.7
+      },
+      "5": {
+        "n": 47,
+        "meanPct": 0.309,
+        "positivePct": 61.7
+      },
+      "10": {
+        "n": 44,
+        "meanPct": 4.586,
+        "positivePct": 84.1
+      }
+    },
+    "strong_not_jointly_adverse__brent_flat_or_falling": {
+      "sessions": 91,
+      "1": {
+        "n": 91,
+        "meanPct": 0.401,
+        "positivePct": 63.7
+      },
+      "3": {
+        "n": 89,
+        "meanPct": 1.092,
+        "positivePct": 68.5
+      },
+      "5": {
+        "n": 88,
+        "meanPct": 1.578,
+        "positivePct": 64.8
+      },
+      "10": {
+        "n": 88,
+        "meanPct": 2.885,
+        "positivePct": 62.5
+      }
+    },
+    "strong_not_jointly_adverse__brent_rising": {
+      "sessions": 88,
+      "1": {
+        "n": 88,
+        "meanPct": 0.1,
+        "positivePct": 60.2
+      },
+      "3": {
+        "n": 86,
+        "meanPct": 0.213,
+        "positivePct": 53.5
+      },
+      "5": {
+        "n": 85,
+        "meanPct": 0.015,
+        "positivePct": 49.4
+      },
+      "10": {
+        "n": 83,
+        "meanPct": 0.483,
+        "positivePct": 50.6
+      }
+    },
+    "volatility_only__brent_flat_or_falling": {
+      "sessions": 57,
+      "1": {
+        "n": 56,
+        "meanPct": 0.678,
+        "positivePct": 62.5
+      },
+      "3": {
+        "n": 56,
+        "meanPct": 0.927,
+        "positivePct": 64.3
+      },
+      "5": {
+        "n": 56,
+        "meanPct": 0.663,
+        "positivePct": 51.8
+      },
+      "10": {
+        "n": 55,
+        "meanPct": 1.629,
+        "positivePct": 63.6
+      }
+    },
+    "volatility_only__brent_rising": {
+      "sessions": 37,
+      "1": {
+        "n": 37,
+        "meanPct": 0.147,
+        "positivePct": 62.2
+      },
+      "3": {
+        "n": 36,
+        "meanPct": -0.239,
+        "positivePct": 58.3
+      },
+      "5": {
+        "n": 36,
+        "meanPct": 0.342,
+        "positivePct": 66.7
+      },
+      "10": {
+        "n": 36,
+        "meanPct": 1.956,
+        "positivePct": 66.7
+      }
+    },
+    "weak_adverse__brent_flat_or_falling": {
+      "sessions": 21,
+      "1": {
+        "n": 21,
+        "meanPct": -0.225,
+        "positivePct": 28.6
+      },
+      "3": {
+        "n": 21,
+        "meanPct": 1.254,
+        "positivePct": 57.1
+      },
+      "5": {
+        "n": 21,
+        "meanPct": 1.828,
+        "positivePct": 61.9
+      },
+      "10": {
+        "n": 20,
+        "meanPct": 3.842,
+        "positivePct": 70.0
+      }
+    },
+    "weak_adverse__brent_rising": {
+      "sessions": 38,
+      "1": {
+        "n": 38,
+        "meanPct": 0.478,
+        "positivePct": 57.9
+      },
+      "3": {
+        "n": 38,
+        "meanPct": 1.837,
+        "positivePct": 63.2
+      },
+      "5": {
+        "n": 38,
+        "meanPct": 2.597,
+        "positivePct": 71.1
+      },
+      "10": {
+        "n": 37,
+        "meanPct": 3.604,
+        "positivePct": 59.5
+      }
+    },
+    "weak_not_jointly_adverse__brent_flat_or_falling": {
+      "sessions": 84,
+      "1": {
+        "n": 83,
+        "meanPct": 0.456,
+        "positivePct": 62.7
+      },
+      "3": {
+        "n": 83,
+        "meanPct": 1.083,
+        "positivePct": 61.4
+      },
+      "5": {
+        "n": 83,
+        "meanPct": 1.669,
+        "positivePct": 62.7
+      },
+      "10": {
+        "n": 81,
+        "meanPct": 2.074,
+        "positivePct": 61.7
+      }
+    },
+    "weak_not_jointly_adverse__brent_rising": {
+      "sessions": 50,
+      "1": {
+        "n": 49,
+        "meanPct": 0.562,
+        "positivePct": 69.4
+      },
+      "3": {
+        "n": 49,
+        "meanPct": 0.804,
+        "positivePct": 59.2
+      },
+      "5": {
+        "n": 49,
+        "meanPct": 1.505,
+        "positivePct": 63.3
+      },
+      "10": {
+        "n": 49,
+        "meanPct": 0.894,
+        "positivePct": 53.1
+      }
+    },
+    "yields_only__brent_flat_or_falling": {
+      "sessions": 43,
+      "1": {
+        "n": 43,
+        "meanPct": 0.148,
+        "positivePct": 58.1
+      },
+      "3": {
+        "n": 42,
+        "meanPct": 0.433,
+        "positivePct": 54.8
+      },
+      "5": {
+        "n": 41,
+        "meanPct": 1.276,
+        "positivePct": 61.0
+      },
+      "10": {
+        "n": 41,
+        "meanPct": 0.566,
+        "positivePct": 43.9
+      }
+    },
+    "yields_only__brent_rising": {
+      "sessions": 61,
+      "1": {
+        "n": 61,
+        "meanPct": 0.494,
+        "positivePct": 65.6
+      },
+      "3": {
+        "n": 61,
+        "meanPct": 0.634,
+        "positivePct": 52.5
+      },
+      "5": {
+        "n": 61,
+        "meanPct": 0.686,
+        "positivePct": 50.8
+      },
+      "10": {
+        "n": 60,
+        "meanPct": -0.016,
+        "positivePct": 43.3
+      }
+    }
+  },
+  "byCohort": {
+    "2025_external_retrospective": {
+      "strong_adverse": {
+        "sessions": 26,
+        "1": {
+          "n": 26,
+          "meanPct": -0.324,
+          "positivePct": 46.2
+        },
+        "3": {
+          "n": 26,
+          "meanPct": -0.308,
+          "positivePct": 53.8
+        },
+        "5": {
+          "n": 26,
+          "meanPct": 0.195,
+          "positivePct": 53.8
+        },
+        "10": {
+          "n": 26,
+          "meanPct": 2.102,
+          "positivePct": 76.9
+        }
+      },
+      "strong_not_jointly_adverse": {
+        "sessions": 105,
+        "1": {
+          "n": 105,
+          "meanPct": 0.233,
+          "positivePct": 61.0
+        },
+        "3": {
+          "n": 103,
+          "meanPct": 0.395,
+          "positivePct": 57.3
+        },
+        "5": {
+          "n": 101,
+          "meanPct": 0.566,
+          "positivePct": 57.4
+        },
+        "10": {
+          "n": 99,
+          "meanPct": 1.202,
+          "positivePct": 56.6
+        }
+      },
+      "weak_adverse": {
+        "sessions": 27,
+        "1": {
+          "n": 27,
+          "meanPct": 0.343,
+          "positivePct": 44.4
+        },
+        "3": {
+          "n": 27,
+          "meanPct": 1.31,
+          "positivePct": 66.7
+        },
+        "5": {
+          "n": 27,
+          "meanPct": 1.272,
+          "positivePct": 63.0
+        },
+        "10": {
+          "n": 26,
+          "meanPct": 2.362,
+          "positivePct": 65.4
+        }
+      },
+      "weak_not_jointly_adverse": {
+        "sessions": 90,
+        "1": {
+          "n": 89,
+          "meanPct": 0.203,
+          "positivePct": 58.4
+        },
+        "3": {
+          "n": 89,
+          "meanPct": 0.585,
+          "positivePct": 59.6
+        },
+        "5": {
+          "n": 89,
+          "meanPct": 1.154,
+          "positivePct": 61.8
+        },
+        "10": {
+          "n": 87,
+          "meanPct": 1.635,
+          "positivePct": 63.2
+        }
+      }
+    },
+    "canonical_point_in_time": {
+      "strong_adverse": {
+        "sessions": 39,
+        "1": {
+          "n": 39,
+          "meanPct": -0.292,
+          "positivePct": 56.4
+        },
+        "3": {
+          "n": 39,
+          "meanPct": -1.022,
+          "positivePct": 38.5
+        },
+        "5": {
+          "n": 38,
+          "meanPct": -0.049,
+          "positivePct": 57.9
+        },
+        "10": {
+          "n": 34,
+          "meanPct": 5.003,
+          "positivePct": 85.3
+        }
+      },
+      "strong_not_jointly_adverse": {
+        "sessions": 75,
+        "1": {
+          "n": 75,
+          "meanPct": 0.272,
+          "positivePct": 62.7
+        },
+        "3": {
+          "n": 73,
+          "meanPct": 1.001,
+          "positivePct": 65.8
+        },
+        "5": {
+          "n": 72,
+          "meanPct": 1.152,
+          "positivePct": 56.9
+        },
+        "10": {
+          "n": 72,
+          "meanPct": 2.43,
+          "positivePct": 56.9
+        }
+      },
+      "weak_adverse": {
+        "sessions": 32,
+        "1": {
+          "n": 32,
+          "meanPct": 0.13,
+          "positivePct": 50.0
+        },
+        "3": {
+          "n": 32,
+          "meanPct": 1.9,
+          "positivePct": 56.2
+        },
+        "5": {
+          "n": 32,
+          "meanPct": 3.21,
+          "positivePct": 71.9
+        },
+        "10": {
+          "n": 31,
+          "meanPct": 4.799,
+          "positivePct": 61.3
+        }
+      },
+      "weak_not_jointly_adverse": {
+        "sessions": 47,
+        "1": {
+          "n": 46,
+          "meanPct": 1.072,
+          "positivePct": 78.3
+        },
+        "3": {
+          "n": 46,
+          "meanPct": 2.016,
+          "positivePct": 65.2
+        },
+        "5": {
+          "n": 46,
+          "meanPct": 2.816,
+          "positivePct": 65.2
+        },
+        "10": {
+          "n": 46,
+          "meanPct": 2.156,
+          "positivePct": 52.2
+        }
+      }
+    }
+  }
+}

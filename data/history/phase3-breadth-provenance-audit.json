@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "status": "research_only",
+  "finding": "2025 semiBreadthPositivePct is five-stock basket breadth, not full SOX breadth.",
+  "cohorts": {
+    "2025_external_retrospective": {
+      "rows": 250,
+      "recordedBreadthCount": 250,
+      "seriesClassification": "verified_five_stock_basket",
+      "distinctValues": [
+        0.0,
+        20.0,
+        40.0,
+        60.0,
+        80.0,
+        100.0
+      ],
+      "fullSoxBreadthCount": 0
+    },
+    "canonical_point_in_time": {
+      "rows": 193,
+      "recordedBreadthCount": 193,
+      "seriesClassification": "unverified_upstream_definition",
+      "distinctValues": [
+        0.0,
+        20.0,
+        40.0,
+        60.0,
+        80.0,
+        100.0
+      ],
+      "fullSoxBreadthCount": 0
+    }
+  },
+  "fullSoxConstituentBreadth": {
+    "status": "unavailable",
+    "coverage": 0,
+    "constituentUniverse": null,
+    "historicalMembershipVerified": false
+  },
+  "limitations": [
+    "2025 basket is NVDA AMD AVGO TSM MU, per scripts/validate_directional_engine_v3_2025.py.",
+    "2026 semiBreadthPositivePct is copied from directional-engine-v3 inputs; verify its generating lineage before classifying.",
+    "A breadth percentage without dated constituent-level prices and membership cannot establish leadership concentration.",
+    "Do not merge basket breadth with full SOX breadth."
+  ]
+}

@@ -1,0 +1,43 @@
+name: Probe CNBC Brent Quote
+on:
+  push:
+    paths:
+      - '.github/workflows/probe_cnbc_brent.yml'
+  workflow_dispatch:
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Sample Brent and WTI quotes without publishing data
+        shell: bash
+        run: |
+          python - <<'PY'
+          import datetime, json, time, urllib.parse, urllib.request
+          base = 'https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol'
+          params = {'symbols':'@LCO.1|@CL.1','requestMethod':'itv','noform':'1','partnerId':'2','fund':'1','exthrs':'1','output':'json','events':'1'}
+          url=base+'?'+urllib.parse.urlencode(params,safe='|@.')
+          snapshots=[]
+          for i in range(4):
+              now=datetime.datetime.now(datetime.timezone.utc).isoformat()
+              try:
+                  req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0','Accept':'application/json,text/plain,*/*','Referer':'https://www.cnbc.com/'})
+                  with urllib.request.urlopen(req,timeout=15) as response:
+                      payload=json.load(response)
+                  quotes=payload.get('FormattedQuoteResult',{}).get('FormattedQuote',[])
+                  if isinstance(quotes,dict): quotes=[quotes]
+                  result={}
+                  for q in quotes:
+                      if q.get('symbol') in ('@LCO.1','@CL.1'):
+                          result[q['symbol']]={k:q.get(k) for k in ('code','last','change_pct','previous_day_closing','last_time','last_timedate')}
+                  snapshots.append({'collectedAt':now,'quotes':result})
+              except Exception as exc:
+                  snapshots.append({'collectedAt':now,'error':repr(exc)})
+              print('CNBC_SNAPSHOT',json.dumps(snapshots[-1]),flush=True)
+              if i<3: time.sleep(20)
+          for symbol in ('@LCO.1','@CL.1'):
+              items=[s.get('quotes',{}).get(symbol,{}) for s in snapshots]
+              prices=[v.get('last') for v in items if v.get('last') not in (None,'')]
+              stamps=[v.get('last_time') or v.get('last_timedate') for v in items if v]
+              print('SUMMARY',symbol,json.dumps({'responses':len(prices),'uniquePrices':len(set(prices)),'uniqueQuoteTimestamps':len(set(stamps)),'prices':prices,'quoteTimestamps':stamps}),flush=True)
+          PY

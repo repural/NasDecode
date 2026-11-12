@@ -1,0 +1,29 @@
+name: Validate Directional v3 on 2025
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/validate_directional_engine_v3_2025.py'
+      - '.github/workflows/validate-directional-v3-2025.yml'
+permissions:
+  contents: write
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run frozen v3.0 on 2025
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: python scripts/validate_directional_engine_v3_2025.py
+      - name: Persist 2025 validation
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/history/directional-engine-v3-2025.json
+          git diff --cached --quiet || git commit -m "Validate frozen directional v3 on 2025"
+          git push

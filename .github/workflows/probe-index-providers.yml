@@ -1,0 +1,39 @@
+name: Probe Yahoo vs CNBC Indices
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/probe_index_providers.py'
+      - '.github/workflows/probe-index-providers.yml'
+permissions:
+  contents: write
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check syntax
+        run: python -m py_compile scripts/probe_index_providers.py
+      - name: Compare providers without modifying production
+        run: python scripts/probe_index_providers.py
+      - name: Upload research report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: index-provider-probe
+          path: data/research/index-provider-probe.json
+          if-no-files-found: warn
+      - name: Persist research report
+        run: |
+          git config user.name nasdecode-bot
+          git config user.email actions@users.noreply.github.com
+          git add data/research/index-provider-probe.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Store Yahoo versus CNBC index provider probe"
+          for i in 1 2 3; do
+            git pull --rebase origin main
+            if git push; then exit 0; fi
+          done
+          exit 1

@@ -1,0 +1,61 @@
+name: Test Massive Premarket Access
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe Massive premarket access
+        env:
+          MASSIVE_API_KEY: ${{ secrets.MASSIVE_API_KEY }}
+        run: |
+          python - <<'PY'
+          import json, os, urllib.request, urllib.error
+          from datetime import datetime, timedelta
+          from zoneinfo import ZoneInfo
+
+          key=os.environ["MASSIVE_API_KEY"]
+          ny=datetime.now(ZoneInfo("America/New_York"))
+          today=ny.date()
+          # Find a recent prior weekday. Historical probe intentionally uses a date
+          # far enough back to distinguish EOD/historical access from today's access.
+          prior=today-timedelta(days=7)
+          while prior.weekday()>=5:
+              prior-=timedelta(days=1)
+
+          def probe(label,url):
+              req=urllib.request.Request(url,headers={"User-Agent":"NasBoard-Massive-Diagnostic/1.0"})
+              try:
+                  with urllib.request.urlopen(req,timeout=30) as r:
+                      data=json.load(r)
+                      results=data.get("results") or []
+                      pre=[]
+                      for x in results:
+                          ts=x.get("t")
+                          if ts:
+                              dt=datetime.fromtimestamp(ts/1000,ZoneInfo("America/New_York"))
+                              if (dt.hour,dt.minute)>=(4,0) and (dt.hour,dt.minute)<(9,30):
+                                  pre.append((dt,x))
+                      print(f"{label}: HTTP {r.status}; status={data.get('status')}; results={len(results)}; premarket_results={len(pre)}")
+                      if results:
+                          first=datetime.fromtimestamp(results[0]["t"]/1000,ZoneInfo("America/New_York"))
+                          last=datetime.fromtimestamp(results[-1]["t"]/1000,ZoneInfo("America/New_York"))
+                          print(f"  aggregate range ET: {first.isoformat()} -> {last.isoformat()}")
+                      if pre:
+                          print(f"  premarket ET: {pre[0][0].isoformat()} -> {pre[-1][0].isoformat()}")
+              except urllib.error.HTTPError as e:
+                  body=e.read().decode("utf-8","replace")[:500]
+                  print(f"{label}: HTTP {e.code}; {body}")
+              except Exception as e:
+                  print(f"{label}: ERROR {type(e).__name__}: {e}")
+
+          base="https://api.massive.com/v2/aggs/ticker/QQQ/range/1/minute"
+          for label,day in [("TODAY_MINUTE_AGGS",today),("HISTORICAL_MINUTE_AGGS",prior)]:
+              ds=day.isoformat()
+              probe(label,f"{base}/{ds}/{ds}?adjusted=true&sort=asc&limit=50000&apiKey={key}")
+
+          # A snapshot probe tests whether this key has current snapshot/near-real-time entitlement.
+          probe("CURRENT_SNAPSHOT",f"https://api.massive.com/v2/snapshot/locale/us/markets/stocks/tickers/QQQ?apiKey={key}")
+          PY

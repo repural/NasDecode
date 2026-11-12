@@ -1,0 +1,4472 @@
+{
+  "schemaVersion": 1,
+  "validationVersion": "directional-edge-walkforward-1.0",
+  "status": "strict expanding-window shadow validation; no production score changes",
+  "method": {
+    "features": "Raw Directional Edge components observed at completed close T.",
+    "learningTarget": "SOX forward 5-session return.",
+    "trainingRule": "For each T, only earlier observations whose T+5 outcome had fully matured before T are eligible.",
+    "mapping": "Each component is split into five equal-count training bins; historical mean 5D returns are converted to within-training percentile quality and linearly interpolated. No v1.1 hand-tuned U-curve is used.",
+    "minimumTrainingSignals": 60,
+    "weights": "45% absolute momentum, 35% relative momentum, 20% breadth persistence."
+  },
+  "signalSpan": {
+    "start": "2026-03-03",
+    "end": "2026-11-11",
+    "signals": 177
+  },
+  "scoreReturnCorrelation": {
+    "sox": {
+      "1": -0.0291,
+      "3": -0.0134,
+      "5": -0.0157,
+      "10": -0.123
+    },
+    "soxl": {
+      "1": -0.0288,
+      "3": -0.044,
+      "5": -0.0407,
+      "10": -0.1449
+    }
+  },
+  "byScoreBucket": {
+    "<30": {
+      "sox": {
+        "1": {
+          "n": 9,
+          "meanPct": 0.46,
+          "positivePct": 77.8
+        },
+        "3": {
+          "n": 9,
+          "meanPct": -0.913,
+          "positivePct": 55.6
+        },
+        "5": {
+          "n": 9,
+          "meanPct": -3.385,
+          "positivePct": 33.3
+        },
+        "10": {
+          "n": 8,
+          "meanPct": 0.762,
+          "positivePct": 50.0
+        }
+      },
+      "soxl": {
+        "1": {
+          "n": 9,
+          "meanPct": 1.472,
+          "positivePct": 77.8
+        },
+        "3": {
+          "n": 9,
+          "meanPct": -3.1,
+          "positivePct": 55.6
+        },
+        "5": {
+          "n": 9,
+          "meanPct": -9.455,
+          "positivePct": 33.3
+        },
+        "10": {
+          "n": 7,
+          "meanPct": 7.819,
+          "positivePct": 42.9
+        }
+      }
+    },
+    "30-44.9": {
+      "sox": {
+        "1": {
+          "n": 52,
+          "meanPct": 0.531,
+          "positivePct": 71.2
+        },
+        "3": {
+          "n": 51,
+          "meanPct": 1.098,
+          "positivePct": 60.8
+        },
+        "5": {
+          "n": 51,
+          "meanPct": 1.846,
+          "positivePct": 56.9
+        },
+        "10": {
+          "n": 51,
+          "meanPct": 4.399,
+          "positivePct": 64.7
+        }
+      },
+      "soxl": {
+        "1": {
+          "n": 51,
+          "meanPct": 1.337,
+          "positivePct": 70.6
+        },
+        "3": {
+          "n": 51,
+          "meanPct": 3.541,
+          "positivePct": 58.8
+        },
+        "5": {
+          "n": 51,
+          "meanPct": 5.861,
+          "positivePct": 56.9
+        },
+        "10": {
+          "n": 51,
+          "meanPct": 14.569,
+          "positivePct": 62.7
+        }
+      }
+    },
+    "45-59.9": {
+      "sox": {
+        "1": {
+          "n": 32,
+          "meanPct": -0.336,
+          "positivePct": 50.0
+        },
+        "3": {
+          "n": 31,
+          "meanPct": 0.132,
+          "positivePct": 54.8
+        },
+        "5": {
+          "n": 31,
+          "meanPct": 0.83,
+          "positivePct": 54.8
+        },
+        "10": {
+          "n": 31,
+          "meanPct": 1.07,
+          "positivePct": 54.8
+        }
+      },
+      "soxl": {
+        "1": {
+          "n": 32,
+          "meanPct": -1.075,
+          "positivePct": 50.0
+        },
+        "3": {
+          "n": 31,
+          "meanPct": -0.102,
+          "positivePct": 51.6
+        },
+        "5": {
+          "n": 31,
+          "meanPct": 2.232,
+          "positivePct": 54.8
+        },
+        "10": {
+          "n": 31,
+          "meanPct": 0.852,
+          "positivePct": 45.2
+        }
+      }
+    },
+    "60-74.9": {
+      "sox": {
+        "1": {
+          "n": 37,
+          "meanPct": 0.359,
+          "positivePct": 62.2
+        },
+        "3": {
+          "n": 37,
+          "meanPct": 1.108,
+          "positivePct": 54.1
+        },
+        "5": {
+          "n": 37,
+          "meanPct": 1.364,
+          "positivePct": 56.8
+        },
+        "10": {
+          "n": 36,
+          "meanPct": 2.754,
+          "positivePct": 52.8
+        }
+      },
+      "soxl": {
+        "1": {
+          "n": 37,
+          "meanPct": 1.151,
+          "positivePct": 56.8
+        },
+        "3": {
+          "n": 37,
+          "meanPct": 3.244,
+          "positivePct": 54.1
+        },
+        "5": {
+          "n": 37,
+          "meanPct": 3.27,
+          "positivePct": 59.5
+        },
+        "10": {
+          "n": 36,
+          "meanPct": 6.986,
+          "positivePct": 47.2
+        }
+      }
+    },
+    "75+": {
+      "sox": {
+        "1": {
+          "n": 46,
+          "meanPct": 0.143,
+          "positivePct": 56.5
+        },
+        "3": {
+          "n": 46,
+          "meanPct": 0.279,
+          "positivePct": 45.7
+        },
+        "5": {
+          "n": 44,
+          "meanPct": 0.403,
+          "positivePct": 52.3
+        },
+        "10": {
+          "n": 41,
+          "meanPct": -0.249,
+          "positivePct": 41.5
+        }
+      },
+      "soxl": {
+        "1": {
+          "n": 46,
+          "meanPct": 0.233,
+          "positivePct": 56.5
+        },
+        "3": {
+          "n": 45,
+          "meanPct": -0.573,
+          "positivePct": 37.8
+        },
+        "5": {
+          "n": 43,
+          "meanPct": 0.139,
+          "positivePct": 48.8
+        },
+        "10": {
+          "n": 41,
+          "meanPct": -1.535,
+          "positivePct": 39.0
+        }
+      }
+    }
+  },
+  "records": [
+    {
+      "date": "2026-03-03",
+      "score": 90.0,
+      "label": "Strong Bullish",
+      "trainingSignals": 60,
+      "components": {
+        "absoluteMomentum": 9.3,
+        "relativeMomentum": 4.5,
+        "breadthPersistence": 17.4
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 90.0
+      },
+      "soxFwd1dPct": 1.9265620944770578,
+      "soxlFwd1dPct": 5.99026581804567,
+      "soxFwd3dPct": -3.2215076693858813,
+      "soxlFwd3dPct": -10.351928116810182,
+      "soxFwd5dPct": 1.2908951191540563,
+      "soxlFwd5dPct": 2.190190939722947,
+      "soxFwd10dPct": 0.9265385363173895,
+      "soxlFwd10dPct": 2.8640958442530895
+    },
+    {
+      "date": "2026-03-04",
+      "score": 90.0,
+      "label": "Strong Bullish",
+      "trainingSignals": 61,
+      "components": {
+        "absoluteMomentum": 23.0,
+        "relativeMomentum": 13.8,
+        "breadthPersistence": 21.4
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 90.0
+      },
+      "soxFwd1dPct": -1.1714821681427345,
+      "soxlFwd1dPct": -3.2144118685976664,
+      "soxFwd3dPct": -1.3150349225859004,
+      "soxlFwd3dPct": -5.828329212292472,
+      "soxFwd5dPct": 0.0011010192103588778,
+      "soxlFwd5dPct": -0.9360649947015132,
+      "soxFwd10dPct": -1.5079883808387318,
+      "soxlFwd10dPct": -4.592016955139522
+    },
+    {
+      "date": "2026-03-05",
+      "score": 90.0,
+      "label": "Strong Bullish",
+      "trainingSignals": 62,
+      "components": {
+        "absoluteMomentum": 17.7,
+        "relativeMomentum": 8.8,
+        "breadthPersistence": 29.4
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 90.0
+      },
+      "soxFwd1dPct": -3.9252652802677646,
+      "soxlFwd1dPct": -12.60948905109488,
+      "soxFwd3dPct": 0.5543240418776962,
+      "soxlFwd3dPct": -0.38321167883210716,
+      "soxFwd5dPct": -2.283215329284405,
+      "soxlFwd5dPct": -8.248175182481743,
+      "soxFwd10dPct": 0.5311166352457208,
+      "soxlFwd10dPct": 0.09124087591241281
+    },
+    {
+      "date": "2026-03-06",
+      "score": 90.0,
+      "label": "Strong Bullish",
+      "trainingSignals": 63,
+      "components": {
+        "absoluteMomentum": 8.6,
+        "relativeMomentum": 7.3,
+        "breadthPersistence": 31.6
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 90.0
+      },
+      "soxFwd1dPct": 3.934448435011273,
+      "soxlFwd1dPct": 11.338484025892658,
+      "soxFwd3dPct": 5.320595383219451,
+      "soxlFwd3dPct": 17.12257256212153,
+      "soxFwd5dPct": 1.7552124470128438,
+      "soxlFwd5dPct": 5.909375652537063,
+      "soxFwd10dPct": 2.0742219725681688,
+      "soxlFwd10dPct": 6.7863854666945
+    },
+    {
+      "date": "2026-03-09",
+      "score": 78.3,
+      "label": "Strong Bullish",
+      "trainingSignals": 64,
+      "components": {
+        "absoluteMomentum": 29.2,
+        "relativeMomentum": 24.7,
+        "breadthPersistence": 45.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 87.8,
+        "relativeMomentum": 70.0,
+        "breadthPersistence": 71.5
+      },
+      "soxFwd1dPct": 0.7005960720299909,
+      "soxlFwd1dPct": 2.3818454613653506,
+      "soxFwd3dPct": -2.141070945043022,
+      "soxlFwd3dPct": -5.701425356339085,
+      "soxFwd5dPct": -0.1812366937419818,
+      "soxlFwd5dPct": 0.6939234808702066,
+      "soxFwd10dPct": -0.4771537729497677,
+      "soxlFwd10dPct": -0.5438859714928745
+    },
+    {
+      "date": "2026-03-10",
+      "score": 73.5,
+      "label": "Bullish",
+      "trainingSignals": 65,
+      "components": {
+        "absoluteMomentum": 45.0,
+        "relativeMomentum": 43.2,
+        "breadthPersistence": 61.7
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 82.8,
+        "relativeMomentum": 78.9,
+        "breadthPersistence": 43.0
+      },
+      "soxFwd1dPct": 0.6286736883932331,
+      "soxlFwd1dPct": 2.747755999267265,
+      "soxFwd3dPct": -2.7778751898792975,
+      "soxlFwd3dPct": -7.089210478109553,
+      "soxFwd5dPct": -0.3597130644447888,
+      "soxlFwd5dPct": 0.6594614398241383,
+      "soxFwd10dPct": 0.09651012363307565,
+      "soxlFwd10dPct": 0.6777798131525792
+    },
+    {
+      "date": "2026-03-11",
+      "score": 78.3,
+      "label": "Strong Bullish",
+      "trainingSignals": 66,
+      "components": {
+        "absoluteMomentum": 48.7,
+        "relativeMomentum": 52.3,
+        "breadthPersistence": 62.3
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 86.5,
+        "relativeMomentum": 86.6,
+        "breadthPersistence": 45.4
+      },
+      "soxFwd1dPct": -3.4290133020994373,
+      "soxlFwd1dPct": -10.358352647530754,
+      "soxFwd3dPct": -1.4949728497847259,
+      "soxlFwd3dPct": -4.278837582456774,
+      "soxFwd5dPct": -1.5090727848678265,
+      "soxlFwd5dPct": -3.690497414868965,
+      "soxFwd10dPct": 0.6719262456380992,
+      "soxlFwd10dPct": 1.6937065430558063
+    },
+    {
+      "date": "2026-03-12",
+      "score": 74.0,
+      "label": "Bullish",
+      "trainingSignals": 67,
+      "components": {
+        "absoluteMomentum": 21.1,
+        "relativeMomentum": 31.1,
+        "breadthPersistence": 57.4
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 74.1,
+        "breadthPersistence": 37.9
+      },
+      "soxFwd1dPct": 0.04530004891287742,
+      "soxlFwd1dPct": 0.8750994431185211,
+      "soxFwd3dPct": 2.5336817406163448,
+      "soxlFwd3dPct": 9.28798727128084,
+      "soxFwd5dPct": 2.880090635415211,
+      "soxlFwd5dPct": 9.089101034208436,
+      "soxFwd10dPct": -0.7497230490643103,
+      "soxlFwd10dPct": -2.605409705648376
+    },
+    {
+      "date": "2026-03-13",
+      "score": 77.3,
+      "label": "Strong Bullish",
+      "trainingSignals": 68,
+      "components": {
+        "absoluteMomentum": 38.0,
+        "relativeMomentum": 52.4,
+        "breadthPersistence": 64.5
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 81.0,
+        "relativeMomentum": 88.1,
+        "breadthPersistence": 49.9
+      },
+      "soxFwd1dPct": 1.9565274172392622,
+      "soxlFwd1dPct": 5.855678233438488,
+      "soxFwd3dPct": 1.9419334370184504,
+      "soxlFwd3dPct": 6.506309148264999,
+      "soxFwd5dPct": 0.3135068149176634,
+      "soxlFwd5dPct": 0.8280757097791858,
+      "soxFwd10dPct": -2.4712499326772663,
+      "soxlFwd10dPct": -8.103312302839116
+    },
+    {
+      "date": "2026-03-16",
+      "score": 67.6,
+      "label": "Bullish",
+      "trainingSignals": 69,
+      "components": {
+        "absoluteMomentum": 38.9,
+        "relativeMomentum": 47.8,
+        "breadthPersistence": 59.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 64.6,
+        "relativeMomentum": 86.6,
+        "breadthPersistence": 41.3
+      },
+      "soxFwd1dPct": 0.52054298061468,
+      "soxlFwd1dPct": 2.3468057366362594,
+      "soxFwd3dPct": 0.86015050867152,
+      "soxlFwd3dPct": 2.160551313093695,
+      "soxFwd5dPct": -0.296454363294274,
+      "soxlFwd5dPct": -1.2292791953808835,
+      "soxFwd10dPct": -8.387500976284556,
+      "soxlFwd10dPct": -24.343453157012483
+    },
+    {
+      "date": "2026-03-17",
+      "score": 53.2,
+      "label": "Neutral",
+      "trainingSignals": 70,
+      "components": {
+        "absoluteMomentum": 55.8,
+        "relativeMomentum": 59.7,
+        "breadthPersistence": 53.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 58.2,
+        "relativeMomentum": 59.0,
+        "breadthPersistence": 31.9
+      },
+      "soxFwd1dPct": -0.5320871626050883,
+      "soxlFwd1dPct": -1.6924476797088306,
+      "soxFwd3dPct": -2.1209936297291954,
+      "soxlFwd3dPct": -6.933575978161965,
+      "soxFwd5dPct": 0.45787020703076386,
+      "soxlFwd5dPct": 0.018198362147403557,
+      "soxFwd10dPct": -3.172594507541815,
+      "soxlFwd10dPct": -12.811646951774346
+    },
+    {
+      "date": "2026-03-18",
+      "score": 48.4,
+      "label": "Neutral",
+      "trainingSignals": 71,
+      "components": {
+        "absoluteMomentum": 43.8,
+        "relativeMomentum": 64.9,
+        "breadthPersistence": 46.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 57.8,
+        "relativeMomentum": 27.7,
+        "breadthPersistence": 63.5
+      },
+      "soxFwd1dPct": 0.8745896211345139,
+      "soxlFwd1dPct": 1.5364679748241405,
+      "soxFwd3dPct": -0.2821808300787487,
+      "soxlFwd3dPct": -1.8326545723805987,
+      "soxFwd5dPct": 2.2144161824591224,
+      "soxlFwd5dPct": 5.590522028878175,
+      "soxFwd10dPct": 0.0921381749783512,
+      "soxlFwd10dPct": -3.258052573121073
+    },
+    {
+      "date": "2026-03-19",
+      "score": 49.8,
+      "label": "Neutral",
+      "trainingSignals": 72,
+      "components": {
+        "absoluteMomentum": 61.2,
+        "relativeMomentum": 82.5,
+        "breadthPersistence": 53.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 68.5,
+        "relativeMomentum": 36.1,
+        "breadthPersistence": 31.6
+      },
+      "soxFwd1dPct": -2.450563308481646,
+      "soxlFwd1dPct": -6.76390154968095,
+      "soxFwd3dPct": 0.11961720222355421,
+      "soxlFwd3dPct": 0.20054694621696179,
+      "soxFwd5dPct": -3.52819837352476,
+      "soxlFwd5dPct": -10.720145852324524,
+      "soxFwd10dPct": -0.38046402366683774,
+      "soxlFwd10dPct": -3.828623518687335
+    },
+    {
+      "date": "2026-03-20",
+      "score": 46.8,
+      "label": "Neutral",
+      "trainingSignals": 73,
+      "components": {
+        "absoluteMomentum": 46.0,
+        "relativeMomentum": 76.3,
+        "breadthPersistence": 44.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 52.9,
+        "relativeMomentum": 24.9,
+        "breadthPersistence": 71.6
+      },
+      "soxFwd1dPct": 1.3365757719981053,
+      "soxlFwd1dPct": 3.6957371920218973,
+      "soxFwd3dPct": 3.8737009762916053,
+      "soxlFwd3dPct": 11.53695737192022,
+      "soxFwd5dPct": -2.7760536302782524,
+      "soxlFwd5dPct": -8.858036761830268,
+      "soxFwd10dPct": 3.2004800776158193,
+      "soxlFwd10dPct": 7.176378568635133
+    },
+    {
+      "date": "2026-03-23",
+      "score": 44.9,
+      "label": "Bearish",
+      "trainingSignals": 74,
+      "components": {
+        "absoluteMomentum": 48.5,
+        "relativeMomentum": 70.8,
+        "breadthPersistence": 42.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 54.4,
+        "relativeMomentum": 16.2,
+        "breadthPersistence": 73.9
+      },
+      "soxFwd1dPct": 1.2810486868909399,
+      "soxlFwd1dPct": 3.6394493682821105,
+      "soxFwd3dPct": -2.4090831499291365,
+      "soxlFwd3dPct": -7.656043748821428,
+      "soxFwd5dPct": -8.115104193457668,
+      "soxlFwd5dPct": -23.401848010560066,
+      "soxFwd10dPct": 2.9683733175399185,
+      "soxlFwd10dPct": 6.637752215726933
+    },
+    {
+      "date": "2026-03-24",
+      "score": 58.4,
+      "label": "Neutral",
+      "trainingSignals": 75,
+      "components": {
+        "absoluteMomentum": 53.0,
+        "relativeMomentum": 84.3,
+        "breadthPersistence": 44.4
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 66.3,
+        "relativeMomentum": 40.5,
+        "breadthPersistence": 71.9
+      },
+      "soxFwd1dPct": 1.2071490129051954,
+      "soxlFwd1dPct": 3.784570596797665,
+      "soxFwd3dPct": -5.271899091099264,
+      "soxlFwd3dPct": -15.192867540029109,
+      "soxFwd5dPct": -3.6139176622903335,
+      "soxlFwd5dPct": -12.82751091703057,
+      "soxFwd10dPct": 8.106585197238347,
+      "soxlFwd10dPct": 22.81659388646289
+    },
+    {
+      "date": "2026-03-25",
+      "score": 42.4,
+      "label": "Bearish",
+      "trainingSignals": 76,
+      "components": {
+        "absoluteMomentum": 65.7,
+        "relativeMomentum": 84.0,
+        "breadthPersistence": 48.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 43.8,
+        "relativeMomentum": 31.8,
+        "breadthPersistence": 57.9
+      },
+      "soxFwd1dPct": -4.79275074358636,
+      "soxlFwd1dPct": -14.147966339410944,
+      "soxFwd3dPct": -10.359401670620528,
+      "soxlFwd3dPct": -28.78681626928472,
+      "soxFwd5dPct": -2.0763000824584044,
+      "soxlFwd5dPct": -8.380084151472655,
+      "soxFwd10dPct": 9.058873495069374,
+      "soxlFwd10dPct": 26.192145862552607
+    },
+    {
+      "date": "2026-03-26",
+      "score": 80.4,
+      "label": "Strong Bullish",
+      "trainingSignals": 77,
+      "components": {
+        "absoluteMomentum": 25.6,
+        "relativeMomentum": 53.4,
+        "breadthPersistence": 37.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 80.8,
+        "relativeMomentum": 80.1,
+        "breadthPersistence": 80.1
+      },
+      "soxFwd1dPct": -1.690016757290791,
+      "soxlFwd1dPct": -4.81927710843374,
+      "soxFwd3dPct": 0.03065667455264265,
+      "soxlFwd3dPct": -2.1645905656524467,
+      "soxFwd5dPct": 3.2628543230129647,
+      "soxlFwd5dPct": 7.719011639779461,
+      "soxFwd10dPct": 17.189289696605826,
+      "soxlFwd10dPct": 55.99346538697163
+    },
+    {
+      "date": "2026-03-27",
+      "score": 73.9,
+      "label": "Bullish",
+      "trainingSignals": 78,
+      "components": {
+        "absoluteMomentum": 22.6,
+        "relativeMomentum": 56.8,
+        "breadthPersistence": 48.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 85.3,
+        "relativeMomentum": 68.5,
+        "breadthPersistence": 57.5
+      },
+      "soxFwd1dPct": -4.228319731098395,
+      "soxlFwd1dPct": -12.851319459343491,
+      "soxFwd3dPct": 4.62131505180885,
+      "soxlFwd3dPct": 12.121862261317307,
+      "soxFwd5dPct": 6.14718279914972,
+      "soxlFwd5dPct": 17.592791246513627,
+      "soxFwd10dPct": 21.211137230775947,
+      "soxlFwd10dPct": 72.83844668526068
+    },
+    {
+      "date": "2026-03-30",
+      "score": 81.9,
+      "label": "Strong Bullish",
+      "trainingSignals": 79,
+      "components": {
+        "absoluteMomentum": 2.1,
+        "relativeMomentum": 15.1,
+        "breadthPersistence": 34.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 70.0,
+        "breadthPersistence": 84.7
+      },
+      "soxFwd1dPct": 6.242526721014996,
+      "soxlFwd1dPct": 17.946824224519943,
+      "soxFwd3dPct": 9.675442753460729,
+      "soxlFwd3dPct": 29.862136878385037,
+      "soxFwd5dPct": 12.062349762395241,
+      "soxlFwd5dPct": 39.21713441654357,
+      "soxFwd10dPct": 29.147151310295595,
+      "soxlFwd10dPct": 110.01969473165931
+    },
+    {
+      "date": "2026-03-31",
+      "score": 67.5,
+      "label": "Bullish",
+      "trainingSignals": 80,
+      "components": {
+        "absoluteMomentum": 37.8,
+        "relativeMomentum": 47.0,
+        "breadthPersistence": 44.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 50.7,
+        "relativeMomentum": 86.2,
+        "breadthPersistence": 72.2
+      },
+      "soxFwd1dPct": 2.821675589280326,
+      "soxlFwd1dPct": 9.079524107701943,
+      "soxFwd3dPct": 4.321296182192325,
+      "soxlFwd3dPct": 14.40200375704448,
+      "soxFwd5dPct": 12.159953569295778,
+      "soxlFwd5dPct": 40.88916718847842,
+      "soxFwd10dPct": 21.758652527626587,
+      "soxlFwd10dPct": 79.41974535587559
+    },
+    {
+      "date": "2026-04-01",
+      "score": 60.6,
+      "label": "Bullish",
+      "trainingSignals": 81,
+      "components": {
+        "absoluteMomentum": 54.4,
+        "relativeMomentum": 55.4,
+        "breadthPersistence": 45.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 53.8,
+        "relativeMomentum": 76.2,
+        "breadthPersistence": 48.7
+      },
+      "soxFwd1dPct": 0.3982929437767124,
+      "soxlFwd1dPct": 0.9376195943360255,
+      "soxFwd3dPct": 2.5832979284500013,
+      "soxlFwd3dPct": 8.208955223880587,
+      "soxFwd5dPct": 11.371275377568812,
+      "soxlFwd5dPct": 37.73440489858402,
+      "soxFwd10dPct": 19.571570635920278,
+      "soxlFwd10dPct": 69.09682357443555
+    },
+    {
+      "date": "2026-04-02",
+      "score": 25.3,
+      "label": "Strong Bearish",
+      "trainingSignals": 82,
+      "components": {
+        "absoluteMomentum": 70.6,
+        "relativeMomentum": 73.1,
+        "breadthPersistence": 61.7
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 11.9,
+        "relativeMomentum": 18.8,
+        "breadthPersistence": 66.9
+      },
+      "soxFwd1dPct": 1.0559685828827936,
+      "soxlFwd1dPct": 3.9052132701421938,
+      "soxFwd3dPct": 8.649270656695851,
+      "soxlFwd3dPct": 27.96208530805686,
+      "soxFwd5dPct": 13.486393984452615,
+      "soxlFwd5dPct": 44.81516587677725,
+      "soxFwd10dPct": 21.989163110998078,
+      "soxlFwd10dPct": 79.48815165876779
+    },
+    {
+      "date": "2026-04-06",
+      "score": 37.3,
+      "label": "Bearish",
+      "trainingSignals": 83,
+      "components": {
+        "absoluteMomentum": 79.3,
+        "relativeMomentum": 72.9,
+        "breadthPersistence": 65.3
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 44.2,
+        "relativeMomentum": 19.1,
+        "breadthPersistence": 53.7
+      },
+      "soxFwd1dPct": 1.108661093094132,
+      "soxlFwd1dPct": 3.1746031746031633,
+      "soxFwd3dPct": 9.770311201247694,
+      "soxlFwd3dPct": 31.326400291917533,
+      "soxFwd5dPct": 14.191572526357144,
+      "soxlFwd5dPct": 46.98047801496077,
+      "soxFwd10dPct": 21.261828371727653,
+      "soxlFwd10dPct": 75.04105090311985
+    },
+    {
+      "date": "2026-04-07",
+      "score": 36.4,
+      "label": "Bearish",
+      "trainingSignals": 84,
+      "components": {
+        "absoluteMomentum": 79.2,
+        "relativeMomentum": 84.7,
+        "breadthPersistence": 82.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 43.8,
+        "relativeMomentum": 42.0,
+        "breadthPersistence": 10.0
+      },
+      "soxFwd1dPct": 6.335061591867586,
+      "soxlFwd1dPct": 19.363395225464195,
+      "soxFwd3dPct": 11.069155100969063,
+      "soxlFwd3dPct": 35.08399646330682,
+      "soxFwd5dPct": 15.245799846357922,
+      "soxlFwd5dPct": 50.85764809902742,
+      "soxFwd10dPct": 20.531909750324594,
+      "soxlFwd10dPct": 73.45711759504864
+    },
+    {
+      "date": "2026-04-08",
+      "score": 42.0,
+      "label": "Bearish",
+      "trainingSignals": 85,
+      "components": {
+        "absoluteMomentum": 98.8,
+        "relativeMomentum": 97.0,
+        "breadthPersistence": 79.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 50.0,
+        "relativeMomentum": 50.0,
+        "breadthPersistence": 10.0
+      },
+      "soxFwd1dPct": 2.0986616204488495,
+      "soxlFwd1dPct": 6.637037037037041,
+      "soxFwd3dPct": 6.21092894508406,
+      "soxlFwd3dPct": 19.34814814814816,
+      "soxFwd5dPct": 8.558044696764666,
+      "soxlFwd5dPct": 27.348148148148145,
+      "soxFwd10dPct": 16.430061384139584,
+      "soxlFwd10dPct": 56.5037037037037
+    },
+    {
+      "date": "2026-04-09",
+      "score": 33.0,
+      "label": "Bearish",
+      "trainingSignals": 86,
+      "components": {
+        "absoluteMomentum": 94.9,
+        "relativeMomentum": 95.5,
+        "breadthPersistence": 80.6
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 30.0,
+        "relativeMomentum": 50.0,
+        "breadthPersistence": 10.0
+      },
+      "soxFwd1dPct": 2.3050170679715043,
+      "soxlFwd1dPct": 6.126701861628225,
+      "soxFwd3dPct": 6.152095148068781,
+      "soxlFwd3dPct": 18.51903306474021,
+      "soxFwd5dPct": 7.363025367673104,
+      "soxlFwd5dPct": 22.770213948318975,
+      "soxFwd10dPct": 15.98520358131772,
+      "soxlFwd10dPct": 56.66851903306473
+    },
+    {
+      "date": "2026-04-10",
+      "score": 33.0,
+      "label": "Bearish",
+      "trainingSignals": 87,
+      "components": {
+        "absoluteMomentum": 95.1,
+        "relativeMomentum": 96.7,
+        "breadthPersistence": 84.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 30.0,
+        "relativeMomentum": 50.0,
+        "breadthPersistence": 10.0
+      },
+      "soxFwd1dPct": 1.6839072993582782,
+      "soxlFwd1dPct": 5.458829689749978,
+      "soxFwd3dPct": 3.930982086154966,
+      "soxlFwd3dPct": 12.52781777719596,
+      "soxFwd5dPct": 7.492324699038666,
+      "soxlFwd5dPct": 23.942924466553215,
+      "soxFwd10dPct": 18.26622308008261,
+      "soxlFwd10dPct": 67.9801021076057
+    },
+    {
+      "date": "2026-04-13",
+      "score": 42.0,
+      "label": "Bearish",
+      "trainingSignals": 88,
+      "components": {
+        "absoluteMomentum": 92.2,
+        "relativeMomentum": 92.8,
+        "breadthPersistence": 82.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 50.0,
+        "relativeMomentum": 50.0,
+        "breadthPersistence": 10.0
+      },
+      "soxFwd1dPct": 2.042105746274969,
+      "soxlFwd1dPct": 5.89622641509433,
+      "soxFwd3dPct": 3.206151254259204,
+      "soxlFwd3dPct": 9.694637537239338,
+      "soxFwd5dPct": 6.191574114401988,
+      "soxlFwd5dPct": 19.091360476663354,
+      "soxFwd10dPct": 15.13922049677523,
+      "soxlFwd10dPct": 53.16534260178749
+    },
+    {
+      "date": "2026-04-14",
+      "score": 42.0,
+      "label": "Bearish",
+      "trainingSignals": 89,
+      "components": {
+        "absoluteMomentum": 92.5,
+        "relativeMomentum": 89.7,
+        "breadthPersistence": 83.3
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 50.0,
+        "relativeMomentum": 50.0,
+        "breadthPersistence": 10.0
+      },
+      "soxFwd1dPct": 0.16439978300859526,
+      "soxlFwd1dPct": 0.7619270894385188,
+      "soxFwd3dPct": 3.596675107275593,
+      "soxlFwd3dPct": 10.98347204313681,
+      "soxFwd5dPct": 4.58681349863852,
+      "soxlFwd5dPct": 14.980658773883482,
+      "soxFwd10dPct": 8.797119392178022,
+      "soxlFwd10dPct": 28.425741413667804
+    },
+    {
+      "date": "2026-04-15",
+      "score": 40.1,
+      "label": "Bearish",
+      "trainingSignals": 90,
+      "components": {
+        "absoluteMomentum": 87.6,
+        "relativeMomentum": 71.9,
+        "breadthPersistence": 74.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 70.0,
+        "relativeMomentum": 17.8,
+        "breadthPersistence": 11.9
+      },
+      "soxFwd1dPct": 0.9747479164794681,
+      "soxlFwd1dPct": 2.8036295951605616,
+      "soxFwd3dPct": 3.895623436625084,
+      "soxlFwd3dPct": 11.610051186598414,
+      "soxFwd5dPct": 7.251435588549748,
+      "soxlFwd5dPct": 22.89436947417405,
+      "soxFwd10dPct": 11.169832934941205,
+      "soxlFwd10dPct": 37.23825034899954
+    },
+    {
+      "date": "2026-04-16",
+      "score": 55.7,
+      "label": "Neutral",
+      "trainingSignals": 91,
+      "components": {
+        "absoluteMomentum": 86.0,
+        "relativeMomentum": 72.4,
+        "breadthPersistence": 62.9
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 70.0,
+        "relativeMomentum": 18.6,
+        "breadthPersistence": 88.3
+      },
+      "soxFwd1dPct": 2.4282249438387415,
+      "soxlFwd1dPct": 7.140432273395958,
+      "soxFwd3dPct": 3.407195724233314,
+      "soxlFwd3dPct": 10.999207875976014,
+      "soxFwd5dPct": 8.030863683393141,
+      "soxlFwd5dPct": 27.611180264795742,
+      "soxFwd10dPct": 12.587760746725408,
+      "soxlFwd10dPct": 43.69129795179359
+    },
+    {
+      "date": "2026-04-17",
+      "score": 53.3,
+      "label": "Neutral",
+      "trainingSignals": 92,
+      "components": {
+        "absoluteMomentum": 88.6,
+        "relativeMomentum": 72.8,
+        "breadthPersistence": 60.7
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 70.0,
+        "relativeMomentum": 21.4,
+        "breadthPersistence": 71.7
+      },
+      "soxFwd1dPct": 0.4534436152012322,
+      "soxlFwd1dPct": 1.330798479087436,
+      "soxFwd3dPct": 3.6980739050632483,
+      "soxlFwd3dPct": 11.575834389522587,
+      "soxFwd5dPct": 10.022946671968569,
+      "soxlFwd5dPct": 35.53020701309673,
+      "soxFwd10dPct": 10.87767909896682,
+      "soxlFwd10dPct": 37.72708069286015
+    },
+    {
+      "date": "2026-04-20",
+      "score": 38.2,
+      "label": "Bearish",
+      "trainingSignals": 93,
+      "components": {
+        "absoluteMomentum": 84.7,
+        "relativeMomentum": 79.0,
+        "breadthPersistence": 53.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 70.0,
+        "relativeMomentum": 11.3,
+        "breadthPersistence": 13.7
+      },
+      "soxFwd1dPct": 0.5000516443668612,
+      "soxlFwd1dPct": 2.240983948301034,
+      "soxFwd3dPct": 4.993731851314687,
+      "soxlFwd3dPct": 17.54221388367729,
+      "soxFwd5dPct": 8.42594759235209,
+      "soxlFwd5dPct": 28.61163227016885,
+      "soxFwd10dPct": 9.745012395083187,
+      "soxlFwd10dPct": 32.94767563060246
+    },
+    {
+      "date": "2026-04-21",
+      "score": 42.4,
+      "label": "Bearish",
+      "trainingSignals": 94,
+      "components": {
+        "absoluteMomentum": 81.0,
+        "relativeMomentum": 82.6,
+        "breadthPersistence": 51.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 66.3,
+        "relativeMomentum": 23.8,
+        "breadthPersistence": 21.4
+      },
+      "soxFwd1dPct": 2.7163493391347826,
+      "soxlFwd1dPct": 7.697012947293302,
+      "soxFwd3dPct": 8.981343626741367,
+      "soxlFwd3dPct": 30.818635946579654,
+      "soxFwd5dPct": 4.025656536131406,
+      "soxlFwd5dPct": 11.69334284840453,
+      "soxFwd10dPct": 13.821227783392587,
+      "soxlFwd10dPct": 46.967071057192356
+    },
+    {
+      "date": "2026-04-22",
+      "score": 70.4,
+      "label": "Bullish",
+      "trainingSignals": 95,
+      "components": {
+        "absoluteMomentum": 88.7,
+        "relativeMomentum": 89.4,
+        "breadthPersistence": 62.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 62.6,
+        "breadthPersistence": 40.0
+      },
+      "soxFwd1dPct": 1.7085614543957517,
+      "soxlFwd1dPct": 6.749337372207487,
+      "soxFwd3dPct": 5.033385893595632,
+      "soxlFwd3dPct": 16.802347595607724,
+      "soxFwd5dPct": 3.6534684360064684,
+      "soxlFwd5dPct": 11.671715259371451,
+      "soxFwd10dPct": 15.778042936274161,
+      "soxlFwd10dPct": 56.99545626656568
+    },
+    {
+      "date": "2026-04-23",
+      "score": 70.7,
+      "label": "Bullish",
+      "trainingSignals": 96,
+      "components": {
+        "absoluteMomentum": 90.7,
+        "relativeMomentum": 95.6,
+        "breadthPersistence": 58.4
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 70.0,
+        "breadthPersistence": 28.5
+      },
+      "soxFwd1dPct": 4.31699559236931,
+      "soxlFwd1dPct": 13.789128314267973,
+      "soxFwd3dPct": -0.42659052232300043,
+      "soxlFwd3dPct": -2.846501729183293,
+      "soxFwd5dPct": 4.2181436933497185,
+      "soxlFwd5dPct": 12.600869025450034,
+      "soxFwd10dPct": 10.739823428206519,
+      "soxlFwd10dPct": 34.87629688747007
+    },
+    {
+      "date": "2026-04-24",
+      "score": 77.2,
+      "label": "Strong Bullish",
+      "trainingSignals": 97,
+      "components": {
+        "absoluteMomentum": 97.2,
+        "relativeMomentum": 97.1,
+        "breadthPersistence": 63.5
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 70.0,
+        "breadthPersistence": 60.9
+      },
+      "soxFwd1dPct": -1.0046527351544987,
+      "soxlFwd1dPct": -3.8419576059850358,
+      "soxFwd3dPct": -2.3052430831534743,
+      "soxlFwd3dPct": -8.065773067331673,
+      "soxFwd5dPct": 0.7768674197998315,
+      "soxlFwd5dPct": 1.6209476309227089,
+      "soxFwd10dPct": 12.001866924464588,
+      "soxlFwd10dPct": 37.88965087281797
+    },
+    {
+      "date": "2026-04-27",
+      "score": 70.2,
+      "label": "Bullish",
+      "trainingSignals": 98,
+      "components": {
+        "absoluteMomentum": 87.3,
+        "relativeMomentum": 87.7,
+        "breadthPersistence": 72.6
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 54.9,
+        "breadthPersistence": 52.6
+      },
+      "soxFwd1dPct": -3.578579792298753,
+      "soxlFwd1dPct": -11.208363724775106,
+      "soxFwd3dPct": 0.9191256886295518,
+      "soxlFwd3dPct": 2.909474025447767,
+      "soxFwd5dPct": 1.216558242765231,
+      "soxlFwd5dPct": 3.3714239403517254,
+      "soxFwd10dPct": 16.07414965798901,
+      "soxlFwd10dPct": 54.323689115811646
+    },
+    {
+      "date": "2026-04-28",
+      "score": 43.0,
+      "label": "Bearish",
+      "trainingSignals": 99,
+      "components": {
+        "absoluteMomentum": 67.2,
+        "relativeMomentum": 60.9,
+        "breadthPersistence": 53.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 33.7,
+        "relativeMomentum": 73.3,
+        "breadthPersistence": 10.7
+      },
+      "soxFwd1dPct": 2.3488457425674847,
+      "soxlFwd1dPct": 7.676159182183273,
+      "soxFwd3dPct": 5.577785169652727,
+      "soxlFwd3dPct": 19.0215407082877,
+      "soxFwd5dPct": 9.416495481438147,
+      "soxlFwd5dPct": 31.580868930266526,
+      "soxFwd10dPct": 16.757181516075903,
+      "soxlFwd10dPct": 57.466228550565916
+    },
+    {
+      "date": "2026-04-29",
+      "score": 41.2,
+      "label": "Bearish",
+      "trainingSignals": 100,
+      "components": {
+        "absoluteMomentum": 69.2,
+        "relativeMomentum": 71.5,
+        "breadthPersistence": 48.1
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 39.5,
+        "relativeMomentum": 27.7,
+        "breadthPersistence": 68.7
+      },
+      "soxFwd1dPct": 2.2626413996194916,
+      "soxlFwd1dPct": 7.637534966516912,
+      "soxFwd3dPct": 2.5640336126079077,
+      "soxlFwd3dPct": 8.120708654742725,
+      "soxFwd5dPct": 11.69722025052462,
+      "soxlFwd5dPct": 40.586589810968874,
+      "soxFwd10dPct": 17.00548665062587,
+      "soxlFwd10dPct": 56.175298804780894
+    },
+    {
+      "date": "2026-04-30",
+      "score": 32.3,
+      "label": "Bearish",
+      "trainingSignals": 101,
+      "components": {
+        "absoluteMomentum": 77.7,
+        "relativeMomentum": 74.9,
+        "breadthPersistence": 55.7
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 43.3,
+        "relativeMomentum": 21.1,
+        "breadthPersistence": 27.1
+      },
+      "soxFwd1dPct": 0.8724552355932502,
+      "soxlFwd1dPct": 2.6933375334698306,
+      "soxFwd3dPct": 4.540084116666709,
+      "soxlFwd3dPct": 13.529689714915726,
+      "soxFwd5dPct": 6.257720108742415,
+      "soxlFwd5dPct": 19.7826429358954,
+      "soxFwd10dPct": 14.947857211646621,
+      "soxlFwd10dPct": 46.62939045518979
+    },
+    {
+      "date": "2026-05-01",
+      "score": 46.0,
+      "label": "Neutral",
+      "trainingSignals": 102,
+      "components": {
+        "absoluteMomentum": 75.0,
+        "relativeMomentum": 67.2,
+        "breadthPersistence": 48.5
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 49.1,
+        "relativeMomentum": 39.0,
+        "breadthPersistence": 51.2
+      },
+      "soxFwd1dPct": -0.5727347084975687,
+      "soxlFwd1dPct": -2.1855828220858964,
+      "soxFwd3dPct": 8.281127009098954,
+      "soxlFwd3dPct": 27.185582822085873,
+      "soxFwd5dPct": 11.138468372811694,
+      "soxlFwd5dPct": 35.690184049079754,
+      "soxFwd10dPct": 9.37319688145848,
+      "soxlFwd10dPct": 25.904907975460123
+    },
+    {
+      "date": "2026-05-04",
+      "score": 45.1,
+      "label": "Neutral",
+      "trainingSignals": 103,
+      "components": {
+        "absoluteMomentum": 69.6,
+        "relativeMomentum": 64.4,
+        "breadthPersistence": 48.5
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 40.1,
+        "relativeMomentum": 47.3,
+        "breadthPersistence": 52.6
+      },
+      "soxFwd1dPct": 4.232885128989183,
+      "soxlFwd1dPct": 13.022344178753432,
+      "soxFwd3dPct": 5.945473717072236,
+      "soxlFwd3dPct": 19.24735397883184,
+      "soxFwd5dPct": 14.679012676550652,
+      "soxlFwd5dPct": 49.290474323794584,
+      "soxFwd10dPct": 7.288878292549583,
+      "soxlFwd10dPct": 18.972951783614267
+    },
+    {
+      "date": "2026-05-05",
+      "score": 85.4,
+      "label": "Strong Bullish",
+      "trainingSignals": 104,
+      "components": {
+        "absoluteMomentum": 92.9,
+        "relativeMomentum": 93.2,
+        "breadthPersistence": 62.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 67.1
+      },
+      "soxFwd1dPct": 4.482249362792956,
+      "soxlFwd1dPct": 15.045782463928958,
+      "soxFwd3dPct": 7.239345277143472,
+      "soxlFwd3dPct": 22.738623751387355,
+      "soxFwd5dPct": 6.708939088515264,
+      "soxlFwd5dPct": 19.672586015538297,
+      "soxFwd10dPct": 2.9590214871747955,
+      "soxlFwd10dPct": 5.3620976692563715
+    },
+    {
+      "date": "2026-05-06",
+      "score": 89.9,
+      "label": "Strong Bullish",
+      "trainingSignals": 105,
+      "components": {
+        "absoluteMomentum": 97.4,
+        "relativeMomentum": 97.1,
+        "breadthPersistence": 65.3
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 89.7
+      },
+      "soxFwd1dPct": -2.7174078007511926,
+      "soxlFwd1dPct": -8.290624057883633,
+      "soxFwd3dPct": 5.302012748729834,
+      "soxlFwd3dPct": 14.814591498341878,
+      "soxFwd5dPct": 4.752371086939666,
+      "soxlFwd5dPct": 11.088332830871273,
+      "soxFwd10dPct": 2.9681758650022427,
+      "soxlFwd10dPct": 4.43171540548688
+    },
+    {
+      "date": "2026-05-07",
+      "score": 44.8,
+      "label": "Bearish",
+      "trainingSignals": 106,
+      "components": {
+        "absoluteMomentum": 83.1,
+        "relativeMomentum": 74.4,
+        "breadthPersistence": 58.4
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 65.5,
+        "relativeMomentum": 23.2,
+        "breadthPersistence": 35.8
+      },
+      "soxFwd1dPct": 5.505841499477726,
+      "soxlFwd1dPct": 16.331360946745566,
+      "soxFwd3dPct": 4.984009226787811,
+      "soxlFwd3dPct": 13.42537804076267,
+      "soxFwd5dPct": 8.17835832917444,
+      "soxlFwd5dPct": 22.4128862590401,
+      "soxFwd10dPct": 7.195524133499376,
+      "soxlFwd10dPct": 17.28468113083497
+    },
+    {
+      "date": "2026-05-08",
+      "score": 82.7,
+      "label": "Strong Bullish",
+      "trainingSignals": 107,
+      "components": {
+        "absoluteMomentum": 97.2,
+        "relativeMomentum": 94.0,
+        "breadthPersistence": 61.7
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 53.7
+      },
+      "soxFwd1dPct": 2.5947251541244887,
+      "soxlFwd1dPct": 7.618401718096535,
+      "soxFwd3dPct": 2.0592146377284015,
+      "soxlFwd3dPct": 4.125692325081953,
+      "soxFwd5dPct": -1.5883532652543386,
+      "soxlFwd5dPct": -7.211484118910361,
+      "soxFwd10dPct": 3.62654165884142,
+      "soxlFwd10dPct": 7.697524584604953
+    },
+    {
+      "date": "2026-05-11",
+      "score": 83.0,
+      "label": "Strong Bullish",
+      "trainingSignals": 108,
+      "components": {
+        "absoluteMomentum": 92.0,
+        "relativeMomentum": 93.0,
+        "breadthPersistence": 61.7
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 55.2
+      },
+      "soxFwd1dPct": -3.011193324270389,
+      "soxlFwd1dPct": -9.400273080558751,
+      "soxFwd3dPct": -0.06011429968389992,
+      "soxlFwd3dPct": -2.2214053145677926,
+      "soxFwd5dPct": -6.444190799623262,
+      "soxlFwd5dPct": -20.307740783531138,
+      "soxFwd10dPct": 6.587717282488925,
+      "soxlFwd10dPct": 18.57472954521584
+    },
+    {
+      "date": "2026-05-12",
+      "score": 41.5,
+      "label": "Bearish",
+      "trainingSignals": 109,
+      "components": {
+        "absoluteMomentum": 82.3,
+        "relativeMomentum": 80.1,
+        "breadthPersistence": 50.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 60.9,
+        "relativeMomentum": 13.2,
+        "breadthPersistence": 47.4
+      },
+      "soxFwd1dPct": 2.5665089610791725,
+      "soxlFwd1dPct": 6.793415256202184,
+      "soxFwd3dPct": -1.0991894997154028,
+      "soxlFwd3dPct": -4.8342221191745915,
+      "soxFwd5dPct": -3.5141550777015085,
+      "soxlFwd5dPct": -11.95803385114771,
+      "soxFwd10dPct": 8.405810264129254,
+      "soxlFwd10dPct": 26.350568050081137
+    },
+    {
+      "date": "2026-05-13",
+      "score": 37.1,
+      "label": "Bearish",
+      "trainingSignals": 110,
+      "components": {
+        "absoluteMomentum": 81.1,
+        "relativeMomentum": 80.3,
+        "breadthPersistence": 43.6
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 40.3,
+        "relativeMomentum": 13.9,
+        "breadthPersistence": 70.5
+      },
+      "soxFwd1dPct": 0.4642759769796223,
+      "soxlFwd1dPct": 1.0584020842379527,
+      "soxFwd3dPct": -5.953298136235807,
+      "soxlFwd3dPct": -17.634607034303084,
+      "soxFwd5dPct": -1.7032504404665194,
+      "soxlFwd5dPct": -5.992184107685638,
+      "soxFwd10dPct": 6.749559454362042,
+      "soxlFwd10dPct": 21.9224924012158
+    },
+    {
+      "date": "2026-05-14",
+      "score": 37.8,
+      "label": "Bearish",
+      "trainingSignals": 111,
+      "components": {
+        "absoluteMomentum": 80.4,
+        "relativeMomentum": 74.8,
+        "breadthPersistence": 58.4
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 35.0,
+        "relativeMomentum": 35.8,
+        "breadthPersistence": 47.6
+      },
+      "soxFwd1dPct": -4.019586149529363,
+      "soxlFwd1dPct": -11.82125785487942,
+      "soxFwd3dPct": -6.363241317138746,
+      "soxlFwd3dPct": -18.422042000107417,
+      "soxFwd5dPct": -0.9085312541760149,
+      "soxlFwd5dPct": -4.1892690262634975,
+      "soxFwd10dPct": 6.258215211341112,
+      "soxlFwd10dPct": 20.489822224609266
+    },
+    {
+      "date": "2026-05-15",
+      "score": 45.9,
+      "label": "Neutral",
+      "trainingSignals": 112,
+      "components": {
+        "absoluteMomentum": 48.9,
+        "relativeMomentum": 45.8,
+        "breadthPersistence": 41.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 33.0,
+        "relativeMomentum": 54.6,
+        "breadthPersistence": 59.6
+      },
+      "soxFwd1dPct": -2.4675142632733738,
+      "soxlFwd1dPct": -7.570958703861619,
+      "soxFwd3dPct": 1.9400588685148712,
+      "soxlFwd3dPct": 5.493970032890716,
+      "soxFwd5dPct": 5.299062760479711,
+      "soxlFwd5dPct": 16.067730539651603,
+      "soxFwd10dPct": 11.884114779936382,
+      "soxlFwd10dPct": 38.28115483006456
+    },
+    {
+      "date": "2026-05-18",
+      "score": 38.1,
+      "label": "Bearish",
+      "trainingSignals": 113,
+      "components": {
+        "absoluteMomentum": 32.0,
+        "relativeMomentum": 24.4,
+        "breadthPersistence": 29.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 56.8,
+        "relativeMomentum": 30.0,
+        "breadthPersistence": 10.0
+      },
+      "soxFwd1dPct": 0.026359026731093138,
+      "soxlFwd1dPct": 0.09225700164743333,
+      "soxFwd3dPct": 5.853288480713781,
+      "soxlFwd3dPct": 17.555189456342667,
+      "soxFwd5dPct": 13.929555196514421,
+      "soxlFwd5dPct": 48.79077429983525,
+      "soxFwd10dPct": 21.44436954240623,
+      "soxlFwd10dPct": 75.49917627677101
+    },
+    {
+      "date": "2026-05-19",
+      "score": 39.3,
+      "label": "Bearish",
+      "trainingSignals": 114,
+      "components": {
+        "absoluteMomentum": 33.6,
+        "relativeMomentum": 30.3,
+        "breadthPersistence": 29.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 54.6,
+        "relativeMomentum": 36.4,
+        "breadthPersistence": 10.0
+      },
+      "soxFwd1dPct": 4.4915391751193745,
+      "soxlFwd1dPct": 14.029890052011318,
+      "soxFwd3dPct": 7.934616319300125,
+      "soxlFwd3dPct": 25.459213904799547,
+      "soxFwd5dPct": 12.354107850151586,
+      "soxlFwd5dPct": 43.51175192573573,
+      "soxFwd10dPct": 23.0990492504511,
+      "soxlFwd10dPct": 84.6994535519126
+    },
+    {
+      "date": "2026-05-20",
+      "score": 44.4,
+      "label": "Bearish",
+      "trainingSignals": 115,
+      "components": {
+        "absoluteMomentum": 58.1,
+        "relativeMomentum": 54.7,
+        "breadthPersistence": 35.6
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 26.1,
+        "relativeMomentum": 82.3,
+        "breadthPersistence": 19.6
+      },
+      "soxFwd1dPct": 1.2765193930992513,
+      "soxlFwd1dPct": 2.9965357967667527,
+      "soxFwd3dPct": 9.00359329327054,
+      "soxlFwd3dPct": 30.363741339491913,
+      "soxFwd5dPct": 8.599277120256254,
+      "soxlFwd5dPct": 29.693995381062365,
+      "soxFwd10dPct": 15.272708340013308,
+      "soxlFwd10dPct": 51.67436489607391
+    },
+    {
+      "date": "2026-05-21",
+      "score": 40.3,
+      "label": "Bearish",
+      "trainingSignals": 116,
+      "components": {
+        "absoluteMomentum": 69.6,
+        "relativeMomentum": 74.7,
+        "breadthPersistence": 31.6
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 45.1,
+        "relativeMomentum": 40.1,
+        "breadthPersistence": 30.0
+      },
+      "soxFwd1dPct": 1.9931155500553466,
+      "soxlFwd1dPct": 6.822131285385957,
+      "soxFwd3dPct": 6.169326350167514,
+      "soxlFwd3dPct": 22.192948035203774,
+      "soxFwd5dPct": 7.232455584950803,
+      "soxlFwd5dPct": 25.75817030102585,
+      "soxFwd10dPct": 2.1453776643049594,
+      "soxlFwd10dPct": 2.3263635854027687
+    },
+    {
+      "date": "2026-05-22",
+      "score": 49.0,
+      "label": "Neutral",
+      "trainingSignals": 117,
+      "components": {
+        "absoluteMomentum": 84.2,
+        "relativeMomentum": 89.3,
+        "breadthPersistence": 35.6
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 51.1,
+        "relativeMomentum": 53.0,
+        "breadthPersistence": 37.5
+      },
+      "soxFwd1dPct": 5.5264161512184495,
+      "soxlFwd1dPct": 18.487615449202345,
+      "soxFwd3dPct": 5.134997525087659,
+      "soxlFwd3dPct": 17.878883291351812,
+      "soxFwd5dPct": 6.253666316513651,
+      "soxlFwd5dPct": 19.13832913518052,
+      "soxFwd10dPct": 5.770514751167544,
+      "soxlFwd10dPct": 10.957178841309823
+    },
+    {
+      "date": "2026-05-26",
+      "score": 72.6,
+      "label": "Bullish",
+      "trainingSignals": 118,
+      "components": {
+        "absoluteMomentum": 96.4,
+        "relativeMomentum": 97.2,
+        "breadthPersistence": 53.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 70.0,
+        "breadthPersistence": 38.2
+      },
+      "soxFwd1dPct": -1.3568313282490752,
+      "soxlFwd1dPct": -3.458966296115862,
+      "soxFwd3dPct": -0.36906546374021465,
+      "soxlFwd3dPct": -0.6421896452455722,
+      "soxFwd5dPct": 6.596018331617004,
+      "soxlFwd5dPct": 17.95030780814031,
+      "soxFwd10dPct": -1.7014721159336998,
+      "soxlFwd10dPct": -10.67806368749723
+    },
+    {
+      "date": "2026-05-27",
+      "score": 64.0,
+      "label": "Bullish",
+      "trainingSignals": 119,
+      "components": {
+        "absoluteMomentum": 88.2,
+        "relativeMomentum": 88.2,
+        "breadthPersistence": 61.7
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 77.9,
+        "relativeMomentum": 47.2,
+        "breadthPersistence": 62.1
+      },
+      "soxFwd1dPct": 0.9994724423918244,
+      "soxlFwd1dPct": 3.0507385998715497,
+      "soxFwd3dPct": 2.074137971773049,
+      "soxlFwd3dPct": 4.151757041930448,
+      "soxFwd5dPct": 9.56346110160049,
+      "soxlFwd5dPct": 28.699880723002135,
+      "soxFwd10dPct": -3.902689403383053,
+      "soxlFwd10dPct": -17.125424350857866
+    },
+    {
+      "date": "2026-05-28",
+      "score": 53.4,
+      "label": "Neutral",
+      "trainingSignals": 120,
+      "components": {
+        "absoluteMomentum": 88.5,
+        "relativeMomentum": 86.5,
+        "breadthPersistence": 55.7
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 79.8,
+        "relativeMomentum": 28.5,
+        "breadthPersistence": 37.7
+      },
+      "soxFwd1dPct": 0.0018614819422113627,
+      "soxlFwd1dPct": -0.1291011886212834,
+      "soxFwd3dPct": 6.992876352528832,
+      "soxlFwd3dPct": 18.559408805591417,
+      "soxFwd5dPct": 6.145005194065245,
+      "soxlFwd5dPct": 16.94786983038774,
+      "soxFwd10dPct": 2.6681081850621124,
+      "soxlFwd10dPct": -0.28491296799180166
+    },
+    {
+      "date": "2026-05-29",
+      "score": 33.1,
+      "label": "Bearish",
+      "trainingSignals": 121,
+      "components": {
+        "absoluteMomentum": 75.6,
+        "relativeMomentum": 69.1,
+        "breadthPersistence": 50.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 16.7,
+        "relativeMomentum": 40.1,
+        "breadthPersistence": 57.5
+      },
+      "soxFwd1dPct": 1.062149580747862,
+      "soxlFwd1dPct": 1.1990728358741265,
+      "soxFwd3dPct": 8.477221698373594,
+      "soxlFwd3dPct": 25.051261478113585,
+      "soxFwd5dPct": -4.743972235733985,
+      "soxlFwd5dPct": -18.63243291432647,
+      "soxFwd10dPct": 4.225358726611317,
+      "soxlFwd10dPct": 4.609075510386029
+    },
+    {
+      "date": "2026-06-01",
+      "score": 32.8,
+      "label": "Bearish",
+      "trainingSignals": 122,
+      "components": {
+        "absoluteMomentum": 82.1,
+        "relativeMomentum": 76.3,
+        "breadthPersistence": 66.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 40.1,
+        "relativeMomentum": 20.3,
+        "breadthPersistence": 38.6
+      },
+      "soxFwd1dPct": 5.866424947793902,
+      "soxlFwd1dPct": 17.306082896533503,
+      "soxFwd3dPct": 5.027480417812913,
+      "soxlFwd3dPct": 15.711579967405175,
+      "soxFwd5dPct": -0.454715194397981,
+      "soxlFwd5dPct": -6.866933885389592,
+      "soxFwd10dPct": 8.745983508405942,
+      "soxlFwd10dPct": 20.028190107034316
+    },
+    {
+      "date": "2026-06-02",
+      "score": 72.6,
+      "label": "Bullish",
+      "trainingSignals": 123,
+      "components": {
+        "absoluteMomentum": 94.7,
+        "relativeMomentum": 98.5,
+        "breadthPersistence": 66.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 70.0,
+        "breadthPersistence": 38.1
+      },
+      "soxFwd1dPct": 1.3892183109842637,
+      "soxlFwd1dPct": 5.339441273655754,
+      "soxFwd3dPct": -10.968090413647202,
+      "soxlFwd3dPct": -31.458395914689095,
+      "soxFwd5dPct": -7.784052891860805,
+      "soxlFwd5dPct": -24.271553018924596,
+      "soxFwd10dPct": -3.1475781045079754,
+      "soxlFwd10dPct": -15.068338840492634
+    },
+    {
+      "date": "2026-06-03",
+      "score": 60.7,
+      "label": "Bullish",
+      "trainingSignals": 124,
+      "components": {
+        "absoluteMomentum": 94.1,
+        "relativeMomentum": 95.9,
+        "breadthPersistence": 63.5
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 30.0,
+        "breadthPersistence": 48.5
+      },
+      "soxFwd1dPct": -2.1517810846254593,
+      "soxlFwd1dPct": -6.359164468525003,
+      "soxFwd3dPct": -7.2592355743128945,
+      "soxlFwd3dPct": -24.631068653311473,
+      "soxFwd5dPct": -12.290731206908578,
+      "soxlFwd5dPct": -35.606330648035936,
+      "soxFwd10dPct": -3.1607858247967635,
+      "soxlFwd10dPct": -16.639338418763817
+    },
+    {
+      "date": "2026-06-04",
+      "score": 44.5,
+      "label": "Bearish",
+      "trainingSignals": 125,
+      "components": {
+        "absoluteMomentum": 82.4,
+        "relativeMomentum": 89.2,
+        "breadthPersistence": 59.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 36.4,
+        "relativeMomentum": 50.1,
+        "breadthPersistence": 52.9
+      },
+      "soxFwd1dPct": -10.256916221482493,
+      "soxlFwd1dPct": -30.513894175866007,
+      "soxFwd3dPct": -7.047445062218271,
+      "soxlFwd3dPct": -23.2280167491435,
+      "soxFwd5dPct": -3.2756105693775295,
+      "soxlFwd5dPct": -14.735439665017125,
+      "soxFwd10dPct": 5.318808892673377,
+      "soxlFwd10dPct": 6.315188427864493
+    },
+    {
+      "date": "2026-06-05",
+      "score": 62.9,
+      "label": "Bullish",
+      "trainingSignals": 126,
+      "components": {
+        "absoluteMomentum": 20.8,
+        "relativeMomentum": 38.5,
+        "breadthPersistence": 48.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 70.0,
+        "relativeMomentum": 64.1,
+        "breadthPersistence": 45.0
+      },
+      "soxFwd1dPct": 5.612848858010722,
+      "soxlFwd1dPct": 15.832146378875866,
+      "soxFwd3dPct": -0.11700026568149946,
+      "soxlFwd3dPct": -1.0353895036704253,
+      "soxFwd5dPct": 9.416024552842028,
+      "soxlFwd5dPct": 28.56360249808263,
+      "soxFwd10dPct": 19.752965373661667,
+      "soxlFwd10dPct": 64.76936561849458
+    },
+    {
+      "date": "2026-06-08",
+      "score": 30.4,
+      "label": "Bearish",
+      "trainingSignals": 127,
+      "components": {
+        "absoluteMomentum": 52.1,
+        "relativeMomentum": 72.3,
+        "breadthPersistence": 53.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 30.3,
+        "relativeMomentum": 30.6,
+        "breadthPersistence": 30.5
+      },
+      "soxFwd1dPct": -1.928326765265831,
+      "soxlFwd1dPct": -4.6159667045024495,
+      "soxFwd3dPct": 2.0512316247641937,
+      "soxlFwd3dPct": 5.93548997351494,
+      "soxFwd5dPct": 9.242726785875988,
+      "soxlFwd5dPct": 28.878168747635268,
+      "soxFwd10dPct": 4.46137212007176,
+      "soxlFwd10dPct": 9.44948921679909
+    },
+    {
+      "date": "2026-06-09",
+      "score": 63.1,
+      "label": "Bullish",
+      "trainingSignals": 128,
+      "components": {
+        "absoluteMomentum": 14.0,
+        "relativeMomentum": 34.4,
+        "breadthPersistence": 44.4
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 70.0,
+        "relativeMomentum": 58.6,
+        "breadthPersistence": 55.6
+      },
+      "soxFwd1dPct": -3.5657662212022156,
+      "soxlFwd1dPct": -10.427409758032525,
+      "soxFwd3dPct": 5.638101768484471,
+      "soxlFwd3dPct": 16.362554541848475,
+      "soxFwd5dPct": 5.027844893156885,
+      "soxlFwd5dPct": 12.152915509718355,
+      "soxFwd10dPct": 6.323251209371383,
+      "soxlFwd10dPct": 13.828837762792535
+    },
+    {
+      "date": "2026-06-10",
+      "score": 75.3,
+      "label": "Strong Bullish",
+      "trainingSignals": 129,
+      "components": {
+        "absoluteMomentum": 18.9,
+        "relativeMomentum": 38.3,
+        "breadthPersistence": 36.4
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 70.0,
+        "relativeMomentum": 76.9,
+        "breadthPersistence": 84.3
+      },
+      "soxFwd1dPct": 7.9054626916347015,
+      "soxlFwd1dPct": 23.991143094381396,
+      "soxFwd3dPct": 15.509502353377624,
+      "soxlFwd3dPct": 50.84417381677275,
+      "soxFwd5dPct": 10.409327894010389,
+      "soxlFwd5dPct": 29.454746747854976,
+      "soxFwd10dPct": 14.208939792737985,
+      "soxlFwd10dPct": 39.833933019651255
+    },
+    {
+      "date": "2026-06-11",
+      "score": 41.2,
+      "label": "Bearish",
+      "trainingSignals": 130,
+      "components": {
+        "absoluteMomentum": 55.9,
+        "relativeMomentum": 75.3,
+        "breadthPersistence": 44.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 33.4,
+        "relativeMomentum": 25.5,
+        "breadthPersistence": 86.2
+      },
+      "soxFwd1dPct": 1.5186708953189632,
+      "soxlFwd1dPct": 4.772534488146785,
+      "soxFwd3dPct": 0.9322114091028899,
+      "soxlFwd3dPct": 0.982186704763599,
+      "soxFwd5dPct": 8.885472953246643,
+      "soxlFwd5dPct": 24.688602169739717,
+      "soxFwd10dPct": 0.2439430753657046,
+      "soxlFwd10dPct": -3.7457029331666614
+    },
+    {
+      "date": "2026-06-12",
+      "score": 49.8,
+      "label": "Neutral",
+      "trainingSignals": 131,
+      "components": {
+        "absoluteMomentum": 86.5,
+        "relativeMomentum": 92.3,
+        "breadthPersistence": 55.7
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 59.2,
+        "relativeMomentum": 46.8,
+        "breadthPersistence": 33.9
+      },
+      "soxFwd1dPct": 5.445574722939428,
+      "soxlFwd1dPct": 16.115561615817285,
+      "soxFwd3dPct": 0.7897601267517151,
+      "soxlFwd3dPct": -0.34941196522924045,
+      "soxFwd5dPct": 9.447373785571479,
+      "soxlFwd5dPct": 28.161752173171962,
+      "soxFwd10dPct": 2.52919326805503,
+      "soxlFwd10dPct": 0.7840463610022219
+    },
+    {
+      "date": "2026-06-15",
+      "score": 56.2,
+      "label": "Neutral",
+      "trainingSignals": 132,
+      "components": {
+        "absoluteMomentum": 98.1,
+        "relativeMomentum": 97.0,
+        "breadthPersistence": 53.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 70.0,
+        "relativeMomentum": 50.0,
+        "breadthPersistence": 36.0
+      },
+      "soxFwd1dPct": -5.7121989906082415,
+      "soxlFwd1dPct": -16.994495412844035,
+      "soxFwd3dPct": 1.7174959638633691,
+      "soxlFwd3dPct": 2.4917431192660544,
+      "soxFwd5dPct": -4.376817392315768,
+      "soxlFwd5dPct": -15.07522935779817,
+      "soxFwd10dPct": 1.0449771964621046,
+      "soxlFwd10dPct": -2.1247706422018453
+    },
+    {
+      "date": "2026-06-16",
+      "score": 61.0,
+      "label": "Bullish",
+      "trainingSignals": 133,
+      "components": {
+        "absoluteMomentum": 50.7,
+        "relativeMomentum": 46.0,
+        "breadthPersistence": 43.7
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 34.0,
+        "relativeMomentum": 81.6,
+        "breadthPersistence": 85.7
+      },
+      "soxFwd1dPct": 1.375391909852075,
+      "soxlFwd1dPct": 3.3909545072726477,
+      "soxFwd3dPct": 10.083310021406255,
+      "soxlFwd3dPct": 32.97227994164198,
+      "soxFwd5dPct": 1.2333932182768237,
+      "soxlFwd5dPct": 1.4943189354082786,
+      "soxFwd10dPct": 0.4442117174232818,
+      "soxlFwd10dPct": -3.819797515363188
+    },
+    {
+      "date": "2026-06-17",
+      "score": 42.1,
+      "label": "Bearish",
+      "trainingSignals": 134,
+      "components": {
+        "absoluteMomentum": 63.3,
+        "relativeMomentum": 73.5,
+        "breadthPersistence": 62.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 35.7,
+        "relativeMomentum": 47.0,
+        "breadthPersistence": 47.9
+      },
+      "soxFwd1dPct": 6.4161657672308525,
+      "soxlFwd1dPct": 19.42615239887111,
+      "soxFwd3dPct": 0.04033578632953727,
+      "soxlFwd3dPct": -1.0433592747797982,
+      "soxFwd5dPct": 3.4413866755670597,
+      "soxlFwd5dPct": 8.017617377918418,
+      "soxFwd10dPct": -6.313320252000776,
+      "soxlFwd10dPct": -22.402291969554444
+    },
+    {
+      "date": "2026-06-18",
+      "score": 37.4,
+      "label": "Bearish",
+      "trainingSignals": 135,
+      "components": {
+        "absoluteMomentum": 86.2,
+        "relativeMomentum": 93.4,
+        "breadthPersistence": 68.6
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 45.7,
+        "relativeMomentum": 30.0,
+        "breadthPersistence": 31.5
+      },
+      "soxFwd1dPct": 2.0425555249709237,
+      "soxlFwd1dPct": 7.690930573955379,
+      "soxFwd3dPct": -6.160941686360211,
+      "soxlFwd3dPct": -17.802284363922816,
+      "soxFwd5dPct": -7.936347837320268,
+      "soxlFwd5dPct": -22.804253643166604,
+      "soxFwd10dPct": -10.052038430681009,
+      "soxlFwd10dPct": -30.3054173081743
+    },
+    {
+      "date": "2026-06-22",
+      "score": 46.6,
+      "label": "Neutral",
+      "trainingSignals": 136,
+      "components": {
+        "absoluteMomentum": 94.8,
+        "relativeMomentum": 97.1,
+        "breadthPersistence": 70.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 70.0,
+        "relativeMomentum": 30.0,
+        "breadthPersistence": 23.2
+      },
+      "soxFwd1dPct": -7.873153113217002,
+      "soxlFwd1dPct": -23.05748578648137,
+      "soxFwd3dPct": -4.7411354918831305,
+      "soxlFwd3dPct": -16.012235262825403,
+      "soxFwd5dPct": -6.321010982931852,
+      "soxlFwd5dPct": -21.361837949263553,
+      "soxFwd10dPct": -15.949781883698645,
+      "soxlFwd10dPct": -45.04771087541975
+    },
+    {
+      "date": "2026-06-23",
+      "score": 65.8,
+      "label": "Bullish",
+      "trainingSignals": 137,
+      "components": {
+        "absoluteMomentum": 38.0,
+        "relativeMomentum": 58.1,
+        "breadthPersistence": 50.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 68.9,
+        "relativeMomentum": 70.0,
+        "breadthPersistence": 51.2
+      },
+      "soxFwd1dPct": -0.18033519725835223,
+      "soxlFwd1dPct": -0.7994123239132289,
+      "soxFwd3dPct": -2.068892585432802,
+      "soxlFwd3dPct": -6.836055656382333,
+      "soxFwd5dPct": 5.6699583102374,
+      "soxlFwd5dPct": 15.249330222106995,
+      "soxFwd10dPct": -6.731249015028329,
+      "soxlFwd10dPct": -24.457695964048053
+    },
+    {
+      "date": "2026-06-24",
+      "score": 47.8,
+      "label": "Neutral",
+      "trainingSignals": 138,
+      "components": {
+        "absoluteMomentum": 52.6,
+        "relativeMomentum": 71.2,
+        "breadthPersistence": 66.7
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 49.3,
+        "relativeMomentum": 52.5,
+        "breadthPersistence": 36.4
+      },
+      "soxFwd1dPct": 3.586482489267473,
+      "soxlFwd1dPct": 10.036154549810528,
+      "soxFwd3dPct": 1.8684928225441544,
+      "soxlFwd3dPct": 3.0273990503985715,
+      "soxFwd5dPct": -0.7795663819664123,
+      "soxlFwd5dPct": -5.235875767739683,
+      "soxFwd10dPct": -3.7017702213637094,
+      "soxlFwd10dPct": -16.16936010802805
+    },
+    {
+      "date": "2026-06-25",
+      "score": 33.0,
+      "label": "Bearish",
+      "trainingSignals": 139,
+      "components": {
+        "absoluteMomentum": 66.1,
+        "relativeMomentum": 77.5,
+        "breadthPersistence": 57.4
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 31.9,
+        "relativeMomentum": 30.9,
+        "breadthPersistence": 39.1
+      },
+      "soxFwd1dPct": -5.288770920986863,
+      "soxlFwd1dPct": -14.651043109932315,
+      "soxFwd3dPct": 2.1956341811157687,
+      "soxlFwd3dPct": 5.5817267724951325,
+      "soxFwd5dPct": -9.430178037116265,
+      "soxlFwd5dPct": -28.16198883654646,
+      "soxFwd10dPct": -6.984551215669821,
+      "soxlFwd10dPct": -23.890582320573227
+    },
+    {
+      "date": "2026-06-26",
+      "score": 86.1,
+      "label": "Strong Bullish",
+      "trainingSignals": 140,
+      "components": {
+        "absoluteMomentum": 21.9,
+        "relativeMomentum": 32.8,
+        "breadthPersistence": 36.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 87.2,
+        "breadthPersistence": 75.3
+      },
+      "soxFwd1dPct": 3.8329809185257524,
+      "soxlFwd1dPct": 9.703153988868273,
+      "soxFwd3dPct": 1.1338550825123805,
+      "soxlFwd3dPct": 0.9044526901669903,
+      "soxFwd5dPct": -2.2980737171085175,
+      "soxlFwd5dPct": -9.71706864564007,
+      "soxFwd10dPct": -6.481475087748723,
+      "soxlFwd10dPct": -23.297773654916508
+    },
+    {
+      "date": "2026-06-29",
+      "score": 69.1,
+      "label": "Bullish",
+      "trainingSignals": 141,
+      "components": {
+        "absoluteMomentum": 47.3,
+        "relativeMomentum": 43.8,
+        "breadthPersistence": 38.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 57.0,
+        "relativeMomentum": 79.8,
+        "breadthPersistence": 77.4
+      },
+      "soxFwd1dPct": 3.919141014707961,
+      "soxlFwd1dPct": 12.764248266531354,
+      "soxFwd3dPct": -7.9027379627818135,
+      "soxlFwd3dPct": -23.274987316083205,
+      "soxFwd5dPct": -10.278474396230342,
+      "soxlFwd5dPct": -30.12007441231186,
+      "soxFwd10dPct": -7.642271095841801,
+      "soxlFwd10dPct": -25.308641975308642
+    },
+    {
+      "date": "2026-06-30",
+      "score": 39.2,
+      "label": "Bearish",
+      "trainingSignals": 142,
+      "components": {
+        "absoluteMomentum": 73.9,
+        "relativeMomentum": 70.0,
+        "breadthPersistence": 53.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 29.4,
+        "relativeMomentum": 54.4,
+        "breadthPersistence": 34.8
+      },
+      "soxFwd1dPct": -6.272789506956123,
+      "soxlFwd1dPct": -18.432004799220113,
+      "soxFwd3dPct": -9.453377379699324,
+      "soxlFwd3dPct": -27.018109557196944,
+      "soxFwd5dPct": -11.735792767947261,
+      "soxlFwd5dPct": -34.453151362903526,
+      "soxFwd10dPct": -12.971661894120812,
+      "soxlFwd10dPct": -37.92883656405833
+    },
+    {
+      "date": "2026-07-01",
+      "score": 75.2,
+      "label": "Strong Bullish",
+      "trainingSignals": 143,
+      "components": {
+        "absoluteMomentum": 43.7,
+        "relativeMomentum": 30.4,
+        "breadthPersistence": 41.4
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 61.6,
+        "relativeMomentum": 88.9,
+        "breadthPersistence": 82.2
+      },
+      "soxFwd1dPct": -5.444786575603522,
+      "soxlFwd1dPct": -16.584693173983002,
+      "soxFwd3dPct": -7.88392820192092,
+      "soxlFwd3dPct": -24.02666053780741,
+      "soxFwd5dPct": -2.9451633427110657,
+      "soxlFwd5dPct": -11.537577568375102,
+      "soxFwd10dPct": -11.126673154193655,
+      "soxlFwd10dPct": -34.507009882785574
+    },
+    {
+      "date": "2026-07-02",
+      "score": 86.7,
+      "label": "Strong Bullish",
+      "trainingSignals": 144,
+      "components": {
+        "absoluteMomentum": 3.1,
+        "relativeMomentum": 1.7,
+        "breadthPersistence": 35.6
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 73.4
+      },
+      "soxFwd1dPct": 2.169456901791622,
+      "soxlFwd1dPct": 7.262908469719509,
+      "soxFwd3dPct": -0.4059361266094408,
+      "soxlFwd3dPct": -3.66451755111038,
+      "soxFwd5dPct": 2.7002667869311603,
+      "soxlFwd5dPct": 5.945886372403142,
+      "soxFwd10dPct": -7.542501240052745,
+      "soxlFwd10dPct": -25.34854245880862
+    },
+    {
+      "date": "2026-07-06",
+      "score": 82.5,
+      "label": "Strong Bullish",
+      "trainingSignals": 145,
+      "components": {
+        "absoluteMomentum": 19.7,
+        "relativeMomentum": 10.3,
+        "breadthPersistence": 51.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 52.4
+      },
+      "soxFwd1dPct": -4.648211039125005,
+      "soxlFwd1dPct": -15.088620601078862,
+      "soxFwd3dPct": 0.46403544936000074,
+      "soxlFwd3dPct": -1.1302337528898088,
+      "soxFwd5dPct": -4.281800297905447,
+      "soxlFwd5dPct": -15.04238376573337,
+      "soxFwd10dPct": -8.963411473336091,
+      "soxlFwd10dPct": -29.7148728487028
+    },
+    {
+      "date": "2026-07-07",
+      "score": 81.6,
+      "label": "Strong Bullish",
+      "trainingSignals": 146,
+      "components": {
+        "absoluteMomentum": 2.0,
+        "relativeMomentum": 2.6,
+        "breadthPersistence": 41.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 70.0,
+        "breadthPersistence": 82.8
+      },
+      "soxFwd1dPct": 2.2312152649544226,
+      "soxlFwd1dPct": 5.77202323330106,
+      "soxFwd3dPct": 5.41966733087762,
+      "soxlFwd3dPct": 16.323814133591476,
+      "soxFwd5dPct": 2.9382060577420432,
+      "soxlFwd5dPct": 6.8852855759922615,
+      "soxFwd10dPct": 0.4523998558926712,
+      "soxlFwd10dPct": -4.077928363988392
+    },
+    {
+      "date": "2026-07-08",
+      "score": 82.3,
+      "label": "Strong Bullish",
+      "trainingSignals": 147,
+      "components": {
+        "absoluteMomentum": 22.7,
+        "relativeMomentum": 23.0,
+        "breadthPersistence": 44.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 70.0,
+        "breadthPersistence": 86.5
+      },
+      "soxFwd1dPct": 3.0619249865339926,
+      "soxlFwd1dPct": 10.084658505891774,
+      "soxFwd3dPct": -1.8066328570301105,
+      "soxlFwd3dPct": -5.4055600045761265,
+      "soxFwd5dPct": -1.4001928583852519,
+      "soxlFwd5dPct": -5.302596956869909,
+      "soxFwd10dPct": -1.30658362120728,
+      "soxlFwd10dPct": -7.9109941654272875
+    },
+    {
+      "date": "2026-07-09",
+      "score": 64.0,
+      "label": "Bullish",
+      "trainingSignals": 148,
+      "components": {
+        "absoluteMomentum": 36.6,
+        "relativeMomentum": 30.9,
+        "breadthPersistence": 55.7
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 71.1,
+        "relativeMomentum": 71.5,
+        "breadthPersistence": 35.0
+      },
+      "soxFwd1dPct": 0.05524690202483029,
+      "soxlFwd1dPct": -0.09872694206287669,
+      "soxFwd3dPct": -2.2999419033250534,
+      "soxlFwd3dPct": -8.204728500909319,
+      "soxFwd5dPct": -8.429780620179073,
+      "soxlFwd5dPct": -25.965185762535725,
+      "soxFwd10dPct": -4.754364166345681,
+      "soxlFwd10dPct": -18.1605611847233
+    },
+    {
+      "date": "2026-07-10",
+      "score": 59.7,
+      "label": "Neutral",
+      "trainingSignals": 149,
+      "components": {
+        "absoluteMomentum": 54.9,
+        "relativeMomentum": 50.8,
+        "breadthPersistence": 63.5
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 45.2,
+        "relativeMomentum": 85.5,
+        "breadthPersistence": 47.1
+      },
+      "soxFwd1dPct": -4.77652312754564,
+      "soxlFwd1dPct": -13.986268594611461,
+      "soxFwd3dPct": -4.382376038622116,
+      "soxlFwd3dPct": -13.892645376053247,
+      "soxFwd5dPct": -9.973458051705208,
+      "soxlFwd5dPct": -29.538125455112862,
+      "soxFwd10dPct": -8.855274202817021,
+      "soxlFwd10dPct": -28.841152605846244
+    },
+    {
+      "date": "2026-07-13",
+      "score": 82.3,
+      "label": "Strong Bullish",
+      "trainingSignals": 150,
+      "components": {
+        "absoluteMomentum": 16.1,
+        "relativeMomentum": 15.5,
+        "breadthPersistence": 44.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 70.0,
+        "breadthPersistence": 86.6
+      },
+      "soxFwd1dPct": 2.544157021103044,
+      "soxlFwd1dPct": 6.827114954344804,
+      "soxFwd3dPct": -3.8896072584752694,
+      "soxlFwd3dPct": -13.841688335248236,
+      "soxFwd5dPct": -4.891035550189315,
+      "soxlFwd5dPct": -17.270363427465686,
+      "soxFwd10dPct": -6.421422684924116,
+      "soxlFwd10dPct": -22.507105279071173
+    },
+    {
+      "date": "2026-07-14",
+      "score": 52.6,
+      "label": "Neutral",
+      "trainingSignals": 151,
+      "components": {
+        "absoluteMomentum": 42.8,
+        "relativeMomentum": 41.9,
+        "breadthPersistence": 55.7
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 46.1,
+        "relativeMomentum": 70.7,
+        "breadthPersistence": 35.6
+      },
+      "soxFwd1dPct": -2.0773870556559326,
+      "soxlFwd1dPct": -6.288916562889158,
+      "soxFwd3dPct": -7.803249477507834,
+      "soxlFwd3dPct": -23.31597418770519,
+      "soxFwd5dPct": -2.4148528491500842,
+      "soxlFwd5dPct": -10.256990829842639,
+      "soxFwd10dPct": -12.843601653138236,
+      "soxlFwd10dPct": -37.99388656175704
+    },
+    {
+      "date": "2026-07-15",
+      "score": 75.5,
+      "label": "Strong Bullish",
+      "trainingSignals": 152,
+      "components": {
+        "absoluteMomentum": 20.4,
+        "relativeMomentum": 15.1,
+        "breadthPersistence": 46.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 50.0,
+        "breadthPersistence": 87.7
+      },
+      "soxFwd1dPct": -4.285785598251513,
+      "soxlFwd1dPct": -13.935366958622787,
+      "soxFwd3dPct": -5.283085884796712,
+      "soxlFwd3dPct": -17.36031410450015,
+      "soxFwd5dPct": 0.09493856011657531,
+      "soxlFwd5dPct": -2.754454847478105,
+      "soxFwd10dPct": -15.738536004167948,
+      "soxlFwd10dPct": -44.433705829054674
+    },
+    {
+      "date": "2026-07-16",
+      "score": 72.3,
+      "label": "Bullish",
+      "trainingSignals": 153,
+      "components": {
+        "absoluteMomentum": 6.0,
+        "relativeMomentum": 6.7,
+        "breadthPersistence": 34.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 50.0,
+        "breadthPersistence": 71.4
+      },
+      "soxFwd1dPct": -1.6314698885922296,
+      "soxlFwd1dPct": -4.919988770353722,
+      "soxFwd3dPct": 4.11763355578032,
+      "soxlFwd3dPct": 11.271757439640663,
+      "soxFwd5dPct": 4.013768317610178,
+      "soxlFwd5dPct": 10.541830432341381,
+      "soxFwd10dPct": -4.756819258366052,
+      "soxlFwd10dPct": -19.483436271757437
+    },
+    {
+      "date": "2026-07-17",
+      "score": 72.0,
+      "label": "Bullish",
+      "trainingSignals": 154,
+      "components": {
+        "absoluteMomentum": 5.7,
+        "relativeMomentum": 8.4,
+        "breadthPersistence": 32.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 50.0,
+        "breadthPersistence": 70.0
+      },
+      "soxFwd1dPct": 0.5992908385966889,
+      "soxlFwd1dPct": 0.9891488890529265,
+      "soxFwd3dPct": 6.311316513471077,
+      "soxlFwd3dPct": 18.838119140769184,
+      "soxFwd5dPct": 1.2420602021239402,
+      "soxlFwd5dPct": 0.9891488890529265,
+      "soxFwd10dPct": -3.1079050321501156,
+      "soxlFwd10dPct": -15.317044364065847
+    },
+    {
+      "date": "2026-07-20",
+      "score": 65.0,
+      "label": "Bullish",
+      "trainingSignals": 155,
+      "components": {
+        "absoluteMomentum": 14.8,
+        "relativeMomentum": 20.7,
+        "breadthPersistence": 55.5
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 50.0,
+        "breadthPersistence": 35.0
+      },
+      "soxFwd1dPct": 5.213916587692591,
+      "soxlFwd1dPct": 15.883341860975065,
+      "soxFwd3dPct": 5.1089577240305495,
+      "soxlFwd3dPct": 15.12316351143923,
+      "soxFwd5dPct": -1.6090882111773896,
+      "soxlFwd5dPct": -6.329946641327389,
+      "soxFwd10dPct": -2.6694647356675483,
+      "soxlFwd10dPct": -14.691908486221772
+    },
+    {
+      "date": "2026-07-21",
+      "score": 54.3,
+      "label": "Neutral",
+      "trainingSignals": 156,
+      "components": {
+        "absoluteMomentum": 55.8,
+        "relativeMomentum": 63.0,
+        "breadthPersistence": 59.6
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 38.7,
+        "relativeMomentum": 79.9,
+        "breadthPersistence": 44.6
+      },
+      "soxFwd1dPct": 0.44108363292894026,
+      "soxlFwd1dPct": 1.5453513308944178,
+      "soxFwd3dPct": -4.348261601642123,
+      "soxlFwd3dPct": -13.706320171565533,
+      "soxFwd5dPct": -10.68681977582827,
+      "soxlFwd5dPct": -30.90702661788822,
+      "soxFwd10dPct": -1.4316816130215737,
+      "soxlFwd10dPct": -11.757285227702784
+    },
+    {
+      "date": "2026-07-22",
+      "score": 59.9,
+      "label": "Neutral",
+      "trainingSignals": 157,
+      "components": {
+        "absoluteMomentum": 57.9,
+        "relativeMomentum": 71.2,
+        "breadthPersistence": 61.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 41.7,
+        "relativeMomentum": 89.3,
+        "breadthPersistence": 49.4
+      },
+      "soxFwd1dPct": -0.53846613326759,
+      "soxlFwd1dPct": -2.1678365115845755,
+      "soxFwd3dPct": -6.895556601782282,
+      "soxlFwd3dPct": -20.398782533076588,
+      "soxFwd5dPct": -15.81845674921415,
+      "soxlFwd5dPct": -42.85980495682963,
+      "soxFwd10dPct": -3.237387507520073,
+      "soxlFwd10dPct": -17.963848686253815
+    },
+    {
+      "date": "2026-07-23",
+      "score": 31.6,
+      "label": "Bearish",
+      "trainingSignals": 158,
+      "components": {
+        "absoluteMomentum": 59.1,
+        "relativeMomentum": 81.3,
+        "breadthPersistence": 73.3
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 56.9,
+        "relativeMomentum": 10.3,
+        "breadthPersistence": 12.2
+      },
+      "soxFwd1dPct": -4.252746452534195,
+      "soxlFwd1dPct": -13.136507936507936,
+      "soxFwd3dPct": -10.597634133525702,
+      "soxlFwd3dPct": -30.45079365079365,
+      "soxFwd5dPct": -8.432140973101642,
+      "soxlFwd5dPct": -27.161904761904765,
+      "soxFwd10dPct": -2.391027149153402,
+      "soxlFwd10dPct": -15.980952380952374
+    },
+    {
+      "date": "2026-07-24",
+      "score": 61.2,
+      "label": "Bullish",
+      "trainingSignals": 159,
+      "components": {
+        "absoluteMomentum": 26.3,
+        "relativeMomentum": 44.7,
+        "breadthPersistence": 68.9
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 73.7,
+        "relativeMomentum": 64.9,
+        "breadthPersistence": 26.8
+      },
+      "soxFwd1dPct": -2.2337560974403536,
+      "soxlFwd1dPct": -6.329946641327389,
+      "soxFwd3dPct": -11.603431703585587,
+      "soxlFwd3dPct": -32.76076310211242,
+      "soxFwd5dPct": -4.296598889423642,
+      "soxlFwd5dPct": -16.146480520429797,
+      "soxFwd10dPct": 4.5512082161710765,
+      "soxlFwd10dPct": 2.5144360792339615
+    },
+    {
+      "date": "2026-07-27",
+      "score": 69.8,
+      "label": "Bullish",
+      "trainingSignals": 160,
+      "components": {
+        "absoluteMomentum": 18.6,
+        "relativeMomentum": 31.8,
+        "breadthPersistence": 50.5
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 88.9,
+        "relativeMomentum": 56.9,
+        "breadthPersistence": 49.3
+      },
+      "soxFwd1dPct": -4.4933183010194,
+      "soxlFwd1dPct": -14.522044479126029,
+      "soxFwd3dPct": -2.1799671498560103,
+      "soxlFwd3dPct": -10.479906359734692,
+      "soxFwd5dPct": -1.0777179570873874,
+      "soxlFwd5dPct": -8.927038626609452,
+      "soxFwd10dPct": 3.799097526811601,
+      "soxlFwd10dPct": 1.4436207569254789
+    },
+    {
+      "date": "2026-07-28",
+      "score": 65.5,
+      "label": "Bullish",
+      "trainingSignals": 161,
+      "components": {
+        "absoluteMomentum": 2.0,
+        "relativeMomentum": 1.8,
+        "breadthPersistence": 35.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 30.0,
+        "breadthPersistence": 72.7
+      },
+      "soxFwd1dPct": -5.32992549611544,
+      "soxlFwd1dPct": -16.02154464122696,
+      "soxFwd3dPct": 2.4954733879744895,
+      "soxlFwd3dPct": 4.728866167609991,
+      "soxFwd5dPct": 10.362567024908031,
+      "soxlFwd5dPct": 27.715902866532783,
+      "soxFwd10dPct": 9.630478103412642,
+      "soxlFwd10dPct": 21.41683403322987
+    },
+    {
+      "date": "2026-07-29",
+      "score": 65.0,
+      "label": "Bullish",
+      "trainingSignals": 162,
+      "components": {
+        "absoluteMomentum": 1.5,
+        "relativeMomentum": 2.1,
+        "breadthPersistence": 23.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 30.0,
+        "breadthPersistence": 70.0
+      },
+      "soxFwd1dPct": 8.188557253884854,
+      "soxlFwd1dPct": 24.70920752255681,
+      "soxFwd3dPct": 9.407640364218528,
+      "soxlFwd3dPct": 26.8724861397978,
+      "soxFwd5dPct": 14.945163459659705,
+      "soxlFwd5dPct": 43.569953255788676,
+      "soxFwd10dPct": 18.682834672182523,
+      "soxlFwd10dPct": 54.538536797478
+    },
+    {
+      "date": "2026-07-30",
+      "score": 64.2,
+      "label": "Bullish",
+      "trainingSignals": 163,
+      "components": {
+        "absoluteMomentum": 25.2,
+        "relativeMomentum": 27.4,
+        "breadthPersistence": 30.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 68.9,
+        "relativeMomentum": 43.4,
+        "breadthPersistence": 90.0
+      },
+      "soxFwd1dPct": 0.0715524952638269,
+      "soxlFwd1dPct": 0.0,
+      "soxFwd3dPct": 7.75259681703111,
+      "soxlFwd3dPct": 21.94909344490934,
+      "soxFwd5dPct": 6.59741735598911,
+      "soxlFwd5dPct": 15.350418410041854,
+      "soxFwd10dPct": 10.200939183942914,
+      "soxlFwd10dPct": 26.70850767085078
+    },
+    {
+      "date": "2026-07-31",
+      "score": 51.7,
+      "label": "Neutral",
+      "trainingSignals": 164,
+      "components": {
+        "absoluteMomentum": 35.0,
+        "relativeMomentum": 27.7,
+        "breadthPersistence": 35.6
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 42.3,
+        "relativeMomentum": 44.0,
+        "breadthPersistence": 86.4
+      },
+      "soxFwd1dPct": 1.0545063328621929,
+      "soxlFwd1dPct": 1.7346582984658188,
+      "soxFwd3dPct": 6.1692465909807925,
+      "soxlFwd3dPct": 15.123779637377964,
+      "soxFwd5dPct": 9.245028915296217,
+      "soxlFwd5dPct": 22.254184100418417,
+      "soxFwd10dPct": 9.777806027949886,
+      "soxlFwd10dPct": 26.351115760111576
+    },
+    {
+      "date": "2026-08-03",
+      "score": 42.6,
+      "label": "Bearish",
+      "trainingSignals": 165,
+      "components": {
+        "absoluteMomentum": 53.7,
+        "relativeMomentum": 35.5,
+        "breadthPersistence": 46.4
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 26.6,
+        "relativeMomentum": 48.6,
+        "breadthPersistence": 67.9
+      },
+      "soxFwd1dPct": 6.5519551576648905,
+      "soxlFwd1dPct": 19.8697626595836,
+      "soxFwd3dPct": 5.409647373277959,
+      "soxlFwd3dPct": 13.383600377002836,
+      "soxFwd5dPct": 4.929946401543228,
+      "soxlFwd5dPct": 11.387199040356455,
+      "soxFwd10dPct": 10.416595009236707,
+      "soxlFwd10dPct": 29.834632850655485
+    },
+    {
+      "date": "2026-08-04",
+      "score": 54.8,
+      "label": "Neutral",
+      "trainingSignals": 166,
+      "components": {
+        "absoluteMomentum": 82.5,
+        "relativeMomentum": 65.1,
+        "breadthPersistence": 56.6
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 46.4,
+        "relativeMomentum": 75.4,
+        "breadthPersistence": 37.9
+      },
+      "soxFwd1dPct": -1.398930072628557,
+      "soxlFwd1dPct": -5.596854896354553,
+      "soxFwd3dPct": 1.4575979501196157,
+      "soxlFwd3dPct": 0.25017869907075774,
+      "soxFwd5dPct": -0.6633489426991601,
+      "soxlFwd5dPct": -4.932094353109373,
+      "soxFwd10dPct": -1.5337514886029413,
+      "soxlFwd10dPct": -7.719799857040755
+    },
+    {
+      "date": "2026-08-05",
+      "score": 46.6,
+      "label": "Neutral",
+      "trainingSignals": 167,
+      "components": {
+        "absoluteMomentum": 68.3,
+        "relativeMomentum": 60.3,
+        "breadthPersistence": 72.1
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 42.1,
+        "relativeMomentum": 70.1,
+        "breadthPersistence": 15.8
+      },
+      "soxFwd1dPct": 0.3315010707874766,
+      "soxlFwd1dPct": 0.19686529870523994,
+      "soxFwd3dPct": -0.12509014034548516,
+      "soxlFwd3dPct": -1.5673506473839582,
+      "soxFwd5dPct": 3.2516994191187365,
+      "soxlFwd5dPct": 7.639887938214596,
+      "soxFwd10dPct": -2.2538107404067698,
+      "soxlFwd10dPct": -8.578783978193382
+    },
+    {
+      "date": "2026-08-06",
+      "score": 49.6,
+      "label": "Neutral",
+      "trainingSignals": 168,
+      "components": {
+        "absoluteMomentum": 69.0,
+        "relativeMomentum": 58.0,
+        "breadthPersistence": 68.9
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 40.8,
+        "relativeMomentum": 74.2,
+        "breadthPersistence": 26.3
+      },
+      "soxFwd1dPct": 2.557077995937518,
+      "soxlFwd1dPct": 5.985037406483773,
+      "soxFwd3dPct": 0.4131467349293816,
+      "soxlFwd3dPct": 0.5063099826192019,
+      "soxFwd5dPct": 3.38049637349056,
+      "soxlFwd5dPct": 9.846595632131795,
+      "soxFwd10dPct": -2.0639083518377954,
+      "soxlFwd10dPct": -7.647547797173749
+    },
+    {
+      "date": "2026-08-07",
+      "score": 39.8,
+      "label": "Bearish",
+      "trainingSignals": 169,
+      "components": {
+        "absoluteMomentum": 81.3,
+        "relativeMomentum": 69.6,
+        "breadthPersistence": 72.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 43.2,
+        "relativeMomentum": 49.5,
+        "breadthPersistence": 15.3
+      },
+      "soxFwd1dPct": -2.9370577460029024,
+      "soxlFwd1dPct": -7.3083778966131945,
+      "soxFwd3dPct": 0.34465865779409466,
+      "soxlFwd3dPct": 1.3618538324420726,
+      "soxFwd5dPct": 0.4876900285016861,
+      "soxlFwd5dPct": 3.3511586452762865,
+      "soxFwd10dPct": -4.988463466819237,
+      "soxlFwd10dPct": -14.010695187165778
+    },
+    {
+      "date": "2026-08-10",
+      "score": 51.7,
+      "label": "Neutral",
+      "trainingSignals": 170,
+      "components": {
+        "absoluteMomentum": 64.9,
+        "relativeMomentum": 46.1,
+        "breadthPersistence": 55.7
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 42.5,
+        "relativeMomentum": 72.2,
+        "breadthPersistence": 36.5
+      },
+      "soxFwd1dPct": 0.8721985663232568,
+      "soxlFwd1dPct": 2.3076923076922995,
+      "soxFwd3dPct": 3.8531138317994262,
+      "soxlFwd3dPct": 11.815384615384627,
+      "soxFwd5dPct": 5.228868207649051,
+      "soxlFwd5dPct": 16.561538461538472,
+      "soxFwd10dPct": -4.7582084377812635,
+      "soxlFwd10dPct": -14.492307692307694
+    },
+    {
+      "date": "2026-08-11",
+      "score": 29.3,
+      "label": "Strong Bearish",
+      "trainingSignals": 171,
+      "components": {
+        "absoluteMomentum": 61.9,
+        "relativeMomentum": 62.0,
+        "breadthPersistence": 54.1
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 10.2,
+        "relativeMomentum": 43.9,
+        "breadthPersistence": 46.6
+      },
+      "soxFwd1dPct": 2.4871276229341044,
+      "soxlFwd1dPct": 6.887218045112786,
+      "soxFwd3dPct": 2.63321287091709,
+      "soxlFwd3dPct": 8.984962406015029,
+      "soxFwd5dPct": -0.8762149082333193,
+      "soxlFwd5dPct": -2.932330827067675,
+      "soxFwd10dPct": -4.218994350802873,
+      "soxlFwd10dPct": -13.030075187969924
+    },
+    {
+      "date": "2026-08-12",
+      "score": 25.5,
+      "label": "Strong Bearish",
+      "trainingSignals": 172,
+      "components": {
+        "absoluteMomentum": 74.5,
+        "relativeMomentum": 77.6,
+        "breadthPersistence": 56.3
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 26.9,
+        "relativeMomentum": 14.3,
+        "breadthPersistence": 41.8
+      },
+      "soxFwd1dPct": 0.4566553475516377,
+      "soxlFwd1dPct": 2.250984805852574,
+      "soxFwd3dPct": 1.7874164396210146,
+      "soxlFwd3dPct": 6.591164884637024,
+      "soxFwd5dPct": -5.33212546669819,
+      "soxlFwd5dPct": -15.067529544175573,
+      "soxFwd10dPct": -6.356272327083612,
+      "soxlFwd10dPct": -17.97974113674733
+    },
+    {
+      "date": "2026-08-13",
+      "score": 40.3,
+      "label": "Bearish",
+      "trainingSignals": 173,
+      "components": {
+        "absoluteMomentum": 79.1,
+        "relativeMomentum": 69.9,
+        "breadthPersistence": 53.5
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 53.7,
+        "relativeMomentum": 28.0,
+        "breadthPersistence": 31.6
+      },
+      "soxFwd1dPct": -0.3126873501132166,
+      "soxlFwd1dPct": -0.28205833791966617,
+      "soxFwd3dPct": -3.7213833702053556,
+      "soxlFwd3dPct": -11.186020913593852,
+      "soxFwd5dPct": -5.266375105860332,
+      "soxlFwd5dPct": -15.925976884975245,
+      "soxFwd10dPct": -4.606851397100497,
+      "soxlFwd10dPct": -15.3481012658228
+    },
+    {
+      "date": "2026-08-14",
+      "score": 35.1,
+      "label": "Bearish",
+      "trainingSignals": 174,
+      "components": {
+        "absoluteMomentum": 68.3,
+        "relativeMomentum": 59.4,
+        "breadthPersistence": 53.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 26.7,
+        "relativeMomentum": 48.8,
+        "breadthPersistence": 30.3
+      },
+      "soxFwd1dPct": 1.6425350746497314,
+      "soxlFwd1dPct": 4.539496378061414,
+      "soxFwd3dPct": -5.466873074615453,
+      "soxlFwd3dPct": -16.70231114177302,
+      "soxFwd5dPct": -5.449576454357441,
+      "soxlFwd5dPct": -16.79889617109348,
+      "soxFwd10dPct": -7.629737372741774,
+      "soxlFwd10dPct": -23.18730596757502
+    },
+    {
+      "date": "2026-08-17",
+      "score": 32.2,
+      "label": "Bearish",
+      "trainingSignals": 175,
+      "components": {
+        "absoluteMomentum": 80.3,
+        "relativeMomentum": 84.6,
+        "breadthPersistence": 69.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 40.2,
+        "relativeMomentum": 25.0,
+        "breadthPersistence": 27.0
+      },
+      "soxFwd1dPct": -4.980122824361722,
+      "soxlFwd1dPct": -14.80234936976177,
+      "soxFwd3dPct": -6.504915453277427,
+      "soxlFwd3dPct": -19.34930376823072,
+      "soxFwd5dPct": -9.490814465211905,
+      "soxlFwd5dPct": -26.64158912426583,
+      "soxFwd10dPct": -8.604335041624422,
+      "soxlFwd10dPct": -25.565894542334846
+    },
+    {
+      "date": "2026-08-18",
+      "score": 61.3,
+      "label": "Bullish",
+      "trainingSignals": 176,
+      "components": {
+        "absoluteMomentum": 29.1,
+        "relativeMomentum": 32.6,
+        "breadthPersistence": 50.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 54.6,
+        "relativeMomentum": 78.9,
+        "breadthPersistence": 45.6
+      },
+      "soxFwd1dPct": -2.119975240006311,
+      "soxlFwd1dPct": -6.475600309837337,
+      "soxFwd3dPct": -2.1020662416035063,
+      "soxlFwd3dPct": -6.584043377226956,
+      "soxFwd5dPct": -3.3723282857639814,
+      "soxlFwd5dPct": -10.402788536018582,
+      "soxFwd10dPct": -5.869112351576589,
+      "soxlFwd10dPct": -17.962819519752127
+    },
+    {
+      "date": "2026-08-19",
+      "score": 81.2,
+      "label": "Strong Bullish",
+      "trainingSignals": 177,
+      "components": {
+        "absoluteMomentum": 17.3,
+        "relativeMomentum": 15.1,
+        "breadthPersistence": 33.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 86.7,
+        "relativeMomentum": 70.0,
+        "breadthPersistence": 88.5
+      },
+      "soxFwd1dPct": 0.5264262320277879,
+      "soxlFwd1dPct": 1.2174921318535592,
+      "soxFwd3dPct": -2.684028715574449,
+      "soxlFwd3dPct": -7.934404505549109,
+      "soxFwd5dPct": -1.081831471800021,
+      "soxlFwd5dPct": -3.4288553917508735,
+      "soxFwd10dPct": -3.398914559087518,
+      "soxlFwd10dPct": -11.9181712771244
+    },
+    {
+      "date": "2026-08-20",
+      "score": 77.0,
+      "label": "Strong Bullish",
+      "trainingSignals": 178,
+      "components": {
+        "absoluteMomentum": 20.5,
+        "relativeMomentum": 27.2,
+        "breadthPersistence": 40.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 78.1,
+        "relativeMomentum": 75.3,
+        "breadthPersistence": 77.7
+      },
+      "soxFwd1dPct": -0.5054684257441711,
+      "soxlFwd1dPct": -1.3174044677194963,
+      "soxFwd3dPct": -1.7964469194497568,
+      "soxlFwd3dPct": -5.351444235332615,
+      "soxFwd5dPct": 0.6961875569490905,
+      "soxlFwd5dPct": 0.6873414614188667,
+      "soxFwd10dPct": -3.7956734299989137,
+      "soxlFwd10dPct": -12.658538581130841
+    },
+    {
+      "date": "2026-08-21",
+      "score": 76.7,
+      "label": "Strong Bullish",
+      "trainingSignals": 179,
+      "components": {
+        "absoluteMomentum": 20.2,
+        "relativeMomentum": 21.2,
+        "breadthPersistence": 42.6
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 81.7,
+        "relativeMomentum": 71.4,
+        "breadthPersistence": 74.9
+      },
+      "soxFwd1dPct": -2.7018312524349386,
+      "soxlFwd1dPct": -7.827529021558865,
+      "soxFwd3dPct": -1.099927107266152,
+      "soxlFwd3dPct": -3.316749585406298,
+      "soxFwd5dPct": -2.305818246633129,
+      "soxlFwd5dPct": -7.678275290215586,
+      "soxFwd10dPct": -0.043534764751163024,
+      "soxlFwd10dPct": -2.752902155887227
+    },
+    {
+      "date": "2026-08-24",
+      "score": 90.0,
+      "label": "Strong Bullish",
+      "trainingSignals": 180,
+      "components": {
+        "absoluteMomentum": 13.0,
+        "relativeMomentum": 16.7,
+        "breadthPersistence": 30.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 90.0
+      },
+      "soxFwd1dPct": 1.4432893612282616,
+      "soxlFwd1dPct": 4.057214825476785,
+      "soxFwd3dPct": 4.018155876024276,
+      "soxlFwd3dPct": 10.696293630802444,
+      "soxFwd5dPct": 0.9794358642712053,
+      "soxlFwd5dPct": 1.466354803886305,
+      "soxFwd10dPct": 4.06805696582313,
+      "soxlFwd10dPct": 10.89420654911839
+    },
+    {
+      "date": "2026-08-25",
+      "score": 70.8,
+      "label": "Bullish",
+      "trainingSignals": 181,
+      "components": {
+        "absoluteMomentum": 27.6,
+        "relativeMomentum": 27.1,
+        "breadthPersistence": 46.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 60.4,
+        "relativeMomentum": 85.1,
+        "breadthPersistence": 69.1
+      },
+      "soxFwd1dPct": 0.2002077974832428,
+      "soxlFwd1dPct": 0.8040114117748631,
+      "soxFwd3dPct": -1.021535920307215,
+      "soxlFwd3dPct": -3.7434079709518397,
+      "soxFwd5dPct": -2.583922412201467,
+      "soxlFwd5dPct": -8.437797181637418,
+      "soxFwd10dPct": 2.9623985769611005,
+      "soxlFwd10dPct": 8.818189677530919
+    },
+    {
+      "date": "2026-08-26",
+      "score": 61.9,
+      "label": "Bullish",
+      "trainingSignals": 182,
+      "components": {
+        "absoluteMomentum": 32.7,
+        "relativeMomentum": 33.2,
+        "breadthPersistence": 59.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 56.8,
+        "relativeMomentum": 79.1,
+        "breadthPersistence": 43.5
+      },
+      "soxFwd1dPct": 2.333353123135118,
+      "soxlFwd1dPct": 5.531732418524871,
+      "soxFwd3dPct": -0.6561481363920207,
+      "soxlFwd3dPct": -3.2675814751286336,
+      "soxFwd5dPct": -2.342424169152435,
+      "soxlFwd5dPct": -8.79073756432247,
+      "soxFwd10dPct": 0.025224241593280183,
+      "soxlFwd10dPct": -0.720411663807885
+    },
+    {
+      "date": "2026-08-27",
+      "score": 53.3,
+      "label": "Neutral",
+      "trainingSignals": 183,
+      "components": {
+        "absoluteMomentum": 52.6,
+        "relativeMomentum": 46.0,
+        "breadthPersistence": 50.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 41.8,
+        "relativeMomentum": 72.2,
+        "breadthPersistence": 46.3
+      },
+      "soxFwd1dPct": -3.4716498518452377,
+      "soxlFwd1dPct": -9.516456724908572,
+      "soxFwd3dPct": -4.995361012233501,
+      "soxlFwd3dPct": -13.92929703372613,
+      "soxFwd5dPct": -4.460805414711078,
+      "soxlFwd5dPct": -13.25477448191792,
+      "soxFwd10dPct": -0.48956651549189045,
+      "soxlFwd10dPct": -0.9995936611133738
+    },
+    {
+      "date": "2026-08-28",
+      "score": 76.4,
+      "label": "Strong Bullish",
+      "trainingSignals": 184,
+      "components": {
+        "absoluteMomentum": 22.8,
+        "relativeMomentum": 15.7,
+        "breadthPersistence": 40.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 80.3,
+        "relativeMomentum": 70.0,
+        "breadthPersistence": 78.9
+      },
+      "soxFwd1dPct": 0.5701057567553347,
+      "soxlFwd1dPct": 1.3023172265133942,
+      "soxFwd3dPct": -1.1369848761167534,
+      "soxlFwd3dPct": -4.481767558828819,
+      "soxFwd5dPct": 2.3156788268038353,
+      "soxlFwd5dPct": 5.335009879647923,
+      "soxFwd10dPct": -2.9502226891928496,
+      "soxlFwd10dPct": -9.170109574276996
+    },
+    {
+      "date": "2026-08-31",
+      "score": 62.3,
+      "label": "Bullish",
+      "trainingSignals": 185,
+      "components": {
+        "absoluteMomentum": 39.0,
+        "relativeMomentum": 31.3,
+        "breadthPersistence": 59.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 58.0,
+        "relativeMomentum": 78.4,
+        "breadthPersistence": 43.8
+      },
+      "soxFwd1dPct": -2.1364373588122154,
+      "soxlFwd1dPct": -6.099831545349776,
+      "soxFwd3dPct": -1.5857956663568706,
+      "soxlFwd3dPct": -5.36395070484973,
+      "soxFwd5dPct": 3.058663454709154,
+      "soxlFwd5dPct": 9.291603865590915,
+      "soxFwd10dPct": -3.1166231726006077,
+      "soxlFwd10dPct": -9.282737831368038
+    },
+    {
+      "date": "2026-09-01",
+      "score": 77.7,
+      "label": "Strong Bullish",
+      "trainingSignals": 186,
+      "components": {
+        "absoluteMomentum": 18.1,
+        "relativeMomentum": 18.6,
+        "breadthPersistence": 44.4
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 86.3,
+        "relativeMomentum": 70.1,
+        "breadthPersistence": 71.8
+      },
+      "soxFwd1dPct": 0.4486080075453813,
+      "soxlFwd1dPct": 0.415447077707487,
+      "soxFwd3dPct": 3.9566465034577725,
+      "soxlFwd3dPct": 10.73553016712303,
+      "soxFwd5dPct": 5.693434930352037,
+      "soxlFwd5dPct": 18.846190161457855,
+      "soxFwd10dPct": -0.3765288509149145,
+      "soxlFwd10dPct": -1.8317439335284624
+    },
+    {
+      "date": "2026-09-02",
+      "score": 70.1,
+      "label": "Bullish",
+      "trainingSignals": 187,
+      "components": {
+        "absoluteMomentum": 32.1,
+        "relativeMomentum": 33.8,
+        "breadthPersistence": 47.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 66.1,
+        "relativeMomentum": 80.7,
+        "breadthPersistence": 60.5
+      },
+      "soxFwd1dPct": 0.11354524641016273,
+      "soxlFwd1dPct": 0.3667136812411931,
+      "soxFwd3dPct": 4.838201321315738,
+      "soxlFwd3dPct": 15.909732016925249,
+      "soxFwd5dPct": 2.424439057187655,
+      "soxlFwd5dPct": 8.848142924306535,
+      "soxFwd10dPct": 2.2950248561154796,
+      "soxlFwd10dPct": 7.964268923366236
+    },
+    {
+      "date": "2026-09-03",
+      "score": 80.9,
+      "label": "Strong Bullish",
+      "trainingSignals": 188,
+      "components": {
+        "absoluteMomentum": 24.9,
+        "relativeMomentum": 15.5,
+        "breadthPersistence": 42.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 76.3,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 75.2
+      },
+      "soxFwd1dPct": 3.374994046271995,
+      "soxlFwd1dPct": 9.874461307850858,
+      "soxFwd3dPct": 5.102064890980884,
+      "soxlFwd3dPct": 17.92205358815815,
+      "soxFwd5dPct": 4.15665938618941,
+      "soxlFwd5dPct": 14.127787146336889,
+      "soxFwd10dPct": 5.017180300462432,
+      "soxlFwd10dPct": 15.860970582724377
+    },
+    {
+      "date": "2026-09-04",
+      "score": 28.1,
+      "label": "Strong Bearish",
+      "trainingSignals": 189,
+      "components": {
+        "absoluteMomentum": 67.2,
+        "relativeMomentum": 69.1,
+        "breadthPersistence": 65.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 25.2,
+        "relativeMomentum": 26.3,
+        "breadthPersistence": 37.8
+      },
+      "soxFwd1dPct": 1.300414576096376,
+      "soxlFwd1dPct": 5.107435197817178,
+      "soxFwd3dPct": -1.0318947821584934,
+      "soxlFwd3dPct": -1.2960436562073685,
+      "soxFwd5dPct": -5.146720010440042,
+      "soxlFwd5dPct": -13.770463847203274,
+      "soxFwd10dPct": 5.947104553674687,
+      "soxlFwd10dPct": 21.018076398362908
+    },
+    {
+      "date": "2026-09-08",
+      "score": 38.2,
+      "label": "Bearish",
+      "trainingSignals": 190,
+      "components": {
+        "absoluteMomentum": 75.6,
+        "relativeMomentum": 82.5,
+        "breadthPersistence": 59.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 48.7,
+        "relativeMomentum": 21.1,
+        "breadthPersistence": 44.6
+      },
+      "soxFwd1dPct": 0.36551749591096083,
+      "soxlFwd1dPct": 2.1091912062951357,
+      "soxFwd3dPct": -0.5372822048399284,
+      "soxlFwd3dPct": -1.1762797112030543,
+      "soxFwd5dPct": -5.992011171407818,
+      "soxlFwd5dPct": -16.995213758416483,
+      "soxFwd10dPct": 6.745959299493531,
+      "soxlFwd10dPct": 23.266001460209296
+    },
+    {
+      "date": "2026-09-09",
+      "score": 45.3,
+      "label": "Neutral",
+      "trainingSignals": 191,
+      "components": {
+        "absoluteMomentum": 78.3,
+        "relativeMomentum": 87.2,
+        "breadthPersistence": 63.5
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 53.8,
+        "relativeMomentum": 36.2,
+        "breadthPersistence": 42.1
+      },
+      "soxFwd1dPct": -2.658170433879603,
+      "soxlFwd1dPct": -8.032096607611027,
+      "soxFwd3dPct": -6.705379534065015,
+      "soxlFwd3dPct": -19.655199809327094,
+      "soxFwd5dPct": -5.742990361952782,
+      "soxlFwd5dPct": -17.39890363073012,
+      "soxFwd10dPct": 5.053530603400214,
+      "soxlFwd10dPct": 16.191308492889476
+    },
+    {
+      "date": "2026-09-10",
+      "score": 31.1,
+      "label": "Bearish",
+      "trainingSignals": 192,
+      "components": {
+        "absoluteMomentum": 50.1,
+        "relativeMomentum": 61.0,
+        "breadthPersistence": 50.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 18.5,
+        "relativeMomentum": 40.0,
+        "breadthPersistence": 43.8
+      },
+      "soxFwd1dPct": 1.8066833283033379,
+      "soxlFwd1dPct": 5.23496890117483,
+      "soxFwd3dPct": -3.7765932687104264,
+      "soxlFwd3dPct": -11.610228058051153,
+      "soxFwd5dPct": -0.1263509004915453,
+      "soxlFwd5dPct": -0.8120248790601359,
+      "soxFwd10dPct": 7.562915862636044,
+      "soxlFwd10dPct": 26.40808569454043
+    },
+    {
+      "date": "2026-09-11",
+      "score": 33.4,
+      "label": "Bearish",
+      "trainingSignals": 193,
+      "components": {
+        "absoluteMomentum": 60.2,
+        "relativeMomentum": 69.6,
+        "breadthPersistence": 53.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 48.4,
+        "relativeMomentum": 15.6,
+        "breadthPersistence": 30.9
+      },
+      "soxFwd1dPct": -5.858566202342319,
+      "soxlFwd1dPct": -16.984074864554255,
+      "soxFwd3dPct": -4.887441650020808,
+      "soxlFwd3dPct": -14.65276637662124,
+      "soxFwd5dPct": 0.8261794486729812,
+      "soxlFwd5dPct": 1.5186340502380657,
+      "soxFwd10dPct": 7.145897784373023,
+      "soxlFwd10dPct": 24.322771301920866
+    },
+    {
+      "date": "2026-09-14",
+      "score": 90.0,
+      "label": "Strong Bullish",
+      "trainingSignals": 194,
+      "components": {
+        "absoluteMomentum": 11.9,
+        "relativeMomentum": 9.8,
+        "breadthPersistence": 32.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 90.0
+      },
+      "soxFwd1dPct": 0.39766935681699866,
+      "soxlFwd1dPct": 1.176703253238398,
+      "soxFwd3dPct": 4.206262700223462,
+      "soxlFwd3dPct": 13.537031543557788,
+      "soxFwd5dPct": 11.695773267235232,
+      "soxlFwd5dPct": 40.34411153960251,
+      "soxFwd10dPct": 11.98388822577936,
+      "soxlFwd10dPct": 40.70008899436368
+    },
+    {
+      "date": "2026-09-15",
+      "score": 82.3,
+      "label": "Strong Bullish",
+      "trainingSignals": 195,
+      "components": {
+        "absoluteMomentum": 20.1,
+        "relativeMomentum": 23.8,
+        "breadthPersistence": 32.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 76.4,
+        "relativeMomentum": 85.6,
+        "breadthPersistence": 90.0
+      },
+      "soxFwd1dPct": 0.6313789691712479,
+      "soxlFwd1dPct": 1.612587959343248,
+      "soxFwd3dPct": 6.676527791193565,
+      "soxlFwd3dPct": 20.865910867865534,
+      "soxFwd5dPct": 13.549880844836393,
+      "soxlFwd5dPct": 48.50469116497263,
+      "soxFwd10dPct": 13.007098068406208,
+      "soxlFwd10dPct": 43.66692728694292
+    },
+    {
+      "date": "2026-09-16",
+      "score": 71.5,
+      "label": "Bullish",
+      "trainingSignals": 196,
+      "components": {
+        "absoluteMomentum": 25.7,
+        "relativeMomentum": 27.0,
+        "breadthPersistence": 40.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 59.1,
+        "relativeMomentum": 83.2,
+        "breadthPersistence": 78.9
+      },
+      "soxFwd1dPct": 3.1422890045366803,
+      "soxlFwd1dPct": 10.435702606521113,
+      "soxFwd3dPct": 10.555329673958958,
+      "soxlFwd3dPct": 36.51053188419737,
+      "soxFwd5dPct": 11.45434276645556,
+      "soxlFwd5dPct": 40.665576608637096,
+      "soxFwd10dPct": 12.29329118185949,
+      "soxlFwd10dPct": 42.21410022121768
+    },
+    {
+      "date": "2026-09-17",
+      "score": 36.3,
+      "label": "Bearish",
+      "trainingSignals": 197,
+      "components": {
+        "absoluteMomentum": 65.1,
+        "relativeMomentum": 60.1,
+        "breadthPersistence": 61.7
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 35.3,
+        "relativeMomentum": 41.6,
+        "breadthPersistence": 29.2
+      },
+      "soxFwd1dPct": 2.7776497092490304,
+      "soxlFwd1dPct": 7.707716425709821,
+      "soxFwd3dPct": 9.399791309677251,
+      "soxlFwd3dPct": 32.33757185159381,
+      "soxFwd5dPct": 7.698994512022317,
+      "soxlFwd5dPct": 27.44295418916567,
+      "soxFwd10dPct": 10.59966878451377,
+      "soxlFwd10dPct": 33.852987284445234
+    },
+    {
+      "date": "2026-09-18",
+      "score": 20.6,
+      "label": "Strong Bearish",
+      "trainingSignals": 198,
+      "components": {
+        "absoluteMomentum": 74.9,
+        "relativeMomentum": 76.5,
+        "breadthPersistence": 73.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 11.6,
+        "relativeMomentum": 26.7,
+        "breadthPersistence": 30.1
+      },
+      "soxFwd1dPct": 4.290376785213024,
+      "soxlFwd1dPct": 14.76510067114094,
+      "soxFwd3dPct": 5.138444575592893,
+      "soxlFwd3dPct": 18.258267971213705,
+      "soxFwd5dPct": 6.267933953519655,
+      "soxlFwd5dPct": 22.463006387967965,
+      "soxFwd10dPct": 10.191419664207668,
+      "soxlFwd10dPct": 32.376485809007846
+    },
+    {
+      "date": "2026-09-21",
+      "score": 55.0,
+      "label": "Neutral",
+      "trainingSignals": 199,
+      "components": {
+        "absoluteMomentum": 94.7,
+        "relativeMomentum": 91.7,
+        "breadthPersistence": 83.3
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 70.0,
+        "relativeMomentum": 50.0,
+        "breadthPersistence": 30.0
+      },
+      "soxFwd1dPct": 2.0642326839950487,
+      "soxlFwd1dPct": 7.059818220249414,
+      "soxFwd3dPct": 0.4774790163151632,
+      "soxlFwd3dPct": 3.100119777355048,
+      "soxFwd5dPct": 0.25794616046466157,
+      "soxlFwd5dPct": 0.25364616360177283,
+      "soxFwd10dPct": 5.948327155800848,
+      "soxlFwd10dPct": 15.74015359684351
+    },
+    {
+      "date": "2026-09-22",
+      "score": 54.7,
+      "label": "Neutral",
+      "trainingSignals": 200,
+      "components": {
+        "absoluteMomentum": 93.2,
+        "relativeMomentum": 91.0,
+        "breadthPersistence": 86.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 70.0,
+        "relativeMomentum": 49.0,
+        "breadthPersistence": 30.0
+      },
+      "soxFwd1dPct": -1.2257509982131154,
+      "soxlFwd1dPct": -3.751233958538991,
+      "soxFwd3dPct": -0.16463139053241038,
+      "soxlFwd3dPct": -0.32905561039815456,
+      "soxFwd5dPct": -0.47801263408799866,
+      "soxlFwd5dPct": -3.257650542941748,
+      "soxFwd10dPct": 4.160836139531066,
+      "soxlFwd10dPct": 8.101349128002644
+    },
+    {
+      "date": "2026-09-23",
+      "score": 46.0,
+      "label": "Neutral",
+      "trainingSignals": 201,
+      "components": {
+        "absoluteMomentum": 83.4,
+        "relativeMomentum": 79.7,
+        "breadthPersistence": 70.7
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 46.0,
+        "relativeMomentum": 47.8,
+        "breadthPersistence": 42.7
+      },
+      "soxFwd1dPct": -0.3329924906229076,
+      "soxlFwd1dPct": 0.05470085470087316,
+      "soxFwd3dPct": -0.5507545504080169,
+      "soxlFwd3dPct": -2.707692307692311,
+      "soxFwd5dPct": 0.7527283321403511,
+      "soxlFwd5dPct": 1.1008547008547032,
+      "soxFwd10dPct": 4.243365902670604,
+      "soxlFwd10dPct": 8.656410256410263
+    },
+    {
+      "date": "2026-09-24",
+      "score": 29.6,
+      "label": "Strong Bearish",
+      "trainingSignals": 202,
+      "components": {
+        "absoluteMomentum": 79.3,
+        "relativeMomentum": 75.9,
+        "breadthPersistence": 61.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 28.1,
+        "relativeMomentum": 42.5,
+        "breadthPersistence": 10.3
+      },
+      "soxFwd1dPct": 1.4119819844859327,
+      "soxlFwd1dPct": 3.49894075035877,
+      "soxFwd3dPct": 1.0936517827910608,
+      "soxlFwd3dPct": 0.45786919975396856,
+      "soxFwd5dPct": 2.693316019925951,
+      "soxlFwd5dPct": 5.029727328640732,
+      "soxFwd10dPct": 1.0500545751309875,
+      "soxlFwd10dPct": -2.603703956809955
+    },
+    {
+      "date": "2026-09-25",
+      "score": 30.4,
+      "label": "Bearish",
+      "trainingSignals": 203,
+      "components": {
+        "absoluteMomentum": 77.1,
+        "relativeMomentum": 74.6,
+        "breadthPersistence": 50.5
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 19.1,
+        "relativeMomentum": 38.8,
+        "breadthPersistence": 41.4
+      },
+      "soxFwd1dPct": -1.6077701730819016,
+      "soxlFwd1dPct": -6.048200726312314,
+      "soxFwd3dPct": -0.3181416115443425,
+      "soxlFwd3dPct": -2.3704192802905033,
+      "soxFwd5dPct": 3.6920692486635653,
+      "soxlFwd5dPct": 8.095080884780458,
+      "soxFwd10dPct": -0.7617783950988888,
+      "soxlFwd10dPct": -7.718719049191147
+    },
+    {
+      "date": "2026-09-28",
+      "score": 34.8,
+      "label": "Bearish",
+      "trainingSignals": 204,
+      "components": {
+        "absoluteMomentum": 59.4,
+        "relativeMomentum": 66.5,
+        "breadthPersistence": 48.5
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 48.6,
+        "relativeMomentum": 12.0,
+        "breadthPersistence": 43.9
+      },
+      "soxFwd1dPct": 1.3150145668312518,
+      "soxlFwd1dPct": 3.3101412608053993,
+      "soxFwd3dPct": 2.9181815573321224,
+      "soxlFwd3dPct": 8.011806873286954,
+      "soxFwd5dPct": 5.67574064027665,
+      "soxlFwd5dPct": 15.447325883758545,
+      "soxFwd10dPct": -1.832722386606911,
+      "soxlFwd10dPct": -9.761754164031199
+    },
+    {
+      "date": "2026-09-29",
+      "score": 41.3,
+      "label": "Bearish",
+      "trainingSignals": 205,
+      "components": {
+        "absoluteMomentum": 64.4,
+        "relativeMomentum": 74.4,
+        "breadthPersistence": 43.6
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 41.1,
+        "relativeMomentum": 23.4,
+        "breadthPersistence": 73.0
+      },
+      "soxFwd1dPct": -0.0042569558164506915,
+      "soxlFwd1dPct": 0.5850340136054566,
+      "soxFwd3dPct": 4.018581514626685,
+      "soxlFwd3dPct": 11.367346938775524,
+      "soxFwd5dPct": 4.661129561815747,
+      "soxlFwd5dPct": 11.741496598639456,
+      "soxFwd10dPct": -3.328539945911413,
+      "soxlFwd10dPct": -13.217687074829932
+    },
+    {
+      "date": "2026-09-30",
+      "score": 31.3,
+      "label": "Bearish",
+      "trainingSignals": 206,
+      "components": {
+        "absoluteMomentum": 63.7,
+        "relativeMomentum": 68.1,
+        "breadthPersistence": 55.7
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 43.0,
+        "relativeMomentum": 13.1,
+        "breadthPersistence": 36.8
+      },
+      "soxFwd1dPct": 1.5866832427580357,
+      "soxlFwd1dPct": 3.9429189774110585,
+      "soxFwd3dPct": 4.308566556701199,
+      "soxlFwd3dPct": 11.098336264033538,
+      "soxFwd5dPct": 3.46455885444914,
+      "soxlFwd5dPct": 7.473285540376029,
+      "soxFwd10dPct": -7.476992664849025,
+      "soxlFwd10dPct": -25.24009197889896
+    },
+    {
+      "date": "2026-10-01",
+      "score": 31.7,
+      "label": "Bearish",
+      "trainingSignals": 207,
+      "components": {
+        "absoluteMomentum": 76.8,
+        "relativeMomentum": 83.7,
+        "breadthPersistence": 57.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 33.0,
+        "relativeMomentum": 25.6,
+        "breadthPersistence": 39.4
+      },
+      "soxFwd1dPct": 2.3982734819776974,
+      "soxlFwd1dPct": 6.519617411672862,
+      "soxFwd3dPct": 3.030812492828594,
+      "soxlFwd3dPct": 6.877480642852496,
+      "soxFwd5dPct": -1.600163972186952,
+      "soxlFwd5dPct": -7.267876895048464,
+      "soxFwd10dPct": -9.726282195603552,
+      "soxlFwd10dPct": -30.151603877936108
+    },
+    {
+      "date": "2026-10-02",
+      "score": 43.5,
+      "label": "Bearish",
+      "trainingSignals": 208,
+      "components": {
+        "absoluteMomentum": 82.4,
+        "relativeMomentum": 85.7,
+        "breadthPersistence": 66.3
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 49.4,
+        "relativeMomentum": 40.9,
+        "breadthPersistence": 34.7
+      },
+      "soxFwd1dPct": 0.27451313825430645,
+      "soxlFwd1dPct": 0.34206829149106,
+      "soxFwd3dPct": -0.5368532166103002,
+      "soxlFwd3dPct": -2.932013927066157,
+      "soxFwd5dPct": -4.295263539472527,
+      "soxlFwd5dPct": -14.629527823590504,
+      "soxFwd10dPct": -15.219893053010303,
+      "soxlFwd10dPct": -42.782969885773625
+    },
+    {
+      "date": "2026-10-05",
+      "score": 30.3,
+      "label": "Bearish",
+      "trainingSignals": 209,
+      "components": {
+        "absoluteMomentum": 81.6,
+        "relativeMomentum": 78.5,
+        "breadthPersistence": 68.1
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 46.7,
+        "relativeMomentum": 10.2,
+        "breadthPersistence": 28.9
+      },
+      "soxFwd1dPct": 0.3422715742474214,
+      "soxlFwd1dPct": -0.006087538808074999,
+      "soxFwd3dPct": -4.167861723389943,
+      "soxlFwd3dPct": -13.240396907530283,
+      "soxFwd5dPct": -7.10519082373181,
+      "soxlFwd5dPct": -21.836001704510867,
+      "soxFwd10dPct": -14.092693724285132,
+      "soxlFwd10dPct": -39.946429658489066
+    },
+    {
+      "date": "2026-10-06",
+      "score": 39.0,
+      "label": "Bearish",
+      "trainingSignals": 210,
+      "components": {
+        "absoluteMomentum": 75.4,
+        "relativeMomentum": 68.3,
+        "breadthPersistence": 65.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 48.2,
+        "relativeMomentum": 27.6,
+        "breadthPersistence": 38.3
+      },
+      "soxFwd1dPct": -1.1474891900659312,
+      "soxlFwd1dPct": -3.257031535370747,
+      "soxFwd3dPct": -4.882825433529248,
+      "soxlFwd3dPct": -14.915378059174477,
+      "soxFwd5dPct": -7.633846052662985,
+      "soxlFwd5dPct": -22.336539632290275,
+      "soxFwd10dPct": -14.631841469670704,
+      "soxlFwd10dPct": -40.61244368683794
+    },
+    {
+      "date": "2026-10-07",
+      "score": 35.4,
+      "label": "Bearish",
+      "trainingSignals": 211,
+      "components": {
+        "absoluteMomentum": 63.8,
+        "relativeMomentum": 54.7,
+        "breadthPersistence": 61.7
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 15.8,
+        "relativeMomentum": 53.0,
+        "breadthPersistence": 48.8
+      },
+      "soxFwd1dPct": -3.386115164720249,
+      "soxlFwd1dPct": -10.314014221886591,
+      "soxFwd3dPct": -6.347405401244266,
+      "soxlFwd3dPct": -19.199546913347177,
+      "soxFwd5dPct": -10.575168579890637,
+      "soxlFwd5dPct": -30.438613051412744,
+      "soxFwd10dPct": -11.943796212448888,
+      "soxlFwd10dPct": -35.03240828141716
+    },
+    {
+      "date": "2026-10-08",
+      "score": 60.7,
+      "label": "Bullish",
+      "trainingSignals": 212,
+      "components": {
+        "absoluteMomentum": 32.9,
+        "relativeMomentum": 28.3,
+        "breadthPersistence": 44.5
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 38.7,
+        "relativeMomentum": 82.6,
+        "breadthPersistence": 71.8
+      },
+      "soxFwd1dPct": -0.40634036386311134,
+      "soxlFwd1dPct": -1.9365703059219919,
+      "soxFwd3dPct": -3.286831846529381,
+      "soxlFwd3dPct": -10.489755823744051,
+      "soxFwd5dPct": -8.25826398848848,
+      "soxlFwd5dPct": -24.677238282346348,
+      "soxFwd10dPct": -14.985583420676296,
+      "soxlFwd10dPct": -42.38703339882123
+    },
+    {
+      "date": "2026-10-09",
+      "score": 83.7,
+      "label": "Strong Bullish",
+      "trainingSignals": 213,
+      "components": {
+        "absoluteMomentum": 25.3,
+        "relativeMomentum": 16.3,
+        "breadthPersistence": 30.3
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 76.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 90.0
+      },
+      "soxFwd1dPct": -2.669584518805823,
+      "soxlFwd1dPct": -8.128219805380644,
+      "soxFwd3dPct": -7.063375726585264,
+      "soxlFwd3dPct": -20.907269605037193,
+      "soxFwd5dPct": -11.414930877578389,
+      "soxlFwd5dPct": -32.9779622209502,
+      "soxFwd10dPct": -14.261021530861907,
+      "soxlFwd10dPct": -40.21179164281625
+    },
+    {
+      "date": "2026-10-12",
+      "score": 90.0,
+      "label": "Strong Bullish",
+      "trainingSignals": 214,
+      "components": {
+        "absoluteMomentum": 14.4,
+        "relativeMomentum": 7.9,
+        "breadthPersistence": 18.3
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 90.0
+      },
+      "soxFwd1dPct": -0.2287664312228488,
+      "soxlFwd1dPct": -0.6464174454828719,
+      "soxFwd3dPct": -5.357395002459741,
+      "soxlFwd3dPct": -16.394080996884743,
+      "soxFwd5dPct": -7.521951939526039,
+      "soxlFwd5dPct": -23.169781931464172,
+      "soxFwd10dPct": -9.425010955917346,
+      "soxlFwd10dPct": -29.5171339563863
+    },
+    {
+      "date": "2026-10-13",
+      "score": 88.5,
+      "label": "Strong Bullish",
+      "trainingSignals": 215,
+      "components": {
+        "absoluteMomentum": 17.7,
+        "relativeMomentum": 14.0,
+        "breadthPersistence": 24.5
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 86.6,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 90.0
+      },
+      "soxFwd1dPct": -4.295364298994365,
+      "soxlFwd1dPct": -13.349533589401885,
+      "soxFwd3dPct": -8.776525560387027,
+      "soxlFwd3dPct": -26.573645841498784,
+      "soxFwd5dPct": -7.576363330011182,
+      "soxlFwd5dPct": -23.53217841185231,
+      "soxFwd10dPct": -5.948905383854974,
+      "soxlFwd10dPct": -20.76507015756055
+    },
+    {
+      "date": "2026-10-14",
+      "score": 90.0,
+      "label": "Strong Bullish",
+      "trainingSignals": 216,
+      "components": {
+        "absoluteMomentum": 3.5,
+        "relativeMomentum": 5.1,
+        "breadthPersistence": 17.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 90.0
+      },
+      "soxFwd1dPct": -0.8829496589732422,
+      "soxlFwd1dPct": -2.8858331825583616,
+      "soxFwd3dPct": -3.1498409697396257,
+      "soxlFwd3dPct": -10.7562873168084,
+      "soxFwd5dPct": -1.5304782920177673,
+      "soxlFwd5dPct": -6.603944273566142,
+      "soxFwd10dPct": -0.003273099862144413,
+      "soxlFwd10dPct": -2.8858331825583616
+    },
+    {
+      "date": "2026-10-15",
+      "score": 90.0,
+      "label": "Strong Bullish",
+      "trainingSignals": 217,
+      "components": {
+        "absoluteMomentum": 8.7,
+        "relativeMomentum": 9.9,
+        "breadthPersistence": 21.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 90.0
+      },
+      "soxFwd1dPct": -3.833177716245828,
+      "soxlFwd1dPct": -12.743362831858395,
+      "soxFwd3dPct": -2.56797938183434,
+      "soxlFwd3dPct": -9.129017233348858,
+      "soxFwd5dPct": -7.3328887425279206,
+      "soxlFwd5dPct": -23.511877037727057,
+      "soxFwd10dPct": -0.5441250779325446,
+      "soxlFwd10dPct": -4.620400558919413
+    },
+    {
+      "date": "2026-10-16",
+      "score": 90.0,
+      "label": "Strong Bullish",
+      "trainingSignals": 218,
+      "components": {
+        "absoluteMomentum": 2.4,
+        "relativeMomentum": 6.3,
+        "breadthPersistence": 24.4
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 90.0
+      },
+      "soxFwd1dPct": 1.6077193344715024,
+      "soxlFwd1dPct": 5.316536778050618,
+      "soxFwd3dPct": 3.306629796841243,
+      "soxlFwd3dPct": 10.216718266253855,
+      "soxFwd5dPct": -3.212833360608791,
+      "soxlFwd5dPct": -10.793210206042492,
+      "soxFwd10dPct": -4.026897425923337,
+      "soxlFwd10dPct": -17.743140813494186
+    },
+    {
+      "date": "2026-10-19",
+      "score": 86.2,
+      "label": "Strong Bullish",
+      "trainingSignals": 219,
+      "components": {
+        "absoluteMomentum": 15.3,
+        "relativeMomentum": 18.7,
+        "breadthPersistence": 44.4
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 89.5,
+        "breadthPersistence": 72.0
+      },
+      "soxFwd1dPct": -0.28746891968092214,
+      "soxlFwd1dPct": -1.1150532184490691,
+      "soxFwd3dPct": -5.163906560085129,
+      "soxlFwd3dPct": -16.766345666497728,
+      "soxFwd5dPct": -2.0578494640661527,
+      "soxlFwd5dPct": -8.261530663963512,
+      "soxFwd10dPct": -8.730862338831047,
+      "soxlFwd10dPct": -30.89711099847947
+    },
+    {
+      "date": "2026-10-20",
+      "score": 89.4,
+      "label": "Strong Bullish",
+      "trainingSignals": 220,
+      "components": {
+        "absoluteMomentum": 14.1,
+        "relativeMomentum": 18.0,
+        "breadthPersistence": 34.6
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 89.8,
+        "breadthPersistence": 87.3
+      },
+      "soxFwd1dPct": 1.9651470366216506,
+      "soxlFwd1dPct": 5.8329062019477185,
+      "soxFwd3dPct": -4.469657977892094,
+      "soxlFwd3dPct": -14.341363403382879,
+      "soxFwd5dPct": 1.7608676793007705,
+      "soxlFwd5dPct": 3.618657098923639,
+      "soxFwd10dPct": -6.056604151380174,
+      "soxlFwd10dPct": -25.043567401332645
+    },
+    {
+      "date": "2026-10-21",
+      "score": 59.0,
+      "label": "Neutral",
+      "trainingSignals": 221,
+      "components": {
+        "absoluteMomentum": 40.5,
+        "relativeMomentum": 38.4,
+        "breadthPersistence": 54.1
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 52.0,
+        "relativeMomentum": 74.7,
+        "breadthPersistence": 47.2
+      },
+      "soxFwd1dPct": -6.723516351559244,
+      "soxlFwd1dPct": -20.466873304920576,
+      "soxFwd3dPct": -3.6685393547315814,
+      "soxlFwd3dPct": -12.340178225493991,
+      "soxFwd5dPct": 1.5509420231415882,
+      "soxlFwd5dPct": 3.9810151104223257,
+      "soxFwd10dPct": -10.750469251117867,
+      "soxlFwd10dPct": -35.41263076327004
+    },
+    {
+      "date": "2026-10-22",
+      "score": 84.0,
+      "label": "Strong Bullish",
+      "trainingSignals": 222,
+      "components": {
+        "absoluteMomentum": 4.2,
+        "relativeMomentum": 7.4,
+        "breadthPersistence": 49.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 60.2
+      },
+      "soxFwd1dPct": 0.4424776736300817,
+      "soxlFwd1dPct": 1.7659237608086853,
+      "soxFwd3dPct": 6.993374707713218,
+      "soxlFwd3dPct": 23.103154305200334,
+      "soxFwd5dPct": 7.325968806487393,
+      "soxlFwd5dPct": 24.69857508220681,
+      "soxFwd10dPct": -16.03469763100065,
+      "soxlFwd10dPct": -50.22530751431007
+    },
+    {
+      "date": "2026-10-23",
+      "score": 73.1,
+      "label": "Bullish",
+      "trainingSignals": 223,
+      "components": {
+        "absoluteMomentum": 18.6,
+        "relativeMomentum": 20.4,
+        "breadthPersistence": 59.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 79.0,
+        "relativeMomentum": 87.0,
+        "breadthPersistence": 35.4
+      },
+      "soxFwd1dPct": 2.8202280137779256,
+      "soxlFwd1dPct": 8.305409286740062,
+      "soxFwd3dPct": 8.391287165084883,
+      "soxlFwd3dPct": 28.470560076591656,
+      "soxFwd5dPct": -0.8410867820395795,
+      "soxlFwd5dPct": -7.790808999521303,
+      "soxFwd10dPct": -12.887600036070568,
+      "soxlFwd10dPct": -44.98563906175204
+    },
+    {
+      "date": "2026-10-26",
+      "score": 60.4,
+      "label": "Bullish",
+      "trainingSignals": 224,
+      "components": {
+        "absoluteMomentum": 25.4,
+        "relativeMomentum": 29.3,
+        "breadthPersistence": 59.0
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 56.1,
+        "relativeMomentum": 80.2,
+        "breadthPersistence": 35.4
+      },
+      "soxFwd1dPct": 3.6002745060183194,
+      "soxlFwd1dPct": 11.690607734806635,
+      "soxFwd3dPct": 3.9223209881132703,
+      "soxlFwd3dPct": 13.138121546961322,
+      "soxFwd5dPct": -6.81321865841269,
+      "soxlFwd5dPct": -24.674033149171272,
+      "soxFwd10dPct": -9.469391424508878,
+      "soxlFwd10dPct": -37.90055248618784
+    },
+    {
+      "date": "2026-10-27",
+      "score": 28.3,
+      "label": "Strong Bearish",
+      "trainingSignals": 225,
+      "components": {
+        "absoluteMomentum": 59.3,
+        "relativeMomentum": 64.2,
+        "breadthPersistence": 72.6
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 46.1,
+        "relativeMomentum": 15.1,
+        "breadthPersistence": 11.4
+      },
+      "soxFwd1dPct": 1.7547999662282487,
+      "soxlFwd1dPct": 6.203007518796988,
+      "soxFwd3dPct": -6.912302240725509,
+      "soxlFwd3dPct": -23.773248911753065,
+      "soxFwd5dPct": -7.682198480576741,
+      "soxlFwd5dPct": -27.661258409180846,
+      "soxFwd10dPct": -12.925530556833687,
+      "soxlFwd10dPct": -44.538979026513644
+    },
+    {
+      "date": "2026-10-28",
+      "score": 29.5,
+      "label": "Strong Bearish",
+      "trainingSignals": 226,
+      "components": {
+        "absoluteMomentum": 68.5,
+        "relativeMomentum": 73.9,
+        "breadthPersistence": 68.6
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 29.1,
+        "relativeMomentum": 36.8,
+        "breadthPersistence": 17.7
+      },
+      "soxFwd1dPct": -1.4190437332421313,
+      "soxlFwd1dPct": -4.620400558919413,
+      "soxFwd3dPct": -11.602801701034938,
+      "soxlFwd3dPct": -36.49743828598043,
+      "soxFwd5dPct": -12.113537333268843,
+      "soxlFwd5dPct": -37.885421518397756,
+      "soxFwd10dPct": -9.584807539451512
+    },
+    {
+      "date": "2026-10-29",
+      "score": 29.2,
+      "label": "Strong Bearish",
+      "trainingSignals": 227,
+      "components": {
+        "absoluteMomentum": 70.2,
+        "relativeMomentum": 81.6,
+        "breadthPersistence": 70.8
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 24.2,
+        "relativeMomentum": 44.3,
+        "breadthPersistence": 14.1
+      },
+      "soxFwd1dPct": -7.200773141920269,
+      "soxlFwd1dPct": -24.74851059673796,
+      "soxFwd3dPct": -7.968283538448673,
+      "soxlFwd3dPct": -28.58677605234886,
+      "soxFwd5dPct": -21.76608950962109,
+      "soxlFwd5dPct": -60.08399257740014
+    },
+    {
+      "date": "2026-10-30",
+      "score": 62.4,
+      "label": "Bullish",
+      "trainingSignals": 228,
+      "components": {
+        "absoluteMomentum": 19.8,
+        "relativeMomentum": 37.5,
+        "breadthPersistence": 55.7
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 75.8,
+        "relativeMomentum": 56.7,
+        "breadthPersistence": 42.4
+      },
+      "soxFwd1dPct": -3.3724171184582707,
+      "soxlFwd1dPct": -11.524983776768327,
+      "soxFwd3dPct": -3.9307057360152386,
+      "soxlFwd3dPct": -13.458792991563906,
+      "soxFwd5dPct": -12.148694316114216,
+      "soxlFwd5dPct": -40.33744321868916
+    },
+    {
+      "date": "2026-11-02",
+      "score": 88.0,
+      "label": "Strong Bullish",
+      "trainingSignals": 229,
+      "components": {
+        "absoluteMomentum": 4.5,
+        "relativeMomentum": 13.8,
+        "breadthPersistence": 38.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 79.9
+      },
+      "soxFwd1dPct": 2.634187397736465,
+      "soxlFwd1dPct": 7.261258618160493,
+      "soxFwd3dPct": -12.753188369774504,
+      "soxlFwd3dPct": -40.04694146985478,
+      "soxFwd5dPct": -2.850375050898757,
+      "soxlFwd5dPct": -17.5590435675517
+    },
+    {
+      "date": "2026-11-03",
+      "score": 80.7,
+      "label": "Strong Bullish",
+      "trainingSignals": 230,
+      "components": {
+        "absoluteMomentum": 12.7,
+        "relativeMomentum": 27.8,
+        "breadthPersistence": 40.4
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 70.8,
+        "breadthPersistence": 77.0
+      },
+      "soxFwd1dPct": -3.1295234374588476,
+      "soxlFwd1dPct": -8.807439824945295,
+      "soxFwd3dPct": -11.416046995675,
+      "soxlFwd3dPct": -37.13074398249453,
+      "soxFwd5dPct": -5.679654400298695,
+      "soxlFwd5dPct": -23.331509846827135
+    },
+    {
+      "date": "2026-11-04",
+      "score": 90.0,
+      "label": "Strong Bullish",
+      "trainingSignals": 231,
+      "components": {
+        "absoluteMomentum": 7.1,
+        "relativeMomentum": 2.8,
+        "breadthPersistence": 30.6
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 90.0
+      },
+      "soxFwd1dPct": -12.246169949118201,
+      "soxlFwd1dPct": -38.707258548290355,
+      "soxFwd3dPct": -2.285808294948888,
+      "soxlFwd3dPct": -15.71685662867427,
+      "soxFwd5dPct": 2.8772688274033342
+    },
+    {
+      "date": "2026-11-05",
+      "score": 90.0,
+      "label": "Strong Bullish",
+      "trainingSignals": 232,
+      "components": {
+        "absoluteMomentum": 0.0,
+        "relativeMomentum": 0.0,
+        "breadthPersistence": 28.4
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 90.0
+      },
+      "soxFwd1dPct": 4.2071551177288,
+      "soxlFwd1dPct": 12.478590653290933,
+      "soxFwd3dPct": 10.955252631207157,
+      "soxlFwd3dPct": 37.16662588695867
+    },
+    {
+      "date": "2026-11-06",
+      "score": 85.5,
+      "label": "Strong Bullish",
+      "trainingSignals": 233,
+      "components": {
+        "absoluteMomentum": 12.2,
+        "relativeMomentum": 12.6,
+        "breadthPersistence": 46.2
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 90.0,
+        "relativeMomentum": 90.0,
+        "breadthPersistence": 67.6
+      },
+      "soxFwd1dPct": 6.854797018706749,
+      "soxlFwd1dPct": 22.253643680661316,
+      "soxFwd3dPct": 12.500850557850507
+    },
+    {
+      "date": "2026-11-09",
+      "score": 49.4,
+      "label": "Neutral",
+      "trainingSignals": 234,
+      "components": {
+        "absoluteMomentum": 29.4,
+        "relativeMomentum": 30.9,
+        "breadthPersistence": 58.4
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 51.4,
+        "relativeMomentum": 53.9,
+        "breadthPersistence": 37.1
+      },
+      "soxFwd1dPct": -0.354818345713348,
+      "soxlFwd1dPct": -0.2491103202846956
+    },
+    {
+      "date": "2026-11-10",
+      "score": 44.5,
+      "label": "Bearish",
+      "trainingSignals": 235,
+      "components": {
+        "absoluteMomentum": 35.0,
+        "relativeMomentum": 35.6,
+        "breadthPersistence": 48.1
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 37.4,
+        "relativeMomentum": 43.1,
+        "breadthPersistence": 62.6
+      },
+      "soxFwd1dPct": 5.658752577712978
+    },
+    {
+      "date": "2026-11-11",
+      "score": 27.9,
+      "label": "Strong Bearish",
+      "trainingSignals": 236,
+      "components": {
+        "absoluteMomentum": 63.3,
+        "relativeMomentum": 69.0,
+        "breadthPersistence": 68.6
+      },
+      "learnedQuality": {
+        "absoluteMomentum": 25.6,
+        "relativeMomentum": 36.6,
+        "breadthPersistence": 17.8
+      }
+    }
+  ]
+}
