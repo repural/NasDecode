@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-13T09:51:46.000Z",
+  "updated": "2026-11-13T10:06:42.000Z",
   "horizon": [
     "2026-11-13",
     "2026-11-16",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-13",
-      "timeET": "04:51",
+      "timeET": "05:06",
       "bias": "Bearish — Elevated Downside Risk",
       "previousBias": "Bearish — Elevated Downside Risk",
       "materialChange": false,
       "confidence": "Moderate-Low",
       "eventRisk": "Very High",
-      "summary": "No material change versus 03:37 EST. Thursday Nasdaq -0.39%, SOX -0.54%, NVDA -4.34%, AMD +5.86%, AVGO +5.54% remain matched US cash closes. November 13 Asian-session 10Y 5.128% and 2Y 4.861% imply +26.7bp, correctly scaled; no synchronized US equity/rate quote. Reuters Friday oil update quotes Brent $96.04 and WTI $88.59, with unspecified underlying timestamps; Brent higher than earlier $95.45 while WTI modestly higher than $88.39, not a synchronized risk-on signal. Reuters and AP report mixed Asian semiconductor response. October PPI remains scheduled for 08:30 EST, still pending. Open Watch count unchanged at 162. No matched fresh QQQ/SOX, breadth, VXN/VIX or live CME FedWatch verified.",
+      "summary": "No material directional change versus 04:51 EST. Fresh November 13 premarket reports show Nasdaq futures modestly negative (Nasdaq-100 futures -0.12% in Benzinga and Nasdaq futures -0.17% in Seeking Alpha, asynchronous snapshots), while QQQ was quoted -0.17% at $686.97. Benzinga reported 10Y 5.12% and 2Y 4.85%, implying +27.0bp, versus earlier asynchronous +26.7bp; not a verified synchronized rates/equity move. Reuters updated Brent to $96.35 and WTI to $88.94, underlying quote times unspecified. October PPI remains pending at 08:30 EST. Open Watch unchanged at 162 events. Friday cash-session QQQ/SOX relative strength, breadth, VXN/VIX and live FedWatch remain unavailable. Bias unchanged; no confirmed market reaction to PPI or sector recovery.",
       "bullish": [
         "Nasdaq closed -0.39% after opening -1.47%, showing substantial absorption of the initial Nvidia shock.",
         "AMD +5.86% and AVGO +5.54% at Thursday's close indicate selective chip rotation rather than uniform sector capitulation.",
@@ -221,11 +221,75 @@
           "quality": "repository verified"
         },
         {
-          "metric": "Fresh synchronized Friday QQQ/SOX, VXN/VIX, breadth, live CME FedWatch",
+          "metric": "Nasdaq-100 futures",
+          "value": -0.12,
+          "unit": "percent premarket change",
+          "source": "https://www.benzinga.com/markets/equities/26/11/63231225/stock-market-today-dow-jones-sp-500-futures-rise-nvidia-ceo-exit-remains-in-focus-csco-amat-nu-in-focus",
+          "sourceTime": "2026-11-13 morning report; exact underlying quote timestamp unspecified",
+          "quality": "published asynchronous premarket quote; not cash close"
+        },
+        {
+          "metric": "QQQ premarket",
+          "value": 686.97,
+          "unit": "USD/share",
+          "source": "https://www.benzinga.com/markets/equities/26/11/63231225/stock-market-today-dow-jones-sp-500-futures-rise-nvidia-ceo-exit-remains-in-focus-csco-amat-nu-in-focus",
+          "sourceTime": "2026-11-13 morning report; underlying quote time unspecified",
+          "quality": "published premarket quote, -0.17% reported"
+        },
+        {
+          "metric": "Nasdaq futures (alternate)",
+          "value": -0.17,
+          "unit": "percent futures change",
+          "source": "https://seekingalpha.com/news/4672205-sp500-nasdaq-dow-jones-outlook-stock-market",
+          "sourceTime": "2026-11-13 morning report; underlying quote time unspecified",
+          "quality": "asynchronous quote; not directly comparable to Benzinga"
+        },
+        {
+          "metric": "10Y Treasury (new report)",
+          "value": 5.12,
+          "unit": "percent yield",
+          "source": "https://www.benzinga.com/markets/equities/26/11/63231225/stock-market-today-dow-jones-sp-500-futures-rise-nvidia-ceo-exit-remains-in-focus-csco-amat-nu-in-focus",
+          "sourceTime": "2026-11-13 morning report; exact quote time unspecified",
+          "quality": "published quote, not synchronized with QQQ"
+        },
+        {
+          "metric": "2Y Treasury (new report)",
+          "value": 4.85,
+          "unit": "percent yield",
+          "source": "https://www.benzinga.com/markets/equities/26/11/63231225/stock-market-today-dow-jones-sp-500-futures-rise-nvidia-ceo-exit-remains-in-focus-csco-amat-nu-in-focus",
+          "sourceTime": "2026-11-13 morning report; exact quote time unspecified",
+          "quality": "published quote, not synchronized with QQQ"
+        },
+        {
+          "metric": "10Y–2Y spread (new report)",
+          "value": 27,
+          "unit": "basis points",
+          "source": "Benzinga reported 10Y and 2Y yields",
+          "sourceTime": "2026-11-13 morning report; underlying quote times unspecified",
+          "quality": "derived (5.12%-4.85%)*100; not synchronized with equity"
+        },
+        {
+          "metric": "Brent (updated report)",
+          "value": 96.35,
+          "unit": "USD/barrel",
+          "source": "https://www.reuters.com/business/energy/oil-prices-set-second-weekly-decline-trump-stay-with-iran-blockade-2026-11-13/",
+          "sourceTime": "2026-11-13 Reuters Friday update; exact underlying quote time unspecified",
+          "quality": "asynchronous published quote"
+        },
+        {
+          "metric": "WTI (updated report)",
+          "value": 88.94,
+          "unit": "USD/barrel",
+          "source": "https://www.reuters.com/business/energy/oil-prices-set-second-weekly-decline-trump-stay-with-iran-blockade-2026-11-13/",
+          "sourceTime": "2026-11-13 Reuters Friday update; exact underlying quote time unspecified",
+          "quality": "asynchronous published quote"
+        },
+        {
+          "metric": "Cash-session Friday SOX relative strength, breadth, VXN/VIX, live FedWatch",
           "value": null,
           "unit": "not available",
-          "source": "research 2026-11-13 04:51 EST",
-          "sourceTime": "2026-11-13 04:51 EST",
+          "source": "research at 2026-11-13 05:06 EST",
+          "sourceTime": "2026-11-13 05:06 EST",
           "quality": "unavailable; not invented"
         }
       ],
@@ -267,7 +331,7 @@
         }
       ],
       "provenance": {
-        "asOf": "2026-11-13 04:51 EST",
+        "asOf": "2026-11-13 05:06 EST",
         "sources": [
           "https://www.reuters.com/business/nasdaq-futures-fall-nvidia-turmoil-rattles-ai-stocks-2026-11-12/",
           "https://ca.investing.com/news/stock-market-news/nasdaq-futures-fall-as-nvidia-turmoil-rattles-ai-stocks-4951887",
@@ -288,18 +352,20 @@
           "https://www.wsj.com/economy/central-banking/upward-pressure-remains-in-treasury-yields-even-as-two-year-yield-stabilizes-0c267082",
           "https://ca.investing.com/news/stock-market-news/us-stock-futures-rise-after-nvidia-ceo-exit-spooks-wall-st-4954925",
           "https://au.investing.com/news/economy-news/stocks-recover-from-nvidia-whiplash-dollar-climbs-with-us-yields-4767458",
-          "https://apnews.com/article/f8edd0eeb1494d4d2584715686c5e619"
+          "https://apnews.com/article/f8edd0eeb1494d4d2584715686c5e619",
+          "https://www.benzinga.com/markets/equities/26/11/63231225/stock-market-today-dow-jones-sp-500-futures-rise-nvidia-ceo-exit-remains-in-focus-csco-amat-nu-in-focus",
+          "https://seekingalpha.com/news/4672205-sp500-nasdaq-dow-jones-outlook-stock-market"
         ],
         "dataQuality": "Thursday US cash-session observations remain the latest matched index/sector closes. WSJ Asian yields imply +26.7 basis points, but timestamps are not exchange-synchronized. Friday Reuters oil quotes are asynchronous. Mixed Asian chips do not verify US SOX recovery. No verified synchronized Friday QQQ/SOX, VXN/VIX, breadth, live CME FedWatch. PPI scheduled for 08:30 ET, not yet released. Open Watch count verified 162."
       },
       "editorial": {
-        "marketOverview": "The three-session outlook remains bearish with elevated downside risk as Thursday's limited Nasdaq and SOX losses mask a sharp Nvidia decline. AMD and Broadcom strength shows rotation within semiconductors rather than uniform liquidation. Friday's Asian session has not supplied a matched US benchmark confirmation.",
-        "whatChanged": "Since the 03:37 EST assessment, Reuters published oil quotes of Brent $96.04 and WTI $88.59, higher than the earlier asynchronous $95.45 and $88.39 observations, though not directly comparable tick-for-tick. AP reports mixed Asian chip performance. The curated Open Watch feed remains at 162 events; no verified new path-changing catalyst.",
-        "marketInterpretation": "The positive rival-chip moves and Thursday recovery from early lows indicate some absorption of Nvidia-specific uncertainty. Still, elevated Treasury yields and event risk argue against declaring a broad recovery. The 10Y 5.128% and 2Y 4.861% imply a +26.7bp curve; those Friday Asian quotes are not matched to current US equity trading. Expected catalyst effects must not be confused with confirmed market responses.",
-        "threeDayPath": "Friday November 13 is dominated by the 08:30 ET October PPI release and subsequent Treasury/semiconductor response. Monday November 16 tests whether QQQ and SOX can stabilize beyond a single rebound; Tuesday November 17 tests follow-through and further scheduled macro data. This is a conditional path, not a forecast of specific index returns.",
-        "bullCase": "A benign PPI reading, falling synchronized yields and contained oil could support a Nasdaq recovery if Nvidia stabilizes and SOX/QQQ relative strength broadens beyond AMD and Broadcom. Thursday's partial rebound and encouraging AI infrastructure earnings provide plausible support, but Friday US price confirmation is missing.",
-        "bearCase": "A hot PPI print could reinforce further Fed tightening expectations and push yields higher, pressuring long-duration technology stocks. Renewed Nvidia selling, weakening SOX and breadth, or an oil supply shock would reinforce downside risk. No fresh synchronized volatility or breadth series confirms acceleration yet.",
-        "watchNext": "Verify official October PPI at 08:30 ET, distinguish actual from consensus, then check synchronized 2Y/10Y yields, QQQ versus SOX, Nvidia/AMD/AVGO, VXN/VIX and breadth. Monitor Reuters oil updates and any genuinely new curated Open Watch events. Reassess on Monday and Tuesday with matched cash-session evidence."
+        "marketOverview": "Nasdaq/QQQ remains under a bearish three-session tactical bias after Thursday's leadership shock. The Nasdaq Composite lost 0.39% and SOX lost 0.54%, while Nvidia fell 4.34% and AMD and Broadcom rose 5.86% and 5.54%. Friday premarket reports show QQQ down 0.17% and Nasdaq futures modestly negative, but those quotes are not synchronized with semiconductor or volatility indicators. This is an indication of caution, not proof of a new breakdown.",
+        "whatChanged": "Compared with 04:51 EST, published premarket snapshots add QQQ $686.97 (-0.17%), Nasdaq-100 futures -0.12% in one report and Nasdaq futures -0.17% in another. Benzinga quotes 10Y 5.12% and 2Y 4.85%, a correctly calculated +27.0bp spread, versus an earlier +26.7bp from a different report. Reuters updated Brent to $96.35 and WTI to $88.94. Differences among snapshots are not reliable intraday trends because underlying timestamps are unspecified. Curated Open Watch remains at 162 events; no material new catalyst.",
+        "marketInterpretation": "The relatively shallow Thursday index loss despite Nvidia's sharp decline supports a rotation hypothesis, but persistent high yields and oil create an unfavorable discount-rate backdrop. Friday's soft premarket QQQ indication is consistent with caution; it is not yet a confirmed semiconductor-led downside impulse. The 27bp curve spread is correctly scaled from percentage yields and cannot establish a contemporaneous rate-equity relationship. Reported Fed hike expectations remain estimates rather than a fresh CME FedWatch read.",
+        "threeDayPath": "Friday November 13 is dominated by the 08:30 EST October PPI release, followed by the Treasury and semiconductor response. A hot surprise accompanied by rising yields and weak SOX/QQQ breadth would favor downside continuation into Monday November 16. A benign surprise and NVDA/SOX stabilization could produce a relief rally, which must persist through Monday to challenge the bearish bias. Tuesday November 17 brings import/export prices and potential AI-related company news, with Nvidia earnings timing still unconfirmed.",
+        "bullCase": "Thursday's recovery from the opening decline and strong AMD/Broadcom relative performance suggest the market may redistribute AI exposure rather than abandon it. Cisco and Applied Materials earnings support ongoing infrastructure demand. A favorable PPI print, falling matched yields, contained VXN/VIX, expanding breadth and semiconductor outperformance would improve the three-day outlook; none is yet jointly verified.",
+        "bearCase": "Nvidia leadership uncertainty, the weak SOX close, elevated 10-year yields near 5.12% and Brent near $96 create vulnerability to further valuation compression. Hot PPI or another oil/yield shock could accelerate risk reduction. A renewed NVDA/SOX decline with deteriorating breadth and rising volatility would validate a more severe downside path; that confirmation is not yet available.",
+        "watchNext": "Verify the official 08:30 EST PPI actual against consensus before attributing a market reaction. Then capture matched timestamps for QQQ, SOX, NVDA, 10Y/2Y, VXN/VIX, breadth and oil; check live FedWatch separately. Monitor the 162-event curated Open Watch feed for genuinely new catalysts, and confirm the issuer's Nvidia earnings date. Do not treat asynchronous premarket quotes as a synchronized cross-asset signal."
       }
     }
   ]
