@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-13T02:14:26.000Z",
+  "updated": "2026-11-13T02:54:18.000Z",
   "horizon": [
     "2026-11-13",
     "2026-11-16",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-12",
-      "timeET": "21:14",
+      "timeET": "21:54",
       "bias": "Bearish — Elevated Downside Risk",
       "previousBias": "Bearish — Elevated Downside Risk",
       "materialChange": false,
       "confidence": "Moderate-Low",
       "eventRisk": "Very High",
-      "summary": "No material change from the 19:38 EST assessment. November 12 closing Nasdaq -0.39%, SOX -0.54%, NVDA -4.34%, AMD +5.86% and AVGO +5.54% remain the last sourced cash-session observations. New overnight reporting confirms Nvidia's Thursday closing decline but does not establish fresh synchronized futures, QQQ, volatility, breadth, yields or oil. Friday October PPI remains pending at 08:30 EST. Prior Cisco and Applied Materials earnings evidence is supportive but not confirmed as broad sector market response. Open Watch remains 159 curated events at the latest repository update, 2026-11-12T23:58:32Z. Bearish — Elevated Downside Risk remains unchanged; confidence Moderate-Low and event risk Very High.",
+      "summary": "No verified material change versus the 21:14 EST assessment. Thursday cash closes remain Nasdaq -0.39%, SOX -0.54%, NVDA -4.34%, AMD +5.86%, AVGO +5.54%. November 13 October PPI remains pending at 08:30 EST. Fresh November 13 pre-release calendar reporting confirms the event, but not an actual PPI value or synchronized US overnight quotes. Curated Open Watch contains 159 events, last updated 2026-11-12T23:58:32+00:00. Bias remains Bearish — Elevated Downside Risk; Moderate-Low confidence, Very High event risk.",
       "bullish": [
         "Nasdaq closed -0.39% after opening -1.47%, showing substantial absorption of the initial Nvidia shock.",
         "AMD +5.86% and AVGO +5.54% at Thursday's close indicate selective chip rotation rather than uniform sector capitulation.",
@@ -133,14 +133,6 @@
           "quality": "stale asynchronous quote"
         },
         {
-          "metric": "Open Watch",
-          "value": 159,
-          "unit": "events",
-          "source": "data/history/market-watch-events.json",
-          "sourceTime": "2026-11-12T23:58:32Z",
-          "quality": "repository verified: 159 events, unchanged count; updated timestamp"
-        },
-        {
           "metric": "Applied Materials fiscal Q4 adjusted EPS",
           "value": 4.16,
           "unit": "USD/share",
@@ -165,12 +157,20 @@
           "quality": "published earnings report"
         },
         {
+          "metric": "Open Watch",
+          "value": 159,
+          "unit": "curated events",
+          "source": "data/history/market-watch-events.json",
+          "sourceTime": "2026-11-12T23:58:32+00:00",
+          "quality": "repository verified; count unchanged; no new curated event verified"
+        },
+        {
           "metric": "QQQ, VXN/VIX, breadth, matched 10Y/2Y, live CME FedWatch, current Brent/WTI",
           "value": null,
           "unit": "mixed",
           "source": "research",
-          "sourceTime": "2026-11-12 21:14 EST",
-          "quality": "fresh synchronized readings unavailable; do not interpret earlier session quotes as live"
+          "sourceTime": "2026-11-12 21:54 EST",
+          "quality": "fresh synchronized readings unavailable; historical observations above must not be treated as live"
         }
       ],
       "conditions": {
@@ -199,7 +199,7 @@
         }
       ],
       "provenance": {
-        "asOf": "2026-11-12 21:14 EST",
+        "asOf": "2026-11-12 21:54 EST",
         "sources": [
           "https://www.reuters.com/business/nasdaq-futures-fall-nvidia-turmoil-rattles-ai-stocks-2026-11-12/",
           "https://ca.investing.com/news/stock-market-news/nasdaq-futures-fall-as-nvidia-turmoil-rattles-ai-stocks-4951887",
@@ -208,18 +208,20 @@
           "https://www.investors.com/news/technology/applied-materials-amat-stock-fiscal-q4-2026-earnings/",
           "https://www.barrons.com/articles/cisco-beat-earnings-estimates-stock-ai-64619a24",
           "https://www.stocktitan.net/articles/stock-market-today-live-november-12-2026",
-          "https://www.stocktitan.net/articles/october-2026-ppi-preview-yearly-rate"
+          "https://www.stocktitan.net/articles/october-2026-ppi-preview-yearly-rate",
+          "https://www.newsquawk.com/headlines/newsquawk-daily-economic-release---13th-november-2026",
+          "https://www.bls.gov/schedule/2026/11_sched.htm"
         ],
-        "dataQuality": "Fresh research at 21:14 EST found no verified new synchronized QQQ/SOX, VXN/VIX, breadth, 10Y/2Y, Brent/WTI, or live FedWatch readings. Thursday closing reports are historical. 10Y-2Y spread +24.5 bp is derived from stale 12:32 EST yields, (5.105%-4.860%)*100; no scaling adjustment applied to live data. October PPI is not yet released; reported 6.6% year-over-year is a forecast, not actual. Open Watch last updated 23:58:32Z, 159 events. No material catalyst established."
+        "dataQuality": "Fresh November 13 calendar reporting confirms October PPI remains scheduled, not released. No timestamp-matched QQQ/SOX, VXN/VIX, breadth, 10Y/2Y, Brent/WTI or live FedWatch observed. Historical spread +24.5 basis points correctly computed as (5.105%-4.860%)*100 from November 12 12:32 EST, stale. Open Watch 159 events, updated 2026-11-12T23:58:32+00:00. No verified material catalyst or market response since previous assessment."
       },
       "editorial": {
-        "marketOverview": "Thursday's Nasdaq -0.39%, SOX -0.54% and Nvidia -4.34% closes show persistent AI leadership fragility, while AMD +5.86% and Broadcom +5.54% suggest selective rotation. Cisco and Applied Materials results support AI infrastructure demand, but their Friday regular-session impact has not occurred. The pre-PPI overnight market picture remains incomplete.",
-        "whatChanged": "Since the 19:38 EST snapshot, fresh overnight research has not verified a new material market catalyst or synchronized futures price response. Nvidia's -4.34% Thursday close was corroborated by a later market recap. Friday PPI expectations remain forecasts, not released data. Open Watch remains at 159 events; no new curated catalyst was established.",
-        "marketInterpretation": "The bearish near-term risk balance persists, but the Nasdaq's partial recovery and selective semiconductor strength limit conviction in a disorderly breakdown. The PPI surprise and the rates response, not an unverified futures quote, will determine whether this becomes a broader downside move. Missing synchronized volatility, breadth, Treasury and oil data constrain confidence.",
-        "threeDayPath": "Friday November 13: watch the 08:30 EST October PPI release, yields, then QQQ and SOX opening breadth and first regular-session reaction to CSCO/AMAT results. Monday November 16: assess continuation or reversal in NVDA, SOX and QQQ. Tuesday November 17: seek sustained confirmation. Conditional scenarios, not deterministic price targets.",
-        "bullCase": "Benign PPI versus expectations and lower synchronized Treasury yields could permit constructive AI infrastructure earnings to translate into broader chip buying. Sustained QQQ and SOX outperformance, Nvidia stabilization, improved breadth and contained volatility would challenge the bearish bias.",
-        "bearCase": "Hot PPI, higher synchronized yields and renewed Nvidia/SOX underperformance would reinforce valuation pressure. Deteriorating breadth and rising VXN/VIX would indicate a broader selloff; higher oil could amplify inflation concerns if verified.",
-        "watchNext": "At 08:30 EST Friday verify official October PPI actual versus consensus; then seek timestamp-matched QQQ/Nasdaq, SOX, NVDA, AMD, AVGO, AMAT, CSCO, Treasury 10Y/2Y, VXN/VIX, breadth, Brent/WTI and FedWatch. Recheck Open Watch for genuinely new curated events."
+        "marketOverview": "Nasdaq -0.39%, SOX -0.54% and NVDA -4.34% at Thursday's close remain the latest verified US cash-session signals. AMD +5.86% and AVGO +5.54% show rotation within semiconductors rather than uniform capitulation. Cisco and Applied Materials earnings were constructive for AI infrastructure demand but their Friday cash-session impact is unobserved. No fresh synchronized overnight quote set establishes a different risk regime.",
+        "whatChanged": "Relative to the 21:14 EST assessment, the November 13 economic-release calendar independently reconfirms US October PPI as a pending event. No actual release, timestamp-matched market repricing, or newly curated Open Watch catalyst is verified. Existing observations age further; this is a data-freshness update, not a directional change.",
+        "marketInterpretation": "Bearish risk remains elevated due to NVDA leadership fragility, rate sensitivity and inflation-event risk. Thursday's partial Nasdaq recovery and strength in AMD and AVGO prevent high conviction in a broad sector breakdown. The market's actual response to PPI and AMAT/CSCO matters more than an expected impact inferred from earnings.",
+        "threeDayPath": "Friday November 13: verify 08:30 EST October PPI actual and consensus, matched Treasury yields, then QQQ/SOX breadth and reaction to AI infrastructure earnings. Monday November 16: test semiconductor follow-through versus renewed NVDA weakness. Tuesday November 17: seek multi-session confirmation or reversal. Scenarios are conditional, not price forecasts.",
+        "bullCase": "A benign PPI surprise with easing matched yields, NVDA stabilization and sustained QQQ/SOX relative strength could validate a broader recovery. AMD and AVGO strength plus positive AI infrastructure earnings provide a foundation, but require market confirmation.",
+        "bearCase": "A hotter-than-expected PPI, higher yields, renewed NVDA/SOX weakness, worsening breadth and rising VXN/VIX would support a deeper drawdown. Higher oil would compound the inflation channel only if fresh observations confirm it.",
+        "watchNext": "Confirm official PPI release at 08:30 EST, then obtain timestamp-matched QQQ/Nasdaq, SOX, NVDA, AMD, AVGO, AMAT, CSCO, 10Y/2Y, VXN/VIX, breadth, Brent/WTI and FedWatch. Monitor curated Open Watch changes and distinguish expectations from realized price reaction."
       }
     }
   ]
