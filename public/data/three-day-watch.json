@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-13T20:31:40.000Z",
+  "updated": "2026-11-13T21:29:00.000Z",
   "horizon": [
-    "2026-11-13",
     "2026-11-16",
-    "2026-11-17"
+    "2026-11-17",
+    "2026-11-18"
   ],
   "archive": {
     "legacyPath": "data/history/three-day-watch/legacy-through-2026-11-10.json",
@@ -16,32 +16,48 @@
   "entries": [
     {
       "date": "2026-11-13",
-      "timeET": "15:31",
+      "timeET": "16:29",
       "bias": "Bearish — Elevated Downside Risk",
       "previousBias": "Bearish — Elevated Downside Risk",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Bearish elevated downside risk persists for Friday November 13 through Tuesday November 17. Reuters' later Friday report showed Nasdaq -0.93%, SOX -3.7% and Nvidia -2.2% in an asynchronous intraday snapshot, a partial recovery from the earlier roughly -5.1% SOX and -2% Nasdaq-100 report. This moderates immediate selling intensity but does not yet establish synchronized broad recovery or a material directional change.",
+      "summary": "Friday's verified Reuters closing report shows Nasdaq Composite -0.91%, S&P 500 -0.42%, Dow +0.09%; Nasdaq and S&P nonetheless gained for the week. Semiconductor and AI-financing weakness persists, but exact SOX close and matched QQQ, breadth and volatility observations are unverified. Bearish elevated downside remains the base case for November 16–18, without a new material directional change.",
       "bullish": [
-        "Later Reuters intraday reporting shows less severe Nasdaq and SOX declines than earlier coverage, consistent with possible partial stabilization; timestamps and instruments differ.",
-        "October PPI +0.3% month-over-month versus +0.4% expected offers limited disinflation relief.",
-        "AP reported Microsoft higher despite the services outage, and nontechnology sectors showed relative resilience; no verified synchronized sector breadth."
+        "Nasdaq and S&P 500 ended four-week losing streaks with weekly gains, according to Reuters, despite Friday losses.",
+        "Nasdaq's -0.91% closing loss was substantially less severe than earlier intraday Nasdaq-100 near -2% reporting, though the instruments differ.",
+        "October PPI +0.3% month over month versus +0.4% expected provides modest disinflation support."
       ],
       "bearish": [
-        "Reuters later reported SOX -3.7% and Nasdaq -0.93%, still substantial semiconductor underperformance versus broad indices.",
-        "Earlier Reuters coverage showed Nasdaq-100 approximately -2%, SOX -5.1%, and Nvidia-linked neoclouds nearly -9%; these were earlier intraday indications, not the latest matched prices.",
-        "October producer inflation 6.5% year-over-year and reported Fed tightening expectations sustain valuation pressure.",
-        "Previously observed Nasdaq breadth 2.03 decliners per advancer, 258 new lows versus 22 highs, remains stale, not a live breadth reading."
+        "Nasdaq -0.91% and S&P 500 -0.42% Friday close; technology remained under pressure.",
+        "Reuters earlier intraday SOX -3.7% (and another earlier -5.1% report), showing material semiconductor underperformance; neither is a verified close.",
+        "Nvidia leadership uncertainty and AI vendor-financing exposure continue to threaten semiconductor and neocloud demand expectations.",
+        "Annual PPI +6.5%, elevated yields and reported December Fed tightening expectations constrain valuation recovery."
       ],
       "observations": [
         {
-          "metric": "Nasdaq Composite",
-          "value": -0.93,
+          "metric": "Nasdaq Composite Friday close",
+          "value": -0.91,
           "unit": "percent vs previous close",
           "source": "https://www.reuters.com/business/nasdaq-futures-dip-nvidia-tumult-keeps-investors-edge-2026-11-13/",
-          "sourceTime": "2026-11-13 Friday intraday, article quote time unspecified",
-          "quality": "Reuters; asynchronous, not close"
+          "sourceTime": "2026-11-13 US regular-session close",
+          "quality": "Reuters confirmed close"
+        },
+        {
+          "metric": "S&P 500 Friday close",
+          "value": -0.42,
+          "unit": "percent vs previous close",
+          "source": "https://www.reuters.com/business/nasdaq-futures-dip-nvidia-tumult-keeps-investors-edge-2026-11-13/",
+          "sourceTime": "2026-11-13 US regular-session close",
+          "quality": "Reuters confirmed close"
+        },
+        {
+          "metric": "Dow Friday close",
+          "value": 0.09,
+          "unit": "percent vs previous close",
+          "source": "https://www.reuters.com/business/nasdaq-futures-dip-nvidia-tumult-keeps-investors-edge-2026-11-13/",
+          "sourceTime": "2026-11-13 US regular-session close",
+          "quality": "Reuters confirmed close"
         },
         {
           "metric": "SOX",
@@ -49,23 +65,7 @@
           "unit": "percent vs previous close",
           "source": "https://www.reuters.com/business/nasdaq-futures-dip-nvidia-tumult-keeps-investors-edge-2026-11-13/",
           "sourceTime": "2026-11-13 Friday intraday, article quote time unspecified",
-          "quality": "Reuters; same report, precise synchronization unverified"
-        },
-        {
-          "metric": "Nvidia",
-          "value": -2.2,
-          "unit": "percent vs previous close",
-          "source": "https://www.reuters.com/business/nasdaq-futures-dip-nvidia-tumult-keeps-investors-edge-2026-11-13/",
-          "sourceTime": "2026-11-13 Friday intraday, article quote time unspecified",
-          "quality": "Reuters; asynchronous"
-        },
-        {
-          "metric": "Earlier SOX",
-          "value": -5.1,
-          "unit": "percent vs previous close",
-          "source": "https://www.reuters.com/business/neoclouds-ai-stocks-slide-again-nvidia-turmoil-rattles-sector-2026-11-13/",
-          "sourceTime": "2026-11-13 earlier intraday, exact time unspecified",
-          "quality": "stale comparison, do not treat as latest"
+          "quality": "stale relative to Friday close; Reuters; same report, precise synchronization unverified"
         },
         {
           "metric": "October PPI",
@@ -73,7 +73,7 @@
           "unit": "percent month-over-month",
           "source": "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-13/",
           "sourceTime": "2026-11-13 08:30 EST release; secondary report",
-          "quality": "reported release; compare +0.4% expected"
+          "quality": "stale relative to Friday close; reported release; compare +0.4% expected"
         },
         {
           "metric": "October PPI annual",
@@ -81,7 +81,7 @@
           "unit": "percent year-over-year",
           "source": "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-13/",
           "sourceTime": "2026-11-13 08:30 EST release; secondary report",
-          "quality": "Reuters"
+          "quality": "stale relative to Friday close; Reuters"
         },
         {
           "metric": "Brent",
@@ -89,7 +89,7 @@
           "unit": "USD per barrel",
           "source": "https://www.reuters.com/business/energy/oil-prices-set-second-weekly-decline-trump-stay-with-iran-blockade-2026-11-13/",
           "sourceTime": "2026-11-13 Friday report, quote time unspecified",
-          "quality": "asynchronous"
+          "quality": "stale relative to Friday close; asynchronous"
         },
         {
           "metric": "WTI",
@@ -97,7 +97,7 @@
           "unit": "USD per barrel",
           "source": "https://www.reuters.com/business/energy/oil-prices-set-second-weekly-decline-trump-stay-with-iran-blockade-2026-11-13/",
           "sourceTime": "2026-11-13 Friday report, quote time unspecified",
-          "quality": "asynchronous"
+          "quality": "stale relative to Friday close; asynchronous"
         },
         {
           "metric": "10Y Treasury yield",
@@ -105,7 +105,7 @@
           "unit": "percent yield",
           "source": "https://apnews.com/article/f8edd0eeb1494d4d2584715686c5e619",
           "sourceTime": "2026-11-13 Friday report, exact quote time unspecified",
-          "quality": "AP; no synchronized 2Y"
+          "quality": "stale relative to Friday close; AP; no synchronized 2Y"
         },
         {
           "metric": "Prior 10Y-2Y spread",
@@ -113,7 +113,7 @@
           "unit": "basis points",
           "source": "previous repository assessment",
           "sourceTime": "2026-11-13 post-PPI, exact time unspecified",
-          "quality": "stale; (5.127%-4.836%)*100; not current"
+          "quality": "stale relative to Friday close; stale; (5.127%-4.836%)*100; not current"
         },
         {
           "metric": "Fed December 50bp hike probability",
@@ -121,7 +121,7 @@
           "unit": "percent probability",
           "source": "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-13/",
           "sourceTime": "2026-11-13 Friday report, quote time unspecified",
-          "quality": "reported pricing; not direct live CME FedWatch"
+          "quality": "stale relative to Friday close; reported pricing; not direct live CME FedWatch"
         },
         {
           "metric": "Open Watch event count",
@@ -129,58 +129,56 @@
           "unit": "curated events",
           "source": "data/history/market-watch-events.json",
           "sourceTime": "2026-11-13T18:24:41+00:00",
-          "quality": "repository verified at last read"
+          "quality": "repository verified; no new feed change"
         }
       ],
       "conditions": {
-        "bullishInvalidation": "Sustained recovery of QQQ/Nasdaq and SOX relative strength with positive breadth and easing VXN/VIX and yields at synchronized timestamps would invalidate bearish positioning.",
-        "bearishConfirmation": "Friday weak close and Monday breakdown of Friday lows, with SOX and AI financing-sensitive names lagging and breadth negative.",
-        "dataQuality": "All yields are percentage yields; convert 10Y-2Y difference to basis points by multiplying by 100. Prior +29.1bp spread is stale. No fresh matched 2Y, VXN/VIX or QQQ quote."
+        "bullishInvalidation": "Bearish bias weakens if Monday and Tuesday deliver sustained QQQ/Nasdaq gains, SOX outperformance, improving breadth, falling VXN/VIX and easing matched yields.",
+        "bearishConfirmation": "Break of Friday lows on Monday with negative breadth, SOX underperformance and AI-financing-sensitive selling.",
+        "dataQuality": "Yield units are percent; spread in basis points = (10Y percent - 2Y percent)*100. Previous +29.1 bp is stale and not a matched closing observation."
       },
       "upcomingEvents": [
         {
-          "date": "2026-11-13",
-          "event": "Friday close: confirm Nasdaq/QQQ, SOX, breadth, VXN/VIX and yields",
-          "status": "pending at 15:31 EST"
-        },
-        {
           "date": "2026-11-16",
-          "event": "Monday continuation versus oversold recovery; reported Anthropic IPO timing",
-          "status": "IPO timing unverified"
+          "event": "Monday post-selloff follow-through; monitor AI financing and reported Anthropic IPO preparations",
+          "status": "IPO date unverified"
         },
         {
           "date": "2026-11-17",
-          "event": "AI-related earnings including reported Nvidia results; verify issuer calendar",
-          "status": "issuer timing unverified"
+          "event": "Reported Nvidia earnings and other AI corporate catalysts",
+          "status": "issuer calendar not independently confirmed"
+        },
+        {
+          "date": "2026-11-18",
+          "event": "Wednesday follow-through, macro/Fed commentary and earnings",
+          "status": "specific release times unverified"
         }
       ],
       "provenance": {
-        "researchTimeET": "2026-11-13 15:31 EST",
+        "researchTimeET": "2026-11-13 16:29 EST",
         "repository": "repural/NasDecode main",
-        "previousSnapshotUpdated": "2026-11-13T18:39:13.000Z",
+        "previousSnapshotUpdated": "2026-11-13T20:31:40.000Z",
         "openWatchUpdated": "2026-11-13T18:24:41+00:00",
         "sources": [
           "https://www.reuters.com/business/nasdaq-futures-dip-nvidia-tumult-keeps-investors-edge-2026-11-13/",
           "https://www.reuters.com/business/neoclouds-ai-stocks-slide-again-nvidia-turmoil-rattles-sector-2026-11-13/",
-          "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-13/",
-          "https://www.reuters.com/business/energy/oil-prices-set-second-weekly-decline-trump-stay-with-iran-blockade-2026-11-13/",
-          "https://apnews.com/article/f8edd0eeb1494d4d2584715686c5e619"
+          "https://www.barrons.com/livecoverage/stock-market-news-today-111326/card/treasury-yields-hold-above-5-after-bruising-weekly-selloff-kvupPpCdoVRCIio0oDyL"
         ],
         "limitations": [
-          "Intraday quotes are asynchronous and some reports lack precise timestamps; do not infer synchronized market changes.",
-          "No verified latest QQQ, VXN/VIX, live Nasdaq breadth, matched 10Y/2Y or direct CME FedWatch.",
-          "Event timing for Anthropic IPO and Nvidia earnings requires issuer confirmation.",
-          "Curated Open Watch latest known update 18:24:41 UTC; not a new event."
+          "No independently verified SOX closing return or synchronized QQQ, VXN/VIX and breadth at Friday close.",
+          "Oil and Treasury readings are older asynchronous observations; do not treat as current close.",
+          "No direct live CME FedWatch; December pricing is secondary reporting.",
+          "Issuer event schedules unverified; no new Open Watch event since previous snapshot."
         ]
       },
       "editorial": {
-        "marketOverview": "Friday's Nasdaq and semiconductor selling remains pronounced, but a later Reuters snapshot showed Nasdaq -0.93%, SOX -3.7% and Nvidia -2.2%, less severe than the earlier Reuters account of Nasdaq-100 near -2% and SOX -5.1%. These are asynchronous intraday reports, not verified same-time cross-asset observations or closing prices. The narrower declines are consistent with partial stabilization, not proof of a durable reversal.",
-        "whatChanged": "Compared with the 13:39 EST repository snapshot, the later Reuters account suggests some moderation of the semiconductor rout. AP separately reported Brent settling at $95.84 and a 10-year yield near 5.15%, while Reuters' earlier oil report had Brent $95.77 and WTI $88.57. The Open Watch feed remains at 163 curated events as of 18:24:41 UTC. None of these inputs establishes a distinct new three-day regime change.",
-        "marketInterpretation": "The market continues to discount uncertainty around Nvidia leadership, AI-infrastructure financing and higher discount rates. Softer monthly PPI (+0.3% versus +0.4% expected) did not prevent selling, while 6.5% annual producer inflation and reported Fed-hike expectations limit relief. SOX still materially lags the broad market in the later Reuters report. An 11% reported probability of a 50bp December hike is secondary reporting, not a fresh live FedWatch reading.",
-        "threeDayPath": "For Friday November 13, confirmation at the cash close matters more than fluctuating intraday reports. Monday November 16 is the key test of whether Friday's semiconductor decline extends or produces an oversold bounce. Tuesday November 17 remains exposed to AI-related corporate catalysts and Fed repricing. Bearish elevated downside remains the base case, though a tactical rebound is plausible and should not be mistaken for sustained leadership without breadth and volatility confirmation.",
-        "bullCase": "A close materially off Friday's lows followed by synchronized QQQ and SOX outperformance, positive breadth, lower volatility and easing Treasury yields would weaken the bearish scenario. Limited PPI relief and resilient nontech groups can support a bounce, but the available evidence is not sufficient to upgrade the bias.",
-        "bearCase": "A weak Friday close and a Monday break below Friday lows would validate continuation. Persistent SOX weakness, pressure on AI-financing-linked equities, negative breadth and high yields could magnify Nasdaq downside despite softer monthly PPI. No exact probability is assigned because key synchronized measures are missing.",
-        "watchNext": "Obtain verified Friday closing levels and timestamp-aligned QQQ, SOX, VXN/VIX, Nasdaq breadth, 10Y and 2Y yields, Brent and WTI, and live CME FedWatch. Recheck the curated Open Watch feed and confirm actual issuer calendars for next week's AI events before attributing market moves to those catalysts."
+        "marketOverview": "Reuters confirmed Friday closing losses of 0.91% for the Nasdaq Composite and 0.42% for the S&P 500, while the Dow rose 0.09%. The Nasdaq and S&P nevertheless posted weekly gains, ending four-week losing streaks. Friday's closing Nasdaq loss is less severe than earlier Nasdaq-100 intraday declines, but differing instruments and timestamps prevent a direct intraday-to-close inference. Semiconductor selling remained central to the session's risk narrative; a reliable SOX closing print was not obtained.",
+        "whatChanged": "The material new observation versus the 15:31 EST snapshot is the verified Friday closing result, replacing reliance on asynchronous intraday reports for the broad Nasdaq and S&P 500. The latest reported SOX -3.7% remains intraday, not a verified closing figure. Open Watch is still at 163 events with the same 18:24:41 UTC feed timestamp. This close adds confidence that Friday was negative but does not establish a distinct regime change beyond the already identified semiconductor-led selloff.",
+        "marketInterpretation": "The weaker Nasdaq close alongside a slightly positive Dow suggests technology-specific stress, consistent with uncertainty over Nvidia leadership and the sustainability of AI infrastructure financing. The softer monthly PPI print offered little durable protection while annual producer inflation at 6.5%, high Treasury yields and reported Fed tightening expectations constrained multiples. A +29.1 basis-point Treasury spread from earlier unmatched data is only historical context; it cannot support a live curve claim.",
+        "threeDayPath": "The next three U.S. trading days are Monday November 16, Tuesday November 17 and Wednesday November 18. Monday is the first decisive test of whether semiconductor selling resumes after Friday's weak close or an oversold bounce develops. Tuesday's reported AI earnings and corporate news could increase gap risk, while Wednesday will test follow-through and whether leadership broadens. The base case remains bearish elevated downside risk, with potential countertrend rallies but no confirmed sector stabilization.",
+        "bullCase": "A Monday rally that holds above Friday's lows and extends into Tuesday with SOX outperforming QQQ, positive breadth, falling VXN/VIX and easing yields would challenge the bearish base case. Weekly gains in Nasdaq and S&P despite Friday weakness demonstrate that some demand remains, but one positive session without synchronized breadth and semiconductor leadership would be insufficient to establish a reversal.",
+        "bearCase": "A break below Friday lows combined with renewed SOX and AI infrastructure financing weakness would validate downside continuation. Persistent high yields, inflation concerns and tighter Fed expectations could magnify valuation pressure. No precise downside target or probability is justified without synchronized volatility, breadth and QQQ data.",
+        "watchNext": "Verify official Friday QQQ and SOX closing returns, VXN/VIX closes, Nasdaq advancing/declining volume and new highs/lows, paired 10Y/2Y closing yields and Brent/WTI settlement. Check direct CME FedWatch and issuer-confirmed earnings and IPO calendars, then compare Monday price response with expected catalysts. Re-read curated Open Watch for genuinely new items before any subsequent publication."
       }
     }
   ]
