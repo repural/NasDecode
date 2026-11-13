@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-13T10:51:55.000Z",
+  "updated": "2026-11-13T11:38:25.000Z",
   "horizon": [
     "2026-11-13",
     "2026-11-16",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-13",
-      "timeET": "05:51",
+      "timeET": "06:38",
       "bias": "Bearish — Elevated Downside Risk",
       "previousBias": "Bearish — Elevated Downside Risk",
       "materialChange": false,
       "confidence": "Moderate-Low",
       "eventRisk": "Very High",
-      "summary": "Bearish elevated-downside-risk outlook unchanged from 05:06 EST. New Reuters Friday premarket report quotes Nasdaq-100 futures -0.11%, NVDA +1.8%, and MSFT -2.6% following service outages; reported December 50bp Fed hike probability 12%. These are asynchronous premarket indications, not confirmed cash-session reversals. October PPI remains pending at 08:30 EST. Thursday Nasdaq -0.39%, SOX -0.54% and NVDA -4.34% remain verified closing evidence. Open Watch remains 162 events; fresh breadth, VXN/VIX, cash SOX and synchronized cross-asset quotes unavailable.",
+      "summary": "Bearish elevated-downside-risk outlook remains unchanged from 05:51 EST. Fresh Friday pre-PPI reporting places the 10Y Treasury near 5.130% and 2Y near 4.861%, an approximately +26.9bp spread, confirming continued elevated duration pressure without synchronized QQQ/SOX evidence. Reuters reports Nasdaq-100 futures -0.11%, NVDA +1.8% premarket and MSFT -2.6% premarket; underlying quote timestamps are not matched. October PPI remains scheduled for 08:30 EST, with no actual release yet. Open Watch remains at 162 events as of repository 08:28 UTC update. Friday cash SOX, breadth, VXN/VIX and live CME FedWatch remain unverified.",
       "bullish": [
         "Nasdaq closed -0.39% after opening -1.47%, showing substantial absorption of the initial Nvidia shock.",
         "AMD +5.86% and AVGO +5.54% at Thursday's close indicate selective chip rotation rather than uniform sector capitulation.",
@@ -333,6 +333,30 @@
           "source": "US cash market not open at 05:51 EST",
           "sourceTime": "2026-11-13 05:51 EST",
           "quality": "not invented"
+        },
+        {
+          "metric": "10Y Treasury (MarketWatch early Friday)",
+          "value": 5.13,
+          "unit": "percent yield",
+          "source": "https://www.marketwatch.com/livecoverage/stock-market-today-dow-s-p-500-nasdaq-nvidia-ceo-jensen-huang-resigns-ppi-inflation-data/card/treasury-yields-dip-after-rip-higher-as-traders-eye-producer-inflation-update-DWPpln4jMwV3Md2U8lld",
+          "sourceTime": "2026-11-13 early morning EST; exact quote timestamp unspecified",
+          "quality": "published indicative quote; not synchronized with equities"
+        },
+        {
+          "metric": "2Y Treasury (MarketWatch early Friday)",
+          "value": 4.861,
+          "unit": "percent yield",
+          "source": "https://www.marketwatch.com/livecoverage/stock-market-today-dow-s-p-500-nasdaq-nvidia-ceo-jensen-huang-resigns-ppi-inflation-data/card/treasury-yields-dip-after-rip-higher-as-traders-eye-producer-inflation-update-DWPpln4jMwV3Md2U8lld",
+          "sourceTime": "2026-11-13 early morning EST; exact quote timestamp unspecified",
+          "quality": "published indicative quote"
+        },
+        {
+          "metric": "10Y–2Y spread (MarketWatch early Friday)",
+          "value": 26.9,
+          "unit": "basis points",
+          "source": "MarketWatch 10Y and 2Y quoted yields",
+          "sourceTime": "2026-11-13 early morning EST; exact quote timestamp unspecified",
+          "quality": "derived (5.130-4.861)*100; not tick-synchronized"
         }
       ],
       "conditions": {
@@ -399,16 +423,18 @@
           "https://seekingalpha.com/news/4672205-sp500-nasdaq-dow-jones-outlook-stock-market",
           "https://www.reuters.com/business/nasdaq-futures-dip-nvidia-tumult-keeps-investors-edge-2026-11-13/"
         ],
-        "dataQuality": "Reuters Friday premarket indications are asynchronous and not matched to Thursday cash close or rates/oil. Friday cash SOX/breadth/VXN/VIX and live CME FedWatch unavailable. PPI is pending, consensus not actual. Treasury spread calculated from percentage yields *100 basis points; earlier rates/oil quotes remain stale. Open Watch verified at repository timestamp 2026-11-13T08:28:00+00:00."
+        "dataQuality": "No synchronized Friday QQQ/SOX/breadth/volatility quote; oil prices from earlier Reuters reporting are asynchronous; PPI pending; FedWatch live unverified; Treasury yields percent units and spread basis points verified.",
+        "runTimeET": "2026-11-13 06:38 EST",
+        "research": "Reuters November 13 premarket, MarketWatch Friday early Treasury, BLS release schedule, NasDecode GitHub main snapshot and Open Watch feed"
       },
       "editorial": {
-        "marketOverview": "Nasdaq enters Friday under pressure from Nvidia leadership uncertainty and elevated yields. The latest Reuters premarket report places Nasdaq-100 futures down 0.11%, versus earlier asynchronous reports of -0.12% and -0.17%. Thursday's verified cash close showed Nasdaq -0.39%, SOX -0.54%, and NVDA -4.34%, although AMD and Broadcom each advanced over 5%. A tentative NVDA premarket bounce does not establish a durable semiconductor reversal.",
-        "whatChanged": "Since the 05:06 EST snapshot, Reuters has reported NVDA +1.8% premarket, MSFT -2.6% premarket following lengthy Microsoft service outages, and Nasdaq futures -0.11%. The reported probability of a 50bp December Fed hike was 12%, compared with earlier 13% and 15% estimates from different observation times. These developments add dispersion and event sensitivity but do not verify a change in the three-day path. The curated Open Watch feed still contains 162 entries.",
-        "marketInterpretation": "Semiconductor relative strength is bifurcated: AMD and Broadcom's prior cash-session gains provide evidence of rotation, while NVDA and SOX weakness show leadership fragility. Microsoft's outage-linked premarket decline is a new near-term index headwind, but the causal and sustained price impact is unconfirmed. The 10Y/2Y yield pair reported at 5.12% and 4.85% implies +27.0bp, correctly scaled; those quotes are not synchronized with equity or oil. Brent $96.35 and WTI $88.94 remain earlier asynchronous published quotes. No fresh verified VIX/VXN, breadth, or live FedWatch data justify a stronger directional conviction.",
-        "threeDayPath": "Friday November 13 is dominated by the 08:30 EST October PPI release and the subsequent rates/NVDA/SOX reaction. Monday November 16 will test whether Friday's leadership and breadth signals persist or reverse. Tuesday November 17 adds import/export price data and potential semiconductor earnings anticipation. Base case remains choppy downside-skewed trading with elevated headline sensitivity; a verified post-PPI sector-led recovery could quickly invalidate this stance.",
-        "bullCase": "A softer-than-expected October PPI, falling matched yields, stable or rising NVDA and stronger SOX versus QQQ would favor a rebound. Positive Cisco and Applied Materials results, plus prior AMD/AVGO strength, provide underlying AI infrastructure demand support. Reuters' NVDA +1.8% premarket indication is encouraging but not proof of sustained buying.",
-        "bearCase": "A hotter PPI and rising yields could extend the discount-rate shock, especially if NVDA resumes falling and SOX underperforms QQQ. Microsoft service disruptions and its reported -2.6% premarket move add another mega-cap risk. Weak breadth and expanding volatility, if confirmed during cash trading, would reinforce downside conviction.",
-        "watchNext": "Verify the official 08:30 EST PPI actual versus 0.4% monthly headline, 0.3% monthly core and 6.6% yearly consensus; then compare synchronized 2Y/10Y, QQQ, NVDA, SOX, breadth and VXN/VIX after release and during the cash session. Monitor Open Watch for truly new catalysts and verify Nvidia earnings timing from issuer sources."
+        "marketOverview": "Nasdaq/QQQ enters Friday under elevated downside risk following Thursday's -0.39% Nasdaq and -0.54% SOX closes, with Nvidia -4.34% despite selective AMD and Broadcom strength. Reuters Friday premarket Nasdaq-100 futures -0.11%, NVDA +1.8% and MSFT -2.6% are indicative and asynchronous. October PPI has not been released at this checkpoint. Friday Treasury commentary indicates 10Y 5.130% and 2Y 4.861%, a correctly computed 26.9bp curve spread. Elevated discount rates and uncertain AI leadership remain the principal risks.",
+        "whatChanged": "Relative to the 05:51 EST assessment, a newer published Treasury pair (10Y 5.130%, 2Y 4.861%) supports the same high-rate backdrop and implies +26.9bp versus the earlier rounded +27bp. This is not a meaningful directional shift. Open Watch's last verified repository update remains 162 events at 08:28 UTC. No verified new event or synchronized equity/volatility reading changes the outlook.",
+        "marketInterpretation": "The negative Nasdaq/SOX cash closes and Nvidia weakness signal fragile leadership, although AMD and Broadcom's Thursday gains argue against indiscriminate semiconductor selling. Higher Treasury yields weigh on long-duration growth multiples. The premarket Nvidia rebound and Microsoft decline are not confirmed regular-session market responses. Expected PPI impact must remain conditional until actual data and ensuing cross-asset price reaction are observed.",
+        "threeDayPath": "Friday November 13 is dominated by the 08:30 EST October PPI release and the first synchronized rates/QQQ/SOX/breadth response after 09:30. Monday November 16 should reveal whether Friday's response persists or reverses. Tuesday November 17 adds earnings and event risk, including Nvidia earnings timing that requires independent confirmation. Base case remains volatile, downside-skewed consolidation rather than a confirmed directional breakdown.",
+        "bullCase": "Benign PPI, falling matched Treasury yields, sustained Nvidia stabilization, semiconductor outperformance and expanding Nasdaq breadth could turn Thursday's partial recovery into a durable rebound. Positive AMAT and Cisco earnings support the underlying AI-infrastructure demand thesis but have not yet demonstrated index-wide follow-through.",
+        "bearCase": "Hotter PPI or hawkish repricing could push 2Y/10Y yields higher and pressure expensive growth equities. Renewed Nvidia-led SOX weakness, weak breadth, rising VXN/VIX and persistent oil inflation pressure would reinforce the downside path. The Microsoft outage-related premarket drop is a potential additional drag, not yet confirmed in cash trading.",
+        "watchNext": "Verify the actual October PPI at BLS 08:30 EST; compare headline/core details with consensus and observe the synchronized 2Y/10Y, QQQ/Nasdaq, SOX, Nvidia, breadth and VXN/VIX response after cash open. Recheck Brent/WTI with source timestamps, CME FedWatch and the curated Open Watch feed. Avoid treating asynchronous published indications as simultaneous signals."
       }
     }
   ]
