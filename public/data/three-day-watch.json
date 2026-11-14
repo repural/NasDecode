@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-14T10:35:59.000Z",
+  "updated": "2026-11-14T12:25:44.000Z",
   "horizon": [
     "2026-11-16",
     "2026-11-17",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-14",
-      "timeET": "05:35",
+      "timeET": "07:25",
       "bias": "Bearish — Elevated Downside Risk",
       "previousBias": "Bearish — Elevated Downside Risk",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Saturday 05:35 EST review for November 16–18: Bearish — Elevated Downside Risk, moderate confidence, very high event risk; unchanged from Saturday 04:40 EST. No new U.S. regular-session market observations. Fresh November 14 market recaps corroborate Friday Nasdaq-100 approximately -1.2%, SOX -3.4%, and rotation toward equal-weight stocks, rather than a new Saturday decline. Open Watch remains 163 curated events, last updated November 13 23:46:19 UTC. Friday Treasury quotes imply +28.3bp 10Y–2Y spread but are not synchronized official closes. Direct live VIX/VXN, Nasdaq breadth and CME FedWatch remain unverified. Nvidia Tuesday evening and Wednesday FOMC minutes remain dominant path catalysts.",
+      "summary": "Saturday 07:25 EST checkpoint for November 16–18: Bearish — Elevated Downside Risk, moderate confidence and very high event risk; no verified material change from the previous 05:35 EST assessment. U.S. cash markets remain closed. Fresh review of November 14 WSJ and Barron's recaps confirms Friday's technology-specific selloff, while the November 12 Schaeffer's calendar and November 13 StockTitan earnings preview corroborate next week's event timing. No new realized market response. Open Watch remains 163 curated events (repository updated 2026-11-13T23:46:19+00:00). Reported 10Y 5.133% and 2Y 4.850% imply +28.3bp, not a verified synchronized close. VIX/VXN, direct FedWatch and Nasdaq advance/decline breadth remain unavailable.",
       "bullish": [
         "Nasdaq gained 2.3% for the week despite Friday's -0.91% decline (AP), showing residual demand.",
         "October PPI +0.3% month-on-month versus +0.4% expected offers limited inflation relief.",
@@ -353,6 +353,30 @@
           "source": "https://www.schaeffersresearch.com/content/news/2026/11/12/the-week-ahead-dow-earnings-fomc-meeting-minutes",
           "sourceTime": "2026-11-12 publication; rechecked 2026-11-14",
           "quality": "forward schedule; releases not yet observed"
+        },
+        {
+          "metric": "Saturday 07:25 EST verification checkpoint",
+          "value": "No new U.S. cash-session prints or verified path-changing catalyst; November 14 WSJ/Barron's reports recap Friday's semiconductor weakness and weekly rotation",
+          "unit": "qualitative",
+          "source": "https://www.barrons.com/articles/stockstoday-rotation-after-nvidia-3d0dbe00",
+          "sourceTime": "2026-11-14 publication; references November 13 close",
+          "quality": "secondary weekend recap, not new market response"
+        },
+        {
+          "metric": "Open Watch curated event count at 07:25 EST",
+          "value": 163,
+          "unit": "events",
+          "source": "data/history/market-watch-events.json",
+          "sourceTime": "2026-11-13T23:46:19+00:00",
+          "quality": "GitHub main read; no newly curated events versus prior assessment"
+        },
+        {
+          "metric": "November 16–18 catalyst calendar verification",
+          "value": "Nov 16 Empire State; Nov 17 retail sales and Nvidia after close; Nov 18 FOMC minutes",
+          "unit": "scheduled dates",
+          "source": "https://www.schaeffersresearch.com/content/news/2026/11/12/the-week-ahead-dow-earnings-fomc-meeting-minutes",
+          "sourceTime": "2026-11-12 article, reviewed 2026-11-14",
+          "quality": "prospective schedule; not market impact"
         }
       ],
       "conditions": {
@@ -425,16 +449,19 @@
         "repositorySnapshotRead": "public/data/three-day-watch.json",
         "openWatchCount": 163,
         "sourcePolicy": "Weekend sources are qualitative or recap; cash closing prices are from Nov 13, not Saturday. Yields are percentages, spread=(5.133-4.850)*100=28.3 bp, asynchronously reported; no synthetic synchronized curve.",
-        "latestResearch": "2026-11-14 05:35 EST; Friday closing observations carried forward, Saturday weekend recaps and forward calendar; repository Open Watch 163 events last updated 2026-11-13T23:46:19+00:00"
+        "latestResearch": "2026-11-14 05:35 EST; Friday closing observations carried forward, Saturday weekend recaps and forward calendar; repository Open Watch 163 events last updated 2026-11-13T23:46:19+00:00",
+        "checkpointUTC": "2026-11-14T12:25:44.000Z",
+        "repositoryOpenWatchUpdated": "2026-11-13T23:46:19+00:00",
+        "notes": "Weekend source verification; no new U.S. regular-session prints. Prior quoted prices retained with original timestamps and quality flags. New weekend sources: Barron's Nov 14, WSJ Nov 14, Schaeffer's Nov 12, StockTitan Nov 13."
       },
       "editorial": {
-        "marketOverview": "The next three U.S. trading sessions, November 16–18, begin after a technology-heavy Friday drawdown. Nasdaq fell 0.91%, QQQ approximately 1.2%, and SOX 3.4%, while equal-weight RSP rose 0.19% in secondary closing coverage. This is concentrated AI-hardware weakness, not a synchronized collapse in every stock. The semiconductor index also gained about 8.1% for the full week, limiting confidence in a one-directional extrapolation.",
-        "whatChanged": "Compared with the 04:40 EST assessment, Saturday news review and the repository Open Watch read revealed no verified new major catalyst, fresh regular-session price, or change in the 163 curated events. Additional reporting reinforces Friday's sector divergence and confirms the already-listed macro calendar; it does not warrant a changed bias. Weekend opinion about Nvidia and positioning is not treated as market confirmation.",
-        "marketInterpretation": "The working bearish bias reflects Friday's QQQ/SOX underperformance, Nvidia leadership stress and elevated reported Treasury yields. The reported 5.133% ten-year and 4.850% two-year yields yield a mathematically correct +28.3 basis-point spread, but their quote synchronization is unverified. Direct VXN/VIX, breadth counts, FedWatch and matched oil settlements are missing; their absence constrains confidence. No weekend quote is invented.",
-        "threeDayPath": "Monday November 16: watch whether Friday's semiconductor underperformance persists or stabilizes after the Empire State survey. Tuesday November 17: retail sales and other economic releases can move yields before Nvidia's anticipated after-close earnings; do not confuse pre-earnings moves with earnings reaction. Wednesday November 18: first regular-session response to Nvidia results and the FOMC minutes are likely to determine whether selling broadens or reverses. These are conditional scenarios, not realized returns.",
-        "bullCase": "A recovery becomes credible if QQQ recaptures Friday's lost ground while SOX and Nvidia lead, breadth broadens, volatility subsides and independently timestamped Treasury yields ease. The strong prior weekly SOX gain and Friday equal-weight resilience leave room for a rotation-driven rebound; constructive Nvidia guidance could strengthen it, but its impact cannot be observed in advance.",
-        "bearCase": "Further QQQ downside is favored if semiconductor weakness persists, Nvidia guidance raises spending or demand concerns, breadth deteriorates and volatility rises while yields remain elevated. A break below Friday lows with SOX underperformance would confirm the risk; adverse Wednesday Fed interpretation could extend it. Friday's AMD and Broadcom losses are confirmed historical evidence, not forecasts of new declines.",
-        "watchNext": "Obtain synchronized Monday QQQ, Nasdaq, SOX and breadth observations, VIX/VXN readings, official paired 10Y/2Y yields, Brent/WTI settlements and direct CME FedWatch before raising confidence. Recheck curated Open Watch for newly published events, validate Nvidia's earnings timing from investor relations, and compare Wednesday's actual market reaction against Tuesday's expected catalyst. Reassess immediately if a verified new development changes the three-day path."
+        "marketOverview": "The next three U.S. trading days (November 16–18) begin with a bearish technology leadership backdrop, not a fresh Saturday selloff. Friday's Nasdaq Composite -0.91%, QQQ roughly -1.2%, SOX -3.4%, AMD -8.8% and Broadcom -4.8% contrasted with a slightly positive Dow. Semiconductor weekly strength (SOX about +8%) and equal-weight resilience temper the breadth of the bearish claim: this is concentrated leadership pressure rather than confirmed indiscriminate liquidation.",
+        "whatChanged": "Compared with the 05:35 EST snapshot, the 07:25 EST weekend research found no new verified market print, no new curated Open Watch event, and no catalyst changing the three-day path. Barron's and WSJ weekend recaps corroborate the Friday decline and the stronger weekly semiconductor performance; the November 16–18 macro calendar was reconfirmed. No Saturday price movement is inferred from publication dates.",
+        "marketInterpretation": "The bearish tilt is driven by technology concentration, uncertainty around Nvidia's leadership and earnings, and elevated reported yields. The quoted 10Y 5.133% and 2Y 4.850% produce +28.3 basis points mathematically, but their precise timing is not synchronized and cannot be treated as an official curve close. Brent's reported Friday $95.84 settlement and asynchronous WTI $88.57 quotation are not a matched spread. Direct CME FedWatch, synchronized VIX/VXN and Nasdaq advance/decline breadth were not verified, limiting confidence.",
+        "threeDayPath": "Monday November 16: watch Empire State manufacturing and whether QQQ and SOX stabilize relative to broader equities. Tuesday November 17: retail sales and inflation-sensitive yields may set the intraday tone before Nvidia's expected after-close earnings. Wednesday November 18: earnings reaction, semiconductor participation and FOMC minutes may dominate repricing. These are conditional scenarios, not observed future returns.",
+        "bullCase": "A constructive reversal requires QQQ stabilization with SOX outperforming, broadening participation and easing yields/volatility. Strong Nvidia guidance could restore confidence, but any such reaction must be observed after Tuesday's report; the prior weekly SOX rally provides some evidence of underlying demand.",
+        "bearCase": "Further semiconductor underperformance, weak Nvidia guidance or a hawkish yield repricing could extend Friday's technology-specific drawdown. Rising VXN/VIX and deteriorating breadth would strengthen downside confirmation, but those synchronized readings are currently missing.",
+        "watchNext": "Monitor Monday QQQ/SOX versus equal-weight performance, Nasdaq advance/decline breadth, synchronized 10Y and 2Y yields with correct percentage-to-basis-point scaling, VIX/VXN, Brent and WTI settlements, direct CME FedWatch, new Open Watch events, Tuesday retail sales and Nvidia earnings, then Wednesday FOMC minutes and realized market response."
       }
     }
   ]
