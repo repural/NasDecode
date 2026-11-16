@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-16T11:58:00Z",
+  "updated": "2026-11-16T12:42:08Z",
   "horizon": [
     "2026-11-16",
     "2026-11-17",
@@ -16,23 +16,25 @@
   "entries": [
     {
       "date": "2026-11-16",
-      "timeET": "06:58",
+      "timeET": "07:42",
       "bias": "Bearish — Elevated Downside Risk",
       "previousBias": "Bearish — Elevated Downside Risk",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Nov 16 06:58 EST: Bearish — Elevated Downside Risk unchanged for Nov 16–18. Reuters reports Nasdaq 100 futures -0.97%, S&P futures -0.36%, NVDA -2.2% premarket, but this is an earlier unsynchronized premarket indication, not a fresh 06:58 synchronized quote. WSJ Nov 16 describes Nasdaq futures about -0.9%, Brent near $95.50 and WTI near $88.50, without exact synchronized quote timestamps. Last verified US cash response remains Friday Nasdaq -0.91%, QQQ -1.19%, SOX about -3.4%; prior SOX weekly +8.1%. Reported 10Y 5.136%, 2Y 4.856% imply +28.0bp (not 2800bp), Asian-session and not official closing pair. Open Watch 164 events updated 06:21 UTC, no newly curated catalyst. Empire State 08:30 ET, Warsh noon, Tuesday retail sales/Nvidia earnings and Wednesday FOMC minutes. VXN/VIX, comprehensive breadth, official synchronized yields and direct CME FedWatch not verified. No material change.",
+      "summary": "Nov 16 07:42 EST: Bearish — Elevated Downside Risk unchanged for Nov 16–18. New Barron's premarket report notes S&P futures -0.64%, VIX futures +4.50%, 10Y yield 5.124%, and Brent -1.01%, while Benzinga reports Nasdaq 100 futures -0.80%, S&P futures -0.39%. Different report/quote timestamps preclude synchronized cross-asset conclusions. Reuters previously reported Nasdaq futures -0.97% and NVDA -2.2%; Friday Nasdaq -0.91%, QQQ -1.19%, SOX about -3.4% remain last verified US cash outcomes. Monday 10Y 5.124% is not paired with a fresh 2Y; prior indicative 5.136%-4.856% = +28.0bp, not 2800bp. Open Watch unchanged at 164 events (06:21 UTC). Empire 08:30 ET not yet released; Warsh noon, Tuesday retail sales/Nvidia earnings, Wednesday FOMC minutes. Fresh synchronized VXN/VIX spot, full breadth and direct CME FedWatch unverified. No material change.",
       "bullish": [
         "SOX gained approximately 8.1% last week despite Friday's 3.4% selloff, leaving room for a chip-led relief rally if actual US cash leadership improves.",
         "WSJ November 16 reports Brent near $95.50 and WTI near $88.50, oil not accelerating from Friday settlements; unsynchronized quotes, not confirmed inflation relief.",
-        "Applied Materials' recently curated record fiscal Q4 revenue and AI equipment guidance support the longer-term chip demand case, not a confirmed Monday price reaction."
+        "Applied Materials' recently curated record fiscal Q4 revenue and AI equipment guidance support the longer-term chip demand case, not a confirmed Monday price reaction.",
+        "Barron's Nov 16 premarket reports 10Y yield easing to 5.124% and Brent down 1.01%; both are isolated indications, not synchronized risk-on confirmation."
       ],
       "bearish": [
         "Reuters November 16 US premarket reported Nasdaq 100 futures -0.97%, S&P 500 futures -0.36% and Nvidia -2.2%; WSJ separately reports Nasdaq futures about -0.9%. Times are not synchronized and are not US cash-market outcomes.",
         "Friday Nasdaq -0.91%, QQQ -1.19%, SOX about -3.4% remain the last verified US regular-session weakness.",
         "Asian semiconductor selling and uncertainty around Nvidia leadership and Tuesday earnings amplify sector gap risk.",
-        "Asian-session 10Y 5.136% and 2Y 4.856% imply an indicative +28.0bp curve, while elevated yields and hawkish Fed pricing constrain long-duration technology."
+        "Asian-session 10Y 5.136% and 2Y 4.856% imply an indicative +28.0bp curve, while elevated yields and hawkish Fed pricing constrain long-duration technology.",
+        "Barron's Nov 16 reports VIX futures +4.50% and S&P futures -0.64%, while Benzinga reports Nasdaq 100 futures -0.80%; quotes are asynchronous, and VIX futures are not VIX spot."
       ],
       "observations": [
         {
@@ -226,6 +228,46 @@
           "source": "https://www.wsj.com/finance/investing/stock-futures-slip-ahead-of-pivotal-week-for-ai-trade-with-nvidia-anthropic-in-focus-c1768330",
           "sourceTime": "2026-11-16 premarket; exact quote timestamp unverified",
           "quality": "approximate, asynchronous, not settlement"
+        },
+        {
+          "metric": "S&P 500 futures Barron's Monday premarket",
+          "value": -0.64,
+          "unit": "percent indicative change",
+          "source": "https://www.barrons.com/articles/s-p-500-futures-fall-in-premarket-trading-telus-corp-vaxcyte-lead-4ac44841",
+          "sourceTime": "2026-11-16 premarket; precise quote time not verified",
+          "quality": "reported premarket indication, not US cash"
+        },
+        {
+          "metric": "VIX futures Barron's Monday premarket",
+          "value": 4.5,
+          "unit": "percent change in futures",
+          "source": "https://www.barrons.com/articles/s-p-500-futures-fall-in-premarket-trading-telus-corp-vaxcyte-lead-4ac44841",
+          "sourceTime": "2026-11-16 premarket; precise quote time not verified",
+          "quality": "futures, not VIX spot or VXN"
+        },
+        {
+          "metric": "10Y Treasury yield Barron's Monday premarket",
+          "value": 5.124,
+          "unit": "percent yield",
+          "source": "https://www.barrons.com/articles/s-p-500-futures-fall-in-premarket-trading-telus-corp-vaxcyte-lead-4ac44841",
+          "sourceTime": "2026-11-16 premarket; precise quote time not verified",
+          "quality": "no synchronized 2Y pair; cannot derive fresh curve"
+        },
+        {
+          "metric": "Brent futures Barron's Monday premarket",
+          "value": -1.01,
+          "unit": "percent change",
+          "source": "https://www.barrons.com/articles/s-p-500-futures-fall-in-premarket-trading-telus-corp-vaxcyte-lead-4ac44841",
+          "sourceTime": "2026-11-16 premarket; precise quote time not verified",
+          "quality": "relative futures move; not price settlement"
+        },
+        {
+          "metric": "Nasdaq 100 futures Benzinga Monday premarket",
+          "value": -0.8,
+          "unit": "percent indicative change",
+          "source": "https://www.benzinga.com/markets/prediction-markets/26/11/63279199/stock-market-will-sp-500-open-up-or-down-today-78",
+          "sourceTime": "2026-11-16 early Monday, exact quote time not verified",
+          "quality": "asynchronous premarket report; not cash"
         }
       ],
       "conditions": {
@@ -253,19 +295,21 @@
           "WSJ Nov 16 stock futures, oil and Fed watch report",
           "WSJ Nov 16 Asian-session Treasury yield article (carried forward)",
           "NasDecode Nov 16 05:53 snapshot and Open Watch 06:21 UTC",
-          "TD Economics Nov 13 forward economic calendar"
+          "TD Economics Nov 13 forward economic calendar",
+          "Barron's Nov 16 premarket futures/volatility/10Y/Brent report",
+          "Benzinga Nov 16 Nasdaq futures premarket report"
         ],
-        "dataQuality": "No US regular session yet. Reuters -0.97% futures and WSJ approximately -0.9% futures are separately reported asynchronous indications, not a verified 06:58 quote. Friday cash returns carried forward. 10Y–2Y = (5.136%-4.856%)*100 = +28.0bp, reported Asian session, not official synchronized closing yield. WSJ Brent about $95.50 and WTI about $88.50 are approximate asynchronous indications, not settlements. No verified fresh VXN/VIX, full Nasdaq breadth, or direct CME FedWatch. Scheduled macro/earnings not mistaken for realized market reactions.",
+        "dataQuality": "Monday premarket reports are asynchronous. Barron's VIX futures +4.50% is not spot VIX or VXN. Barron's 10Y 5.124% lacks contemporaneous 2Y, so +28.0bp remains derived solely from prior paired Asian-session WSJ report: (5.136%-4.856%)*100. No Monday US cash session yet, no fresh complete Nasdaq breadth, no direct CME FedWatch, no verified Empire actual. Earlier Reuters and newer Barron's/Benzinga futures quotes must not be interpreted as synchronized movements.",
         "openWatchUpdatedUTC": "2026-11-16T06:21:00+00:00"
       },
       "editorial": {
-        "marketOverview": "The November 16–18 Nasdaq/QQQ outlook remains bearish with elevated downside risk and very high event sensitivity. Friday's Nasdaq, QQQ and SOX declines remain the last verified US cash-market reaction, while Monday premarket reports show technology and Nvidia under pressure. Semiconductor weekly strength is a counterweight, not yet a confirmed intraday reversal.",
-        "whatChanged": "Compared with the 05:53 EST assessment, no verified new directional catalyst or synchronized US cash evidence warrants a bias change. A separate November 16 WSJ premarket report describes Nasdaq futures around -0.9%, broadly consistent with Reuters' earlier -0.97%, while oil was reported near $95.50 Brent and $88.50 WTI. Different publication/quote times prevent treating these as a synchronized cross-asset tape. Open Watch still contains 164 records with its last update at 06:21 UTC.",
-        "marketInterpretation": "The key short-term risk is that AI/semiconductor leadership fails to recover as investors await Nvidia earnings and Fed communication. A modestly positive reported 10Y–2Y slope of 28 basis points is correctly scaled, but high absolute yields still weigh on long-duration growth. Oil appears below or near Friday settlement levels depending on timestamp; without synchronized observations it is not proof of a durable inflation relief impulse. No live VXN/VIX or breadth confirmation is available.",
-        "threeDayPath": "Monday November 16: verify Empire State manufacturing at 08:30 ET, then watch actual Nasdaq/QQQ/SOX trading, breadth and Fed Chair Warsh remarks at noon; premarket weakness may either persist or reverse. Tuesday November 17: retail sales and industrial production set rate-sensitive tone; Nvidia earnings after the close create a major overnight gap catalyst. Wednesday November 18: housing starts and 14:00 ET FOMC minutes may reprice yields and technology multiples. This is a conditional scenario, not a prediction of guaranteed daily returns.",
-        "bullCase": "A better-than-feared Monday cash open, persistent SOX relative strength, improving participation, lower yields and stable or falling oil could squeeze bearish positioning. Strong Nvidia guidance could validate AI demand and lift QQQ even if the initial futures tape is weak.",
-        "bearCase": "Weak QQQ/SOX participation at the US open, persistent Nvidia/AI financing concerns, hawkish Fed language or hotter data could reinforce discount-rate and earnings risks. An adverse Nvidia earnings surprise or oil rebound could extend selling into Wednesday.",
-        "watchNext": "Prioritize actual 09:30–16:00 ET QQQ/SOX cash leadership and Nasdaq breadth over stale futures. Capture official Empire actual versus forecast and subsequent rates response, VXN/VIX with timestamps, directly observed Fed probabilities if available, Tuesday retail sales and Nvidia earnings, Wednesday FOMC minutes. Preserve source and time provenance for every refreshed metric."
+        "marketOverview": "Nasdaq/QQQ remains bearish with elevated downside risk for November 16–18. Friday's verified QQQ, Nasdaq and SOX losses are the latest cash-market evidence; Monday premarket reports remain negative but vary by timestamp and instrument. Strong SOX weekly performance provides a potential relief-rally counterweight, not confirmation.",
+        "whatChanged": "Since 06:58 EST, Barron's separately reported S&P futures -0.64%, VIX futures +4.50%, 10Y yield 5.124%, and Brent down 1.01%. Benzinga separately reported Nasdaq 100 futures -0.80%. These do not represent one synchronized tape, and the VIX futures move must not be mislabeled as spot volatility. Open Watch remains 164 records, last updated 06:21 UTC. No verified material catalyst or directional reversal emerged.",
+        "marketInterpretation": "Risk aversion remains the dominant premarket interpretation given weaker equity futures and firmer volatility futures, but actual US market confirmation is still missing. A slightly lower reported 10Y yield and falling oil offer potential relief for long-duration technology, without proving inflation pressure has eased. The previous 10Y–2Y slope is +28.0bp; a fresh curve cannot be computed from the isolated 5.124% 10Y quote.",
+        "threeDayPath": "Monday November 16: Empire State manufacturing at 08:30 ET, then verify 09:30 ET QQQ/SOX cash leadership and breadth; Fed Chair Warsh remarks at noon may change rate expectations. Tuesday November 17: retail sales and industrial production set the macro tone ahead of Nvidia earnings after close, with large gap potential. Wednesday November 18: housing starts and FOMC minutes may reshape rate and growth expectations. Each path is conditional, not a forecast of guaranteed daily returns.",
+        "bullCase": "If the reported Treasury and oil easing persists and Monday's actual cash breadth and SOX/QQQ leadership improve, the negative futures setup could reverse. Nvidia's Tuesday earnings and guidance could support a chip-led rebound, especially after prior weekly SOX strength.",
+        "bearCase": "If QQQ and SOX remain weak after the cash open, VXN/VIX spot confirms rising stress, or inflation/Fed signals push yields back up, downside could extend. Disappointing Nvidia earnings or renewed oil supply disruptions would intensify the risk.",
+        "watchNext": "Verify the 08:30 ET Empire release and actual-versus-consensus, 09:30 ET Nasdaq/QQQ/SOX cash trading, breadth, VXN/VIX spot with timestamps, 2Y/10Y official paired yields, direct CME FedWatch if accessible, Warsh remarks, Tuesday retail sales and Nvidia earnings, Wednesday FOMC minutes. Separate realized market reactions from anticipated catalyst impact."
       }
     }
   ]
