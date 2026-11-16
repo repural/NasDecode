@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-16T06:24:56.137Z",
+  "updated": "2026-11-16T06:41:31Z",
   "horizon": [
     "2026-11-16",
     "2026-11-17",
@@ -16,24 +16,23 @@
   "entries": [
     {
       "date": "2026-11-16",
-      "timeET": "01:24",
+      "timeET": "01:41",
       "bias": "Bearish — Elevated Downside Risk",
       "previousBias": "Bearish — Elevated Downside Risk",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "2026-11-16 01:24 EST: Bearish — Elevated Downside Risk unchanged for Nov 16–18. Reuters Nov 16 01:35 UTC update reports Nasdaq futures -0.4% and Nikkei -1.7%, reversing an earlier indicative +0.5% Nasdaq futures report; observations are asynchronous, not US cash reaction. Open Watch now 164 events, updated 2026-11-16T06:21:00+00:00. Friday US cash remains latest; fresh synchronized VXN/VIX, Nasdaq breadth, paired official yields and live CME FedWatch unavailable.",
+      "summary": "2026-11-16 01:41 EST: Bearish — Elevated Downside Risk unchanged for Nov 16–18. Reuters Nov 16 01:35 UTC reported Nasdaq futures -0.4% and Nikkei -1.7%; AP Nov 16 reports Korea Kospi -2.8%, Taiwan Taiex -4.1% and Nikkei -1.6% in Asian trading. Regional chip weakness reinforces caution but is not a US SOX/QQQ cash-market reaction. Reuters early Nov 16 oil indications Brent $95.30, WTI $88.34; no synchronized settlement. Open Watch 164 records, updated 06:21 UTC. Synchronized VXN/VIX, Nasdaq breadth, official paired yields and direct CME FedWatch unavailable.",
       "bullish": [
-        "SOX reportedly rose 8.1% over the prior week despite Friday -3.4%; rebound capacity remains conditional.",
-        "Monday early Brent/WTI indications below Friday settlements may temper inflation concerns; not synchronized.",
-        "A sustained QQQ/SOX recovery with broad participation and easing yields could invalidate downside risk."
+        "Friday SOX weekly gain +8.1% remains a potential rebound counterweight despite Friday -3.4% session.",
+        "Reuters early Monday Brent $95.30 and WTI $88.34 indications are below Friday settlements, reducing immediate inflation pressure if sustained.",
+        "Financial Times Nov 16 argues AI-led selling has so far remained relatively contained outside data-center exposure; interpretation, not a fresh breadth measure."
       ],
       "bearish": [
-        "Reuters Nov 16 01:35 UTC reports Nasdaq futures -0.4%, after an earlier +0.5% indication; not a confirmed US cash-session move.",
-        "Reuters same update reports Nikkei -1.7%; Asian semiconductor pressure remains a risk indicator, not US SOX performance.",
-        "Friday Nasdaq -0.91%, QQQ -1.19%, SOX approximately -3.4% remain last confirmed US regular-session evidence.",
-        "High event risk from Tuesday Nvidia earnings and Wednesday FOMC minutes, with elevated reported Treasury yields.",
-        "Hormuz mine/tanker claims remain unverified; no confirmed physical oil disruption or synchronized oil-market response."
+        "AP Nov 16 reports Kospi -2.8%, Taiwan Taiex -4.1%, Nikkei -1.6% during Asian trading; semiconductor weakness is regionally broad, though no US cash reaction is yet established.",
+        "Reuters Nov 16 01:35 UTC Nasdaq futures -0.4% versus earlier +0.5% indications; quote timing matters.",
+        "Friday Nasdaq -0.91%, QQQ -1.19%, SOX approximately -3.4% are latest US cash observations.",
+        "Elevated yields and Nvidia earnings Tuesday / FOMC minutes Wednesday pose major repricing risks."
       ],
       "observations": [
         {
@@ -483,12 +482,36 @@
           "source": "data/history/market-watch-events.json",
           "sourceTime": "2026-11-16T06:21:00+00:00",
           "quality": "GitHub main verified; one additional record relative to previous snapshot; no independently established new material US cash catalyst"
+        },
+        {
+          "metric": "Nov 16 Asian equity declines (AP)",
+          "value": "Kospi -2.8%; Taiex -4.1%; Nikkei -1.6%",
+          "unit": "percent during Nov 16 Asian trading",
+          "source": "https://apnews.com/article/35786b8f539ec95f16ae0500f71cfcc7",
+          "sourceTime": "2026-11-16 publication; precise synchronized market timestamps unavailable",
+          "quality": "AP reported Asian-market indications; not US SOX or Nasdaq cash performance"
+        },
+        {
+          "metric": "Nov 16 early oil indications",
+          "value": "Brent 95.30; WTI 88.34",
+          "unit": "USD per barrel",
+          "source": "https://www.reuters.com/business/energy/oil-prices-fall-expectations-coming-supply-surplus-2026-11-16/",
+          "sourceTime": "2026-11-16 Reuters early Monday report; exact quote time unavailable",
+          "quality": "Reuters indicative quotes, asynchronous; not settlements"
+        },
+        {
+          "metric": "Nov 16 FT market breadth interpretation",
+          "value": "AI/data-center weakness described as concentrated; broader S&P 500 pullback less than 2% since late October",
+          "unit": "qualitative analysis and approximate percent",
+          "source": "https://www.ft.com/content/a61f1fe9-55d9-498e-9ecc-c3a66980d63a",
+          "sourceTime": "2026-11-16 FT publication",
+          "quality": "commentary; not synchronized Nasdaq advance/decline breadth"
         }
       ],
       "conditions": {
-        "bullishInvalidation": "Sustained SOX/QQQ recovery with broader breadth, lower yields, contained Brent/WTI and no confirmed Hormuz disruption would invalidate elevated downside risk.",
-        "bearishConfirmation": "Confirmed Hormuz shipping impairment and sustained oil/yield surge, alongside SOX weakness and volatility expansion, would strengthen downside; Nvidia guidance disappointment adds independent pressure.",
-        "dataLimitations": "US regular session not yet open; Reuters Monday futures and Asian stocks asynchronous. No synchronized VXN/VIX, complete Nasdaq breadth, official paired Treasury yields or live CME FedWatch. 10Y 5.133% minus 2Y 4.850% = +28.3 basis points (not 2830). Unverified tanker claims are not treated as confirmed disruption."
+        "bullishInvalidation": "Sustained Monday US QQQ and SOX recovery with improving actual Nasdaq breadth, declining 10Y yields and VXN, and contained crude would invalidate elevated downside risk.",
+        "bearishConfirmation": "US cash SOX underperformance, widening VXN/VIX and weak Nasdaq breadth alongside rising yields or verified oil disruption would reinforce downside; Nvidia guidance disappointment would add independent pressure.",
+        "dataLimitations": "Friday is latest verified US cash session. Monday Asian market readings and futures are asynchronous; no synchronized VXN/VIX, full Nasdaq breadth, official paired Treasury yields or direct CME FedWatch. Previously reported 5.133% 10Y and 4.850% 2Y imply +28.3 basis points, not 2830. Tanker incidents remain unverified."
       },
       "upcomingEvents": [
         {
@@ -518,52 +541,28 @@
         }
       ],
       "provenance": {
-        "reviewedAt": "2026-11-16T06:24:56.137Z",
-        "sources": [
-          "GitHub main 3-Day Watch snapshot and Open Watch history",
-          "Reuters Nov 13 IEA oil surplus report",
-          "Reuters Nov 15 Bab el-Mandeb security report",
-          "StockTitan Nov 13 Nvidia earnings calendar",
-          "StoneX Nov 13 Treasury and Fed-expectations commentary",
-          "Reuters Nov 14 Iranian tanker mine claims (not independently verified)",
-          "Reuters Nov 15 Gulf equity market reaction",
-          "StoneX Nov 15 Nasdaq rebound analysis",
-          "Reuters Nov 15 Gulf bourses and Iranian mine claims",
-          "AFP Nov 15 supertanker sinking claim as reported by Gulf News",
-          "Reuters Nov 15 Gulf bourses slide amid Hormuz concerns (fresh review)",
-          "Reuters Nov 14 Iranian mine claims (explicitly unverified)",
-          "Reuters syndicated Gulf Times Nov 15 Kpler vessel traffic, chronology caveat",
-          "Reuters Nov 13 IEA forecast Q4 oil surplus 1.7 million bpd; forecast, not observed outcome",
-          "Reuters November 16 Asian market report https://www.reuters.com/world/china/global-markets-global-markets-2026-11-16/",
-          "GitHub main Open Watch 2026-11-16T06:21:00+00:00"
-        ],
-        "dataQuality": "Reuters November 16 futures/Asian stocks are asynchronous indications; Friday US cash is latest. Oil indications are not synchronized settlements. No live VXN/VIX, comprehensive breadth, official paired Treasury closing yields or direct CME FedWatch. Unverified tanker claims excluded as facts.",
-        "checkpointUTC": "2026-11-16T06:24:56.137Z",
+        "reviewedAt": "2026-11-16T06:41:31Z",
         "repository": "repural/NasDecode main",
         "openWatchUpdated": "2026-11-16T06:21:00+00:00",
         "openWatchCount": 164,
-        "comparison": "Prior 2026-11-16 00:22 ET; no verified material bias change",
-        "latestReview": "2026-11-15 14:38 EST",
-        "dataQualityNote": "Early Monday oil quotes asynchronous and not settlements; US cash closed; no synchronized VXN/VIX, Nasdaq breadth, official paired Treasury yields or live CME FedWatch. Curve in bp = (5.133-4.850)*100=28.3. Reuters tanker claims unverified.",
-        "checkedAtUTC": "2026-11-15T19:38:25Z",
-        "sourceDateCorrection": "Gulf Times / Reuters Kpler article is dated 2026-09-15, not 2026-11-15; historical shipping figures excluded",
-        "newSources": [
+        "comparison": "Compared with 2026-11-16 01:24 EST snapshot; no material change",
+        "sources": [
           "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-16/",
-          "https://www.reuters.com/business/energy/oil-prices-fall-expectations-coming-supply-surplus-2026-11-16/"
+          "https://apnews.com/article/35786b8f539ec95f16ae0500f71cfcc7",
+          "https://www.reuters.com/business/energy/oil-prices-fall-expectations-coming-supply-surplus-2026-11-16/",
+          "https://www.ft.com/content/a61f1fe9-55d9-498e-9ecc-c3a66980d63a",
+          "GitHub main latest snapshot and curated Open Watch"
         ],
-        "runReview": "Fresh Reuters Nov 16 oil report reviewed; Friday equity and yield evidence retained with source timestamps. US cash not yet open. No independently confirmed material change.",
-        "runReviewedET": "2026-11-15 23:22 EST",
-        "researchCheckpoint": "2026-11-16T00:47:00Z",
-        "reviewedAtUTC": "2026-11-16T05:22:56Z"
+        "dataQuality": "US cash not yet open. AP Asian equity moves and Reuters futures are asynchronous; oil indicative, not settlements. Friday Treasury yields from secondary report, 10Y-2Y +28.3bp correctly scaled. VXN/VIX, complete Nasdaq breadth, official paired yields, live CME FedWatch unavailable. No verified new physical Hormuz outage or market response."
       },
       "editorial": {
-        "marketOverview": "Friday's Nasdaq -0.91%, QQQ -1.19% and SOX about -3.4% remain the last verified U.S. cash-market observations. Reuters' November 16 01:35 UTC report puts Nasdaq futures down 0.4% and Nikkei down 1.7%, contrasting with earlier futures indications of +0.5%. This suggests fragile overnight sentiment but does not establish a Monday U.S. regular-session outcome.",
-        "whatChanged": "Since the prior 00:22 EST assessment, the Reuters Asian-market update reports weaker Nasdaq futures and Nikkei performance. The Open Watch repository file is now updated 2026-11-16T06:21:00+00:00, with 164 curated records versus the previous 163. The additional record is not independently established as a new market-moving U.S. catalyst. These updates reinforce caution but do not change the three-day bearish baseline.",
-        "marketInterpretation": "Semiconductor leadership and Nvidia governance uncertainty remain the principal equity transmission channels. Reported Friday 10Y 5.133% and 2Y 4.850% yield indications imply +28.3bp, but their exact synchronized closing timestamps are not verified. Friday RSP +0.19% offers only an imperfect breadth proxy, not comprehensive Nasdaq breadth. Live VXN/VIX and CME FedWatch have not been verified. Lower indicative crude prices mitigate inflation concerns, while geopolitical disruption reports require independent confirmation.",
-        "threeDayPath": "Monday November 16: Empire State manufacturing at 08:30 ET and the opening QQQ/SOX response will distinguish overnight futures from actual cash positioning. Tuesday November 17: retail sales at 08:30 ET, industrial production at 09:15 ET and Nvidia results after close can alter both growth and AI leadership expectations. Wednesday November 18: housing starts at 08:30 ET, the first cash response to Nvidia results and FOMC minutes at 14:00 ET. The base case remains choppy sideways-to-lower with elevated gap risk.",
-        "bullCase": "An opening stabilization that persists through U.S. cash trade, supported by SOX outperformance, improving Nasdaq breadth, easing Treasury yields and contained crude, could reverse the bearish setup. Positive Nvidia demand guidance with credible leadership clarity would strengthen the rebound case. Overnight futures alone are not enough to confirm it.",
-        "bearCase": "A failed U.S. opening rebound with sustained SOX underperformance, elevated yields and widening volatility would confirm downside. Disappointing retail sales or Nvidia guidance could accelerate de-risking ahead of Wednesday's Fed minutes. Confirmed Hormuz oil disruption would add an inflation shock, but existing tanker claims remain unverified.",
-        "watchNext": "Check Empire State manufacturing at 08:30 ET and then obtain synchronized U.S. cash QQQ/Nasdaq, SOX, breadth, VXN/VIX, official 10Y/2Y yields, Brent/WTI and FedWatch readings. Monitor newly curated Open Watch records for confirmed market response rather than predicted direction; prioritize Tuesday Nvidia and Wednesday FOMC minutes."
+        "marketOverview": "Friday's Nasdaq -0.91%, QQQ -1.19% and SOX about -3.4% remain the last U.S. cash-session observations. Asian markets were weaker Monday: AP reports Korea's Kospi -2.8%, Taiwan's Taiex -4.1% and Japan's Nikkei -1.6%, reinforcing global AI and semiconductor fragility. Reuters earlier indicated Nasdaq futures -0.4%; these are different markets and nonsynchronized quotes, not a U.S. opening verdict.",
+        "whatChanged": "Compared with the 01:24 EST snapshot, AP's broader Asian equity account adds corroboration of regional chip-market stress, and Reuters' early oil figures remain modestly below Friday settlement. No newly verified U.S. market response or independent major catalyst warrants a change in bias. The 164 curated Open Watch events were reviewed; no later repository update was found.",
+        "marketInterpretation": "Semiconductor leadership remains the critical transmission channel to QQQ, but Asian weakness is a warning rather than proof of Monday SOX selling. The FT characterizes the recent AI drawdown as more concentrated than a generalized equity panic, a bullish counterweight that cannot replace measured Nasdaq breadth. Previously reported 10Y 5.133% and 2Y 4.850% imply +28.3bp, with closing synchronization unverified. Live VXN/VIX and FedWatch are not established. Oil's early decline may soften inflation concerns, while unverified Hormuz tanker claims should not be counted as physical supply losses.",
+        "threeDayPath": "Monday November 16: Empire State manufacturing at 08:30 ET and then the first liquid U.S. cash QQQ/SOX/breadth response will determine whether Asia's selling spills over. Tuesday November 17: retail sales 08:30 ET, industrial production 09:15 ET, and Nvidia earnings after close may alter both growth and AI leadership expectations. Wednesday November 18: housing starts 08:30 ET, first cash reaction to Nvidia earnings and FOMC minutes 14:00 ET. Baseline remains choppy sideways-to-lower, with high gap risk rather than a deterministic daily decline.",
+        "bullCase": "A sustained QQQ recovery accompanied by SOX relative strength, broad participation, softer yields and contained Brent/WTI would weaken the bearish case. Strong Nvidia demand guidance and credible leadership clarity could catalyze a sharper recovery. Asian or overnight futures reversals alone are insufficient confirmation.",
+        "bearCase": "A failed Monday cash-session bounce with SOX underperforming, volatility expanding and yields staying elevated would reinforce de-risking. Tuesday's Nvidia guidance disappointment or weak retail sales could amplify pressure before Wednesday Fed minutes. Verified maritime disruption and a sustained oil rebound would worsen the inflation channel, but present tanker claims remain unconfirmed.",
+        "watchNext": "Check Empire State at 08:30 ET, then synchronized QQQ/Nasdaq and SOX prices, Nasdaq breadth, VXN/VIX, official Treasury 10Y/2Y, Brent/WTI and CME FedWatch when available. Watch for new Open Watch entries that demonstrate actual market confirmation, rather than interpreting expected impact as observed price response."
       }
     }
   ]
