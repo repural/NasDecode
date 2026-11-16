@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-16T02:12:43Z",
+  "updated": "2026-11-16T03:35:15Z",
   "horizon": [
     "2026-11-16",
     "2026-11-17",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-15",
-      "timeET": "21:12",
+      "timeET": "22:35",
       "bias": "Bearish — Elevated Downside Risk",
       "previousBias": "Bearish — Elevated Downside Risk",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Nov 15 21:12 EST: Bearish — Elevated Downside Risk unchanged for Nov 16–18. Friday Nasdaq -0.91%, QQQ -1.19%, SOX approximately -3.4%; weekly SOX +8.1%. Reuters early-Nov-16 oil reporting quotes Brent $95.37 and WTI $88.33, softer than Friday settlements, and describes near-normalizing Hormuz shipping, counterbalancing unverified tanker-mine claims. Quotes are asynchronous early-session indications, not synchronized settlement. No verified new U.S. cash reaction or material bias change.",
+      "summary": "Nov 15 22:35 EST: Bearish — Elevated Downside Risk unchanged for Nov 16–18. Latest verified US cash session remains Friday: Nasdaq -0.91%, QQQ -1.19%, SOX about -3.4%; SOX +8.1% over the week. Reuters early Nov 16 reports Brent $95.37 and WTI $88.33, below Friday settlements, with Hormuz shipping nearly back to pre-war levels. No synchronized fresh US equity, volatility, breadth, Treasury or FedWatch confirmation; no material directional change.",
       "bullish": [
         "SOX's reported +8.1% weekly gain and Nasdaq +2.3% weekly gain show residual rebound capacity despite Friday selling.",
         "Reported October PPI +0.3% month-over-month versus +0.4% consensus offers some inflation relief.",
@@ -455,28 +455,36 @@
           "quality": "stale; not current VIX/VXN"
         },
         {
-          "metric": "Early Monday Brent indication",
-          "value": 95.37,
-          "unit": "USD per barrel",
-          "source": "https://www.reuters.com/business/energy/oil-prices-fall-expectations-coming-supply-surplus-2026-11-16/",
-          "sourceTime": "2026-11-16 Reuters early Monday report; precise quote time unverified",
-          "quality": "Reuters-reported indicative futures quote; not settlement; asynchronous"
-        },
-        {
-          "metric": "Early Monday WTI indication",
-          "value": 88.33,
-          "unit": "USD per barrel",
-          "source": "https://www.reuters.com/business/energy/oil-prices-fall-expectations-coming-supply-surplus-2026-11-16/",
-          "sourceTime": "2026-11-16 Reuters early Monday report; precise quote time unverified",
-          "quality": "Reuters-reported indicative futures quote; not settlement; asynchronous"
-        },
-        {
           "metric": "Hormuz shipping context",
           "value": "Reuters says transits nearly returned to pre-war levels; Iranian state-media tanker mine/fire claim not independently verified",
           "unit": "qualitative shipping report",
           "source": "https://www.reuters.com/business/energy/oil-prices-fall-expectations-coming-supply-surplus-2026-11-16/",
           "sourceTime": "2026-11-16 early Monday report",
           "quality": "Reuters reporting; no synchronized Nasdaq market response"
+        },
+        {
+          "metric": "Early Monday Brent indication",
+          "value": 95.37,
+          "unit": "USD/barrel",
+          "source": "https://www.reuters.com/business/energy/oil-prices-fall-expectations-coming-supply-surplus-2026-11-16/",
+          "sourceTime": "2026-11-16 Reuters early Monday report; exact quote timestamp not verified",
+          "quality": "asynchronous indicative quote; not settlement"
+        },
+        {
+          "metric": "Early Monday WTI indication",
+          "value": 88.33,
+          "unit": "USD/barrel",
+          "source": "https://www.reuters.com/business/energy/oil-prices-fall-expectations-coming-supply-surplus-2026-11-16/",
+          "sourceTime": "2026-11-16 Reuters early Monday report; exact quote timestamp not verified",
+          "quality": "asynchronous indicative quote; not settlement"
+        },
+        {
+          "metric": "Open Watch curated event count at run",
+          "value": 163,
+          "unit": "events",
+          "source": "data/history/market-watch-events.json",
+          "sourceTime": "2026-11-13T23:46:19+00:00",
+          "quality": "read from GitHub main; no new curated event since previous snapshot"
         }
       ],
       "conditions": {
@@ -512,7 +520,7 @@
         }
       ],
       "provenance": {
-        "reviewedAt": "2026-11-16T02:12:43Z",
+        "reviewedAt": "2026-11-16T03:35:15Z",
         "sources": [
           "GitHub main 3-Day Watch snapshot and Open Watch history",
           "Reuters Nov 13 IEA oil surplus report",
@@ -529,32 +537,32 @@
           "Reuters syndicated Gulf Times Nov 15 Kpler vessel traffic, chronology caveat",
           "Reuters Nov 13 IEA forecast Q4 oil surplus 1.7 million bpd; forecast, not observed outcome"
         ],
-        "dataQuality": "Fresh synchronized volatility, breadth, CME FedWatch and Treasury closing curve unavailable; oil and futures quotes asynchronous.",
-        "checkpointUTC": "2026-11-16T02:12:43Z",
+        "dataQuality": "Oil indications asynchronous; no new synchronized QQQ/SOX, VXN/VIX, Nasdaq breadth, official Treasury yield pair or live CME FedWatch; tanker mine claims unverified.",
+        "checkpointUTC": "2026-11-16T03:35:15Z",
         "repository": "repural/NasDecode main",
         "openWatchUpdated": "2026-11-13T23:46:19+00:00",
         "openWatchCount": 163,
-        "comparison": "Prior 2026-11-15 19:47 EST snapshot; bias unchanged, no material confirmed shift",
+        "comparison": "Compared to previous Nov 15 21:12 EST snapshot; no newly confirmed material directional shift",
         "latestReview": "2026-11-15 14:38 EST",
         "dataQualityNote": "Early Monday oil quotes asynchronous and not settlements; US cash closed; no synchronized VXN/VIX, Nasdaq breadth, official paired Treasury yields or live CME FedWatch. Curve in bp = (5.133-4.850)*100=28.3. Reuters tanker claims unverified.",
         "checkedAtUTC": "2026-11-15T19:38:25Z",
         "sourceDateCorrection": "Gulf Times / Reuters Kpler article is dated 2026-09-15, not 2026-11-15; historical shipping figures excluded",
         "newSources": [
           "https://www.reuters.com/business/energy/oil-prices-fall-expectations-coming-supply-surplus-2026-11-16/",
-          "https://economics.td.com/domains/economics.td.com/documents/reports/bottom-line/tables/2026-11-13/upcoming.htm"
+          "https://www.stocktitan.net/articles/earnings-calendar-week-of-november-16-2026"
         ],
-        "runReview": "2026-11-15 17:58 EST; Friday market observations carried forward with original timestamps; new Nov 15 Reuters regional reporting; no live synchronized US market data confirmed.",
-        "runReviewedET": "2026-11-15 19:18 EST",
+        "runReview": "Fresh Reuters Nov 16 oil report reviewed; Friday equity and yield evidence retained with source timestamps. US cash not yet open. No independently confirmed material change.",
+        "runReviewedET": "2026-11-15 22:35 EST",
         "researchCheckpoint": "2026-11-16T00:47:00Z"
       },
       "editorial": {
-        "marketOverview": "Ahead of Monday's U.S. cash opening, Nasdaq/QQQ remain vulnerable after Friday's Nasdaq -0.91%, QQQ -1.19% and SOX roughly -3.4%, even though SOX rose approximately 8.1% over the week. Early Monday Reuters oil indications show modest crude easing rather than the oil shock implied by unverified mine claims. There is still no new U.S. cash-session confirmation, so the bearish but two-sided outlook is unchanged.",
-        "whatChanged": "Compared with the 19:47 EST assessment, Reuters' early Monday oil coverage reports Brent near $95.37 and WTI near $88.33, below Friday settlements, and says Hormuz shipping has nearly returned to pre-war levels. The Iranian tanker fire/mine report remains unverified. This reduces evidence for an immediate oil-driven inflation shock, but is not yet a material Nasdaq/semiconductor repricing. The curated Open Watch feed remains dated November 13 with 163 events.",
-        "marketInterpretation": "The contrast between Friday SOX weakness and its positive weekly performance remains the key internal tension. Lower oil indications support the bull case marginally; elevated asynchronously quoted 10Y 5.133% and 2Y 4.850% still imply an indicative +28.3bp curve spread, not an official paired close. No fresh synchronized VXN/VIX, Nasdaq breadth or CME FedWatch reading is available, so confidence stays Moderate and event risk Very High. An expected catalyst impact is not an observed QQQ response.",
-        "threeDayPath": "Monday Nov 16: monitor Empire manufacturing at 08:30 ET and whether opening QQQ/SOX, volatility, yields and oil confirm a recovery or renewed selloff. Tuesday Nov 17: retail sales at 08:30, industrial production at 09:15 and Nvidia after-close earnings create high two-way risk. Wednesday Nov 18: housing starts, Nvidia's first regular-session earnings reaction and FOMC minutes at 14:00 may define the next leg. Base case remains volatile sideways-to-lower until chip leadership and breadth recover.",
-        "bullCase": "Oil's modest early Monday decline, nearly normalized Hormuz shipping reported by Reuters, SOX's strong weekly gain and rotation toward equal-weight stocks offer stabilization potential. A constructive Nvidia outlook, improving breadth and falling yields could invalidate the bearish bias. These are conditional pathways, not verified U.S. cash-market outcomes.",
-        "bearCase": "Friday's concentrated semiconductor selloff, high reported Treasury yields, Nvidia governance/export scrutiny and potential disappointment in guidance favor downside vulnerability. Shipping incidents and energy spikes remain tail risks, but tanker losses have not been independently established and crude has not shown a confirmed sustained spike.",
-        "watchNext": "Verify Monday's actual U.S. cash opening and synchronized QQQ/SOX relative performance, Nasdaq breadth, VXN/VIX, official 10Y/2Y yields, Brent/WTI and direct CME FedWatch. Watch Empire manufacturing, retail sales, Nvidia earnings and FOMC minutes. Recheck Open Watch for new curated events; separate unverified incident claims and scheduled catalysts from market-confirmed reactions."
+        "marketOverview": "Nasdaq and QQQ enter Monday with downside vulnerability after Friday's -0.91% Nasdaq, -1.19% QQQ and roughly -3.4% SOX session. SOX's +8.1% weekly performance leaves room for a sharp recovery, but Friday's chip underperformance argues against declaring one in advance. Early Monday crude indications are softer; they are not evidence of a US equity rebound.",
+        "whatChanged": "Relative to the prior 21:12 EST snapshot, no verified material market catalyst has changed the three-session path. Reuters' Monday oil report continues to show Brent around $95.37 and WTI around $88.33 and describes Hormuz shipping nearly back to pre-war levels. The same report cautions that Iranian tanker-mine claims are unverified. Open Watch remains at 163 curated events, last updated 2026-11-13T23:46:19+00:00.",
+        "marketInterpretation": "The near-term balance remains unfavorable to technology because semiconductor selling on Friday was pronounced, even as the weekly SOX trend and softer crude argue against an unqualified bearish forecast. The reported 10Y 5.133% and 2Y 4.850% imply (5.133-4.850)*100 = +28.3 basis points; these are not synchronized official closing yields. No fresh verified VXN/VIX pair, Nasdaq breadth or CME FedWatch probability is available. Forecast catalyst impacts are distinct from observed price responses.",
+        "threeDayPath": "Monday November 16: watch the 08:30 ET Empire State survey and first liquid US QQQ/SOX, yields, oil, volatility and breadth confirmation. Tuesday November 17: 08:30 ET retail sales, 09:15 industrial production and Nvidia's after-close results create large two-way gap potential. Wednesday November 18: Nvidia's first regular-session earnings reaction, housing starts and 14:00 ET FOMC minutes can establish a new trend. Base case is choppy sideways-to-lower trading unless chips and breadth improve together.",
+        "bullCase": "SOX's strong weekly advance, rotation toward equal-weight equities and early Monday oil softness offer an avenue for stabilization. Better Nvidia guidance, easing rates and sustained QQQ/SOX relative strength with improving breadth could shift the outlook toward neutral or bullish. These are conditions to verify, not observed Monday US cash-market facts.",
+        "bearCase": "Friday's semiconductor-led decline, elevated reported Treasury yields and Nvidia governance/export scrutiny create a fragile setup ahead of major earnings. A disappointing outlook, widening volatility, weak breadth or confirmed oil-shipping disruptions with sustained crude/yield gains would increase downside risk. Iranian mine/tanker claims remain unverified and must not be counted as realized supply losses.",
+        "watchNext": "At Monday's US opening obtain timestamp-aligned QQQ/Nasdaq and SOX returns, Nasdaq advance-decline/breadth, VXN/VIX, official 10Y and 2Y yields, Brent/WTI and CME FedWatch probabilities. Check the Empire release and curated Open Watch for new events, then Tuesday retail sales and Nvidia earnings and Wednesday FOMC minutes. Do not infer market reactions from headlines alone."
       }
     }
   ]
