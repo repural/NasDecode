@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-16T15:37:30Z",
+  "updated": "2026-11-16T16:33:25Z",
   "horizon": [
     "2026-11-16",
     "2026-11-17",
@@ -16,385 +16,185 @@
   "entries": [
     {
       "date": "2026-11-16",
-      "timeET": "10:37",
+      "timeET": "11:33",
       "bias": "Bearish — Elevated Downside Risk",
       "previousBias": "Bearish — Elevated Downside Risk",
-      "materialChange": false,
+      "materialChange": true,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Nov 16 10:37 EST: Bearish — Elevated Downside Risk unchanged for Nov 16–18. Monday US cash open confirmed tech-led weakness: Reuters Nasdaq -1.13% at opening, S&P -0.63%, Dow -0.15%; Benzinga subsequently reported Nasdaq -1.11%, information technology -2% in morning trading. Empire State manufacturing November actual 7.8 vs WSJ economist expectation 16.7 and October 25.5, a growth deceleration but not a demonstrated independent equity reaction. Cash weakness confirms the prior premarket risk rather than creating a new three-day catalyst. Monday SOX intraday, synchronized VXN/VIX, comprehensive Nasdaq breadth, current paired yields and CME FedWatch are unverified. Prior indicative 10Y/2Y +28bp not refreshed. Open Watch 164 records, updated 15:22 UTC, no newly curated event changing path. Tuesday retail sales and Nvidia results, Wednesday FOMC minutes remain primary risks.",
+      "summary": "Monday intraday downside has broadened materially versus the prior 10:37 ET report: FT Nasdaq 100 more than -2% early cash versus S&P -0.7%; MarketWatch VIX 21.53 (+11.6%) and Nasdaq decliners/advancers 2.3:1. This validates broader risk-off participation beyond the previously verified -1.13% Nasdaq open. Direction stays bearish, but the three-day downside path is more firmly confirmed. Reports are asynchronous, not a synchronized tick. SOX/VXN and direct FedWatch remain unverified.",
       "bullish": [
-        "Last week's approximately +8.1% SOX advance leaves rebound potential if cash-session chip leadership reverses and Nasdaq breadth improves.",
-        "Lower oil indications versus Friday settlement may offer valuation relief but are asynchronous and not a confirmed Monday risk-on response.",
-        "November Empire survey remained expansionary at 7.8 despite falling below expectation; cannot infer immediate Fed repricing."
+        "A recovery in breadth and VIX alongside semiconductor leadership could still create a sharp relief rally.",
+        "Nvidia's pending results could reverse AI-sector sentiment; no earnings outcome is known."
       ],
       "bearish": [
-        "Reuters confirmed Nasdaq -1.13% at Monday cash open versus S&P -0.63% and Dow -0.15%, showing tech underperformance; later Benzinga reported Nasdaq -1.11% and IT sector -2% in morning trading.",
-        "Friday QQQ -1.19% and SOX approximately -3.4% compound Monday's weak opening; Monday SOX level not independently synchronized.",
-        "November Empire manufacturing 7.8 versus forecast 16.7 (WSJ) and October 25.5 signals growth cooling; market attribution unverified.",
-        "Earlier paired 10Y 5.136% and 2Y 4.856% imply +28bp; elevated yields remain a risk, not a fresh synchronized Monday observation."
+        "Nasdaq 100 fell more than 2% in early cash trading versus S&P 500 approximately -0.7%, according to FT.",
+        "VIX spot jumped 11.6% to 21.53 and Nasdaq decliners outnumbered advancers 2.3:1 in a separate MarketWatch intraday report.",
+        "Elevated reported Treasury yields near 5.13% 10Y and 4.85% 2Y add valuation pressure; paired timing unverified."
       ],
       "observations": [
         {
-          "metric": "Nasdaq Composite Friday close",
-          "value": -0.91,
+          "metric": "Nasdaq 100 early Monday cash session",
+          "value": "down more than 2",
           "unit": "percent vs previous close",
-          "source": "https://www.reuters.com/business/nasdaq-futures-dip-nvidia-tumult-keeps-investors-edge-2026-11-13/",
-          "sourceTime": "2026-11-13 US regular-session close",
-          "quality": "Reuters confirmed close"
+          "source": "https://www.ft.com/content/12d927a9-98b1-40b9-8f75-01fb56a693d1",
+          "sourceTime": "2026-11-16 early US cash session, exact timestamp unspecified",
+          "quality": "FT reported; not synchronized with breadth/VIX"
         },
         {
-          "metric": "10Y Treasury reported yield",
-          "value": 5.133,
+          "metric": "S&P 500 early Monday cash session",
+          "value": -0.7,
+          "unit": "percent vs previous close",
+          "source": "https://www.ft.com/content/12d927a9-98b1-40b9-8f75-01fb56a693d1",
+          "sourceTime": "2026-11-16 early US cash session, exact timestamp unspecified",
+          "quality": "FT reported; not synchronized with Nasdaq 100"
+        },
+        {
+          "metric": "VIX spot intraday",
+          "value": 21.53,
+          "unit": "index points",
+          "source": "https://www.marketwatch.com/livecoverage/stock-market-today-dow-s-p-500-nasdaq-investors-nvidia-results-anthropic-ipo/card/market-s-fear-gauge-jumps-as-breadth-worsens-pj4RM1GG25jZsSs8lGvs",
+          "sourceTime": "2026-11-16 intraday report; precise time unspecified",
+          "quality": "MarketWatch observed spot VIX, not VXN"
+        },
+        {
+          "metric": "VIX spot intraday change",
+          "value": 11.6,
+          "unit": "percent change vs prior close",
+          "source": "https://www.marketwatch.com/livecoverage/stock-market-today-dow-s-p-500-nasdaq-investors-nvidia-results-anthropic-ipo/card/market-s-fear-gauge-jumps-as-breadth-worsens-pj4RM1GG25jZsSs8lGvs",
+          "sourceTime": "2026-11-16 intraday report; precise time unspecified",
+          "quality": "MarketWatch reported; separate timestamp from FT"
+        },
+        {
+          "metric": "Nasdaq declining/advancing issues",
+          "value": 2.3,
+          "unit": "decliners per advancer",
+          "source": "https://www.marketwatch.com/livecoverage/stock-market-today-dow-s-p-500-nasdaq-investors-nvidia-results-anthropic-ipo/card/market-s-fear-gauge-jumps-as-breadth-worsens-pj4RM1GG25jZsSs8lGvs",
+          "sourceTime": "2026-11-16 intraday report",
+          "quality": "reported live exchange breadth; not Nasdaq-100 constituent breadth"
+        },
+        {
+          "metric": "NYSE declining/advancing issues",
+          "value": 1.7,
+          "unit": "decliners per advancer",
+          "source": "https://www.marketwatch.com/livecoverage/stock-market-today-dow-s-p-500-nasdaq-investors-nvidia-results-anthropic-ipo/card/market-s-fear-gauge-jumps-as-breadth-worsens-pj4RM1GG25jZsSs8lGvs",
+          "sourceTime": "2026-11-16 intraday report",
+          "quality": "reported live exchange breadth"
+        },
+        {
+          "metric": "10Y US Treasury yield secondary latest",
+          "value": 5.13,
           "unit": "percent yield",
-          "source": "https://www.wsj.com/economy/central-banking/upward-pressure-remains-in-treasury-yields-even-as-two-year-yield-stabilizes-0c267082",
-          "sourceTime": "2026-11-13 Friday article; exact quote time unspecified",
-          "quality": "reported Friday quote; not verified synchronized close"
+          "source": "https://www.benzinga.com/markets/equities/26/11/63280484/stock-market-today-dow-jones-sp-500-futures-trade-mixed-as-scott-bessent-presses-nvidia-over-china-chips-bidu-rklb-mstr-in-focus",
+          "sourceTime": "2026-11-16 article updated intraday; precise quote time unspecified",
+          "quality": "secondary, rounded; pair timing unverified"
         },
         {
-          "metric": "2Y Treasury reported yield",
+          "metric": "2Y US Treasury yield secondary latest",
           "value": 4.85,
           "unit": "percent yield",
-          "source": "https://www.wsj.com/economy/central-banking/upward-pressure-remains-in-treasury-yields-even-as-two-year-yield-stabilizes-0c267082",
-          "sourceTime": "2026-11-13 Friday article; exact quote time unspecified",
-          "quality": "same WSJ report; exact synchronized timing unverified"
+          "source": "https://www.benzinga.com/markets/equities/26/11/63280484/stock-market-today-dow-jones-sp-500-futures-trade-mixed-as-scott-bessent-presses-nvidia-over-china-chips-bidu-rklb-mstr-in-focus",
+          "sourceTime": "2026-11-16 article updated intraday; precise quote time unspecified",
+          "quality": "secondary, rounded; pair timing unverified"
         },
         {
-          "metric": "December 25bp Fed hike implied probability",
-          "value": 91,
-          "unit": "percent probability",
-          "source": "https://www.wsj.com/economy/central-banking/upward-pressure-remains-in-treasury-yields-even-as-two-year-yield-stabilizes-0c267082",
-          "sourceTime": "2026-11-13 Friday article",
-          "quality": "secondary money-market estimate, not live CME FedWatch"
-        },
-        {
-          "metric": "SOX Friday close",
-          "value": -3.4,
-          "unit": "percent vs previous close",
-          "source": "https://www.wsj.com/finance/stocks/u-s-stocks-mixed-on-nvidia-fallout-fears-f9946e8d",
-          "sourceTime": "2026-11-13 US regular-session close",
-          "quality": "WSJ closing report; independently quoted index close"
-        },
-        {
-          "metric": "Brent Friday settlement",
-          "value": 95.84,
-          "unit": "USD per barrel",
-          "source": "https://apnews.com/article/f8edd0eeb1494d4d2584715686c5e619",
-          "sourceTime": "2026-11-13 Friday settlement",
-          "quality": "AP reported settlement; WTI settlement unavailable"
-        },
-        {
-          "metric": "SOX weekly return",
-          "value": 8.1,
-          "unit": "percent week-over-week",
-          "source": "https://www.marketwatch.com/story/nvidias-stock-is-on-a-losing-streak-not-seen-in-14-years-what-comes-next-a07e801e",
-          "sourceTime": "2026-11-13 weekly close; reported Nov 14",
-          "quality": "secondary weekly summary, distinct from Friday -3.4%"
-        },
-        {
-          "metric": "Equal-weight S&P 500 ETF RSP Friday return",
-          "value": 0.19,
-          "unit": "percent vs prior close",
-          "source": "https://www.quantisnow.com/articles/amd-falls-8-8-and-cisco-6-2-in-chip-pullback-that-leaves-the-average-stock-higher",
-          "sourceTime": "2026-11-13 regular-session close; reported 17:11 ET",
-          "quality": "secondary report; ETF proxy is not full Nasdaq breadth"
-        },
-        {
-          "metric": "QQQ Friday closing return additional corroboration",
-          "value": -1.19,
-          "unit": "percent vs prior close",
-          "source": "https://www.quantisnow.com/articles/amd-falls-8-8-and-cisco-6-2-in-chip-pullback-that-leaves-the-average-stock-higher",
-          "sourceTime": "2026-11-13 regular-session close; reported 17:11 ET",
-          "quality": "secondary, rounded difference from previous -1.20% estimate"
-        },
-        {
-          "metric": "November 16–18 scheduled US economic releases",
-          "value": "Nov 16 Empire Manufacturing 08:30 ET; Nov 17 retail sales 08:30 ET and industrial production 09:15 ET; Nov 18 housing starts 08:30 ET and FOMC minutes 14:00 ET",
-          "unit": "scheduled event times, ET",
-          "source": "https://economics.td.com/domains/economics.td.com/documents/reports/bottom-line/tables/2026-11-13/upcoming.htm",
-          "sourceTime": "2026-11-13 publication, reviewed 2026-11-14 19:35 EST",
-          "quality": "forward calendar, no realized data"
-        },
-        {
-          "metric": "WTI Friday settlement corroborated",
-          "value": 88.56,
-          "unit": "USD per barrel",
-          "source": "https://www.gulf-times.com/gulftimes/uploads/pdf/2026/11/15/business-20261115-1-1794690881.pdf?ts=1794690881",
-          "sourceTime": "2026-11-13 US oil futures settlement; published 2026-11-15",
-          "quality": "Sunday Gulf Times business market review quotes Friday front-month NYMEX WTI settlement; supersedes asynchronous $88.57 quote, not a Sunday price"
-        },
-        {
-          "metric": "Monday Asian-session 10Y Treasury yield",
-          "value": 5.136,
-          "unit": "percent yield",
-          "source": "https://www.wsj.com/finance/investing/u-s-treasury-yields-decline-but-fed-rate-hike-prospects-in-focus-1257629b",
-          "sourceTime": "2026-11-16 Asian session; exact quote time not specified",
-          "quality": "WSJ reported; not US close"
-        },
-        {
-          "metric": "Monday Asian-session 2Y Treasury yield",
-          "value": 4.856,
-          "unit": "percent yield",
-          "source": "https://www.wsj.com/finance/investing/u-s-treasury-yields-decline-but-fed-rate-hike-prospects-in-focus-1257629b",
-          "sourceTime": "2026-11-16 Asian session; exact quote time not specified",
-          "quality": "WSJ reported; paired within article but exact quote synchronization not guaranteed"
-        },
-        {
-          "metric": "Monday indicative 10Y minus 2Y",
+          "metric": "10Y-2Y indicative secondary curve",
           "value": 28,
           "unit": "basis points",
-          "source": "https://www.wsj.com/finance/investing/u-s-treasury-yields-decline-but-fed-rate-hike-prospects-in-focus-1257629b",
-          "sourceTime": "2026-11-16 Asian session",
-          "quality": "derived (5.136-4.856)*100; indicative, not official closing curve"
+          "source": "https://www.benzinga.com/markets/equities/26/11/63280484/stock-market-today-dow-jones-sp-500-futures-trade-mixed-as-scott-bessent-presses-nvidia-over-china-chips-bidu-rklb-mstr-in-focus",
+          "sourceTime": "2026-11-16 article updated intraday",
+          "quality": "derived (5.13-4.85)*100; not synchronized official close"
         },
         {
-          "metric": "Nasdaq futures Reuters Asian-session",
-          "value": -0.4,
-          "unit": "percent indicative change",
-          "source": "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-16/",
-          "sourceTime": "2026-11-16 01:35 UTC initial report; subsequent quote synchronization not verified",
-          "quality": "stale intraday futures indication; not US cash"
+          "metric": "Fed December hike probability secondary claim",
+          "value": 100,
+          "unit": "percent",
+          "source": "https://www.benzinga.com/markets/equities/26/11/63280484/stock-market-today-dow-jones-sp-500-futures-trade-mixed-as-scott-bessent-presses-nvidia-over-china-chips-bidu-rklb-mstr-in-focus",
+          "sourceTime": "2026-11-16 article updated intraday",
+          "quality": "Benzinga characterization of CME FedWatch; not directly verified, not substituted for official CME"
         },
         {
           "metric": "Open Watch curated events",
           "value": 164,
-          "unit": "event records",
+          "unit": "records",
           "source": "data/history/market-watch-events.json",
-          "sourceTime": "2026-11-16T06:21:00+00:00",
-          "quality": "repository confirmed; no new event since prior assessment"
+          "sourceTime": "2026-11-16T15:22:27+00:00",
+          "quality": "repository read; compare event ids with previous run; not independent market confirmation"
         },
         {
-          "metric": "Fed Chair Warsh Monday remarks scheduled",
-          "value": "12:00",
-          "unit": "ET scheduled time",
-          "source": "https://www.marketwatch.com/livecoverage/stock-market-today-dow-s-p-500-nasdaq-investors-nvidia-results-anthropic-ipo/card/warsh-event-headlines-the-u-s-economics-calendar-on-monday-gpUYigUGOHluvrdpkuRn",
-          "sourceTime": "2026-11-16 premarket report",
-          "quality": "scheduled introductory remarks; no realized statement or equity reaction at assessment"
-        },
-        {
-          "metric": "Empire State November survey release scheduled",
-          "value": "08:30",
-          "unit": "ET scheduled time",
-          "source": "https://www.newyorkfed.org/survey/empire/empiresurvey_overview",
-          "sourceTime": "2026-11-16 scheduled release",
-          "quality": "actual November reading unverified before release; October 25.5 historical"
-        },
-        {
-          "metric": "Nasdaq 100 futures Monday US premarket",
-          "value": -0.97,
-          "unit": "percent indicative change",
-          "source": "https://www.reuters.com/business/sp-500-nasdaq-futures-slide-nvidia-earnings-anthropic-debut-loom-2026-11-16/",
-          "sourceTime": "2026-11-16 Monday US premarket; exact synchronized quote time unavailable",
-          "quality": "Reuters reported indicative futures, not US cash session"
-        },
-        {
-          "metric": "S&P 500 futures Monday US premarket",
-          "value": -0.36,
-          "unit": "percent indicative change",
-          "source": "https://www.reuters.com/business/sp-500-nasdaq-futures-slide-nvidia-earnings-anthropic-debut-loom-2026-11-16/",
-          "sourceTime": "2026-11-16 Monday US premarket",
-          "quality": "Reuters reported indicative futures"
-        },
-        {
-          "metric": "Nvidia Monday premarket",
-          "value": -2.2,
-          "unit": "percent indicative change",
-          "source": "https://www.reuters.com/business/sp-500-nasdaq-futures-slide-nvidia-earnings-anthropic-debut-loom-2026-11-16/",
-          "sourceTime": "2026-11-16 Monday premarket",
-          "quality": "Reuters reported indicative premarket stock move"
-        },
-        {
-          "metric": "Nasdaq 100 futures WSJ Nov 16 premarket",
-          "value": -0.9,
-          "unit": "percent approximate indicative change",
-          "source": "https://www.wsj.com/finance/investing/stock-futures-slip-ahead-of-pivotal-week-for-ai-trade-with-nvidia-anthropic-in-focus-c1768330",
-          "sourceTime": "2026-11-16 premarket; exact quote timestamp not verified",
-          "quality": "secondary report; asynchronous, not US cash"
-        },
-        {
-          "metric": "Brent WSJ Nov 16 premarket",
-          "value": 95.5,
-          "unit": "USD per barrel approximately",
-          "source": "https://www.wsj.com/finance/investing/stock-futures-slip-ahead-of-pivotal-week-for-ai-trade-with-nvidia-anthropic-in-focus-c1768330",
-          "sourceTime": "2026-11-16 premarket; exact quote timestamp unverified",
-          "quality": "approximate, asynchronous, not settlement"
-        },
-        {
-          "metric": "WTI WSJ Nov 16 premarket",
-          "value": 88.5,
-          "unit": "USD per barrel approximately",
-          "source": "https://www.wsj.com/finance/investing/stock-futures-slip-ahead-of-pivotal-week-for-ai-trade-with-nvidia-anthropic-in-focus-c1768330",
-          "sourceTime": "2026-11-16 premarket; exact quote timestamp unverified",
-          "quality": "approximate, asynchronous, not settlement"
-        },
-        {
-          "metric": "S&P 500 futures Barron's Monday premarket",
-          "value": -0.64,
-          "unit": "percent indicative change",
-          "source": "https://www.barrons.com/articles/s-p-500-futures-fall-in-premarket-trading-telus-corp-vaxcyte-lead-4ac44841",
-          "sourceTime": "2026-11-16 premarket; precise quote time not verified",
-          "quality": "reported premarket indication, not US cash"
-        },
-        {
-          "metric": "VIX futures Barron's Monday premarket",
-          "value": 4.5,
-          "unit": "percent change in futures",
-          "source": "https://www.barrons.com/articles/s-p-500-futures-fall-in-premarket-trading-telus-corp-vaxcyte-lead-4ac44841",
-          "sourceTime": "2026-11-16 premarket; precise quote time not verified",
-          "quality": "futures, not VIX spot or VXN"
-        },
-        {
-          "metric": "10Y Treasury yield Barron's Monday premarket",
-          "value": 5.124,
-          "unit": "percent yield",
-          "source": "https://www.barrons.com/articles/s-p-500-futures-fall-in-premarket-trading-telus-corp-vaxcyte-lead-4ac44841",
-          "sourceTime": "2026-11-16 premarket; precise quote time not verified",
-          "quality": "no synchronized 2Y pair; cannot derive fresh curve"
-        },
-        {
-          "metric": "Brent futures Barron's Monday premarket",
-          "value": -1.01,
-          "unit": "percent change",
-          "source": "https://www.barrons.com/articles/s-p-500-futures-fall-in-premarket-trading-telus-corp-vaxcyte-lead-4ac44841",
-          "sourceTime": "2026-11-16 premarket; precise quote time not verified",
-          "quality": "relative futures move; not price settlement"
-        },
-        {
-          "metric": "Nasdaq 100 futures Benzinga Monday premarket",
-          "value": -0.8,
-          "unit": "percent indicative change",
-          "source": "https://www.benzinga.com/markets/prediction-markets/26/11/63279199/stock-market-will-sp-500-open-up-or-down-today-78",
-          "sourceTime": "2026-11-16 early Monday, exact quote time not verified",
-          "quality": "asynchronous premarket report; not cash"
-        },
-        {
-          "metric": "Nasdaq futures AP later Monday premarket",
-          "value": -1.4,
-          "unit": "percent indicative change",
-          "source": "https://apnews.com/article/35786b8f539ec95f16ae0500f71cfcc7",
-          "sourceTime": "2026-11-16 premarket, exact quote time unavailable",
-          "quality": "AP report; not US cash or synchronized with WSJ"
-        },
-        {
-          "metric": "Nasdaq futures WSJ later Monday premarket",
-          "value": -1.7,
-          "unit": "percent indicative change",
-          "source": "https://www.wsj.com/finance/investing/stock-futures-slip-ahead-of-pivotal-week-for-ai-trade-with-nvidia-anthropic-in-focus-c1768330",
-          "sourceTime": "2026-11-16 premarket, exact quote time unavailable",
-          "quality": "WSJ report; not US cash, cannot compare tick-for-tick with AP"
-        },
-        {
-          "metric": "S&P futures AP later Monday premarket",
-          "value": -0.6,
-          "unit": "percent indicative change",
-          "source": "https://apnews.com/article/35786b8f539ec95f16ae0500f71cfcc7",
-          "sourceTime": "2026-11-16 premarket",
-          "quality": "AP reported indication"
-        },
-        {
-          "metric": "Brent AP Monday indicative",
+          "metric": "Brent latest verified earlier indication",
           "value": 95.34,
           "unit": "USD per barrel",
           "source": "https://apnews.com/article/35786b8f539ec95f16ae0500f71cfcc7",
-          "sourceTime": "2026-11-16 premarket; exact quote time unavailable",
-          "quality": "not settlement"
+          "sourceTime": "2026-11-16 earlier premarket",
+          "quality": "stale/asynchronous; not fresh intraday quote"
         },
         {
-          "metric": "WTI AP Monday indicative",
+          "metric": "WTI latest verified earlier indication",
           "value": 88.31,
           "unit": "USD per barrel",
           "source": "https://apnews.com/article/35786b8f539ec95f16ae0500f71cfcc7",
-          "sourceTime": "2026-11-16 premarket; exact quote time unavailable",
-          "quality": "not settlement"
-        },
-        {
-          "metric": "Nasdaq Composite Monday opening move",
-          "value": -1.13,
-          "unit": "percent vs prior close",
-          "source": "https://www.reuters.com/business/sp-500-nasdaq-futures-slide-nvidia-earnings-anthropic-debut-loom-2026-11-16/",
-          "sourceTime": "2026-11-16 09:30 ET opening report",
-          "quality": "Reuters confirmed cash open, not closing return"
-        },
-        {
-          "metric": "S&P 500 Monday opening move",
-          "value": -0.63,
-          "unit": "percent vs prior close",
-          "source": "https://www.reuters.com/business/sp-500-nasdaq-futures-slide-nvidia-earnings-anthropic-debut-loom-2026-11-16/",
-          "sourceTime": "2026-11-16 09:30 ET opening report",
-          "quality": "Reuters confirmed cash open"
-        },
-        {
-          "metric": "Dow Monday opening move",
-          "value": -0.15,
-          "unit": "percent vs prior close",
-          "source": "https://www.reuters.com/business/sp-500-nasdaq-futures-slide-nvidia-earnings-anthropic-debut-loom-2026-11-16/",
-          "sourceTime": "2026-11-16 09:30 ET opening report",
-          "quality": "Reuters confirmed cash open"
-        },
-        {
-          "metric": "Nasdaq Monday morning reported change",
-          "value": -1.11,
-          "unit": "percent vs prior close",
-          "source": "https://www.benzinga.com/markets/market-summary/26/11/63296383/nasdaq-down-over-1-tyson-foods-earnings-top-views",
-          "sourceTime": "2026-11-16 Monday morning, precise time unverified",
-          "quality": "secondary cash-session observation, asynchronous"
-        },
-        {
-          "metric": "November Empire State Manufacturing index",
-          "value": 7.8,
-          "unit": "index points",
-          "source": "https://www.wsj.com/economy/central-banking/new-york-manufacturing-activity-moderates-from-october-surge-4d9db965",
-          "sourceTime": "2026-11-16 08:30 ET release, reported same day",
-          "quality": "WSJ reported actual, compared with WSJ consensus 16.7 and prior 25.5; market impact unverified"
-        },
-        {
-          "metric": "Open Watch curated events",
-          "value": 164,
-          "unit": "event records",
-          "source": "data/history/market-watch-events.json",
-          "sourceTime": "2026-11-16T15:22:27+00:00",
-          "quality": "GitHub repository confirmed; no new curated event since prior snapshot"
+          "sourceTime": "2026-11-16 earlier premarket",
+          "quality": "stale/asynchronous; not fresh intraday quote"
         }
       ],
       "conditions": {
-        "bullishInvalidation": "Sustained QQQ/SOX recovery, positive Nasdaq breadth and falling verified yields with constructive Nvidia guidance would invalidate the bearish tilt.",
-        "bearishConfirmation": "Nasdaq and SOX continue underperforming into Monday close with negative breadth and rising VXN/VIX, or Tuesday catalysts intensify chip selling.",
-        "watch": "Track Monday cash-session SOX and QQQ alongside breadth, spot VXN/VIX and synchronized Treasury pairs; Warsh noon remarks; Tuesday retail sales/industrial production and Nvidia earnings; Wednesday FOMC minutes."
+        "bearishInvalidation": "Sustained Nasdaq/QQQ and SOX recovery, breadth improving materially toward parity, VIX falling from 21.53, and no renewed rate shock.",
+        "bearishConfirmation": "Persistent Nasdaq decliner dominance, VIX above 21.53 or rising, semiconductor relative weakness and a weak Monday close.",
+        "riskTriggers": "Tuesday macro data and Nvidia earnings, Wednesday FOMC minutes; exact responses unknown."
       },
       "upcomingEvents": [
         {
-          "date": "2026-11-16",
-          "event": "Fed Chair Warsh remarks scheduled 12:00 ET; US cash-session follow-through and closing breadth"
+          "date": "2026-11-17",
+          "event": "US retail sales",
+          "timeET": "08:30",
+          "status": "scheduled"
         },
         {
           "date": "2026-11-17",
-          "event": "Retail sales 08:30 ET; industrial production 09:15 ET; Nvidia earnings after close"
+          "event": "US industrial production",
+          "timeET": "09:15",
+          "status": "scheduled"
+        },
+        {
+          "date": "2026-11-17",
+          "event": "Nvidia quarterly results",
+          "timeET": "after close",
+          "status": "scheduled; timing requires issuer confirmation"
         },
         {
           "date": "2026-11-18",
-          "event": "Housing starts 08:30 ET; FOMC minutes 14:00 ET"
+          "event": "US housing starts",
+          "timeET": "08:30",
+          "status": "scheduled"
+        },
+        {
+          "date": "2026-11-18",
+          "event": "FOMC minutes",
+          "timeET": "14:00",
+          "status": "scheduled"
         }
       ],
       "provenance": {
+        "researchAsOf": "2026-11-16T16:33:25Z",
         "sources": [
-          "Reuters Nov 16 US cash-market opening report",
-          "Benzinga Nov 16 Monday morning market summary",
-          "WSJ Nov 16 Empire State manufacturing actual",
-          "NasDecode main latest snapshot and Open Watch events updated 15:22:27 UTC",
-          "Previous WSJ Asian-session Treasury yield pair",
-          "TD Economics Nov 13 macro schedule"
+          "https://www.ft.com/content/12d927a9-98b1-40b9-8f75-01fb56a693d1",
+          "https://www.marketwatch.com/livecoverage/stock-market-today-dow-s-p-500-nasdaq-investors-nvidia-results-anthropic-ipo/card/market-s-fear-gauge-jumps-as-breadth-worsens-pj4RM1GG25jZsSs8lGvs",
+          "https://www.benzinga.com/markets/equities/26/11/63280484/stock-market-today-dow-jones-sp-500-futures-trade-mixed-as-scott-bessent-presses-nvidia-over-china-chips-bidu-rklb-mstr-in-focus"
         ],
-        "dataQuality": "Reuters cash opening observations verified but not synchronized with secondary Benzinga morning observations. WSJ November Empire 7.8 vs forecast 16.7 is realized release, not proof of market causality. Prior Treasury pair +28bp = (5.136%-4.856%)*100; not current closing curve. No verified Monday SOX or QQQ live quote, synchronized VXN/VIX, comprehensive Nasdaq breadth, latest Brent/WTI, official Treasury pair or direct CME FedWatch. Some search reports may contain later-session information and were excluded.",
-        "openWatchUpdatedUTC": "2026-11-16T15:22:27+00:00"
+        "repositoryOpenWatchUpdated": "2026-11-16T15:22:27+00:00",
+        "repositoryOpenWatchCount": 164,
+        "previousOpenWatchCount": 164,
+        "dataQuality": "FT and MarketWatch observations are separate intraday reports and not synchronized. Secondary yields rounded and paired timestamp unverified; 28bp is derived from percentages, not 28 percentage points. VXN, SOX intraday and direct CME FedWatch unavailable. Oil quotes stale; no inferred intraday market reaction to scheduled events."
       },
       "editorial": {
-        "marketOverview": "Monday's US cash opening confirmed the downside pressure anticipated by the earlier bearish premarket assessments. Nasdaq declined 1.13% at the open against a 0.63% S&P 500 decline and a 0.15% Dow loss, indicating technology-specific underperformance. This validates the near-term risk rather than materially altering the three-session bearish path.",
-        "whatChanged": "Since the 08:44 EST snapshot, Reuters published actual US cash-opening losses and WSJ reported November Empire manufacturing at 7.8, down from October's 25.5 and below its surveyed 16.7 expectation. The macro miss adds a growth caution, but there is no verified evidence that it independently caused the Nasdaq selloff. Open Watch still has 164 events despite a newer repository update timestamp.",
-        "marketInterpretation": "The transition from negative futures to negative actual cash prices increases evidence quality and confirms sector concentration risk. It does not justify double-counting premarket and opening moves as separate shocks. Without synchronized SOX, VXN/VIX, breadth and yields, confidence remains Moderate. The earlier correctly scaled +28bp curve is carried as historical context, not a fresh reading.",
-        "threeDayPath": "Monday: test whether opening tech underperformance persists through the close, and whether Warsh remarks change rate expectations. Tuesday: retail sales and industrial production can reprice growth and yields, while Nvidia's after-close results and guidance can swing chip leadership. Wednesday: housing data and FOMC minutes may reinforce or reverse the rates narrative. Bearish downside risk remains the central scenario; daily direction is conditional.",
-        "bullCase": "A cash-session reversal accompanied by sustained SOX and QQQ outperformance, improved Nasdaq breadth, lower synchronized Treasury yields and constructive Nvidia results would weaken or overturn the bearish thesis. Last week's SOX strength suggests rebounds are possible but does not confirm one.",
-        "bearCase": "If Nasdaq's weaker cash open extends into the close with broad semiconductor selling and rising spot volatility, Tuesday's Nvidia event could amplify risk-off positioning. An adverse rate or oil shock would further constrain high-duration technology valuations.",
-        "watchNext": "Verify Monday QQQ and SOX intraday/close, Nasdaq advance-decline breadth, VXN and VIX spot, contemporaneous 10Y and 2Y Treasury yields, and official Fed probabilities. Monitor noon Warsh remarks and then Tuesday's retail sales, industrial production and Nvidia earnings; distinguish actual price reaction from projected catalyst impact."
+        "marketOverview": "Monday's US cash-market weakness has deepened beyond the opening selloff already captured in the prior snapshot. The Financial Times reported the Nasdaq 100 down more than 2% in early trade against approximately 0.7% for the S&P 500, a marked concentration in technology and AI exposure. MarketWatch separately reported VIX at 21.53, up 11.6%, and Nasdaq declining issues outnumbering advancers by 2.3 to one. These are independently reported, asynchronous readings, but together show more than an isolated premarket wobble.",
+        "whatChanged": "Relative to the 10:37 ET snapshot, the key change is breadth and volatility confirmation of the downside: the previous update documented a roughly 1.1% Nasdaq opening drop without reliable contemporaneous breadth or VIX. The new reports show more than 2% Nasdaq-100 weakness, negative Nasdaq issue breadth, and a double-digit VIX percentage jump. This materially increases evidence for a risk-off first leg of the three-day path, even though the overarching bearish direction remains unchanged. Curated Open Watch's event count and update timestamp are checked separately; the observed selling is market response, not proof that any single headline caused it.",
+        "marketInterpretation": "The combination of technology underperformance, broad declining participation, and elevated implied volatility raises near-term continuation risk. The FT attributes pressure to AI-sector uncertainty ahead of Nvidia results; the market's observed selloff is verified as an index move, but precise causal allocation among CEO uncertainty, export restrictions, valuations, and interest-rate expectations is not. A secondary source quotes 10Y near 5.13% and 2Y near 4.85%, implying about +28bp with correct units, but not a synchronized official curve. No directly confirmed VXN or SOX intraday level is available.",
+        "threeDayPath": "Monday November 16: downside pressure is confirmed in the cash session; watch whether Nasdaq-100 weakness persists into the close or whether breadth recovers. Tuesday November 17: retail sales and industrial production may reset the rate/growth narrative; Nvidia results after the close are a major binary semiconductor catalyst. Wednesday November 18: housing starts and FOMC minutes may reinforce or reverse rate sensitivity. Base case remains elevated downside and whipsaw risk, not a deterministic daily decline.",
+        "bullCase": "An intraday stabilization with Nasdaq decliners narrowing toward parity, VIX retreating below its newly observed 21.53 level, and a sustained semiconductor-led rebound would undermine the short-term continuation thesis. Favorable Nvidia guidance and contained rate pressure could spark a relief rally. These are conditional paths, not confirmed developments.",
+        "bearCase": "Failure of Nasdaq breadth to recover, VIX remaining elevated or rising, and continued underperformance of semiconductors into Nvidia earnings could extend the selloff across the three-session window. A hawkish interpretation of Fed communications or disappointing growth/earnings could compound valuation pressure. These are scenarios; no specific earnings outcome is known.",
+        "watchNext": "Prioritize synchronized Nasdaq-100/QQQ, SOX, VXN/VIX and issue-breadth snapshots at the Monday close; verify official Treasury 2Y/10Y and direct CME FedWatch before treating rate changes as facts. Monitor the Tuesday 08:30 ET retail-sales release, 09:15 ET industrial production, Nvidia after-hours earnings, Wednesday housing starts and 14:00 ET FOMC minutes. Reconcile new Open Watch event IDs with market-confirmed response rather than headline expected impact."
       }
     }
   ]
