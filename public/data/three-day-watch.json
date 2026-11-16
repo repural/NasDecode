@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-16T06:41:31Z",
+  "updated": "2026-11-16T08:44:47Z",
   "horizon": [
     "2026-11-16",
     "2026-11-17",
@@ -16,23 +16,23 @@
   "entries": [
     {
       "date": "2026-11-16",
-      "timeET": "01:41",
+      "timeET": "03:44",
       "bias": "Bearish — Elevated Downside Risk",
       "previousBias": "Bearish — Elevated Downside Risk",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "2026-11-16 01:41 EST: Bearish — Elevated Downside Risk unchanged for Nov 16–18. Reuters Nov 16 01:35 UTC reported Nasdaq futures -0.4% and Nikkei -1.7%; AP Nov 16 reports Korea Kospi -2.8%, Taiwan Taiex -4.1% and Nikkei -1.6% in Asian trading. Regional chip weakness reinforces caution but is not a US SOX/QQQ cash-market reaction. Reuters early Nov 16 oil indications Brent $95.30, WTI $88.34; no synchronized settlement. Open Watch 164 records, updated 06:21 UTC. Synchronized VXN/VIX, Nasdaq breadth, official paired yields and direct CME FedWatch unavailable.",
+      "summary": "2026-11-16 03:44 EST: Bearish — Elevated Downside Risk unchanged for Nov 16–18. Latest verified Reuters Nov 16 01:35 UTC Asian-market update reported Nasdaq futures -0.4% and Nikkei -1.7%; Investing.com 02:58 publication reports Advantest -10%, Lasertec over -9%, Tokyo Electron -5.2%, SK Hynix -4.2%, TSMC -2.1% in asynchronous Asian trading. No US regular-session reaction established. Friday US Nasdaq -0.91%, QQQ -1.19%, SOX ~-3.4% remain latest cash evidence. Open Watch 164 records, updated 06:21 UTC. No fresh synchronized VXN/VIX, breadth, official paired Treasury yields or CME FedWatch. Oil quotes remain asynchronous.",
       "bullish": [
-        "Friday SOX weekly gain +8.1% remains a potential rebound counterweight despite Friday -3.4% session.",
-        "Reuters early Monday Brent $95.30 and WTI $88.34 indications are below Friday settlements, reducing immediate inflation pressure if sustained.",
-        "Financial Times Nov 16 argues AI-led selling has so far remained relatively contained outside data-center exposure; interpretation, not a fresh breadth measure."
+        "SOX reported +8.1% week-over-week as of Friday, providing a rebound counterweight despite Friday -3.4%.",
+        "Friday Brent $95.84 and WTI $88.56 settlements exceeded early Monday indicative prices, potentially relieving inflation pressure if sustained.",
+        "SMIC and AMAT supplier demand commentary supports underlying AI capital spending, not yet confirmed by a fresh US market response."
       ],
       "bearish": [
-        "AP Nov 16 reports Kospi -2.8%, Taiwan Taiex -4.1%, Nikkei -1.6% during Asian trading; semiconductor weakness is regionally broad, though no US cash reaction is yet established.",
-        "Reuters Nov 16 01:35 UTC Nasdaq futures -0.4% versus earlier +0.5% indications; quote timing matters.",
-        "Friday Nasdaq -0.91%, QQQ -1.19%, SOX approximately -3.4% are latest US cash observations.",
-        "Elevated yields and Nvidia earnings Tuesday / FOMC minutes Wednesday pose major repricing risks."
+        "Reuters Nov 16 01:35 UTC Nasdaq futures -0.4%; Asian equity risk appetite weak, not a US cash-session response.",
+        "Investing.com Nov 16 02:58 report: Advantest -10%, Lasertec over -9%, Tokyo Electron -5.2%, SK Hynix -4.2%, TSMC -2.1%; asynchronous intraday Asia chip readings.",
+        "Friday Nasdaq -0.91%, QQQ -1.19%, SOX ~-3.4% confirm weakness entering the week.",
+        "High 10Y yield (~5.133% Friday reported, asynchronous) and Tuesday Nvidia earnings/Wednesday FOMC minutes amplify downside event risk."
       ],
       "observations": [
         {
@@ -506,6 +506,22 @@
           "source": "https://www.ft.com/content/a61f1fe9-55d9-498e-9ecc-c3a66980d63a",
           "sourceTime": "2026-11-16 FT publication",
           "quality": "commentary; not synchronized Nasdaq advance/decline breadth"
+        },
+        {
+          "metric": "Nov 16 Asian semiconductor intraday update",
+          "value": "Advantest -10%; Lasertec >-9%; Tokyo Electron -5.2%; SK Hynix -4.2%; TSMC -2.1%",
+          "unit": "percent intraday moves, individual Asian listings",
+          "source": "https://uk.investing.com/news/stock-market-news/asian-chip-stocks-slide-ahead-of-nvidia-earnings-4983541",
+          "sourceTime": "2026-11-16 02:58 as displayed by publisher (timezone unspecified)",
+          "quality": "secondary asynchronous intraday observations; not synchronized US SOX or QQQ returns"
+        },
+        {
+          "metric": "Nov 16 Nasdaq futures Reuters Asia report",
+          "value": -0.4,
+          "unit": "percent change, indicative futures",
+          "source": "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-16/",
+          "sourceTime": "2026-11-16 01:35 UTC publication; precise quote time unspecified",
+          "quality": "Reuters report, not a US cash-market return; earlier futures indications differ"
         }
       ],
       "conditions": {
@@ -553,16 +569,26 @@
           "https://www.ft.com/content/a61f1fe9-55d9-498e-9ecc-c3a66980d63a",
           "GitHub main latest snapshot and curated Open Watch"
         ],
-        "dataQuality": "US cash not yet open. AP Asian equity moves and Reuters futures are asynchronous; oil indicative, not settlements. Friday Treasury yields from secondary report, 10Y-2Y +28.3bp correctly scaled. VXN/VIX, complete Nasdaq breadth, official paired yields, live CME FedWatch unavailable. No verified new physical Hormuz outage or market response."
+        "dataQuality": "US cash not yet open. AP Asian equity moves and Reuters futures are asynchronous; oil indicative, not settlements. Friday Treasury yields from secondary report, 10Y-2Y +28.3bp correctly scaled. VXN/VIX, complete Nasdaq breadth, official paired yields, live CME FedWatch unavailable. No verified new physical Hormuz outage or market response.",
+        "reviewedAtUTC": "2026-11-16T08:44:47Z",
+        "sourceQuality": "Reuters Nov 16 futures/Asia; Investing.com Nov 16 Asia chips; historical Reuters/WSJ/AP Friday US cash, rates, oil; no verified synchronized US live tape",
+        "openWatchEventCount": 164,
+        "limitations": [
+          "No synchronized VXN/VIX",
+          "No comprehensive Nasdaq breadth",
+          "No official paired 10Y/2Y closing yields",
+          "No live direct CME FedWatch",
+          "No confirmed new US cash-session response"
+        ]
       },
       "editorial": {
-        "marketOverview": "Friday's Nasdaq -0.91%, QQQ -1.19% and SOX about -3.4% remain the last U.S. cash-session observations. Asian markets were weaker Monday: AP reports Korea's Kospi -2.8%, Taiwan's Taiex -4.1% and Japan's Nikkei -1.6%, reinforcing global AI and semiconductor fragility. Reuters earlier indicated Nasdaq futures -0.4%; these are different markets and nonsynchronized quotes, not a U.S. opening verdict.",
-        "whatChanged": "Compared with the 01:24 EST snapshot, AP's broader Asian equity account adds corroboration of regional chip-market stress, and Reuters' early oil figures remain modestly below Friday settlement. No newly verified U.S. market response or independent major catalyst warrants a change in bias. The 164 curated Open Watch events were reviewed; no later repository update was found.",
-        "marketInterpretation": "Semiconductor leadership remains the critical transmission channel to QQQ, but Asian weakness is a warning rather than proof of Monday SOX selling. The FT characterizes the recent AI drawdown as more concentrated than a generalized equity panic, a bullish counterweight that cannot replace measured Nasdaq breadth. Previously reported 10Y 5.133% and 2Y 4.850% imply +28.3bp, with closing synchronization unverified. Live VXN/VIX and FedWatch are not established. Oil's early decline may soften inflation concerns, while unverified Hormuz tanker claims should not be counted as physical supply losses.",
-        "threeDayPath": "Monday November 16: Empire State manufacturing at 08:30 ET and then the first liquid U.S. cash QQQ/SOX/breadth response will determine whether Asia's selling spills over. Tuesday November 17: retail sales 08:30 ET, industrial production 09:15 ET, and Nvidia earnings after close may alter both growth and AI leadership expectations. Wednesday November 18: housing starts 08:30 ET, first cash reaction to Nvidia earnings and FOMC minutes 14:00 ET. Baseline remains choppy sideways-to-lower, with high gap risk rather than a deterministic daily decline.",
-        "bullCase": "A sustained QQQ recovery accompanied by SOX relative strength, broad participation, softer yields and contained Brent/WTI would weaken the bearish case. Strong Nvidia demand guidance and credible leadership clarity could catalyze a sharper recovery. Asian or overnight futures reversals alone are insufficient confirmation.",
-        "bearCase": "A failed Monday cash-session bounce with SOX underperforming, volatility expanding and yields staying elevated would reinforce de-risking. Tuesday's Nvidia guidance disappointment or weak retail sales could amplify pressure before Wednesday Fed minutes. Verified maritime disruption and a sustained oil rebound would worsen the inflation channel, but present tanker claims remain unconfirmed.",
-        "watchNext": "Check Empire State at 08:30 ET, then synchronized QQQ/Nasdaq and SOX prices, Nasdaq breadth, VXN/VIX, official Treasury 10Y/2Y, Brent/WTI and CME FedWatch when available. Watch for new Open Watch entries that demonstrate actual market confirmation, rather than interpreting expected impact as observed price response."
+        "marketOverview": "The November 16–18 Nasdaq/QQQ path remains skewed toward downside and volatility. Friday's US cash-session decline in Nasdaq (-0.91%), QQQ (-1.19%) and SOX (~-3.4%) is the last confirmed US regular-session signal. Monday Asian semiconductor weakness and the Reuters -0.4% Nasdaq futures indication reinforce risk aversion but do not establish a US cash-market response.",
+        "whatChanged": "Compared with the prior 01:41 EST assessment, the most useful incremental detail is the cross-sectional Asian chip selloff: Advantest around -10%, Lasertec over -9%, Tokyo Electron -5.2%, SK Hynix -4.2% and TSMC -2.1%, according to a November 16 Investing.com intraday report. This deepens sector-specific caution without independently meeting the threshold for a new three-day directional regime. Open Watch remains 164 curated events with no later update than 06:21 UTC.",
+        "marketInterpretation": "The sector remains vulnerable to leadership, valuation and rates shocks, with Friday's +8.1% SOX weekly rebound a counterweight to its -3.4% Friday session. The indicative 10Y 5.133% minus 2Y 4.850% equals +28.3 basis points, not 0.283 basis points; reported yields are not an official synchronized closing pair. Monday oil indications below Friday settlements offer some relief, but supply risks remain and fresh synchronized oil prices are unavailable. Neither VXN/VIX nor comprehensive Nasdaq breadth or direct CME FedWatch were verified for this checkpoint.",
+        "threeDayPath": "Monday November 16: watch whether US QQQ/SOX confirm or reject Asian chip weakness at the cash open and through the session; futures are provisional. Tuesday November 17: retail sales and industrial production precede Nvidia earnings after the close, which may dominate the sector's next gap. Wednesday November 18: housing starts and FOMC minutes can reprice rates and the growth-stock discount factor. This is a conditional scenario, not a forecast of realized returns.",
+        "bullCase": "A constructive reversal requires QQQ and SOX to stabilize together, chip breadth to improve, Treasury yields to stop rising, and Nvidia's outlook to validate AI capex demand. Oil easing would remove one inflationary headwind. Friday's strong SOX weekly return and AMAT/SMIC supply-chain commentary support the possibility of a sharp rebound, but do not prove one.",
+        "bearCase": "Failure of US semiconductor leadership to stabilize, renewed QQQ weakness, rising 10Y yields or a hawkish Fed repricing would reinforce the bearish path. Nvidia guidance disappointment or new export-compliance restrictions could deepen concentrated technology selling. Geopolitical shipping claims must not be treated as verified physical supply losses without independent corroboration.",
+        "watchNext": "Confirm the Monday 09:30 ET US cash open and intraday QQQ/SOX relative performance, verified VXN/VIX and breadth, paired official 10Y/2Y yields, synchronized Brent/WTI quotes, CME FedWatch pricing, Tuesday retail sales and Nvidia earnings, and Wednesday FOMC minutes. Distinguish anticipated catalysts from actual market reaction."
       }
     }
   ]
