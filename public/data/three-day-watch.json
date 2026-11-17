@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-17T11:00:36Z",
+  "updated": "2026-11-17T12:22:40Z",
   "horizon": [
     "2026-11-17",
     "2026-11-18",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-17",
-      "timeET": "06:00",
+      "timeET": "07:22",
       "bias": "Bearish — Elevated Downside Risk",
       "previousBias": "Bearish — Elevated Downside Risk",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Bearish elevated downside risk persists for November 17–19. New Reuters November 17 10:51 UTC reporting shows Nasdaq-100 futures -0.34%, S&P futures -0.34%, Dow futures -0.45%, confirming weaker premarket tone than earlier unsynchronized +0.5% Nasdaq indication but not a new US cash-market decline. Monday QQQ -2.67% versus SPY -1.91%, SOX roughly -5.3% remains decisive synchronized evidence. Secondary Benzinga yields 10Y 5.11%, 2Y 4.80% imply +31bp; source quote time unspecified. Brent $92.61 and WTI $85.73 are earlier Reuters quotes. VXN/VIX, breadth and official paired yields remain unverified. Benzinga claims 100% December hike pricing but direct CME FedWatch verification is unavailable. Open Watch 165 events at 07:26 UTC; no verified new path-changing event.",
+      "summary": "Bearish elevated downside risk unchanged for November 17–19. Reuters November 17 reported Nasdaq-100 futures -0.34% at 10:51 UTC, while a later secondary QQQ premarket quote was +0.65% at 06:44 ET; quotes are not synchronized. Monday QQQ -2.67%, SPY -1.91%, SOX near -5.3% remain strongest US evidence. Reuters reports Nvidia options implying an 8.5% move either direction after earnings, not a directional forecast. Brent $92.76 and WTI $86.11 were reported without exact tick times. Secondary Treasury yields 10Y 5.11%, 2Y 4.80% imply +31bp. Open Watch increased to 166 events as of 10:22 UTC; no verified path-changing new event.",
       "bullish": [
         "A sustained US cash-market QQQ and SOX rebound with improved breadth could invalidate the bearish trend; not yet observed.",
         "A positive Nvidia guidance surprise and easing volatility or yields could produce a sharp relief rally; results not yet released.",
@@ -129,6 +129,46 @@
           "source": "data/history/market-watch-events.json",
           "sourceTime": "2026-11-17T07:26:17+00:00",
           "quality": "Direct GitHub file read, unchanged from preceding snapshot"
+        },
+        {
+          "metric": "Nvidia earnings options implied move",
+          "value": 8.5,
+          "unit": "percent either direction",
+          "source": "https://www.reuters.com/business/nvidia-shares-set-335-billion-swing-after-earnings-options-show-2026-11-17/",
+          "sourceTime": "2026-11-17 publication, quote time unavailable",
+          "quality": "Expected two-sided volatility, not actual reaction"
+        },
+        {
+          "metric": "QQQ premarket secondary",
+          "value": 0.65,
+          "unit": "percent",
+          "source": "https://www.stocktitan.net/articles/stock-market-today-live-november-17-2026",
+          "sourceTime": "2026-11-17 06:44 ET",
+          "quality": "Not synchronized with Reuters Nasdaq futures"
+        },
+        {
+          "metric": "Brent updated Reuters",
+          "value": 92.76,
+          "unit": "USD/barrel",
+          "source": "https://www.reuters.com/business/energy/oil-slips-supply-surplus-outlook-despite-gulf-tensions-2026-11-17/",
+          "sourceTime": "2026-11-17 quote time unavailable",
+          "quality": "Not synchronized with equity observations"
+        },
+        {
+          "metric": "WTI updated Reuters",
+          "value": 86.11,
+          "unit": "USD/barrel",
+          "source": "https://www.reuters.com/business/energy/oil-slips-supply-surplus-outlook-despite-gulf-tensions-2026-11-17/",
+          "sourceTime": "2026-11-17 quote time unavailable",
+          "quality": "Same report as Brent"
+        },
+        {
+          "metric": "Open Watch latest event count",
+          "value": 166,
+          "unit": "records",
+          "source": "data/history/market-watch-events.json",
+          "sourceTime": "2026-11-17T10:22:00+00:00",
+          "quality": "Direct GitHub read"
         }
       ],
       "conditions": {
@@ -169,9 +209,9 @@
         }
       ],
       "provenance": {
-        "researchAsOf": "2026-11-17T11:00:36Z",
-        "repositorySnapshotUpdated": "2026-11-17T09:59:52Z",
-        "openWatchUpdated": "2026-11-17T07:26:17+00:00",
+        "researchAsOf": "2026-11-17T12:22:40Z",
+        "repositorySnapshotUpdated": "2026-11-17T11:00:36Z",
+        "openWatchUpdated": "2026-11-17T10:22:00+00:00",
         "sources": [
           "https://www.stocktitan.net/articles/stock-market-today-live-november-16-2026",
           "https://www.investors.com/market-trend/stock-market-today/dow-jones-futures-nvidia-stock-nvda-nvidia-earnings-next/",
@@ -181,16 +221,16 @@
           "https://www.reuters.com/business/us-stock-futures-slip-ahead-nvidia-results-fed-speakers-focus-2026-11-17/",
           "https://www.benzinga.com/markets/equities/26/11/63331709/stock-market-today-dow-jones-sp-500-futures-fall-ahead-of-nvidias-q3-earnings-cbrs-amzn-rcat-in-focus"
         ],
-        "dataQuality": "Reuters 10:51 UTC publication offers same-report premarket futures but not exact tick times; cash-market confirmation absent. Secondary Treasury yields and claimed FedWatch probability not verified against official sources. VXN/VIX, breadth and updated SOX not verified. Brent/WTI retained as earlier Reuters quotes; event schedule inherited from prior snapshot."
+        "dataQuality": "Unsynchronized premarket quotes; official yields, FedWatch, VXN/VIX, breadth and fresh SOX not verified. Secondary Treasury curve +31bp correctly scaled. Options imply volatility not direction."
       },
       "editorial": {
-        "marketOverview": "The November 17–19 Nasdaq/QQQ path remains bearish with elevated downside risk. Monday's QQQ underperformance and severe semiconductor selling remain the strongest synchronized market observations. Tuesday's US premarket is also soft, but it is not yet a confirmed regular-session continuation.",
-        "whatChanged": "A Reuters report published November 17 at 10:51 UTC places Nasdaq-100 futures at -0.34% and S&P 500 futures at -0.34%, a weaker tone than earlier unsynchronized Nasdaq futures reports near +0.5%. A separate secondary report gives paired 10Y and 2Y yields of 5.11% and 4.80%, implying +31bp. Neither development independently changes the directional thesis. The 165-record Open Watch file is unchanged.",
-        "marketInterpretation": "Semiconductor weakness is a confirmed market response; the contribution from export restrictions, valuation fears and earnings positioning cannot be separated confidently. The latest Reuters futures figures are directional premarket evidence, not proof of cash-session downside. Elevated yields pressure long-duration valuations, while secondary Fed-hike probabilities require direct CME validation. The yield curve is correctly expressed as +31 basis points.",
-        "threeDayPath": "Tuesday's retail sales and industrial production releases, US regular-session chip breadth and Nvidia's after-close earnings are the first tests. Wednesday's FOMC minutes and Thursday's follow-through will determine whether a chip-led decline extends or stabilizes. This conditional path does not presume any unreleased result or price reaction.",
-        "bullCase": "A strong Nvidia earnings/guidance response, improving SOX leadership, broad positive participation and easing VXN/VIX and Treasury yields could support a relief rally and invalidate the bearish assessment if sustained in cash trading.",
-        "bearCase": "Further QQQ/SOX relative weakness, deteriorating breadth, firmer yields or volatility, and weak Nvidia guidance would reinforce the downside path. Export-control uncertainty is an added risk, but its earnings impact remains unquantified.",
-        "watchNext": "Check the 08:30 ET retail sales and 09:15 ET industrial production releases against consensus and actual equity response; verify SOX/QQQ relative strength, breadth, VXN/VIX and official Treasury yields. Monitor Nvidia results after Tuesday close and FOMC minutes Wednesday 14:00 ET; recheck Open Watch for newly curated catalysts."
+        "marketOverview": "Bearish elevated downside risk persists for Nasdaq/QQQ over November 17–19, anchored by Monday's QQQ and SOX weakness. Tuesday premarket evidence is mixed and not synchronized.",
+        "whatChanged": "Open Watch increased from 165 to 166 records. Reuters reports Nvidia options imply 8.5% two-sided earnings movement, increasing clarity about event risk without changing directional outlook. A later secondary QQQ premarket gain contrasts with earlier Reuters futures weakness, without synchronized confirmation. Brent and WTI reports updated.",
+        "marketInterpretation": "Semiconductor weakness is observed, while specific causal attribution to export controls, leadership changes and rates remains uncertain. The implied options move is two-sided. Secondary 10Y 5.11% minus 2Y 4.80% gives +31 basis points.",
+        "threeDayPath": "Tuesday retail sales 08:30 ET, industrial production 09:15 ET and Nvidia after-close earnings are immediate tests. Wednesday FOMC minutes and Thursday follow-through will determine continuation versus stabilization; no unreleased results are assumed.",
+        "bullCase": "A sustained QQQ/SOX cash-market rebound, stronger breadth, easing yields and volatility, and positive Nvidia guidance could invalidate the bearish case.",
+        "bearCase": "Further semiconductor underperformance, weak Nvidia guidance, elevated yields and volatility, or export-control pressure could extend the selloff; options imply a large move in either direction.",
+        "watchNext": "Verify macro release outcomes and actual equity responses, synchronized SOX/QQQ, breadth, VXN/VIX, official Treasury yields and CME FedWatch. Review the new Open Watch event and Nvidia earnings, then FOMC minutes."
       }
     }
   ]
