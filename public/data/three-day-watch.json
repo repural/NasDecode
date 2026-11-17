@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-17T21:48:49Z",
+  "updated": "2026-11-17T23:09:55Z",
   "horizon": [
     "2026-11-17",
     "2026-11-18",
@@ -16,22 +16,21 @@
   "entries": [
     {
       "date": "2026-11-17",
-      "timeET": "16:48",
+      "timeET": "18:09",
       "bias": "Bearish — Elevated Downside Risk; upside relief catalyst",
-      "previousBias": "Bearish — Elevated Downside Risk",
-      "materialChange": true,
+      "previousBias": "Bearish — Elevated Downside Risk; upside relief catalyst",
+      "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "November 17 cash session ended lower (Nasdaq -0.74%, S&P 500 -1.03%), but Nvidia's newly reported $130B next-quarter revenue outlook exceeds $125.25B consensus and materially improves the November 18 relief-rally scenario. Bearish baseline is retained pending verified after-hours price action and next-session QQQ/SOX breadth confirmation; the earnings beat is an actual catalyst, not proof of market reversal.",
+      "summary": "Nvidia's $130B Q4 guidance remains an upside catalyst already identified in the prior assessment. Subsequent reports confirm roughly $115.8B Q3 revenue versus $109B expected and preliminary NVDA after-hours gains around 2%-3.8% at differing times. This is a positive NVDA reaction, not a verified QQQ/SOX reversal. Bearish elevated downside baseline remains pending Wednesday breadth and semiconductor confirmation.",
       "bullish": [
-        "Nvidia forecast Q4 revenue $130B +/-3%, versus LSEG consensus $125.25B; meaningful positive demand/guidance surprise.",
-        "Nasdaq -0.74% versus S&P -1.03% at November 17 close, relative improvement versus November 16 QQQ underperformance; not evidence of semiconductor recovery.",
-        "Potential short-covering Wednesday if NVDA, SOX and QQQ rise together with improving breadth and declining VXN."
+        "Nvidia Q3 revenue approximately $115.8B exceeded roughly $109B consensus; Q4 guidance $130B exceeds $125.25B consensus.",
+        "NVDA reportedly up 2%-3.8% after hours in unsynchronized reports; potential Wednesday relief rally."
       ],
       "bearish": [
-        "Four in five S&P 500 constituents fell on November 17 per AP; breadth remains weak despite narrower Nasdaq decline.",
-        "November 16 SOX -5.3% and QQQ -2.67% showed major prior-session chip weakness; no synchronized November 17 SOX close verified.",
-        "Nvidia leadership, export restrictions and AI-financing risks remain; 71%-72% forward adjusted gross-margin guidance is near 71.7% consensus, not an unqualified upside surprise."
+        "Nasdaq November 17 close -0.74%, S&P 500 -1.03%, approximately 80% of S&P constituents lower.",
+        "Prior SOX -5.3% and QQQ -2.67%; no verified synchronized current semiconductor recovery.",
+        "Export controls, Nvidia leadership uncertainty, high volatility and upcoming FOMC minutes remain downside risks."
       ],
       "observations": [
         {
@@ -147,12 +146,28 @@
           "quality": "Direct repository read; no new curated item since previous snapshot"
         },
         {
-          "metric": "Current after-hours NVDA/QQQ/SOX, VXN, official yields, FedWatch",
-          "value": null,
-          "unit": "unverified",
-          "source": "No synchronized authoritative quote",
-          "sourceTime": "2026-11-17 16:48 ET",
-          "quality": "Do not infer market response from guidance"
+          "metric": "Nvidia Q3 reported revenue",
+          "value": 115.8,
+          "unit": "USD billion approximately",
+          "source": "https://www.thetimes.com/us/business-us/article/record-third-quarter-revenue-brings-relief-for-nvidia-2kx6sn6j6",
+          "sourceTime": "2026-11-17 evening ET",
+          "quality": "Reported actual earnings, approximate"
+        },
+        {
+          "metric": "NVDA preliminary after-hours reaction",
+          "value": "2%-3.8% gain",
+          "unit": "percent share price change",
+          "source": "https://www.barrons.com/livecoverage/nvidia-earnings-stock-huang-departure/card/nvidia-stock-climbs-on-solid-earnings-that-was-the-easy-part--asyfiCcUpsdjXesKyulE ; https://www.thetimes.com/us/business-us/article/record-third-quarter-revenue-brings-relief-for-nvidia-2kx6sn6j6",
+          "sourceTime": "2026-11-17 evening ET, exact quote times unavailable",
+          "quality": "Unsynchronized secondary observations; not index response"
+        },
+        {
+          "metric": "VIX reported November 17 close",
+          "value": 25.64,
+          "unit": "index points",
+          "source": "https://journalarta.com/en/2026/11/18/wall-street-close-dow-sheds-1-65-as-chip-shares-sink-and-vix-jumps-ahead-of-nvidia/",
+          "sourceTime": "2026-11-17 close, secondary report",
+          "quality": "Secondary report, VXN unavailable"
         }
       ],
       "conditions": {
@@ -163,9 +178,9 @@
       "upcomingEvents": [
         {
           "date": "2026-11-17",
-          "event": "Nvidia earnings call",
-          "timeET": "17:00",
-          "status": "Results/guidance released; call and market reaction pending verification"
+          "event": "Nvidia earnings",
+          "timeET": "after close",
+          "status": "Results and guidance released; preliminary positive after-hours NVDA response, Wednesday index confirmation pending"
         },
         {
           "date": "2026-11-18",
@@ -193,8 +208,8 @@
         }
       ],
       "provenance": {
-        "researchAsOf": "2026-11-17T21:48:49Z",
-        "repositorySnapshotUpdated": "2026-11-17T20:45:47Z",
+        "researchAsOf": "2026-11-17T23:09:55Z",
+        "repositorySnapshotUpdated": "2026-11-17T21:48:49Z",
         "openWatchUpdated": "2026-11-17T19:38:27+00:00",
         "sources": [
           "https://www.reuters.com/business/nvidia-forecasts-quarterly-revenue-above-estimates-first-report-since-huangs-2026-11-17/",
@@ -202,18 +217,20 @@
           "https://apnews.com/article/4d5a35288288389d894e63e6bebe8240",
           "https://www.stocktitan.net/articles/stock-market-today-live-november-17-2026",
           "https://www.wsj.com/finance/stocks/u-s-stocks-fall-as-ai-doubts-fester-a0979bdb",
-          "data/history/market-watch-events.json"
+          "data/history/market-watch-events.json",
+          "https://www.thetimes.com/us/business-us/article/record-third-quarter-revenue-brings-relief-for-nvidia-2kx6sn6j6",
+          "https://www.barrons.com/livecoverage/nvidia-earnings-stock-huang-departure/card/nvidia-stock-climbs-on-solid-earnings-that-was-the-easy-part--asyfiCcUpsdjXesKyulE"
         ],
-        "dataQuality": "November 17 cash close indices from same published closing report, but QQQ and SOX closes unavailable. Nvidia revenue forecast is reported actual guidance and its expected positive impact is not verified market reaction. Four-in-five breadth is AP approximate. Treasury yields are stale secondary paired values, spread correctly +28.6bp. VXN, live VIX, FedWatch, synchronized Brent/WTI and after-hours Nvidia response unavailable."
+        "dataQuality": "Direct latest repository snapshot and Open Watch (167 events); Nvidia actual results reported, after-hours NVDA prices unsynchronized. No verified current QQQ/SOX, VXN, breadth, official yields, FedWatch or synchronized oil. Stale paired Treasury 5.137%/4.851% yields correctly +28.6bp."
       },
       "editorial": {
-        "marketOverview": "US stocks finished November 17 lower, with Nasdaq Composite down 0.74% and S&P 500 down 1.03%; AP reported roughly four in five S&P constituents declining. This leaves a broadly weak market beneath a narrower Nasdaq loss. Previous-session semiconductor weakness was severe, but a synchronized fresh SOX close is unavailable.",
-        "whatChanged": "The major change since 15:45 ET is Nvidia's released fiscal fourth-quarter revenue forecast of $130 billion plus or minus 3%, exceeding LSEG's $125.25 billion consensus. That is a genuinely new, verified earnings catalyst and raises the probability of a Wednesday technology relief rally. The Open Watch file still has 167 curated events; the new catalyst came from Reuters reporting rather than an added curated entry.",
-        "marketInterpretation": "A stronger-than-expected Nvidia sales outlook challenges the immediate demand-collapse narrative but does not repair the breadth deterioration, export-control exposure, management uncertainty or fragile AI financing. Guidance is a company-reported fundamental observation; any stock/index reaction remains unverified. The stale paired 10Y/2Y yields imply +28.6 basis points, not an updated rates impulse. VXN and direct FedWatch probabilities are unavailable.",
-        "threeDayPath": "For the remaining November 17–19 window, the base case remains elevated downside risk but with a newly meaningful upside branch. Wednesday may open with earnings-driven semiconductor relief; its durability requires synchronized SOX/QQQ strength and positive breadth. The FOMC minutes Wednesday afternoon can reinforce or reverse any relief, and Thursday's labor releases will test follow-through.",
-        "bullCase": "Nvidia's $130B revenue outlook versus $125.25B expected can drive a relief gap and short covering after a sharp AI-sector drawdown. If Wednesday QQQ and SOX sustain outperformance, breadth broadens and VXN eases, the bearish outlook should be downgraded or reversed. This is a scenario, not a confirmed after-hours reaction.",
-        "bearCase": "Broad selling persisted into Tuesday's close, and November 16's semiconductor drawdown remains a warning. Export controls, uncertainty over Nvidia's leadership and financing of AI infrastructure can prevent a durable rally even after strong guidance. Hawkish minutes or rising verified yields could trigger a sell-the-news reversal.",
-        "watchNext": "Verify Nvidia's actual after-hours stock move and full earnings-call commentary; Wednesday's QQQ/SOX and semiconductor breadth against SPY; synchronized VXN/VIX and official 10Y/2Y; CME FedWatch and timestamped oil. Track housing starts, 14:00 ET FOMC minutes and Thursday claims/Philadelphia Fed."
+        "marketOverview": "November 17 Nasdaq closed -0.74% and S&P 500 -1.03%, with broad negative breadth. Nvidia earnings after close offered a credible counterweight but did not yet reverse the cash-market weakness.",
+        "whatChanged": "Nvidia reported about $115.8B Q3 revenue against roughly $109B expected and preliminary positive after-hours share reaction of 2%-3.8% across different reports. Its $130B guidance catalyst was already captured in the previous assessment, so no new material outlook change is declared.",
+        "marketInterpretation": "A company-level earnings beat and preliminary NVDA after-hours rally improve relief odds but are not proof of broad semiconductor leadership. The secondary VIX close near 25.64 suggests persistent risk aversion. Stale Treasury pair implies +28.6bp, not a fresh yield signal.",
+        "threeDayPath": "Wednesday may bring an Nvidia-led rebound, but QQQ/SOX and breadth must confirm sustained strength. Wednesday 14:00 ET FOMC minutes may disrupt the move; Thursday claims and Philadelphia Fed data will test continuation. Baseline bearish with an upside relief branch.",
+        "bullCase": "Revenue and guidance beats can trigger short covering; sustained Wednesday QQQ/SOX outperformance, breadth recovery and lower synchronized VXN/VIX would invalidate bearish bias.",
+        "bearCase": "Broad selling, prior SOX weakness, Nvidia leadership and export risks and hawkish minutes could overwhelm a temporary earnings bounce.",
+        "watchNext": "Verify Wednesday synchronized QQQ, SOX, breadth, VXN/VIX, official 10Y/2Y, FedWatch and Brent/WTI; watch housing starts, FOMC minutes, Thursday claims and Philadelphia Fed."
       }
     }
   ]
