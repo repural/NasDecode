@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-18T04:33:52Z",
+  "updated": "2026-11-18T05:17:08Z",
   "horizon": [
     "2026-11-18",
     "2026-11-19",
@@ -15,27 +15,26 @@
   },
   "entries": [
     {
-      "date": "2026-11-17",
-      "timeET": "23:33",
+      "date": "2026-11-18",
+      "timeET": "00:17",
       "bias": "Bearish — Elevated Downside Risk; upside relief catalyst",
       "previousBias": "Bearish — Elevated Downside Risk; upside relief catalyst",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Nvidia earnings-led relief remains plausible but unconfirmed in the U.S. cash session. Reuters' November 18 Asia reporting is mixed: one timestamped regional report describes Nvidia +4.7% after hours and positive U.S. S&P futures, while a later global wrap reports NVDA -0.5% after hours and Asian stocks edging lower. Quote times and baselines are not synchronized, so these conflicting readings do not verify a path-changing reversal. Bearish baseline remains with a conditional upside relief branch; FOMC minutes and Wednesday cash-session SOX breadth are decisive.",
+      "summary": "November 18 00:17 EST: Bearish elevated-downside baseline remains, with conditional Nvidia-led upside relief. Bloomberg-syndicated November 18 07:20 IST report described Nasdaq-100 futures +1.3%, S&P futures +0.7%, and Nvidia more than +4% after hours, but this report predates the current run and is not synchronized with later Reuters Asia coverage describing Nvidia -0.5% and soft Asian shares. No verified November 18 U.S. cash-session SOX/breadth response. November 17 close remains weak. FOMC minutes are the primary imminent policy catalyst.",
       "bullish": [
         "Nvidia reported roughly $115.8B Q3 revenue and $130B Q4 guidance, exceeding expectations; reported $107.6B data-center revenue (+110% year over year) supports AI infrastructure demand.",
         "A timestamped independent 18:30 ET secondary after-hours NVDA reading was +3.89%; this is a market reaction, not a synchronized QQQ/SOX regular-session confirmation.",
         "Earlier after-hours QQQ +1.44%, NVDA +4.55% and other semiconductor gains remain supportive but stale and unsynchronized.",
-        "A November 17 18:27 ET market diary reported Nasdaq futures about 450 index points higher after Nvidia results; a discretionary trader observation, not a synchronized exchange quote.",
-        "Reuters November 18 Asia morning report described Nvidia +4.7% after hours and S&P e-mini futures +0.5%; secondary, not synchronized with later Reuters global wrap."
+        "Bloomberg report published November 18 07:20 IST described Nasdaq-100 futures +1.3%, S&P futures +0.7% and Nvidia more than +4% extended hours, a timestamped but earlier and non-synchronized relief observation."
       ],
       "bearish": [
         "November 17 Nasdaq -0.74%, S&P 500 -1.03%, and about 80% of S&P 500 constituents declining show broad cash-session weakness.",
         "Prior SOX approximately -5.3% on November 16, with no November 18 cash-session semiconductor confirmation.",
         "Nvidia's leadership transition, export-control restrictions and disclosed infrastructure guarantees remain company-specific risks; high volatility and FOMC minutes may undermine relief.",
         "November 17 Nasdaq declining issues reportedly outnumbered advancing issues 2.9 to 1; separate market diary observation, not a confirmed November 18 breadth reversal.",
-        "A separate November 18 Reuters global wrap described Nvidia -0.5% after hours and Asian shares edging lower, underscoring fragile follow-through; quote time/baseline unclear."
+        "Reuters November 18 Asia update described MSCI Asia ex-Japan -0.1%, Nikkei -0.3% and NVDA -0.5% after hours; later market context is inconsistent with the earlier positive futures snapshot, and no cash-session reversal is confirmed."
       ],
       "observations": [
         {
@@ -317,11 +316,51 @@
           "source": "https://www.reuters.com/world/china/global-markets-wrapup-1-2026-11-18/",
           "sourceTime": "2026-11-18 Asia morning, precise tick unspecified",
           "quality": "Secondary quote, WTI not synchronized"
+        },
+        {
+          "metric": "Nasdaq-100 futures Bloomberg syndicated Asia report",
+          "value": 1.3,
+          "unit": "percent change",
+          "source": "https://www.moneycontrol.com/news/business/markets/nasdaq-s-p-500-futures-rise-after-nvidia-earnings-14082960.html",
+          "sourceTime": "2026-11-18 07:20 IST publication (2026-11-17 20:50 EST); exchange tick unspecified",
+          "quality": "Earlier secondary futures snapshot; not synchronized with Reuters later Asia report"
+        },
+        {
+          "metric": "S&P 500 futures Bloomberg syndicated Asia report",
+          "value": 0.7,
+          "unit": "percent change",
+          "source": "https://www.moneycontrol.com/news/business/markets/nasdaq-s-p-500-futures-rise-after-nvidia-earnings-14082960.html",
+          "sourceTime": "2026-11-18 07:20 IST publication",
+          "quality": "Earlier secondary futures snapshot, no current exchange tick"
+        },
+        {
+          "metric": "Nov 17 10Y Treasury daily secondary close",
+          "value": 5.1,
+          "unit": "percent yield",
+          "source": "https://www.investech.com/daily-data/",
+          "sourceTime": "2026-11-17 daily row, time unspecified",
+          "quality": "Same-date secondary paired daily series; not official Treasury source"
+        },
+        {
+          "metric": "Nov 17 2Y Treasury daily secondary close",
+          "value": 4.8,
+          "unit": "percent yield",
+          "source": "https://www.investech.com/daily-data/",
+          "sourceTime": "2026-11-17 daily row, time unspecified",
+          "quality": "Same-date secondary paired daily series; not official Treasury source"
+        },
+        {
+          "metric": "Nov 17 10Y-2Y paired secondary spread",
+          "value": 30,
+          "unit": "basis points",
+          "source": "https://www.investech.com/daily-data/",
+          "sourceTime": "2026-11-17 daily row",
+          "quality": "Calculated (5.10-4.80)*100; properly scaled, daily secondary series"
         }
       ],
       "conditions": {
-        "bearishInvalidation": "Sustained November 18 regular-session QQQ and SOX outperformance with improving breadth and falling VXN/VIX, surviving the FOMC minutes.",
-        "bearishConfirmation": "Extended-hours relief fades in cash trading, SOX fails to lead, breadth stays weak, or Fed minutes lift yields and volatility.",
+        "bearishInvalidation": "November 18 U.S. regular-session QQQ and SOX sustain leadership with improving Nasdaq breadth and declining VXN/VIX after 14:00 EST FOMC minutes.",
+        "bearishConfirmation": "Nasdaq futures relief fails to translate to cash-session SOX leadership, breadth remains negative, or FOMC minutes lift Treasury yields/volatility.",
         "riskTriggers": "November 18 housing starts and 14:00 ET FOMC minutes; November 19 claims and Philadelphia Fed; Nvidia guidance and export controls."
       },
       "upcomingEvents": [
@@ -355,34 +394,22 @@
         "repositorySnapshotUpdated": "2026-11-18T03:12:58Z",
         "openWatchUpdated": "2026-11-18T02:10:14+00:00",
         "sources": [
-          "https://www.reuters.com/business/nvidia-forecasts-quarterly-revenue-above-estimates-first-report-since-huangs-2026-11-17/",
-          "https://www.reuters.com/business/us-stock-futures-slip-ahead-nvidia-results-fed-speakers-focus-2026-11-17/",
-          "https://apnews.com/article/4d5a35288288389d894e63e6bebe8240",
-          "https://www.stocktitan.net/articles/stock-market-today-live-november-17-2026",
-          "https://www.wsj.com/finance/stocks/u-s-stocks-fall-as-ai-doubts-fester-a0979bdb",
-          "data/history/market-watch-events.json",
-          "https://www.thetimes.com/us/business-us/article/record-third-quarter-revenue-brings-relief-for-nvidia-2kx6sn6j6",
-          "https://www.barrons.com/livecoverage/nvidia-earnings-stock-huang-departure/card/nvidia-stock-climbs-on-solid-earnings-that-was-the-easy-part--asyfiCcUpsdjXesKyulE",
-          "https://www.barrons.com/livecoverage/nvidia-earnings-stock-huang-departure/card/nvidia-s-earnings-boost-other-chip-and-ai-stocks-4LB8BXhYlBDT3eG0vSNK",
-          "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-17/",
-          "https://www.wsj.com/livecoverage/nvidia-earnings-stock-market-news-11-17-2026",
-          "https://www.businessinsider.com/nvidia-earnings-jensen-huang-departure-nvda-stock-2026-11",
-          "https://wiseview.ai/news/earnings-after-the-bell-2026-11-17",
-          "https://www.stonex.com/en-gb/news-and-analysis/vix-short-covering-surges-as-traders-reassess-stock-market-risk-2026-11-17/",
-          "https://pro.thestreet.com/dougs-daily-diary/2026-11-17",
           "https://www.reuters.com/world/china/global-markets-wrapup-1-2026-11-18/",
-          "https://za.investing.com/news/economy-news/asia-stocks-set-to-snap-losing-streak-on-nvidia-beat-as-anthropic-looms-4582289"
+          "https://www.moneycontrol.com/news/business/markets/nasdaq-s-p-500-futures-rise-after-nvidia-earnings-14082960.html",
+          "https://www.investech.com/daily-data/",
+          "https://apnews.com/article/dad5715bc91b4aba23a567a40e22b1fc"
         ],
-        "dataQuality": "Compared directly with 22:12 ET snapshot. Open Watch file read directly: 167 events, updated 02:10 UTC, no newly confirmed independent catalyst. Two November 18 Reuters Asia reports have conflicting NVDA after-hours readings (+4.7%, -0.5%) with no synchronized quote time or common baseline; neither proves cash-session reversal. Brent $92.60 is a secondary Asia quote, WTI unverified. No new synchronized QQQ/SOX, breadth, VXN/VIX, official 10Y/2Y or CME FedWatch. Carried stale yields 5.137% and 4.851% imply 28.6 bp, but may be anomalous."
+        "dataQuality": "New Bloomberg-syndicated futures snapshot and Reuters Asia update are not synchronized; official Treasury, direct FedWatch, current VXN, current SOX, paired Brent/WTI unavailable. Prior quotes explicitly stale. 2026-11-17 paired daily secondary yields 5.10%/4.80% imply +30bp. Open Watch 167 entries, updated 2026-11-18T02:10:14Z, no newly published catalyst.",
+        "runTimeUTC": "2026-11-18T05:17:08Z"
       },
       "editorial": {
-        "marketOverview": "The November 17 U.S. cash market finished weak: Nasdaq -0.74%, S&P 500 -1.03%, and breadth negative. Nvidia's substantial earnings beat and guidance lifted early after-hours sentiment, but the November 18 Asia session presents mixed signals, and no U.S. regular-session confirmation is available yet.",
-        "whatChanged": "Relative to the 22:12 ET snapshot, new Reuters Asia reporting first described Nvidia up 4.7% after hours and S&P futures up 0.5%, then another Reuters global wrap described Nvidia down 0.5% after hours with Asian shares edging lower. Without matched quote times and baselines, this is evidence of uncertainty rather than a confirmed reversal. Brent was quoted near $92.60, not synchronized with WTI. The curated Open Watch event count remains 167.",
-        "marketInterpretation": "Strong reported AI infrastructure demand supports a rebound, but uncertain post-earnings price response and persistent concerns over export controls, financing and leadership keep the bearish baseline intact. Reported after-hours prices and Asian indices are not a substitute for synchronized Wednesday U.S. cash-session QQQ/SOX leadership, breadth, and volatility. Stale and possibly anomalous Treasury yields are not directional confirmation.",
-        "threeDayPath": "Wednesday November 18 could open with an Nvidia-driven relief attempt, but cash-session QQQ and SOX relative strength, breadth, and the 14:00 ET FOMC minutes will determine whether it persists. Thursday November 19 jobless claims and Philadelphia Fed survey test the macro backdrop and rates. Friday November 20 measures follow-through versus a fading relief rally. Baseline remains bearish, with an explicitly conditional upside branch.",
-        "bullCase": "Nvidia earnings strength transmits into broad semiconductor and mega-cap participation during Wednesday's cash session, Nasdaq breadth turns positive and VXN/VIX declines. A less-hawkish reading of Fed minutes and stable Thursday macro data allow the rebound to extend through Friday. No such synchronized confirmation exists yet.",
-        "bearCase": "The after-hours bounce proves unstable, chip leadership fails to broaden, and a hawkish Fed interpretation or renewed yield pressure keeps technology valuations under stress. Negative breadth, elevated volatility and export-control risks would favor another lower high and renewed downside.",
-        "watchNext": "Verify official synchronized Wednesday QQQ, SPY and SOX cash-session quotes and breadth, VXN/VIX, Treasury 10Y/2Y in percent with bp spread, CME FedWatch and paired Brent/WTI. Check housing starts at 08:30 ET, FOMC minutes 14:00 ET, Thursday 08:30 ET claims/Philadelphia Fed, and new curated Open Watch events. Avoid interpreting conflicting Reuters after-hours snapshots as a verified reversal."
+        "marketOverview": "Nasdaq entered November 18 after a weak November 17 cash close, with negative market breadth and elevated volatility. Nvidia's stronger-than-expected earnings and forward guidance create a meaningful countertrend rally opportunity, but an extended-hours bounce is not yet a confirmed change in broad index trend.",
+        "whatChanged": "A Bloomberg-syndicated report published at 07:20 IST described Nasdaq-100 futures up 1.3%, S&P futures up 0.7%, and Nvidia up more than 4% after hours. A separate Reuters Asia wrap described Nvidia down 0.5% after hours and Asian equities slightly lower. Their precise ticks and baselines differ or are unavailable, so these reports cannot be combined into a reliable time series or proof of a new reversal. Secondary daily November 17 Treasury yields were 5.10% for 10Y and 4.80% for 2Y, a +30bp spread, without claiming live verification.",
+        "marketInterpretation": "The market is testing whether robust AI infrastructure demand can offset export restrictions, valuation pressure and broader risk aversion. Strong company earnings support a relief branch, but sustained SOX relative strength, broader participation and falling implied volatility are necessary for a credible bullish regime shift. A hawkish FOMC interpretation could offset the earnings benefit.",
+        "threeDayPath": "Wednesday November 18 is the confirmation session: early semiconductor participation and the 14:00 EST FOMC minutes can generate a volatile two-way session. Thursday November 19 brings labor and Philadelphia Fed data that could reinforce or reverse the yield response. Friday November 20 should reveal whether the earnings rally broadens into a durable recovery or fades under renewed macro and sector selling.",
+        "bullCase": "Nvidia guidance catalyzes durable SOX and QQQ outperformance, Nasdaq breadth turns positive and volatility compresses. Falling yields or a less-hawkish reading of FOMC minutes would help extend the rebound through Friday. This remains a conditional scenario rather than the verified baseline.",
+        "bearCase": "An early futures-led bounce fails in cash trading, chip leadership remains narrow, and FOMC minutes or labor data support further tightening expectations. Weak breadth and high VIX would favor another leg lower, especially if the export-control and AI-financing concerns reassert themselves.",
+        "watchNext": "Track November 18 synchronized QQQ/SOX and breadth after the cash open; compare VXN and VIX at the same timestamps; check official 2Y/10Y yields and direct CME FedWatch; watch 14:00 EST FOMC minutes and November 19 claims/Philadelphia Fed. Refresh paired Brent and WTI before drawing inflation conclusions. Review Open Watch for newly published material catalysts."
       }
     }
   ]
