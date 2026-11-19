@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-19T22:25:19Z",
+  "updated": "2026-11-19T23:32:11Z",
   "horizon": [
-    "2026-11-19",
     "2026-11-20",
-    "2026-11-23"
+    "2026-11-23",
+    "2026-11-24"
   ],
   "archive": {
     "legacyPath": "data/history/three-day-watch/legacy-through-2026-11-10.json",
@@ -16,22 +16,22 @@
   "entries": [
     {
       "date": "2026-11-19",
-      "timeET": "17:25",
+      "timeET": "18:32",
       "bias": "Bearish — Elevated Downside Risk; broad selloff and semiconductor reversal",
       "previousBias": "Bearish — Elevated Downside Risk; broad selloff and semiconductor reversal",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Official November 19 closes confirm the previously identified failed IPO-led relief rally: Nasdaq Composite -2.3%, S&P 500 -2.0%, Dow -2.2%, and over 90% of S&P 500 stocks lower. Anthropic finished at $97.17, above its $83 offer but below its $111.50 opening. This confirms the prior bearish path rather than constituting a distinct new directional change.",
+      "summary": "Post-close reassessment: November 19 broad selloff remains the dominant confirmed signal. WSJ additionally reports VIX closing at 28.44 (+15.8%) and Nvidia down 3.3%; no new verified path-changing event after the prior 17:25 EST assessment. Bearish continuation risk remains elevated into November 20, 23 and 24.",
       "bullish": [
-        "Anthropic closed $97.17, 17.1% above its $83 offer, demonstrating selective IPO demand despite the broader selloff",
-        "An oversold rebound is possible if Friday QQQ/SPY relative strength, SOX/SMH, breadth and volatility improve together"
+        "Anthropic IPO closed $97.17, 17.1% above $83 offering despite selling in wider technology sector",
+        "Oversold rebound possible only if QQQ relative strength, chip leadership, breadth and volatility improve together"
       ],
       "bearish": [
-        "Nasdaq Composite closed at 23,879.20, down approximately 2.3%, versus S&P 500 down approximately 2.0%",
-        "More than 90% of S&P 500 constituents declined and all 11 sectors finished negative according to AP/MarketWatch",
-        "AI chipmakers failed to sustain opening strength; AMD fell more than 9% according to Investor's Business Daily",
-        "S&P 500 recorded its sixth consecutive decline, indicating persistent broad risk aversion"
+        "Nasdaq Composite closed 23,879.20, down about 2.3%; S&P 500 7,175.83, down 2.0%",
+        "More than 90% of S&P 500 constituents declined; broad risk aversion confirmed",
+        "WSJ reports VIX at 28.44, up 15.8%, and Nvidia down 3.3% on November 19",
+        "IPO-led rally faded; sector-wide AI valuation and capex concerns persist"
       ],
       "observations": [
         {
@@ -83,12 +83,36 @@
           "quality": "Reported regular-session close"
         },
         {
+          "metric": "VIX close",
+          "value": 28.44,
+          "unit": "index points",
+          "source": "https://www.wsj.com/finance/stocks/u-s-stocks-slide-as-ai-bust-continues-despite-anthropic-ipo-5a14e137",
+          "sourceTime": "2026-11-19 US close",
+          "quality": "WSJ closing report; not synchronized with unavailable VXN"
+        },
+        {
+          "metric": "VIX daily change",
+          "value": 15.8,
+          "unit": "percent",
+          "source": "https://www.wsj.com/finance/stocks/u-s-stocks-slide-as-ai-bust-continues-despite-anthropic-ipo-5a14e137",
+          "sourceTime": "2026-11-19 US close",
+          "quality": "WSJ closing report"
+        },
+        {
+          "metric": "Nvidia daily change",
+          "value": -3.3,
+          "unit": "percent",
+          "source": "https://www.wsj.com/finance/stocks/u-s-stocks-slide-as-ai-bust-continues-despite-anthropic-ipo-5a14e137",
+          "sourceTime": "2026-11-19 US close",
+          "quality": "WSJ rounded closing report"
+        },
+        {
           "metric": "10Y minus 2Y prior indicative",
           "value": 25.4,
           "unit": "basis points",
           "source": "https://www.wsj.com/finance/investing/jgbs-edge-higher-amid-mixed-developments-c690e1af",
           "sourceTime": "2026-11-19 morning EST",
-          "quality": "Stale, (5.082%-4.828%)*100=25.4 bp; not a fresh close"
+          "quality": "Stale; (5.082%-4.828%)*100=25.4 bp; do not treat as close"
         },
         {
           "metric": "Curated Open Watch events",
@@ -96,7 +120,7 @@
           "unit": "events",
           "source": "https://github.com/repural/NasDecode/blob/main/data/history/market-watch-events.json",
           "sourceTime": "2026-11-19T19:22:15+00:00",
-          "quality": "Direct repository count, latest listed catalyst predates close"
+          "quality": "Direct repository; no new events since prior assessment"
         }
       ],
       "conditions": {
@@ -106,37 +130,42 @@
       "upcomingEvents": [
         {
           "date": "2026-11-20",
-          "event": "Michigan consumer sentiment; QQQ/SOX breadth and semiconductor follow-through",
-          "status": "Scheduled / monitor"
+          "event": "Michigan consumer sentiment; QQQ/SPY, SOX/SMH and volatility confirmation",
+          "status": "Scheduled; results not yet available"
         },
         {
           "date": "2026-11-23",
-          "event": "Third-session direction, semiconductor participation, Treasury/volatility response",
+          "event": "Monday directional follow-through and macro/rates reaction",
+          "status": "Upcoming"
+        },
+        {
+          "date": "2026-11-24",
+          "event": "Third trading-day confirmation; macro/earnings schedule to verify",
           "status": "Upcoming"
         }
       ],
       "provenance": {
         "repository": "repural/NasDecode",
-        "priorSnapshotUpdated": "2026-11-19T20:39:33Z",
+        "priorSnapshotUpdated": "2026-11-19T22:25:19Z",
         "openWatchUpdated": "2026-11-19T19:22:15+00:00",
         "openWatchCount": 171,
         "sources": [
-          "AP November 19 closing index report",
-          "AP broad market and breadth report",
-          "Guardian Anthropic first-day close",
-          "Investor's Business Daily semiconductor commentary",
-          "NasDecode latest snapshot and curated Open Watch"
+          "AP November 19 closing report",
+          "WSJ November 19 close VIX/Nvidia report",
+          "NasDecode prior snapshot",
+          "NasDecode curated Open Watch",
+          "StockTitan November 16-20 earnings calendar"
         ],
-        "dataQuality": "AP closing index and breadth observations are date-aligned but QQQ, SOX, VXN/VIX, official Treasury 10Y/2Y, Brent/WTI and CME FedWatch closing observations were not independently verified or synchronized. Prior yield spread is explicitly stale. No estimated data presented as live."
+        "dataQuality": "Nasdaq and S&P close, breadth, VIX and Nvidia changes from date-aligned closing reports; not all timestamp-synchronized. QQQ, SOX, VXN, official Treasury yields, Brent/WTI and direct CME FedWatch close unavailable. Earlier yield spread is stale and correctly scaled. No unverified quotes treated as current."
       },
       "editorial": {
-        "marketOverview": "Thursday's regular-session close confirms an unusually broad risk-off session. AP reports Nasdaq Composite down 2.3%, S&P 500 down 2.0%, and Dow down 2.2%, with more than 90% of S&P 500 stocks declining. The strong Anthropic debut did not carry through to existing AI and semiconductor equities.",
-        "whatChanged": "Since the 15:39 EST assessment, closing figures replace provisional intraday index readings. Nasdaq finished at 23,879.20 and S&P 500 at 7,175.83. Anthropic closed at $97.17, above the offer but below the opening trade. This confirms, rather than newly changes, the established bearish assessment; Open Watch remains 171 curated records.",
-        "marketInterpretation": "The failed early rebound and broad closing losses indicate fragile demand for risk assets. The IPO's premium demonstrates selective appetite but not generalized AI-sector support. Semiconductor weakness remains important, yet an independently synchronized SOX close is unavailable. Yield pressure and inflation-growth concerns are contextual, not demonstrated immediate causes of the close.",
-        "threeDayPath": "Thursday November 19 is now confirmed as a broad distribution day. Friday November 20 is the critical test: sustained weakness in QQQ relative to SPY and semiconductors would favor continuation; a broad rebound with declining volatility would weaken the bearish case. Monday November 23 is the follow-through checkpoint. The evidence does not support a numerical target.",
-        "bullCase": "Selective AI demand remains visible in Anthropic's first-day premium. Following a six-session S&P decline, a relief bounce is possible, especially if QQQ and chip stocks lead and breadth broadens. These are conditional possibilities, not confirmed reversal signals.",
-        "bearCase": "Nasdaq's 2.3% loss, widespread S&P decliners and fading AI-sector participation strengthen the risk of continued de-risking. A weak Friday recovery, elevated volatility and chip underperformance would favor another lower-high sequence into Monday.",
-        "watchNext": "Verify synchronized Friday QQQ/SPY and SOX/SMH leadership, market breadth, VXN/VIX, official 10Y/2Y yields converted to basis points, Brent/WTI, direct CME FedWatch and Michigan sentiment; monitor new curated Open Watch events and after-hours earnings responses."
+        "marketOverview": "The November 19 close remains a broad distribution session: Nasdaq lost roughly 2.3%, S&P 500 2.0%, and over 90% of S&P 500 stocks declined. The WSJ closing account also puts VIX at 28.44, a 15.8% jump, while Nvidia lost 3.3%. This reinforces already recognized risk aversion.",
+        "whatChanged": "Since the 17:25 EST assessment, a credible closing report supplies VIX and Nvidia figures that were previously unavailable. They reinforce the established bearish case but do not constitute a fresh path-changing catalyst. Curated Open Watch remains at 171 events and has not refreshed since 19:22 UTC.",
+        "marketInterpretation": "A broad selloff accompanied by rising implied volatility and AI-chip weakness suggests an unfavorable near-term risk/reward environment for Nasdaq. Anthropic's IPO premium shows selective demand but did not stabilize the sector. Rate and oil causality cannot be inferred from unsynchronized or unavailable quotes.",
+        "threeDayPath": "The forward three trading sessions are Friday November 20, Monday November 23 and Tuesday November 24. Friday's breadth, QQQ/SPY relative strength and chip participation are the first tests. If rebounds fail, Monday and Tuesday carry downside-continuation risk. A broad recovery with falling volatility could instead produce a relief bounce; no point target is defensible.",
+        "bullCase": "The market is stretched after a prolonged decline and Anthropic closed above offer price. A sustained rebound led by QQQ and semiconductors, with broader participation and lower VIX/VXN, would undermine the bearish continuation scenario. This remains conditional, not observed.",
+        "bearCase": "Six straight S&P losses, over 90% decliners, VIX at 28.44 and Nvidia weakness argue that risk appetite is fragile. Another failed Friday bounce or continued semiconductor underperformance would support downside into Monday and Tuesday.",
+        "watchNext": "Check November 20 Michigan sentiment against expectations and observed yield/market response; verify synchronized QQQ/SPY, SOX/SMH, VXN/VIX, 10Y and 2Y official yields in percent and curve basis points, Brent/WTI, direct CME FedWatch and breadth. Review curated Open Watch for new events; separate announced catalysts from actual market response."
       }
     }
   ]
