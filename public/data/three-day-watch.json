@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-19T02:52:18Z",
+  "updated": "2026-11-19T03:56:41Z",
   "horizon": [
     "2026-11-19",
     "2026-11-20",
@@ -16,23 +16,25 @@
   "entries": [
     {
       "date": "2026-11-18",
-      "timeET": "21:52",
-      "bias": "Bearish — Elevated Downside Risk; upside relief catalyst",
+      "timeET": "22:56",
+      "bias": "Bearish — Elevated Downside Risk; conditional IPO-led upside relief",
       "previousBias": "Bearish — Elevated Downside Risk; upside relief catalyst",
-      "materialChange": false,
+      "materialChange": true,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "21:52 EST review: bearish elevated downside risk and conditional upside relief unchanged for November 19/20/23. Reuters confirms Wednesday Nasdaq +0.39% and Nvidia -2.9% despite strong earnings. Latest secondary extended-hours QQQ +1.38% versus SPY +0.72% at 19:59 EST remains unsynchronized and insufficient to confirm sector breadth. No new verified material catalyst; Open Watch 170 events unchanged.",
+      "summary": "22:56 EST: bearish baseline retained, but confirmed Anthropic $83 IPO pricing above $70-$78 range, $79.3bn offering and planned Nov 19 Nasdaq debut add a major new liquidity/AI-sentiment catalyst to Thursday's path. This is expected impact, not an observed post-listing market reaction. Nvidia's negative Wednesday close and hawkish Fed minutes still limit upside conviction.",
       "bullish": [
         "Nasdaq Composite +0.39% against S&P 500 -0.24% at Wednesday close; separately reported QQQ +0.39% versus SPY -0.31%.",
         "Nvidia earnings strength provides conditional upside if chip participation and breadth improve.",
         "Palo Alto Networks after-hours rise is a stock-specific positive, not broad sector confirmation.",
-        "Secondary QQQ after-hours +1.38% versus SPY +0.72% at 19:59 EST suggests tentative overnight appetite, not confirmed regular-session breadth."
+        "Secondary QQQ after-hours +1.38% versus SPY +0.72% at 19:59 EST suggests tentative overnight appetite, not confirmed regular-session breadth.",
+        "Le Monde Nov 19 reports Anthropic IPO priced at $83, above $70-$78 indicated range, with $79.3bn raised; potential positive AI demand/IPO sentiment, not yet a verified market reaction."
       ],
       "bearish": [
         "NVDA -2.89% at November 18 close despite strong earnings; negative observed reaction overrides assumed bullish earnings impact.",
         "October FOMC minutes and hawkish Fed commentary sustain rate-duration risk; Reuters reports inflation concern and potential further increases.",
-        "No synchronized SOX/breadth/volatility improvement; export-control and AI spending uncertainty persist."
+        "No synchronized SOX/breadth/volatility improvement; export-control and AI spending uncertainty persist.",
+        "An unusually large Anthropic IPO and approximately $1.5tn indicated valuation may increase Thursday opening volatility and capital rotation; direction cannot be inferred from pricing alone."
       ],
       "observations": [
         {
@@ -144,12 +146,28 @@
           "source": "https://github.com/repural/NasDecode/commit/8d213260e9ff79ba08fbc477dc47d132be6c3dd8",
           "sourceTime": "2026-11-18 21:17:54 EST",
           "quality": "Calculated (5.064%-4.796%)*100=26.8bp; source feed not independently validated"
+        },
+        {
+          "metric": "Anthropic IPO offer price",
+          "value": 83,
+          "unit": "USD per share",
+          "source": "https://www.lemonde.fr/en/economy/article/2026/11/19/anthropic-prices-shares-at-83-valuing-the-ai-firm-at-1-5-trillion-on-the-eve-of-its-ipo_6783988_19.html",
+          "sourceTime": "2026-11-19 publication, exact clock time not available",
+          "quality": "Reported confirmed pricing by Le Monde; not independently corroborated by exchange/SEC; no observed listing market reaction"
+        },
+        {
+          "metric": "Anthropic IPO proceeds",
+          "value": 79.3,
+          "unit": "USD billions",
+          "source": "https://www.lemonde.fr/en/economy/article/2026/11/19/anthropic-prices-shares-at-83-valuing-the-ai-firm-at-1-5-trillion-on-the-eve-of-its-ipo_6783988_19.html",
+          "sourceTime": "2026-11-19 publication, exact clock time not available",
+          "quality": "Reported IPO size, not a live market quote"
         }
       ],
       "conditions": {
         "bearishInvalidation": "QQQ and SOX sustain relative strength with expanding participation, improving breadth, declining VXN/VIX and non-rising yields following Thursday's data.",
         "bearishConfirmation": "NVDA/SOX continue lagging, breadth weakens and volatility or Treasury yields rise after macro releases.",
-        "riskTriggers": "Nov 19 08:30 EST claims and Philadelphia Fed; Walmart earnings; Anthropic IPO pricing/debut only if confirmed; Friday sector follow-through and Monday confirmation."
+        "riskTriggers": "Nov 19 Anthropic first trade and initial price discovery (reported pricing $83, listing not yet observed); 08:30 EST jobless claims and Philadelphia Fed; Walmart earnings; Friday semiconductor follow-through and Monday confirmation."
       },
       "upcomingEvents": [
         {
@@ -160,9 +178,9 @@
         },
         {
           "date": "2026-11-19",
-          "event": "Walmart earnings and potential Anthropic trading debut",
+          "event": "Walmart earnings; Anthropic Nasdaq IPO debut after $83 offer pricing",
           "timeET": null,
-          "status": "Expected; actual pricing/debut not independently confirmed"
+          "status": "IPO pricing reported by Le Monde Nov 19; first trade and market response not yet verified"
         },
         {
           "date": "2026-11-20",
@@ -178,8 +196,8 @@
         }
       ],
       "provenance": {
-        "researchAsOf": "2026-11-19T02:52:18Z",
-        "repositorySnapshotUpdated": "2026-11-19T02:17:09Z",
+        "researchAsOf": "2026-11-19T03:56:41Z",
+        "repositorySnapshotUpdated": "2026-11-19T02:52:18Z",
         "openWatchUpdated": "2026-11-19T01:21:10+00:00",
         "openWatchEventCount": 170,
         "sources": [
@@ -187,19 +205,20 @@
           "https://www.stocktitan.net/articles/stock-market-today-live-november-18-2026",
           "https://ng.investing.com/news/stock-market-news/jobless-claims-and-philadelphia-fed-index-due-thursday-93CH-2816604",
           "https://github.com/repural/NasDecode/blob/main/data/history/market-watch-events.json",
-          "https://www.schaeffersresearch.com/content/news/2026/11/12/the-week-ahead-dow-earnings-fomc-meeting-minutes"
+          "https://www.schaeffersresearch.com/content/news/2026/11/12/the-week-ahead-dow-earnings-fomc-meeting-minutes",
+          "https://www.lemonde.fr/en/economy/article/2026/11/19/anthropic-prices-shares-at-83-valuing-the-ai-firm-at-1-5-trillion-on-the-eve-of-its-ipo_6783988_19.html"
         ],
-        "dataQuality": "Reuters Nov 18 regular-session closes verified; Stock Titan extended-hours QQQ/SPY 19:59 EST secondary and stale for this run. SOX/VXN/VIX/breadth not synchronized. Latest repository dashboard refresh 02:23:51 UTC reports 10Y 5.064% and 2Y 4.796% as of 21:17:54 EST, implying +26.8bp, but dashboard feed cannot be independently synchronized or validated as official Treasury. Prior 5.09%-4.79%=30bp secondary quote stale. Oil and FedWatch not independently refreshed. Open Watch unchanged 170 events.",
-        "runTimeUTC": "2026-11-19T02:52:18Z"
+        "dataQuality": "Latest verified Wednesday cash close Nasdaq +0.39%, S&P -0.24%; QQQ/SPY extended hours secondary and stale. No synchronized SOX, breadth, VXN/VIX, direct FedWatch, official paired Treasury, or Brent/WTI. Repository 10Y 5.064% minus 2Y 4.796% implies +26.8 basis points, unverified official feed. Anthropic $83 IPO pricing from Le Monde, market response not observed. Open Watch 170 events unchanged.",
+        "runTimeUTC": "2026-11-19T03:56:41Z"
       },
       "editorial": {
-        "marketOverview": "Wednesday Nasdaq Composite gained 0.39% while S&P 500 fell 0.24%; Nvidia dropped about 2.9% despite strong results. QQQ's 1.38% after-hours rise at 19:59 EST versus SPY's 0.72% is a tentative relief signal, not confirmation of broad semiconductor participation.",
-        "whatChanged": "Since the 21:17 EST snapshot, no new independently verified path-changing catalyst has emerged. Repository dashboard refreshed at 21:18 EST, showing 10Y 5.064% and 2Y 4.796%, an implied 26.8bp curve; these are feed values, not official synchronized observations. Open Watch remains at 170 events.",
-        "marketInterpretation": "Nasdaq's relative strength offsets some downside pressure, but Nvidia's negative post-earnings reaction and hawkish Fed minutes prevent a bullish regime call. The repository yield pair implies an elevated 10Y yield and 26.8bp positive spread, though source verification is limited. Volatility, breadth and FedWatch lack fresh direct confirmation.",
-        "threeDayPath": "Thursday November 19: jobless claims and Philadelphia Fed at 08:30 EST, Walmart earnings and potential Anthropic IPO developments may set the open. Friday November 20: Michigan sentiment and semiconductor/breadth follow-through test the move. Monday November 23: seek sustained directional confirmation. Bearish baseline with conditional relief remains.",
-        "bullCase": "QQQ and SOX lead together after Thursday releases, Nvidia recovers, participation broadens, VXN/VIX retreat and yields stabilize. Sustained synchronized confirmation invalidates the bearish baseline.",
-        "bearCase": "Overnight relief fades, Nvidia/SOX lag, breadth deteriorates and Treasury yields or volatility rise after macro catalysts. This would support downside continuation into Friday and Monday.",
-        "watchNext": "Confirm Thursday 08:30 EST claims and Philadelphia Fed actuals and price response, Walmart earnings, Anthropic listing status, Friday Michigan sentiment; verify synchronized QQQ/SOX, breadth, VXN/VIX, official 10Y/2Y, Brent/WTI and direct FedWatch. Recheck new curated Open Watch events."
+        "marketOverview": "Nasdaq outperformed broad benchmarks at Wednesday's close (+0.39% versus S&P -0.24%), but Nvidia fell around 2.9% despite strong results. The bearish elevated-downside baseline remains because semiconductor breadth and volatility confirmation are missing. Anthropic's reported $83 IPO pricing now adds a large, imminent AI-equity price-discovery event.",
+        "whatChanged": "Le Monde reports Anthropic priced at $83, above the indicated $70-$78 range, raising $79.3 billion at an approximately $1.5 trillion valuation, with Nasdaq trading planned Thursday November 19. This materially raises near-term event and liquidity risk and creates a conditional positive sentiment channel; there is not yet an observed debut or attributable QQQ/SOX response. Open Watch remains at 170 curated events.",
+        "marketInterpretation": "The IPO pricing is evidence of strong primary-market demand for AI exposure, not proof of secondary-market demand or semiconductor leadership. Its unusually large scale could either lift AI sentiment or drain liquidity from other growth shares. Hawkish Fed minutes and Nvidia's negative post-earnings reaction keep the bearish baseline intact. The repository Treasury curve +26.8bp is a calculated, unverified feed observation.",
+        "threeDayPath": "Thursday November 19: 08:30 EST claims/Philadelphia Fed and Walmart earnings set macro tone, while Anthropic's reported IPO debut may amplify AI-sector volatility and capital rotation. Friday November 20: monitor whether QQQ and SOX leadership and breadth confirm the IPO reaction, alongside Michigan sentiment. Monday November 23: assess persistence rather than first-day headline direction. Bearish baseline with a wider two-way path.",
+        "bullCase": "Strong Anthropic debut supports AI demand narrative, QQQ and SOX outperform together, Nvidia recovers, participation broadens, VXN/VIX fall and yields stabilize; sustained confirmation would invalidate bearish positioning.",
+        "bearCase": "Anthropic debut disappoints or triggers liquidity rotation, Nvidia/SOX remain weak, breadth narrows, yields and volatility rise after macro data, driving downside continuation Friday and Monday.",
+        "watchNext": "Verify exchange/issuer IPO listing and first trade rather than extrapolate from pricing; compare synchronized QQQ/SOX/NVDA, breadth, VXN/VIX and paired official 10Y/2Y with direct FedWatch and Brent/WTI. Confirm 08:30 EST claims and Philadelphia Fed, Walmart, Michigan sentiment and new Open Watch events."
       }
     }
   ]
