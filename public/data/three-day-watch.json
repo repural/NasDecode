@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-19T23:32:11Z",
+  "updated": "2026-11-19T23:50:13Z",
   "horizon": [
     "2026-11-20",
     "2026-11-23",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-19",
-      "timeET": "18:32",
+      "timeET": "19:50",
       "bias": "Bearish — Elevated Downside Risk; broad selloff and semiconductor reversal",
       "previousBias": "Bearish — Elevated Downside Risk; broad selloff and semiconductor reversal",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Post-close reassessment: November 19 broad selloff remains the dominant confirmed signal. WSJ additionally reports VIX closing at 28.44 (+15.8%) and Nvidia down 3.3%; no new verified path-changing event after the prior 17:25 EST assessment. Bearish continuation risk remains elevated into November 20, 23 and 24.",
+      "summary": "Evening reassessment after November 19 close: broad Nasdaq selling, 90%+ S&P decliners, VIX 28.44 and chip weakness remain the verified bearish baseline. No independently verified new three-day path-changing catalyst since 18:32 EST. Elastic's weaker sales guidance is an incremental software-sector earnings warning, not a broad confirmed repricing. Forward horizon November 20, 23, 24.",
       "bullish": [
         "Anthropic IPO closed $97.17, 17.1% above $83 offering despite selling in wider technology sector",
         "Oversold rebound possible only if QQQ relative strength, chip leadership, breadth and volatility improve together"
@@ -31,7 +31,8 @@
         "Nasdaq Composite closed 23,879.20, down about 2.3%; S&P 500 7,175.83, down 2.0%",
         "More than 90% of S&P 500 constituents declined; broad risk aversion confirmed",
         "WSJ reports VIX at 28.44, up 15.8%, and Nvidia down 3.3% on November 19",
-        "IPO-led rally faded; sector-wide AI valuation and capex concerns persist"
+        "IPO-led rally faded; sector-wide AI valuation and capex concerns persist",
+        "Elastic reported quarterly earnings above estimates but guided next-quarter sales below consensus; after-hours decline is a narrow software-sector risk signal, not verified Nasdaq-wide reaction"
       ],
       "observations": [
         {
@@ -121,6 +122,30 @@
           "source": "https://github.com/repural/NasDecode/blob/main/data/history/market-watch-events.json",
           "sourceTime": "2026-11-19T19:22:15+00:00",
           "quality": "Direct repository; no new events since prior assessment"
+        },
+        {
+          "metric": "Elastic next-quarter revenue guidance",
+          "value": 508,
+          "unit": "USD millions",
+          "source": "https://www.investors.com/news/technology/elastic-stock-estc-earnings-november-2026/",
+          "sourceTime": "2026-11-19 US after-hours earnings report",
+          "quality": "IBD reported guidance versus USD 518 million analyst consensus; company-specific, not synchronized broad-market response"
+        },
+        {
+          "metric": "Elastic revenue consensus",
+          "value": 518,
+          "unit": "USD millions",
+          "source": "https://www.investors.com/news/technology/elastic-stock-estc-earnings-november-2026/",
+          "sourceTime": "2026-11-19 US after-hours earnings report",
+          "quality": "Reported analyst estimate"
+        },
+        {
+          "metric": "Curated Open Watch events",
+          "value": 171,
+          "unit": "events",
+          "source": "https://github.com/repural/NasDecode/blob/main/data/history/market-watch-events.json",
+          "sourceTime": "2026-11-19T19:22:15+00:00",
+          "quality": "Repository read-back; unchanged since prior snapshot"
         }
       ],
       "conditions": {
@@ -130,42 +155,42 @@
       "upcomingEvents": [
         {
           "date": "2026-11-20",
-          "event": "Michigan consumer sentiment; QQQ/SPY, SOX/SMH and volatility confirmation",
-          "status": "Scheduled; results not yet available"
+          "event": "Michigan final November consumer sentiment and inflation expectations, 10:00 EST; QQQ/SOX and breadth follow-through",
+          "status": "Scheduled, not yet released; secondary calendar consensus 51.0"
         },
         {
           "date": "2026-11-23",
-          "event": "Monday directional follow-through and macro/rates reaction",
+          "event": "Monday directional follow-through, rates and semiconductor confirmation",
           "status": "Upcoming"
         },
         {
           "date": "2026-11-24",
-          "event": "Third trading-day confirmation; macro/earnings schedule to verify",
-          "status": "Upcoming"
+          "event": "Analog Devices earnings and broader Tuesday macro/earnings checks",
+          "status": "Secondary earnings calendar; confirm timing"
         }
       ],
       "provenance": {
         "repository": "repural/NasDecode",
-        "priorSnapshotUpdated": "2026-11-19T22:25:19Z",
+        "priorSnapshotUpdated": "2026-11-19T23:32:11Z",
         "openWatchUpdated": "2026-11-19T19:22:15+00:00",
         "openWatchCount": 171,
         "sources": [
-          "AP November 19 closing report",
-          "WSJ November 19 close VIX/Nvidia report",
-          "NasDecode prior snapshot",
-          "NasDecode curated Open Watch",
-          "StockTitan November 16-20 earnings calendar"
+          "NasDecode 18:32 EST snapshot",
+          "NasDecode Open Watch file",
+          "WSJ November 19 closing market report",
+          "Investor's Business Daily November 19 Elastic earnings",
+          "Investing.com November 20 economic calendar"
         ],
-        "dataQuality": "Nasdaq and S&P close, breadth, VIX and Nvidia changes from date-aligned closing reports; not all timestamp-synchronized. QQQ, SOX, VXN, official Treasury yields, Brent/WTI and direct CME FedWatch close unavailable. Earlier yield spread is stale and correctly scaled. No unverified quotes treated as current."
+        "dataQuality": "No new synchronized cash-market observations after November 19 close. Prior AP/WSJ closing data remain date-aligned, not tick-synchronized. QQQ, SOX, VXN, official Treasury 10Y/2Y, direct CME FedWatch, Brent/WTI and current breadth beyond previously reported 90%+ decliners unavailable. Prior +25.4 bp 10Y–2Y spread is stale and correctly calculated from 5.082% and 4.828%; never treat as current. Company after-hours report is not evidence of index response."
       },
       "editorial": {
-        "marketOverview": "The November 19 close remains a broad distribution session: Nasdaq lost roughly 2.3%, S&P 500 2.0%, and over 90% of S&P 500 stocks declined. The WSJ closing account also puts VIX at 28.44, a 15.8% jump, while Nvidia lost 3.3%. This reinforces already recognized risk aversion.",
-        "whatChanged": "Since the 17:25 EST assessment, a credible closing report supplies VIX and Nvidia figures that were previously unavailable. They reinforce the established bearish case but do not constitute a fresh path-changing catalyst. Curated Open Watch remains at 171 events and has not refreshed since 19:22 UTC.",
-        "marketInterpretation": "A broad selloff accompanied by rising implied volatility and AI-chip weakness suggests an unfavorable near-term risk/reward environment for Nasdaq. Anthropic's IPO premium shows selective demand but did not stabilize the sector. Rate and oil causality cannot be inferred from unsynchronized or unavailable quotes.",
-        "threeDayPath": "The forward three trading sessions are Friday November 20, Monday November 23 and Tuesday November 24. Friday's breadth, QQQ/SPY relative strength and chip participation are the first tests. If rebounds fail, Monday and Tuesday carry downside-continuation risk. A broad recovery with falling volatility could instead produce a relief bounce; no point target is defensible.",
-        "bullCase": "The market is stretched after a prolonged decline and Anthropic closed above offer price. A sustained rebound led by QQQ and semiconductors, with broader participation and lower VIX/VXN, would undermine the bearish continuation scenario. This remains conditional, not observed.",
-        "bearCase": "Six straight S&P losses, over 90% decliners, VIX at 28.44 and Nvidia weakness argue that risk appetite is fragile. Another failed Friday bounce or continued semiconductor underperformance would support downside into Monday and Tuesday.",
-        "watchNext": "Check November 20 Michigan sentiment against expectations and observed yield/market response; verify synchronized QQQ/SPY, SOX/SMH, VXN/VIX, 10Y and 2Y official yields in percent and curve basis points, Brent/WTI, direct CME FedWatch and breadth. Review curated Open Watch for new events; separate announced catalysts from actual market response."
+        "marketOverview": "November 19 ended in broad risk-off selling, with Nasdaq down roughly 2.3%, S&P 500 down roughly 2%, more than 90% of S&P constituents declining and VIX at 28.44. Nvidia weakness and the failed Anthropic IPO-led opening rally remain central. No new cash-session data exist this evening to supersede the verified closing picture.",
+        "whatChanged": "Since the 18:32 EST assessment, Investor's Business Daily reported Elastic's earnings beat but next-quarter revenue guidance of $508 million against a $518 million consensus, accompanied by an after-hours stock decline. This is an incremental company-specific software warning, not independently demonstrated Nasdaq-wide catalyst. Curated Open Watch is still 171 events, last updated 19:22 UTC; no new curated item.",
+        "marketInterpretation": "A failed relief rally with broad selling and rising VIX leaves the short-term balance of evidence bearish. Selective IPO demand does not establish durable technology leadership. Elastic's guidance underscores selective earnings risk but should not be extrapolated to the whole index. Treasury and oil effects cannot be inferred from stale or asynchronous figures.",
+        "threeDayPath": "Friday November 20 is the first test: Michigan sentiment and inflation expectations at 10:00 EST may affect yields, but market response must be observed rather than assumed. Sustained QQQ/SPY and SOX/SMH recovery with breadth improvement could produce a relief bounce. Failed recovery attempts leave downside risk into Monday November 23 and Tuesday November 24; avoid unsupported targets.",
+        "bullCase": "After a sharp broad selloff, a technical rebound is plausible, and Anthropic's close above its IPO price indicates pockets of demand. A sustainable bull case requires chip leadership, expanding breadth, falling VXN/VIX and non-disruptive yields; none is yet established by fresh synchronized readings.",
+        "bearCase": "Over 90% decliners, a 2%+ Nasdaq fall, Nvidia weakness and VIX 28.44 support elevated downside risk. A weak Friday bounce or further chip underperformance would reinforce risk into Monday and Tuesday. Elastic's cautious outlook adds a limited earnings-sentiment headwind without proving index-level transmission.",
+        "watchNext": "At Friday 10:00 EST verify final Michigan sentiment against 51.0 consensus and inflation expectations, then observed QQQ/SPY, SOX/SMH, breadth, VXN/VIX, official 10Y/2Y yields and correctly scaled curve, Brent/WTI, direct CME FedWatch and new Open Watch entries. Track Analog Devices' November 24 earnings timing. Keep quote timestamps and distinguish realized response from anticipated impact."
       }
     }
   ]
