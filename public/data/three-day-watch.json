@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-19T15:18:00Z",
+  "updated": "2026-11-19T15:40:59Z",
   "horizon": [
     "2026-11-19",
     "2026-11-20",
@@ -16,23 +16,23 @@
   "entries": [
     {
       "date": "2026-11-19",
-      "timeET": "10:18",
+      "timeET": "10:40",
       "bias": "Bearish — Elevated Downside Risk; conditional IPO-led upside relief",
       "previousBias": "Bearish — Elevated Downside Risk; conditional IPO-led upside relief",
-      "materialChange": true,
+      "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "10:18 EST Nov 19: bearish elevated-downside baseline retained, but a new adverse macro catalyst increases Thursday-Friday whipsaw risk: November Philadelphia Fed manufacturing index reportedly dropped to 6.3 from 20.9 against ~20 expected, while prices paid climbed to 58.2 from 43.2. Initial jobless claims rose to 203,000 versus 197,000 consensus. This is a growth/inflation mix risk, not verified evidence of a negative market reaction. Anthropic IPO interest and premarket tech rebound remain bullish offsets. No synchronized cash-session QQQ/SOX, breadth or VXN confirmation.",
+      "summary": "10:40 EST November 19: bearish elevated-downside baseline retained with conditional IPO-driven relief. The reported weak Philadelphia Fed activity and higher prices-paid reading remain the latest material macro catalyst, already incorporated at 10:18. CBS at 10:15 EST confirms Anthropic's debut is still pending; a secondary opening report describes Nasdaq rising at the open but does not supply synchronized QQQ, SOX, breadth or volatility. No independently verified new path-changing catalyst.",
       "bullish": [
-        "Anthropic $83 IPO demand and 2%+ premarket Nasdaq futures gain support a conditional relief rally, but actual cash-session breadth not independently confirmed",
-        "November 19 morning secondary report suggests VIX eased to 22.62, but quote time and synchronization are not established",
-        "Walmart earnings narrowly exceeded consensus and guidance improved; market-wide effect unconfirmed"
+        "Anthropic $83 IPO pricing and substantial demand support conditional AI-led relief; first-trade market response remains unverified",
+        "Reuters premarket report describes chip and hyperscaler gains; these are stale relative to the cash session",
+        "Secondary November 19 opening report describes Nasdaq outperforming Dow directionally, but provides no synchronized quantitative SOX or breadth"
       ],
       "bearish": [
-        "New November Philadelphia Fed survey reportedly 6.3 versus ~20 expected, with prices paid 58.2 versus 43.2: weaker growth and stronger input inflation",
-        "Initial claims 203,000 versus 197,000 forecast, according to MarketWatch/WSJ; not evidence of market response",
-        "Hawkish Fed and 10Y yield around 5.08% keep growth valuations vulnerable",
-        "November 18 Nvidia weakness and unverified synchronized SOX/breadth leave gap-and-fade risk"
+        "Reported Philadelphia Fed manufacturing index 6.3 versus approximately 20 expected, prices paid 58.2 versus 43.2 prior: adverse growth/inflation combination, already incorporated",
+        "Initial claims 203,000 versus 197,000 consensus; this is an economic observation rather than market response",
+        "Indicative 10Y 5.082% and 2Y 4.828% imply +25.4 bp curve; yields remain elevated and asynchronous",
+        "Earlier Nvidia weakness and unverified broad chip participation leave reversal risk"
       ],
       "observations": [
         {
@@ -92,14 +92,6 @@
           "quality": "Secondary and not synchronized; VXN unavailable"
         },
         {
-          "metric": "Nasdaq-100 futures premarket",
-          "value": 2.08,
-          "unit": "percent change",
-          "source": "https://www.reuters.com/business/nasdaq-futures-jump-anthropics-record-ipo-pricing-fuels-hopes-strong-debut-2026-11-19/",
-          "sourceTime": "2026-11-19 premarket Reuters; quote time unspecified",
-          "quality": "Stale relative to 10:18 EST, not cash-session"
-        },
-        {
           "metric": "Brent indicative earlier",
           "value": 92.67,
           "unit": "USD/barrel",
@@ -116,12 +108,28 @@
           "quality": "Stale asynchronous"
         },
         {
+          "metric": "Nasdaq open directional report",
+          "value": "Higher at open",
+          "unit": "direction, no verified percentage",
+          "source": "https://journalarta.com/2026/11/19/stock-market-today-nasdaq-rises-at-the-open-while-dow-holds-near-flat/",
+          "sourceTime": "2026-11-19 regular-session opening; exact quote timestamp unavailable",
+          "quality": "Secondary report, no synchronized index/sector readings; not sufficient to establish durable market confirmation"
+        },
+        {
+          "metric": "Anthropic IPO trading status",
+          "value": "Debut pending in report",
+          "unit": "status",
+          "source": "https://www.cbsnews.com/news/anthropic-ipo-nasdaq-debut-claude-ai/",
+          "sourceTime": "2026-11-19 10:15 EST updated report",
+          "quality": "Published contemporaneous report; no first trade price confirmed"
+        },
+        {
           "metric": "Open Watch curated events",
           "value": 171,
           "unit": "events",
           "source": "https://github.com/repural/NasDecode/blob/main/data/history/market-watch-events.json",
-          "sourceTime": "2026-11-19T06:55:00Z",
-          "quality": "Direct repository read; no new curated catalyst since previous assessment"
+          "sourceTime": "2026-11-19T06:55:00+00:00",
+          "quality": "Direct repository read; unchanged from 10:18 snapshot"
         }
       ],
       "conditions": {
@@ -158,27 +166,25 @@
       ],
       "provenance": {
         "repository": "repural/NasDecode",
-        "priorSnapshotUpdated": "2026-11-19T13:43:14Z",
+        "priorSnapshotUpdated": "2026-11-19T15:18:00Z",
         "openWatchUpdated": "2026-11-19T06:55:00+00:00",
         "openWatchCount": 171,
         "sources": [
-          "NasDecode snapshot and Open Watch direct GitHub reads",
-          "MarketWatch Nov 19 jobless claims actual",
-          "PrimerIQ Nov 19 Philly Fed actual and prices paid (secondary)",
-          "WSJ Nov 19 Treasury indicative yields",
-          "Reuters Nov 19 premarket Nasdaq futures",
-          "AP Nov 19 earlier oil quotes"
+          "Direct NasDecode current snapshot and curated Open Watch JSON",
+          "CBS News November 19 10:15 EST Anthropic IPO status",
+          "November 19 secondary Nasdaq opening report",
+          "Previously sourced macro, Treasury, VIX and oil observations carried forward with original timestamps"
         ],
-        "dataQuality": "No verified synchronized cash-session QQQ, SOX, breadth, VXN, VIX, FedWatch or oil; VIX 22.62 is secondary and untimed. Philadelphia Fed numbers are secondary and should be checked against the official release. Macro actuals are not market reactions. 10Y 5.082% and 2Y 4.828% imply +25.4 bp, not 0.254 bp. Brent/WTI and futures are earlier indicative observations."
+        "dataQuality": "No verified synchronized QQQ/SPY, SOX, market breadth, VXN/VIX, CME FedWatch, official synchronized 10Y/2Y or oil. Treasury spread is (5.082-4.828)*100=25.4 basis points. Prior macro data from secondary reporting, not independently validated against official Philadelphia Fed release. IPO first trade and market impact unverified. Opening direction does not establish sustained leadership."
       },
       "editorial": {
-        "marketOverview": "At 10:18 EST the premarket IPO-driven Nasdaq rebound is colliding with a fresh adverse macro mix. The reported Philadelphia Fed survey unexpectedly deteriorated while its prices-paid component rose sharply, and weekly claims were a little above forecasts. The bearish elevated-downside baseline remains, with meaningful upside relief still possible, but the new macro mix increases the risk of a rally fading as investors reassess rates and earnings.",
-        "whatChanged": "Compared with the 08:43 EST snapshot, actual initial claims of 203,000 versus a 197,000 forecast are now reported. More importantly, the Philadelphia Fed index reportedly fell to 6.3 versus approximately 20 expected and prices paid climbed to 58.2 from 43.2. This is a new material macro catalyst, not evidence that QQQ or SOX has already reacted adversely. Open Watch still contains 171 events and the Anthropic IPO is already incorporated.",
-        "marketInterpretation": "Slower regional manufacturing momentum combined with faster input-price pressure creates an uncomfortable combination for growth stocks and the Fed. The reported Treasury yields of 5.082% (10Y) and 4.828% (2Y) imply a correctly scaled +25.4 bp curve, but the quote times are not synchronized. A secondary VIX reading of 22.62 suggests some relief from earlier fear, without proving an intraday volatility trend. Direct FedWatch probabilities and VXN remain unverified.",
-        "threeDayPath": "Thursday November 19: IPO optimism could sustain a tech bounce, but the unexpectedly weak Philadelphia Fed activity and higher input-price reading raise gap-and-fade risk; confirm actual cash-session QQQ/SOX/breadth before changing direction. Friday November 20: the key test is whether semiconductors and breadth follow through despite rates and macro concerns. Monday November 23: confirmation or failure of that rebound will determine whether the bearish baseline remains appropriate.",
-        "bullCase": "Anthropic's debut can draw fresh risk appetite into AI infrastructure and software; sustained QQQ leadership over SPY, broad SOX participation, positive breadth, falling VXN/VIX and stable yields would challenge the bearish baseline. Better-than-feared macro interpretation could further support a relief rally.",
-        "bearCase": "The Philadelphia Fed surprise may intensify concerns about slowing demand alongside sticky input inflation, leaving the Fed little room to ease. If Treasury yields stay high and chip leadership fails, an IPO-driven opening rally could fade into Friday and Monday. Nvidia's prior post-earnings decline adds to caution.",
-        "watchNext": "Check the Philadelphia Fed official release and initial-claims detail; verify actual ANT first trade, QQQ/SPY, SOX, semiconductor constituents, breadth, VXN/VIX, official synchronized Treasury yields, Brent/WTI and direct CME FedWatch. Watch Thursday afternoon Fed speakers and TIPS auction, Friday consumer sentiment and semiconductor follow-through, and Monday's confirmation."
+        "marketOverview": "The bearish elevated-downside baseline persists as an anticipated AI IPO relief rally encounters the already-reported weak manufacturing and stronger input-price backdrop. A secondary opening report says Nasdaq rose, but no synchronized QQQ, SOX or breadth observations establish a durable risk-on rotation. The market is still balancing powerful AI demand sentiment against high discount rates and slowing activity risk.",
+        "whatChanged": "Since the 10:18 EST assessment, CBS News updated its Anthropic IPO preview at 10:15 EST, with the actual first-trade reaction still unverified, while a secondary account described a positive Nasdaq opening. Neither supplies sufficient synchronized evidence to alter the three-day path. The 171 curated Open Watch events remain unchanged. The Philadelphia Fed and claims surprises were incorporated previously and are not new this run.",
+        "marketInterpretation": "A positive index open can coexist with narrow leadership or an intraday fade. Earlier Reuters chipmaker premarket gains and the record IPO pricing are encouraging, but not evidence that semiconductors and breadth confirmed the move. The indicative Treasury pair implies +25.4 basis points, and stale VIX and oil observations cannot be used as synchronized risk confirmation. FedWatch and VXN remain unavailable.",
+        "threeDayPath": "Thursday November 19: assess whether Nasdaq's reported positive opening becomes sustained QQQ and SOX leadership following the IPO and macro data. Friday November 20: require semiconductor breadth and volatility confirmation rather than relying on Thursday's gap. Monday November 23: evaluate whether a durable rebound has invalidated the bearish baseline or whether fading breadth and high yields reinforce it.",
+        "bullCase": "A strong Anthropic debut could sustain risk appetite across hyperscalers and chips, especially if QQQ beats SPY, SOX confirms, breadth expands, VXN/VIX retreat and yields stabilize. These are conditional tests, not verified outcomes.",
+        "bearCase": "The already-reported weaker manufacturing and higher prices-paid mix can keep Fed policy and discount-rate risks elevated. If the IPO impulse remains narrow or fades while SOX lags, a Thursday bounce could reverse into Friday and Monday.",
+        "watchNext": "Verify Anthropic's actual first trade and sustained cash-session QQQ/SPY, SOX and constituents; obtain synchronized breadth, VXN/VIX, official Treasury yields, Brent/WTI and direct CME FedWatch. Check official Philadelphia Fed release, Thursday TIPS auction and Fed speakers, Friday sentiment, and Monday follow-through."
       }
     }
   ]
