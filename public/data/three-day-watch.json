@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-19T01:34:43Z",
+  "updated": "2026-11-19T02:17:09Z",
   "horizon": [
     "2026-11-19",
     "2026-11-20",
@@ -16,17 +16,18 @@
   "entries": [
     {
       "date": "2026-11-18",
-      "timeET": "20:34",
+      "timeET": "21:17",
       "bias": "Bearish — Elevated Downside Risk; upside relief catalyst",
       "previousBias": "Bearish — Elevated Downside Risk; upside relief catalyst",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "20:34 EST overnight review: November 19/20/23 bearish elevated-downside-risk baseline unchanged. Reuters November 18 close confirms Nasdaq +0.39%, S&P -0.24%, NVDA weakness despite strong earnings and hawkish October FOMC minutes. No new synchronized post-close QQQ/SOX, VXN/VIX, breadth, Treasury, oil or FedWatch confirmation. Open Watch updated 01:21 UTC November 19 with 170 events; no independently verified new three-day path-changing catalyst.",
+      "summary": "21:17 EST overnight review: bearish elevated downside risk with conditional relief unchanged for November 19/20/23. Reuters confirms mixed Wednesday close and Nvidia's negative reaction. Secondary Stock Titan report shows QQQ +1.38% after hours at 19:59 EST versus SPY +0.72%, a tentative positive but not synchronized SOX/breadth confirmation. No independently verified path-changing catalyst; Open Watch remains 170 events, updated 01:21 UTC.",
       "bullish": [
         "Nasdaq Composite +0.39% against S&P 500 -0.24% at Wednesday close; separately reported QQQ +0.39% versus SPY -0.31%.",
         "Nvidia earnings strength provides conditional upside if chip participation and breadth improve.",
-        "Palo Alto Networks after-hours rise is a stock-specific positive, not broad sector confirmation."
+        "Palo Alto Networks after-hours rise is a stock-specific positive, not broad sector confirmation.",
+        "Secondary QQQ after-hours +1.38% versus SPY +0.72% at 19:59 EST suggests tentative overnight appetite, not confirmed regular-session breadth."
       ],
       "bearish": [
         "NVDA -2.89% at November 18 close despite strong earnings; negative observed reaction overrides assumed bullish earnings impact.",
@@ -111,6 +112,22 @@
           "source": "https://github.com/repural/NasDecode/blob/main/data/history/market-watch-events.json",
           "sourceTime": "2026-11-19T01:21:10Z",
           "quality": "Fresh repository read; event count unchanged; latest listed event Nov 18 Meta Muse investigation with unconfirmed isolated price response"
+        },
+        {
+          "metric": "QQQ after-hours change versus 16:00 close",
+          "value": 1.38,
+          "unit": "percent",
+          "source": "https://www.stocktitan.net/articles/stock-market-today-live-november-18-2026",
+          "sourceTime": "2026-11-18 19:59 EST",
+          "quality": "Secondary extended-hours ETF quote; thinner trading, not synchronized with SOX or breadth"
+        },
+        {
+          "metric": "SPY after-hours change versus 16:00 close",
+          "value": 0.72,
+          "unit": "percent",
+          "source": "https://www.stocktitan.net/articles/stock-market-today-live-november-18-2026",
+          "sourceTime": "2026-11-18 19:59 EST",
+          "quality": "Secondary extended-hours quote in same report; not evidence of next-day cash-market follow-through"
         }
       ],
       "conditions": {
@@ -133,9 +150,9 @@
         },
         {
           "date": "2026-11-20",
-          "event": "Semiconductor breadth and volatility follow-through",
+          "event": "University of Michigan consumer sentiment; semiconductor breadth and volatility follow-through",
           "timeET": null,
-          "status": "Monitoring checkpoint"
+          "status": "Scheduled/monitoring; release timing to confirm"
         },
         {
           "date": "2026-11-23",
@@ -145,27 +162,28 @@
         }
       ],
       "provenance": {
-        "researchAsOf": "2026-11-19T01:34:43Z",
-        "repositorySnapshotUpdated": "2026-11-18T23:43:01Z",
+        "researchAsOf": "2026-11-19T02:17:09Z",
+        "repositorySnapshotUpdated": "2026-11-19T01:34:43Z",
         "openWatchUpdated": "2026-11-19T01:21:10+00:00",
         "openWatchEventCount": 170,
         "sources": [
           "https://www.reuters.com/business/nasdaq-futures-jump-nvidia-forecast-lifts-ai-trade-ahead-anthropic-pricing-2026-11-18/",
           "https://www.stocktitan.net/articles/stock-market-today-live-november-18-2026",
           "https://ng.investing.com/news/stock-market-news/jobless-claims-and-philadelphia-fed-index-due-thursday-93CH-2816604",
-          "https://github.com/repural/NasDecode/blob/main/data/history/market-watch-events.json"
+          "https://github.com/repural/NasDecode/blob/main/data/history/market-watch-events.json",
+          "https://www.schaeffersresearch.com/content/news/2026/11/12/the-week-ahead-dow-earnings-fomc-meeting-minutes"
         ],
-        "dataQuality": "Overnight 20:34 EST review; latest verified US regular-session closing data are November 18. QQQ/SPY and NVDA from secondary 16:00 EST report, Reuters index close; not independently synchronized with SOX, breadth, volatility. No fresh official paired 10Y/2Y, Brent/WTI, direct FedWatch; stale secondary 5.09%-4.79% = +30bp, not current. Open Watch 170 events, updated 01:21:10 UTC, newest listed Meta Muse investigation has unconfirmed isolated market reaction.",
-        "runTimeUTC": "2026-11-19T01:34:43Z"
+        "dataQuality": "Latest verified Reuters regular-session close November 18; secondary QQQ/SPY after-hours readings 19:59 EST, not synchronized with SOX, breadth, VXN/VIX, yields, oil or FedWatch. No fresh official paired 10Y/2Y, Brent/WTI or direct FedWatch. Older secondary 5.09%-4.79%=+30 basis points is stale, not a live rate. Open Watch 170 events at 01:21:10 UTC; no newly verified independent path-changing catalyst.",
+        "runTimeUTC": "2026-11-19T02:17:09Z"
       },
       "editorial": {
-        "marketOverview": "Wednesday's regular session ended with Nasdaq Composite up 0.39% and the S&P 500 down 0.24%, while Nvidia lost roughly 2.9% despite robust earnings. Nasdaq relative strength is a stabilizing signal but the lack of broad semiconductor confirmation leaves the three-session bearish elevated-downside-risk assessment intact.",
-        "whatChanged": "The overnight review found no fresh synchronized cross-asset price observations after the November 18 close. The curated Open Watch file advanced to 01:21:10 UTC November 19 but retained 170 events. Its newest listed Meta Muse privacy investigation remains an unconfirmed isolated market catalyst. No verified change to the anticipated three-day path.",
-        "marketInterpretation": "The market's observed negative Nvidia response is more informative than the earnings release's theoretically positive read-through. Hawkish FOMC minutes add valuation pressure, though direct updated FedWatch probabilities and official synchronized yield readings are absent. Relative QQQ resilience and isolated software earnings strength cannot substitute for SOX, breadth and volatility confirmation.",
-        "threeDayPath": "Thursday November 19 brings jobless claims and Philadelphia Fed at 08:30 EST, Walmart results and potential Anthropic pricing/debut developments; each requires observed price reaction rather than assumed impact. Friday November 20 tests whether semiconductors and breadth stabilize. Monday November 23 is the third trading-day confirmation. Baseline remains elevated downside risk with conditional relief.",
-        "bullCase": "A favorable data response stabilizes Treasury yields and volatility, Nvidia recovers, SOX outperforms, and participation broadens beyond a few Nasdaq leaders. Such synchronized improvement would invalidate the bearish baseline.",
-        "bearCase": "Further chip weakness, hawkish repricing, rising volatility or deteriorating breadth turn relative Nasdaq resilience into a failed bounce, extending downside into Friday and Monday.",
-        "watchNext": "Verify official November 19 08:30 EST claims and Philadelphia Fed releases, Walmart earnings and any confirmed Anthropic IPO pricing; compare synchronized QQQ, SOX, breadth, VXN/VIX, official 10Y/2Y, Brent/WTI and FedWatch, with time stamps and units. Check newly curated Open Watch items for independent market confirmation."
+        "marketOverview": "Wednesday closed with Nasdaq Composite up 0.39% and S&P 500 down 0.24%, while Nvidia lost about 2.9% despite strong earnings. A secondary report showed QQQ up 1.38% after hours at 19:59 EST, versus SPY up 0.72%. This tentative extended-hours improvement does not yet demonstrate durable semiconductor participation or broad risk appetite.",
+        "whatChanged": "Compared with the prior 20:34 EST assessment, a later-reported after-hours QQQ/SPY observation offers a modest bullish counterweight. It is not synchronized with SOX, breadth or volatility and occurred in thinner extended-hours trading. The Open Watch file remains at 170 events, with no new verified market-wide catalyst. Directional bias is unchanged.",
+        "marketInterpretation": "Observed Nvidia weakness after strong results and hawkish October FOMC minutes maintain downside risk. Relative Nasdaq resilience and positive extended-hours QQQ performance support a conditional relief scenario, but no verified sector-wide reversal is established. The stale Treasury 10Y/2Y difference is 30 basis points, not a current quote; direct FedWatch repricing remains unverified.",
+        "threeDayPath": "Thursday November 19: claims and Philadelphia Fed at 08:30 EST, Walmart results and any confirmed Anthropic IPO developments could redirect the opening; verify reaction rather than assume it. Friday November 20: University of Michigan consumer sentiment and semiconductor/breadth follow-through. Monday November 23: third-session directional confirmation. Elevated downside risk remains the baseline, with conditional upside relief.",
+        "bullCase": "Thursday QQQ and SOX lead together, Nvidia recovers, participation broadens and volatility/yields ease in verified synchronized observations. Such sustained confirmation would invalidate the bearish baseline.",
+        "bearCase": "A failed overnight QQQ rebound alongside continued Nvidia/SOX weakness, weak breadth, higher yields or volatility would reinforce a bearish continuation through Friday and Monday.",
+        "watchNext": "Verify Thursday 08:30 EST jobless claims and Philadelphia Fed, Walmart results, confirmed Anthropic pricing/trading status and Friday Michigan sentiment. Obtain timestamped synchronized QQQ/SOX, breadth, VXN/VIX, official 10Y/2Y, Brent/WTI and direct FedWatch observations. Compare new Open Watch events against independently observed price response."
       }
     }
   ]
