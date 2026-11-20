@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-20T01:12:39Z",
+  "updated": "2026-11-20T01:58:04Z",
   "horizon": [
     "2026-11-20",
     "2026-11-23",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-19",
-      "timeET": "20:12",
+      "timeET": "20:58",
       "bias": "Bearish — Elevated Downside Risk; broad selloff and semiconductor reversal",
       "previousBias": "Bearish — Elevated Downside Risk; broad selloff and semiconductor reversal",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Post-close reassessment: bearish elevated downside risk unchanged. Nasdaq November 19 selloff, >90% S&P decliners, VIX 28.44 and chip weakness remain baseline. New same-source QQQ/SPY close and oil settlement data refine context but do not change three-session path for November 20, 23 and 24. No new curated Open Watch catalyst.",
+      "summary": "Evening reassessment: bearish elevated downside risk unchanged for November 20, 23 and 24. New technical commentary reports Nasdaq-100 and SOX below uptrend lines, VIX highest close since March, and NYSE downside volume 87%; reinforces prior selloff, not an independently new catalyst. Michigan final sentiment is still scheduled for Friday. No fresh synchronized official cross-asset dataset.",
       "bullish": [
         "Anthropic closed at $97.17 above $83 IPO price",
         "Oversold technical rebound possible after six consecutive S&P down sessions, unconfirmed"
@@ -163,12 +163,28 @@
           "quality": "January contract"
         },
         {
+          "metric": "NYSE downside volume",
+          "value": 87,
+          "unit": "percent",
+          "source": "https://pro.thestreet.com/market-commentary/thursdays-charts-more-uptrend-lines-give-way",
+          "sourceTime": "2026-11-19 18:33 EST published",
+          "quality": "Technical commentary, not independently exchange verified"
+        },
+        {
+          "metric": "Nasdaq-100 and SOX uptrend lines",
+          "value": "broken",
+          "unit": "qualitative technical condition",
+          "source": "https://pro.thestreet.com/market-commentary/thursdays-charts-more-uptrend-lines-give-way",
+          "sourceTime": "2026-11-19 18:33 EST published",
+          "quality": "Analyst interpretation, not a synchronized index quote"
+        },
+        {
           "metric": "Curated Open Watch events",
           "value": 171,
           "unit": "events",
           "source": "https://github.com/repural/NasDecode/blob/main/data/history/market-watch-events.json",
-          "sourceTime": "2026-11-19T19:22:15+00:00",
-          "quality": "Direct repository, no new curated events"
+          "sourceTime": "2026-11-20T01:24:04+00:00",
+          "quality": "Direct repository; checked recent curated events; no independently identified new path-changing event"
         }
       ],
       "conditions": {
@@ -194,25 +210,27 @@
       ],
       "provenance": {
         "repository": "repural/NasDecode",
-        "priorSnapshotUpdated": "2026-11-19T23:50:13Z",
-        "openWatchUpdated": "2026-11-19T19:22:15+00:00",
+        "priorSnapshotUpdated": "2026-11-20T01:12:39Z",
+        "openWatchUpdated": "2026-11-20T01:24:04+00:00",
         "openWatchCount": 171,
         "sources": [
           "NasDecode latest snapshot and Open Watch repository",
           "AP and WSJ November 19 close",
           "Nightglass November 19 QQQ/SPY secondary close",
-          "WSJ November 19 oil settlement"
+          "WSJ November 19 oil settlement",
+          "TheStreet technical commentary November 19 18:33 EST",
+          "Investing.com November 20 Michigan calendar"
         ],
-        "dataQuality": "No November 20 US cash-session observations yet. QQQ/SPY same-source secondary close; SOX close, VXN, official synchronized 10Y/2Y, direct FedWatch and current breadth unavailable. Previously indicative +25.4 bp curve correctly calculated (5.082%-4.828%)*100 but stale. WTI December and Brent January have different maturities. Expected catalyst impacts not observed market responses."
+        "dataQuality": "November 20 cash session not yet open. New technical commentary on SOX/NDX and 87% NYSE downside volume is secondary, not independently exchange-verified. Prior VIX 28.44 differs from another secondary report 28.04; avoid treating discrepancy as resolved. No new synchronized QQQ/SOX/VXN, Treasury, FedWatch or breadth tape. Treasury +25.4 bp indicative curve stale and correctly scaled; oil contracts are different months."
       },
       "editorial": {
-        "marketOverview": "The last completed U.S. cash session ended in a broad selloff: Nasdaq -2.25%, S&P 500 -2.02%, more than 90% decliners and VIX 28.44. A same-source secondary report places QQQ -2.19% versus SPY -1.97%. The failed IPO-led relief rally and weak chip leadership support continued caution for November 20, 23 and 24.",
-        "whatChanged": "Since the 19:50 EST assessment, additional secondary QQQ/SPY closing figures show 0.22 percentage points of QQQ underperformance. WSJ reports WTI December $83.21 and Brent January $91.98 at settlement. These refine evidence but do not constitute a material outlook change. Curated Open Watch remains at 171 unchanged events.",
-        "marketInterpretation": "Broad distribution and volatility expansion outweigh selective IPO strength. Six consecutive S&P declines raise the chance of a technical rebound, not proof of a durable turn. Treasury yield curve observations are stale and oil futures are different contract months, limiting cross-market inference. No new market response to Friday events has occurred.",
-        "threeDayPath": "Friday November 20 is the immediate test of whether a recovery can sustain after Thursday's reversal. Michigan consumer sentiment and inflation expectations at 10:00 EST are scheduled, not yet observed. Continued semiconductor underperformance and weak breadth would favor downside continuation Monday November 23 and Tuesday November 24. Broad QQQ/SOX recovery and lower volatility would challenge that path.",
-        "bullCase": "Oversold conditions and Anthropic holding above IPO price allow a relief bounce. To confirm durable upside require QQQ relative strength, SOX/SMH leadership, improving breadth and falling VXN/VIX with stable or lower yields. Those conditions have not been established.",
-        "bearCase": "The failed rally, Nasdaq -2.25%, >90% decliners, VIX 28.44 and Nvidia -3.3% establish elevated downside risk. Friday's failed rebound could carry weakness into Monday and Tuesday. Company-specific after-hours earnings disappointment is a potential sentiment headwind, not proof of index-wide reaction.",
-        "watchNext": "At Friday's 10:00 EST Michigan sentiment release verify actual values and inflation expectations, then compare synchronized QQQ/SPY, SOX/SMH, breadth, VXN/VIX, official 10Y/2Y yields in percent and basis points, Brent/WTI contract months, direct FedWatch and newly curated Open Watch events. Verify Analog Devices earnings timing before interpreting Tuesday moves."
+        "marketOverview": "Thursday's broad selloff remains the latest observed cash-market backdrop. Nasdaq -2.25%, S&P 500 -2.02%, and over 90% S&P decliners accompany elevated volatility. New November 19 evening technical commentary describes Nasdaq-100 and SOX below uptrend lines, NYSE downside volume 87%, and VIX at its highest close since March; these corroborate existing weakness rather than create a new catalyst.",
+        "whatChanged": "Relative to the 20:12 EST assessment, an 18:33 EST technical commentary added broken Nasdaq-100/SOX trend lines and 87% NYSE downside volume. This increases corroboration of the established bearish picture but does not change the directional three-session path. Open Watch was refreshed at 2026-11-20T01:24:04+00:00 with 171 curated events; no independently established new path-changing catalyst.",
+        "marketInterpretation": "Weak breadth, semiconductor trend deterioration and volatility expansion remain consistent with distribution. The latest technical commentary is secondary evidence and cannot substitute for synchronized official prices. A rebound after heavy selling remains possible, but durable recovery requires stronger relative performance and broader participation. Prior curve and oil observations are stale or maturity-mismatched.",
+        "threeDayPath": "Friday November 20 is the immediate test: a relief rebound that fails in QQQ and SOX would support continued weakness Monday November 23 and Tuesday November 24. Michigan final sentiment at 10:00 EST and inflation expectations are future catalysts, not observed market reactions. A broad, sustained semiconductor-led recovery would challenge the bearish path.",
+        "bullCase": "A sharp oversold bounce is plausible after broad selling. Require sustained QQQ versus SPY outperformance, SOX/SMH leadership, improving breadth and declining volatility with stable yields before upgrading the outlook. Anthropic's prior IPO premium is company-specific, not sufficient market confirmation.",
+        "bearCase": "Nasdaq -2.25%, broad S&P selling, elevated VIX and fresh analyst-observed breaks in NDX/SOX uptrends favor further downside if Friday's bounce fails. NYSE downside volume of 87% adds confirmation but is sourced from technical commentary rather than an independent exchange feed.",
+        "watchNext": "Verify Friday November 20 10:00 EST Michigan final sentiment, inflation expectations and actual market response; synchronize QQQ/SPY, SOX/SMH, breadth, VIX/VXN, 10Y/2Y percent yields and basis-point spread, Brent/WTI matching contracts, direct FedWatch, and new curated Open Watch events. Check Monday/Tuesday macro and earnings timing before publication."
       }
     }
   ]
