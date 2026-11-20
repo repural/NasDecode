@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-20T21:22:00Z",
+  "updated": "2026-11-20T21:46:52Z",
   "horizon": [
     "2026-11-23",
     "2026-11-24",
@@ -16,85 +16,126 @@
   "entries": [
     {
       "date": "2026-11-20",
-      "timeET": "16:22",
-      "bias": "Bearish — Elevated Downside Risk; Friday close unverified",
-      "previousBias": "Bearish — Elevated Downside Risk; late-session liquidation accelerating",
-      "materialChange": false,
-      "confidence": "Moderate",
+      "timeET": "16:46",
+      "bias": "Bearish — Elevated Downside Risk; confirmed broad-market closing liquidation",
+      "previousBias": "Bearish — Elevated Downside Risk; Friday close unverified",
+      "materialChange": true,
+      "confidence": "Moderate-High",
       "eventRisk": "Very High",
-      "summary": "Manual post-session review: latest independently accessible Friday observations do not verify the official 16:00 ET closing prints. Prior 15:02 ET QQQ -4.63% and NVDA -11.71% remain the latest timestamped late-session observations from the previous assessment; earlier Reuters confirmed broad technology and semiconductor weakness. Bearish three-session path unchanged pending confirmed closes. November 23-25 horizon.",
+      "summary": "November 20 confirmed close: Nasdaq Composite -5.3% to 22,617.73, S&P 500 -3.7% to 6,910.39 and Dow -1.9% to 48,147.33 (AP). Nvidia -13.8%, AMD -13.3%, Micron -13.9%, Broadcom -12.1%; this extends the previously unverified late-session selloff into confirmed close and broadens it. Monday downside risk heightened; oversold rebound remains possible. Horizon November 23-25.",
       "bullish": [
-        "Oversold bounce possible after heavy semiconductor liquidation, conditional on QQQ and SOX/SMH recovery together",
-        "Relative non-tech resilience in prior intraday observations, not broad-market strength",
-        "Treasury safe-haven buying could offset discount-rate pressure; not verified as equity reversal"
+        "Oversold rebound potential after extreme selling; not yet confirmed by breadth/volatility",
+        "AP reports Treasury yields declined and consumer sentiment improved; specific synchronized rates unavailable",
+        "Non-tech sectors showed relative resilience even as broad indexes fell"
       ],
       "bearish": [
-        "Prior 15:02 ET QQQ -4.63% and NVDA -11.71% intraday readings remain severe, not verified closes",
-        "Reuters reported global technology and semiconductor selling on November 20",
-        "Earlier VIX around 30.93 indicated heightened risk aversion, stale by assessment time"
+        "AP November 20 closing Nasdaq Composite -5.3% and S&P 500 -3.7% confirm broad market liquidation",
+        "Semiconductor leaders NVDA -13.8%, AMD -13.3%, MU -13.9%, AVGO -12.1% at close",
+        "AP reports Nasdaq turned negative for the year and S&P 500 entered a correction",
+        "AI capital-spending and valuation concerns persist; causal attribution of specific stock moves remains uncertain"
       ],
       "observations": [
         {
-          "metric": "QQQ prior intraday",
-          "value": -4.63,
+          "metric": "Nasdaq Composite close",
+          "value": -5.3,
           "unit": "percent session change",
-          "source": "https://www.stocktitan.net/articles/stock-market-today-live-november-20-2026",
-          "sourceTime": "2026-11-20 15:02 EST (prior assessment)",
-          "quality": "Carried forward from prior repository assessment; close not verified"
+          "source": "https://apnews.com/article/c4c3f4878b12989347f8a930ed813dad",
+          "sourceTime": "2026-11-20 regular session close; AP report",
+          "quality": "Reported closing move, independently published; not QQQ"
         },
         {
-          "metric": "NVDA prior intraday",
-          "value": -11.71,
+          "metric": "Nasdaq Composite closing level",
+          "value": 22617.73,
+          "unit": "index points",
+          "source": "https://apnews.com/article/c4c3f4878b12989347f8a930ed813dad",
+          "sourceTime": "2026-11-20 regular session close",
+          "quality": "Reported close"
+        },
+        {
+          "metric": "S&P 500 close",
+          "value": -3.7,
           "unit": "percent session change",
-          "source": "https://www.stocktitan.net/articles/stock-market-today-live-november-20-2026",
-          "sourceTime": "2026-11-20 15:02 EST (prior assessment)",
-          "quality": "Carried forward from prior repository assessment; close not verified"
+          "source": "https://apnews.com/article/c4c3f4878b12989347f8a930ed813dad",
+          "sourceTime": "2026-11-20 regular session close",
+          "quality": "Reported close"
         },
         {
-          "metric": "SOX prior intraday",
-          "value": -8.6,
-          "unit": "percent approximately",
-          "source": "https://www.reuters.com/legal/transactional/wall-st-futures-slip-anthropic-debut-fails-reassure-ai-investors-2026-11-20/",
-          "sourceTime": "2026-11-20 midday",
-          "quality": "Stale, not synchronized"
+          "metric": "Dow close",
+          "value": -1.9,
+          "unit": "percent session change",
+          "source": "https://apnews.com/article/c4c3f4878b12989347f8a930ed813dad",
+          "sourceTime": "2026-11-20 regular session close",
+          "quality": "Reported close"
         },
         {
-          "metric": "VIX prior",
+          "metric": "NVDA close",
+          "value": -13.8,
+          "unit": "percent session change",
+          "source": "https://apnews.com/article/c4c3f4878b12989347f8a930ed813dad",
+          "sourceTime": "2026-11-20 regular session close",
+          "quality": "Reported close"
+        },
+        {
+          "metric": "AMD close",
+          "value": -13.3,
+          "unit": "percent session change",
+          "source": "https://apnews.com/article/c4c3f4878b12989347f8a930ed813dad",
+          "sourceTime": "2026-11-20 regular session close",
+          "quality": "Reported close"
+        },
+        {
+          "metric": "MU close",
+          "value": -13.9,
+          "unit": "percent session change",
+          "source": "https://apnews.com/article/c4c3f4878b12989347f8a930ed813dad",
+          "sourceTime": "2026-11-20 regular session close",
+          "quality": "Reported close"
+        },
+        {
+          "metric": "AVGO close",
+          "value": -12.1,
+          "unit": "percent session change",
+          "source": "https://apnews.com/article/c4c3f4878b12989347f8a930ed813dad",
+          "sourceTime": "2026-11-20 regular session close",
+          "quality": "Reported close"
+        },
+        {
+          "metric": "VIX earlier",
           "value": 30.93,
           "unit": "index points",
           "source": "https://www.benzinga.com/markets/equities/26/11/63492512/stock-market-today-nasdaq-100-nvidia-seventh-day-chipmakers-smh",
-          "sourceTime": "2026-11-20 12:43 EST article",
-          "quality": "Stale"
+          "sourceTime": "2026-11-20 midday",
+          "quality": "Stale; not closing VIX"
         },
         {
           "metric": "10Y minus 2Y indicative prior",
           "value": 29,
           "unit": "basis points",
           "source": "https://www.benzinga.com/markets/equities/26/11/63492512/stock-market-today-nasdaq-100-nvidia-seventh-day-chipmakers-smh",
-          "sourceTime": "2026-11-20 12:43 EST article",
-          "quality": "4.94%-4.65%=29 bp; stale and not synchronized"
+          "sourceTime": "2026-11-20 midday",
+          "quality": "Stale 4.94%-4.65%=29 bp; paired close not verified"
         },
         {
           "metric": "Brent prior",
           "value": 91.53,
           "unit": "USD/barrel",
           "source": "https://www.benzinga.com/markets/equities/26/11/63492512/stock-market-today-nasdaq-100-nvidia-seventh-day-chipmakers-smh",
-          "sourceTime": "2026-11-20 12:43 EST article",
-          "quality": "Stale, contract maturity unknown"
+          "sourceTime": "2026-11-20 midday",
+          "quality": "Stale; contract unknown"
         },
         {
           "metric": "WTI prior",
           "value": 82.47,
           "unit": "USD/barrel",
           "source": "https://www.benzinga.com/markets/equities/26/11/63492512/stock-market-today-nasdaq-100-nvidia-seventh-day-chipmakers-smh",
-          "sourceTime": "2026-11-20 12:43 EST article",
-          "quality": "Stale, contract maturity unknown"
+          "sourceTime": "2026-11-20 midday",
+          "quality": "Stale; contract unknown"
         }
       ],
       "conditions": {
-        "bullishInvalidation": "Bearish thesis weakens if Monday QQQ and SOX/SMH recover together, breadth improves and VXN/VIX fall with sustained Tuesday confirmation.",
-        "bearishInvalidation": "Rebound thesis fails if Monday chips lag, breadth remains negative and volatility remains high.",
-        "confirmationNeeded": "Official Friday closing prints; synchronized SOX/QQQ, VXN/VIX, breadth; fresh Treasury yields and CME FedWatch."
+        "bullishInvalidation": "Bearish continuation weakens on Monday-Tuesday if QQQ and SOX/SMH recover together with positive breadth and falling VXN/VIX.",
+        "bearishInvalidation": "A bounce fails if chips remain weak, Nasdaq underperforms SPY, breadth stays negative and volatility remains high.",
+        "confirmationNeeded": "Official QQQ and SOX/SMH closes, synchronized breadth, VXN/VIX closes, primary Treasury 10Y/2Y, CME FedWatch, matched Brent/WTI contracts."
       },
       "upcomingEvents": [
         {
@@ -114,25 +155,24 @@
         }
       ],
       "provenance": {
-        "assessmentTimeUTC": "2026-11-20T21:22:00Z",
-        "manual": true,
+        "assessmentTimeUTC": "2026-11-20T21:46:52Z",
         "sources": [
-          "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-20/",
-          "https://www.stocktitan.net/articles/earnings-calendar-week-of-november-23-2026",
-          "https://www.bls.gov/schedule/2026/11_sched.htm"
+          "https://apnews.com/article/c4c3f4878b12989347f8a930ed813dad",
+          "https://www.reuters.com/business/view-nasdaq-plunges-5-day-after-anthropic-debut-investors-still-believe-ai-2026-11-20/",
+          "https://www.reuters.com/business/wall-streets-fear-gauge-touches-seven-month-high-ai-worries-mount-2026-11-20/"
         ],
         "openWatchEvents": 174,
         "openWatchUpdated": "2026-11-20T18:58:08+00:00",
-        "dataQuality": "No verified Friday closing prints, synchronized breadth, VXN, current FedWatch probabilities, fresh paired 10Y/2Y or matched oil futures. Intraday numbers carried from previous snapshot, explicitly stale. Open Watch file header unchanged from previous assessment; no new curated event established. Causal attribution not inferred."
+        "dataQuality": "AP close-based equity observations distinguish confirmed closes from stale QQQ/SOX/VIX/Treasury/oil. Nasdaq Composite is not QQQ. No synchronized QQQ/SOX close, direct VXN, breadth, current CME FedWatch or matched oil quotes. Prior yield pair implies +29 bp, not 0.29 bp. Open Watch file update unchanged; no new curated event. Market reactions not automatically attributed to particular news."
       },
       "editorial": {
-        "marketOverview": "Friday's technology-led decline remained severe in the latest timestamped observations available from the prior assessment. Reuters separately described global risk aversion and heavy semiconductor selling. Because official 16:00 ET closes could not be independently established, the late-session intraday readings must not be represented as final closes.",
-        "whatChanged": "This manual post-session review advances the horizon to Monday November 23 through Wednesday November 25 and adds the holiday-shortened week's earnings and macro calendar. It does not establish a new synchronized market move or new curated Open Watch catalyst. Directional bias is unchanged.",
-        "marketInterpretation": "Semiconductor underperformance and elevated volatility support a defensive three-day baseline. Earlier 10Y 4.94% and 2Y 4.65% imply +29 basis points, not 0.29 basis points, but are not current synchronized measurements. Reuters described Treasury safe-haven demand; it cannot by itself confirm a sustained technology rebound. The exact role of regulatory and AI valuation headlines in Friday's prices is unproven.",
-        "threeDayPath": "Monday may see downside continuation or a sharp mechanical oversold bounce; Tuesday's chip leadership and market breadth will determine whether any bounce holds. Wednesday brings concentrated 08:30 ET macro releases and the Fed Beige Book, increasing event-driven two-way risk. No numeric price targets are justified without verified closing prices and current volatility.",
-        "bullCase": "A tradable recovery would require QQQ and SOX/SMH stabilizing together, breadth improving and volatility retreating. Treasury yield relief and an oversold technical setup are potential supports, not confirmed reversal evidence.",
-        "bearCase": "Severe prior intraday QQQ/NVDA weakness, reported chip-sector losses and high volatility leave the market vulnerable to further liquidation. A failed Monday rebound or continued chip underperformance would reinforce downside continuation.",
-        "watchNext": "Obtain official November 20 closing QQQ/Nasdaq/SOX/SMH, breadth and VXN/VIX; check 10Y/2Y from primary sources and CME FedWatch; verify Brent/WTI contract maturities. Monitor Monday HPE/Zoom earnings, Tuesday ADI/Dell/HP earnings, and Wednesday GDP/PCE/durable goods/claims and Beige Book; recheck curated Open Watch events."
+        "marketOverview": "Friday's regular-session close confirms a much deeper rout than the last verified afternoon observations: AP reports Nasdaq Composite down 5.3%, S&P 500 down 3.7%, and Dow down 1.9%. Nvidia, AMD, Micron and Broadcom each declined more than 12%. Reuters separately described a Nasdaq plunge around 5%, corroborating the scale of the equity selloff. Nasdaq Composite is not interchangeable with QQQ.",
+        "whatChanged": "The prior 16:22 ET manual assessment lacked official closing prints and therefore retained an unconfirmed late-session selloff. AP now reports completed Friday session results showing severe semiconductor losses and broad-market spillover. This materially strengthens Monday downside-continuation risk without changing the bearish label. Curated Open Watch is unchanged at 174 events.",
+        "marketInterpretation": "A broad correction driven by outsized AI and chip losses signals significant risk reduction, but does not prove a specific catalyst caused each move. Treasury yields reportedly declined and consumer sentiment improved, yet these offsets failed to prevent Friday's stock selloff. The old 10Y 4.94% and 2Y 4.65% imply an indicative +29 bp spread; neither yield is a synchronized close. VXN, closing VIX, breadth, direct FedWatch and matched oil contracts remain unverified.",
+        "threeDayPath": "Monday November 23 has elevated continuation and gap risk after a confirmed Nasdaq -5.3% close, but an abrupt oversold rebound is plausible. Tuesday November 24 should determine whether semiconductor participation and breadth validate a recovery. Wednesday November 25 brings concentrated macro-event risk and could reset rate expectations. Numeric levels cannot be justified without verified current QQQ/SOX prices and volatility.",
+        "bullCase": "A credible recovery needs joint QQQ/SOX or SMH strength, improving breadth and retreating VXN/VIX through Tuesday. Softer yields and oversold conditions can help, but a single sharp bounce would not invalidate the bearish three-day baseline.",
+        "bearCase": "Friday's Nasdaq -5.3% and simultaneous double-digit losses in Nvidia, AMD, Micron and Broadcom confirm extreme leadership damage. A weak Monday open, failed rebound and persistent elevated volatility would favor further downside into Tuesday, with Wednesday macro releases adding gap risk.",
+        "watchNext": "Verify QQQ and SOX/SMH closing returns and primary VXN/VIX/breadth; compare Monday open and close against Friday. Refresh primary 10Y/2Y and CME FedWatch and matched Brent/WTI. Confirm earnings Monday and Tuesday and Wednesday macro schedule; recheck Open Watch curated events."
       }
     }
   ]
