@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-20T10:18:18Z",
+  "updated": "2026-11-20T11:35:39Z",
   "horizon": [
     "2026-11-20",
     "2026-11-23",
@@ -16,16 +16,17 @@
   "entries": [
     {
       "date": "2026-11-20",
-      "timeET": "05:18",
+      "timeET": "06:35",
       "bias": "Bearish — Elevated Downside Risk; broad selloff and semiconductor reversal",
       "previousBias": "Bearish — Elevated Downside Risk; broad selloff and semiconductor reversal",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "05:18 EST Nov 20: Bearish — Elevated Downside Risk unchanged for Nov 20, 23, 24. Newly curated California DOJ investigative subpoena to Nvidia adds a distinct high-materiality state securities/export-disclosure risk, but its announcement followed the Nov 19 US close and no attributable market reaction is verified. WSJ reports Nasdaq-100 futures -1.15% and 10Y yield below 5%, 2Y near 4.72%, without synchronized ticks. Reuters reports severe Asia semiconductor weakness. This raises downside tail risk but does not independently establish a changed three-session base path. Await US cash session and Michigan sentiment.",
+      "summary": "06:35 EST Nov 20: Bearish — Elevated Downside Risk unchanged for Nov 20, 23 and 24. Reuters reports premarket VIX 29.50 after touching 30.04, while FT reports Nasdaq futures pointing -1.5%, Anthropic -6.4% premarket and further Asia chip weakness. MarketWatch reports 10Y 4.991% and 2Y 4.711% in same early-Friday report, an indicative +28.0 bp curve, not tick-synchronized. Reuters cites market-implied 99.3% probability of a December 25-bp Fed hike, source calculation not independently verified. No Friday US cash-session response yet. Open Watch unchanged at 174 events; no new independent path-changing catalyst.",
       "bullish": [
         "Anthropic closed at $97.17 above $83 IPO price",
-        "Oversold technical rebound possible after six consecutive S&P down sessions, unconfirmed"
+        "Oversold technical rebound possible after six consecutive S&P down sessions, unconfirmed",
+        "Treasury yields easing on safe-haven demand could eventually support long-duration technology if volatility and breadth stabilize; not yet a bullish price confirmation"
       ],
       "bearish": [
         "Nasdaq -2.25%, S&P 500 -2.02% November 19 close",
@@ -36,7 +37,10 @@
         "TSMC affected China advanced-node orders halted pending US export licences; market-specific causal effect unconfirmed",
         "Newly curated US House disclosure: licences approved for approximately 879,000 NVDA/AMD AI chips to China; heightened policy scrutiny, no causal stock response verified",
         "California DOJ Nov 19 investigative subpoena to NVDA over possible China chip/confidential-information transfers and investor disclosures; no wrongdoing established, and post-announcement market reaction unverified",
-        "WSJ Nov 20 indicative Nasdaq futures -1.15%, Asia technology weakness and ASML >5% lower; non-synchronized premarket indications"
+        "WSJ Nov 20 indicative Nasdaq futures -1.15%, Asia technology weakness and ASML >5% lower; non-synchronized premarket indications",
+        "Reuters Nov 20 premarket VIX 29.50 after 30.04 intraday (seven-month high), not US cash close",
+        "FT Nov 20 Nasdaq futures indicative -1.5%, Anthropic -6.4% premarket; still not confirmed US cash session",
+        "Reuters Nov 20 cites 99.3% implied chance of December 25bp Fed hike; underlying futures timestamp not independently verified"
       ],
       "observations": [
         {
@@ -438,6 +442,78 @@
           "source": "https://www.wsj.com/finance/stocks/nasdaq-set-for-fresh-decline-as-ai-selloff-intensifies-e974bbb5",
           "sourceTime": "2026-11-20 premarket report, precise tick time unavailable",
           "quality": "Rounded report; not verified tick-synchronized with 10Y; prior +28.20 bp spread retained as historical only"
+        },
+        {
+          "metric": "VIX premarket",
+          "value": 29.5,
+          "unit": "index points",
+          "source": "https://www.reuters.com/business/wall-streets-fear-gauge-touches-seven-month-high-ai-worries-mount-2026-11-20/",
+          "sourceTime": "2026-11-20 premarket, precise quote time unspecified",
+          "quality": "Reuters contemporaneous report, not Friday closing VIX"
+        },
+        {
+          "metric": "VIX premarket high",
+          "value": 30.04,
+          "unit": "index points",
+          "source": "https://www.reuters.com/business/wall-streets-fear-gauge-touches-seven-month-high-ai-worries-mount-2026-11-20/",
+          "sourceTime": "2026-11-20 premarket, precise tick unspecified",
+          "quality": "Reuters reported intraday high"
+        },
+        {
+          "metric": "Nasdaq futures indicative",
+          "value": -1.5,
+          "unit": "percent",
+          "source": "https://www.ft.com/content/c7ad2e0c-efd1-40c2-a5a8-819ced8acf5b",
+          "sourceTime": "2026-11-20 premarket, article quote time unspecified",
+          "quality": "FT report; not US cash session"
+        },
+        {
+          "metric": "Anthropic premarket change",
+          "value": -6.4,
+          "unit": "percent",
+          "source": "https://www.ft.com/content/c7ad2e0c-efd1-40c2-a5a8-819ced8acf5b",
+          "sourceTime": "2026-11-20 premarket",
+          "quality": "FT reported indicative premarket change"
+        },
+        {
+          "metric": "US Treasury 10-year yield",
+          "value": 4.991,
+          "unit": "percent",
+          "source": "https://www.marketwatch.com/livecoverage/stock-market-today-dow-s-p-500-nasdaq-anthropic-ipo-second-day-trading/card/treasury-yields-fall-below-5-as-sliding-risk-assets-bolster-demand-for-government-bonds-V0fIHwHPjKuujMfSbcHc",
+          "sourceTime": "2026-11-20 early Friday, precise quote time unspecified",
+          "quality": "Same article as 2Y, not tick synchronized"
+        },
+        {
+          "metric": "US Treasury 2-year yield",
+          "value": 4.711,
+          "unit": "percent",
+          "source": "https://www.marketwatch.com/livecoverage/stock-market-today-dow-s-p-500-nasdaq-anthropic-ipo-second-day-trading/card/treasury-yields-fall-below-5-as-sliding-risk-assets-bolster-demand-for-government-bonds-V0fIHwHPjKuujMfSbcHc",
+          "sourceTime": "2026-11-20 early Friday, precise quote time unspecified",
+          "quality": "Same article as 10Y, not tick synchronized"
+        },
+        {
+          "metric": "10Y minus 2Y yield spread indicative",
+          "value": 28,
+          "unit": "basis points",
+          "source": "https://www.marketwatch.com/livecoverage/stock-market-today-dow-s-p-500-nasdaq-anthropic-ipo-second-day-trading/card/treasury-yields-fall-below-5-as-sliding-risk-assets-bolster-demand-for-government-bonds-V0fIHwHPjKuujMfSbcHc",
+          "sourceTime": "2026-11-20 early Friday, precise tick times unspecified",
+          "quality": "(4.991%-4.711%)*100=28.0bp; same-report, not verified synchronized ticks"
+        },
+        {
+          "metric": "December Fed 25bp hike probability",
+          "value": 99.3,
+          "unit": "percent implied probability",
+          "source": "https://www.reuters.com/world/india/gold-set-worst-week-eight-months-firm-dollar-fed-hike-bets-weigh-2026-11-20/",
+          "sourceTime": "2026-11-20 Reuters report, exact futures observation time unspecified",
+          "quality": "Reuters secondary reported market pricing; direct CME FedWatch not verified"
+        },
+        {
+          "metric": "Curated Open Watch events",
+          "value": 174,
+          "unit": "events",
+          "source": "https://github.com/repural/NasDecode/blob/main/data/history/market-watch-events.json",
+          "sourceTime": "2026-11-20T09:34:00+00:00",
+          "quality": "Direct repository; no additional curated event since prior snapshot"
         }
       ],
       "conditions": {
@@ -463,7 +539,7 @@
       ],
       "provenance": {
         "repository": "repural/NasDecode",
-        "priorSnapshotUpdated": "2026-11-20T08:40:08Z",
+        "priorSnapshotUpdated": "2026-11-20T10:18:18Z",
         "openWatchUpdated": "2026-11-20T09:34:00+00:00",
         "openWatchCount": 174,
         "sources": [
@@ -488,18 +564,22 @@
           "https://oag.ca.gov/node/633133",
           "https://www.reuters.com/legal/litigation/california-ag-subpoenas-nvidia-over-concerns-about-former-ceo-china-2026-11-19/",
           "https://www.wsj.com/finance/stocks/nasdaq-set-for-fresh-decline-as-ai-selloff-intensifies-e974bbb5",
-          "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-20/"
+          "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-20/",
+          "Reuters Nov 20 premarket VIX",
+          "FT Nov 20 Nasdaq futures and Anthropic premarket",
+          "MarketWatch Nov 20 same-report US Treasury yields",
+          "Reuters Nov 20 December hike implied pricing"
         ],
-        "dataQuality": "Nov 19 US closing evidence is dated and verified in previously sourced reports. Nov 20 Asia and US futures are asynchronous and indicative, not US cash response. Nov 20 WSJ yields are approximate, not tick-synchronized; prior 5.0089%/4.7269% yields imply +28.20 basis points (percentage-point difference times 100), but spread is historical, not current. SOX/VXN, fresh breadth, exact FedWatch, synchronized oil contracts and fresh US cash data unavailable. Official DOJ subpoena establishes investigation, not wrongdoing."
+        "dataQuality": "Prior US cash close is November 19. Nov 20 VIX, futures, Anthropic are premarket, not US cash confirmation. MarketWatch same-report 10Y 4.991% and 2Y 4.711% yield difference = +28.0 basis points, but exact tick synchronization unavailable. Reuters reports 99.3% implied December hike probability without direct CME observation. SOX, VXN, synchronized QQQ/SPY, Friday breadth and maturity-matched current oil prices unavailable. No Michigan actual before 10:00 EST."
       },
       "editorial": {
-        "marketOverview": "The Nasdaq/QQQ three-session outlook remains bearish after the broad November 19 US selloff, elevated volatility and weak semiconductor leadership. Friday's overseas technology losses and negative US futures indications point to fragile risk appetite, but they are not proof of US cash-session follow-through. Friday, Monday and Tuesday remain the relevant horizon.",
-        "whatChanged": "The curated Open Watch count increased from 173 to 174. The newly surfaced California Department of Justice investigative subpoena asks Nvidia about possible restricted chip or confidential-information transfers to China and investor disclosures. This is a distinct legal front beyond federal export controls and the House licensing disclosure. The subpoena is official and high materiality; it is not a finding of misconduct. It was announced after Thursday's cash close, so Nvidia's Thursday decline cannot be attributed to it. The WSJ also reported Nasdaq futures down around 1.15% Friday premarket, a time-limited indication rather than a verified cash-market reaction.",
-        "marketInterpretation": "The new state-level investigation reinforces the existing bearish AI-leadership narrative and increases negative headline-tail risk. However, regulatory exposure cannot be translated mechanically into an index decline, and a causal stock reaction has not yet been verified. The latest cited 10Y and 2Y yields are rounded, not tick-synchronized, so no new precise curve spread is claimed; the earlier +28.20 bp is correctly scaled but dated. Volatility and semiconductor breadth need current US-session confirmation.",
-        "threeDayPath": "Friday may open under pressure if negative futures indications persist; the 10:00 EST Michigan sentiment release could alter the rates and growth narrative. Monday should test whether Friday's rebounds fail and whether semiconductors remain relative laggards. Tuesday will show whether a base forms or lower highs persist, alongside company earnings and macro headlines. This is a conditional scenario, not a forecast of exact daily returns.",
-        "bullCase": "A short-covering recovery is plausible after unusually broad selling. Sustained QQQ leadership over SPY, improved SOX/SMH relative performance, positive breadth, VIX/VXN retreat and stable or easing yields would challenge the bearish path. A benign verified market response to Nvidia's investigation would reduce its expected near-term impact.",
-        "bearCase": "The bearish case strengthens if Nvidia and other chip leaders sell further following the new legal scrutiny, SOX underperforms QQQ, breadth remains deeply negative, volatility rises and Friday's rebounds fail. Persistent weakness through Monday would make a lower-high pattern into Tuesday more likely. Export restrictions and geopolitical oil risk are additional potential headwinds, not independently confirmed market causes.",
-        "watchNext": "Verify Friday's actual QQQ, SOX/SMH and NVDA moves against SPY at comparable timestamps; check VXN/VIX, breadth, official Treasury 10Y/2Y with correct units, FedWatch, matched-contract Brent/WTI, and Michigan sentiment versus consensus after release. Monitor Nvidia's response and any official follow-on investigation, distinguishing expected risk from observed price action."
+        "marketOverview": "Nasdaq/QQQ remain in a bearish three-session regime following Thursday's broad US selloff and the Asian semiconductor rout. Friday premarket risk indicators have deteriorated further, including a VIX print above 30 and a reported 1.5% drop in Nasdaq futures. These are premarket indications, not yet evidence of a Friday US cash-market decline.",
+        "whatChanged": "Reuters reported VIX reaching 30.04 before easing to 29.50, a seven-month high. The Financial Times reported Nasdaq futures indicating a 1.5% decline and Anthropic shares falling 6.4% premarket. MarketWatch reported Treasury yields falling to 4.991% for 10Y and 4.711% for 2Y, giving a correctly scaled but not tick-synchronized +28.0-basis-point spread. Reuters cited a 99.3% implied chance of a December 25-basis-point Fed hike. The curated Open Watch list remains at 174 events, with no new distinct event.",
+        "marketInterpretation": "The new observations reinforce rather than change the existing downside path. Volatility near 30 and weakness in AI leaders indicate continued demand for protection and reduced risk appetite. Lower Treasury yields appear associated with safe-haven flows rather than a confirmed bullish discount-rate impulse; reported Fed-hike pricing remains hawkish. Without US cash trading, these signals cannot establish the realized response to the Nvidia investigation or Thursday's technology selloff.",
+        "threeDayPath": "Friday is vulnerable to a weak opening and failed intraday rebound, but the 10:00 EST Michigan sentiment release could change the rates narrative. Monday should reveal whether semiconductors recover leadership or confirm Friday weakness. Tuesday tests whether any bounce forms a durable base or another lower high. No precise daily return forecast is justified.",
+        "bullCase": "An oversold rebound remains possible. The bearish view would weaken if QQQ begins outperforming SPY on synchronized US cash observations, SOX and SMH lead a recovery, breadth improves, VIX and VXN fall materially, and falling yields coincide with improving stock prices rather than forced deleveraging.",
+        "bearCase": "The bearish scenario gains confirmation if Friday's cash-market weakness matches negative futures, Nvidia and semiconductor shares underperform, volatility remains near or above 30, and market breadth is decisively negative. Continued weakness Monday would make Tuesday lower highs more plausible; Fed tightening expectations and export-policy headlines add conditional risks.",
+        "watchNext": "At the Friday open, check synchronized QQQ, SPY, SOX/SMH, NVDA, VIX/VXN and advance-decline breadth. At 10:00 EST, compare actual Michigan sentiment and inflation expectations with consensus and observe yields and index response. Recheck official 10Y/2Y yields, direct CME FedWatch, matched-contract Brent/WTI and newly curated Open Watch events. Avoid attributing Thursday losses to Nvidia's post-close subpoena."
       }
     }
   ]
