@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-20T01:58:04Z",
+  "updated": "2026-11-20T02:53:40Z",
   "horizon": [
     "2026-11-20",
     "2026-11-23",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-19",
-      "timeET": "20:58",
+      "timeET": "21:53",
       "bias": "Bearish — Elevated Downside Risk; broad selloff and semiconductor reversal",
       "previousBias": "Bearish — Elevated Downside Risk; broad selloff and semiconductor reversal",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Evening reassessment: bearish elevated downside risk unchanged for November 20, 23 and 24. New technical commentary reports Nasdaq-100 and SOX below uptrend lines, VIX highest close since March, and NYSE downside volume 87%; reinforces prior selloff, not an independently new catalyst. Michigan final sentiment is still scheduled for Friday. No fresh synchronized official cross-asset dataset.",
+      "summary": "November 19 21:53 EST reassessment for November 20, 23 and 24: bearish elevated downside risk unchanged. Reuters early November 20 Asia coverage reports region-wide AI-related risk aversion and lower US Treasury yields on safe-haven demand, but does not establish a new synchronized US QQQ/SOX/VXN price or independent path-changing catalyst. Friday Michigan sentiment remains unreleased.",
       "bullish": [
         "Anthropic closed at $97.17 above $83 IPO price",
         "Oversold technical rebound possible after six consecutive S&P down sessions, unconfirmed"
@@ -185,6 +185,22 @@
           "source": "https://github.com/repural/NasDecode/blob/main/data/history/market-watch-events.json",
           "sourceTime": "2026-11-20T01:24:04+00:00",
           "quality": "Direct repository; checked recent curated events; no independently identified new path-changing event"
+        },
+        {
+          "metric": "Asia-Pacific equities Friday early-session weekly performance",
+          "value": -7,
+          "unit": "percent approximate weekly MSCI Asia-Pacific index change",
+          "source": "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-20/",
+          "sourceTime": "2026-11-20 early Asia trading, Reuters report",
+          "quality": "Reuters reported regional weekly move; not US cash-market observation or synchronized with November 19 US close"
+        },
+        {
+          "metric": "November final Michigan sentiment consensus",
+          "value": 51,
+          "unit": "index points, expected not actual",
+          "source": "https://in.investing.com/news/stock-market-news/michigan-consumer-sentiment-and-baker-hughes-rig-count-due-friday-93CH-5715997",
+          "sourceTime": "2026-11-20 00:32 local article publication; release scheduled 10:00 EST",
+          "quality": "Calendar consensus only, not realized data"
         }
       ],
       "conditions": {
@@ -195,7 +211,7 @@
         {
           "date": "2026-11-20",
           "event": "Michigan final November consumer sentiment and inflation expectations, 10:00 EST; QQQ/SOX and breadth follow-through",
-          "status": "Scheduled, not yet released; secondary calendar consensus 51.0"
+          "status": "Scheduled, unreleased at this run; secondary calendar consensus 51.0"
         },
         {
           "date": "2026-11-23",
@@ -210,7 +226,7 @@
       ],
       "provenance": {
         "repository": "repural/NasDecode",
-        "priorSnapshotUpdated": "2026-11-20T01:12:39Z",
+        "priorSnapshotUpdated": "2026-11-20T01:58:04Z",
         "openWatchUpdated": "2026-11-20T01:24:04+00:00",
         "openWatchCount": 171,
         "sources": [
@@ -219,18 +235,20 @@
           "Nightglass November 19 QQQ/SPY secondary close",
           "WSJ November 19 oil settlement",
           "TheStreet technical commentary November 19 18:33 EST",
-          "Investing.com November 20 Michigan calendar"
+          "Investing.com November 20 Michigan calendar",
+          "Reuters November 20 early Asian-session global markets",
+          "Investing.com November 20 Michigan final sentiment calendar"
         ],
-        "dataQuality": "November 20 cash session not yet open. New technical commentary on SOX/NDX and 87% NYSE downside volume is secondary, not independently exchange-verified. Prior VIX 28.44 differs from another secondary report 28.04; avoid treating discrepancy as resolved. No new synchronized QQQ/SOX/VXN, Treasury, FedWatch or breadth tape. Treasury +25.4 bp indicative curve stale and correctly scaled; oil contracts are different months."
+        "dataQuality": "November 20 US cash session not yet open as of 21:53 EST November 19. Reuters Asia risk-off is a different trading session and not a verified US market response. Prior November 19 closing index, QQQ/SPY, VIX, oil and breadth observations retained with original timestamps. No verified synchronized SOX/VXN, fresh official 10Y/2Y, direct FedWatch, or matching-maturity oil contracts. Indicative 5.082% minus 4.828%=0.254 percentage points=25.4 bp is stale; never multiply by 10000 when yields already expressed in percent. Open Watch repository last updated 2026-11-20T01:24:04Z with 171 entries, no independently confirmed new catalyst."
       },
       "editorial": {
-        "marketOverview": "Thursday's broad selloff remains the latest observed cash-market backdrop. Nasdaq -2.25%, S&P 500 -2.02%, and over 90% S&P decliners accompany elevated volatility. New November 19 evening technical commentary describes Nasdaq-100 and SOX below uptrend lines, NYSE downside volume 87%, and VIX at its highest close since March; these corroborate existing weakness rather than create a new catalyst.",
-        "whatChanged": "Relative to the 20:12 EST assessment, an 18:33 EST technical commentary added broken Nasdaq-100/SOX trend lines and 87% NYSE downside volume. This increases corroboration of the established bearish picture but does not change the directional three-session path. Open Watch was refreshed at 2026-11-20T01:24:04+00:00 with 171 curated events; no independently established new path-changing catalyst.",
-        "marketInterpretation": "Weak breadth, semiconductor trend deterioration and volatility expansion remain consistent with distribution. The latest technical commentary is secondary evidence and cannot substitute for synchronized official prices. A rebound after heavy selling remains possible, but durable recovery requires stronger relative performance and broader participation. Prior curve and oil observations are stale or maturity-mismatched.",
-        "threeDayPath": "Friday November 20 is the immediate test: a relief rebound that fails in QQQ and SOX would support continued weakness Monday November 23 and Tuesday November 24. Michigan final sentiment at 10:00 EST and inflation expectations are future catalysts, not observed market reactions. A broad, sustained semiconductor-led recovery would challenge the bearish path.",
-        "bullCase": "A sharp oversold bounce is plausible after broad selling. Require sustained QQQ versus SPY outperformance, SOX/SMH leadership, improving breadth and declining volatility with stable yields before upgrading the outlook. Anthropic's prior IPO premium is company-specific, not sufficient market confirmation.",
-        "bearCase": "Nasdaq -2.25%, broad S&P selling, elevated VIX and fresh analyst-observed breaks in NDX/SOX uptrends favor further downside if Friday's bounce fails. NYSE downside volume of 87% adds confirmation but is sourced from technical commentary rather than an independent exchange feed.",
-        "watchNext": "Verify Friday November 20 10:00 EST Michigan final sentiment, inflation expectations and actual market response; synchronize QQQ/SPY, SOX/SMH, breadth, VIX/VXN, 10Y/2Y percent yields and basis-point spread, Brent/WTI matching contracts, direct FedWatch, and new curated Open Watch events. Check Monday/Tuesday macro and earnings timing before publication."
+        "marketOverview": "The November 19 US cash-market selloff remains the last verified US session: Nasdaq approximately -2.25%, S&P 500 -2.02%, over 90% of S&P constituents lower and VIX 28.44. Reuters November 20 early Asia reporting describes pronounced global risk aversion toward AI equities and falling US Treasury yields amid flight to safety. This regional follow-through reinforces caution but does not supply a synchronized Friday US trading signal.",
+        "whatChanged": "Since the 20:58 EST snapshot, Reuters reported Asian equities heading toward their worst week since March 2020, with an approximate 7% weekly decline for its Asia-Pacific index, while yields eased on safety demand. This is geographically and temporally distinct confirmation of risk aversion, not a new US QQQ/SOX market response or material change in the expected three-day path. The 171 curated Open Watch events were unchanged at the last repository refresh.",
+        "marketInterpretation": "The existing bearish baseline reflects broad US distribution, volatility expansion and semiconductor underperformance. Asian risk-off adds cross-region corroboration but is not interchangeable with US Friday cash breadth. Treasury easing on safety demand is not necessarily a bullish duration-stock signal when risk premiums rise. Fed expectations remain qualitatively hawkish in Reuters coverage; no direct current FedWatch probability was verified.",
+        "threeDayPath": "Friday November 20 remains a key follow-through test: watch for an attempted rebound and whether QQQ and SOX outperform SPY with breadth improvement. Failure would support weakness Monday November 23 and Tuesday November 24; a sustained semiconductor-led recovery would challenge the bearish outlook. The Friday 10:00 EST Michigan final sentiment and inflation expectations are scheduled events, not realized surprises.",
+        "bullCase": "An oversold rebound can follow six consecutive S&P down days. Require synchronized QQQ relative outperformance, SOX/SMH leadership, broad participation, declining VXN/VIX and stable-to-lower yields before reducing downside risk. The Anthropic IPO premium alone does not constitute market-wide recovery.",
+        "bearCase": "November 19 Nasdaq -2.25%, broad decliners, VIX 28.44 and semiconductor weakness point to further downside if Friday fails to reclaim leadership. Reuters early Asia losses corroborate global risk aversion, though not US cash-market confirmation. Another failed rebound into Monday would strengthen continuation.",
+        "watchNext": "Check Michigan November final sentiment and inflation expectations at 10:00 EST Friday and subsequent US market reaction; collect synchronized QQQ/SPY, SOX/SMH, breadth, VXN/VIX, official 10Y/2Y yields and basis-point curve, Brent/WTI comparable maturities, FedWatch probabilities, and newly published curated Open Watch events. Confirm Analog Devices Tuesday earnings timing."
       }
     }
   ]
