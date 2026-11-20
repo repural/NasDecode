@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-20T02:53:40Z",
+  "updated": "2026-11-20T03:59:33Z",
   "horizon": [
     "2026-11-20",
     "2026-11-23",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-19",
-      "timeET": "21:53",
+      "timeET": "22:59",
       "bias": "Bearish — Elevated Downside Risk; broad selloff and semiconductor reversal",
       "previousBias": "Bearish — Elevated Downside Risk; broad selloff and semiconductor reversal",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "November 19 21:53 EST reassessment for November 20, 23 and 24: bearish elevated downside risk unchanged. Reuters early November 20 Asia coverage reports region-wide AI-related risk aversion and lower US Treasury yields on safe-haven demand, but does not establish a new synchronized US QQQ/SOX/VXN price or independent path-changing catalyst. Friday Michigan sentiment remains unreleased.",
+      "summary": "November 19 22:59 EST review for November 20, 23 and 24: bearish elevated downside risk unchanged. November 20 Asia technology shares and US index futures remain weak; fresh Reuters and FT coverage reinforces cross-border AI risk aversion, not yet a US Friday cash-session response. No independent path-changing catalyst verified.",
       "bullish": [
         "Anthropic closed at $97.17 above $83 IPO price",
         "Oversold technical rebound possible after six consecutive S&P down sessions, unconfirmed"
@@ -201,6 +201,46 @@
           "source": "https://in.investing.com/news/stock-market-news/michigan-consumer-sentiment-and-baker-hughes-rig-count-due-friday-93CH-5715997",
           "sourceTime": "2026-11-20 00:32 local article publication; release scheduled 10:00 EST",
           "quality": "Calendar consensus only, not realized data"
+        },
+        {
+          "metric": "Nasdaq-100 futures overnight change",
+          "value": -0.5,
+          "unit": "percent",
+          "source": "https://www.investors.com/market-trend/stock-market-today/dow-jones-futures-market-reversal-anthropic-ipo-debuts-amd-dives/",
+          "sourceTime": "2026-11-19 overnight EST; article published 2026-11-20",
+          "quality": "Secondary futures indication, not live synchronized quote"
+        },
+        {
+          "metric": "Japan Nikkei Friday early session",
+          "value": -4.5,
+          "unit": "percent approximate",
+          "source": "https://apnews.com/article/c4c3f4878b12989347f8a930ed813dad",
+          "sourceTime": "2026-11-20 Asia session, article timestamp not precise",
+          "quality": "AP regional observation, not US market"
+        },
+        {
+          "metric": "South Korea Kospi Friday early session",
+          "value": -4.5,
+          "unit": "percent approximate",
+          "source": "https://apnews.com/article/c4c3f4878b12989347f8a930ed813dad",
+          "sourceTime": "2026-11-20 Asia session, article timestamp not precise",
+          "quality": "AP regional observation, not US market"
+        },
+        {
+          "metric": "TSMC Friday Asia share change",
+          "value": -4.5,
+          "unit": "percent",
+          "source": "https://www.ft.com/content/c7ad2e0c-efd1-40c2-a5a8-819ced8acf5b",
+          "sourceTime": "2026-11-20 Asia session",
+          "quality": "FT reported Taiwan trading; not US SOX quote"
+        },
+        {
+          "metric": "10-year Treasury yield indicative",
+          "value": 5.04,
+          "unit": "percent",
+          "source": "https://apnews.com/article/c4c3f4878b12989347f8a930ed813dad",
+          "sourceTime": "2026-11-20 Asia news report",
+          "quality": "AP indicative 10Y only; no synchronized 2Y, cannot compute fresh spread"
         }
       ],
       "conditions": {
@@ -226,7 +266,7 @@
       ],
       "provenance": {
         "repository": "repural/NasDecode",
-        "priorSnapshotUpdated": "2026-11-20T01:58:04Z",
+        "priorSnapshotUpdated": "2026-11-20T02:53:40Z",
         "openWatchUpdated": "2026-11-20T01:24:04+00:00",
         "openWatchCount": 171,
         "sources": [
@@ -237,18 +277,21 @@
           "TheStreet technical commentary November 19 18:33 EST",
           "Investing.com November 20 Michigan calendar",
           "Reuters November 20 early Asian-session global markets",
-          "Investing.com November 20 Michigan final sentiment calendar"
+          "Investing.com November 20 Michigan final sentiment calendar",
+          "AP November 20 Asia trading",
+          "FT November 20 Asian semiconductor trading",
+          "IBD November 20 overnight futures"
         ],
-        "dataQuality": "November 20 US cash session not yet open as of 21:53 EST November 19. Reuters Asia risk-off is a different trading session and not a verified US market response. Prior November 19 closing index, QQQ/SPY, VIX, oil and breadth observations retained with original timestamps. No verified synchronized SOX/VXN, fresh official 10Y/2Y, direct FedWatch, or matching-maturity oil contracts. Indicative 5.082% minus 4.828%=0.254 percentage points=25.4 bp is stale; never multiply by 10000 when yields already expressed in percent. Open Watch repository last updated 2026-11-20T01:24:04Z with 171 entries, no independently confirmed new catalyst."
+        "dataQuality": "Friday US cash session not open. AP/FT Asian equities and IBD overnight futures are distinct time frames; do not treat as US closing confirmation. AP indicative 10Y 5.04% has no synchronized 2Y; previous +25.4 bp spread stale. No fresh synchronized SOX, VXN, direct FedWatch or maturity-matched Brent/WTI. Open Watch repository updated 2026-11-20T01:24:04+00:00; 171 curated events; no newly published path-changing catalyst verified."
       },
       "editorial": {
-        "marketOverview": "The November 19 US cash-market selloff remains the last verified US session: Nasdaq approximately -2.25%, S&P 500 -2.02%, over 90% of S&P constituents lower and VIX 28.44. Reuters November 20 early Asia reporting describes pronounced global risk aversion toward AI equities and falling US Treasury yields amid flight to safety. This regional follow-through reinforces caution but does not supply a synchronized Friday US trading signal.",
-        "whatChanged": "Since the 20:58 EST snapshot, Reuters reported Asian equities heading toward their worst week since March 2020, with an approximate 7% weekly decline for its Asia-Pacific index, while yields eased on safety demand. This is geographically and temporally distinct confirmation of risk aversion, not a new US QQQ/SOX market response or material change in the expected three-day path. The 171 curated Open Watch events were unchanged at the last repository refresh.",
-        "marketInterpretation": "The existing bearish baseline reflects broad US distribution, volatility expansion and semiconductor underperformance. Asian risk-off adds cross-region corroboration but is not interchangeable with US Friday cash breadth. Treasury easing on safety demand is not necessarily a bullish duration-stock signal when risk premiums rise. Fed expectations remain qualitatively hawkish in Reuters coverage; no direct current FedWatch probability was verified.",
-        "threeDayPath": "Friday November 20 remains a key follow-through test: watch for an attempted rebound and whether QQQ and SOX outperform SPY with breadth improvement. Failure would support weakness Monday November 23 and Tuesday November 24; a sustained semiconductor-led recovery would challenge the bearish outlook. The Friday 10:00 EST Michigan final sentiment and inflation expectations are scheduled events, not realized surprises.",
-        "bullCase": "An oversold rebound can follow six consecutive S&P down days. Require synchronized QQQ relative outperformance, SOX/SMH leadership, broad participation, declining VXN/VIX and stable-to-lower yields before reducing downside risk. The Anthropic IPO premium alone does not constitute market-wide recovery.",
-        "bearCase": "November 19 Nasdaq -2.25%, broad decliners, VIX 28.44 and semiconductor weakness point to further downside if Friday fails to reclaim leadership. Reuters early Asia losses corroborate global risk aversion, though not US cash-market confirmation. Another failed rebound into Monday would strengthen continuation.",
-        "watchNext": "Check Michigan November final sentiment and inflation expectations at 10:00 EST Friday and subsequent US market reaction; collect synchronized QQQ/SPY, SOX/SMH, breadth, VXN/VIX, official 10Y/2Y yields and basis-point curve, Brent/WTI comparable maturities, FedWatch probabilities, and newly published curated Open Watch events. Confirm Analog Devices Tuesday earnings timing."
+        "marketOverview": "Thursday's US close remains the anchor: Nasdaq -2.25%, S&P -2.02%, broad decliners and VIX 28.44. Overnight Asian technology shares continued to slide; AP reported Nikkei and Kospi approximately -4.5%, and FT reported TSMC -4.5%. The overnight futures indication was negative, but Friday US cash trading has not begun.",
+        "whatChanged": "Relative to 21:53 EST, AP and FT supply additional evidence of Asian semiconductor selling, while IBD reports Nasdaq-100 futures down approximately 0.5% overnight. This is further corroboration of existing risk aversion, not a newly established US-market directional break. The Open Watch file has no fresh timestamp since the prior review.",
+        "marketInterpretation": "Global semiconductor selling increases the risk that Friday US QQQ and SOX open weak. The inference remains conditional: regional trading, overnight futures and US closing breadth are asynchronous. AP's indicative 10-year yield of 5.04% does not provide a synchronized 2-year curve, and declining yields can reflect defensive positioning rather than improved equity appetite.",
+        "threeDayPath": "Friday November 20 is the first test: watch whether QQQ and SOX stabilize against SPY after the open and how equities respond to 10:00 EST Michigan sentiment. Continued weak breadth and failed bounces would favor downside continuation Monday November 23 and Tuesday November 24. A durable semiconductor-led rebound would invalidate that scenario.",
+        "bullCase": "An oversold bounce is plausible after sustained selling; it requires actual Friday QQQ/SPY outperformance, SOX/SMH strength, improving participation and falling VXN/VIX, rather than an isolated IPO premium or a lower Treasury yield.",
+        "bearCase": "The broad Thursday US selloff and Asian Friday semiconductor losses support a bearish baseline. A weak US Friday open followed by failure to recover and broad downside volume would favor further losses into Monday; this remains a scenario, not a verified Friday market reaction.",
+        "watchNext": "Check Friday 10:00 EST Michigan final sentiment and inflation expectations against consensus and actual US market response; obtain synchronized QQQ, SPY, SOX, SMH, breadth, VXN/VIX, 10Y/2Y Treasury yields in percent, direct FedWatch probabilities and matched-maturity Brent/WTI. Recheck curated Open Watch and Tuesday earnings timing."
       }
     }
   ]
