@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-20T08:40:08Z",
+  "updated": "2026-11-20T10:18:18Z",
   "horizon": [
     "2026-11-20",
     "2026-11-23",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-20",
-      "timeET": "03:40",
+      "timeET": "05:18",
       "bias": "Bearish — Elevated Downside Risk; broad selloff and semiconductor reversal",
       "previousBias": "Bearish — Elevated Downside Risk; broad selloff and semiconductor reversal",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "03:40 EST November 20 review, horizon November 20, 23, 24: Bearish — Elevated Downside Risk unchanged; Moderate confidence, Very High event risk. Latest Reuters Asia report reinforces severe regional AI/semiconductor selling but does not verify US cash follow-through. Open Watch rose from 172 to 173 events: a distinct US House disclosure of approximately 879,000 NVDA/AMD AI-chip export licences to China (approvals, not shipments), reported November 19; new to curation, not demonstrably a new directional surprise or confirmed market response. Await Friday US session and 10:00 EST Michigan sentiment.",
+      "summary": "05:18 EST Nov 20: Bearish — Elevated Downside Risk unchanged for Nov 20, 23, 24. Newly curated California DOJ investigative subpoena to Nvidia adds a distinct high-materiality state securities/export-disclosure risk, but its announcement followed the Nov 19 US close and no attributable market reaction is verified. WSJ reports Nasdaq-100 futures -1.15% and 10Y yield below 5%, 2Y near 4.72%, without synchronized ticks. Reuters reports severe Asia semiconductor weakness. This raises downside tail risk but does not independently establish a changed three-session base path. Await US cash session and Michigan sentiment.",
       "bullish": [
         "Anthropic closed at $97.17 above $83 IPO price",
         "Oversold technical rebound possible after six consecutive S&P down sessions, unconfirmed"
@@ -34,7 +34,9 @@
         "Secondary same-source QQQ -2.19% versus SPY -1.97%; semiconductor weakness persists",
         "Reuters November 20: MSCI Asia-Pacific ex-Japan about -3.3% Friday and -8.5% for week; regional AI selloff deepens (asynchronous to US cash)",
         "TSMC affected China advanced-node orders halted pending US export licences; market-specific causal effect unconfirmed",
-        "Newly curated US House disclosure: licences approved for approximately 879,000 NVDA/AMD AI chips to China; heightened policy scrutiny, no causal stock response verified"
+        "Newly curated US House disclosure: licences approved for approximately 879,000 NVDA/AMD AI chips to China; heightened policy scrutiny, no causal stock response verified",
+        "California DOJ Nov 19 investigative subpoena to NVDA over possible China chip/confidential-information transfers and investor disclosures; no wrongdoing established, and post-announcement market reaction unverified",
+        "WSJ Nov 20 indicative Nasdaq futures -1.15%, Asia technology weakness and ASML >5% lower; non-synchronized premarket indications"
       ],
       "observations": [
         {
@@ -396,34 +398,74 @@
           "source": "https://www.reuters.com/world/license-information-ai-chips-sent-china-released-by-us-house-committee-2026-11-19/",
           "sourceTime": "2026-11-19 report; curated 2026-11-20T08:35:00Z",
           "quality": "Curated Reuters-source disclosure; no attributable US cash-market reaction verified"
+        },
+        {
+          "metric": "Curated Open Watch events",
+          "value": 174,
+          "unit": "events",
+          "source": "https://github.com/repural/NasDecode/blob/main/data/history/market-watch-events.json",
+          "sourceTime": "2026-11-20T09:34:00+00:00",
+          "quality": "Direct repository; +1 versus previous assessment, newly curated California DOJ subpoena originally announced November 19"
+        },
+        {
+          "metric": "California DOJ investigative subpoena to Nvidia",
+          "value": "served; investigation, no liability finding",
+          "unit": "regulatory action",
+          "source": "https://oag.ca.gov/node/633133",
+          "sourceTime": "2026-11-19 California DOJ release, time unspecified",
+          "quality": "Official primary source; after Nov 19 US close; no attributable subsequent cash market reaction established"
+        },
+        {
+          "metric": "Nasdaq-100 futures indicative change",
+          "value": -1.15,
+          "unit": "percent",
+          "source": "https://www.wsj.com/finance/stocks/nasdaq-set-for-fresh-decline-as-ai-selloff-intensifies-e974bbb5",
+          "sourceTime": "2026-11-20 premarket article, precise tick time unavailable",
+          "quality": "WSJ reported futures indication; not verified synchronized live quote or US cash session"
+        },
+        {
+          "metric": "10Y US Treasury yield indicative",
+          "value": "below 5",
+          "unit": "percent",
+          "source": "https://www.wsj.com/finance/stocks/nasdaq-set-for-fresh-decline-as-ai-selloff-intensifies-e974bbb5",
+          "sourceTime": "2026-11-20 premarket report, precise tick time unavailable",
+          "quality": "Indicative approximate level; cannot derive fresh exact curve with unsynchronized 2Y"
+        },
+        {
+          "metric": "2Y US Treasury yield indicative",
+          "value": 4.72,
+          "unit": "percent approximate",
+          "source": "https://www.wsj.com/finance/stocks/nasdaq-set-for-fresh-decline-as-ai-selloff-intensifies-e974bbb5",
+          "sourceTime": "2026-11-20 premarket report, precise tick time unavailable",
+          "quality": "Rounded report; not verified tick-synchronized with 10Y; prior +28.20 bp spread retained as historical only"
         }
       ],
       "conditions": {
-        "bullishInvalidation": "Sustained QQQ relative outperformance against SPY, renewed SOX/SMH leadership, broad participation, falling VXN/VIX and stable-to-lower yields would invalidate the bearish baseline",
-        "bearishConfirmation": "Friday failed rebound with weak semiconductor participation and breadth, followed by Monday lower highs or another broad down session"
+        "bullishInvalidation": "Sustained Friday and Monday QQQ outperformance against SPY, SOX/SMH leadership recovery, positive breadth, VIX/VXN compression and stable yields would undermine bearish outlook; a genuine positive market response to Nvidia legal news would weaken its expected negative impact",
+        "bearishConfirmation": "Friday weak opening and failed rebounds with SOX underperforming QQQ, negative breadth, elevated VIX/VXN, and renewed Monday selling; confirm with synchronized US-session observations"
       },
       "upcomingEvents": [
         {
           "date": "2026-11-20",
-          "event": "Michigan final November consumer sentiment and inflation expectations, 10:00 EST; QQQ/SOX and breadth follow-through",
-          "status": "Scheduled, unreleased at this run; secondary calendar consensus 51.0"
+          "event": "Michigan final consumer sentiment and inflation expectations, scheduled 10:00 EST; US cash-market reaction to Nvidia subpoena; QQQ/SOX, breadth, VIX/VXN",
+          "status": "Pending; consensus 51 secondary and unverified; no actual release yet"
         },
         {
           "date": "2026-11-23",
-          "event": "Monday directional follow-through, rates and semiconductor confirmation",
+          "event": "Monday follow-through, semiconductor leadership, Treasury yields, Fed expectations",
           "status": "Upcoming"
         },
         {
           "date": "2026-11-24",
-          "event": "Analog Devices earnings and broader Tuesday macro/earnings checks",
-          "status": "Secondary earnings calendar; confirm timing"
+          "event": "Analog Devices earnings (secondary calendar, verify timing) and Tuesday directional follow-through",
+          "status": "Upcoming"
         }
       ],
       "provenance": {
         "repository": "repural/NasDecode",
-        "priorSnapshotUpdated": "2026-11-20T07:40:50Z",
-        "openWatchUpdated": "2026-11-20T08:35:00+00:00",
-        "openWatchCount": 173,
+        "priorSnapshotUpdated": "2026-11-20T08:40:08Z",
+        "openWatchUpdated": "2026-11-20T09:34:00+00:00",
+        "openWatchCount": 174,
         "sources": [
           "NasDecode latest snapshot and Open Watch repository",
           "AP and WSJ November 19 close",
@@ -442,18 +484,22 @@
           "Reuters November 20 updated Asian market selloff",
           "AP November 20 Asian market close",
           "Reuters November 19 TSMC China licensing controls",
-          "Reuters Nov 19 US House disclosure of Nvidia/AMD China chip export licences; Open Watch Nov 20 08:35 UTC"
+          "Reuters Nov 19 US House disclosure of Nvidia/AMD China chip export licences; Open Watch Nov 20 08:35 UTC",
+          "https://oag.ca.gov/node/633133",
+          "https://www.reuters.com/legal/litigation/california-ag-subpoenas-nvidia-over-concerns-about-former-ceo-china-2026-11-19/",
+          "https://www.wsj.com/finance/stocks/nasdaq-set-for-fresh-decline-as-ai-selloff-intensifies-e974bbb5",
+          "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-20/"
         ],
-        "dataQuality": "US Friday cash session not yet opened at 03:40 EST. Regional quotes asynchronous. Previous 10Y 5.0089%, 2Y 4.7269%, curve +28.20 bp correctly scaled but precise tick synchronization unknown. No verified live SOX/VXN, direct FedWatch probabilities, or maturity-matched Brent/WTI. Export approvals are not shipments; market response unconfirmed."
+        "dataQuality": "Nov 19 US closing evidence is dated and verified in previously sourced reports. Nov 20 Asia and US futures are asynchronous and indicative, not US cash response. Nov 20 WSJ yields are approximate, not tick-synchronized; prior 5.0089%/4.7269% yields imply +28.20 basis points (percentage-point difference times 100), but spread is historical, not current. SOX/VXN, fresh breadth, exact FedWatch, synchronized oil contracts and fresh US cash data unavailable. Official DOJ subpoena establishes investigation, not wrongdoing."
       },
       "editorial": {
-        "marketOverview": "The three-day Nasdaq/QQQ baseline remains bearish with elevated downside risk after Thursday's US breadth collapse, VIX spike and chip weakness. Reuters' Friday Asian-market coverage reinforces the cross-border AI unwind, while Friday's US cash-market response remains unobserved.",
-        "whatChanged": "Open Watch increased from 172 to 173 at 08:35 UTC. The newly curated item details a US House disclosure of licences for approximately 879,000 Nvidia/AMD AI chips destined for China, reported November 19. It is distinct from the earlier TSMC foundry restriction, but not a newly dated Friday policy change. Reuters' Asian selling report reinforces the prior assessment rather than establishing a fresh directional reversal.",
-        "marketInterpretation": "The licensing disclosure adds regulatory scrutiny and potential forward sales-permission risk to an already fragile AI semiconductor backdrop. Approved licences do not establish physical shipments; there is no verified price response attributable to the disclosure. The previous 10Y–2Y spread of +28.20 bp is calculated from same-report, not tick-synchronized yields. Rate expectations remain unquantified by direct FedWatch access.",
-        "threeDayPath": "Friday November 20: downside follow-through and failed rebound remain the baseline risks; verify US QQQ versus SPY, SOX/SMH, breadth and VXN/VIX after opening, and Michigan sentiment at 10:00 EST. Monday November 23: watch whether lower highs and weak chip leadership persist or a broad stabilization base forms. Tuesday November 24: watch Analog Devices earnings timing and the rates/AI risk response. These are conditional forecasts, not realized returns.",
-        "bullCase": "A durable oversold rebound requires QQQ outperforming SPY, SOX/SMH leadership returning, broadening breadth and volatility retreating. Falling yields help only alongside improving risk appetite.",
-        "bearCase": "Continued Asian AI deleveraging, weak US breadth and elevated VIX, combined with TSMC order restrictions and the newly highlighted Nvidia/AMD China export licence scrutiny, could extend downside into Monday. Actual incremental damage from either policy story remains unquantified.",
-        "watchNext": "Verify Friday US cash-market QQQ/SPY, SOX/SMH, breadth, VXN/VIX, Treasury 10Y/2Y and direct FedWatch; 10:00 EST Michigan final sentiment and inflation expectations; comparable-maturity oil contracts; Monday follow-through; Tuesday Analog Devices earnings schedule."
+        "marketOverview": "The Nasdaq/QQQ three-session outlook remains bearish after the broad November 19 US selloff, elevated volatility and weak semiconductor leadership. Friday's overseas technology losses and negative US futures indications point to fragile risk appetite, but they are not proof of US cash-session follow-through. Friday, Monday and Tuesday remain the relevant horizon.",
+        "whatChanged": "The curated Open Watch count increased from 173 to 174. The newly surfaced California Department of Justice investigative subpoena asks Nvidia about possible restricted chip or confidential-information transfers to China and investor disclosures. This is a distinct legal front beyond federal export controls and the House licensing disclosure. The subpoena is official and high materiality; it is not a finding of misconduct. It was announced after Thursday's cash close, so Nvidia's Thursday decline cannot be attributed to it. The WSJ also reported Nasdaq futures down around 1.15% Friday premarket, a time-limited indication rather than a verified cash-market reaction.",
+        "marketInterpretation": "The new state-level investigation reinforces the existing bearish AI-leadership narrative and increases negative headline-tail risk. However, regulatory exposure cannot be translated mechanically into an index decline, and a causal stock reaction has not yet been verified. The latest cited 10Y and 2Y yields are rounded, not tick-synchronized, so no new precise curve spread is claimed; the earlier +28.20 bp is correctly scaled but dated. Volatility and semiconductor breadth need current US-session confirmation.",
+        "threeDayPath": "Friday may open under pressure if negative futures indications persist; the 10:00 EST Michigan sentiment release could alter the rates and growth narrative. Monday should test whether Friday's rebounds fail and whether semiconductors remain relative laggards. Tuesday will show whether a base forms or lower highs persist, alongside company earnings and macro headlines. This is a conditional scenario, not a forecast of exact daily returns.",
+        "bullCase": "A short-covering recovery is plausible after unusually broad selling. Sustained QQQ leadership over SPY, improved SOX/SMH relative performance, positive breadth, VIX/VXN retreat and stable or easing yields would challenge the bearish path. A benign verified market response to Nvidia's investigation would reduce its expected near-term impact.",
+        "bearCase": "The bearish case strengthens if Nvidia and other chip leaders sell further following the new legal scrutiny, SOX underperforms QQQ, breadth remains deeply negative, volatility rises and Friday's rebounds fail. Persistent weakness through Monday would make a lower-high pattern into Tuesday more likely. Export restrictions and geopolitical oil risk are additional potential headwinds, not independently confirmed market causes.",
+        "watchNext": "Verify Friday's actual QQQ, SOX/SMH and NVDA moves against SPY at comparable timestamps; check VXN/VIX, breadth, official Treasury 10Y/2Y with correct units, FedWatch, matched-contract Brent/WTI, and Michigan sentiment versus consensus after release. Monitor Nvidia's response and any official follow-on investigation, distinguishing expected risk from observed price action."
       }
     }
   ]
