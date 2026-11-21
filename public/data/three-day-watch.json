@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-20T23:41:33Z",
+  "updated": "2026-11-21T01:25:12Z",
   "horizon": [
     "2026-11-23",
     "2026-11-24",
@@ -16,42 +16,66 @@
   "entries": [
     {
       "date": "2026-11-20",
-      "timeET": "18:41",
-      "bias": "Bearish — Elevated Downside Risk; confirmed broad-market closing liquidation",
+      "timeET": "20:25",
+      "bias": "Bearish — Elevated Downside Risk; semiconductor-led closing liquidation",
       "previousBias": "Bearish — Elevated Downside Risk; confirmed broad-market closing liquidation",
       "materialChange": false,
       "confidence": "Moderate-High",
       "eventRisk": "Very High",
-      "summary": "Friday post-close follow-up: Reuters confirms the S&P 500 and Dow entered corrections; Reuters reports Nasdaq plunged approximately 5%, consistent with the already-persisted bearish close. StockTitan separately reports QQQ -5.67% and NVDA -14.01% at the 16:00 ET close. No newly confirmed catalyst changes the November 23-25 bearish baseline. Open Watch updated timestamp unchanged.",
+      "summary": "Weekend follow-up confirms Friday's Nasdaq -5.28% close, Reuters-reported SOX approximately -11% and VIX around 37; QQQ -5.67% and NVDA -14.01% from timestamped secondary closing report. These corroborate the existing severe bearish baseline rather than create a new directional shift. No new Open Watch event; count 174, file refreshed 2026-11-21T00:44:37Z. Three-session horizon November 23-25.",
       "bullish": [
-        "Extreme one-day liquidation leaves room for a technical oversold rebound, not yet a reversal",
-        "Defensive relative strength and safe-haven Treasury demand could help if breadth and volatility confirm",
-        "Any sustained QQQ and semiconductor rebound with declining volatility would challenge bearish path"
+        "A sharp oversold bounce is possible after Friday's extreme selling, but unconfirmed",
+        "Lower Treasury yields on safe-haven demand may relieve duration pressure if risk appetite recovers",
+        "Sustained QQQ and SOX/SMH recovery, positive breadth and falling VXN/VIX would weaken bearish path"
       ],
       "bearish": [
-        "Reuters November 20 confirms S&P 500 and Dow corrections and approximately 5% Nasdaq plunge",
-        "StockTitan November 20 16:00 ET closing figures: QQQ -5.67%, NVDA -14.01%, SPY -3.64%, DIA -1.98%; QQQ significantly lagged broad market",
-        "Semiconductor and AI concentration risk remains acute heading into Dell/ADI earnings and November 25 macro data"
+        "Reuters November 20 closing Nasdaq -5.28%, SOX roughly -11%, Nvidia roughly -14% show severe chip-led liquidation",
+        "Reuters VIX approximately 37 points after a roughly 33% rise, reflecting acute volatility stress",
+        "QQQ -5.67% versus SPY -3.64% and DIA -1.98% in secondary-source same-session close comparisons"
       ],
       "observations": [
         {
-          "metric": "QQQ regular-session close",
+          "metric": "Nasdaq Composite close",
+          "value": -5.28,
+          "unit": "percent session change",
+          "source": "https://www.reuters.com/legal/transactional/wall-st-futures-slip-anthropic-debut-fails-reassure-ai-investors-2026-11-20/",
+          "sourceTime": "2026-11-20 regular-session close; Reuters November 20",
+          "quality": "Reported closing index change"
+        },
+        {
+          "metric": "SOX close",
+          "value": -11,
+          "unit": "percent approximately",
+          "source": "https://www.reuters.com/business/view-nasdaq-plunges-5-day-after-anthropic-debut-investors-still-believe-ai-2026-11-20/",
+          "sourceTime": "2026-11-20 closing-day Reuters report",
+          "quality": "Rounded closing-day reported move, exact closing tick not independently verified"
+        },
+        {
+          "metric": "VIX closing-day reported",
+          "value": 37,
+          "unit": "index points approximately",
+          "source": "https://www.reuters.com/business/view-nasdaq-plunges-5-day-after-anthropic-debut-investors-still-believe-ai-2026-11-20/",
+          "sourceTime": "2026-11-20 Reuters closing-day commentary",
+          "quality": "Rounded quote; not independently matched to precise closing tick"
+        },
+        {
+          "metric": "QQQ reported close",
           "value": -5.67,
           "unit": "percent session change",
           "source": "https://www.stocktitan.net/articles/stock-market-today-live-november-20-2026",
-          "sourceTime": "2026-11-20 16:00 EST; page updated 18:19 EST",
-          "quality": "Secondary-source reported close; no independently synchronized exchange feed"
-        },
-        {
-          "metric": "NVDA regular-session close",
-          "value": -14.01,
-          "unit": "percent session change",
-          "source": "https://www.stocktitan.net/articles/stock-market-today-live-november-20-2026",
-          "sourceTime": "2026-11-20 16:00 EST; page updated 18:19 EST",
+          "sourceTime": "2026-11-20 16:00 EST",
           "quality": "Secondary-source reported close"
         },
         {
-          "metric": "SPY regular-session close",
+          "metric": "NVDA reported close",
+          "value": -14.01,
+          "unit": "percent session change",
+          "source": "https://www.stocktitan.net/articles/stock-market-today-live-november-20-2026",
+          "sourceTime": "2026-11-20 16:00 EST",
+          "quality": "Secondary-source reported close"
+        },
+        {
+          "metric": "SPY reported close",
           "value": -3.64,
           "unit": "percent session change",
           "source": "https://www.stocktitan.net/articles/stock-market-today-live-november-20-2026",
@@ -59,7 +83,7 @@
           "quality": "Secondary-source reported close"
         },
         {
-          "metric": "DIA regular-session close",
+          "metric": "DIA reported close",
           "value": -1.98,
           "unit": "percent session change",
           "source": "https://www.stocktitan.net/articles/stock-market-today-live-november-20-2026",
@@ -67,70 +91,70 @@
           "quality": "Secondary-source reported close"
         },
         {
-          "metric": "Nasdaq Composite previous close",
-          "value": -5.3,
-          "unit": "percent session change",
-          "source": "https://apnews.com/article/c4c3f4878b12989347f8a930ed813dad",
-          "sourceTime": "2026-11-20 regular session close",
-          "quality": "Previously reported close; Reuters separately corroborates approximately 5% decline"
+          "metric": "10Y yield prior",
+          "value": 4.94,
+          "unit": "percent",
+          "source": "https://www.benzinga.com/markets/equities/26/11/63492512/stock-market-today-nasdaq-100-nvidia-seventh-day-chipmakers-smh",
+          "sourceTime": "2026-11-20 12:43 EST article",
+          "quality": "Stale; not synchronized with 2Y"
         },
         {
-          "metric": "10Y minus 2Y indicative stale",
+          "metric": "2Y yield prior",
+          "value": 4.65,
+          "unit": "percent",
+          "source": "https://www.benzinga.com/markets/equities/26/11/63492512/stock-market-today-nasdaq-100-nvidia-seventh-day-chipmakers-smh",
+          "sourceTime": "2026-11-20 12:43 EST article",
+          "quality": "Stale; not synchronized with 10Y"
+        },
+        {
+          "metric": "10Y minus 2Y prior indicative",
           "value": 29,
           "unit": "basis points",
           "source": "https://www.benzinga.com/markets/equities/26/11/63492512/stock-market-today-nasdaq-100-nvidia-seventh-day-chipmakers-smh",
           "sourceTime": "2026-11-20 12:43 EST article",
-          "quality": "4.94% minus 4.65%=0.29 percentage points=29 basis points; stale and not synchronized"
+          "quality": "(4.94-4.65)*100=29 bp, stale and unsynchronized"
         },
         {
-          "metric": "VIX stale",
-          "value": 30.93,
-          "unit": "index points",
-          "source": "https://www.benzinga.com/markets/equities/26/11/63492512/stock-market-today-nasdaq-100-nvidia-seventh-day-chipmakers-smh",
-          "sourceTime": "2026-11-20 12:43 EST article",
-          "quality": "Stale, not close"
-        },
-        {
-          "metric": "Brent stale",
+          "metric": "Brent prior",
           "value": 91.53,
           "unit": "USD/barrel",
           "source": "https://www.benzinga.com/markets/equities/26/11/63492512/stock-market-today-nasdaq-100-nvidia-seventh-day-chipmakers-smh",
           "sourceTime": "2026-11-20 12:43 EST article",
-          "quality": "Stale; maturity unverified"
+          "quality": "Stale, contract month unknown"
         },
         {
-          "metric": "WTI stale",
+          "metric": "WTI prior",
           "value": 82.47,
           "unit": "USD/barrel",
           "source": "https://www.benzinga.com/markets/equities/26/11/63492512/stock-market-today-nasdaq-100-nvidia-seventh-day-chipmakers-smh",
           "sourceTime": "2026-11-20 12:43 EST article",
-          "quality": "Stale; maturity unverified"
+          "quality": "Stale, contract month unknown"
         }
       ],
       "conditions": {
-        "bullishInvalidation": "Bearish path weakens if QQQ and SOX/SMH recover together on Monday-Tuesday with positive breadth and falling VXN/VIX.",
-        "bearishInvalidation": "Oversold rebound thesis fails if semiconductor leadership remains weak, Nasdaq underperforms and volatility stays elevated.",
-        "confirmationNeeded": "Official synchronized QQQ/SOX/SMH and breadth, VXN/VIX, 10Y/2Y Treasury yields, CME FedWatch probabilities, maturity-matched Brent/WTI quotes."
+        "bullishInvalidation": "Bearish baseline weakens on synchronized QQQ and SOX/SMH rebound Monday-Tuesday with breadth recovery and VXN/VIX retreat.",
+        "bearishInvalidation": "Countertrend rebound invalidated if chips continue to underperform and volatility remains elevated.",
+        "confirmationNeeded": "Monday synchronized QQQ/SOX/SMH, VXN/VIX, market breadth, primary Treasury yields, direct CME FedWatch, contract-matched oil futures."
       },
       "upcomingEvents": [
         {
           "date": "2026-11-23",
-          "event": "Monday: market reopening and HPE/Zoom earnings",
-          "status": "Scheduled; earnings time verify with issuer"
+          "event": "Monday reopening; HPE and Zoom earnings",
+          "status": "Upcoming; no market response yet"
         },
         {
           "date": "2026-11-24",
-          "event": "Tuesday: Dell, Analog Devices, HP, Best Buy, Dollar Tree earnings",
-          "status": "StockTitan calendar, November 20; outcomes unknown"
+          "event": "Analog Devices and Dell earnings; Best Buy, Dollar Tree, HP",
+          "status": "Scheduled; individual release times vary"
         },
         {
           "date": "2026-11-25",
-          "event": "Wednesday: 08:30 ET PCE, GDP and labor/income data; 14:00 ET Beige Book",
-          "status": "Scheduled, event risk high"
+          "event": "08:30 ET GDP/PCE/income and labor releases; 14:00 ET Fed Beige Book",
+          "status": "Scheduled; outcomes unknown"
         }
       ],
       "provenance": {
-        "assessmentTimeUTC": "2026-11-20T23:41:33Z",
+        "assessmentTimeUTC": "2026-11-21T01:25:12Z",
         "sources": [
           "https://www.reuters.com/legal/transactional/wall-st-futures-slip-anthropic-debut-fails-reassure-ai-investors-2026-11-20/",
           "https://www.reuters.com/business/view-nasdaq-plunges-5-day-after-anthropic-debut-investors-still-believe-ai-2026-11-20/",
@@ -138,17 +162,17 @@
           "https://www.stocktitan.net/articles/earnings-calendar-week-of-november-23-2026"
         ],
         "openWatchEvents": 174,
-        "openWatchUpdated": "2026-11-20T18:58:08+00:00",
-        "dataQuality": "New secondary-source ETF closes QQQ/NVDA/SPY/DIA are all reported at 16:00 ET, but tick-level synchronization and independent official exchange feed unavailable. Reuters corroborates broad correction, not exact QQQ prices. Direct SOX/SMH closing relative strength, advance-decline breadth, VXN/VIX close, direct CME FedWatch, synchronized Treasury yields and matched Brent/WTI contracts unverified. Prior 10Y 4.94% minus 2Y 4.65%=29 bp, stale. Open Watch header unchanged; no newly curated event. Do not infer catalyst causality."
+        "openWatchUpdated": "2026-11-21T00:44:37+00:00",
+        "dataQuality": "Reuters corroborates closing Nasdaq and approximately SOX/VIX values; rounded SOX/VIX not independently tick synchronized. Secondary source QQQ/NVDA/SPY/DIA 16:00 ET returns. Direct VXN, advance-decline breadth, FedWatch probabilities, paired fresh Treasury yields and matched oil futures unavailable. Prior 10Y/2Y 4.94%-4.65%=29bp, not 0.29bp. Open Watch file timestamp advanced but count and latest events unchanged. AI valuation news is market narrative, not proven unique cause."
       },
       "editorial": {
-        "marketOverview": "Reuters confirmed Friday's severe AI-led market selloff and that both the S&P 500 and Dow entered corrections. StockTitan's later reported 16:00 EST ETF closes show QQQ down 5.67%, SPY down 3.64% and DIA down 1.98%; Nvidia down 14.01%. The technology-to-broad-market gap is clear in this secondary-source same-close comparison. This reinforces rather than newly changes the existing bearish baseline.",
-        "whatChanged": "Relative to the 17:59 EST persisted assessment, there is now an additional same-source set of closing ETF percentages and Reuters' independently published market context. These do not constitute a new market development after Friday's close or a new catalyst. The existing bearish three-day path remains intact and the curated Open Watch file timestamp remains unchanged.",
-        "marketInterpretation": "A Nasdaq and semiconductor-led selloff with wider index correction points to substantial risk reduction. Reuters discussed AI valuation concerns and Anthropic's debut as market narratives, but the closing prices alone cannot establish a unique cause. The prior yield curve is +29 basis points, based on stale 4.94% 10Y and 4.65% 2Y inputs. Direct FedWatch, VXN, breadth and matched oil futures are unavailable; these omissions limit confidence.",
-        "threeDayPath": "Monday November 23 could bring a sharp oversold rebound or further downside if chips fail to stabilize. Tuesday November 24 provides an earnings and semiconductor-leadership test, notably Dell and Analog Devices. Wednesday November 25 adds concentrated 08:30 EST macro and 14:00 EST Fed Beige Book risk. Until a joint QQQ/SOX rebound, improving breadth and declining volatility emerge, downside continuation remains the base case; no exact targets are warranted.",
-        "bullCase": "The depth of Friday's selloff increases the potential for a countertrend rally. A durable bull case requires QQQ and SOX/SMH strength together, better breadth, lower VXN/VIX and rates stabilization; no such post-close confirmation exists.",
-        "bearCase": "QQQ's 5.67% loss versus SPY's 3.64% and Nvidia's 14.01% decline underscores the fragile leadership. Failure of Monday's rebound or adverse AI hardware earnings would preserve or intensify downside pressure; future earnings outcomes are not observed facts.",
-        "watchNext": "Check Monday QQQ/SOX/SMH leadership and breadth, VXN/VIX, paired official 10Y/2Y, direct FedWatch and matched Brent/WTI. Monitor Open Watch updates and Monday-Tuesday earnings; prepare for Wednesday PCE/GDP and Fed Beige Book."
+        "marketOverview": "Friday's US session ended with a severe technology-led selloff. Reuters reported Nasdaq down 5.28% and the semiconductor index down roughly 11%, while closing-day commentary placed VIX near 37. Secondary-source ETF closes put QQQ down 5.67% versus SPY down 3.64% and DIA down 1.98%. The magnitude of semiconductor underperformance makes the already-established bearish outlook particularly fragile to further deleveraging.",
+        "whatChanged": "The previous 18:41 ET snapshot already recognized the confirmed Nasdaq/QQQ and Nvidia collapse. This check adds Reuters' approximately 11% SOX decline and VIX around 37, strengthening evidence quality, but not demonstrating a new catalyst or changed directional path. The curated Open Watch file was refreshed at 00:44 UTC without a new event; 174 remain.",
+        "marketInterpretation": "Chip leadership deterioration, volatility expansion and broad-index corrections indicate elevated risk aversion. Safe-haven Treasury buying is a plausible counterweight but not a demonstrated equity reversal. Older 10Y 4.94% and 2Y 4.65% produce a +29 basis point indicative spread; they are stale and not synchronized. Oil values are stale and contract maturities unverified. Neither AI headlines nor regulatory events can be individually assigned causality for Friday's decline.",
+        "threeDayPath": "Monday November 23 has heightened gap and whipsaw risk: a sharp technical rebound could coexist with a bearish trend. Tuesday's semiconductor and AI-hardware earnings provide a key leadership test. Wednesday's concentrated GDP/PCE and Fed Beige Book calendar adds rate-sensitivity and volatility risk. Until QQQ and chips recover together with breadth and volatility confirmation, downside continuation remains the baseline; no unsupported price targets.",
+        "bullCase": "An extreme one-day selloff can trigger short covering and bargain hunting. The bullish case becomes credible only if QQQ and SOX/SMH rebound together, participation broadens, and VIX/VXN retreat over more than a brief intraday move.",
+        "bearCase": "Nasdaq -5.28%, SOX roughly -11%, NVDA -14% and VIX around 37 indicate concentrated chip liquidation with broad risk-off spillover. A failed Monday rebound or weak Tuesday AI-hardware earnings would reinforce continuation.",
+        "watchNext": "Check synchronized Monday QQQ/SOX/SMH returns, breadth, VXN/VIX and Treasury 10Y/2Y from primary data; direct FedWatch and matched Brent/WTI; track HPE/Zoom Monday, ADI/Dell Tuesday, Wednesday GDP/PCE/Beige Book, and any newly curated Open Watch event."
       }
     }
   ]
