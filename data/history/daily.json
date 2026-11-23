@@ -137615,7 +137615,7 @@
     },
     "2026-11-22": {
       "schemaVersion": 4,
-      "timestampET": "2026-11-22T18:06:34.321270-05:00",
+      "timestampET": "2026-11-22T19:28:38.507652-05:00",
       "market": {
         ".IXIC": {
           "last": 22617.733,
@@ -137869,9 +137869,9 @@
           "open": 0.0,
           "previousClose": 4.912,
           "changePct": 0.7736,
-          "timestamp": "5:05 PM EST",
-          "observationDate": "2026-11-20",
-          "dataState": "previous_close",
+          "timestamp": "6:30 PM EST",
+          "observationDate": "2026-11-22",
+          "dataState": "live",
           "realTime": true,
           "marketStatus": "REG_MKT",
           "quoteSource": "Exchange",
@@ -137881,21 +137881,21 @@
           "last": 4.649,
           "open": 0.0,
           "previousClose": 4.613,
-          "changePct": 0.0,
-          "timestamp": "5:05 PM EST",
-          "observationDate": "2026-11-20",
-          "dataState": "previous_close",
+          "changePct": -0.0664,
+          "timestamp": "6:30 PM EST",
+          "observationDate": "2026-11-22",
+          "dataState": "live",
           "realTime": true,
           "marketStatus": "REG_MKT",
           "quoteSource": "Exchange",
           "provider": "CNBC Quote Cache"
         },
         "@CL.1": {
-          "last": 83.41,
-          "open": 0.0,
+          "last": 82.84,
+          "open": 83.67,
           "previousClose": 83.41,
-          "changePct": null,
-          "timestamp": "5:32 PM EST",
+          "changePct": -0.68,
+          "timestamp": "7:18 PM EST",
           "observationDate": "2026-11-22",
           "dataState": "delayed_or_unspecified",
           "realTime": false,
@@ -137904,13 +137904,13 @@
           "provider": "CNBC Quote Cache"
         },
         "@LCO.1": {
-          "last": 92.57,
-          "open": 0.0,
+          "last": 91.78,
+          "open": 92.2,
           "previousClose": 92.57,
-          "changePct": null,
-          "timestamp": "11:55 PM BST",
-          "observationDate": "2026-11-22",
-          "dataState": "delayed_or_unspecified",
+          "changePct": -0.85,
+          "timestamp": "1:18 AM BST",
+          "observationDate": "2026-11-23",
+          "dataState": "stale",
           "realTime": false,
           "marketStatus": "REG_MKT",
           "quoteSource": "Exchange",
@@ -138324,7 +138324,7 @@
         "trend": "Deteriorating ↓",
         "signal": "negative",
         "label": "Cautiously Negative",
-        "confidence": 66,
+        "confidence": 65,
         "coverage": 91,
         "effectiveScore": -36.0
       },
@@ -138468,8 +138468,8 @@
           "observationDate": "2026-11-20"
         },
         "macroConstraint": {
-          "ratesMacroBucketStrength": -0.583,
-          "effectiveRatesMacroBucketStrength": -0.583,
+          "ratesMacroBucketStrength": -0.56,
+          "effectiveRatesMacroBucketStrength": -0.56,
           "marketResponseAttenuationPct": 0.0
         },
         "directionalScoreUnchanged": true,
@@ -138487,7 +138487,7 @@
             "trend": "Deteriorating ↓",
             "signal": "negative",
             "label": "Cautiously Negative",
-            "confidence": 66,
+            "confidence": 65,
             "coverage": 91,
             "effectiveScore": -36.0
           },
@@ -138499,22 +138499,6 @@
               "effectiveWeight": 4.0,
               "freshnessWeight": 1.0,
               "regimeMultiplier": 1.0
-            },
-            {
-              "factor": "2Y Treasury yield",
-              "bucket": "Rates / Macro",
-              "strength": -0.744,
-              "effectiveWeight": 3.75,
-              "freshnessWeight": 1.0,
-              "regimeMultiplier": 1.25
-            },
-            {
-              "factor": "10Y Treasury Yield",
-              "bucket": "Rates / Macro",
-              "strength": -0.752,
-              "effectiveWeight": 3.75,
-              "freshnessWeight": 1.0,
-              "regimeMultiplier": 1.25
             },
             {
               "factor": "Market breadth",
@@ -138531,6 +138515,22 @@
               "effectiveWeight": 3.22,
               "freshnessWeight": 0.7,
               "regimeMultiplier": 1.15
+            },
+            {
+              "factor": "2Y Treasury yield",
+              "bucket": "Rates / Macro",
+              "strength": -0.744,
+              "effectiveWeight": 3.75,
+              "freshnessWeight": 1.0,
+              "regimeMultiplier": 1.25
+            },
+            {
+              "factor": "10Y Treasury Yield",
+              "bucket": "Rates / Macro",
+              "strength": -0.752,
+              "effectiveWeight": 3.75,
+              "freshnessWeight": 1.0,
+              "regimeMultiplier": 1.25
             },
             {
               "factor": "Fed expectations",
@@ -138559,7 +138559,7 @@
             {
               "factor": "Oil (WTI / Brent)",
               "bucket": "Rates / Macro",
-              "strength": -0.0,
+              "strength": 0.255,
               "effectiveWeight": 1.25,
               "freshnessWeight": 1.0,
               "regimeMultiplier": 1.25
@@ -138614,13 +138614,6 @@
               "cap": 4.0
             },
             {
-              "bucket": "Rates / Macro",
-              "strength": -0.583,
-              "weight": 9.0,
-              "uncappedWeight": 13.75,
-              "cap": 9.0
-            },
-            {
               "bucket": "Breadth",
               "strength": 1.0,
               "weight": 4.0,
@@ -138632,6 +138625,13 @@
               "strength": -0.857,
               "weight": 7.67,
               "uncappedWeight": 7.67,
+              "cap": 9.0
+            },
+            {
+              "bucket": "Rates / Macro",
+              "strength": -0.56,
+              "weight": 9.0,
+              "uncappedWeight": 13.75,
               "cap": 9.0
             },
             {
@@ -138789,8 +138789,8 @@
               "observationDate": "2026-11-20"
             },
             "macroConstraint": {
-              "ratesMacroBucketStrength": -0.583,
-              "effectiveRatesMacroBucketStrength": -0.583,
+              "ratesMacroBucketStrength": -0.56,
+              "effectiveRatesMacroBucketStrength": -0.56,
               "marketResponseAttenuationPct": 0.0
             },
             "directionalScoreUnchanged": true,
@@ -138802,7 +138802,7 @@
             "status": "inactive",
             "mode": null,
             "summary": "No persistent divergence between the macro impulse and live market response.",
-            "observedAt": "2026-11-22T18:10:07.334796-05:00",
+            "observedAt": "2026-11-22T19:32:21.775280-05:00",
             "candidateMode": null,
             "candidateSince": null,
             "persistenceMinutes": 0.0,
@@ -138811,8 +138811,8 @@
             "positiveResponseScore": 17,
             "negativeResponseScore": 75,
             "attenuationPct": 0.0,
-            "rawRatesMacroStrength": -0.583,
-            "effectiveRatesMacroStrength": -0.583,
+            "rawRatesMacroStrength": -0.56,
+            "effectiveRatesMacroStrength": -0.56,
             "rawNasdaqScore": -36,
             "effectiveNasdaqScore": -36,
             "components": {},
@@ -139098,12 +139098,12 @@
           },
           "oil": {
             "wti": {
-              "close": 83.41,
-              "changePct": 0.0
+              "close": 82.84,
+              "changePct": -0.68
             },
             "brent": {
-              "close": 92.57,
-              "changePct": 0.0
+              "close": 91.78,
+              "changePct": -0.85
             }
           },
           "earningsAvwap": {
@@ -139548,18 +139548,6 @@
           "trend": "Stable →",
           "latest": "ADI: Nov 24, 2026 · CRDO: Dec 01, 2026 · MRVL: Dec 01, 2026 · CRDO: Dec 07, 2026 · AVGO: Dec 09, 2026 · MU: Dec 16, 2026"
         },
-        "2Y Treasury yield": {
-          "signal": "negative",
-          "currentImpact": "High",
-          "trend": "Deteriorating ↓",
-          "latest": "4.649% (+3.6 bp vs prev close)"
-        },
-        "10Y Treasury Yield": {
-          "signal": "negative",
-          "currentImpact": "High",
-          "trend": "Deteriorating ↓",
-          "latest": "4.950% (+3.8 bp vs prev close)"
-        },
         "Market breadth": {
           "signal": "positive",
           "currentImpact": "Very High",
@@ -139571,6 +139559,18 @@
           "currentImpact": "Very High",
           "trend": "Deteriorating ↓",
           "latest": "Previous regular-session close · SOX -10.73% | Nasdaq -5.28% | SOX vs Nasdaq -5.45 pp | SOXX vs Nasdaq -5.27 pp | SMH vs Nasdaq -5.32 pp"
+        },
+        "2Y Treasury yield": {
+          "signal": "negative",
+          "currentImpact": "High",
+          "trend": "Deteriorating ↓",
+          "latest": "4.649% (+3.6 bp vs prev close)"
+        },
+        "10Y Treasury Yield": {
+          "signal": "negative",
+          "currentImpact": "High",
+          "trend": "Deteriorating ↓",
+          "latest": "4.950% (+3.8 bp vs prev close)"
         },
         "Fed expectations": {
           "signal": "negative",
@@ -139594,7 +139594,7 @@
           "signal": "mixed",
           "currentImpact": "Low",
           "trend": "Stable →",
-          "latest": "Brent $92.57 (+0.00%) | WTI $83.41 (+0.00%)"
+          "latest": "Brent $91.78 (-0.85%) | WTI $82.84 (-0.68%)"
         },
         "Mega-cap leadership": {
           "signal": "positive",
@@ -139632,7 +139632,7 @@
         "status": "inactive",
         "mode": null,
         "summary": "No persistent divergence between the macro impulse and live market response.",
-        "observedAt": "2026-11-22T18:10:07.334796-05:00",
+        "observedAt": "2026-11-22T19:32:21.775280-05:00",
         "candidateMode": null,
         "candidateSince": null,
         "persistenceMinutes": 0.0,
@@ -139641,8 +139641,8 @@
         "positiveResponseScore": 17,
         "negativeResponseScore": 75,
         "attenuationPct": 0.0,
-        "rawRatesMacroStrength": -0.583,
-        "effectiveRatesMacroStrength": -0.583,
+        "rawRatesMacroStrength": -0.56,
+        "effectiveRatesMacroStrength": -0.56,
         "rawNasdaqScore": -36,
         "effectiveNasdaqScore": -36,
         "components": {},
