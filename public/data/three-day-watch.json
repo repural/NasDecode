@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-23T12:07:19Z",
+  "updated": "2026-11-23T12:46:55Z",
   "horizon": [
     "2026-11-23",
     "2026-11-24",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-23",
-      "timeET": "07:07",
+      "timeET": "07:46",
       "bias": "Bearish — Elevated Downside Risk; semiconductor-led closing liquidation",
       "previousBias": "Bearish — Elevated Downside Risk; semiconductor-led closing liquidation",
       "materialChange": false,
       "confidence": "Moderate-High",
       "eventRisk": "Very High",
-      "summary": "November 23 07:07 EST: bearish elevated downside risk unchanged. Newsquawk at 10:44 UTC reports NQ futures +3.5% and European equities firmer; Barron's SOXX >6% premarket. Relief-rally strength remains pre-cash and not confirmation of durable recovery. Open Watch updated 11:39 UTC with previously known Taiwan stabilization. Current synchronized US breadth, VXN/VIX, paired Treasury yields, FedWatch and matched oil contracts unverified.",
+      "summary": "November 23 07:46 EST: Bearish elevated downside risk unchanged. Reuters at 05:17 ET reported NQ futures +3.52%, S&P futures +2.72% and NVDA +8.7% premarket. SOXX >6% premarket from Barron's is consistent with existing relief-rally thesis, not verified cash follow-through. Upstox at 16:18 IST reports Brent $91.82 at 15:54 IST; maturity not established. Open Watch remains 175 events as of 11:39 UTC. Current synchronized US breadth, VXN/VIX, paired Treasury yields and primary FedWatch probabilities not verified.",
       "bullish": [
         "Extreme Friday losses and VIX 37.66 may support short-covering, but do not establish a durable bottom",
         "Friday Treasury safe-haven demand may relieve discount-rate pressure if sustained; paired current yields unavailable",
@@ -613,6 +613,38 @@
           "source": "data/history/market-watch-events.json",
           "sourceTime": "2026-11-23T11:39:00+00:00",
           "quality": "Repository curated events; market impact forecasts are not observed returns"
+        },
+        {
+          "metric": "Nasdaq-100 futures Monday premarket",
+          "value": 3.52,
+          "unit": "percent change",
+          "source": "https://www.reuters.com/business/wall-street-futures-rebound-after-rough-week-ai-linked-shares-2026-11-23/",
+          "sourceTime": "2026-11-23 05:17 EST",
+          "quality": "Reuters reported premarket; not synchronized with US cash market or later ETF quote"
+        },
+        {
+          "metric": "S&P 500 futures Monday premarket",
+          "value": 2.72,
+          "unit": "percent change",
+          "source": "https://www.reuters.com/business/wall-street-futures-rebound-after-rough-week-ai-linked-shares-2026-11-23/",
+          "sourceTime": "2026-11-23 05:17 EST",
+          "quality": "Reuters reported at same article time; precise contract tick not independently verified"
+        },
+        {
+          "metric": "NVDA Monday premarket",
+          "value": 8.7,
+          "unit": "percent change",
+          "source": "https://www.reuters.com/business/wall-street-futures-rebound-after-rough-week-ai-linked-shares-2026-11-23/",
+          "sourceTime": "2026-11-23 Reuters premarket, exact tick unavailable",
+          "quality": "Reported premarket equity indication; not a cash-session reaction"
+        },
+        {
+          "metric": "Brent Monday indication",
+          "value": 91.82,
+          "unit": "USD/barrel",
+          "source": "https://upstox.com/news/market-news/us-stocks/dow-s-and-p-500-nasdaq-futures-signal-gap-up-open-on-nov-23-nvidia-intel-broadcom-other-stocks-to-watch/article-203885/",
+          "sourceTime": "2026-11-23 15:54 IST (10:24 UTC)",
+          "quality": "Secondary report, contract maturity unspecified; not synchronized with WTI"
         }
       ],
       "conditions": {
@@ -641,25 +673,25 @@
         }
       ],
       "provenance": {
-        "reviewedAtUTC": "2026-11-23T12:07:19Z",
+        "reviewedAtUTC": "2026-11-23T12:46:55Z",
         "repository": "repural/NasDecode",
         "openWatchUpdated": "2026-11-23T11:39:00+00:00",
         "openWatchCount": 175,
         "sources": [
-          "https://newsquawk.com/daily/article?id=5873-us-market-open-us-equity-futures-rebound-nq-3-5-led-by-tech-strength-dxy-is-flat-in-quiet-trade&utm_campaign=partner-post&utm_medium=research&utm_source=tradingview",
+          "https://www.reuters.com/business/wall-street-futures-rebound-after-rough-week-ai-linked-shares-2026-11-23/",
           "https://www.barrons.com/livecoverage/stock-market-news-today-112326/card/chip-stocks-lead-premarket-bounce-as-soxx-soars-IywT7TpC0WHDyCm0kaKI",
-          "https://www.reuters.com/business/wall-street-futures-rebound-after-rough-week-ai-linked-shares-2026-11-23/"
+          "https://upstox.com/news/market-news/us-stocks/dow-s-and-p-500-nasdaq-futures-signal-gap-up-open-on-nov-23-nvidia-intel-broadcom-other-stocks-to-watch/article-203885/"
         ],
-        "dataQuality": "Mixed-time premarket reports; no synchronized cash confirmation. Previously conflicting Friday VIX values unresolved; 10Y and 2Y must be quoted in percent and difference multiplied by 100 to get basis points. Unverified FedWatch, VXN, breadth, oil maturity and live curve are not asserted."
+        "dataQuality": "Premarket and Asia reports with nonmatched timestamps; no US cash confirmation. Reuters reports December hike probability around 96%, not verified against primary CME FedWatch. Treasury 10Y and 2Y not paired; no curve computed; yield percentages must be converted to basis points by multiplying difference by 100. Friday VIX discrepancy unresolved. Current VXN/VIX, breadth and WTI contract-matched quote unavailable."
       },
       "editorial": {
-        "marketOverview": "Monday's US premarket recovery is strengthening after Friday's semiconductor-led capitulation. Newsquawk's 10:44 UTC report places NQ futures around +3.5%; Barron's reports SOXX over 6% higher in premarket trading. Both are pre-open indications, not synchronized cash-market closes or proof of a sustained reversal. Elevated volatility, an extreme weekly drawdown, and conflicting Asian chip-market performance keep the three-day risk distribution unusually wide.",
-        "whatChanged": "Compared with the 05:59 ET assessment, the most useful incremental evidence is Newsquawk's timestamped 10:44 UTC NQ +3.5% report and its description of broadly firmer European equities and consolidating bonds. The latest Open Watch refresh is 11:39 UTC, with Taiwan stabilization already incorporated in the prior assessment. These developments strengthen the anticipated oversold rebound but do not introduce a new regime-changing catalyst.",
-        "marketInterpretation": "A gap higher following severe deleveraging can be driven by short covering and tactical re-risking. Semiconductors participating disproportionately is constructive, but durability requires post-open SOX/SMH and QQQ relative strength, improving breadth and easing VXN/VIX. A Friday close VIX of 37.66 remains a previously reported, disputed historical observation; the alternative Reuters 35.89 figure is not reconciled. No live synchronized volatility or Treasury curve is established.",
-        "threeDayPath": "Monday November 23: a strong premarket rebound is probable but vulnerable to opening-hour selling and 09:45 ET flash PMI surprises. Tuesday November 24: monitor follow-through in semiconductors, consumer confidence and Dell earnings, plus Taiwan margin-rule implementation. Wednesday November 25: PCE/GDP and Beige Book can reprice Fed expectations and tech duration. The baseline remains choppy downside risk with an oversold relief rally, not an established new uptrend.",
-        "bullCase": "Sustained QQQ and SOX/SMH leadership through the US cash session, positive participation beyond mega-cap AI, lower verified VXN/VIX, and stable or declining correctly scaled Treasury yields would justify upgrading the bias. Semiconductor earnings and benign macro readings could support a second and third day of gains.",
-        "bearCase": "If the initial gap fades, breadth remains weak, SOX underperforms QQQ, or volatility reaccelerates, the rally may prove a countertrend bounce. Oil-driven inflation worries, hawkish Fed repricing, and disappointing PMIs or hardware earnings could restore pressure. Friday's semiconductor liquidation and leveraged positioning remain unresolved.",
-        "watchNext": "Verify cash-market QQQ/Nasdaq and SOX/SMH after 09:30 ET, US flash PMIs at 09:45 ET, matched 10Y/2Y Treasury yields in percent and curve in basis points, VXN/VIX, breadth, and dated Brent/WTI contracts. Monitor Fed speaker Williams and HPE Monday, consumer confidence and Dell Tuesday, and PCE/GDP/Beige Book Wednesday. Treat expected catalyst impacts separately from observed reactions."
+        "marketOverview": "Monday's Nasdaq-100 futures rebound remains substantial after Friday's semiconductor-led liquidation. Reuters at 05:17 ET reported Nasdaq-100 futures +3.52%, S&P 500 futures +2.72% and NVDA +8.7% premarket. Barron's SOXX premarket advance over 6% suggests chip participation, but this is not yet a synchronized US cash-market observation. The bearish three-day baseline remains because extreme recent losses and volatility have not been repaired by a premarket gap.",
+        "whatChanged": "Since the 07:07 ET assessment, Reuters' 05:17 ET futures snapshot and a newer secondary Brent quote add corroboration, not a new catalyst. Reuters' futures observation predates the prior assessment and is included for independent provenance, not falsely presented as a later market move. Open Watch remains at 175 events, updated 11:39 UTC, with Taiwan stabilization already recognized. No material change is established.",
+        "marketInterpretation": "An oversold gap can reflect short covering after institutional deleveraging. Semiconductors outperforming index futures premarket is constructive but insufficient without cash-session breadth and volatility confirmation. Reports of firmer yields differ by timestamp from earlier safe-haven buying; a matched 10Y/2Y curve cannot be inferred. Reuters' approximately 96% December hike pricing is secondary and not independently verified with CME.",
+        "threeDayPath": "Monday November 23: strong gap-up indications, with cash open and 09:45 ET flash PMIs the immediate tests; reversal risk remains. Tuesday November 24: follow-through depends on breadth, chip leadership, consumer confidence, Dell results and Taiwan margin-policy implementation. Wednesday November 25: PCE, GDP and Beige Book could reset inflation and Fed expectations. Baseline is a volatile relief rally within elevated downside risk, not a confirmed trend reversal.",
+        "bullCase": "A sustained QQQ recovery accompanied by SOX/SMH leadership, broad positive advance/decline participation, easing VXN/VIX and stable or falling correctly measured Treasury yields would invalidate the bearish interpretation. Strong hardware earnings and benign macro readings could extend the bounce.",
+        "bearCase": "A failed opening gap, renewed chip underperformance, weak breadth or rising volatility would imply short-covering rather than durable demand. Elevated oil and hawkish inflation repricing ahead of Wednesday's PCE could amplify downside. Friday's semiconductor liquidation and hedge-fund deleveraging remain unresolved.",
+        "watchNext": "At and after 09:30 ET, verify QQQ/Nasdaq and SOX/SMH cash prices, breadth, VXN/VIX and matched 10Y/2Y yields. Monitor 09:45 ET flash PMIs and later Fed Williams/HPE, Tuesday consumer confidence/Dell, Wednesday PCE/GDP/Beige Book. Check dated Brent and WTI contracts, primary CME FedWatch and newly curated Open Watch entries. Do not equate forecast impacts with realized market responses."
       }
     }
   ]
