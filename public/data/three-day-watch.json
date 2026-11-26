@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-26T04:52:51Z",
+  "updated": "2026-11-26T06:09:47Z",
   "horizon": [
     "2026-11-27",
     "2026-11-30",
@@ -15,14 +15,14 @@
   },
   "entries": [
     {
-      "date": "2026-11-25",
-      "timeET": "23:52",
+      "date": "2026-11-26",
+      "timeET": "01:09",
       "bias": "Neutral to Bearish — Intraday Recovery",
       "previousBias": "Neutral to Bearish — Intraday Recovery",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Asian technology rebound and less punitive tariff interpretation support tentative stabilization, but elevated oil and unresolved US semiconductor weakness retain cautious bias.",
+      "summary": "New curated macro and tariff records formalize already-known risks; Asian technology relief continues, but no US cash confirmation during Thanksgiving. Bias unchanged.",
       "bullish": [
         "QQQ recovered 3.73 percentage points from morning observation.",
         "Russell 2000 and Dow closed higher; reported 10Y yield fell.",
@@ -33,7 +33,8 @@
         "QQQ lagged SPY by 0.36 percentage points at close.",
         "Reuters reports semiconductor and AI credit stress; VIX rose despite recovery.",
         "SMH reportedly lost 8% over five sessions; secondary SOX report indicates severe weakness, exact timestamp unavailable.",
-        "Oil supply disruption risk is corroborated by Reuters; inflation sensitivity remains elevated."
+        "Oil supply disruption risk is corroborated by Reuters; inflation sensitivity remains elevated.",
+        "Curated core PCE 3.3% versus 3.2% consensus and GDP 4.3% versus 3.6% forecast reinforce tightening risk; tariff proposals are not yet effective."
       ],
       "observations": [
         {
@@ -115,14 +116,6 @@
           "source": "https://www.reuters.com/business/ai-stocks-slide-fears-over-infrastructure-buildout-costs-2026-11-25/",
           "sourceTime": "2026-11-25 intraday; exact time unavailable",
           "quality": "Reported intraday, not close; historical November 25 observation, not live"
-        },
-        {
-          "metric": "Open Watch count",
-          "value": 178,
-          "unit": "events",
-          "source": "data/history/market-watch-events.json",
-          "sourceTime": "2026-11-26T02:59:48Z",
-          "quality": "Repository refreshed; count unchanged"
         },
         {
           "metric": "SOX close",
@@ -355,6 +348,62 @@
           "source": "https://www.koreatimes.co.kr/world/20261126/nasdaq-sp-500-ease-but-off-lows-of-the-day-as-investors-seek-bargains",
           "sourceTime": "2026-11-25 close; index identity not independently verified",
           "quality": "Reported observation; not synchronized with other sources"
+        },
+        {
+          "metric": "Open Watch count",
+          "value": 180,
+          "unit": "events",
+          "source": "data/history/market-watch-events.json",
+          "sourceTime": "2026-11-26T06:03:03Z",
+          "quality": "Repository verified"
+        },
+        {
+          "metric": "2Y reported",
+          "value": 4.633,
+          "unit": "percent yield",
+          "source": "https://www.wsj.com/finance/investing/u-s-treasury-yields-fall-ahead-of-pce-inflation-data-dfeb7995",
+          "sourceTime": "2026-11-25; exact time unavailable",
+          "quality": "Curated same-report pair, not live"
+        },
+        {
+          "metric": "10Y reported",
+          "value": 4.845,
+          "unit": "percent yield",
+          "source": "https://www.wsj.com/finance/investing/u-s-treasury-yields-fall-ahead-of-pce-inflation-data-dfeb7995",
+          "sourceTime": "2026-11-25; exact time unavailable",
+          "quality": "Curated same-report pair, not live"
+        },
+        {
+          "metric": "10Y-2Y reported",
+          "value": 21.2,
+          "unit": "basis points",
+          "source": "https://www.wsj.com/finance/investing/u-s-treasury-yields-fall-ahead-of-pce-inflation-data-dfeb7995",
+          "sourceTime": "2026-11-25; exact time unavailable",
+          "quality": "Calculated same-report pair"
+        },
+        {
+          "metric": "Brent reported settlement",
+          "value": 94.61,
+          "unit": "USD/barrel",
+          "source": "https://wealthinsights.metrobank.com.ph/news/global-markets-world-stocks-tumble-as-trump-tariffs-rattle-markets-ai-rally-fades",
+          "sourceTime": "2026-11-25 settlement",
+          "quality": "Reuters syndicated report; conflicting Asian quotes not comparable"
+        },
+        {
+          "metric": "Core PCE YoY",
+          "value": 3.3,
+          "unit": "percent",
+          "source": "https://bea.gov/sites/default/files/2026-11/pi1026.pdf",
+          "sourceTime": "2026-11-25T13:30:00Z",
+          "quality": "Curated release record"
+        },
+        {
+          "metric": "Q3 GDP annualized",
+          "value": 4.3,
+          "unit": "percent",
+          "source": "https://www.reuters.com/business/us-inflation-rises-further-october-2026-11-25/",
+          "sourceTime": "2026-11-25T13:30:00Z",
+          "quality": "Curated release record"
         }
       ],
       "conditions": {
@@ -388,12 +437,12 @@
         }
       ],
       "provenance": {
-        "assessmentTime": "2026-11-26T04:52:51Z",
-        "repositorySnapshotUpdated": "2026-11-26T04:08:34Z",
-        "openWatchUpdated": "2026-11-26T02:59:48Z",
-        "sourceQuality": "Historical US closes carried forward; Asian intraday reports lack exact quote times. Conflicting semiconductor and VIX reports not resolved; no synchronized fresh US panel. Oil pair and official lagged yields retained.",
-        "yieldScaling": "Official yields already percent; 100*(4.91-4.63)=28 bps for Nov 24 only.",
-        "marketVsCatalyst": "Asian rebound observed; tariff interpretation and prospective US response are not causal proof.",
+        "assessmentTime": "2026-11-26T06:09:47Z",
+        "repositorySnapshotUpdated": "2026-11-26T04:52:51Z",
+        "openWatchUpdated": "2026-11-26T06:03:03Z",
+        "sourceQuality": "US cash closes historical; fresh Reuters reporting corroborates Asian relief and oil risk, not synchronized US quotes. Curated paired yields are reported November 25 observations, not live. Current futures, VXN, SOX close and Fed probabilities unavailable.",
+        "yieldScaling": "Reported yields already percent; 100*(4.845-4.633)=21.2 bps; official Nov 24 pair 28 bps is separate.",
+        "marketVsCatalyst": "New curated records formalize previously known PCE/GDP and tariff risks; no isolated causal market reaction or new directional shift.",
         "sources": [
           "https://www.stocktitan.net/articles/stock-market-today-live-november-25-2026",
           "https://portfolio-terminal.com/markets/stock-market-close/november-25-2026",
@@ -416,17 +465,23 @@
           "https://www.wsj.com/finance/asian-stocks-rise-as-investors-shrug-off-u-s-tariff-plan-f8daa85b",
           "https://apnews.com/article/10044b4fb55d3ff20fde9ba9e9acaab1",
           "https://www.ckeconomics.com/united-states/calendar",
-          "https://www.koreatimes.co.kr/world/20261126/nasdaq-sp-500-ease-but-off-lows-of-the-day-as-investors-seek-bargains"
+          "https://www.koreatimes.co.kr/world/20261126/nasdaq-sp-500-ease-but-off-lows-of-the-day-as-investors-seek-bargains",
+          "https://www.wsj.com/finance/investing/u-s-treasury-yields-fall-ahead-of-pce-inflation-data-dfeb7995",
+          "https://wealthinsights.metrobank.com.ph/news/global-markets-world-stocks-tumble-as-trump-tariffs-rattle-markets-ai-rally-fades",
+          "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-26/",
+          "https://www.reuters.com/business/nasdaq-futures-slide-over-2-fresh-us-tariff-concerns-inflation-data-focus-2026-11-25/",
+          "https://www.icis.com/explore/resources/news/2026/11/25/11243467/us-proposes-higher-tariffs-on-china-eu-and-12-other-trade-partners/",
+          "https://bea.gov/sites/default/files/2026-11/pi1026.pdf"
         ]
       },
       "editorial": {
-        "marketOverview": "US cash markets are closed for Thanksgiving. Wednesday's recovery remains the latest US evidence. FT and WSJ report a rebound in Asian technology-heavy markets Thursday, with Taiwan and Japan higher, but US semiconductor leadership is not yet confirmed.",
-        "whatChanged": "Asian shares recovered and WSJ reports proposed tariffs may replace overlapping levies rather than stack, mitigating immediate fears. AP corroborates broad US participation Wednesday. A secondary report gives a much smaller semiconductor index closing decline than earlier intraday reports; exact index identity remains unverified. Open Watch remains 178 events.",
-        "marketInterpretation": "The Asian rebound supports the existing stabilization scenario rather than establishing a new US trend. Elevated oil and inflation risks remain, and the US holiday prevents cash-market confirmation. Conflicting semiconductor and volatility readings should not be combined as synchronized observations.",
-        "threeDayPath": "Friday's abbreviated session could extend relief if Asian strength carries over, but thin liquidity increases reversal risk. Monday tests the rebound after the OPEC+ meeting and normal liquidity returns. Tuesday's reported JOLTS release may influence rate expectations; official timing and earnings remain to be verified.",
-        "bullCase": "A sustained Asian technology rebound, easing tariff fears and broad US participation could support QQQ if domestic chips regain relative strength and oil stabilizes.",
-        "bearCase": "Elevated oil, sticky inflation and AI financing concerns remain threats. Renewed chip selling or a reversal of Asian gains would undermine the recovery, especially in thin Friday liquidity.",
-        "watchNext": "Monitor Asian closing performance, US futures with timestamps, oil and shipping developments, Friday early close, Sunday OPEC+ and Tuesday JOLTS confirmation. Obtain paired yields, SOX, VXN and Nasdaq breadth before upgrading confidence."
+        "marketOverview": "Thanksgiving closes US cash markets. Reuters corroborates Wednesday's recovery and Thursday Asian relief, while oil supply concerns remain elevated. US chip leadership remains unconfirmed.",
+        "whatChanged": "Open Watch increased from 178 to 180, adding formal tariff proposals and PCE/GDP upside surprises. Both concern Wednesday developments already reflected in the previous cautious outlook. Reuters syndicated reporting confirms Brent Wednesday settlement at $94.61; curated Treasury pair implies a 21.2 bp curve.",
+        "marketInterpretation": "The stronger macro releases reinforce tightening risk, but reported yields declined, consistent with risk aversion rather than a clean hawkish repricing. Tariffs are proposals with hearings in January, not immediate duties. Asian relief is supportive but does not establish US semiconductor recovery.",
+        "threeDayPath": "Friday's abbreviated session may extend relief but thin liquidity raises reversal risk. Monday tests the move after Sunday's OPEC+ meeting. Tuesday macro timing and earnings remain unverified; reported JOLTS timing should not be treated as confirmed.",
+        "bullCase": "Asian technology recovery, less severe tariff interpretation and broad US participation support stabilization if US chips regain relative strength and oil eases.",
+        "bearCase": "Elevated oil, above-consensus core inflation, AI financing and Nvidia rating concerns could renew technology selling. Lower yields alone are not sufficient evidence of improving risk appetite.",
+        "watchNext": "Monitor oil and shipping developments, Asian closes, timestamped US futures, Friday early close and Sunday OPEC+. Verify SOX, VXN, Nasdaq breadth, Fed pricing and Tuesday macro/earnings before raising confidence."
       }
     }
   ]
