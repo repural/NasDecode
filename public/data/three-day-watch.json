@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-26T07:13:45Z",
+  "updated": "2026-11-26T08:39:13Z",
   "horizon": [
     "2026-11-27",
     "2026-11-30",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-26",
-      "timeET": "02:13",
+      "timeET": "03:39",
       "bias": "Neutral to Bearish — Intraday Recovery",
       "previousBias": "Neutral to Bearish — Intraday Recovery",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Holiday futures and Asian chip shares support relief, but US cash confirmation is absent. BLS confirms Tuesday JOLTS. Bias unchanged.",
+      "summary": "Holiday futures remain positive but a secondary timestamped report shows smaller gains than earlier untimed indications. Oil remains elevated; newly curated Nvidia CreditWatch adds risk without a confirmed isolated reaction. Three-day bias unchanged.",
       "bullish": [
         "QQQ recovered 3.73 percentage points from morning observation.",
         "Russell 2000 and Dow closed higher; reported 10Y yield fell.",
@@ -35,7 +35,8 @@
         "Reuters reports semiconductor and AI credit stress; VIX rose despite recovery.",
         "SMH reportedly lost 8% over five sessions; secondary SOX report indicates severe weakness, exact timestamp unavailable.",
         "Oil supply disruption risk is corroborated by Reuters; inflation sensitivity remains elevated.",
-        "Curated core PCE 3.3% versus 3.2% consensus and GDP 4.3% versus 3.6% forecast reinforce tightening risk; tariff proposals are not yet effective."
+        "Curated core PCE 3.3% versus 3.2% consensus and GDP 4.3% versus 3.6% forecast reinforce tightening risk; tariff proposals are not yet effective.",
+        "S&P CreditWatch Negative on Nvidia AA rating adds financing/governance risk; no downgrade or isolated price reaction confirmed."
       ],
       "observations": [
         {
@@ -351,14 +352,6 @@
           "quality": "Reported observation; not synchronized with other sources"
         },
         {
-          "metric": "Open Watch count",
-          "value": 180,
-          "unit": "events",
-          "source": "data/history/market-watch-events.json",
-          "sourceTime": "2026-11-26T06:03:03Z",
-          "quality": "Repository verified"
-        },
-        {
           "metric": "2Y reported",
           "value": 4.633,
           "unit": "percent yield",
@@ -469,6 +462,46 @@
           "source": "https://apnews.com/article/320cd8c9c286a7773797bf2f478ef314",
           "sourceTime": "2026-11-26 overnight/Asian session; exact time unavailable",
           "quality": "Reported, not live or synchronized across sources; oil quotes conflict with Reuters, contract/time not reconciled"
+        },
+        {
+          "metric": "Nasdaq-100 futures secondary",
+          "value": 0.59,
+          "unit": "percent",
+          "source": "https://journalarta.com/en/2026/11/26/dow-futures-edge-higher-in-holiday-trade-as-asian-tech-rebound-eases-pressure/",
+          "sourceTime": "2026-11-26T07:28:00Z",
+          "quality": "Secondary timestamped report, not independently verified"
+        },
+        {
+          "metric": "S&P futures secondary",
+          "value": 0.41,
+          "unit": "percent",
+          "source": "https://journalarta.com/en/2026/11/26/dow-futures-edge-higher-in-holiday-trade-as-asian-tech-rebound-eases-pressure/",
+          "sourceTime": "2026-11-26T07:28:00Z",
+          "quality": "Same report"
+        },
+        {
+          "metric": "Brent latest report",
+          "value": 94.52,
+          "unit": "USD/barrel",
+          "source": "https://www.reuters.com/business/energy/oil-rises-supply-concerns-iran-claims-mine-strikes-ships-2026-11-26/",
+          "sourceTime": "2026-11-26; exact quote time unavailable",
+          "quality": "Reuters intraday, not settlement"
+        },
+        {
+          "metric": "WTI latest report",
+          "value": 83.83,
+          "unit": "USD/barrel",
+          "source": "https://www.reuters.com/business/energy/oil-rises-supply-concerns-iran-claims-mine-strikes-ships-2026-11-26/",
+          "sourceTime": "2026-11-26; exact quote time unavailable",
+          "quality": "Reuters intraday; no Thursday settlement"
+        },
+        {
+          "metric": "Open Watch count",
+          "value": 181,
+          "unit": "events",
+          "source": "data/history/market-watch-events.json",
+          "sourceTime": "2026-11-26T07:45:02+00:00",
+          "quality": "Repository verified"
         }
       ],
       "conditions": {
@@ -499,15 +532,21 @@
           "event": "October JOLTS 10:00 ET",
           "status": "Official BLS schedule confirmed; earnings unverified",
           "source": "https://www.bls.gov/schedule/2026/"
+        },
+        {
+          "date": "2026-11-30",
+          "event": "Chicago PMI and Dallas Fed manufacturing",
+          "status": "Secondary calendar; official timing not verified",
+          "source": "https://www.myfxbook.com/forex-economic-calendar/united-states"
         }
       ],
       "provenance": {
-        "assessmentTime": "2026-11-26T07:13:45Z",
-        "repositorySnapshotUpdated": "2026-11-26T06:09:47Z",
-        "openWatchUpdated": "2026-11-26T06:03:03Z",
-        "sourceQuality": "Historical US cash observations carried forward; overnight futures and Asian reports have no exact quote timestamps. No fresh SOX close, VXN, paired yields, Nasdaq breadth or Fed probability. Oil reports conflict.",
+        "assessmentTime": "2026-11-26T08:39:13Z",
+        "repositorySnapshotUpdated": "2026-11-26T07:13:45Z",
+        "openWatchUpdated": "2026-11-26T07:45:02+00:00",
+        "sourceQuality": "Prior cash and macro observations carried forward, not live. Secondary futures timestamp 02:28 ET; earlier futures quote time unknown, so no reliable sequential return. Reuters oil quote time unavailable. VIX reports conflict; fresh SOX close, VXN, Nasdaq breadth, paired yields and Fed probabilities unavailable.",
         "yieldScaling": "Reported yields already percent; 100*(4.845-4.633)=21.2 bps; official Nov 24 pair 28 bps is separate.",
-        "marketVsCatalyst": "New curated records formalize previously known PCE/GDP and tariff risks; no isolated causal market reaction or new directional shift.",
+        "marketVsCatalyst": "New curated Nvidia CreditWatch is a potential negative risk premium, not a downgrade; CDS reportedly little changed and no isolated equity reaction established.",
         "sources": [
           "https://www.stocktitan.net/articles/stock-market-today-live-november-25-2026",
           "https://portfolio-terminal.com/markets/stock-market-close/november-25-2026",
@@ -539,17 +578,20 @@
           "https://bea.gov/sites/default/files/2026-11/pi1026.pdf",
           "https://www.investors.com/market-trend/stock-market-today/dow-jones-futures-market-wild-ride-nasdaq-nvidia-slash-losses-anthropic-higher/",
           "https://apnews.com/article/320cd8c9c286a7773797bf2f478ef314",
-          "https://www.bls.gov/schedule/2026/"
+          "https://www.bls.gov/schedule/2026/",
+          "https://journalarta.com/en/2026/11/26/dow-futures-edge-higher-in-holiday-trade-as-asian-tech-rebound-eases-pressure/",
+          "https://www.reuters.com/business/sp-global-places-nvidia-rating-creditwatch-negative-rising-management-governance-2026-11-25/",
+          "https://www.myfxbook.com/forex-economic-calendar/united-states"
         ]
       },
       "editorial": {
-        "marketOverview": "US cash equities are closed for Thanksgiving. Overnight Nasdaq futures reportedly outperform S&P futures, while Asian chip shares rebound. Wednesday cash technology weakness remains the last confirmed US session.",
-        "whatChanged": "IBD reports Nasdaq futures up 1.05% and S&P futures up 0.7%; AP corroborates Asian relief. BLS officially confirms December 1 JOLTS at 10 ET. Open Watch count is 180 with update 2026-11-26T06:03:03Z. No new confirmed directional catalyst.",
-        "marketInterpretation": "Holiday futures support stabilization but thin liquidity and absent exact timestamps limit confidence. Oil reports conflict; elevated supply risk remains. Lower historical Treasury yields may reflect safety demand rather than dovish repricing.",
-        "threeDayPath": "Friday relief is plausible but the 13 ET close limits confirmation. Monday tests the rebound after OPEC+ and normal liquidity returns. Tuesday JOLTS may reprice Fed expectations; strong labor demand could pressure duration-sensitive technology.",
-        "bullCase": "Futures relief extends into cash trading, SOX outperforms QQQ, volatility eases and oil stabilizes.",
-        "bearCase": "Chip weakness resumes as AI financing, tariffs and inflation remain unresolved. Oil supply shocks or strong labor data could amplify rate pressure.",
-        "watchNext": "Verify Friday cash leadership, VXN, SOX, breadth, paired Treasury yields and Fed pricing. Monitor Sunday OPEC+ and Tuesday JOLTS; earnings schedule remains unverified."
+        "marketOverview": "Thanksgiving cash closure leaves Wednesday as the latest US cash session. Reuters corroborates the Nasdaq decline of about 0.6% and value outperformance. A secondary report puts Nasdaq futures up 0.59% and S&P futures up 0.41% at 02:28 ET. This is a relief indication, not cash confirmation.",
+        "whatChanged": "Open Watch now contains 181 events, including Nvidia CreditWatch Negative. Reuters reports Brent $94.52 and WTI $83.83, with no Thursday WTI settlement. The secondary futures report shows smaller gains than the prior untimed report, but the sequence cannot be verified.",
+        "marketInterpretation": "Positive futures and broad participation in the prior cash session support stabilization. Chip leadership is still unconfirmed, and governance and financing risks reinforce the existing bearish tilt. Elevated oil and sticky inflation constrain duration valuations; the historical Treasury curve cannot establish current policy repricing.",
+        "threeDayPath": "Friday may see relief in a shortened session, with fragile liquidity. Monday tests the move after OPEC+ and normal liquidity returns; regional manufacturing reports may add context. Tuesday JOLTS at 10 ET can alter rate expectations. Strong labor demand may weigh on technology through rates.",
+        "bullCase": "A sustained QQQ rebound accompanied by SOX relative strength, improving Nasdaq breadth, falling volatility and contained oil would invalidate the bearish tilt.",
+        "bearCase": "A failed rebound, renewed chip selling or widening AI credit spreads could reopen Wednesday lows. An oil shock or hawkish labor surprise would compound the risk.",
+        "watchNext": "Monitor Friday cash leadership, SOX, VXN, breadth, paired Treasury yields and Fed pricing. Confirm earnings and manufacturing calendars. Watch OPEC+ Sunday and official Tuesday JOLTS; do not infer a downgrade from CreditWatch."
       }
     }
   ]
