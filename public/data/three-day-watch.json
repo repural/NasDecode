@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-26T13:25:12Z",
+  "updated": "2026-11-26T15:34:40Z",
   "horizon": [
     "2026-11-27",
     "2026-11-30",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-26",
-      "timeET": "08:25",
-      "bias": "Neutral to Bearish — Intraday Recovery",
+      "timeET": "10:34",
+      "bias": "Bearish — Relief Rally at Risk",
       "previousBias": "Neutral to Bearish — Intraday Recovery",
-      "materialChange": false,
+      "materialChange": true,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Fresh Reuters coverage confirms holiday relief and prior cash weakness; no new directional catalyst. Repository dashboard remains cautiously negative, with hawkish settlement pricing and weak semiconductor momentum.",
+      "summary": "Renewed oil supply shock materially weakens Friday relief prospects and increases Monday downside risk; US cash response unobserved.",
       "bullish": [
         "QQQ recovered 3.73 percentage points from morning observation.",
         "Russell 2000 and Dow closed higher; reported 10Y yield fell.",
@@ -40,7 +40,8 @@
         "Curated core PCE 3.3% versus 3.2% consensus and GDP 4.3% versus 3.6% forecast reinforce tightening risk; tariff proposals are not yet effective.",
         "S&P CreditWatch Negative on Nvidia AA rating adds financing/governance risk; no downgrade or isolated price reaction confirmed.",
         "IBD reports Micron down 4.5% Wednesday; latest reported NQ futures no longer outperform ES.",
-        "Reuters reports China reserves the right to respond to tariffs; Korean chipmakers pared early gains according to FT."
+        "Reuters reports China reserves the right to respond to tariffs; Korean chipmakers pared early gains according to FT.",
+        "Reuters reports Brent $96.25 and WTI $84.78 after renewed reported Middle East supply disruptions; WSJ independently corroborates rising oil. Exact quote times unavailable."
       ],
       "observations": [
         {
@@ -274,12 +275,52 @@
           "source": "https://github.com/repural/NasDecode/commit/4ffc8b7a44c5bec776448273dcb61d7b6b56fb1b",
           "sourceTime": "2026-11-26 07:22 ET dashboard refresh; underlying quote time unknown",
           "quality": "Repository-reported; not independently verified live; curve calculated from displayed pair"
+        },
+        {
+          "metric": "Brent Reuters",
+          "value": 96.25,
+          "source": "https://www.reuters.com/business/energy/oil-rises-supply-concerns-iran-claims-mine-strikes-ships-2026-11-26/",
+          "unit": "USD/barrel",
+          "sourceTime": "2026-11-26 report; exact quote time unavailable",
+          "quality": "Reported intraday, not synchronized; WTI no holiday settlement"
+        },
+        {
+          "metric": "WTI Reuters",
+          "value": 84.78,
+          "source": "https://www.reuters.com/business/energy/oil-rises-supply-concerns-iran-claims-mine-strikes-ships-2026-11-26/",
+          "unit": "USD/barrel",
+          "sourceTime": "2026-11-26 report; exact quote time unavailable",
+          "quality": "Reported intraday, not synchronized; WTI no holiday settlement"
+        },
+        {
+          "metric": "Brent WSJ",
+          "value": 95.36,
+          "source": "https://www.wsj.com/business/energy-oil/oil-prices-mixed-as-traders-weigh-middle-east-supply-risks-opec-meeting-c234598a",
+          "unit": "USD/barrel",
+          "sourceTime": "2026-11-26 report; exact quote time unavailable",
+          "quality": "Reported intraday, not synchronized; WTI no holiday settlement"
+        },
+        {
+          "metric": "WTI WSJ",
+          "value": 84.73,
+          "source": "https://www.wsj.com/business/energy-oil/oil-prices-mixed-as-traders-weigh-middle-east-supply-risks-opec-meeting-c234598a",
+          "unit": "USD/barrel",
+          "sourceTime": "2026-11-26 report; exact quote time unavailable",
+          "quality": "Reported intraday, not synchronized; WTI no holiday settlement"
+        },
+        {
+          "metric": "Open Watch count rechecked",
+          "value": 181,
+          "unit": "events",
+          "source": "data/history/market-watch-events.json",
+          "sourceTime": "2026-11-26T07:45:02+00:00",
+          "quality": "Repository verified this run"
         }
       ],
       "conditions": {
-        "bullishConfirmation": "QQQ holds the November 25 recovery in the next session with SOX outperformance and easing volatility and credit spreads.",
-        "bearishConfirmation": "QQQ gives back afternoon recovery or semiconductor weakness broadens again.",
-        "invalidation": "Sustained broad technology leadership invalidates bearish tilt; renewed session lows invalidate recovery thesis."
+        "bullishConfirmation": "Oil retraces toward earlier reported $94 Brent area, QQQ holds recovery and SOX leads with improving breadth and volatility.",
+        "bearishConfirmation": "Oil remains elevated or rises further and Friday cash QQQ fails to hold recovery with SOX lagging.",
+        "invalidation": "Sustained oil reversal plus broad technology leadership invalidates bearish tilt; oil alone does not confirm equity selling."
       },
       "upcomingEvents": [
         {
@@ -319,27 +360,29 @@
         }
       ],
       "provenance": {
-        "assessmentTime": "2026-11-26T13:25:12Z",
+        "assessmentTime": "2026-11-26T15:34:40Z",
         "repositorySnapshotUpdated": "2026-11-26T12:21:47Z",
         "openWatchUpdated": "2026-11-26T07:45:02+00:00",
-        "sourceQuality": "Reuters refreshed coverage corroborates prior relief; US cash closed. Repository dashboard commit reports yields and Fed settlement pricing, but underlying quote times not verified. No new synchronized panel. Open Watch unchanged at 181.",
-        "yieldScaling": "Reported yields already percent; 100*(4.845-4.633)=21.2 bps; official Nov 24 pair 28 bps is separate.",
-        "marketVsCatalyst": "Overseas equity gains observed; US cash response to potential Chinese retaliation and NVIDIA credit watch remains unconfirmed.",
+        "sourceQuality": "Fresh Reuters, WSJ and AP reporting; previous repository dashboard observations retained with original timestamps. No synchronized live US cash panel. Open Watch re-read.",
+        "yieldScaling": "Dashboard 4.864% minus 4.650% = 21.4 bps; official lagged 4.91% minus 4.63% = 28 bps. No scaling applied.",
+        "marketVsCatalyst": "Oil rise reported; equity impact prospective, US cash closed.",
         "sources": [
           "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-26/",
           "https://www.reuters.com/business/nasdaq-futures-slide-over-2-fresh-us-tariff-concerns-inflation-data-focus-2026-11-25/",
           "https://www.reuters.com/business/energy/oil-rises-supply-concerns-iran-claims-mine-strikes-ships-2026-11-26/",
-          "https://github.com/repural/NasDecode/commit/4ffc8b7a44c5bec776448273dcb61d7b6b56fb1b"
+          "https://github.com/repural/NasDecode/commit/4ffc8b7a44c5bec776448273dcb61d7b6b56fb1b",
+          "https://apnews.com/article/320cd8c9c286a7773797bf2f478ef314",
+          "https://www.wsj.com/business/energy-oil/oil-prices-mixed-as-traders-weigh-middle-east-supply-risks-opec-meeting-c234598a"
         ]
       },
       "editorial": {
-        "marketOverview": "US cash markets are closed for Thanksgiving. Reuters confirms overseas relief and roughly equal positive US index futures, while Wednesday cash trading ended with Nasdaq underperforming the broad market. The repository dashboard remains cautiously negative.",
-        "whatChanged": "No new curated event: Open Watch remains at 181. The dashboard refresh reports Brent at 94.97 and a 97% December hike probability based on November 25 CME settlement; neither is an independently verified live quote. Reuters continues to report oil supply risks and tariff uncertainty.",
-        "marketInterpretation": "Holiday futures support a tactical bounce, not a confirmed reversal. Weak semiconductor momentum and restrictive policy expectations limit upside. Repository yields are already percentages; their implied spread is 21.4 basis points, but underlying observation times are unverified. Breadth proxies from Wednesday are historical, not current Nasdaq breadth.",
-        "threeDayPath": "Friday's shortened session may extend relief but offers weak confirmation. Monday brings normal liquidity and the potential oil response to Sunday's OPEC+ meeting. Tuesday JOLTS and repository-listed semiconductor earnings could alter the path; earnings dates require independent issuer confirmation.",
-        "bullCase": "A sustained QQQ recovery with SOX relative strength, wider participation and easing volatility would challenge the bearish tilt, particularly if oil and yields stabilize.",
-        "bearCase": "Renewed semiconductor selling, a failed holiday bounce, rising oil or retaliatory tariffs could reopen Wednesday lows. NVIDIA credit watch is a risk rather than a confirmed downgrade or isolated price reaction.",
-        "watchNext": "Verify Friday cash SOX, QQQ relative strength, Nasdaq breadth, VXN and VIX, paired Treasury yields and updated Fed pricing. Monitor OPEC+ and confirm MRVL and CRDO earnings dates before assigning directional impact."
+        "marketOverview": "Thanksgiving closes US cash equities. AP reports overseas gains and positive US futures, but Wednesday Nasdaq fell 0.6% and Nvidia 3.9%. These are historical or holiday observations, not a synchronized live panel. Prior dashboard yields and Fed settlement pricing remain carried forward, not refreshed.",
+        "whatChanged": "Reuters now reports Brent $96.25 and WTI $84.78 after renewed reported refinery and shipping disruptions, versus earlier reported $93.79 and $83.33. WSJ corroborates direction at different levels. Exact observation times are unavailable, so the comparison is indicative rather than a measured synchronized return. Open Watch remains at 181 events.",
+        "marketInterpretation": "The oil reversal adds inflation and discount-rate risk to already weak semiconductor leadership and hawkish prior Fed pricing. The observed oil response is distinct from expected Nasdaq impact: no US cash reaction is possible today. The earlier holiday futures bounce may predate the oil move. No new synchronized yields, SOX, VXN or Nasdaq breadth were verified.",
+        "threeDayPath": "Friday: relief rally is more vulnerable to fading in the shortened session. Monday: normal liquidity and the weekend OPEC+ decision could amplify or reverse the oil risk premium. Tuesday: JOLTS and tentatively listed chip earnings could redirect the path. The three-session skew is now bearish, not a certainty.",
+        "bullCase": "Oil retreats as supply fears ease, overseas technology strength translates into US semiconductor leadership, and QQQ holds Wednesday recovery with wider participation and lower volatility.",
+        "bearCase": "Persistent oil strength compounds inflation risk and AI financing concerns, causing a failed Friday bounce and renewed selling Monday. Tariff retaliation would add risk. No isolated equity reaction to the new oil headlines has been established.",
+        "watchNext": "Track oil with timestamped quotes, Friday QQQ/SOX relative performance, VXN/VIX, Nasdaq advance-decline, paired Treasury yields and Fed pricing. Monitor Sunday OPEC+ and Tuesday JOLTS; confirm issuer earnings dates."
       }
     }
   ]
