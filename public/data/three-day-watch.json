@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-26T18:59:01Z",
+  "updated": "2026-11-26T21:01:01Z",
   "horizon": [
     "2026-11-27",
     "2026-11-30",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-26",
-      "timeET": "13:59",
+      "timeET": "16:01",
       "bias": "Bearish — Relief Rally at Risk",
       "previousBias": "Bearish — Relief Rally at Risk",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Bearish skew unchanged; Reuters reports Brent $96.48 and WTI $84.71, while WSJ reports positive holiday futures and 97.9% December hike probability. No fresh US cash confirmation.",
+      "summary": "Bearish skew unchanged. Reuters reports Brent settlement $96.57 and WTI $84.84 at 13:21 ET, not a settlement. Holiday futures relief remains unconfirmed by cash trading.",
       "bullish": [
         "QQQ recovered 3.73 percentage points from morning observation.",
         "Russell 2000 and Dow closed higher; reported 10Y yield fell.",
@@ -396,6 +396,30 @@
           "source": "data/history/market-watch-events.json",
           "sourceTime": "2026-11-26T18:50:16+00:00",
           "quality": "Repository verified; count unchanged, metadata refreshed"
+        },
+        {
+          "metric": "Brent settlement",
+          "value": 96.57,
+          "unit": "USD/barrel",
+          "source": "https://www.reuters.com/business/energy/oil-rises-supply-concerns-iran-claims-mine-strikes-ships-2026-11-26/",
+          "sourceTime": "2026-11-26 settlement; exact time unavailable",
+          "quality": "Reuters reported settlement; contract month not specified in retrieved report"
+        },
+        {
+          "metric": "WTI intraday",
+          "value": 84.84,
+          "unit": "USD/barrel",
+          "source": "https://www.globalbankingandfinance.com/oil-rises-supply-concerns-iran-claims-mine-strikes-ships/",
+          "sourceTime": "2026-11-26T18:21:00Z",
+          "quality": "Reuters syndicated report; no holiday settlement"
+        },
+        {
+          "metric": "Open Watch count current",
+          "value": 181,
+          "unit": "events",
+          "source": "data/history/market-watch-events.json",
+          "sourceTime": "2026-11-26T19:59:38+00:00",
+          "quality": "Repository read; leading catalysts unchanged"
         }
       ],
       "conditions": {
@@ -441,10 +465,10 @@
         }
       ],
       "provenance": {
-        "assessmentTime": "2026-11-26T18:59:01Z",
-        "repositorySnapshotUpdated": "2026-11-26T17:53:16Z",
-        "openWatchUpdated": "2026-11-26T18:50:16+00:00",
-        "sourceQuality": "Reuters and WSJ reports refreshed; exact quote times unavailable. US cash and bond markets closed, equity futures holiday pause after 13:00 ET. Earlier observations retain timestamps; VIX reports conflict (IBD above 30 versus prior secondary 28.19), no verified fresh VXN or breadth. Open Watch 181, latest two events unchanged.",
+        "assessmentTime": "2026-11-26T21:01:01Z",
+        "repositorySnapshotUpdated": "2026-11-26T18:59:01Z",
+        "openWatchUpdated": "2026-11-26T19:59:38+00:00",
+        "sourceQuality": "Fresh Reuters settlement report and syndicated timestamped WTI quote; prior observations retained as historical, not synchronized. Cash and bond markets closed; no new SOX, VXN, breadth or paired yields verified. Open Watch 181 with unchanged leading catalysts.",
         "yieldScaling": "Dashboard 4.864% minus 4.650% = 21.4 bps; official lagged 4.91% minus 4.63% = 28 bps. No scaling applied.",
         "marketVsCatalyst": "Oil rise reported; equity impact prospective, US cash closed.",
         "sources": [
@@ -457,17 +481,19 @@
           "https://www.barrons.com/articles/stock-market-today-futures-76292212",
           "https://www.investing.com/news/stock-market-news/asia-shares-bounce-ai-and-tariffs-lurk-in-background-5051871",
           "https://www.wsj.com/finance/stocks/u-s-stock-futures-higher-as-ai-trade-steadies-for-thanksgiving-break-8f712d82",
-          "https://www.investors.com/news/stock-market-hours-thanksgiving-black-friday-sp-500-nasdaq-dow-jones-nvidia/"
+          "https://www.investors.com/news/stock-market-hours-thanksgiving-black-friday-sp-500-nasdaq-dow-jones-nvidia/",
+          "https://www.globalbankingandfinance.com/oil-rises-supply-concerns-iran-claims-mine-strikes-ships/",
+          "https://www.kitco.com/news/off-the-wire/2026-11-26/stocks-climb-traders-shrug-latest-us-tariff-salvo"
         ]
       },
       "editorial": {
-        "marketOverview": "Thanksgiving cash and bond market closure limits confirmation. WSJ reports Nasdaq futures up 0.65% and S&P futures up 0.7%, while Reuters reports elevated crude. Prior QQQ weakness and semiconductor underperformance remain relevant, not live readings.",
-        "whatChanged": "Reuters reports Brent $96.48 and WTI $84.71 versus $96.14 and $84.88 in the previous assessment. WSJ reports 97.9% December hike probability versus prior repository 97%; timestamps differ and these are not synchronized changes. Open Watch refreshed at 18:50 UTC with 181 events and unchanged leading catalysts. No material change.",
-        "marketInterpretation": "Oil supply risk remains elevated, but inventory growth and potential unchanged OPEC+ targets temper the shortage scenario. Positive holiday futures suggest relief without relative Nasdaq leadership. The lagged Treasury curve remains positive at 21.4 bps on the dashboard and 28 bps in official prior data; no new paired yield or volatility confirmation.",
+        "marketOverview": "US cash and bond markets remain closed for Thanksgiving. Reuters reports Brent settled at $96.57 and WTI traded at $84.84 at 13:21 ET without settlement. Overseas equity gains and earlier positive US futures indicate relief potential, not fresh cash confirmation.",
+        "whatChanged": "Brent settlement is only $0.09 above the previous reported quote; WTI is $0.13 above the previous report. These are not synchronized returns. Open Watch metadata refreshed with 181 events and unchanged leading catalysts. No material change.",
+        "marketInterpretation": "Elevated crude maintains inflation and valuation risk, while inventory growth and possible unchanged OPEC+ targets temper the supply shock. Reuters reports tariff proposals may not stack on existing July levies, supporting relief. Prior semiconductor weakness, restrictive Fed pricing and lagged positive Treasury curve remain relevant; no new synchronized readings.",
         "threeDayPath": "Friday November 27: early close and thin liquidity favor a possible bounce with fade risk. Monday November 30: normal liquidity and weekend OPEC+ outcome may determine whether oil pressure persists. Tuesday December 1: JOLTS and tentative chip earnings may redirect the rate and semiconductor narrative.",
         "bullCase": "Oil retreat toward $94 alongside broad QQQ participation and SOX outperformance could invalidate the bearish tilt. Overseas equity recovery and prior intraday buying show potential for relief.",
         "bearCase": "Persistent crude strength, restrictive Fed expectations and weak semiconductor leadership could undermine a Friday bounce. Tariff and AI financing uncertainty remain risks, but no new cash equity response has been observed.",
-        "watchNext": "Check futures reopening at 18:00 ET, Friday cash breadth, SOX versus QQQ, VXN/VIX and paired yields. Watch Sunday OPEC+ and Tuesday JOLTS; confirm issuer earnings dates independently."
+        "watchNext": "Check futures after 18:00 ET reopening, Friday cash breadth, SOX relative strength, VXN/VIX and paired yields. Monitor Sunday OPEC+ and Tuesday JOLTS; issuer earnings dates remain unconfirmed. Compare like-for-like oil contracts around expiry."
       }
     }
   ]
