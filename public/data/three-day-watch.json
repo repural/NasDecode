@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-26T08:39:13Z",
+  "updated": "2026-11-26T10:04:13Z",
   "horizon": [
     "2026-11-27",
     "2026-11-30",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-26",
-      "timeET": "03:39",
+      "timeET": "05:04",
       "bias": "Neutral to Bearish — Intraday Recovery",
       "previousBias": "Neutral to Bearish — Intraday Recovery",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Holiday futures remain positive but a secondary timestamped report shows smaller gains than earlier untimed indications. Oil remains elevated; newly curated Nvidia CreditWatch adds risk without a confirmed isolated reaction. Three-day bias unchanged.",
+      "summary": "European and Asian equities extend relief; Reuters reports lower crude, but exact quote times are unavailable and AP oil figures conflict. US cash closed for Thanksgiving; semiconductor leadership and current Fed pricing remain unconfirmed. Bias unchanged.",
       "bullish": [
         "QQQ recovered 3.73 percentage points from morning observation.",
         "Russell 2000 and Dow closed higher; reported 10Y yield fell.",
@@ -480,28 +480,60 @@
           "quality": "Same report"
         },
         {
-          "metric": "Brent latest report",
-          "value": 94.52,
-          "unit": "USD/barrel",
-          "source": "https://www.reuters.com/business/energy/oil-rises-supply-concerns-iran-claims-mine-strikes-ships-2026-11-26/",
-          "sourceTime": "2026-11-26; exact quote time unavailable",
-          "quality": "Reuters intraday, not settlement"
-        },
-        {
-          "metric": "WTI latest report",
-          "value": 83.83,
-          "unit": "USD/barrel",
-          "source": "https://www.reuters.com/business/energy/oil-rises-supply-concerns-iran-claims-mine-strikes-ships-2026-11-26/",
-          "sourceTime": "2026-11-26; exact quote time unavailable",
-          "quality": "Reuters intraday; no Thursday settlement"
-        },
-        {
           "metric": "Open Watch count",
           "value": 181,
           "unit": "events",
           "source": "data/history/market-watch-events.json",
           "sourceTime": "2026-11-26T07:45:02+00:00",
           "quality": "Repository verified"
+        },
+        {
+          "metric": "Brent latest report",
+          "value": 93.79,
+          "unit": "USD/barrel",
+          "source": "https://www.reuters.com/business/energy/oil-rises-supply-concerns-iran-claims-mine-strikes-ships-2026-11-26/",
+          "sourceTime": "2026-11-26; exact observation time unavailable",
+          "quality": "Reported intraday; not synchronized; publication/quote time not independently established"
+        },
+        {
+          "metric": "WTI latest report",
+          "value": 83.33,
+          "unit": "USD/barrel",
+          "source": "https://www.reuters.com/business/energy/oil-rises-supply-concerns-iran-claims-mine-strikes-ships-2026-11-26/",
+          "sourceTime": "2026-11-26; exact observation time unavailable",
+          "quality": "Reported intraday; not synchronized; publication/quote time not independently established"
+        },
+        {
+          "metric": "DAX reported",
+          "value": 1.8,
+          "unit": "percent",
+          "source": "https://apnews.com/article/320cd8c9c286a7773797bf2f478ef314",
+          "sourceTime": "2026-11-26; exact observation time unavailable",
+          "quality": "Reported intraday; not synchronized; publication/quote time not independently established"
+        },
+        {
+          "metric": "CAC 40 reported",
+          "value": 1.6,
+          "unit": "percent",
+          "source": "https://apnews.com/article/320cd8c9c286a7773797bf2f478ef314",
+          "sourceTime": "2026-11-26; exact observation time unavailable",
+          "quality": "Reported intraday; not synchronized; publication/quote time not independently established"
+        },
+        {
+          "metric": "Taiwan Taiex latest report",
+          "value": 2.5,
+          "unit": "percent",
+          "source": "https://apnews.com/article/320cd8c9c286a7773797bf2f478ef314",
+          "sourceTime": "2026-11-26; exact observation time unavailable",
+          "quality": "Reported intraday; not synchronized; publication/quote time not independently established"
+        },
+        {
+          "metric": "Kospi latest report",
+          "value": 0.3,
+          "unit": "percent",
+          "source": "https://apnews.com/article/320cd8c9c286a7773797bf2f478ef314",
+          "sourceTime": "2026-11-26; exact observation time unavailable",
+          "quality": "Reported intraday; not synchronized; publication/quote time not independently established"
         }
       ],
       "conditions": {
@@ -541,10 +573,10 @@
         }
       ],
       "provenance": {
-        "assessmentTime": "2026-11-26T08:39:13Z",
-        "repositorySnapshotUpdated": "2026-11-26T07:13:45Z",
+        "assessmentTime": "2026-11-26T10:04:13Z",
+        "repositorySnapshotUpdated": "2026-11-26T08:39:13Z",
         "openWatchUpdated": "2026-11-26T07:45:02+00:00",
-        "sourceQuality": "Prior cash and macro observations carried forward, not live. Secondary futures timestamp 02:28 ET; earlier futures quote time unknown, so no reliable sequential return. Reuters oil quote time unavailable. VIX reports conflict; fresh SOX close, VXN, Nasdaq breadth, paired yields and Fed probabilities unavailable.",
+        "sourceQuality": "Prior US cash, futures and Treasury observations carried forward with original timestamps. Reuters and AP Thursday reports corroborate overseas relief but oil quotes conflict and exact quote times are unavailable. No new synchronized SOX, VXN, breadth, paired yields or Fed pricing. Open Watch unchanged at 181.",
         "yieldScaling": "Reported yields already percent; 100*(4.845-4.633)=21.2 bps; official Nov 24 pair 28 bps is separate.",
         "marketVsCatalyst": "New curated Nvidia CreditWatch is a potential negative risk premium, not a downgrade; CDS reportedly little changed and no isolated equity reaction established.",
         "sources": [
@@ -585,13 +617,13 @@
         ]
       },
       "editorial": {
-        "marketOverview": "Thanksgiving cash closure leaves Wednesday as the latest US cash session. Reuters corroborates the Nasdaq decline of about 0.6% and value outperformance. A secondary report puts Nasdaq futures up 0.59% and S&P futures up 0.41% at 02:28 ET. This is a relief indication, not cash confirmation.",
-        "whatChanged": "Open Watch now contains 181 events, including Nvidia CreditWatch Negative. Reuters reports Brent $94.52 and WTI $83.83, with no Thursday WTI settlement. The secondary futures report shows smaller gains than the prior untimed report, but the sequence cannot be verified.",
-        "marketInterpretation": "Positive futures and broad participation in the prior cash session support stabilization. Chip leadership is still unconfirmed, and governance and financing risks reinforce the existing bearish tilt. Elevated oil and sticky inflation constrain duration valuations; the historical Treasury curve cannot establish current policy repricing.",
-        "threeDayPath": "Friday may see relief in a shortened session, with fragile liquidity. Monday tests the move after OPEC+ and normal liquidity returns; regional manufacturing reports may add context. Tuesday JOLTS at 10 ET can alter rate expectations. Strong labor demand may weigh on technology through rates.",
-        "bullCase": "A sustained QQQ rebound accompanied by SOX relative strength, improving Nasdaq breadth, falling volatility and contained oil would invalidate the bearish tilt.",
-        "bearCase": "A failed rebound, renewed chip selling or widening AI credit spreads could reopen Wednesday lows. An oil shock or hawkish labor surprise would compound the risk.",
-        "watchNext": "Monitor Friday cash leadership, SOX, VXN, breadth, paired Treasury yields and Fed pricing. Confirm earnings and manufacturing calendars. Watch OPEC+ Sunday and official Tuesday JOLTS; do not infer a downgrade from CreditWatch."
+        "marketOverview": "US cash markets are closed for Thanksgiving. Reuters reports gains across Europe and Asia as tariff fears ease, while AP reports positive European and Taiwanese equities. Wednesday Nasdaq and QQQ weakness remains the latest cash evidence; overseas gains are not confirmation of US chip leadership.",
+        "whatChanged": "Reuters now reports Brent at $93.79 and WTI at $83.33, below the earlier reported figures, but exact quote times and contract reconciliation are missing. AP reports different crude levels. Open Watch remains at 181 events; no new curated catalyst.",
+        "marketInterpretation": "Overseas relief and softer reported oil improve the potential for a Friday bounce. The prior cash divergence, elevated volatility and AI financing risk still argue against assuming a durable reversal. The historical Treasury pair is not current policy pricing.",
+        "threeDayPath": "Friday's shortened session may extend the relief move but thin liquidity reduces confidence. Monday tests durability after the OPEC+ meeting and normal liquidity returns. Tuesday JOLTS may shift rate expectations; a strong labor surprise could pressure duration assets.",
+        "bullCase": "Sustained QQQ recovery with SOX relative outperformance, improving Nasdaq breadth, lower volatility and contained oil would invalidate the bearish tilt.",
+        "bearCase": "Renewed chip selling, failed recovery or widening credit spreads could reopen Wednesday lows. Oil supply disruption or hawkish repricing could amplify downside.",
+        "watchNext": "Verify Friday cash leadership, SOX, VXN, VIX, Nasdaq breadth and paired Treasury yields. Check current Fed pricing, Sunday OPEC+ and Tuesday JOLTS; confirm earnings and manufacturing calendars. Do not infer a downgrade from CreditWatch."
       }
     }
   ]
