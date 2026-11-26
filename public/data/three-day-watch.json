@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-26T02:41:21Z",
+  "updated": "2026-11-26T04:08:34Z",
   "horizon": [
     "2026-11-27",
     "2026-11-30",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-25",
-      "timeET": "21:41",
+      "timeET": "23:08",
       "bias": "Neutral to Bearish — Intraday Recovery",
       "previousBias": "Neutral to Bearish — Intraday Recovery",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Post-close research corroborates rotation and sticky inflation; no new directional catalyst or cash-session observation. Holiday liquidity remains a risk.",
+      "summary": "Holiday cash closure; Reuters confirms elevated oil futures and supply risk, offset partly by falling yields. Existing cautious recovery thesis remains.",
       "bullish": [
         "QQQ recovered 3.73 percentage points from morning observation.",
         "Russell 2000 and Dow closed higher; reported 10Y yield fell.",
@@ -31,7 +31,8 @@
       "bearish": [
         "QQQ lagged SPY by 0.36 percentage points at close.",
         "Reuters reports semiconductor and AI credit stress; VIX rose despite recovery.",
-        "SMH reportedly lost 8% over five sessions; secondary SOX report indicates severe weakness, exact timestamp unavailable."
+        "SMH reportedly lost 8% over five sessions; secondary SOX report indicates severe weakness, exact timestamp unavailable.",
+        "Oil supply disruption risk is corroborated by Reuters; inflation sensitivity remains elevated."
       ],
       "observations": [
         {
@@ -119,8 +120,8 @@
           "value": 178,
           "unit": "events",
           "source": "data/history/market-watch-events.json",
-          "sourceTime": "2026-11-25T20:23:00Z",
-          "quality": "Repository verified; historical November 25 observation, not live"
+          "sourceTime": "2026-11-26T02:59:48Z",
+          "quality": "Repository refreshed; count unchanged"
         },
         {
           "metric": "SOX close",
@@ -265,6 +266,46 @@
           "source": "https://portfolio-terminal.com/markets/stock-market-close",
           "sourceTime": "2026-11-25T21:00:00Z",
           "quality": "Secondary closing panel"
+        },
+        {
+          "metric": "Brent futures",
+          "value": 94.71,
+          "unit": "USD/barrel",
+          "source": "https://www.reuters.com/business/energy/oil-rises-supply-concerns-iran-claims-mine-strikes-ships-2026-11-26/",
+          "sourceTime": "2026-11-26T01:37:00Z",
+          "quality": "Reuters timestamped Asian trade, not settlement"
+        },
+        {
+          "metric": "WTI futures",
+          "value": 84.03,
+          "unit": "USD/barrel",
+          "source": "https://www.reuters.com/business/energy/oil-rises-supply-concerns-iran-claims-mine-strikes-ships-2026-11-26/",
+          "sourceTime": "2026-11-26T01:37:00Z",
+          "quality": "Same report; no Thursday settlement"
+        },
+        {
+          "metric": "2Y official constant maturity",
+          "value": 4.63,
+          "unit": "percent yield",
+          "source": "https://www.federalreserve.gov/releases/H15/",
+          "sourceTime": "2026-11-24",
+          "quality": "Official H.15 released Nov 25; lagged"
+        },
+        {
+          "metric": "10Y official constant maturity",
+          "value": 4.91,
+          "unit": "percent yield",
+          "source": "https://www.federalreserve.gov/releases/H15/",
+          "sourceTime": "2026-11-24",
+          "quality": "Official H.15 released Nov 25; lagged"
+        },
+        {
+          "metric": "10Y-2Y official curve",
+          "value": 28,
+          "unit": "basis points",
+          "source": "https://www.federalreserve.gov/releases/H15/",
+          "sourceTime": "2026-11-24",
+          "quality": "Same-date official pair, not live"
         }
       ],
       "conditions": {
@@ -297,12 +338,12 @@
         }
       ],
       "provenance": {
-        "assessmentTime": "2026-11-26T02:41:21Z",
-        "repositorySnapshotUpdated": "2026-11-26T00:26:01Z",
-        "openWatchUpdated": "2026-11-25T20:23:00Z",
-        "sourceQuality": "Historical observations carried forward, not live. New secondary WTI settlement and PCE reports; VIX reports conflict, 2Y/VXN/Brent and Nasdaq breadth remain unverified. No synchronized overnight panel.",
-        "yieldScaling": "10Y 4.85% reported directly; no verified paired 2Y, no curve calculation.",
-        "marketVsCatalyst": "Recovery observed; cause not established. Credit stress is a risk mechanism, not proof of investment cuts.",
+        "assessmentTime": "2026-11-26T04:08:34Z",
+        "repositorySnapshotUpdated": "2026-11-26T02:41:21Z",
+        "openWatchUpdated": "2026-11-26T02:59:48Z",
+        "sourceQuality": "Prior equity observations carried forward, not live. Reuters timestamped oil pair; official H.15 pair is Nov 24, not Nov 25. Fresh SOX close, VXN, Nasdaq breadth and Fed probability unavailable.",
+        "yieldScaling": "Official yields already percent; 100*(4.91-4.63)=28 bps for Nov 24 only.",
+        "marketVsCatalyst": "Oil rise observed; supply disruption reports and prospective inflation impact do not establish a Nasdaq reaction during holiday closure.",
         "sources": [
           "https://www.stocktitan.net/articles/stock-market-today-live-november-25-2026",
           "https://portfolio-terminal.com/markets/stock-market-close/november-25-2026",
@@ -317,17 +358,20 @@
           "https://www.investopedia.com/5-things-to-know-stock-market-november-25-2026-12276784",
           "https://www.financialexpress.com/market/global-markets/nasdaq-crashes-1000-points-as-sticky-us-inflation-fuels-fed-rate-hike-fears/4393800/",
           "https://www.stonex.com/en-gb/news-and-analysis/sandp-500-nasdaq-dow-forecast-wall-street-rebound-faces-major-resistance-bull-trap-or-breakout/",
-          "https://www.investors.com/news/stock-market-hours-thanksgiving-black-friday-sp-500-nasdaq-dow-jones-nvidia/"
+          "https://www.investors.com/news/stock-market-hours-thanksgiving-black-friday-sp-500-nasdaq-dow-jones-nvidia/",
+          "https://www.reuters.com/business/energy/oil-rises-supply-concerns-iran-claims-mine-strikes-ships-2026-11-26/",
+          "https://www.federalreserve.gov/releases/H15/",
+          "https://www.reuters.com/world/africa/dollar-steady-sliding-yields-temper-safe-haven-bid-2026-11-26/"
         ]
       },
       "editorial": {
-        "marketOverview": "Wednesday closing data corroborate Nasdaq -0.62%, S&P -0.25% and Russell +0.71%. QQQ recovery remains historical, with cash markets closed for Thanksgiving. Secondary closing data show NVDA -3.91%, consistent with persistent technology weakness.",
-        "whatChanged": "New cross-checks report WTI settlement $84.05 and 10Y par yield 4.85%. October PCE headline inflation was reported at 3.8% year over year. Open Watch remains 178 events, unchanged. No new directional catalyst is established.",
-        "marketInterpretation": "Broad participation proxies and the recovery support stabilization, but semiconductor leadership is not confirmed. StoneX describes damaged Nasdaq trends despite the rebound. A secondary intraday report places December hike odds at 97.8%, not a current probability. VIX reports conflict with the prior 28.19 reading; VXN, paired yields and Brent settlement remain unverified. Oil settlement and equity close are not synchronized.",
-        "threeDayPath": "Friday November 27 may extend relief in a shortened session, but thin liquidity makes signals fragile. Monday November 30 tests recovery under normal liquidity and weekend oil headlines. Tuesday December 1 depends on semiconductor leadership and rates; specific macro and earnings releases remain unverified.",
-        "bullCase": "The recovery and positive small-cap and equal-weight performance suggest demand outside technology. A sustained QQQ rebound with SOX leadership and falling volatility would improve the outlook.",
-        "bearCase": "Sticky inflation and reported tightening expectations, AI credit stress and chip weakness could undermine relief. Higher oil prices could amplify inflation concerns; this is a prospective mechanism, not an observed causal market response.",
-        "watchNext": "Confirm SOX close, VXN/VIX, Nasdaq breadth, paired 2Y/10Y yields, Brent settlement and current Fed pricing. Monitor Friday 13:00 ET close, weekend OPEC+ headlines and next-week official macro and earnings calendars."
+        "marketOverview": "Wednesday equity recovery remains the latest cash-session evidence. QQQ lagged SPY despite stronger equal-weight and small-cap participation. Reuters reports softer Treasury yields and fragile risk appetite in Asian trading; no synchronized overnight equity panel is available.",
+        "whatChanged": "Reuters reports Brent at $94.71 and WTI at $84.03 at 01:37 UTC on November 26, confirming elevated oil prices amid supply concerns. Official H.15 supplies a lagged November 24 curve of +28 bps. Open Watch refreshed but remains at 178 events; no new directional regime is established.",
+        "marketInterpretation": "Lower yields may cushion duration-sensitive technology, but oil supply risk and sticky inflation limit the benefit. The reported chip selloff and relative weakness remain historical evidence; fresh SOX and VXN are unavailable. The oil move is observed, while its effect on Friday equities is prospective.",
+        "threeDayPath": "Friday's abbreviated session may see fragile relief or renewed selling if oil rises further. Monday tests the recovery with normal liquidity and the weekend OPEC+ decision. Tuesday depends on chip leadership, yields and incoming macro data; exact release and earnings timing remains unverified.",
+        "bullCase": "Broad participation and the Wednesday rebound leave room for stabilization if oil risk subsides and semiconductor relative strength improves alongside softer yields.",
+        "bearCase": "Elevated oil and persistent tightening expectations may reinforce AI valuation pressure. Renewed supply disruptions could amplify inflation risk, particularly if chip weakness broadens.",
+        "watchNext": "Track oil and shipping headlines, Friday's 13:00 ET close, Sunday OPEC+ policy, synchronized SOX/QQQ and VXN/VIX, fresh paired yields and official macro and earnings calendars."
       }
     }
   ]
