@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-26T10:04:13Z",
+  "updated": "2026-11-26T10:50:31Z",
   "horizon": [
     "2026-11-27",
     "2026-11-30",
@@ -16,19 +16,20 @@
   "entries": [
     {
       "date": "2026-11-26",
-      "timeET": "05:04",
+      "timeET": "05:50",
       "bias": "Neutral to Bearish — Intraday Recovery",
       "previousBias": "Neutral to Bearish — Intraday Recovery",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "European and Asian equities extend relief; Reuters reports lower crude, but exact quote times are unavailable and AP oil figures conflict. US cash closed for Thanksgiving; semiconductor leadership and current Fed pricing remain unconfirmed. Bias unchanged.",
+      "summary": "Holiday futures remain positive but Nasdaq no longer leads S&P in the latest IBD report; oil reports remain mixed. No new curated catalyst or cash confirmation. Bias unchanged.",
       "bullish": [
         "QQQ recovered 3.73 percentage points from morning observation.",
         "Russell 2000 and Dow closed higher; reported 10Y yield fell.",
         "Equal-weight RSP gained 0.78% while SPY fell 0.30% in a secondary closing report.",
         "FT and WSJ report Asian technology-heavy markets rebounding Thursday; proposed tariffs may replace existing levies rather than stack.",
-        "IBD reports Nasdaq-100 futures +1.05% versus S&P futures +0.7% overnight; exact quote time unavailable."
+        "IBD reports Nasdaq-100 futures +1.05% versus S&P futures +0.7% overnight; exact quote time unavailable.",
+        "IBD reports both NQ and ES futures up 0.55%; holiday relief persists."
       ],
       "bearish": [
         "QQQ lagged SPY by 0.36 percentage points at close.",
@@ -36,7 +37,8 @@
         "SMH reportedly lost 8% over five sessions; secondary SOX report indicates severe weakness, exact timestamp unavailable.",
         "Oil supply disruption risk is corroborated by Reuters; inflation sensitivity remains elevated.",
         "Curated core PCE 3.3% versus 3.2% consensus and GDP 4.3% versus 3.6% forecast reinforce tightening risk; tariff proposals are not yet effective.",
-        "S&P CreditWatch Negative on Nvidia AA rating adds financing/governance risk; no downgrade or isolated price reaction confirmed."
+        "S&P CreditWatch Negative on Nvidia AA rating adds financing/governance risk; no downgrade or isolated price reaction confirmed.",
+        "IBD reports Micron down 4.5% Wednesday; latest reported NQ futures no longer outperform ES."
       ],
       "observations": [
         {
@@ -534,6 +536,46 @@
           "source": "https://apnews.com/article/320cd8c9c286a7773797bf2f478ef314",
           "sourceTime": "2026-11-26; exact observation time unavailable",
           "quality": "Reported intraday; not synchronized; publication/quote time not independently established"
+        },
+        {
+          "metric": "Nasdaq-100 futures refreshed report",
+          "value": 0.55,
+          "unit": "percent",
+          "source": "https://www.investors.com/market-trend/stock-market-today/dow-jones-futures-market-wild-ride-nasdaq-nvidia-slash-losses-anthropic-higher/",
+          "sourceTime": "2026-11-26 report; exact quote time unavailable",
+          "quality": "Reported, not independently synchronized or live"
+        },
+        {
+          "metric": "S&P 500 futures refreshed report",
+          "value": 0.55,
+          "unit": "percent",
+          "source": "https://www.investors.com/market-trend/stock-market-today/dow-jones-futures-market-wild-ride-nasdaq-nvidia-slash-losses-anthropic-higher/",
+          "sourceTime": "2026-11-26 report; exact quote time unavailable",
+          "quality": "Reported, not independently synchronized or live"
+        },
+        {
+          "metric": "Micron close",
+          "value": -4.5,
+          "unit": "percent",
+          "source": "https://www.investors.com/market-trend/stock-market-today/dow-jones-futures-market-wild-ride-nasdaq-nvidia-slash-losses-anthropic-higher/",
+          "sourceTime": "2026-11-25 close",
+          "quality": "Reported, not independently synchronized or live"
+        },
+        {
+          "metric": "Brent WSJ report",
+          "value": 94.43,
+          "unit": "USD/barrel",
+          "source": "https://www.wsj.com/finance/commodities-futures/oil-rises-amid-ongoing-middle-east-tensions-c730426d",
+          "sourceTime": "2026-11-26 report; exact quote time unavailable",
+          "quality": "Reported, not independently synchronized or live"
+        },
+        {
+          "metric": "WTI WSJ report",
+          "value": 83.91,
+          "unit": "USD/barrel",
+          "source": "https://www.wsj.com/finance/commodities-futures/oil-rises-amid-ongoing-middle-east-tensions-c730426d",
+          "sourceTime": "2026-11-26 report; exact quote time unavailable",
+          "quality": "Reported, not independently synchronized or live"
         }
       ],
       "conditions": {
@@ -573,10 +615,10 @@
         }
       ],
       "provenance": {
-        "assessmentTime": "2026-11-26T10:04:13Z",
-        "repositorySnapshotUpdated": "2026-11-26T08:39:13Z",
+        "assessmentTime": "2026-11-26T10:50:31Z",
+        "repositorySnapshotUpdated": "2026-11-26T10:04:13Z",
         "openWatchUpdated": "2026-11-26T07:45:02+00:00",
-        "sourceQuality": "Prior US cash, futures and Treasury observations carried forward with original timestamps. Reuters and AP Thursday reports corroborate overseas relief but oil quotes conflict and exact quote times are unavailable. No new synchronized SOX, VXN, breadth, paired yields or Fed pricing. Open Watch unchanged at 181.",
+        "sourceQuality": "Refreshed Reuters, WSJ, AP and IBD reports; exact quote times unavailable. US cash closed. Prior observations retain original timestamps; VIX conflicting (IBD reports above 30), VXN and SOX close unverified. Open Watch unchanged at 181. No fresh paired yields or Fed pricing.",
         "yieldScaling": "Reported yields already percent; 100*(4.845-4.633)=21.2 bps; official Nov 24 pair 28 bps is separate.",
         "marketVsCatalyst": "New curated Nvidia CreditWatch is a potential negative risk premium, not a downgrade; CDS reportedly little changed and no isolated equity reaction established.",
         "sources": [
@@ -613,13 +655,14 @@
           "https://www.bls.gov/schedule/2026/",
           "https://journalarta.com/en/2026/11/26/dow-futures-edge-higher-in-holiday-trade-as-asian-tech-rebound-eases-pressure/",
           "https://www.reuters.com/business/sp-global-places-nvidia-rating-creditwatch-negative-rising-management-governance-2026-11-25/",
-          "https://www.myfxbook.com/forex-economic-calendar/united-states"
+          "https://www.myfxbook.com/forex-economic-calendar/united-states",
+          "https://www.wsj.com/finance/commodities-futures/oil-rises-amid-ongoing-middle-east-tensions-c730426d"
         ]
       },
       "editorial": {
-        "marketOverview": "US cash markets are closed for Thanksgiving. Reuters reports gains across Europe and Asia as tariff fears ease, while AP reports positive European and Taiwanese equities. Wednesday Nasdaq and QQQ weakness remains the latest cash evidence; overseas gains are not confirmation of US chip leadership.",
-        "whatChanged": "Reuters now reports Brent at $93.79 and WTI at $83.33, below the earlier reported figures, but exact quote times and contract reconciliation are missing. AP reports different crude levels. Open Watch remains at 181 events; no new curated catalyst.",
-        "marketInterpretation": "Overseas relief and softer reported oil improve the potential for a Friday bounce. The prior cash divergence, elevated volatility and AI financing risk still argue against assuming a durable reversal. The historical Treasury pair is not current policy pricing.",
+        "marketOverview": "Thanksgiving closes US cash and bond markets. Overseas equities and US futures are positive in current reports, but Wednesday's Nasdaq loss and chip weakness remain the latest cash evidence. Holiday liquidity and missing quote timestamps limit confidence.",
+        "whatChanged": "IBD now reports NQ and ES both up 0.55%, versus earlier reported NQ leadership. Micron fell 4.5% Wednesday. WSJ reports Brent $94.43 and WTI $83.91, differing from Reuters $93.79 and $83.33; exact quote times unavailable, so no synchronized change inferred. Open Watch remains at 181.",
+        "marketInterpretation": "Holiday futures support relief but the latest same-report NQ/ES comparison shows no relative technology leadership. Prior cash chip weakness and inflation risk still constrain the recovery. Oil supply risk persists despite surplus expectations; no Thursday WTI settlement. Conflicting VIX reports preclude a precise current reading.",
         "threeDayPath": "Friday's shortened session may extend the relief move but thin liquidity reduces confidence. Monday tests durability after the OPEC+ meeting and normal liquidity returns. Tuesday JOLTS may shift rate expectations; a strong labor surprise could pressure duration assets.",
         "bullCase": "Sustained QQQ recovery with SOX relative outperformance, improving Nasdaq breadth, lower volatility and contained oil would invalidate the bearish tilt.",
         "bearCase": "Renewed chip selling, failed recovery or widening credit spreads could reopen Wednesday lows. Oil supply disruption or hawkish repricing could amplify downside.",
