@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-27T08:10:40Z",
+  "updated": "2026-11-27T10:53:35Z",
   "horizon": [
     "2026-11-27",
     "2026-11-30",
@@ -16,20 +16,20 @@
   "entries": [
     {
       "date": "2026-11-27",
-      "timeET": "03:10",
+      "timeET": "05:53",
       "bias": "Bearish — Relief Rally at Risk",
       "previousBias": "Bearish — Relief Rally at Risk",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Reuters reconfirms overnight Nasdaq futures rebound and reports Chinese equities rising on support measures. Updated repository outlook remains negative; US cash confirmation absent and oil/rate risks persist.",
+      "summary": "Friday relief momentum strengthened, including reported chip premarket gains, but oil and yields remain elevated and cash confirmation is absent. Three-day bearish skew retained.",
       "bullish": [
-        "Reuters reports Nasdaq futures +2.4%, Nikkei +2.1% and Chinese shares nearly +4% on support measures.",
-        "Prior Asian chip recovery and Wednesday US recovery from lows support relief potential."
+        "Reuters reports Nasdaq futures +2.8% versus S&P futures +2.0%.",
+        "Barron's reports broad AI-related premarket gains, including Marvell and Sandisk; exact quote times unavailable."
       ],
       "bearish": [
-        "Latest repository outlook remains -49/100 with VXN 38.53 and mixed semiconductor/breadth signals.",
-        "Prior reported crude and Treasury yields remain elevated; December hike pricing remains a headwind."
+        "Reuters reports 10Y yield 4.92%, December hike probability 99%, and Brent touching $98.",
+        "Repository premarket score remains negative; cash semiconductor leadership and breadth not confirmed."
       ],
       "observations": [
         {
@@ -185,44 +185,108 @@
           "quality": "Reported overnight; Chinese gain approximate (nearly 4%); not synchronized with US cash"
         },
         {
+          "metric": "Nasdaq futures updated",
+          "value": 2.8,
+          "unit": "percent",
+          "source": "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-27/",
+          "sourceTime": "2026-11-27 report; exact quote time unavailable",
+          "quality": "Reported, not live verified"
+        },
+        {
+          "metric": "S&P futures updated",
+          "value": 2,
+          "unit": "percent",
+          "source": "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-27/",
+          "sourceTime": "2026-11-27 report; exact quote time unavailable",
+          "quality": "Same report; synchronization unverified"
+        },
+        {
+          "metric": "10Y Reuters",
+          "value": 4.92,
+          "unit": "percent yield",
+          "source": "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-27/",
+          "sourceTime": "2026-11-27 report; exact quote time unavailable",
+          "quality": "Already percent; no paired 2Y"
+        },
+        {
+          "metric": "Brent intraday high",
+          "value": 98,
+          "unit": "USD/barrel",
+          "source": "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-27/",
+          "sourceTime": "2026-11-27 report; exact quote time unavailable",
+          "quality": "Reported approximate high, not latest quote"
+        },
+        {
+          "metric": "Brent",
+          "value": 97.4,
+          "unit": "USD/barrel",
+          "source": "https://www.wsj.com/finance/commodities-futures/oil-mixed-as-markets-track-mideast-developments-u-s-inventories-6daf3fb1",
+          "sourceTime": "2026-11-27T08:54:00Z",
+          "quality": "Reported timestamped quote, historical at run"
+        },
+        {
+          "metric": "WTI",
+          "value": 86.57,
+          "unit": "USD/barrel",
+          "source": "https://www.wsj.com/finance/commodities-futures/oil-mixed-as-markets-track-mideast-developments-u-s-inventories-6daf3fb1",
+          "sourceTime": "2026-11-27T08:54:00Z",
+          "quality": "Same report and timestamp"
+        },
+        {
+          "metric": "Marvell premarket",
+          "value": 8.6,
+          "unit": "percent",
+          "source": "https://www.barrons.com/articles/stock-movers-ac5937bf",
+          "sourceTime": "2026-11-27 report; exact quote time unavailable",
+          "quality": "Reported premarket, not cash SOX"
+        },
+        {
+          "metric": "Sandisk premarket",
+          "value": 11,
+          "unit": "percent",
+          "source": "https://www.barrons.com/articles/stock-movers-ac5937bf",
+          "sourceTime": "2026-11-27 report; exact quote time unavailable",
+          "quality": "Reported premarket"
+        },
+        {
+          "metric": "Nasdaq score",
+          "value": -48,
+          "unit": "score points",
+          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
+          "sourceTime": "2026-11-27 03:11 ET",
+          "quality": "Repository refresh; not live quote"
+        },
+        {
           "metric": "10Y dashboard",
-          "value": 4.914,
+          "value": 4.908,
           "unit": "percent yield",
           "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "sourceTime": "2026-11-27 02:28 ET dashboard refresh; underlying quote time unknown",
-          "quality": "Repository reported; not independently verified live"
+          "sourceTime": "2026-11-27 03:11 ET",
+          "quality": "Repository report; underlying timestamp unknown"
         },
         {
           "metric": "VXN dashboard",
           "value": 38.53,
           "unit": "index points",
           "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "sourceTime": "2026-11-27 02:28 ET dashboard refresh; underlying quote time unknown",
-          "quality": "Repository reported; not independently verified live"
+          "sourceTime": "2026-11-27 03:11 ET",
+          "quality": "Underlying timestamp unknown"
         },
         {
           "metric": "VIX dashboard",
           "value": 26.8,
           "unit": "index points",
           "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "sourceTime": "2026-11-27 02:28 ET dashboard refresh; underlying quote time unknown",
-          "quality": "Repository reported; not independently verified live"
-        },
-        {
-          "metric": "Nasdaq score",
-          "value": -49,
-          "unit": "score points",
-          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "sourceTime": "2026-11-27 02:28 ET dashboard refresh; underlying quote time unknown",
-          "quality": "Repository reported; not independently verified live"
+          "sourceTime": "2026-11-27 03:11 ET",
+          "quality": "Underlying timestamp unknown"
         },
         {
           "metric": "Open Watch count",
           "value": 181,
           "unit": "events",
           "source": "data/history/market-watch-events.json",
-          "sourceTime": "2026-11-27T07:44:04Z",
-          "quality": "Rechecked; count and leading catalysts unchanged"
+          "sourceTime": "2026-11-27T07:44:04+00:00",
+          "quality": "Repository rechecked"
         }
       ],
       "conditions": {
@@ -268,12 +332,12 @@
         }
       ],
       "provenance": {
-        "assessmentTime": "2026-11-27T08:10:40Z",
-        "repositorySnapshotUpdated": "2026-11-27T07:28:04Z",
-        "openWatchUpdated": "2026-11-27T07:44:04Z",
-        "sourceQuality": "Fresh Reuters search reconfirms futures and Asian rebound; exact quote timestamps unavailable. Repository 02:28 ET dashboard refresh is not underlying quote time. No fresh paired yields, cash SOX or breadth. Open Watch count and leading catalysts unchanged.",
-        "yieldScaling": "Official lagged 4.91% minus 4.63% = 28 bps; dashboard 10Y 4.914% already in percent; no fresh 2Y pair, no current curve calculated.",
-        "marketVsCatalyst": "Asian equity and US futures gains reported; US cash response to oil, rates and China support remains prospective.",
+        "assessmentTime": "2026-11-27T10:53:35Z",
+        "repositorySnapshotUpdated": "2026-11-27 03:11 ET",
+        "openWatchUpdated": "2026-11-27T07:44:04+00:00",
+        "sourceQuality": "Reuters and Barron's reported premarket moves without exact quote timestamps; WSJ oil pair timestamped 08:54 UTC. No fresh cash SOX, breadth, paired yields or volatility quotes. Earlier observations retained with original timestamps.",
+        "yieldScaling": "10Y 4.92% and dashboard 4.908% already percent. Historical official 4.91 minus 4.63 = 28 bp; no current curve inferred.",
+        "marketVsCatalyst": "Reported futures and individual chip gains are observed premarket moves; cash response and weekend OPEC impact remain prospective.",
         "sources": [
           "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-26/",
           "https://www.reuters.com/business/nasdaq-futures-slide-over-2-fresh-us-tariff-concerns-inflation-data-focus-2026-11-25/",
@@ -297,17 +361,19 @@
           "https://www.reuters.com/markets/europe/global-markets-view-europe-2026-11-27/",
           "https://www.reuters.com/business/wall-st-futures-dip-chip-stocks-cool-after-nvidia-fueled-rally-2026-11-24/",
           "https://www.wsj.com/finance/investing/short-term-jgb-yields-rise-on-elevated-tokyo-inflation-data-713a900b",
-          "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json"
+          "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
+          "https://www.wsj.com/finance/commodities-futures/oil-mixed-as-markets-track-mideast-developments-u-s-inventories-6daf3fb1",
+          "https://www.barrons.com/articles/stock-movers-ac5937bf"
         ]
       },
       "editorial": {
-        "marketOverview": "Reuters reports Nasdaq futures up 2.4%, Nikkei up 2.1% and Chinese equities up nearly 4% on support measures. This corroborates the overnight risk rebound, not a synchronized US cash reversal. Earlier oil reports and the latest repository 10Y reading near 4.91% continue to indicate valuation pressure.",
-        "whatChanged": "The fresh Reuters search adds evidence of Chinese equity support and reconfirms the futures rebound. The repository premarket report refreshed at 02:28 ET remains at -49/100; Open Watch refreshed at 07:44 UTC with 181 events and unchanged leading catalysts. No material change to the three-session path is established.",
-        "marketInterpretation": "The futures rebound is constructive but the dashboard still describes mixed semiconductor and breadth signals and negative mega-cap leadership. VXN 38.53 versus VIX 26.80 suggests technology risk remains elevated, although underlying timestamps are unknown. Prior Fed hike pricing and crude quotations are not fresh synchronized observations. The cash reaction to these catalysts is still unknown.",
-        "threeDayPath": "Friday November 27: relief rally possible, with fade risk in the shortened session. Monday November 30: normal liquidity and the Sunday OPEC+ outcome test whether gains hold. Tuesday December 1: JOLTS may reprice rates; tentative semiconductor earnings could alter leadership if confirmed.",
-        "bullCase": "Sustained QQQ gains accompanied by SOX outperformance, broad participation and falling volatility would support a durable reversal, especially if oil and yields ease. Overseas strength alone does not establish that outcome.",
-        "bearCase": "A failed opening rebound, weak chip leadership and persistent oil or yield pressure would reinforce the bearish skew. Existing inflation and tariff risks remain relevant; no isolated causal response to the Nvidia credit watch has been established.",
-        "watchNext": "Check cash SOX versus QQQ, Nasdaq advance-decline breadth, VXN/VIX and paired 2Y/10Y after reopening. Monitor the 13:00 ET Friday close, Sunday OPEC+ and Tuesday JOLTS. Earnings dates remain tentative."
+        "marketOverview": "Friday risk appetite has improved: Reuters reports Nasdaq futures up 2.8% against S&P futures up 2%. Barron's reports gains across AI-related names including Marvell and Sandisk. This is evidence of a stronger opening rebound, not yet a durable cash-market reversal. Oil and rates remain restrictive.",
+        "whatChanged": "Compared with the 03:10 ET assessment, reported Nasdaq futures gains increased from 2.4% to 2.8%, and individual chip premarket gains add leadership evidence. Repository score is -48; Open Watch contains 181 events, updated 2026-11-27T07:44:04+00:00. The leading inflation, tariff and Nvidia credit catalysts remain relevant. No new material path change established.",
+        "marketInterpretation": "The relative futures gain and chip rebound improve the immediate outlook, but the reported 10Y at 4.92% and Brent near $98 constrain valuation recovery. The 08:54 UTC oil pair was $97.40/$86.57. The repository still describes mixed internals; stale VXN and VIX cannot confirm a volatility reversal. The December hike probability is reported rather than independently verified.",
+        "threeDayPath": "Friday November 27: stronger relief opening is plausible; watch whether gains survive the 13:00 ET close. Monday November 30: weekend OPEC+ outcome and restored liquidity test the rebound. Tuesday December 1: JOLTS and tentative chip earnings may shift rates and leadership; earnings timing remains unverified.",
+        "bullCase": "If premarket chip strength carries into cash trading, QQQ holds gains, breadth broadens and volatility falls while oil and yields stabilize, the bearish skew could be invalidated. A single thin-session rally is insufficient.",
+        "bearCase": "A fade in semiconductor leadership alongside elevated crude and rising yields would support renewed downside. Tariff and AI financing risks remain unresolved; their isolated price effects are not established.",
+        "watchNext": "Verify SOX relative to QQQ, Nasdaq advance-decline breadth, VXN/VIX and synchronized 2Y/10Y at the cash open. Watch Friday early close, Sunday OPEC+ and Tuesday JOLTS; confirm issuer earnings dates."
       }
     }
   ]
