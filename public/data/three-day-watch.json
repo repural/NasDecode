@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-27T05:31:34Z",
+  "updated": "2026-11-27T06:20:27Z",
   "horizon": [
     "2026-11-27",
     "2026-11-30",
@@ -16,21 +16,21 @@
   "entries": [
     {
       "date": "2026-11-27",
-      "timeET": "00:31",
+      "timeET": "01:20",
       "bias": "Bearish — Relief Rally at Risk",
       "previousBias": "Bearish — Relief Rally at Risk",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Reported overnight technology futures strength improves Friday relief potential, but elevated oil and near-certain reported December tightening leave the three-day bearish skew intact.",
+      "summary": "Reuters corroborates stronger technology futures (+2.4% versus S&P +1.6%), but holiday liquidity, elevated oil and restrictive rates leave the three-day bearish skew intact.",
       "bullish": [
-        "FT reports NQ +2.2% versus ES +1.5%, indicating potential tech leadership; exact quote time unavailable.",
-        "Reuters reports Asian equities recovering; Wednesday US cash recovered sharply from lows."
+        "Reuters reports Nasdaq futures +2.4% versus S&P +1.6%; quote times unavailable.",
+        "Asian equity recovery and Wednesday bargain buying support relief potential."
       ],
       "bearish": [
-        "Reuters reports Brent $96.61 and WTI $85.78; supply risk persists.",
-        "Reuters reports 99% probability of December 25 bp hike and rising Treasury yields after reopening.",
-        "Prior US cash QQQ underperformed SPY and chip weakness remains unconfirmed as reversed."
+        "Oil remains elevated; Reuters Friday Brent $96.61 and WTI $85.78 are previously reported, not new synchronized quotes.",
+        "Reported December hike pricing remains near certain; Treasury yields reportedly rising.",
+        "Prior semiconductor weakness and AI financing concerns remain unresolved."
       ],
       "observations": [
         {
@@ -488,6 +488,38 @@
           "source": "data/history/market-watch-events.json",
           "sourceTime": "2026-11-27T02:46:05Z",
           "quality": "Rechecked; unchanged leading catalysts"
+        },
+        {
+          "metric": "Nasdaq futures Reuters Friday",
+          "value": 2.4,
+          "unit": "percent",
+          "source": "https://www.reuters.com/markets/europe/global-markets-view-europe-2026-11-27/",
+          "sourceTime": "2026-11-27 report; exact quote time unavailable",
+          "quality": "Reported overnight, not verified live"
+        },
+        {
+          "metric": "S&P futures Reuters Friday",
+          "value": 1.6,
+          "unit": "percent",
+          "source": "https://www.reuters.com/markets/europe/global-markets-view-europe-2026-11-27/",
+          "sourceTime": "2026-11-27 report; exact quote time unavailable",
+          "quality": "Same report, exact synchronization unverified"
+        },
+        {
+          "metric": "SOX November 24 close",
+          "value": -7.9,
+          "unit": "percent",
+          "source": "https://www.reuters.com/business/wall-st-futures-dip-chip-stocks-cool-after-nvidia-fueled-rally-2026-11-24/",
+          "sourceTime": "2026-11-24 close",
+          "quality": "Historical, not current"
+        },
+        {
+          "metric": "Nasdaq Composite November 24 close",
+          "value": -1.48,
+          "unit": "percent",
+          "source": "https://www.reuters.com/business/wall-st-futures-dip-chip-stocks-cool-after-nvidia-fueled-rally-2026-11-24/",
+          "sourceTime": "2026-11-24 close",
+          "quality": "Historical same report"
         }
       ],
       "conditions": {
@@ -533,10 +565,10 @@
         }
       ],
       "provenance": {
-        "assessmentTime": "2026-11-27T05:31:34Z",
-        "repositorySnapshotUpdated": "2026-11-27T04:29:06Z",
+        "assessmentTime": "2026-11-27T06:20:27Z",
+        "repositorySnapshotUpdated": "2026-11-27T05:31:34Z",
         "openWatchUpdated": "2026-11-27T02:46:05Z",
-        "sourceQuality": "Fresh Reuters and FT reports; exact futures quote times unavailable. US cash historical November 25; no fresh synchronized SOX, VXN, breadth or paired yields. Reuters reports yields rising qualitatively. No independent live feed.",
+        "sourceQuality": "Reuters Friday reports corroborate overnight futures strength; exact quote times unavailable. No fresh synchronized cash SOX, VXN, breadth or paired yields. Open Watch checked at 181 events, unchanged. Historical quotes retain timestamps.",
         "yieldScaling": "Dashboard 4.864% minus 4.650% = 21.4 bps; official lagged 4.91% minus 4.63% = 28 bps. No scaling applied.",
         "marketVsCatalyst": "Oil rise reported; equity impact prospective, US cash closed.",
         "sources": [
@@ -558,17 +590,19 @@
           "https://apnews.com/article/c7ef10c1dbc5fa09668bd4fe0729c613",
           "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-27/",
           "https://www.reuters.com/business/energy/brent-trades-near-months-high-mideast-conflict-threatens-supply-2026-11-27/",
-          "https://www.ft.com/content/fedc6392-ad25-43e4-9d9f-20216cbf331e"
+          "https://www.ft.com/content/fedc6392-ad25-43e4-9d9f-20216cbf331e",
+          "https://www.reuters.com/markets/europe/global-markets-view-europe-2026-11-27/",
+          "https://www.reuters.com/business/wall-st-futures-dip-chip-stocks-cool-after-nvidia-fueled-rally-2026-11-24/"
         ]
       },
       "editorial": {
-        "marketOverview": "FT reports a stronger overnight technology rebound, with Nasdaq futures up 2.2% and S&P futures up 1.5%. Reuters reports Asian recovery alongside elevated crude and rising Treasury yields. US cash has not yet reopened.",
-        "whatChanged": "Compared with 23:29 ET, reported US futures leadership is more constructive, but exact observation times are unavailable. Reuters reports 99% December hike pricing and crude near Thursday highs. Open Watch remains at 181 events. Friday relief potential improves without establishing a sustained three-day reversal.",
-        "marketInterpretation": "Overnight relative strength is encouraging but cannot substitute for SOX cash leadership or broad participation. Higher yields and oil constrain duration-sensitive valuations; the expected equity impact of supply disruption is not an observed causal response.",
-        "threeDayPath": "Friday: stronger relief potential in shortened trading, with fade risk. Monday: normal liquidity and weekend OPEC+ policy test durability. Tuesday: JOLTS and tentative chip earnings may redirect rates and technology leadership.",
-        "bullCase": "A sustained cash rebound with SOX outperforming, broad participation, lower volatility and falling oil would invalidate the bearish skew. Overnight futures are a preliminary positive signal.",
-        "bearCase": "A failure to hold overnight gains alongside elevated crude, higher yields and renewed chip weakness would reinforce downside risk. Near-certain reported December tightening limits valuation relief.",
-        "watchNext": "Confirm futures quotes and cash SOX relative strength, VXN/VIX, breadth and paired yields; monitor Friday 13:00 ET close, Sunday OPEC+ and Tuesday JOLTS. Verify issuer earnings dates."
+        "marketOverview": "Reuters reports Nasdaq futures up 2.4% versus S&P futures up 1.6%, alongside Asian equity gains. This corroborates the earlier FT report of technology relative strength. US cash has not reopened; oil and rates remain headwinds.",
+        "whatChanged": "Compared with 00:31 ET, the reported futures rebound is modestly stronger, but different quotation times prevent treating the difference as a measured move. Open Watch remains at 181 events. No independently confirmed major new catalyst changes the path.",
+        "marketInterpretation": "The overnight rebound improves Friday prospects but does not establish durable chip leadership. Reuters reported SOX fell 7.9% on November 24 versus Nasdaq down 1.48%; that is historical evidence, not a current signal. Elevated crude and restrictive rate expectations remain valuation risks, not proof of a causal equity response.",
+        "threeDayPath": "Friday: relief rally potential with fade risk in shortened trading. Monday: normal liquidity and weekend OPEC+ outcome test the rebound. Tuesday: JOLTS and tentative chip earnings could redirect rates and sector leadership.",
+        "bullCase": "Sustained QQQ and SOX outperformance with broad participation, falling volatility and easing crude would support a durable recovery and invalidate the bearish skew.",
+        "bearCase": "A reversal of overnight gains with renewed chip weakness, rising yields or persistent oil supply stress would reinforce downside risk. Thin holiday trading may exaggerate moves in either direction.",
+        "watchNext": "Confirm cash SOX relative strength, VXN/VIX, breadth and paired Treasury yields. Monitor Friday early close, Sunday OPEC+ and Tuesday JOLTS; issuer earnings dates remain unverified."
       }
     }
   ]
