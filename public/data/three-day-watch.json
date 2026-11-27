@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-27T17:26:43Z",
+  "updated": "2026-11-27T20:52:03Z",
   "horizon": [
-    "2026-11-27",
     "2026-11-30",
-    "2026-12-01"
+    "2026-12-01",
+    "2026-12-02"
   ],
   "archive": {
     "legacyPath": "data/history/three-day-watch/legacy-through-2026-11-10.json",
@@ -16,77 +16,117 @@
   "entries": [
     {
       "date": "2026-11-27",
-      "timeET": "12:26",
+      "timeET": "15:52",
       "bias": "Neutral — Broad Relief Rally, Macro Risk",
-      "previousBias": "Bearish — Relief Rally at Risk",
-      "materialChange": true,
+      "previousBias": "Neutral — Broad Relief Rally, Macro Risk",
+      "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Broad semiconductor and Nasdaq-100 participation materially weakens the bearish skew; holiday liquidity and restrictive rates prevent a bullish upgrade.",
+      "summary": "Friday's broad chip-led close confirms the relief rally, but elevated rates and a deteriorating intraday score keep the next three sessions neutral.",
       "bullish": [
-        "Repository reports SOX +3.47% versus Nasdaq +1.76%, 87 of 100 Nasdaq-100 members advancing and QQQ +1.94%.",
-        "AP corroborates broad recovery; oil lower in repository report."
+        "SOX +4.69%, Nasdaq +2.31%, QQQ approximately +2.7%; positive breadth in repository.",
+        "VIX reported lower at 24.06; broad equity gains."
       ],
       "bearish": [
-        "WSJ reports 10Y 4.921% and 2Y 4.693%; December tightening fully priced.",
-        "Holiday liquidity and conflicting oil quotes limit durability; current volatility unavailable."
+        "10Y 4.936%, 2Y 4.710%; score fell from +10 to -7.",
+        "AI valuation and policy risks persist; holiday liquidity limits inference."
       ],
       "observations": [
         {
-          "metric": "2Y official constant maturity",
-          "value": 4.63,
-          "unit": "percent yield",
-          "source": "https://www.federalreserve.gov/releases/H15/",
-          "sourceTime": "2026-11-24",
-          "quality": "Official H.15 released Nov 25; lagged; carried from previous assessment, not current; carried, not live"
+          "metric": "QQQ",
+          "value": 2.69,
+          "unit": "percent change",
+          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
+          "sourceTime": "2026-11-27 15:46 ET report",
+          "quality": "Repository report; underlying timestamps unverified; cash session closed 13:00 ET"
         },
         {
-          "metric": "10Y official constant maturity",
-          "value": 4.91,
-          "unit": "percent yield",
-          "source": "https://www.federalreserve.gov/releases/H15/",
-          "sourceTime": "2026-11-24",
-          "quality": "Official H.15 released Nov 25; lagged; carried from previous assessment, not current; carried, not live"
+          "metric": "Nasdaq",
+          "value": 2.31,
+          "unit": "percent change",
+          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
+          "sourceTime": "2026-11-27 15:46 ET report",
+          "quality": "Repository report; underlying timestamps unverified; cash session closed 13:00 ET"
         },
         {
-          "metric": "10Y-2Y official curve",
-          "value": 28,
+          "metric": "SOX",
+          "value": 4.69,
+          "unit": "percent change",
+          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
+          "sourceTime": "2026-11-27 15:46 ET report",
+          "quality": "Repository report; underlying timestamps unverified; cash session closed 13:00 ET"
+        },
+        {
+          "metric": "SOX minus Nasdaq",
+          "value": 2.38,
+          "unit": "percentage points",
+          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
+          "sourceTime": "2026-11-27 15:46 ET report",
+          "quality": "Repository report; underlying timestamps unverified; cash session closed 13:00 ET"
+        },
+        {
+          "metric": "SOXX minus Nasdaq",
+          "value": 2.45,
+          "unit": "percentage points",
+          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
+          "sourceTime": "2026-11-27 15:46 ET report",
+          "quality": "Repository report; underlying timestamps unverified; cash session closed 13:00 ET"
+        },
+        {
+          "metric": "SMH minus Nasdaq",
+          "value": 1.86,
+          "unit": "percentage points",
+          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
+          "sourceTime": "2026-11-27 15:46 ET report",
+          "quality": "Repository report; underlying timestamps unverified; cash session closed 13:00 ET"
+        },
+        {
+          "metric": "10Y",
+          "value": 4.936,
+          "unit": "percent yield",
+          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
+          "sourceTime": "2026-11-27 15:46 ET report",
+          "quality": "Repository report; underlying timestamps unverified; cash session closed 13:00 ET"
+        },
+        {
+          "metric": "2Y",
+          "value": 4.71,
+          "unit": "percent yield",
+          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
+          "sourceTime": "2026-11-27 15:46 ET report",
+          "quality": "Repository report; underlying timestamps unverified; cash session closed 13:00 ET"
+        },
+        {
+          "metric": "10Y minus 2Y",
+          "value": 22.6,
           "unit": "basis points",
-          "source": "https://www.federalreserve.gov/releases/H15/",
-          "sourceTime": "2026-11-24",
-          "quality": "Same-date official pair, not live; carried from previous assessment, not current; carried, not live"
-        },
-        {
-          "metric": "VXN dashboard",
-          "value": 38.53,
-          "unit": "index points",
           "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "sourceTime": "2026-11-27 03:11 ET",
-          "quality": "Underlying timestamp unknown; carried from previous assessment, not current; carried, not live"
+          "sourceTime": "2026-11-27 15:46 ET report",
+          "quality": "Repository report; underlying timestamps unverified; cash session closed 13:00 ET"
         },
         {
-          "metric": "VIX dashboard",
-          "value": 26.8,
-          "unit": "index points",
+          "metric": "Nasdaq score",
+          "value": -7,
+          "unit": "score points",
           "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "sourceTime": "2026-11-27 03:11 ET",
-          "quality": "Underlying timestamp unknown; carried from previous assessment, not current; carried, not live"
+          "sourceTime": "2026-11-27 15:46 ET report",
+          "quality": "Repository report; underlying timestamps unverified; cash session closed 13:00 ET"
         },
         {
-          "metric": "December hike probability",
-          "value": 99,
-          "unit": "percent",
-          "source": "https://www.marketwatch.com/livecoverage/stock-market-today-dow-s-p-500-nasdaq-thanksgiving-holiday-shortened-black-friday-trading/card/treasury-yields-jump-as-revived-ai-optimism-boosts-stocks-reduce-haven-flows-JRBYwfFarlgqEidpQLRg",
-          "sourceTime": "2026-11-27 report; exact quote time unavailable",
-          "quality": "Reported CME pricing; carried, not live"
+          "metric": "Breadth",
+          "value": null,
+          "unit": "positive qualitative",
+          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
+          "sourceTime": "2026-11-27 15:46 ET report",
+          "quality": "Repository report; underlying timestamps unverified; cash session closed 13:00 ET"
         },
         {
-          "metric": "January hike probability",
-          "value": 65.9,
-          "unit": "percent",
-          "source": "https://www.marketwatch.com/livecoverage/stock-market-today-dow-s-p-500-nasdaq-thanksgiving-holiday-shortened-black-friday-trading/card/treasury-yields-jump-as-revived-ai-optimism-boosts-stocks-reduce-haven-flows-JRBYwfFarlgqEidpQLRg",
-          "sourceTime": "2026-11-27 report; exact quote time unavailable",
-          "quality": "Reported CME pricing; carried, not live"
+          "metric": "VIX",
+          "value": 24.06,
+          "unit": "index points",
+          "source": "https://portfolio-terminal.com/markets/stock-market-close/november-27-2026",
+          "sourceTime": "2026-11-27 closing report",
+          "quality": "Secondary reported close; exact timestamp unverified"
         },
         {
           "metric": "VXN premarket",
@@ -94,79 +134,7 @@
           "unit": "index points",
           "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
           "sourceTime": "2026-11-27 05:54 ET",
-          "quality": "Repository refresh, underlying quote time unknown; carried, not live"
-        },
-        {
-          "metric": "VIX premarket",
-          "value": 24.61,
-          "unit": "index points",
-          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "sourceTime": "2026-11-27 05:54 ET",
-          "quality": "Repository refresh, underlying quote time unknown; carried, not live"
-        },
-        {
-          "metric": "QQQ",
-          "value": 1.94,
-          "unit": "percent",
-          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "sourceTime": "2026-11-27 11:34 ET report",
-          "quality": "Same repository report; underlying tick timestamps not independently verified"
-        },
-        {
-          "metric": "SOX",
-          "value": 3.47,
-          "unit": "percent",
-          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "sourceTime": "2026-11-27 11:34 ET report",
-          "quality": "Same repository report; underlying tick timestamps not independently verified"
-        },
-        {
-          "metric": "Nasdaq",
-          "value": 1.76,
-          "unit": "percent",
-          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "sourceTime": "2026-11-27 11:34 ET report",
-          "quality": "Same repository report; underlying tick timestamps not independently verified"
-        },
-        {
-          "metric": "SOX minus Nasdaq",
-          "value": 1.71,
-          "unit": "percentage points",
-          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "sourceTime": "2026-11-27 11:34 ET report",
-          "quality": "Same repository report; underlying tick timestamps not independently verified"
-        },
-        {
-          "metric": "SOXX minus Nasdaq",
-          "value": 1.79,
-          "unit": "percentage points",
-          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "sourceTime": "2026-11-27 11:34 ET report",
-          "quality": "Same repository report; underlying tick timestamps not independently verified"
-        },
-        {
-          "metric": "SMH minus Nasdaq",
-          "value": 1.03,
-          "unit": "percentage points",
-          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "sourceTime": "2026-11-27 11:34 ET report",
-          "quality": "Same repository report; underlying tick timestamps not independently verified"
-        },
-        {
-          "metric": "Nasdaq-100 advancing",
-          "value": 87,
-          "unit": "count of 100",
-          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "sourceTime": "2026-11-27 11:34 ET report",
-          "quality": "Same repository report; underlying tick timestamps not independently verified"
-        },
-        {
-          "metric": "Nasdaq score",
-          "value": 10,
-          "unit": "score points",
-          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "sourceTime": "2026-11-27 11:34 ET report",
-          "quality": "Same repository report; underlying tick timestamps not independently verified"
+          "quality": "Stale prior assessment; not current or synchronized"
         },
         {
           "metric": "Brent",
@@ -174,7 +142,7 @@
           "unit": "USD/barrel",
           "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
           "sourceTime": "2026-11-27 11:34 ET report",
-          "quality": "Same repository report; underlying tick timestamps not independently verified"
+          "quality": "Stale prior assessment; not current or synchronized"
         },
         {
           "metric": "WTI",
@@ -182,71 +150,23 @@
           "unit": "USD/barrel",
           "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
           "sourceTime": "2026-11-27 11:34 ET report",
-          "quality": "Same repository report; underlying tick timestamps not independently verified"
+          "quality": "Stale prior assessment; not current or synchronized"
         },
         {
-          "metric": "Nasdaq Composite",
-          "value": 2,
+          "metric": "December hike probability",
+          "value": 99,
           "unit": "percent",
-          "source": "https://apnews.com/article/c7ef10c1dbc5fa09668bd4fe0729c613",
-          "sourceTime": "2026-11-27 intraday report; exact time unavailable",
-          "quality": "Reported; not synchronized; Brent conflicts with repository"
+          "source": "https://www.marketwatch.com/livecoverage/stock-market-today-dow-s-p-500-nasdaq-thanksgiving-holiday-shortened-black-friday-trading/card/treasury-yields-jump-as-revived-ai-optimism-boosts-stocks-reduce-haven-flows-JRBYwfFarlgqEidpQLRg",
+          "sourceTime": "2026-11-27 report; exact quote time unavailable",
+          "quality": "Stale prior assessment; not current or synchronized"
         },
         {
-          "metric": "S&P 500",
-          "value": 1.5,
+          "metric": "January hike probability",
+          "value": 65.9,
           "unit": "percent",
-          "source": "https://apnews.com/article/c7ef10c1dbc5fa09668bd4fe0729c613",
-          "sourceTime": "2026-11-27 intraday report; exact time unavailable",
-          "quality": "Reported; not synchronized; Brent conflicts with repository"
-        },
-        {
-          "metric": "Brent",
-          "value": 89.97,
-          "unit": "USD/barrel",
-          "source": "https://apnews.com/article/c7ef10c1dbc5fa09668bd4fe0729c613",
-          "sourceTime": "2026-11-27 intraday report; exact time unavailable",
-          "quality": "Reported; not synchronized; Brent conflicts with repository"
-        },
-        {
-          "metric": "10Y",
-          "value": 4.93,
-          "unit": "percent yield",
-          "source": "https://apnews.com/article/c7ef10c1dbc5fa09668bd4fe0729c613",
-          "sourceTime": "2026-11-27 intraday report; exact time unavailable",
-          "quality": "Reported; not synchronized; Brent conflicts with repository"
-        },
-        {
-          "metric": "10Y",
-          "value": 4.921,
-          "unit": "percent yield",
-          "source": "https://www.wsj.com/finance/investing/u-s-treasury-yields-rise-in-shortened-post-thanksgiving-trade-f0822039",
-          "sourceTime": "2026-11-27 report; exact time unavailable",
-          "quality": "Same report, exact synchronization unknown"
-        },
-        {
-          "metric": "2Y",
-          "value": 4.693,
-          "unit": "percent yield",
-          "source": "https://www.wsj.com/finance/investing/u-s-treasury-yields-rise-in-shortened-post-thanksgiving-trade-f0822039",
-          "sourceTime": "2026-11-27 report; exact time unavailable",
-          "quality": "Same report, exact synchronization unknown"
-        },
-        {
-          "metric": "10Y minus 2Y",
-          "value": 22.8,
-          "unit": "basis points",
-          "source": "https://www.wsj.com/finance/investing/u-s-treasury-yields-rise-in-shortened-post-thanksgiving-trade-f0822039",
-          "sourceTime": "2026-11-27 report; exact time unavailable",
-          "quality": "Same report, exact synchronization unknown"
-        },
-        {
-          "metric": "Open Watch updated",
-          "value": null,
-          "unit": "events",
-          "source": "data/history/market-watch-events.json",
-          "sourceTime": "2026-11-27T07:44:04+00:00",
-          "quality": "Timestamp unchanged; count not independently recomputed"
+          "source": "https://www.marketwatch.com/livecoverage/stock-market-today-dow-s-p-500-nasdaq-thanksgiving-holiday-shortened-black-friday-trading/card/treasury-yields-jump-as-revived-ai-optimism-boosts-stocks-reduce-haven-flows-JRBYwfFarlgqEidpQLRg",
+          "sourceTime": "2026-11-27 report; exact quote time unavailable",
+          "quality": "Stale prior assessment; not current or synchronized"
         }
       ],
       "conditions": {
@@ -256,63 +176,52 @@
       },
       "upcomingEvents": [
         {
-          "date": "2026-11-27",
-          "event": "US equities early close 13:00 ET; advance indicators timing unverified",
-          "status": "Scheduled; Thursday closed",
-          "source": "https://www.investors.com/news/stock-market-hours-thanksgiving-black-friday-sp-500-nasdaq-dow-jones-nvidia/"
-        },
-        {
-          "date": "2026-11-30",
-          "event": "Post-holiday liquidity normalization; specific releases not verified",
-          "status": "Watch"
-        },
-        {
           "date": "2026-11-29",
-          "event": "OPEC+ output policy meeting; potential Monday oil catalyst",
-          "status": "Scheduled",
+          "event": "OPEC+ meeting",
+          "status": "Previously reported; outcome pending",
           "source": "https://www.reuters.com/business/energy/oil-prices-fall-supply-glut-concerns-offset-middle-east-disruption-fears-2026-11-25/"
         },
         {
+          "date": "2026-11-30",
+          "event": "Normal liquidity resumes",
+          "status": "Watch"
+        },
+        {
           "date": "2026-12-01",
-          "event": "October JOLTS 10:00 ET",
-          "status": "Official BLS schedule confirmed; earnings unverified",
+          "event": "ISM manufacturing and JOLTS 10:00 ET; CRDO earnings repository-listed",
+          "status": "JOLTS official; ISM TD calendar; earnings not issuer verified",
           "source": "https://www.bls.gov/schedule/2026/"
         },
         {
-          "date": "2026-11-30",
-          "event": "Chicago PMI and Dallas Fed manufacturing",
-          "status": "Secondary calendar; official timing not verified",
-          "source": "https://www.myfxbook.com/forex-economic-calendar/united-states"
-        },
-        {
-          "date": "2026-12-01",
-          "event": "MRVL and CRDO earnings listed in dashboard",
-          "status": "Repository calendar; issuer confirmation unavailable",
-          "source": "https://github.com/repural/NasDecode/commit/4ffc8b7a44c5bec776448273dcb61d7b6b56fb1b"
+          "date": "2026-12-02",
+          "event": "ADP employment 08:15 ET",
+          "status": "TD calendar",
+          "source": "https://economics.td.com/domains/economics.td.com/documents/reports/bottom-line/tables/2026-11-27/upcoming.htm"
         }
       ],
       "provenance": {
-        "assessmentTime": "2026-11-27T17:26:43Z",
-        "repositorySnapshotUpdated": "2026-11-27 11:34 ET",
-        "openWatchUpdated": "2026-11-27T07:44:04+00:00",
-        "sourceQuality": "Repository same-report breadth and relative strength, not independently synchronized ticks. AP corroborates direction; oil levels conflict. Current VXN/VIX unavailable.",
-        "yieldScaling": "WSJ yields already percentages; (4.921-4.693)*100=22.8 bp.",
-        "marketVsCatalyst": "Observed broad rebound; weekend OPEC+ and JOLTS impacts prospective.",
+        "assessmentTime": "2026-11-27T20:52:03Z",
+        "repositorySnapshotUpdated": "2026-11-27 15:46 ET",
+        "openWatchUpdated": "2026-11-27T19:48:49+00:00",
+        "sourceQuality": "Closing equity direction corroborated externally; repository refresh after early close is not a live cash quote. Exact rate timestamps unavailable. Oil and VXN not freshly verified; prior readings labeled stale.",
+        "yieldScaling": "Repository yields already percent; (4.936-4.710)*100=22.6 bp.",
+        "marketVsCatalyst": "Friday gains observed; weekend oil and next-week data effects prospective. Open Watch refreshed but newest listed events dated Nov 25, no new dated catalyst after previous assessment.",
         "sources": [
           "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "https://apnews.com/article/c7ef10c1dbc5fa09668bd4fe0729c613",
-          "https://www.wsj.com/finance/investing/u-s-treasury-yields-rise-in-shortened-post-thanksgiving-trade-f0822039",
-          "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-27/"
+          "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-27/",
+          "https://finance.biggo.com/news/96a6dd9c-dfde-447d-9fba-83a4a62a0c21",
+          "https://portfolio-terminal.com/markets/stock-market-close/november-27-2026",
+          "https://www.quantisnow.com/articles/chip-stocks-lead-a-black-friday-rally-that-wins-back-only-12-of-their-monthly-loss"
         ]
       },
       "editorial": {
-        "marketOverview": "The 11:34 ET repository report shows QQQ up 1.94%, SOX up 3.47% and Nasdaq up 1.76%, with 87 Nasdaq-100 constituents advancing. AP independently reports a broad rebound, with Nasdaq up 2% and S&P 500 up 1.5%, although quote times are not synchronized.",
-        "whatChanged": "The prior bearish assessment lacked breadth and SOX confirmation. Both are now positive in the repository, and its score has moved from -46 premarket to +10. This materially reduces the bearish skew. Open Watch timestamp remains unchanged.",
-        "marketInterpretation": "The rebound has stronger internal participation than previously established, warranting neutral rather than bearish bias. WSJ's 4.921% ten-year and 4.693% two-year yields imply 22.8 basis points of positive curve slope; restrictive policy remains a valuation headwind. Oil is lower in the repository but absolute Brent quotes conflict with AP. Fresh volatility is unavailable.",
-        "threeDayPath": "Friday's remaining shortened session tests whether broad gains survive the close. Monday's normal liquidity and weekend OPEC+ outcome will test follow-through. Tuesday JOLTS may reprice rates; CRDO and MRVL earnings dates remain tentative pending issuer verification.",
-        "bullCase": "Persistent semiconductor outperformance and broad participation could extend the recovery if volatility cools and oil and yields stabilize. The positive breadth is more persuasive than isolated mega-cap gains.",
-        "bearCase": "Holiday trading can exaggerate rebounds. A renewed oil shock, higher yields or reversal of chip leadership could restore the bearish skew; December tightening remains priced and existing AI financing and trade risks are unresolved.",
-        "watchNext": "Check closing SOX relative strength, QQQ and breadth, fresh VXN/VIX, paired yields and oil contract quotes. Confirm Monday follow-through and Tuesday JOLTS and earnings timing."
+        "marketOverview": "Friday closed with Nasdaq up 2.31% and SOX up 4.69%, corroborated by external closing reports. The repository reports QQQ up 2.69% and positive breadth; an external report puts QQQ at 2.66%. The difference is small but exact synchronization is unverified.",
+        "whatChanged": "The close strengthened semiconductor relative performance from 1.71 to 2.38 percentage points versus the earlier snapshot. The repository score nevertheless fell from +10 to -7. Open Watch refreshed, but its newest listed events remain dated November 25; no new dated catalyst was identified.",
+        "marketInterpretation": "The rebound is broad enough to retain neutral bias, not enough to establish a durable uptrend. Treasury yields remain elevated and the reported VIX decline is encouraging but still leaves volatility elevated. Current VXN and oil contract levels are not verified; prior Fed pricing is stale, though Reuters corroborates tightening expectations.",
+        "threeDayPath": "Monday November 30 tests the rally under normal liquidity and the weekend OPEC+ outcome. Tuesday December 1 brings ISM and JOLTS, with Credo earnings listed in the repository but not issuer-confirmed. Wednesday December 2 ADP adds labor-market rate risk ahead of Friday payrolls outside the horizon.",
+        "bullCase": "Continued semiconductor leadership, positive breadth and easing volatility could extend the rebound if yields stabilize. Friday's gains are supportive evidence, not a forecast guarantee.",
+        "bearCase": "A reversal of holiday gains, higher oil or a move above 5% in the ten-year yield could revive selling. Existing inflation, Nvidia governance and trade risks remain relevant; no isolated causal reaction is established.",
+        "watchNext": "Check Monday cash breadth and SOX relative strength, fresh VXN/VIX, paired Treasury yields and matched oil contracts. Verify Fed pricing and issuer earnings dates; monitor JOLTS and ISM surprises against expectations."
       }
     }
   ]
