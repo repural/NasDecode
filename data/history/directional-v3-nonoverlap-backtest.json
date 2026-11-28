@@ -4,7 +4,7 @@
   "engineVersion": "directional-engine-v3.0",
   "specSha256": "cf7ede6ff6312720f2b31d0c9a557c484039bb533fa7e04c3a078cc5583157c3",
   "holdoutStart": "2026-07-01",
-  "through": "2026-11-25",
+  "through": "2026-11-27",
   "assumptions": [
     "Completed T-close signal; enter T+1 SOXL open; exit T+5 SOXL close.",
     "SetupResults: five-session lock per category (independent setup studies).",
@@ -16,19 +16,19 @@
     "Missing entry or exit price excludes that signal without assuming a price."
   ],
   "skippedSignals": {
-    "not_mature": 2,
+    "not_mature": 3,
     "missing_entry_or_exit": 0,
     "overlap": 85
   },
   "setupSkippedSignals": {
     "washout_rebound": {
       "overlap": 38,
-      "not_mature": 0,
+      "not_mature": 1,
       "missing_entry_or_exit": 0
     },
     "uptrend_pullback": {
       "overlap": 3,
-      "not_mature": 1,
+      "not_mature": 0,
       "missing_entry_or_exit": 0
     },
     "continuation": {
@@ -62,13 +62,13 @@
       "worstDrawdownPct": -54.4267
     },
     "uptrend_pullback": {
-      "n": 3,
-      "meanPct": -13.228,
-      "medianPct": -19.923,
-      "positivePct": 33.3,
-      "drawdownObserved": 3,
-      "meanMaxDrawdownPct": -17.475,
-      "worstDrawdownPct": -27.5651
+      "n": 4,
+      "meanPct": -13.358,
+      "medianPct": -16.837,
+      "positivePct": 25.0,
+      "drawdownObserved": 4,
+      "meanMaxDrawdownPct": -23.598,
+      "worstDrawdownPct": -41.9693
     },
     "continuation": {
       "n": 4,
@@ -404,6 +404,16 @@
         "exitClose": 110.54,
         "returnPct": -26.5417,
         "maxIntratradeDrawdownPct": -27.5651
+      },
+      {
+        "signalDate": "2026-11-19",
+        "setup": "uptrend_pullback",
+        "entryDate": "2026-11-20",
+        "exitDate": "2026-11-27",
+        "entryOpen": 42.4,
+        "exitClose": 36.57,
+        "returnPct": -13.75,
+        "maxIntratradeDrawdownPct": -41.9693
       }
     ],
     "continuation": [
