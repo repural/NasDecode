@@ -150137,7 +150137,7 @@
     },
     "2026-11-27": {
       "schemaVersion": 4,
-      "timestampET": "2026-11-27T20:09:56.234717-05:00",
+      "timestampET": "2026-11-27T21:36:12.377954-05:00",
       "market": {
         ".IXIC": {
           "last": 24129.5,
@@ -150855,15 +150855,15 @@
       },
       "consolidationRisk": {
         "version": 4,
-        "score": 19,
+        "score": 16,
         "level": "Low",
         "horizon": "1–3 sessions",
         "coverageWeight": 100,
-        "historyDays": 125,
-        "structuralFloor": 3,
+        "historyDays": 126,
+        "structuralFloor": 0,
         "components": {
-          "Structural extension": 5,
-          "Structural floor": 3,
+          "Structural extension": 0,
+          "Structural floor": 0,
           "Confirmation risk": 16,
           "Intraday rejection": 0,
           "Breadth divergence": 0,
@@ -150874,19 +150874,19 @@
         "structuralComponents": {
           "QQQ vs 20DMA": 0,
           "QQQ RSI14": 0,
-          "QQQ 3D/5D acceleration": 50,
+          "QQQ 3D/5D acceleration": 0,
           "QQQ high × extension": 0,
           "SOXX vs 20DMA": 0,
           "SOXX RSI14": 0,
           "SOXX high × extension": 0
         },
         "technicalContext": {
-          "qqqMa20DistancePct": -4.92,
-          "qqqRsi14": 38.6,
-          "qqqDistanceFrom20dHighPct": -11.38,
-          "soxxMa20DistancePct": -11.4,
-          "soxxRsi14": 37.2,
-          "soxxDistanceFrom20dHighPct": -25.28
+          "qqqMa20DistancePct": -2.36,
+          "qqqRsi14": 44.0,
+          "qqqDistanceFrom20dHighPct": -5.92,
+          "soxxMa20DistancePct": -7.18,
+          "soxxRsi14": 41.6,
+          "soxxDistanceFrom20dHighPct": -14.7
         },
         "intradayGivebackPp": 0.0,
         "dominantDrivers": [
@@ -150894,7 +150894,7 @@
           "Confirmation risk 16",
           "Leadership divergence 16"
         ],
-        "explanation": "1–3 session fade/consolidation risk is low (19/100). Structural extension creates a 3/100 baseline; live confirmation risk is 16/100. Main drivers: Volatility / rates stress 65, Confirmation risk 16, Leadership divergence 16. A high near the 20DMA is not penalized by itself; high proximity matters when QQQ/SOXX are also stretched or overbought.",
+        "explanation": "1–3 session fade/consolidation risk is low (16/100). Structural extension creates a 0/100 baseline; live confirmation risk is 16/100. Main drivers: Volatility / rates stress 65, Confirmation risk 16, Leadership divergence 16. A high near the 20DMA is not penalized by itself; high proximity matters when QQQ/SOXX are also stretched or overbought.",
         "note": "Higher means the current move is more vulnerable to a fade or sideways reset; it is not a bearish-direction forecast."
       },
       "opportunityScore": {
@@ -150906,37 +150906,37 @@
         "type": "Recovery / dip entry",
         "components": {
           "Directional edge": 34,
-          "Entry quality": 74,
+          "Entry quality": 76,
           "Recovery confirmation": 65,
           "Macro timing": 26,
           "Catalyst asymmetry": 50
         },
         "entryQualityComponents": {
           "QQQ vs 20DMA": 100,
-          "QQQ RSI14": 54,
-          "QQQ 5D return": 92,
+          "QQQ RSI14": 76,
+          "QQQ 5D return": 59,
           "QQQ high × extension": 100,
           "SOXX structural extension": 100,
-          "QQQ ATR14 regime": 20
+          "QQQ ATR14 regime": 25
         },
         "entryQualityVxnAtrAdjustment": -8,
         "entryQualityAtrContext": {
-          "atr14Pct": 3.4,
-          "atr14PctPercentile60": 100.0,
-          "atr14Vs50": 1.38,
-          "regimeScore": 20
+          "atr14Pct": 3.26,
+          "atr14PctPercentile60": 96.7,
+          "atr14Vs50": 1.35,
+          "regimeScore": 25
         },
-        "consolidationRiskContext": 19,
+        "consolidationRiskContext": 16,
         "gates": [],
         "strongestDrivers": [
-          "Entry quality 74",
+          "Entry quality 76",
           "Recovery confirmation 65"
         ],
         "weakestDrivers": [
           "Macro timing 26",
           "Directional edge 34"
         ],
-        "explanation": "Long-entry quality is selective (55/100; Recovery / dip entry). Raw weighted score 55/100. Strongest inputs: Entry quality 74, Recovery confirmation 65. Weakest: Macro timing 26, Directional edge 34.",
+        "explanation": "Long-entry quality is selective (55/100; Recovery / dip entry). Raw weighted score 55/100. Strongest inputs: Entry quality 76, Recovery confirmation 65. Weakest: Macro timing 26, Directional edge 34.",
         "note": "This is an entry-quality score, not a forecast of the next session return. Strong internals can support the trend without making an extended price a good new entry."
       },
       "confirmationLayer": {
@@ -151072,20 +151072,20 @@
               "regimeMultiplier": 1.2
             },
             {
-              "factor": "Oil (WTI / Brent)",
-              "bucket": "Rates / Macro",
-              "strength": 0.07,
-              "effectiveWeight": 1.25,
-              "freshnessWeight": 1.0,
-              "regimeMultiplier": 1.25
-            },
-            {
               "factor": "Mega-cap leadership",
               "bucket": "Leadership",
               "strength": -0.416,
               "effectiveWeight": 1.4,
               "freshnessWeight": 0.7,
               "regimeMultiplier": 1.0
+            },
+            {
+              "factor": "Oil (WTI / Brent)",
+              "bucket": "Rates / Macro",
+              "strength": 0.07,
+              "effectiveWeight": 1.25,
+              "freshnessWeight": 1.0,
+              "regimeMultiplier": 1.25
             },
             {
               "factor": "Options positioning / sentiment",
@@ -151174,15 +151174,15 @@
           ],
           "consolidationRisk": {
             "version": 4,
-            "score": 19,
+            "score": 16,
             "level": "Low",
             "horizon": "1–3 sessions",
             "coverageWeight": 100,
-            "historyDays": 125,
-            "structuralFloor": 3,
+            "historyDays": 126,
+            "structuralFloor": 0,
             "components": {
-              "Structural extension": 5,
-              "Structural floor": 3,
+              "Structural extension": 0,
+              "Structural floor": 0,
               "Confirmation risk": 16,
               "Intraday rejection": 0,
               "Breadth divergence": 0,
@@ -151193,19 +151193,19 @@
             "structuralComponents": {
               "QQQ vs 20DMA": 0,
               "QQQ RSI14": 0,
-              "QQQ 3D/5D acceleration": 50,
+              "QQQ 3D/5D acceleration": 0,
               "QQQ high × extension": 0,
               "SOXX vs 20DMA": 0,
               "SOXX RSI14": 0,
               "SOXX high × extension": 0
             },
             "technicalContext": {
-              "qqqMa20DistancePct": -4.92,
-              "qqqRsi14": 38.6,
-              "qqqDistanceFrom20dHighPct": -11.38,
-              "soxxMa20DistancePct": -11.4,
-              "soxxRsi14": 37.2,
-              "soxxDistanceFrom20dHighPct": -25.28
+              "qqqMa20DistancePct": -2.36,
+              "qqqRsi14": 44.0,
+              "qqqDistanceFrom20dHighPct": -5.92,
+              "soxxMa20DistancePct": -7.18,
+              "soxxRsi14": 41.6,
+              "soxxDistanceFrom20dHighPct": -14.7
             },
             "intradayGivebackPp": 0.0,
             "dominantDrivers": [
@@ -151213,7 +151213,7 @@
               "Confirmation risk 16",
               "Leadership divergence 16"
             ],
-            "explanation": "1–3 session fade/consolidation risk is low (19/100). Structural extension creates a 3/100 baseline; live confirmation risk is 16/100. Main drivers: Volatility / rates stress 65, Confirmation risk 16, Leadership divergence 16. A high near the 20DMA is not penalized by itself; high proximity matters when QQQ/SOXX are also stretched or overbought.",
+            "explanation": "1–3 session fade/consolidation risk is low (16/100). Structural extension creates a 0/100 baseline; live confirmation risk is 16/100. Main drivers: Volatility / rates stress 65, Confirmation risk 16, Leadership divergence 16. A high near the 20DMA is not penalized by itself; high proximity matters when QQQ/SOXX are also stretched or overbought.",
             "note": "Higher means the current move is more vulnerable to a fade or sideways reset; it is not a bearish-direction forecast."
           },
           "opportunityScore": {
@@ -151225,37 +151225,37 @@
             "type": "Recovery / dip entry",
             "components": {
               "Directional edge": 34,
-              "Entry quality": 74,
+              "Entry quality": 76,
               "Recovery confirmation": 65,
               "Macro timing": 26,
               "Catalyst asymmetry": 50
             },
             "entryQualityComponents": {
               "QQQ vs 20DMA": 100,
-              "QQQ RSI14": 54,
-              "QQQ 5D return": 92,
+              "QQQ RSI14": 76,
+              "QQQ 5D return": 59,
               "QQQ high × extension": 100,
               "SOXX structural extension": 100,
-              "QQQ ATR14 regime": 20
+              "QQQ ATR14 regime": 25
             },
             "entryQualityVxnAtrAdjustment": -8,
             "entryQualityAtrContext": {
-              "atr14Pct": 3.4,
-              "atr14PctPercentile60": 100.0,
-              "atr14Vs50": 1.38,
-              "regimeScore": 20
+              "atr14Pct": 3.26,
+              "atr14PctPercentile60": 96.7,
+              "atr14Vs50": 1.35,
+              "regimeScore": 25
             },
-            "consolidationRiskContext": 19,
+            "consolidationRiskContext": 16,
             "gates": [],
             "strongestDrivers": [
-              "Entry quality 74",
+              "Entry quality 76",
               "Recovery confirmation 65"
             ],
             "weakestDrivers": [
               "Macro timing 26",
               "Directional edge 34"
             ],
-            "explanation": "Long-entry quality is selective (55/100; Recovery / dip entry). Raw weighted score 55/100. Strongest inputs: Entry quality 74, Recovery confirmation 65. Weakest: Macro timing 26, Directional edge 34.",
+            "explanation": "Long-entry quality is selective (55/100; Recovery / dip entry). Raw weighted score 55/100. Strongest inputs: Entry quality 76, Recovery confirmation 65. Weakest: Macro timing 26, Directional edge 34.",
             "note": "This is an entry-quality score, not a forecast of the next session return. Strong internals can support the trend without making an extended price a good new entry."
           },
           "confirmationLayer": {
@@ -151323,7 +151323,7 @@
             "status": "inactive",
             "mode": null,
             "summary": "No persistent divergence between the macro impulse and live market response.",
-            "observedAt": "2026-11-27T20:13:41.090957-05:00",
+            "observedAt": "2026-11-27T21:39:55.484896-05:00",
             "candidateMode": null,
             "candidateSince": null,
             "persistenceMinutes": 0.0,
@@ -151341,9 +151341,9 @@
           },
           "soxlBuyScore": {
             "version": 3.3,
-            "score": 50,
-            "rawScore": 50,
-            "preGateScore": 50,
+            "score": 52,
+            "rawScore": 52,
+            "preGateScore": 52,
             "label": "Wait",
             "signal": "mixed",
             "horizon": "1–5 sessions",
@@ -151351,18 +151351,18 @@
             "last": 36.57,
             "changePct": 14.21,
             "components": {
-              "Semiconductor trend": 71,
-              "SOXL entry quality": 19,
+              "Semiconductor trend": 75,
+              "SOXL entry quality": 22,
               "Market confirmation": 65,
-              "Volatility / leverage risk": 54,
+              "Volatility / leverage risk": 56,
               "Rates / macro": 31,
               "Catalyst asymmetry": 50
             },
             "semiconductorTrend": {
               "version": 2.1,
-              "score": 71,
+              "score": 75,
               "components": {
-                "SOXX technical trend": 4,
+                "SOXX technical trend": 18,
                 "SOX relative strength": 100,
                 "SOXX relative strength": 100,
                 "SMH relative strength": 100,
@@ -151377,11 +151377,11 @@
               },
               "availableWeightPct": 100,
               "soxxTechnicalTrend": {
-                "score": 4,
+                "score": 18,
                 "components": {
-                  "SOXX vs 20DMA": 0,
-                  "SOXX 5D momentum": 0,
-                  "SOXX RSI14 trend": 9,
+                  "SOXX vs 20DMA": 14,
+                  "SOXX 5D momentum": 22,
+                  "SOXX RSI14 trend": 25,
                   "SOXX ADX/DMI trend strength": 8
                 },
                 "weights": {
@@ -151391,12 +151391,12 @@
                   "SOXX ADX/DMI trend strength": 20
                 },
                 "context": {
-                  "ma20DistancePct": -11.4,
-                  "return5dPct": -9.78,
-                  "rsi14": 37.2,
-                  "adx14": 33.0,
-                  "plusDI14": 16.6,
-                  "minusDI14": 41.9
+                  "ma20DistancePct": -7.18,
+                  "return5dPct": -2.81,
+                  "rsi14": 41.6,
+                  "adx14": 32.9,
+                  "plusDI14": 20.8,
+                  "minusDI14": 39.8
                 }
               }
             },
@@ -151404,38 +151404,38 @@
             "intradayGivebackPp": 0.0,
             "indicatorSnapshot": {
               "RSI14": {
-                "value": 33.0,
-                "meaning": "Oversold / Weak",
-                "entryScore": 36,
+                "value": 36.0,
+                "meaning": "Weak Momentum",
+                "entryScore": 38,
                 "role": "SOXL entry-quality momentum / overheating input"
               },
               "STOCH96": {
                 "label": "Stochastic · Daily",
                 "kPeriod": 9,
                 "dPeriod": 6,
-                "k": 18.5,
-                "d": 15.1,
-                "meaning": "Oversold · Momentum accelerating",
+                "k": 37.7,
+                "d": 17.7,
+                "meaning": "Neutral · Momentum accelerating",
                 "scored": false,
                 "timeframe": "Daily",
                 "role": "Observational SOXL range-position and momentum context only"
               },
               "ATR14": {
-                "valuePct": 37.16,
+                "valuePct": 31.17,
                 "meaning": "Expanding / High Leverage Risk",
-                "regimeSafetyScore": 44,
-                "percentile60": 96.7,
-                "atr14Vs50": 0.96,
+                "regimeSafetyScore": 47,
+                "percentile60": 93.3,
+                "atr14Vs50": 0.93,
                 "role": "SOXL realized-volatility / leverage-risk input"
               }
             },
             "volatilityLeverageRisk": {
-              "score": 54,
+              "score": 56,
               "components": {
-                "Consolidation safety": 81,
+                "Consolidation safety": 84,
                 "VXN condition": 0,
                 "VXN daily change": 100,
-                "SOXL ATR regime": 44
+                "SOXL ATR regime": 47
               },
               "weights": {
                 "Consolidation safety": 35,
@@ -151444,18 +151444,18 @@
                 "SOXL ATR regime": 25
               },
               "soxlAtr": {
-                "atr14Pct": 37.16,
-                "atr14PctPercentile60": 96.7,
-                "atr14Vs50": 0.96,
-                "regimeSafetyScore": 44
+                "atr14Pct": 31.17,
+                "atr14PctPercentile60": 93.3,
+                "atr14Vs50": 0.93,
+                "regimeSafetyScore": 47
               }
             },
             "entryQuality": {
-              "score": 19,
+              "score": 22,
               "factorScores": {
                 "20DMA distance": 0,
-                "5D return": 0,
-                "RSI14": 36,
+                "5D return": 13,
+                "RSI14": 38,
                 "20D-high distance": 10,
                 "Intraday giveback": 100
               },
@@ -151471,8 +151471,8 @@
             },
             "extensionAdjustment": {
               "base20dMaPenalty": 0.0,
-              "regimeMultiplier": 1.0,
-              "regime": "No extension relief",
+              "regimeMultiplier": 0.8,
+              "regime": "Strong semiconductor trend",
               "applied20dMaPenalty": 0.0,
               "rsiHeatPenalty": 0.0,
               "rsiExtensionAmplifier": 0.25,
@@ -151480,20 +151480,20 @@
               "totalPenalty": 0.0
             },
             "technicalContext": {
-              "ma20DistancePct": -42.18,
-              "return5dPct": -35.0,
-              "rsi14": 33.0,
-              "distanceFrom20dHighPct": -68.73
+              "ma20DistancePct": -29.79,
+              "return5dPct": -19.27,
+              "rsi14": 36.0,
+              "distanceFrom20dHighPct": -52.54
             },
             "strongestDrivers": [
-              "Semiconductor trend 71",
+              "Semiconductor trend 75",
               "Market confirmation 65"
             ],
             "weakestDrivers": [
-              "SOXL entry quality 19",
+              "SOXL entry quality 22",
               "Rates / macro 31"
             ],
-            "explanation": "SOXL tactical entry quality is wait (50/100) for a 1–5 session horizon. Raw score 50; extension/overheating penalty 0.0. Strongest inputs: Semiconductor trend 71, Market confirmation 65. Weakest: SOXL entry quality 19, Rates / macro 31.",
+            "explanation": "SOXL tactical entry quality is wait (52/100) for a 1–5 session horizon. Raw score 52; extension/overheating penalty 0.0. Strongest inputs: Semiconductor trend 75, Market confirmation 65. Weakest: SOXL entry quality 22, Rates / macro 31.",
             "note": "Experimental tactical score for a daily 3x leveraged ETF. It measures entry quality, not expected return or position size."
           }
         },
@@ -151539,13 +151539,13 @@
             "soxxVsNasdaqPp": 2.45,
             "smhVsNasdaqPp": 1.86,
             "soxx": {
-              "return1d": -0.49758979940911496,
-              "return3d": 3.711507293354943,
-              "return5d": -9.777934437786385,
-              "ma20Distance": -11.401,
-              "ma50Distance": -22.933,
-              "rsi14": 37.17851972257574,
-              "streak": -2
+              "return1d": 4.758556024378802,
+              "return3d": -4.385964912280704,
+              "return5d": -2.8126132656759673,
+              "ma20Distance": -7.185,
+              "ma50Distance": -19.266,
+              "rsi14": 41.603987150547596,
+              "streak": 1
             }
           },
           "megaCaps": {
@@ -151553,13 +151553,13 @@
             "basketVsQqqPp": -0.52
           },
           "qqq": {
-            "return1d": -0.653502585801613,
-            "return3d": 4.187690032048641,
-            "return5d": -3.8786371700201716,
-            "ma20Distance": -4.92,
-            "ma50Distance": -10.342,
-            "rsi14": 38.59845140837887,
-            "streak": -2
+            "return1d": 2.691148865016646,
+            "return3d": -0.006144110102446199,
+            "return5d": 0.922423415602136,
+            "ma20Distance": -2.361,
+            "ma50Distance": -7.929,
+            "rsi14": 44.037850604881754,
+            "streak": 1
           },
           "fed": {
             "tradeDate": "2026-11-25",
@@ -151631,7 +151631,7 @@
             "covered": 6,
             "above": 1,
             "abovePct": 16.67,
-            "medianDistancePct": -15.3955
+            "medianDistancePct": -15.2684
           }
         },
         "sameDayReturnsPct": {
@@ -151722,37 +151722,37 @@
         "NVDA": {
           "earningsDate": "2026-08-26",
           "anchorDate": "2026-08-27",
-          "throughDate": "2026-11-25",
-          "avwap": 188.95710173853473,
+          "throughDate": "2026-11-27",
+          "avwap": 188.34666634027454,
           "price": 150.49,
-          "distancePct": -20.357584544116648,
+          "distancePct": -20.09946184652994,
           "above": false,
-          "slope5dPct": -5.101889564770234,
-          "sessions": 64,
+          "slope5dPct": -4.646126589210608,
+          "sessions": 65,
           "instrumentType": "equity",
           "anchors": {
             "highestHigh": {
               "anchorDate": "2026-10-06",
               "anchorPrice": 243.37,
-              "avwap": 175.15571531118601,
-              "sessions": 37,
-              "throughDate": "2026-11-25",
-              "slope5dPct": -5.449560350140659,
+              "avwap": 174.60409901325804,
+              "sessions": 38,
+              "throughDate": "2026-11-27",
+              "slope5dPct": -4.8626108385115385,
               "lookbackSessions": 120,
               "anchorType": "highestHigh",
-              "distancePct": -14.082164128852027,
+              "distancePct": -13.810729043323889,
               "above": false
             },
             "lowestLow": {
               "anchorDate": "2026-11-20",
               "anchorPrice": 124.5,
-              "avwap": 150.0662325246139,
-              "sessions": 4,
-              "throughDate": "2026-11-25",
+              "avwap": 149.97144740415405,
+              "sessions": 5,
+              "throughDate": "2026-11-27",
               "slope5dPct": null,
               "lookbackSessions": 120,
               "anchorType": "lowestLow",
-              "distancePct": 0.2823869622478936,
+              "distancePct": 0.34576754763759876,
               "above": true
             }
           }
@@ -151760,37 +151760,37 @@
         "AMD": {
           "earningsDate": "2026-08-04",
           "anchorDate": "2026-08-05",
-          "throughDate": "2026-11-25",
-          "avwap": 514.2129414741381,
+          "throughDate": "2026-11-27",
+          "avwap": 513.2106775745635,
           "price": 424.54,
-          "distancePct": -17.438872934054327,
+          "distancePct": -17.277636933358753,
           "above": false,
-          "slope5dPct": -2.114664625591456,
-          "sessions": 80,
+          "slope5dPct": -2.1093690340355353,
+          "sessions": 81,
           "instrumentType": "equity",
           "anchors": {
             "highestHigh": {
               "anchorDate": "2026-10-06",
               "anchorPrice": 658.52,
-              "avwap": 506.79786389836454,
-              "sessions": 37,
-              "throughDate": "2026-11-25",
-              "slope5dPct": -3.6154730130065316,
+              "avwap": 505.231604799089,
+              "sessions": 38,
+              "throughDate": "2026-11-27",
+              "slope5dPct": -3.550571295236127,
               "lookbackSessions": 120,
               "anchorType": "highestHigh",
-              "distancePct": -16.23090185614138,
+              "distancePct": -15.97121083333195,
               "above": false
             },
             "lowestLow": {
               "anchorDate": "2026-11-25",
               "anchorPrice": 370.4,
-              "avwap": 388.5685,
-              "sessions": 1,
-              "throughDate": "2026-11-25",
+              "avwap": 396.6130027677671,
+              "sessions": 2,
+              "throughDate": "2026-11-27",
               "slope5dPct": null,
               "lookbackSessions": 120,
               "anchorType": "lowestLow",
-              "distancePct": 9.257441094684737,
+              "distancePct": 7.041372077401431,
               "above": true
             }
           }
@@ -151798,37 +151798,37 @@
         "AVGO": {
           "earningsDate": "2026-09-02",
           "anchorDate": "2026-09-03",
-          "throughDate": "2026-11-25",
-          "avwap": 340.78276056114834,
+          "throughDate": "2026-11-27",
+          "avwap": 340.4578649267647,
           "price": 312.34,
-          "distancePct": -8.346302645800874,
+          "distancePct": -8.25883841244588,
           "above": false,
-          "slope5dPct": -1.12203941821436,
-          "sessions": 59,
+          "slope5dPct": -1.264928325331427,
+          "sessions": 60,
           "instrumentType": "equity",
           "anchors": {
             "highestHigh": {
               "anchorDate": "2026-08-10",
               "anchorPrice": 432.73,
-              "avwap": 347.8393159882502,
-              "sessions": 77,
-              "throughDate": "2026-11-25",
-              "slope5dPct": -1.0848762401623468,
+              "avwap": 347.51531112672717,
+              "sessions": 78,
+              "throughDate": "2026-11-27",
+              "slope5dPct": -1.1864163704249475,
               "lookbackSessions": 120,
               "anchorType": "highestHigh",
-              "distancePct": -10.205665189799696,
+              "distancePct": -10.121945710156044,
               "above": false
             },
             "lowestLow": {
               "anchorDate": "2026-11-25",
               "anchorPrice": 278.0,
-              "avwap": 292.2612,
-              "sessions": 1,
-              "throughDate": "2026-11-25",
+              "avwap": 298.14703662847654,
+              "sessions": 2,
+              "throughDate": "2026-11-27",
               "slope5dPct": null,
               "lookbackSessions": 120,
               "anchorType": "lowestLow",
-              "distancePct": 6.870155874265893,
+              "distancePct": 4.7603905549493675,
               "above": true
             }
           }
@@ -151836,37 +151836,37 @@
         "MU": {
           "earningsDate": "2026-09-30",
           "anchorDate": "2026-10-01",
-          "throughDate": "2026-11-25",
-          "avwap": 828.6038962831449,
+          "throughDate": "2026-11-27",
+          "avwap": 824.5745119380716,
           "price": 646.95,
-          "distancePct": -21.922887051097252,
+          "distancePct": -21.54135367592005,
           "above": false,
-          "slope5dPct": -4.837456252798922,
-          "sessions": 40,
+          "slope5dPct": -4.742530164467795,
+          "sessions": 41,
           "instrumentType": "equity",
           "anchors": {
             "highestHigh": {
               "anchorDate": "2026-06-25",
               "anchorPrice": 1255.0,
-              "avwap": 916.0372514684585,
-              "sessions": 108,
-              "throughDate": "2026-11-25",
-              "slope5dPct": -1.9679922179368758,
+              "avwap": 914.0218468286845,
+              "sessions": 109,
+              "throughDate": "2026-11-27",
+              "slope5dPct": -1.9545869684557848,
               "lookbackSessions": 120,
               "anchorType": "highestHigh",
-              "distancePct": -29.375142881700135,
+              "distancePct": -29.21941611738541,
               "above": false
             },
             "lowestLow": {
               "anchorDate": "2026-11-25",
               "anchorPrice": 548.13,
-              "avwap": 577.6683,
-              "sessions": 1,
-              "throughDate": "2026-11-25",
+              "avwap": 596.1321416772262,
+              "sessions": 2,
+              "throughDate": "2026-11-27",
               "slope5dPct": null,
               "lookbackSessions": 120,
               "anchorType": "lowestLow",
-              "distancePct": 11.993335968063334,
+              "distancePct": 8.524596271524153,
               "above": true
             }
           }
@@ -151874,37 +151874,37 @@
         "QCOM": {
           "earningsDate": "2026-07-29",
           "anchorDate": "2026-07-30",
-          "throughDate": "2026-11-25",
-          "avwap": 171.58447373988855,
+          "throughDate": "2026-11-27",
+          "avwap": 171.63965210423265,
           "price": 179.27,
-          "distancePct": 4.479150177516789,
+          "distancePct": 4.44556243398444,
           "above": true,
-          "slope5dPct": -0.5102506461534984,
-          "sessions": 84,
+          "slope5dPct": -0.4084949973679919,
+          "sessions": 85,
           "instrumentType": "equity",
           "anchors": {
             "highestHigh": {
               "anchorDate": "2026-06-22",
               "anchorPrice": 233.444,
-              "avwap": 175.82627518140714,
-              "sessions": 111,
-              "throughDate": "2026-11-25",
-              "slope5dPct": -0.48032998892819645,
+              "avwap": 175.83787774173618,
+              "sessions": 112,
+              "throughDate": "2026-11-27",
+              "slope5dPct": -0.405005821015747,
               "lookbackSessions": 120,
               "anchorType": "highestHigh",
-              "distancePct": 1.958595104764549,
+              "distancePct": 1.9518674260302404,
               "above": true
             },
             "lowestLow": {
               "anchorDate": "2026-08-03",
               "anchorPrice": 142.89,
-              "avwap": 172.39104115229208,
-              "sessions": 82,
-              "throughDate": "2026-11-25",
-              "slope5dPct": -0.5695480879265302,
+              "avwap": 172.44063407847543,
+              "sessions": 83,
+              "throughDate": "2026-11-27",
+              "slope5dPct": -0.461419660717588,
               "lookbackSessions": 120,
               "anchorType": "lowestLow",
-              "distancePct": 3.9903226999081554,
+              "distancePct": 3.9604156862567796,
               "above": true
             }
           }
@@ -151912,37 +151912,37 @@
         "TSM": {
           "earningsDate": "2026-07-16",
           "anchorDate": "2026-07-16",
-          "throughDate": "2026-11-25",
-          "avwap": 407.7882764893489,
+          "throughDate": "2026-11-27",
+          "avwap": 407.35093718061563,
           "price": 353.34,
-          "distancePct": -13.352094610981558,
+          "distancePct": -13.259067857911344,
           "above": false,
-          "slope5dPct": -1.7448001948062175,
-          "sessions": 94,
+          "slope5dPct": -1.6411156283703043,
+          "sessions": 95,
           "instrumentType": "equity",
           "anchors": {
             "highestHigh": {
               "anchorDate": "2026-10-05",
               "anchorPrice": 487.47,
-              "avwap": 394.72603260543696,
-              "sessions": 38,
-              "throughDate": "2026-11-25",
-              "slope5dPct": -3.2984095825436266,
+              "avwap": 394.0370762762842,
+              "sessions": 39,
+              "throughDate": "2026-11-27",
+              "slope5dPct": -3.0456638249720336,
               "lookbackSessions": 120,
               "anchorType": "highestHigh",
-              "distancePct": -10.48474870843037,
+              "distancePct": -10.328235266812547,
               "above": false
             },
             "lowestLow": {
               "anchorDate": "2026-11-20",
               "anchorPrice": 318.481,
-              "avwap": 342.695498945978,
-              "sessions": 4,
-              "throughDate": "2026-11-25",
+              "avwap": 343.349391945805,
+              "sessions": 5,
+              "throughDate": "2026-11-27",
               "slope5dPct": null,
               "lookbackSessions": 120,
               "anchorType": "lowestLow",
-              "distancePct": 3.1061105520093113,
+              "distancePct": 2.9097497442989173,
               "above": true
             }
           }
@@ -151962,25 +151962,25 @@
             "highestHigh": {
               "anchorDate": "2026-06-22",
               "anchorPrice": 671.83,
-              "avwap": 549.8227687694208,
-              "sessions": 111,
-              "throughDate": "2026-11-25",
-              "slope5dPct": -1.68978581241368,
+              "avwap": 549.0123258965135,
+              "sessions": 112,
+              "throughDate": "2026-11-27",
+              "slope5dPct": -1.657237670123679,
               "lookbackSessions": 120,
               "anchorType": "highestHigh",
-              "distancePct": -19.963299994848338,
+              "distancePct": -19.845151148218587,
               "above": false
             },
             "lowestLow": {
               "anchorDate": "2026-11-25",
               "anchorPrice": 393.88,
-              "avwap": 406.7203999999999,
-              "sessions": 1,
-              "throughDate": "2026-11-25",
+              "avwap": 415.51530444687387,
+              "sessions": 2,
+              "throughDate": "2026-11-27",
               "slope5dPct": null,
               "lookbackSessions": 120,
               "anchorType": "lowestLow",
-              "distancePct": 8.197179192388692,
+              "distancePct": 5.9070497020078605,
               "above": true
             }
           }
@@ -152000,25 +152000,25 @@
             "highestHigh": {
               "anchorDate": "2026-06-22",
               "anchorPrice": 218.65,
-              "avwap": 168.8019729538611,
-              "sessions": 111,
-              "throughDate": "2026-11-25",
-              "slope5dPct": -2.152647991847889,
+              "avwap": 168.37876657363614,
+              "sessions": 112,
+              "throughDate": "2026-11-27",
+              "slope5dPct": -2.1676396570785794,
               "lookbackSessions": 120,
               "anchorType": "highestHigh",
-              "distancePct": -20.575572871624225,
+              "distancePct": -20.37594601254671,
               "above": false
             },
             "lowestLow": {
               "anchorDate": "2026-11-25",
               "anchorPrice": 118.18,
-              "avwap": 122.3838,
-              "sessions": 1,
-              "throughDate": "2026-11-25",
+              "avwap": 126.56835899323188,
+              "sessions": 2,
+              "throughDate": "2026-11-27",
               "slope5dPct": null,
               "lookbackSessions": 120,
               "anchorType": "lowestLow",
-              "distancePct": 9.548812833071052,
+              "distancePct": 5.926948145996946,
               "above": true
             }
           }
@@ -152038,25 +152038,25 @@
             "highestHigh": {
               "anchorDate": "2026-06-22",
               "anchorPrice": 302.0,
-              "avwap": 94.25374627785378,
-              "sessions": 111,
-              "throughDate": "2026-11-25",
-              "slope5dPct": -12.333122320361124,
+              "avwap": 92.84124557043715,
+              "sessions": 112,
+              "throughDate": "2026-11-27",
+              "slope5dPct": -12.08411837342156,
               "lookbackSessions": 120,
               "anchorType": "highestHigh",
-              "distancePct": -61.20048120719353,
+              "distancePct": -60.61017947862953,
               "above": false
             },
             "lowestLow": {
               "anchorDate": "2026-11-25",
               "anchorPrice": 24.605,
-              "avwap": 28.0792,
-              "sessions": 1,
-              "throughDate": "2026-11-25",
+              "avwap": 30.455422250303254,
+              "sessions": 2,
+              "throughDate": "2026-11-27",
               "slope5dPct": null,
               "lookbackSessions": 120,
               "anchorType": "lowestLow",
-              "distancePct": 30.23875324083307,
+              "distancePct": 20.077139957026404,
               "above": true
             }
           }
@@ -152105,17 +152105,17 @@
           "trend": "Deteriorating ↓",
           "latest": "VXN 33.34 (-13.47%) | VIX 23.81 (-11.16%)"
         },
-        "Oil (WTI / Brent)": {
-          "signal": "mixed",
-          "currentImpact": "Low",
-          "trend": "Stable →",
-          "latest": "Brent $95.44 (+0.00%) | WTI $83.33 (-0.42%)"
-        },
         "Mega-cap leadership": {
           "signal": "mixed",
           "currentImpact": "Medium",
           "trend": "Stable →",
           "latest": "Previous regular-session close · 7-stock basket +2.17% | 7/7 positive | QQQ +2.69% | relative -0.52 pp"
+        },
+        "Oil (WTI / Brent)": {
+          "signal": "mixed",
+          "currentImpact": "Low",
+          "trend": "Stable →",
+          "latest": "Brent $95.44 (+0.00%) | WTI $83.33 (-0.42%)"
         },
         "Options positioning / sentiment": {
           "signal": "mixed",
@@ -152145,7 +152145,7 @@
           "signal": "negative",
           "currentImpact": "High",
           "trend": "Deteriorating ↓",
-          "latest": "1/6 above Earnings AVWAP · median -15.4%"
+          "latest": "1/6 above Earnings AVWAP · median -15.3%"
         }
       },
       "marketResponse": {
@@ -152153,7 +152153,7 @@
         "status": "inactive",
         "mode": null,
         "summary": "No persistent divergence between the macro impulse and live market response.",
-        "observedAt": "2026-11-27T20:13:41.090957-05:00",
+        "observedAt": "2026-11-27T21:39:55.484896-05:00",
         "candidateMode": null,
         "candidateSince": null,
         "persistenceMinutes": 0.0,
@@ -152171,9 +152171,9 @@
       },
       "soxlBuyScore": {
         "version": 3.3,
-        "score": 50,
-        "rawScore": 50,
-        "preGateScore": 50,
+        "score": 52,
+        "rawScore": 52,
+        "preGateScore": 52,
         "label": "Wait",
         "signal": "mixed",
         "horizon": "1–5 sessions",
@@ -152181,18 +152181,18 @@
         "last": 36.57,
         "changePct": 14.21,
         "components": {
-          "Semiconductor trend": 71,
-          "SOXL entry quality": 19,
+          "Semiconductor trend": 75,
+          "SOXL entry quality": 22,
           "Market confirmation": 65,
-          "Volatility / leverage risk": 54,
+          "Volatility / leverage risk": 56,
           "Rates / macro": 31,
           "Catalyst asymmetry": 50
         },
         "semiconductorTrend": {
           "version": 2.1,
-          "score": 71,
+          "score": 75,
           "components": {
-            "SOXX technical trend": 4,
+            "SOXX technical trend": 18,
             "SOX relative strength": 100,
             "SOXX relative strength": 100,
             "SMH relative strength": 100,
@@ -152207,11 +152207,11 @@
           },
           "availableWeightPct": 100,
           "soxxTechnicalTrend": {
-            "score": 4,
+            "score": 18,
             "components": {
-              "SOXX vs 20DMA": 0,
-              "SOXX 5D momentum": 0,
-              "SOXX RSI14 trend": 9,
+              "SOXX vs 20DMA": 14,
+              "SOXX 5D momentum": 22,
+              "SOXX RSI14 trend": 25,
               "SOXX ADX/DMI trend strength": 8
             },
             "weights": {
@@ -152221,12 +152221,12 @@
               "SOXX ADX/DMI trend strength": 20
             },
             "context": {
-              "ma20DistancePct": -11.4,
-              "return5dPct": -9.78,
-              "rsi14": 37.2,
-              "adx14": 33.0,
-              "plusDI14": 16.6,
-              "minusDI14": 41.9
+              "ma20DistancePct": -7.18,
+              "return5dPct": -2.81,
+              "rsi14": 41.6,
+              "adx14": 32.9,
+              "plusDI14": 20.8,
+              "minusDI14": 39.8
             }
           }
         },
@@ -152234,38 +152234,38 @@
         "intradayGivebackPp": 0.0,
         "indicatorSnapshot": {
           "RSI14": {
-            "value": 33.0,
-            "meaning": "Oversold / Weak",
-            "entryScore": 36,
+            "value": 36.0,
+            "meaning": "Weak Momentum",
+            "entryScore": 38,
             "role": "SOXL entry-quality momentum / overheating input"
           },
           "STOCH96": {
             "label": "Stochastic · Daily",
             "kPeriod": 9,
             "dPeriod": 6,
-            "k": 18.5,
-            "d": 15.1,
-            "meaning": "Oversold · Momentum accelerating",
+            "k": 37.7,
+            "d": 17.7,
+            "meaning": "Neutral · Momentum accelerating",
             "scored": false,
             "timeframe": "Daily",
             "role": "Observational SOXL range-position and momentum context only"
           },
           "ATR14": {
-            "valuePct": 37.16,
+            "valuePct": 31.17,
             "meaning": "Expanding / High Leverage Risk",
-            "regimeSafetyScore": 44,
-            "percentile60": 96.7,
-            "atr14Vs50": 0.96,
+            "regimeSafetyScore": 47,
+            "percentile60": 93.3,
+            "atr14Vs50": 0.93,
             "role": "SOXL realized-volatility / leverage-risk input"
           }
         },
         "volatilityLeverageRisk": {
-          "score": 54,
+          "score": 56,
           "components": {
-            "Consolidation safety": 81,
+            "Consolidation safety": 84,
             "VXN condition": 0,
             "VXN daily change": 100,
-            "SOXL ATR regime": 44
+            "SOXL ATR regime": 47
           },
           "weights": {
             "Consolidation safety": 35,
@@ -152274,18 +152274,18 @@
             "SOXL ATR regime": 25
           },
           "soxlAtr": {
-            "atr14Pct": 37.16,
-            "atr14PctPercentile60": 96.7,
-            "atr14Vs50": 0.96,
-            "regimeSafetyScore": 44
+            "atr14Pct": 31.17,
+            "atr14PctPercentile60": 93.3,
+            "atr14Vs50": 0.93,
+            "regimeSafetyScore": 47
           }
         },
         "entryQuality": {
-          "score": 19,
+          "score": 22,
           "factorScores": {
             "20DMA distance": 0,
-            "5D return": 0,
-            "RSI14": 36,
+            "5D return": 13,
+            "RSI14": 38,
             "20D-high distance": 10,
             "Intraday giveback": 100
           },
@@ -152301,8 +152301,8 @@
         },
         "extensionAdjustment": {
           "base20dMaPenalty": 0.0,
-          "regimeMultiplier": 1.0,
-          "regime": "No extension relief",
+          "regimeMultiplier": 0.8,
+          "regime": "Strong semiconductor trend",
           "applied20dMaPenalty": 0.0,
           "rsiHeatPenalty": 0.0,
           "rsiExtensionAmplifier": 0.25,
@@ -152310,20 +152310,20 @@
           "totalPenalty": 0.0
         },
         "technicalContext": {
-          "ma20DistancePct": -42.18,
-          "return5dPct": -35.0,
-          "rsi14": 33.0,
-          "distanceFrom20dHighPct": -68.73
+          "ma20DistancePct": -29.79,
+          "return5dPct": -19.27,
+          "rsi14": 36.0,
+          "distanceFrom20dHighPct": -52.54
         },
         "strongestDrivers": [
-          "Semiconductor trend 71",
+          "Semiconductor trend 75",
           "Market confirmation 65"
         ],
         "weakestDrivers": [
-          "SOXL entry quality 19",
+          "SOXL entry quality 22",
           "Rates / macro 31"
         ],
-        "explanation": "SOXL tactical entry quality is wait (50/100) for a 1–5 session horizon. Raw score 50; extension/overheating penalty 0.0. Strongest inputs: Semiconductor trend 71, Market confirmation 65. Weakest: SOXL entry quality 19, Rates / macro 31.",
+        "explanation": "SOXL tactical entry quality is wait (52/100) for a 1–5 session horizon. Raw score 52; extension/overheating penalty 0.0. Strongest inputs: Semiconductor trend 75, Market confirmation 65. Weakest: SOXL entry quality 22, Rates / macro 31.",
         "note": "Experimental tactical score for a daily 3x leveraged ETF. It measures entry quality, not expected return or position size."
       }
     }
