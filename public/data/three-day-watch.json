@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-28T13:36:10Z",
+  "updated": "2026-11-28T15:58:06Z",
   "horizon": [
     "2026-11-30",
     "2026-12-01",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-28",
-      "timeET": "08:36",
+      "timeET": "10:58",
       "bias": "Neutral — Broad Relief Rally, Macro Risk",
       "previousBias": "Neutral — Broad Relief Rally, Macro Risk",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Neutral unchanged; weekend review corroborates Friday broad relief rally and persistent rate and oil risks. No new curated catalyst or synchronized market prices.",
+      "summary": "Neutral unchanged. Fresh weekend source review confirms broad Friday relief, elevated rates and pending OPEC+ decision; no new curated catalyst or live synchronized quotes.",
       "bullish": [
         "Friday SOX +4.7%, Nasdaq +2.31%, QQQ approximately +2.7%; broad participation including Russell 2000 +1.7%.",
         "Dashboard VXN 33.34 and VIX 23.81, lower than prior session readings; exact underlying timestamps unavailable."
@@ -304,6 +304,22 @@
           "source": "https://apnews.com/article/04dab6079cf7f3dfe7285a3cc1f240a2",
           "sourceTime": "week ended 2026-11-27",
           "quality": "Historical weekly return, not live"
+        },
+        {
+          "metric": "10Y external later report",
+          "value": 4.933,
+          "unit": "percent yield",
+          "source": "https://www.wsj.com/finance/investing/short-term-jgb-yields-rise-on-elevated-tokyo-inflation-data-713a900b",
+          "sourceTime": "2026-11-27 session, reported November 28",
+          "quality": "Historical report; exact quote time unknown; no matched 2Y quote"
+        },
+        {
+          "metric": "Nasdaq score latest",
+          "value": -12,
+          "unit": "score points",
+          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
+          "sourceTime": "2026-11-28 08:37 ET report",
+          "quality": "Model output, not live quote"
         }
       ],
       "conditions": {
@@ -358,13 +374,25 @@
           "event": "Huang Senate testimony",
           "status": "Reuters reported date; outside horizon, committee confirmation not obtained",
           "source": "https://www.reuters.com/business/take-five/global-markets-themes-takealook-graphics-2026-11-27/"
+        },
+        {
+          "date": "2026-12-01",
+          "event": "Construction spending 10:00 ET; S&P manufacturing PMI 09:45 ET",
+          "status": "NY Fed and TD calendars",
+          "source": "https://www.newyorkfed.org/research/calendars/i-dec26.html"
+        },
+        {
+          "date": "2026-12-02",
+          "event": "Labor Market Tightness Index 09:00 ET",
+          "status": "NY Fed calendar",
+          "source": "https://www.newyorkfed.org/research/calendars/i-dec26.html"
         }
       ],
       "provenance": {
-        "assessmentTime": "2026-11-28T13:36:10Z",
-        "repositorySnapshotUpdated": "2026-11-28 02:41 ET",
+        "assessmentTime": "2026-11-28T15:58:06Z",
+        "repositorySnapshotUpdated": "2026-11-28T13:36:10Z",
         "openWatchUpdated": "2026-11-28T02:31:23+00:00",
-        "sourceQuality": "Fresh weekend retrieval of Reuters, AP, WSJ and MarketWatch corroborates Friday/weekly recovery and oil risk. No synchronized new quotes; previous exact Fed probabilities and volatility timestamps remain unverified. Open Watch unchanged. Calendar earnings corroborated by secondary calendar, not issuer verified.",
+        "sourceQuality": "Fresh retrieval of Reuters, WSJ, AP, TD and NY Fed calendar; all prices historical, no new synchronized observations. Latest repository report 08:37 ET retains score -12, VXN 33.34 and VIX 23.81 with underlying quote times unknown. Open Watch unchanged. Earnings secondary calendar, not issuer verified.",
         "yieldScaling": "Repository yields already percent; (4.936-4.710)*100=22.6 bp.",
         "marketVsCatalyst": "Friday rally observed; weekend OPEC+ outcome and potential supply disruptions are prospective, not observed equity reactions.",
         "sources": [
@@ -390,17 +418,20 @@
           "https://www.reuters.com/business/wall-st-week-ahead-sliding-stock-market-confronts-jobs-data-rate-view-next-tests-2026-11-27/",
           "https://www.reuters.com/business/take-five/global-markets-themes-takealook-graphics-2026-11-27/",
           "https://www.marketwatch.com/story/these-stocks-soared-the-most-during-a-wild-week-highlighted-by-huangs-return-to-nvidia-578b3f9a",
-          "https://www.pretickt.com/earnings-this-week/"
+          "https://www.pretickt.com/earnings-this-week/",
+          "https://www.newyorkfed.org/research/calendars/i-dec26.html",
+          "https://www.wsj.com/finance/investing/short-term-jgb-yields-rise-on-elevated-tokyo-inflation-data-713a900b",
+          "https://vaultwealth.com/resources/daily-pour/28-november/"
         ]
       },
       "editorial": {
-        "marketOverview": "Friday's shortened session saw Nasdaq rise 2.31% and SOX about 4.7%, while AP reports Russell 2000 up 1.7%, consistent with broad participation. The weekly rebound was strong but holiday liquidity and the preceding selloff limit trend inference. Weekly breadth is unusually broad, but the Nasdaq's 6.7% weekly gain only partly offsets the preceding 10% decline.",
-        "whatChanged": "Latest repository early outlook at 02:41 ET retains score -12 and consolidation risk 16/100. Open Watch remains updated 02:31 UTC with no new curated catalyst. MarketWatch reports 97% of S&P constituents advanced over the week, and AP reports Russell 2000 gained 6.5% over the week. These are additional historical breadth confirmations, not new trading. No material change to the three-session path.",
-        "marketInterpretation": "The rebound remains a relief move pending normal-liquidity confirmation. Cooling volatility is constructive, but VXN remains elevated. Repository yields of 4.936% and 4.710% imply 22.6 basis points; WSJ reports slightly earlier lower yields and a widely priced December hike. Oil settlements remain historical and weekend supply risks prospective. The weekly breadth confirmation reduces concern that the rebound was confined to one AI stock, without resolving the rate or financing headwinds.",
-        "threeDayPath": "Monday tests Friday's broad rally under normal liquidity after OPEC+; Rubrik reports after close. Tuesday ISM and JOLTS at 10 ET may reset rate expectations, with Marvell and Credo guidance after close shaping Wednesday's chip trade. Wednesday ADP and the semiconductor earnings response are the main in-horizon tests; Salesforce and Snowflake report after close. Thursday's reported Huang testimony may influence positioning before the event, not an observed reaction.",
-        "bullCase": "Broad participation and sustained semiconductor relative strength, combined with easing volatility and stable or lower yields, could extend Friday's rebound. Constructive chip guidance would reinforce the demand narrative.",
-        "bearCase": "A reversal in chip leadership, renewed oil supply disruption or yields above 5% could unwind the relief rally. Weak AI infrastructure guidance or hotter macro data could intensify valuation pressure.",
-        "watchNext": "Watch Sunday OPEC+ decision and futures reopening, Monday breadth and synchronized rates/volatility, Tuesday macro and chip earnings, Wednesday ADP. Reuters dates Huang Senate testimony to Thursday December 3; Friday payrolls and December 8–9 Fed meeting are also outside the horizon but may affect positioning."
+        "marketOverview": "Friday's shortened session saw Nasdaq rise 2.31%, SOX about 4.7%, and Russell 2000 1.7%. AP confirms the broad weekly rebound, including Russell 2000 up 6.5%. Micron and Marvell led Friday chips while Nvidia lagged. The recovery is historical and holiday liquidity limits extrapolation.",
+        "whatChanged": "The 08:37 ET repository report retains score -12 and consolidation risk 16. Open Watch timestamp is unchanged. Fresh WSJ reporting places Friday 10Y near 4.933%, corroborating repository 4.936% without establishing synchronized 2Y timing. NY Fed calendar confirms Tuesday ISM/JOLTS and Wednesday ADP; construction spending and labor tightness are additional scheduled releases. No material path change.",
+        "marketInterpretation": "The rebound remains a relief move pending normal liquidity. Repository VXN 33.34 and VIX 23.81 suggest cooling but underlying timestamps are unknown. Repository yields 4.936% and 4.710% imply 22.6 bp without rescaling; WSJ later reporting corroborates the 10Y level. Friday Fed pricing remains restrictive and Reuters reports Brent 95.44 and WTI 83.08 settlements. Weekend supply developments are prospective, not observed equity reactions.",
+        "threeDayPath": "Monday tests the relief rally after Sunday's pending OPEC+ decision. Tuesday manufacturing PMI, ISM, JOLTS and construction spending can reprice rates; Marvell and Credo after-close guidance may shape Wednesday chips. Wednesday ADP and labor tightness data add rate risk, with Salesforce and Snowflake after close. Friday payrolls and the December Fed meeting are outside the horizon but may influence positioning.",
+        "bullCase": "Sustained chip outperformance and broad participation under normal liquidity, stable or falling yields and further volatility cooling would support a continuation. Constructive chip guidance could strengthen demand confidence.",
+        "bearCase": "Renewed oil supply pressure, a 10Y move above 5%, narrowing breadth or weaker chip guidance could reverse the relief rally. Hot macro releases could reinforce tightening expectations.",
+        "watchNext": "Watch OPEC+ outcome, Sunday futures reopening, Monday synchronized cross-asset prices and breadth, Tuesday macro releases and chip earnings, and Wednesday ADP and earnings reaction. Do not infer weekend equity responses from news alone."
       }
     }
   ]
