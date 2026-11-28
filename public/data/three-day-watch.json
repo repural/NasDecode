@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-28T02:29:36Z",
+  "updated": "2026-11-28T02:52:47Z",
   "horizon": [
     "2026-11-30",
     "2026-12-01",
@@ -16,20 +16,21 @@
   "entries": [
     {
       "date": "2026-11-27",
-      "timeET": "21:29",
+      "timeET": "21:52",
       "bias": "Neutral — Broad Relief Rally, Macro Risk",
       "previousBias": "Neutral — Broad Relief Rally, Macro Risk",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Friday's chip-led rebound remains intact; model score slips to -13, still mixed/neutral. No new curated catalyst or live weekend reversal.",
+      "summary": "Neutral remains appropriate: Friday's broad chip rebound offsets elevated rates and oil supply risk. Freshly corroborated oil settlements clarify earlier conflicting quotes; no new cash session or dated curated catalyst.",
       "bullish": [
         "SOX +4.69%, Nasdaq +2.31%, QQQ approximately +2.7%; positive breadth in repository.",
         "VIX reported lower at 24.06; broad equity gains."
       ],
       "bearish": [
         "10Y 4.936%, 2Y 4.710% in repository; score fell from +10 at open to -13.",
-        "AI valuation and policy risks persist; holiday liquidity limits inference."
+        "AI valuation and policy risks persist; holiday liquidity limits inference.",
+        "Brent settled at $95.44 despite daily decline; weekend supply risks remain."
       ],
       "observations": [
         {
@@ -129,22 +130,6 @@
           "quality": "Prior session observation; not live at assessment. Stale prior assessment; not current or synchronized"
         },
         {
-          "metric": "Brent",
-          "value": 94.33,
-          "unit": "USD/barrel",
-          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "sourceTime": "2026-11-27 11:34 ET report",
-          "quality": "Prior session observation; not live at assessment. Stale prior assessment; not current or synchronized"
-        },
-        {
-          "metric": "WTI",
-          "value": 83.34,
-          "unit": "USD/barrel",
-          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "sourceTime": "2026-11-27 11:34 ET report",
-          "quality": "Prior session observation; not live at assessment. Stale prior assessment; not current or synchronized"
-        },
-        {
           "metric": "December hike probability",
           "value": 99,
           "unit": "percent",
@@ -183,14 +168,6 @@
           "source": "https://www.wsj.com/finance/stocks/stocks-poised-to-end-week-strong-as-investors-take-break-from-ai-jitters-ce6b2846",
           "sourceTime": "2026-11-27 closing report",
           "quality": "Reported weekly return"
-        },
-        {
-          "metric": "Nasdaq score",
-          "value": -13,
-          "unit": "score points",
-          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "sourceTime": "2026-11-27 20:09 ET",
-          "quality": "Repository model score, not live quote"
         },
         {
           "metric": "Nasdaq Reuters close",
@@ -239,6 +216,38 @@
           "source": "https://www.wsj.com/finance/investing/u-s-treasury-yields-rise-in-shortened-post-thanksgiving-trade-f0822039",
           "sourceTime": "2026-11-27 report",
           "quality": "Calculated from same report, tick synchronization unknown"
+        },
+        {
+          "metric": "Brent",
+          "value": 95.44,
+          "unit": "USD/barrel",
+          "source": "https://www.reuters.com/business/energy/brent-trades-near-months-high-mideast-conflict-threatens-supply-2026-11-27/",
+          "sourceTime": "2026-11-27 settlement",
+          "quality": "Reuters and WSJ agree; AP reports different Brent quote, contract/timing unresolved"
+        },
+        {
+          "metric": "WTI",
+          "value": 83.08,
+          "unit": "USD/barrel",
+          "source": "https://www.wsj.com/finance/commodities-futures/oil-mixed-as-markets-track-mideast-developments-u-s-inventories-6daf3fb1",
+          "sourceTime": "2026-11-27 settlement",
+          "quality": "Reuters and WSJ agree; not live"
+        },
+        {
+          "metric": "S&P breadth",
+          "value": 80,
+          "unit": "percent advancing",
+          "source": "https://apnews.com/article/c7ef10c1dbc5fa09668bd4fe0729c613",
+          "sourceTime": "2026-11-27 cash session",
+          "quality": "Approximate reported breadth; not Nasdaq-specific"
+        },
+        {
+          "metric": "Nasdaq score",
+          "value": -13,
+          "unit": "score points",
+          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
+          "sourceTime": "2026-11-27 21:36 ET",
+          "quality": "Repository model score, not live quote"
         }
       ],
       "conditions": {
@@ -284,18 +293,17 @@
         }
       ],
       "provenance": {
-        "assessmentTime": "2026-11-28T02:29:36Z",
-        "repositorySnapshotUpdated": "2026-11-27 20:09 ET",
-        "openWatchUpdated": "2026-11-27T19:48:49+00:00",
-        "sourceQuality": "Weekend; no live synchronized quotes. Reuters corroborates Nasdaq and SOX close; repository score updated. Oil and VXN remain stale; exact settlements unavailable.",
+        "assessmentTime": "2026-11-28T02:52:47Z",
+        "repositorySnapshotUpdated": "2026-11-27 21:36 ET",
+        "openWatchUpdated": "2026-11-28T02:31:23+00:00",
+        "sourceQuality": "Weekend; no live synchronized quotes. Reuters and WSJ agree on oil settlements; AP Brent quote differs. VXN and exact Fed probabilities remain stale. Open Watch refreshed; latest dated events November 25.",
         "yieldScaling": "Repository yields already percent; (4.936-4.710)*100=22.6 bp.",
-        "marketVsCatalyst": "Friday rally observed; reported congressional hearings next week have no verified exact date or incremental market response. Open Watch timestamp unchanged.",
+        "marketVsCatalyst": "Friday rally observed; weekend OPEC+ outcome and potential supply disruptions are prospective, not observed equity reactions.",
         "sources": [
           "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
           "https://www.reuters.com/world/china/global-markets-global-markets-2026-11-27/",
           "https://finance.biggo.com/news/96a6dd9c-dfde-447d-9fba-83a4a62a0c21",
           "https://portfolio-terminal.com/markets/stock-market-close/november-27-2026",
-          "https://www.quantisnow.com/articles/chip-stocks-lead-a-black-friday-rally-that-wins-back-only-12-of-their-monthly-loss",
           "https://www.quantisnow.com/articles/chip-stocks-lead-a-black-friday-rally-that-wins-back-only-12-of-their-monthly-loss",
           "https://www.wsj.com/finance/stocks/stocks-poised-to-end-week-strong-as-investors-take-break-from-ai-jitters-ce6b2846",
           "https://www.thetimes.com/business/companies-markets/article/ai-stocks-rebound-thanksgiving-vggmcsfjm",
@@ -303,17 +311,20 @@
           "https://economics.td.com/domains/economics.td.com/documents/reports/bottom-line/tables/2026-11-27/upcoming.htm",
           "https://www.reuters.com/business/wall-st-futures-surge-investors-return-holiday-2026-11-27/",
           "https://www.wsj.com/finance/investing/u-s-treasury-yields-rise-in-shortened-post-thanksgiving-trade-f0822039",
-          "https://www.metatradingclub.com/close-recap-nov-27-2026-chip-stocks-bounce-big-week/"
+          "https://www.metatradingclub.com/close-recap-nov-27-2026-chip-stocks-bounce-big-week/",
+          "https://www.reuters.com/business/energy/brent-trades-near-months-high-mideast-conflict-threatens-supply-2026-11-27/",
+          "https://www.wsj.com/finance/commodities-futures/oil-mixed-as-markets-track-mideast-developments-u-s-inventories-6daf3fb1",
+          "https://apnews.com/article/c7ef10c1dbc5fa09668bd4fe0729c613"
         ]
       },
       "editorial": {
-        "marketOverview": "Friday's cash close remains the latest market observation. Reuters reports Nasdaq +2.31%, SOX approximately +4.7%, and Nvidia only +0.8%. Repository QQQ +2.69% differs slightly from Quantisnow +2.66%; SMH reports also differ. The broad rebound is real but exact cross-source returns are not synchronized.",
-        "whatChanged": "Repository score declined from -7 to -13 at 20:09 ET, still mixed/neutral. Reuters independently confirms the chip-led close, with Nvidia lagging the sector. Open Watch timestamp remains unchanged at 19:48 UTC. No new market session has occurred.",
-        "marketInterpretation": "The chip recovery and positive breadth offset restrictive rate expectations, but the weaker model score and Nvidia lag limit conviction. WSJ reports earlier 10Y 4.921% and 2Y 4.693%, versus repository 4.936% and 4.710%; both imply a positive curve near 23 bp. VXN and matched oil settlements remain unverified. No weekend price response is established.",
-        "threeDayPath": "Monday November 30 tests the rebound with normal liquidity and weekend oil news. Tuesday December 1 brings manufacturing PMI, ISM and official JOLTS at 10 ET; Credo earnings remain repository-listed. A secondary recap reports Nvidia hearings December 1 and 3, not independently confirmed. Wednesday December 2 ADP at 08:15 ET adds rate sensitivity.",
-        "bullCase": "A sustained chip-led recovery with broad participation and cooling volatility could extend gains if yields stabilize. The weekly rebound supports this possibility but does not establish a durable trend.",
-        "bearCase": "A reversal of semiconductor relative strength, narrowing breadth or renewed oil-driven inflation pressure could unwind the holiday rally. A ten-year yield above 5% would reinforce downside risk; AI financing and export uncertainty remain unresolved.",
-        "watchNext": "Monitor weekend OPEC+ developments, Monday futures and cash breadth, paired Treasury yields, fresh VXN/VIX and matched oil contracts. Verify hearing and earnings dates and compare Tuesday and Wednesday releases with consensus."
+        "marketOverview": "Friday's shortened cash session remains the latest observation. Reuters reports Nasdaq +2.31%, SOX about +4.7% and NVDA +0.8%. AP reports broad S&P participation, about four in five advancing. Repository QQQ +2.69% and score -13 indicate a broad rebound but mixed model conditions.",
+        "whatChanged": "The repository score remains -13 at 2026-11-27 21:36 ET. Open Watch refreshed at 2026-11-28T02:31:23+00:00; latest dated events remain November 25. Reuters and WSJ now corroborate Brent $95.44 and WTI $83.08 settlements, both lower on Friday. AP reports a different Brent quote, so contract and timing differences remain unresolved.",
+        "marketInterpretation": "Chip relative strength offsets restrictive Fed expectations but NVDA lag and elevated yields limit conviction. Repository 10Y 4.936% and 2Y 4.710% imply 22.6 basis points; no extra scaling is warranted. Oil supply risk remains despite lower daily settlements. VXN and exact Fed probabilities are stale; no live weekend market response is established.",
+        "threeDayPath": "Monday November 30 tests the relief rally under normal liquidity and after Sunday's OPEC+ meeting. Tuesday December 1 brings ISM manufacturing (55 consensus) and JOLTS (7.45 million consensus) at 10 ET; CRDO earnings remain repository-listed. Wednesday December 2 ADP at 08:15 ET (80,000 consensus) could shift rate expectations ahead of Friday payrolls. Hearing dates remain unverified.",
+        "bullCase": "Sustained SOX outperformance, broad participation and cooling volatility with stable yields could extend the recovery. Lower oil prices would help reduce inflation pressure if sustained.",
+        "bearCase": "A reversal in semiconductor leadership or breadth, renewed oil supply disruptions or yields above 5% could unwind the holiday rally. AI financing, governance and trade uncertainty remain unresolved.",
+        "watchNext": "Watch Sunday OPEC+ outcome, Monday futures and cash breadth, paired Treasury yields, fresh VXN/VIX and oil contracts. Compare Tuesday and Wednesday data with consensus and verify earnings and hearing dates."
       }
     }
   ]
