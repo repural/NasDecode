@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-28T06:10:24Z",
+  "updated": "2026-11-28T07:41:09Z",
   "horizon": [
     "2026-11-30",
     "2026-12-01",
@@ -16,13 +16,13 @@
   "entries": [
     {
       "date": "2026-11-28",
-      "timeET": "01:10",
+      "timeET": "02:41",
       "bias": "Neutral — Broad Relief Rally, Macro Risk",
       "previousBias": "Neutral — Broad Relief Rally, Macro Risk",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Neutral unchanged. Friday's broad semiconductor rebound and cooling volatility are supportive, but elevated yields, expected Fed tightening and weekend oil supply risk constrain conviction. No new curated catalyst.",
+      "summary": "Neutral unchanged. Friday relief rally remains broad, but rates and oil supply risk constrain follow-through. Reuters dates Huang Senate testimony to December 3, outside the three-session horizon; positioning risk remains.",
       "bullish": [
         "Friday SOX +4.7%, Nasdaq +2.31%, QQQ approximately +2.7%; broad participation including Russell 2000 +1.7%.",
         "Dashboard VXN 33.34 and VIX 23.81, lower than prior session readings; exact underlying timestamps unavailable."
@@ -280,6 +280,14 @@
           "source": "https://apnews.com/article/04dab6079cf7f3dfe7285a3cc1f240a2",
           "sourceTime": "2026-11-27 cash close",
           "quality": "Reported close, breadth proxy not constituent count"
+        },
+        {
+          "metric": "Nasdaq score latest",
+          "value": -12,
+          "unit": "score points",
+          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
+          "sourceTime": "2026-11-28 01:11 ET report",
+          "quality": "Model output, not live quote"
         }
       ],
       "conditions": {
@@ -313,18 +321,6 @@
         },
         {
           "date": "2026-11-30",
-          "event": "Reported Nvidia congressional hearings next week",
-          "status": "Exact date unverified; watch only",
-          "source": "https://www.thetimes.com/business/companies-markets/article/ai-stocks-rebound-thanksgiving-vggmcsfjm"
-        },
-        {
-          "date": "2026-12-01",
-          "event": "Reported Nvidia congressional hearing",
-          "status": "Secondary recap only; issuer or committee confirmation unavailable",
-          "source": "https://www.metatradingclub.com/close-recap-nov-27-2026-chip-stocks-bounce-big-week/"
-        },
-        {
-          "date": "2026-11-30",
           "event": "Rubrik earnings after close",
           "source": "https://www.stocktitan.net/articles/earnings-calendar-week-of-november-30-2026",
           "status": "Secondary calendar citing issuer notices"
@@ -340,13 +336,19 @@
           "event": "Salesforce and Snowflake after close",
           "source": "https://www.stocktitan.net/articles/earnings-calendar-week-of-november-30-2026",
           "status": "Secondary calendar; direct reaction likely next session"
+        },
+        {
+          "date": "2026-12-03",
+          "event": "Huang Senate testimony",
+          "status": "Reuters reported date; outside horizon, committee confirmation not obtained",
+          "source": "https://www.reuters.com/business/take-five/global-markets-themes-takealook-graphics-2026-11-27/"
         }
       ],
       "provenance": {
-        "assessmentTime": "2026-11-28T06:10:24Z",
-        "repositorySnapshotUpdated": "2026-11-28 00:24 ET",
+        "assessmentTime": "2026-11-28T07:41:09Z",
+        "repositorySnapshotUpdated": "2026-11-28 01:11 ET",
         "openWatchUpdated": "2026-11-28T02:31:23+00:00",
-        "sourceQuality": "Weekend; no live synchronized quotes. Reuters and AP corroborate Friday equity rebound; WSJ corroborates elevated yields and tightening expectations. Dashboard VXN 33.34 and VIX 23.81 have unknown underlying timestamps; Saturday Rio Times briefing corroborates VIX and 10Y. Exact Fed probabilities remain stale. Open Watch unchanged.",
+        "sourceQuality": "Weekend review: no new synchronized market quotes. Fresh retrieval of WSJ, Reuters and AP corroborates Friday broad rebound, elevated rates and oil settlements. Dashboard volatility timestamps remain unknown; conflicting secondary quotes not treated as fresh closes. Open Watch timestamp unchanged. Reuters reports December 3 testimony, not independently committee-confirmed.",
         "yieldScaling": "Repository yields already percent; (4.936-4.710)*100=22.6 bp.",
         "marketVsCatalyst": "Friday rally observed; weekend OPEC+ outcome and potential supply disruptions are prospective, not observed equity reactions.",
         "sources": [
@@ -369,17 +371,18 @@
           "https://www.tradingview.com/news/barchart%3Aea1deb022094b%3A0-stocks-settle-sharply-higher-as-chipmakers-and-ai-stocks-rebound/",
           "https://www.riotimesonline.com/global-economy-briefing-november-28-2026/",
           "https://apnews.com/article/04dab6079cf7f3dfe7285a3cc1f240a2",
-          "https://www.reuters.com/business/wall-st-week-ahead-sliding-stock-market-confronts-jobs-data-rate-view-next-tests-2026-11-27/"
+          "https://www.reuters.com/business/wall-st-week-ahead-sliding-stock-market-confronts-jobs-data-rate-view-next-tests-2026-11-27/",
+          "https://www.reuters.com/business/take-five/global-markets-themes-takealook-graphics-2026-11-27/"
         ]
       },
       "editorial": {
         "marketOverview": "Friday's shortened session saw Nasdaq rise 2.31% and SOX about 4.7%, while AP reports Russell 2000 up 1.7%, consistent with broad participation. The weekly rebound was strong but holiday liquidity and the preceding selloff limit trend inference.",
-        "whatChanged": "The latest repository report at 00:24 ET retains the -12 score and provides VXN 33.34 and VIX 23.81, with underlying quote times unavailable. A Saturday briefing corroborates the VIX reading and 10Y yield. Open Watch remains unchanged at 02:31 UTC, with no new dated catalyst. These are data-quality improvements rather than new market moves.",
+        "whatChanged": "Repository early outlook updated at 01:11 ET, score unchanged at -12. Open Watch remains at 02:31 UTC. Reuters week-ahead reporting dates Huang testimony to December 3, removing the previously speculative Tuesday hearing from the base calendar; anticipatory risk remains. OPEC+ is expected to hold first-quarter targets, but outcome is pending. No new cash-session response exists.",
         "marketInterpretation": "The rebound remains a relief move pending normal-liquidity confirmation. Cooling volatility is constructive, but VXN remains elevated. Repository yields of 4.936% and 4.710% imply 22.6 basis points; WSJ reports slightly earlier lower yields and a widely priced December hike. Oil settlements remain historical and weekend supply risks prospective.",
-        "threeDayPath": "Monday tests the rally under normal liquidity following Sunday's OPEC+ meeting; Rubrik reports after close. Tuesday's ISM and JOLTS at 10 ET may shift yields, followed by Marvell and Credo calls at 16:30 and 17:00 ET. Wednesday ADP at 08:15 ET and the response to chip guidance could determine whether leadership persists; Salesforce and Snowflake report after close, so their main cash reaction may fall outside the horizon.",
+        "threeDayPath": "Monday tests Friday's broad rally under normal liquidity after OPEC+; Rubrik reports after close. Tuesday ISM and JOLTS at 10 ET may reset rate expectations, with Marvell and Credo guidance after close shaping Wednesday's chip trade. Wednesday ADP and the semiconductor earnings response are the main in-horizon tests; Salesforce and Snowflake report after close. Thursday's reported Huang testimony may influence positioning before the event, not an observed reaction.",
         "bullCase": "Broad participation and sustained semiconductor relative strength, combined with easing volatility and stable or lower yields, could extend Friday's rebound. Constructive chip guidance would reinforce the demand narrative.",
         "bearCase": "A reversal in chip leadership, renewed oil supply disruption or yields above 5% could unwind the relief rally. Weak AI infrastructure guidance or hotter macro data could intensify valuation pressure.",
-        "watchNext": "Watch Sunday's OPEC+ decision and futures reopening, Monday breadth and synchronized rates/volatility, Tuesday macro and chip earnings, and Wednesday ADP. Friday December 4 payrolls and December 8–9 Fed meeting are outside the horizon but may affect positioning."
+        "watchNext": "Watch Sunday OPEC+ decision and futures reopening, Monday breadth and synchronized rates/volatility, Tuesday macro and chip earnings, Wednesday ADP. Reuters dates Huang Senate testimony to Thursday December 3; Friday payrolls and December 8–9 Fed meeting are also outside the horizon but may affect positioning."
       }
     }
   ]
