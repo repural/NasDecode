@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "three-day-watch-history",
-  "updated": "2026-11-28T01:09:08Z",
+  "updated": "2026-11-28T02:29:36Z",
   "horizon": [
     "2026-11-30",
     "2026-12-01",
@@ -16,19 +16,19 @@
   "entries": [
     {
       "date": "2026-11-27",
-      "timeET": "20:09",
+      "timeET": "21:29",
       "bias": "Neutral — Broad Relief Rally, Macro Risk",
       "previousBias": "Neutral — Broad Relief Rally, Macro Risk",
       "materialChange": false,
       "confidence": "Moderate",
       "eventRisk": "Very High",
-      "summary": "Friday's chip-led rebound remains intact in the last cash close; no new verified market reversal or curated catalyst. Weekend oil and next-week labor data keep risk elevated.",
+      "summary": "Friday's chip-led rebound remains intact; model score slips to -13, still mixed/neutral. No new curated catalyst or live weekend reversal.",
       "bullish": [
         "SOX +4.69%, Nasdaq +2.31%, QQQ approximately +2.7%; positive breadth in repository.",
         "VIX reported lower at 24.06; broad equity gains."
       ],
       "bearish": [
-        "10Y 4.936%, 2Y 4.710%; score fell from +10 to -7.",
+        "10Y 4.936%, 2Y 4.710% in repository; score fell from +10 at open to -13.",
         "AI valuation and policy risks persist; holiday liquidity limits inference."
       ],
       "observations": [
@@ -100,14 +100,6 @@
           "metric": "10Y minus 2Y",
           "value": 22.6,
           "unit": "basis points",
-          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
-          "sourceTime": "2026-11-27 15:46 ET report",
-          "quality": "Prior session observation; not live at assessment. Repository report; underlying timestamps unverified; cash session closed 13:00 ET"
-        },
-        {
-          "metric": "Nasdaq score",
-          "value": -7,
-          "unit": "score points",
           "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
           "sourceTime": "2026-11-27 15:46 ET report",
           "quality": "Prior session observation; not live at assessment. Repository report; underlying timestamps unverified; cash session closed 13:00 ET"
@@ -191,6 +183,62 @@
           "source": "https://www.wsj.com/finance/stocks/stocks-poised-to-end-week-strong-as-investors-take-break-from-ai-jitters-ce6b2846",
           "sourceTime": "2026-11-27 closing report",
           "quality": "Reported weekly return"
+        },
+        {
+          "metric": "Nasdaq score",
+          "value": -13,
+          "unit": "score points",
+          "source": "https://github.com/repural/NasDecode/blob/main/public/data/premarket.json",
+          "sourceTime": "2026-11-27 20:09 ET",
+          "quality": "Repository model score, not live quote"
+        },
+        {
+          "metric": "Nasdaq Reuters close",
+          "value": 2.31,
+          "unit": "percent change",
+          "source": "https://www.reuters.com/business/wall-st-futures-surge-investors-return-holiday-2026-11-27/",
+          "sourceTime": "2026-11-27 13:00 ET",
+          "quality": "Reported cash close"
+        },
+        {
+          "metric": "SOX Reuters close",
+          "value": 4.7,
+          "unit": "percent change",
+          "source": "https://www.reuters.com/business/wall-st-futures-surge-investors-return-holiday-2026-11-27/",
+          "sourceTime": "2026-11-27 13:00 ET",
+          "quality": "Rounded reported cash close"
+        },
+        {
+          "metric": "NVDA close",
+          "value": 0.8,
+          "unit": "percent change",
+          "source": "https://www.reuters.com/business/wall-st-futures-surge-investors-return-holiday-2026-11-27/",
+          "sourceTime": "2026-11-27 13:00 ET",
+          "quality": "Reported cash close"
+        },
+        {
+          "metric": "10Y external",
+          "value": 4.921,
+          "unit": "percent yield",
+          "source": "https://www.wsj.com/finance/investing/u-s-treasury-yields-rise-in-shortened-post-thanksgiving-trade-f0822039",
+          "sourceTime": "2026-11-27 report",
+          "quality": "Earlier quote, exact time unavailable"
+        },
+        {
+          "metric": "2Y external",
+          "value": 4.693,
+          "unit": "percent yield",
+          "source": "https://www.wsj.com/finance/investing/u-s-treasury-yields-rise-in-shortened-post-thanksgiving-trade-f0822039",
+          "sourceTime": "2026-11-27 report",
+          "quality": "Earlier quote, exact time unavailable"
+        },
+        {
+          "metric": "External curve",
+          "value": 22.8,
+          "unit": "basis points",
+          "source": "https://www.wsj.com/finance/investing/u-s-treasury-yields-rise-in-shortened-post-thanksgiving-trade-f0822039",
+          "sourceTime": "2026-11-27 report",
+          "quality": "Calculated from same report, tick synchronization unknown"
         }
       ],
       "conditions": {
@@ -227,13 +275,19 @@
           "event": "Reported Nvidia congressional hearings next week",
           "status": "Exact date unverified; watch only",
           "source": "https://www.thetimes.com/business/companies-markets/article/ai-stocks-rebound-thanksgiving-vggmcsfjm"
+        },
+        {
+          "date": "2026-12-01",
+          "event": "Reported Nvidia congressional hearing",
+          "status": "Secondary recap only; issuer or committee confirmation unavailable",
+          "source": "https://www.metatradingclub.com/close-recap-nov-27-2026-chip-stocks-bounce-big-week/"
         }
       ],
       "provenance": {
-        "assessmentTime": "2026-11-28T01:09:08Z",
-        "repositorySnapshotUpdated": "2026-11-27 15:53 ET",
+        "assessmentTime": "2026-11-28T02:29:36Z",
+        "repositorySnapshotUpdated": "2026-11-27 20:09 ET",
         "openWatchUpdated": "2026-11-27T19:48:49+00:00",
-        "sourceQuality": "Cash closed; no synchronized new quotes. External QQQ and SMH differ from repository, retain separately. VXN and exact oil settlement unavailable; Fed probabilities earlier Friday only.",
+        "sourceQuality": "Weekend; no live synchronized quotes. Reuters corroborates Nasdaq and SOX close; repository score updated. Oil and VXN remain stale; exact settlements unavailable.",
         "yieldScaling": "Repository yields already percent; (4.936-4.710)*100=22.6 bp.",
         "marketVsCatalyst": "Friday rally observed; reported congressional hearings next week have no verified exact date or incremental market response. Open Watch timestamp unchanged.",
         "sources": [
@@ -246,14 +300,17 @@
           "https://www.wsj.com/finance/stocks/stocks-poised-to-end-week-strong-as-investors-take-break-from-ai-jitters-ce6b2846",
           "https://www.thetimes.com/business/companies-markets/article/ai-stocks-rebound-thanksgiving-vggmcsfjm",
           "https://www.bls.gov/schedule/2026/",
-          "https://economics.td.com/domains/economics.td.com/documents/reports/bottom-line/tables/2026-11-27/upcoming.htm"
+          "https://economics.td.com/domains/economics.td.com/documents/reports/bottom-line/tables/2026-11-27/upcoming.htm",
+          "https://www.reuters.com/business/wall-st-futures-surge-investors-return-holiday-2026-11-27/",
+          "https://www.wsj.com/finance/investing/u-s-treasury-yields-rise-in-shortened-post-thanksgiving-trade-f0822039",
+          "https://www.metatradingclub.com/close-recap-nov-27-2026-chip-stocks-bounce-big-week/"
         ]
       },
       "editorial": {
-        "marketOverview": "Friday's shortened session remains the latest cash observation. QQQ rose 2.66% according to Quantisnow versus 2.69% in the repository; SOX gained 4.69% in the repository. External SMH gain of 3.79% differs from the repository implied 4.17%, so exact relative returns are not synchronized. WSJ reports Nasdaq gained 6.7% for the week after a 10% decline the previous week.",
-        "whatChanged": "Repository report refreshed to 15:53 ET without a change in score (-7) or quoted equity and rate figures. Open Watch remains updated at 19:48 UTC with no new dated catalyst. Fresh external coverage reinforces the rebound but also notes unresolved AI financing and export risks.",
-        "marketInterpretation": "Broad participation and semiconductor strength support neutral rather than bearish bias, but holiday liquidity and elevated rates limit confidence in continuation. Earlier Friday FedWatch pricing favored a December hike; exact latest probabilities, VXN and matched Brent/WTI settlements are not verified. Oil supply risk remains two-sided.",
-        "threeDayPath": "Monday November 30 tests the rebound with normal liquidity and weekend oil developments. Tuesday December 1 brings manufacturing PMI, ISM and official JOLTS at 10 ET; Credo earnings remain repository-listed, not issuer-confirmed. Wednesday December 2 ADP at 08:15 ET adds rate sensitivity. Reported Nvidia congressional hearings next week are a watch item without confirmed timing.",
+        "marketOverview": "Friday's cash close remains the latest market observation. Reuters reports Nasdaq +2.31%, SOX approximately +4.7%, and Nvidia only +0.8%. Repository QQQ +2.69% differs slightly from Quantisnow +2.66%; SMH reports also differ. The broad rebound is real but exact cross-source returns are not synchronized.",
+        "whatChanged": "Repository score declined from -7 to -13 at 20:09 ET, still mixed/neutral. Reuters independently confirms the chip-led close, with Nvidia lagging the sector. Open Watch timestamp remains unchanged at 19:48 UTC. No new market session has occurred.",
+        "marketInterpretation": "The chip recovery and positive breadth offset restrictive rate expectations, but the weaker model score and Nvidia lag limit conviction. WSJ reports earlier 10Y 4.921% and 2Y 4.693%, versus repository 4.936% and 4.710%; both imply a positive curve near 23 bp. VXN and matched oil settlements remain unverified. No weekend price response is established.",
+        "threeDayPath": "Monday November 30 tests the rebound with normal liquidity and weekend oil news. Tuesday December 1 brings manufacturing PMI, ISM and official JOLTS at 10 ET; Credo earnings remain repository-listed. A secondary recap reports Nvidia hearings December 1 and 3, not independently confirmed. Wednesday December 2 ADP at 08:15 ET adds rate sensitivity.",
         "bullCase": "A sustained chip-led recovery with broad participation and cooling volatility could extend gains if yields stabilize. The weekly rebound supports this possibility but does not establish a durable trend.",
         "bearCase": "A reversal of semiconductor relative strength, narrowing breadth or renewed oil-driven inflation pressure could unwind the holiday rally. A ten-year yield above 5% would reinforce downside risk; AI financing and export uncertainty remain unresolved.",
         "watchNext": "Monitor weekend OPEC+ developments, Monday futures and cash breadth, paired Treasury yields, fresh VXN/VIX and matched oil contracts. Verify hearing and earnings dates and compare Tuesday and Wednesday releases with consensus."
